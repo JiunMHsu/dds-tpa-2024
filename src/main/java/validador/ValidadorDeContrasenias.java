@@ -24,9 +24,12 @@ public class ValidadorDeContrasenias {
     return true;
   }
 
-  // TODO - noTieneCaracteresRepetidosConsecutivos()
   private boolean noTieneCaracteresRepetidosConsecutivos(String unaClave) {
-    // si tiene secuencias tipo aaa, &&&, FFF, no va
+    for (int i = 0; i < unaClave.length(); i++){
+      if (unaClave.charAt(i) == unaClave.charAt(i + 1) && unaClave.charAt(i) == unaClave.charAt(i + 2)){
+        return  false;
+      }
+    }
     return true;
   }
 
