@@ -1,4 +1,10 @@
+
 package validador;
+
+import java.io.IOException; /** para esFuerte */
+import java.nio.file.Files; /** para esFuerte */
+import java.nio.file.Paths; /** para esFuerte */
+import java.util.List; /** para esFuerte */
 
 /**
  * Validador de contraseñas según las recomendaciones
@@ -6,6 +12,7 @@ package validador;
  * <p/>
  * Véase: <a href="https://pages.nist.gov/800-63-3/sp800-63b.html#memsecret"> Memorized Secret Verifiers </a>
  */
+
 public class ValidadorDeContrasenias {
 
   // TODO - esValida()
@@ -18,15 +25,18 @@ public class ValidadorDeContrasenias {
     return true;
   }
 
-  // TODO - esFuerte()
-  private boolean esFuerte(String unaClave) {
-    // chequeo de las 10000 peores contraseñas.
-    return true;
+  private boolean esFuerte(String unaClave) throws IOException {
+    List <String> peoresContrasenias;
+    peoresContrasenias = Files.readAllLines(Paths.get("contraseniasComunes.txt"));
+    return !peoresContrasenias.contains(unaClave);
   }
 
-  // TODO - noTieneCaracteresRepetidosConsecutivos()
   private boolean noTieneCaracteresRepetidosConsecutivos(String unaClave) {
-    // si tiene secuencias tipo aaa, &&&, FFF, no va
+    for (int i = 0; i < unaClave.length(); i++){
+      if (unaClave.charAt(i) == unaClave.charAt(i + 1) && unaClave.charAt(i) == unaClave.charAt(i + 2)){
+        return  false;
+      }
+    }
     return true;
   }
 
