@@ -4,7 +4,7 @@ package validador;
 import java.io.IOException; /** para esFuerte */
 import java.nio.file.Files; /** para esFuerte */
 import java.nio.file.Paths; /** para esFuerte */
-import java.util.List; /** para esFuerte */
+import java.util.List;      /** para esFuerte */
 
 /**
  * Validador de contraseñas según las recomendaciones
@@ -17,24 +17,27 @@ public class ValidadorDeContrasenias {
 
   // TODO - esValida()
   public boolean esValida(String unaClave) {
-    return true;
+    return tieneMasDeOchoCaracteres(unaClave) && esFuerte(unaClave) && noTieneCaracteresRepetidosConsecutivos(unaClave)
+              && esDesordenadoAscendentemente(unaClave) && esDesordenadoDescendentemente(unaClave);
   }
 
   // TODO - tieneMasDeOchoCaracteres()
   private boolean tieneMasDeOchoCaracteres(String unaClave) {
-    if(unaClave.length() > 8)
-      return true;
-    return false;
+    return unaClave.length() > 8;
   }
 
-  private boolean esFuerte(String unaClave) throws IOException {
-    List <String> peoresContrasenias;
-    peoresContrasenias = Files.readAllLines(Paths.get("contraseniasComunes.txt"));
+  private boolean esFuerte(String unaClave) {
+    List <String> peoresContrasenias = List.of();
+    try {
+      peoresContrasenias = Files.readAllLines(Paths.get("contraseniasComunes.txt"));
+    } catch (IOException error) {
+      error.printStackTrace();
+    }
     return !peoresContrasenias.contains(unaClave);
   }
 
   private boolean noTieneCaracteresRepetidosConsecutivos(String unaClave) {
-    for (int i = 0; i < unaClave.length(); i++){
+    for (int i = 0; i < unaClave.length() - 1; i++){
       if (unaClave.charAt(i) == unaClave.charAt(i + 1) && unaClave.charAt(i) == unaClave.charAt(i + 2)){
         return  false;
       }
