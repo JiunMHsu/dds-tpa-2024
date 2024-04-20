@@ -22,7 +22,9 @@ public class ValidadorDeContrasenias {
 
   // TODO - tieneMasDeOchoCaracteres()
   private boolean tieneMasDeOchoCaracteres(String unaClave) {
-    return true;
+    if(unaClave.length() > 8)
+      return true;
+    return false;
   }
 
   private boolean esFuerte(String unaClave) throws IOException {
@@ -40,15 +42,23 @@ public class ValidadorDeContrasenias {
     return true;
   }
 
-  // TODO - esDesordenadoAlfabeticamente()
-  private boolean esDesordenadoAlfabeticamente(String unaClave) {
-    // si tiene secuencias tipo abc, fgh, cba, no va
-    return true;
+  // TODO - esDesordenadoAscendentemente()
+  private boolean esDesordenadoAscendentemente(String unaClave) {
+    // si tiene secuencias tipo abc, fgh, 123 no va
+    for (int i = 0; i < unaClave.length() - 1; i++) { //ascendentemente - si ya dos caracteres no lo estan,
+      if(unaClave.charAt(i) >= unaClave.charAt(i + 1))   //como abd, va a ser verdadero. lo mismo con los numeros
+        return true;                                  //porque son caracteres ascii
+    }
+    return false;
   }
 
-  // TODO - esDesordenadoNumericamente()
-  private boolean esDesordenadoNumericamente(String unaClave) {
-    // si tiene secuencias tipo 123, 345, 876, no va
-    return true;
+  // TODO - esDesordenadoDescendentemente()
+  private boolean esDesordenadoDescendentemente(String unaClave) {
+    // si tiene secuencias tipo 321, cba, hgf no va
+    for(int i = 0; i < unaClave.length() - 1; i++) {  // lo mismo de arriba
+      if(unaClave.charAt(i) <= unaClave.charAt(i + 1))
+        return true;
+    }
+    return false;
   }
 }
