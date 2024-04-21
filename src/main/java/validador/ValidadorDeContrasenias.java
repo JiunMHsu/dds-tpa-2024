@@ -1,11 +1,10 @@
-
 package validador;
 
-import java.io.IOException; // para esFuerte
-import java.nio.file.Files; // para esFuerte
-import java.nio.file.Paths; // para esFuerte
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;      // para esFuerte
+import java.util.List;
 
 /**
  * Validador de contraseñas según las recomendaciones
@@ -14,26 +13,20 @@ import java.util.List;      // para esFuerte
  * Véase: <a href="https://pages.nist.gov/800-63-3/sp800-63b.html#memsecret"> Memorized Secret Verifiers </a>
  */
 public class ValidadorDeContrasenias {
-
-  /**
-   *
-   * @param unaClave
-   * @return bool
-   */
   public boolean esValida(String unaClave) {
-    return tieneMasDeOchoCaracteres(unaClave)
-        && esFuerte(unaClave)
-        && noTieneCaracteresRepetidosConsecutivos(unaClave)
-        && esDesordenadoAscendentemente(unaClave)
-        && esDesordenadoDescendentemente(unaClave);
+    return this.tieneMasDeOchoCaracteres(unaClave)
+        && this.esFuerte(unaClave)
+        && this.noTieneCaracteresRepetidosConsecutivos(unaClave)
+        && this.esDesordenadoAscendentemente(unaClave)
+        && this.esDesordenadoDescendentemente(unaClave);
   }
 
   // TODO - tieneMasDeOchoCaracteres()
-  public boolean tieneMasDeOchoCaracteres(String unaClave) {
-    return unaClave.length() > 8;
+  private boolean tieneMasDeOchoCaracteres(String unaClave) {
+    return unaClave.length() >= 8;
   }
 
-  public boolean esFuerte(String unaClave) {
+  private boolean esFuerte(String unaClave) {
     List<String> peoresContrasenias = new ArrayList<>();
     try {
       peoresContrasenias = Files.readAllLines(Paths.get("contraseniasComunes.txt"));
@@ -43,34 +36,34 @@ public class ValidadorDeContrasenias {
     return !peoresContrasenias.contains(unaClave);
   }
 
-
-  public boolean noTieneCaracteresRepetidosConsecutivos(String unaClave) {
+  private boolean noTieneCaracteresRepetidosConsecutivos(String unaClave) {
     for (int i = 0; i < unaClave.length() - 1; i++) {
-      if (unaClave.charAt(i) == unaClave.charAt(i + 1) && unaClave.charAt(i) == unaClave.charAt(i + 2)) {
-        return  false;
+      char actualCaracter = unaClave.charAt(i);
+      char siguienteCaracter = unaClave.charAt(i + 1);
+      char siguienteSiguienteCaracter = unaClave.charAt(i + 2);
+      if (actualCaracter == siguienteCaracter && actualCaracter == siguienteSiguienteCaracter) {
+        return false;
       }
     }
     return true;
   }
 
   // TODO - esDesordenadoAscendentemente()
-  public boolean esDesordenadoAscendentemente(String unaClave) {
-    // si tiene secuencias tipo abc, fgh, 123 no va
-    for (int i = 0; i < unaClave.length() - 1; i++) { //ascendentemente - si ya dos caracteres no lo estan,
-      if (unaClave.charAt(i) >= unaClave.charAt(i + 1))   //como abd, va a ser verdadero. lo mismo con los numeros
-        return true;                                  //porque son caracteres ascii
+  private boolean esDesordenadoAscendentemente(String unaClave) {
+    for (int i = 0; i < unaClave.length() - 2; i++) {
+      char actualCaracter = unaClave.charAt(i);
+      char siguienteCaracter = unaClave.charAt(i + 1);
+      char siguienteSiguienteCaracter = unaClave.charAt(i + 2);
+      if (siguienteCaracter == actualCaracter + 1 && siguienteSiguienteCaracter == siguienteCaracter + 1) {
+        return false;
+      }
     }
-    return false;
+    return true;
   }
 
   // TODO - esDesordenadoDescendentemente()
-  public boolean esDesordenadoDescendentemente(String unaClave) {
-    // si tiene secuencias tipo 321, cba, hgf no va
-    for (int i = 0; i < unaClave.length() - 1; i++) {  // lo mismo de arriba
-      if (unaClave.charAt(i) <= unaClave.charAt(i + 1)) {
-        return true;
-      }
-    }
-    return false;
+  private boolean esDesordenadoDescendentemente(String unaClave) {
+    String cadenaAlReves = new StringBuffer(unaClave).reverse().toString();
+    return this.esDesordenadoAscendentemente(cadenaAlReves);
   }
 }
