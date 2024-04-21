@@ -1,12 +1,13 @@
-package domain;
+package validador;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import validador.ValidadorDeContrasenias;
-public class testValidador {
+
+public class TestValidadorDeContrasenias {
 
     ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
+
     @Test
     @DisplayName("Una clave es fuerte si no pertenece a las 10000 claves debiles")
     public void esFuerte() {
