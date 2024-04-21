@@ -1,11 +1,12 @@
-package domain;
+package validador;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import validador.ValidadorDeContrasenias;
-public class testValidador {
+
+public class TestValidadorDeContrasenias {
 
     ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
+
     @Test
     public void unaClaveEsFuerteSiNoPerteneceALas10000Debiles() {
         String unaClaveDebil = "dragon";
