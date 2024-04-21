@@ -11,8 +11,9 @@ public class TestValidadorDeContrasenias {
   @Test
   @DisplayName("Una clave es fuerte si no pertenece a las 10000 claves debiles")
   public void esFuerte() {
-    String unaClaveDebil = "dragon";
-    String unaClaveFuerte = "gloria";
+    String unaClaveDebil = "sherlock";
+    String unaClaveFuerte = "ogiuh3e4";
+
     Assertions.assertFalse(validador.esValida(unaClaveDebil));
     Assertions.assertTrue(validador.esValida(unaClaveFuerte));
   }
@@ -20,8 +21,9 @@ public class TestValidadorDeContrasenias {
   @Test
   @DisplayName("Una clave no tiene caracteres repetidos consecutivos cuando posee 3 o mas")
   public void noTieneCaracteresRepetidosConsecutivos() {
-    String claveCaracRepetConsec = "fraaaa";
+    String claveCaracRepetConsec = "fraaaa&^h";
     String claveCaracNoRepetConsec = "awibciuawb";
+
     Assertions.assertFalse(validador.esValida(claveCaracRepetConsec));
     Assertions.assertTrue(validador.esValida(claveCaracNoRepetConsec));
   }
@@ -32,6 +34,7 @@ public class TestValidadorDeContrasenias {
     String claveConMasDeOchoCaracteres = "fuerteElDragon";
     String claveConOchoCaracteres = "fuerteja";
     String claveConMenosDeOchoCaracteres = "fuerte";
+
     Assertions.assertTrue(validador.esValida(claveConMasDeOchoCaracteres));
     Assertions.assertTrue(validador.esValida(claveConOchoCaracteres));
     Assertions.assertFalse(validador.esValida(claveConMenosDeOchoCaracteres));
@@ -40,17 +43,19 @@ public class TestValidadorDeContrasenias {
   @Test
   @DisplayName("Una clave esta desordenada ascendentemente cuando tiene 3 caracteres ordenados segun su valor en el codigo ascii")
   public void esDesordenadoAscendentemente() {
-    String claveDesordenada = "juakmju";
-    String claveOrdenada = "mabcju";
+    String claveDesordenada = "juakmju2";
+    String claveOrdenada = "mabcjugq3e";
+
     Assertions.assertTrue(validador.esValida(claveDesordenada));
     Assertions.assertFalse(validador.esValida(claveOrdenada));
   }
 
   @Test
-  @DisplayName("Una clave esta desordenada descendentemente cuando tiene 3 caracteres ordenados segun su valor en el codigo ascii")
+  @DisplayName("Una clave esta desordenada descendentemente cuando tiene 3 caracteres ordenados según su valor en el codigo ascii")
   public void esDesordenadoDescendentemente() {
-    String claveDesordenada = "juakmju";
-    String claveOrdenada = "mcbaju";
+    String claveDesordenada = "juakmju249";
+    String claveOrdenada = "mcbaju*0";
+
     Assertions.assertTrue(validador.esValida(claveDesordenada));
     Assertions.assertFalse(validador.esValida(claveOrdenada));
   }

@@ -21,23 +21,22 @@ public class ValidadorDeContrasenias {
         && this.esDesordenadoDescendentemente(unaClave);
   }
 
-  // TODO - tieneMasDeOchoCaracteres()
   private boolean tieneMasDeOchoCaracteres(String unaClave) {
     return unaClave.length() >= 8;
   }
 
   private boolean esFuerte(String unaClave) {
-    List<String> peoresContrasenias = new ArrayList<>();
     try {
-      peoresContrasenias = Files.readAllLines(Paths.get("contraseniasComunes.txt"));
+      List<String> peoresContrasenias = Files.readAllLines(Paths.get("contraseniasComunes.txt"));
+      return !peoresContrasenias.contains(unaClave);
     } catch (IOException error) {
       error.printStackTrace();
     }
-    return !peoresContrasenias.contains(unaClave);
+    return false;
   }
 
   private boolean noTieneCaracteresRepetidosConsecutivos(String unaClave) {
-    for (int i = 0; i < unaClave.length() - 1; i++) {
+    for (int i = 0; i < unaClave.length() - 2; i++) {
       char actualCaracter = unaClave.charAt(i);
       char siguienteCaracter = unaClave.charAt(i + 1);
       char siguienteSiguienteCaracter = unaClave.charAt(i + 2);
@@ -48,7 +47,6 @@ public class ValidadorDeContrasenias {
     return true;
   }
 
-  // TODO - esDesordenadoAscendentemente()
   private boolean esDesordenadoAscendentemente(String unaClave) {
     for (int i = 0; i < unaClave.length() - 2; i++) {
       char actualCaracter = unaClave.charAt(i);
@@ -61,7 +59,6 @@ public class ValidadorDeContrasenias {
     return true;
   }
 
-  // TODO - esDesordenadoDescendentemente()
   private boolean esDesordenadoDescendentemente(String unaClave) {
     String cadenaAlReves = new StringBuffer(unaClave).reverse().toString();
     return this.esDesordenadoAscendentemente(cadenaAlReves);
