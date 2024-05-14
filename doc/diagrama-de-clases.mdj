@@ -9581,8 +9581,8 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": -848,
-											"top": -288,
+											"left": -880,
+											"top": -208,
 											"height": 13
 										},
 										{
@@ -9592,11 +9592,11 @@
 												"$ref": "AAAAAAGPSiqu5/9KXgw="
 											},
 											"font": "Arial;13;1",
-											"left": 141,
-											"top": 735,
-											"width": 186.224609375,
+											"left": 125,
+											"top": 775,
+											"width": 231.166015625,
 											"height": 13,
-											"text": "DonacionDineroJuridica"
+											"text": "DonacionDinero"
 										},
 										{
 											"_type": "LabelView",
@@ -9606,8 +9606,8 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": -848,
-											"top": -288,
+											"left": -880,
+											"top": -208,
 											"width": 73.67724609375,
 											"height": 13,
 											"text": "(from Model)"
@@ -9620,16 +9620,16 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": -848,
-											"top": -288,
+											"left": -880,
+											"top": -208,
 											"height": 13,
 											"horizontalAlignment": 1
 										}
 									],
 									"font": "Arial;13;0",
-									"left": 136,
-									"top": 728,
-									"width": 196.224609375,
+									"left": 120,
+									"top": 768,
+									"width": 241.166015625,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGPSiqu5/9Lg2U="
@@ -9664,9 +9664,9 @@
 												"$ref": "AAAAAAGPSm7LDaIHTPQ="
 											},
 											"font": "Arial;13;0",
-											"left": 141,
-											"top": 758,
-											"width": 186.224609375,
+											"left": 125,
+											"top": 798,
+											"width": 231.166015625,
 											"height": 13,
 											"text": "-fechaDonacion: LocalDateTime",
 											"horizontalAlignment": 0
@@ -9681,9 +9681,9 @@
 												"$ref": "AAAAAAGPSnBZ3c95dZY="
 											},
 											"font": "Arial;13;0",
-											"left": 141,
-											"top": 773,
-											"width": 186.224609375,
+											"left": 125,
+											"top": 813,
+											"width": 231.166015625,
 											"height": 13,
 											"text": "-monto: Integer",
 											"horizontalAlignment": 0
@@ -9698,9 +9698,9 @@
 												"$ref": "AAAAAAGPSnBio9HwQL8="
 											},
 											"font": "Arial;13;0",
-											"left": 141,
-											"top": 788,
-											"width": 186.224609375,
+											"left": 125,
+											"top": 828,
+											"width": 231.166015625,
 											"height": 13,
 											"text": "-frecuencia: Period",
 											"horizontalAlignment": 0
@@ -9715,19 +9715,36 @@
 												"$ref": "AAAAAAGPSnBor9RnnVQ="
 											},
 											"font": "Arial;13;0",
-											"left": 141,
-											"top": 803,
-											"width": 186.224609375,
+											"left": 125,
+											"top": 843,
+											"width": 231.166015625,
 											"height": 13,
-											"text": "-colaborador: PersonaJuridica",
+											"text": "-colaboradorJuridico: PersonaJuridica",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGPeLpegc/fbeE=",
+											"_parent": {
+												"$ref": "AAAAAAGPSiqu5/9P4dY="
+											},
+											"model": {
+												"$ref": "AAAAAAGPeLpebs+j2Vg="
+											},
+											"font": "Arial;13;0",
+											"left": 125,
+											"top": 858,
+											"width": 231.166015625,
+											"height": 13,
+											"text": "-colaboradorHumano: PersonaHumana",
 											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
-									"left": 136,
-									"top": 753,
-									"width": 196.224609375,
-									"height": 68
+									"left": 120,
+									"top": 793,
+									"width": 241.166015625,
+									"height": 83
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -9739,9 +9756,9 @@
 										"$ref": "AAAAAAGPSiqu5/9HnNI="
 									},
 									"font": "Arial;13;0",
-									"left": 136,
-									"top": 821,
-									"width": 196.224609375,
+									"left": 120,
+									"top": 876,
+									"width": 241.166015625,
 									"height": 10
 								},
 								{
@@ -9755,8 +9772,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": -424,
-									"top": -144,
+									"left": -456,
+									"top": -64,
 									"width": 10,
 									"height": 10
 								},
@@ -9771,18 +9788,18 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": -424,
-									"top": -144,
+									"left": -456,
+									"top": -64,
 									"width": 10,
 									"height": 10
 								}
 							],
 							"font": "Arial;13;0",
 							"containerChangeable": true,
-							"left": 136,
-							"top": 728,
-							"width": 195.224609375,
-							"height": 103,
+							"left": 120,
+							"top": 768,
+							"width": 240.166015625,
+							"height": 118,
 							"nameCompartment": {
 								"$ref": "AAAAAAGPSiqu5/9KXgw="
 							},
@@ -12917,252 +12934,6 @@
 							"headQualifiersCompartment": {
 								"$ref": "AAAAAAGPSmM6lSxHbps="
 							}
-						},
-						{
-							"_type": "UMLClassView",
-							"_id": "AAAAAAGPbwv1kLTDVMY=",
-							"_parent": {
-								"$ref": "AAAAAAFF+qBtyKM79qY="
-							},
-							"model": {
-								"$ref": "AAAAAAGPbwv1j7TBsiY="
-							},
-							"subViews": [
-								{
-									"_type": "UMLNameCompartmentView",
-									"_id": "AAAAAAGPbwv1kLTEwzg=",
-									"_parent": {
-										"$ref": "AAAAAAGPbwv1kLTDVMY="
-									},
-									"model": {
-										"$ref": "AAAAAAGPbwv1j7TBsiY="
-									},
-									"subViews": [
-										{
-											"_type": "LabelView",
-											"_id": "AAAAAAGPbwv1kLTFAbs=",
-											"_parent": {
-												"$ref": "AAAAAAGPbwv1kLTEwzg="
-											},
-											"visible": false,
-											"font": "Arial;13;0",
-											"left": -224,
-											"top": 352,
-											"height": 13
-										},
-										{
-											"_type": "LabelView",
-											"_id": "AAAAAAGPbwv1kLTGUBw=",
-											"_parent": {
-												"$ref": "AAAAAAGPbwv1kLTEwzg="
-											},
-											"font": "Arial;13;1",
-											"left": 141,
-											"top": 855,
-											"width": 186.224609375,
-											"height": 13,
-											"text": "DonacionDineroHumana"
-										},
-										{
-											"_type": "LabelView",
-											"_id": "AAAAAAGPbwv1kLTHTHI=",
-											"_parent": {
-												"$ref": "AAAAAAGPbwv1kLTEwzg="
-											},
-											"visible": false,
-											"font": "Arial;13;0",
-											"left": -224,
-											"top": 352,
-											"width": 73.67724609375,
-											"height": 13,
-											"text": "(from Model)"
-										},
-										{
-											"_type": "LabelView",
-											"_id": "AAAAAAGPbwv1kLTInzQ=",
-											"_parent": {
-												"$ref": "AAAAAAGPbwv1kLTEwzg="
-											},
-											"visible": false,
-											"font": "Arial;13;0",
-											"left": -224,
-											"top": 352,
-											"height": 13,
-											"horizontalAlignment": 1
-										}
-									],
-									"font": "Arial;13;0",
-									"left": 136,
-									"top": 848,
-									"width": 196.224609375,
-									"height": 25,
-									"stereotypeLabel": {
-										"$ref": "AAAAAAGPbwv1kLTFAbs="
-									},
-									"nameLabel": {
-										"$ref": "AAAAAAGPbwv1kLTGUBw="
-									},
-									"namespaceLabel": {
-										"$ref": "AAAAAAGPbwv1kLTHTHI="
-									},
-									"propertyLabel": {
-										"$ref": "AAAAAAGPbwv1kLTInzQ="
-									}
-								},
-								{
-									"_type": "UMLAttributeCompartmentView",
-									"_id": "AAAAAAGPbwv1kLTJKUU=",
-									"_parent": {
-										"$ref": "AAAAAAGPbwv1kLTDVMY="
-									},
-									"model": {
-										"$ref": "AAAAAAGPbwv1j7TBsiY="
-									},
-									"subViews": [
-										{
-											"_type": "UMLAttributeView",
-											"_id": "AAAAAAGPbw5Xo3r8epw=",
-											"_parent": {
-												"$ref": "AAAAAAGPbwv1kLTJKUU="
-											},
-											"model": {
-												"$ref": "AAAAAAGPbw5Xk3qrJWs="
-											},
-											"font": "Arial;13;0",
-											"left": 141,
-											"top": 878,
-											"width": 186.224609375,
-											"height": 13,
-											"text": "-fechaDonacion: LocalDateTime",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLAttributeView",
-											"_id": "AAAAAAGPbw6OmovGlRE=",
-											"_parent": {
-												"$ref": "AAAAAAGPbwv1kLTJKUU="
-											},
-											"model": {
-												"$ref": "AAAAAAGPbw6Oj4t1JRA="
-											},
-											"font": "Arial;13;0",
-											"left": 141,
-											"top": 893,
-											"width": 186.224609375,
-											"height": 13,
-											"text": "-monto: Integer",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLAttributeView",
-											"_id": "AAAAAAGPbw7MOKG+SS0=",
-											"_parent": {
-												"$ref": "AAAAAAGPbwv1kLTJKUU="
-											},
-											"model": {
-												"$ref": "AAAAAAGPbw7MKqFtFQ8="
-											},
-											"font": "Arial;13;0",
-											"left": 141,
-											"top": 908,
-											"width": 186.224609375,
-											"height": 13,
-											"text": "-frecuencia: Period",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLAttributeView",
-											"_id": "AAAAAAGPbw74fbBmNfs=",
-											"_parent": {
-												"$ref": "AAAAAAGPbwv1kLTJKUU="
-											},
-											"model": {
-												"$ref": "AAAAAAGPbw74c7AVrmw="
-											},
-											"font": "Arial;13;0",
-											"left": 141,
-											"top": 923,
-											"width": 186.224609375,
-											"height": 13,
-											"text": "-colaborador: PersonaHumana",
-											"horizontalAlignment": 0
-										}
-									],
-									"font": "Arial;13;0",
-									"left": 136,
-									"top": 873,
-									"width": 196.224609375,
-									"height": 68
-								},
-								{
-									"_type": "UMLOperationCompartmentView",
-									"_id": "AAAAAAGPbwv1kLTKAPw=",
-									"_parent": {
-										"$ref": "AAAAAAGPbwv1kLTDVMY="
-									},
-									"model": {
-										"$ref": "AAAAAAGPbwv1j7TBsiY="
-									},
-									"font": "Arial;13;0",
-									"left": 136,
-									"top": 941,
-									"width": 196.224609375,
-									"height": 10
-								},
-								{
-									"_type": "UMLReceptionCompartmentView",
-									"_id": "AAAAAAGPbwv1kLTL8us=",
-									"_parent": {
-										"$ref": "AAAAAAGPbwv1kLTDVMY="
-									},
-									"model": {
-										"$ref": "AAAAAAGPbwv1j7TBsiY="
-									},
-									"visible": false,
-									"font": "Arial;13;0",
-									"left": -112,
-									"top": 176,
-									"width": 10,
-									"height": 10
-								},
-								{
-									"_type": "UMLTemplateParameterCompartmentView",
-									"_id": "AAAAAAGPbwv1kLTMoz8=",
-									"_parent": {
-										"$ref": "AAAAAAGPbwv1kLTDVMY="
-									},
-									"model": {
-										"$ref": "AAAAAAGPbwv1j7TBsiY="
-									},
-									"visible": false,
-									"font": "Arial;13;0",
-									"left": -112,
-									"top": 176,
-									"width": 10,
-									"height": 10
-								}
-							],
-							"font": "Arial;13;0",
-							"containerChangeable": true,
-							"left": 136,
-							"top": 848,
-							"width": 195.224609375,
-							"height": 103,
-							"nameCompartment": {
-								"$ref": "AAAAAAGPbwv1kLTEwzg="
-							},
-							"attributeCompartment": {
-								"$ref": "AAAAAAGPbwv1kLTJKUU="
-							},
-							"operationCompartment": {
-								"$ref": "AAAAAAGPbwv1kLTKAPw="
-							},
-							"receptionCompartment": {
-								"$ref": "AAAAAAGPbwv1kLTL8us="
-							},
-							"templateParameterCompartment": {
-								"$ref": "AAAAAAGPbwv1kLTMoz8="
-							}
 						}
 					]
 				},
@@ -15079,7 +14850,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "DonacionDineroJuridica",
+					"name": "DonacionDinero",
 					"attributes": [
 						{
 							"_type": "UMLAttribute",
@@ -15117,10 +14888,22 @@
 							"_parent": {
 								"$ref": "AAAAAAGPSiqu5/9HnNI="
 							},
-							"name": "colaborador",
+							"name": "colaboradorJuridico",
 							"visibility": "private",
 							"type": {
 								"$ref": "AAAAAAGPSbND3An62hE="
+							}
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGPeLpebs+j2Vg=",
+							"_parent": {
+								"$ref": "AAAAAAGPSiqu5/9HnNI="
+							},
+							"name": "colaboradorHumano",
+							"visibility": "private",
+							"type": {
+								"$ref": "AAAAAAGPSbMl0gnQ9oI="
 							}
 						}
 					]
