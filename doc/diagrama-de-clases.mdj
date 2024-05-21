@@ -339,7 +339,7 @@
 											"top": 455,
 											"width": 94.20263671875,
 											"height": 13,
-											"text": "Usuario"
+											"text": "ar.edu.utn.frba.dds.models.usuario.Usuario"
 										},
 										{
 											"_type": "LabelView",
@@ -646,7 +646,7 @@
 											"top": 396,
 											"width": 137.56982421875,
 											"height": 13,
-											"text": "TipoColaboracion"
+											"text": "ar.edu.utn.frba.dds.models.colaboracion.TipoColaboracion"
 										},
 										{
 											"_type": "LabelView",
@@ -782,7 +782,7 @@
 											"top": 419,
 											"width": 137.56982421875,
 											"height": 13,
-											"text": "DonacionVianda",
+											"text": "ar.edu.utn.frba.dds.models.colaboracion.DonacionVianda",
 											"horizontalAlignment": 0
 										},
 										{
@@ -799,7 +799,7 @@
 											"top": 434,
 											"width": 137.56982421875,
 											"height": 13,
-											"text": "DonacionDinero",
+											"text": "ar.edu.utn.frba.dds.models.colaboracion.DonacionDinero",
 											"horizontalAlignment": 0
 										},
 										{
@@ -816,7 +816,7 @@
 											"top": 449,
 											"width": 137.56982421875,
 											"height": 13,
-											"text": "DistribucionViandas",
+											"text": "ar.edu.utn.frba.dds.models.colaboracion.DistribucionViandas",
 											"horizontalAlignment": 0
 										},
 										{
@@ -833,7 +833,7 @@
 											"top": 464,
 											"width": 137.56982421875,
 											"height": 13,
-											"text": "HacerseCargoHeladera",
+											"text": "ar.edu.utn.frba.dds.models.colaboracion.HacerseCargoHeladera",
 											"horizontalAlignment": 0
 										}
 									],
@@ -914,7 +914,7 @@
 											"top": 551,
 											"width": 270.76904296875,
 											"height": 13,
-											"text": "PersonaHumana"
+											"text": "ar.edu.utn.frba.dds.models.usuario.PersonaHumana"
 										},
 										{
 											"_type": "LabelView",
@@ -1020,7 +1020,7 @@
 											"top": 604,
 											"width": 270.76904296875,
 											"height": 13,
-											"text": "-contacto: Contacto",
+											"text": "-contacto: ar.edu.utn.frba.dds.models.data.Contacto",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1054,7 +1054,7 @@
 											"top": 634,
 											"width": 270.76904296875,
 											"height": 13,
-											"text": "-direccion: Direccion",
+											"text": "-direccion: ar.edu.utn.frba.dds.models.data.Direccion",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1071,7 +1071,7 @@
 											"top": 649,
 											"width": 270.76904296875,
 											"height": 13,
-											"text": "-formaDeColaborar: List<TipoColaboracion>??",
+											"text": "-formaDeColaborar: List<ar.edu.utn.frba.dds.models.colaboracion.TipoColaboracion>??",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1088,7 +1088,7 @@
 											"top": 664,
 											"width": 270.76904296875,
 											"height": 13,
-											"text": "-datosAdicionales: FormularioRespondido",
+											"text": "-datosAdicionales: ar.edu.utn.frba.dds.models.formulario.FormularioRespondido",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1105,7 +1105,7 @@
 											"top": 679,
 											"width": 270.76904296875,
 											"height": 13,
-											"text": "-usuario: Usuario",
+											"text": "-usuario: ar.edu.utn.frba.dds.models.usuario.Usuario",
 											"horizontalAlignment": 0
 										}
 									],
@@ -1228,7 +1228,7 @@
 											"top": 167,
 											"width": 259.57177734375,
 											"height": 13,
-											"text": "PersonaJuridica"
+											"text": "ar.edu.utn.frba.dds.models.usuario.PersonaJuridica"
 										},
 										{
 											"_type": "LabelView",
@@ -1317,7 +1317,7 @@
 											"top": 205,
 											"width": 259.57177734375,
 											"height": 13,
-											"text": "-tipoRazonSocial: TipoRazonSocial",
+											"text": "-tipoRazonSocial: ar.edu.utn.frba.dds.models.data.TipoRazonSocial",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1351,7 +1351,7 @@
 											"top": 235,
 											"width": 259.57177734375,
 											"height": 13,
-											"text": "-contacto: Contacto",
+											"text": "-contacto: ar.edu.utn.frba.dds.models.data.Contacto",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1368,7 +1368,7 @@
 											"top": 250,
 											"width": 259.57177734375,
 											"height": 13,
-											"text": "-direccion: Direccion",
+											"text": "-direccion: ar.edu.utn.frba.dds.models.data.Direccion",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1385,7 +1385,7 @@
 											"top": 265,
 											"width": 259.57177734375,
 											"height": 13,
-											"text": "-formaDeColaborar: List<TipoColaboracion>",
+											"text": "-formaDeColaborar: List<ar.edu.utn.frba.dds.models.colaboracion.TipoColaboracion>",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1402,7 +1402,7 @@
 											"top": 280,
 											"width": 259.57177734375,
 											"height": 13,
-											"text": "-datosAdicionales: FormularioRespondido",
+											"text": "-datosAdicionales: ar.edu.utn.frba.dds.models.formulario.FormularioRespondido",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1419,7 +1419,7 @@
 											"top": 295,
 											"width": 259.57177734375,
 											"height": 13,
-											"text": "-usuario: Usuario",
+											"text": "-usuario: ar.edu.utn.frba.dds.models.usuario.Usuario",
 											"horizontalAlignment": 0
 										}
 									],
@@ -2091,7 +2091,7 @@
 											"top": 132,
 											"width": 117.34619140625,
 											"height": 13,
-											"text": "TipoRazonSocial"
+											"text": "ar.edu.utn.frba.dds.models.data.TipoRazonSocial"
 										},
 										{
 											"_type": "LabelView",
@@ -3180,7 +3180,7 @@
 											"top": 575,
 											"width": 124.5634765625,
 											"height": 13,
-											"text": "Direccion"
+											"text": "ar.edu.utn.frba.dds.models.data.Direccion"
 										},
 										{
 											"_type": "LabelView",
@@ -3284,7 +3284,7 @@
 											"top": 628,
 											"width": 124.5634765625,
 											"height": 13,
-											"text": "-ubicacion: Ubicacion",
+											"text": "-ubicacion: ar.edu.utn.frba.dds.models.data.Ubicacion",
 											"horizontalAlignment": 0
 										}
 									],
@@ -3405,7 +3405,7 @@
 											"top": 279,
 											"width": 103.603515625,
 											"height": 13,
-											"text": "Contacto"
+											"text": "ar.edu.utn.frba.dds.models.data.Contacto"
 										},
 										{
 											"_type": "LabelView",
@@ -3634,7 +3634,7 @@
 											"top": 407,
 											"width": 102.9052734375,
 											"height": 13,
-											"text": "Ubicacion"
+											"text": "ar.edu.utn.frba.dds.models.data.Ubicacion"
 										},
 										{
 											"_type": "LabelView",
@@ -5216,7 +5216,7 @@
 											"top": 311,
 											"width": 102.892578125,
 											"height": 13,
-											"text": "Pregunta"
+											"text": "ar.edu.utn.frba.dds.models.formulario.Pregunta"
 										},
 										{
 											"_type": "LabelView",
@@ -5411,7 +5411,7 @@
 											"top": 167,
 											"width": 119.89794921875,
 											"height": 13,
-											"text": "Respuesta"
+											"text": "ar.edu.utn.frba.dds.models.formulario.Respuesta"
 										},
 										{
 											"_type": "LabelView",
@@ -5483,7 +5483,7 @@
 											"top": 190,
 											"width": 119.89794921875,
 											"height": 13,
-											"text": "-pregunta: Pregunta",
+											"text": "-pregunta: ar.edu.utn.frba.dds.models.formulario.Pregunta",
 											"horizontalAlignment": 0
 										},
 										{
@@ -5623,7 +5623,7 @@
 											"top": 255,
 											"width": 246.34326171875,
 											"height": 13,
-											"text": "Formulario"
+											"text": "ar.edu.utn.frba.dds.models.formulario.Formulario"
 										},
 										{
 											"_type": "LabelView",
@@ -5695,7 +5695,7 @@
 											"top": 278,
 											"width": 246.34326171875,
 											"height": 13,
-											"text": "+preguntas: List<Pregunta>",
+											"text": "+preguntas: List<ar.edu.utn.frba.dds.models.formulario.Pregunta>",
 											"horizontalAlignment": 0
 										}
 									],
@@ -5729,7 +5729,7 @@
 											"top": 301,
 											"width": 246.34326171875,
 											"height": 13,
-											"text": "+agregarCampo(pregunta: Pregunta): void",
+											"text": "+agregarCampo(pregunta: ar.edu.utn.frba.dds.models.formulario.Pregunta): void",
 											"horizontalAlignment": 0
 										},
 										{
@@ -5746,7 +5746,7 @@
 											"top": 316,
 											"width": 246.34326171875,
 											"height": 13,
-											"text": "+quitarCampo(pregunta: Pregunta): void",
+											"text": "+quitarCampo(pregunta: ar.edu.utn.frba.dds.models.formulario.Pregunta): void",
 											"horizontalAlignment": 0
 										}
 									],
@@ -5854,7 +5854,7 @@
 											"top": 103,
 											"width": 176.9697265625,
 											"height": 13,
-											"text": "FormularioRespondido"
+											"text": "ar.edu.utn.frba.dds.models.formulario.FormularioRespondido"
 										},
 										{
 											"_type": "LabelView",
@@ -5926,7 +5926,7 @@
 											"top": 126,
 											"width": 176.9697265625,
 											"height": 13,
-											"text": "-respuestas: List<Respuesta>",
+											"text": "-respuestas: List<ar.edu.utn.frba.dds.models.formulario.Respuesta>",
 											"horizontalAlignment": 0
 										},
 										{
@@ -5943,7 +5943,7 @@
 											"top": 141,
 											"width": 176.9697265625,
 											"height": 13,
-											"text": "-formulario: Formulario",
+											"text": "-formulario: ar.edu.utn.frba.dds.models.formulario.Formulario",
 											"horizontalAlignment": 0
 										}
 									],
@@ -7436,7 +7436,7 @@
 											"top": 343,
 											"width": 196.32373046875,
 											"height": 13,
-											"text": "PersonaVulnerable"
+											"text": "ar.edu.utn.frba.dds.models.usuario.PersonaVulnerable"
 										},
 										{
 											"_type": "LabelView",
@@ -7559,7 +7559,7 @@
 											"top": 411,
 											"width": 196.32373046875,
 											"height": 13,
-											"text": "-domicilio: Direccion",
+											"text": "-domicilio: ar.edu.utn.frba.dds.models.data.Direccion",
 											"horizontalAlignment": 0
 										},
 										{
@@ -7576,7 +7576,7 @@
 											"top": 426,
 											"width": 196.32373046875,
 											"height": 13,
-											"text": "-documento: Documento",
+											"text": "-documento: ar.edu.utn.frba.dds.models.data.Documento",
 											"horizontalAlignment": 0
 										},
 										{
@@ -7716,7 +7716,7 @@
 											"top": 583,
 											"width": 124.79833984375,
 											"height": 13,
-											"text": "Documento"
+											"text": "ar.edu.utn.frba.dds.models.data.Documento"
 										},
 										{
 											"_type": "LabelView",
@@ -7805,7 +7805,7 @@
 											"top": 621,
 											"width": 124.79833984375,
 											"height": 13,
-											"text": "-tipo: TipoDocumento",
+											"text": "-tipo: ar.edu.utn.frba.dds.models.data.TipoDocumento",
 											"horizontalAlignment": 0
 										}
 									],
@@ -7929,7 +7929,7 @@
 											"top": 732,
 											"width": 117.34619140625,
 											"height": 13,
-											"text": "TipoDocumento"
+											"text": "ar.edu.utn.frba.dds.models.data.TipoDocumento"
 										},
 										{
 											"_type": "LabelView",
@@ -8985,7 +8985,7 @@
 											"top": 1111,
 											"width": 254.14453125,
 											"height": 13,
-											"text": "Heladera"
+											"text": "ar.edu.utn.frba.dds.models.heladera.Heladera"
 										},
 										{
 											"_type": "LabelView",
@@ -9074,7 +9074,7 @@
 											"top": 1149,
 											"width": 254.14453125,
 											"height": 13,
-											"text": "-direccion: Direccion",
+											"text": "-direccion: ar.edu.utn.frba.dds.models.data.Direccion",
 											"horizontalAlignment": 0
 										},
 										{
@@ -9125,7 +9125,7 @@
 											"top": 1194,
 											"width": 254.14453125,
 											"height": 13,
-											"text": "-contenido: List<Vianda>",
+											"text": "-contenido: List<ar.edu.utn.frba.dds.models.vianda.Vianda>",
 											"horizontalAlignment": 0
 										}
 									],
@@ -9159,7 +9159,7 @@
 											"top": 1217,
 											"width": 254.14453125,
 											"height": 13,
-											"text": "+agregarVianda(vianda: Vianda): void",
+											"text": "+agregarVianda(vianda: ar.edu.utn.frba.dds.models.vianda.Vianda): void",
 											"horizontalAlignment": 0
 										},
 										{
@@ -9176,7 +9176,7 @@
 											"top": 1232,
 											"width": 254.14453125,
 											"height": 13,
-											"text": "+quitarVianda(vianda: Vianda): void",
+											"text": "+quitarVianda(vianda: ar.edu.utn.frba.dds.models.vianda.Vianda): void",
 											"horizontalAlignment": 0
 										},
 										{
@@ -9592,7 +9592,7 @@
 											"top": 599,
 											"width": 231.166015625,
 											"height": 13,
-											"text": "DonacionDinero"
+											"text": "ar.edu.utn.frba.dds.models.colaboracion.DonacionDinero"
 										},
 										{
 											"_type": "LabelView",
@@ -9715,7 +9715,7 @@
 											"top": 667,
 											"width": 231.166015625,
 											"height": 13,
-											"text": "-colaboradorJuridico: PersonaJuridica",
+											"text": "-colaboradorJuridico: ar.edu.utn.frba.dds.models.usuario.PersonaJuridica",
 											"horizontalAlignment": 0
 										},
 										{
@@ -9732,7 +9732,7 @@
 											"top": 682,
 											"width": 231.166015625,
 											"height": 13,
-											"text": "-colaboradorHumano: PersonaHumana",
+											"text": "-colaboradorHumano: ar.edu.utn.frba.dds.models.usuario.PersonaHumana",
 											"horizontalAlignment": 0
 										}
 									],
@@ -9855,7 +9855,7 @@
 											"top": 863,
 											"width": 227.9033203125,
 											"height": 13,
-											"text": "DonacionVianda"
+											"text": "ar.edu.utn.frba.dds.models.colaboracion.DonacionVianda"
 										},
 										{
 											"_type": "LabelView",
@@ -9927,7 +9927,7 @@
 											"top": 886,
 											"width": 227.9033203125,
 											"height": 13,
-											"text": "-vianda: Vianda",
+											"text": "-vianda: ar.edu.utn.frba.dds.models.vianda.Vianda",
 											"horizontalAlignment": 0
 										},
 										{
@@ -9961,7 +9961,7 @@
 											"top": 916,
 											"width": 227.9033203125,
 											"height": 13,
-											"text": "-heladera: Heladera",
+											"text": "-heladera: ar.edu.utn.frba.dds.models.heladera.Heladera",
 											"horizontalAlignment": 0
 										},
 										{
@@ -9978,7 +9978,7 @@
 											"top": 931,
 											"width": 227.9033203125,
 											"height": 13,
-											"text": "-colaboradorHumano: PersonaHumana",
+											"text": "-colaboradorHumano: ar.edu.utn.frba.dds.models.usuario.PersonaHumana",
 											"horizontalAlignment": 0
 										}
 									],
@@ -10101,7 +10101,7 @@
 											"top": 759,
 											"width": 227.9033203125,
 											"height": 13,
-											"text": "DistribucionViandas"
+											"text": "ar.edu.utn.frba.dds.models.colaboracion.DistribucionViandas"
 										},
 										{
 											"_type": "LabelView",
@@ -10173,7 +10173,7 @@
 											"top": 782,
 											"width": 227.9033203125,
 											"height": 13,
-											"text": "-origen: Heladera",
+											"text": "-origen: ar.edu.utn.frba.dds.models.heladera.Heladera",
 											"horizontalAlignment": 0
 										},
 										{
@@ -10190,7 +10190,7 @@
 											"top": 797,
 											"width": 227.9033203125,
 											"height": 13,
-											"text": "-destino: Heladera",
+											"text": "-destino: ar.edu.utn.frba.dds.models.heladera.Heladera",
 											"horizontalAlignment": 0
 										},
 										{
@@ -10207,7 +10207,7 @@
 											"top": 812,
 											"width": 227.9033203125,
 											"height": 13,
-											"text": "-viandasAMover: List<Vianda>",
+											"text": "-viandasAMover: List<ar.edu.utn.frba.dds.models.vianda.Vianda>",
 											"horizontalAlignment": 0
 										},
 										{
@@ -10258,7 +10258,7 @@
 											"top": 857,
 											"width": 227.9033203125,
 											"height": 13,
-											"text": "-colaboradorHumano: PersonaHumana",
+											"text": "-colaboradorHumano: ar.edu.utn.frba.dds.models.usuario.PersonaHumana",
 											"horizontalAlignment": 0
 										}
 									],
@@ -10380,7 +10380,7 @@
 											"top": 815,
 											"width": 216.33154296875,
 											"height": 13,
-											"text": "HacerseCargoHeladera"
+											"text": "ar.edu.utn.frba.dds.models.colaboracion.HacerseCargoHeladera"
 										},
 										{
 											"_type": "LabelView",
@@ -10450,7 +10450,7 @@
 											"top": 838,
 											"width": 216.33154296875,
 											"height": 13,
-											"text": "-heladeraACargo: Heladera",
+											"text": "-heladeraACargo: ar.edu.utn.frba.dds.models.heladera.Heladera",
 											"horizontalAlignment": 0
 										},
 										{
@@ -10588,7 +10588,7 @@
 											"top": 1031,
 											"width": 193.45458984375,
 											"height": 13,
-											"text": "Vianda"
+											"text": "ar.edu.utn.frba.dds.models.vianda.Vianda"
 										},
 										{
 											"_type": "LabelView",
@@ -10660,7 +10660,7 @@
 											"top": 1054,
 											"width": 193.45458984375,
 											"height": 13,
-											"text": "-comida: Comida",
+											"text": "-comida: ar.edu.utn.frba.dds.models.data.Comida",
 											"horizontalAlignment": 0
 										},
 										{
@@ -10712,7 +10712,7 @@
 											"top": 1155,
 											"width": 193.45458984375,
 											"height": 13,
-											"text": "-comida: Comida",
+											"text": "-comida: ar.edu.utn.frba.dds.models.data.Comida",
 											"horizontalAlignment": 0
 										}
 									],
@@ -10835,7 +10835,7 @@
 											"top": 1143,
 											"width": 99.25537109375,
 											"height": 13,
-											"text": "Comida"
+											"text": "ar.edu.utn.frba.dds.models.data.Comida"
 										},
 										{
 											"_type": "LabelView",
@@ -14275,19 +14275,6 @@
 							"headQualifiersCompartment": {
 								"$ref": "AAAAAAGPnDGGklXq2Ag="
 							}
-						},
-						{
-							"_type": "UMLTextView",
-							"_id": "AAAAAAGPnDGYK2A7Sks=",
-							"_parent": {
-								"$ref": "AAAAAAFF+qBtyKM79qY="
-							},
-							"font": "Arial;13;0",
-							"left": 775,
-							"top": 798,
-							"width": 100,
-							"height": 25,
-							"text": "Text"
 						}
 					]
 				},
@@ -14495,7 +14482,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Usuario",
+					"name": "ar.edu.utn.frba.dds.models.usuario.Usuario",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -14695,7 +14682,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "TipoColaboracion",
+					"name": "ar.edu.utn.frba.dds.models.colaboracion.TipoColaboracion",
 					"literals": [
 						{
 							"_type": "UMLEnumerationLiteral",
@@ -14703,7 +14690,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGPSa/3dQlsFtA="
 							},
-							"name": "DonacionVianda"
+							"name": "ar.edu.utn.frba.dds.models.colaboracion.DonacionVianda"
 						},
 						{
 							"_type": "UMLEnumerationLiteral",
@@ -14711,7 +14698,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGPSa/3dQlsFtA="
 							},
-							"name": "DonacionDinero"
+							"name": "ar.edu.utn.frba.dds.models.colaboracion.DonacionDinero"
 						},
 						{
 							"_type": "UMLEnumerationLiteral",
@@ -14719,7 +14706,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGPSa/3dQlsFtA="
 							},
-							"name": "DistribucionViandas"
+							"name": "ar.edu.utn.frba.dds.models.colaboracion.DistribucionViandas"
 						},
 						{
 							"_type": "UMLEnumerationLiteral",
@@ -14727,7 +14714,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGPSa/3dQlsFtA="
 							},
-							"name": "HacerseCargoHeladera"
+							"name": "ar.edu.utn.frba.dds.models.colaboracion.HacerseCargoHeladera"
 						}
 					]
 				},
@@ -14737,7 +14724,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "PersonaHumana",
+					"name": "ar.edu.utn.frba.dds.models.usuario.PersonaHumana",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -14965,7 +14952,7 @@
 							},
 							"name": "contacto",
 							"visibility": "private",
-							"type": "Contacto"
+							"type": "ar.edu.utn.frba.dds.models.data.Contacto"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -14985,7 +14972,7 @@
 							},
 							"name": "direccion",
 							"visibility": "private",
-							"type": "Direccion"
+							"type": "ar.edu.utn.frba.dds.models.data.Direccion"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -14995,7 +14982,7 @@
 							},
 							"name": "formaDeColaborar",
 							"visibility": "private",
-							"type": "List<TipoColaboracion>??"
+							"type": "List<ar.edu.utn.frba.dds.models.colaboracion.TipoColaboracion>??"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -15005,7 +14992,7 @@
 							},
 							"name": "datosAdicionales",
 							"visibility": "private",
-							"type": "FormularioRespondido"
+							"type": "ar.edu.utn.frba.dds.models.formulario.FormularioRespondido"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -15027,7 +15014,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "PersonaJuridica",
+					"name": "ar.edu.utn.frba.dds.models.usuario.PersonaJuridica",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -15189,7 +15176,7 @@
 							},
 							"name": "tipoRazonSocial",
 							"visibility": "private",
-							"type": "TipoRazonSocial"
+							"type": "ar.edu.utn.frba.dds.models.data.TipoRazonSocial"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -15209,7 +15196,7 @@
 							},
 							"name": "contacto",
 							"visibility": "private",
-							"type": "Contacto"
+							"type": "ar.edu.utn.frba.dds.models.data.Contacto"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -15219,7 +15206,7 @@
 							},
 							"name": "direccion",
 							"visibility": "private",
-							"type": "Direccion"
+							"type": "ar.edu.utn.frba.dds.models.data.Direccion"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -15229,7 +15216,7 @@
 							},
 							"name": "formaDeColaborar",
 							"visibility": "private",
-							"type": "List<TipoColaboracion>"
+							"type": "List<ar.edu.utn.frba.dds.models.colaboracion.TipoColaboracion>"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -15239,7 +15226,7 @@
 							},
 							"name": "datosAdicionales",
 							"visibility": "private",
-							"type": "FormularioRespondido"
+							"type": "ar.edu.utn.frba.dds.models.formulario.FormularioRespondido"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -15261,7 +15248,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "TipoRazonSocial",
+					"name": "ar.edu.utn.frba.dds.models.data.TipoRazonSocial",
 					"literals": [
 						{
 							"_type": "UMLEnumerationLiteral",
@@ -15303,7 +15290,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Direccion",
+					"name": "ar.edu.utn.frba.dds.models.data.Direccion",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -15459,7 +15446,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Contacto",
+					"name": "ar.edu.utn.frba.dds.models.data.Contacto",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -15557,7 +15544,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Ubicacion",
+					"name": "ar.edu.utn.frba.dds.models.data.Ubicacion",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -15617,7 +15604,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Pregunta",
+					"name": "ar.edu.utn.frba.dds.models.formulario.Pregunta",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -15695,7 +15682,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Respuesta",
+					"name": "ar.edu.utn.frba.dds.models.formulario.Respuesta",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -15757,7 +15744,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Formulario",
+					"name": "ar.edu.utn.frba.dds.models.formulario.Formulario",
 					"attributes": [
 						{
 							"_type": "UMLAttribute",
@@ -15766,7 +15753,7 @@
 								"$ref": "AAAAAAGPSf6SsoudSAY="
 							},
 							"name": "preguntas",
-							"type": "List<Pregunta>"
+							"type": "List<ar.edu.utn.frba.dds.models.formulario.Pregunta>"
 						}
 					],
 					"operations": [
@@ -15838,7 +15825,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "FormularioRespondido",
+					"name": "ar.edu.utn.frba.dds.models.formulario.FormularioRespondido",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -15906,7 +15893,7 @@
 							},
 							"name": "respuestas",
 							"visibility": "private",
-							"type": "List<Respuesta>"
+							"type": "List<ar.edu.utn.frba.dds.models.formulario.Respuesta>"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -15928,7 +15915,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "PersonaVulnerable",
+					"name": "ar.edu.utn.frba.dds.models.usuario.PersonaVulnerable",
 					"attributes": [
 						{
 							"_type": "UMLAttribute",
@@ -15980,7 +15967,7 @@
 							},
 							"name": "documento",
 							"visibility": "private",
-							"type": "Documento"
+							"type": "ar.edu.utn.frba.dds.models.data.Documento"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -16000,7 +15987,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Documento",
+					"name": "ar.edu.utn.frba.dds.models.data.Documento",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -16090,7 +16077,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "TipoDocumento"
+					"name": "ar.edu.utn.frba.dds.models.data.TipoDocumento"
 				},
 				{
 					"_type": "UMLEnumeration",
@@ -16098,7 +16085,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "TipoDocumento",
+					"name": "ar.edu.utn.frba.dds.models.data.TipoDocumento",
 					"literals": [
 						{
 							"_type": "UMLEnumerationLiteral",
@@ -16124,7 +16111,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Heladera",
+					"name": "ar.edu.utn.frba.dds.models.heladera.Heladera",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -16292,7 +16279,7 @@
 							},
 							"name": "contenido",
 							"visibility": "private",
-							"type": "List<Vianda>"
+							"type": "List<ar.edu.utn.frba.dds.models.vianda.Vianda>"
 						}
 					],
 					"operations": [
@@ -16311,7 +16298,7 @@
 										"$ref": "AAAAAAGPSiWUT3beCxk="
 									},
 									"name": "vianda",
-									"type": "Vianda"
+									"type": "ar.edu.utn.frba.dds.models.vianda.Vianda"
 								},
 								{
 									"_type": "UMLParameter",
@@ -16339,7 +16326,7 @@
 										"$ref": "AAAAAAGPSiWtSHiVWj0="
 									},
 									"name": "vianda",
-									"type": "Vianda"
+									"type": "ar.edu.utn.frba.dds.models.vianda.Vianda"
 								},
 								{
 									"_type": "UMLParameter",
@@ -16400,7 +16387,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "DonacionDinero",
+					"name": "ar.edu.utn.frba.dds.models.colaboracion.DonacionDinero",
 					"attributes": [
 						{
 							"_type": "UMLAttribute",
@@ -16464,7 +16451,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "DonacionVianda",
+					"name": "ar.edu.utn.frba.dds.models.colaboracion.DonacionVianda",
 					"attributes": [
 						{
 							"_type": "UMLAttribute",
@@ -16520,7 +16507,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "DistribucionViandas",
+					"name": "ar.edu.utn.frba.dds.models.colaboracion.DistribucionViandas",
 					"attributes": [
 						{
 							"_type": "UMLAttribute",
@@ -16554,7 +16541,7 @@
 							},
 							"name": "viandasAMover",
 							"visibility": "private",
-							"type": "List<Vianda>"
+							"type": "List<ar.edu.utn.frba.dds.models.vianda.Vianda>"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -16596,7 +16583,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "HacerseCargoHeladera",
+					"name": "ar.edu.utn.frba.dds.models.colaboracion.HacerseCargoHeladera",
 					"attributes": [
 						{
 							"_type": "UMLAttribute",
@@ -16628,7 +16615,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Vianda",
+					"name": "ar.edu.utn.frba.dds.models.vianda.Vianda",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -16740,7 +16727,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Comida",
+					"name": "ar.edu.utn.frba.dds.models.data.Comida",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -16800,7 +16787,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "DonacionDinero"
+					"name": "ar.edu.utn.frba.dds.models.colaboracion.DonacionDinero"
 				},
 				{
 					"_type": "UMLClass",
@@ -16808,7 +16795,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "DonacionDineroHumana",
+					"name": "ar.edu.utn.frba.dds.models.colaboracion.DonacionDineroHumana",
 					"attributes": [
 						{
 							"_type": "UMLAttribute",
@@ -16860,7 +16847,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "DonacionDinero"
+					"name": "ar.edu.utn.frba.dds.models.colaboracion.DonacionDinero"
 				}
 			]
 		}
