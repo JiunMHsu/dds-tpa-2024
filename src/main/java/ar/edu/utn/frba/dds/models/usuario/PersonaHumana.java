@@ -1,5 +1,11 @@
 package ar.edu.utn.frba.dds.models.usuario;
 
+import ar.edu.utn.frba.dds.models.colaboracion.TipoColaboracion;
+import ar.edu.utn.frba.dds.models.data.Contacto;
+import ar.edu.utn.frba.dds.models.data.Direccion;
+import ar.edu.utn.frba.dds.models.formulario.FormularioRespondido;
+
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
