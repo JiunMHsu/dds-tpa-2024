@@ -1,7 +1,9 @@
 package ar.edu.utn.frba.dds.models.formulario;
 
 import java.util.ArrayList;
+import lombok.Getter;
 
+@Getter
 public class Formulario {
 
     private ArrayList<Pregunta> preguntas;
