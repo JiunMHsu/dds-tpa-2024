@@ -8,7 +8,6 @@ public class PuntoIdealAPI implements AdapterPuntoIdeal{
 
     @Override
     public List<Ubicacion> puntoIdeal(Integer latitud, Integer longitud, Integer radio) {
-
         //  VER IMPLEMENTACION
         return null;
     }
