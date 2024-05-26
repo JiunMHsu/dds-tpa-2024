@@ -18,4 +18,8 @@ public class Persona {
     private Integer puntosObtenidos;
     private InfoJuridica informacionJuridica;
     private InfoHumana informacionHumana;
+
+    public Persona(){
+
+    }
 }
