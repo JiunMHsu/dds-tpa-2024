@@ -9,7 +9,8 @@ public class Respuesta {
 
     private String respuesta;
 
-    public Respuesta() {
+    public Respuesta(Pregunta pregunta, String respuesta) {
+        this.pregunta = pregunta;
+        this.respuesta = respuesta;
     }
-
 }
