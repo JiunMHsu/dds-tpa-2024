@@ -7,8 +7,7 @@ import java.util.List;
 
 public class PuntoIdeal {
     private  AdapterPuntoIdeal adapterPuntoIdeal;
-
-    public List<Ubicacion> puntoIdeal(Ubicacion ubicacion, Integer radio){
+    public List<Ubicacion> puntoIdeal(Ubicacion ubicacion, Integer radio)  {
         return adapterPuntoIdeal.puntoIdeal(ubicacion.getLatitud(), ubicacion.getLongitud(), radio);
     }
 }
