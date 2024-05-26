@@ -7,5 +7,6 @@ public enum TipoColaboracion {
     DonacionVianda,
     DonacionDinero,
     DistribucionViandas,
-    HacerseCargoHeladera
+    HacerseCargoHeladera,
+    OfrecerProductos,
 }
