@@ -23,4 +23,11 @@ public class Ubicacion {
      */
     private Integer Longitud;
 
+    public Integer getLatitud() {
+        return Latitud;
+    }
+
+    public Integer getLongitud() {
+        return Longitud;
+    }
 }
