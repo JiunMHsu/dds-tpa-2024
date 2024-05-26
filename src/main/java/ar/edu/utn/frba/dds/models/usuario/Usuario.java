@@ -16,11 +16,13 @@ public class Usuario {
     /**
      * 
      */
-    private void nombreUsuario;
+    private String nombreUsuario;
 
     /**
      * 
      */
-    private void contrasenia;
+    private String contrasenia;
+
+    private String email;
 
 }
