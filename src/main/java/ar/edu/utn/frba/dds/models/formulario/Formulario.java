@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.models.formulario;
 
 import java.util.ArrayList;
 
+
 public class Formulario {
 
     private ArrayList<Pregunta> preguntas;
