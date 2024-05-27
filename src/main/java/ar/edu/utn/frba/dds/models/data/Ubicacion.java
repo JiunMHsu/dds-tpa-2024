@@ -7,15 +7,6 @@ import java.util.*;
  */
 public class Ubicacion {
 
-    /**
-     * Default constructor
-     */
-    public Ubicacion() {
-    }
-
-    /**
-     * 
-     */
     private Integer Latitud;
 
     /**
@@ -29,5 +20,8 @@ public class Ubicacion {
 
     public Integer getLongitud() {
         return Longitud;
+    }
+
+    public Ubicacion() {
     }
 }

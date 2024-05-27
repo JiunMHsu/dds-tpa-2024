@@ -6,16 +6,6 @@ import java.util.*;
  * 
  */
 public class Contacto {
-
-    /**
-     * Default constructor
-     */
-    public Contacto() {
-    }
-
-    /**
-     * 
-     */
     private String email;
 
     /**
@@ -27,5 +17,7 @@ public class Contacto {
      * 
      */
     private String whatsApp;
+    public Contacto() {
+    }
 
 }

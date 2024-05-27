@@ -4,37 +4,15 @@ import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.usuario.InfoHumana;
 import ar.edu.utn.frba.dds.models.vianda.Vianda;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-/**
- * 
- */
 public class DonacionVianda {
 
-    /**
-     * Default constructor
-     */
+    private Vianda vianda;
+    private LocalDate fechaDonacion;
+    private Heladera heladera;
+    private InfoHumana colaboradorHumano;
     public DonacionVianda() {
     }
-
-    /**
-     * 
-     */
-    private Vianda vianda;
-
-    /**
-     * 
-     */
-    private LocalDateTime fechaDonacion;
-
-    /**
-     * 
-     */
-    private Heladera heladera;
-
-    /**
-     * 
-     */
-    private InfoHumana colaboradorHumano;
 
 }

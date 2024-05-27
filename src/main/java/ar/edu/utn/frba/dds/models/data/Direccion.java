@@ -7,15 +7,6 @@ import java.util.*;
  */
 public class Direccion {
 
-    /**
-     * Default constructor
-     */
-    public Direccion() {
-    }
-
-    /**
-     * 
-     */
     private String Calle;
 
     /**
@@ -27,5 +18,8 @@ public class Direccion {
      * 
      */
     private Ubicacion ubicacion;
+
+    public Direccion() {
+    }
 
 }

@@ -6,9 +6,10 @@ public class CalculadorDePuntos {
 
     public Double calcularPuntos(Persona persona){
         return PuntosDonacionDinero.calcularPuntos(persona)
-                +PuntosHeladerasActivas.calcularPuntos(persona)
+//                +PuntosHeladerasActivas.calcularPuntos(persona)
                 +PuntosDistribucionViandas.calcularPuntos(persona)
                 +PuntosDonacionViandas.calcularPuntos(persona)
-                +PuntosTarjetasDonadas.calcularPuntos(persona);
+                +PuntosTarjetasDonadas.calcularPuntos(persona)
+                -persona.getPuntosCanjeados();
     }
 }

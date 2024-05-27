@@ -7,6 +7,12 @@ import ar.edu.utn.frba.dds.models.formulario.FormularioRespondido;
 
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+
 public class Persona {
 
     private Direccion direccion;
@@ -15,7 +21,8 @@ public class Persona {
     private Usuario usuario;
     private Contacto contacto;
     private TipoDePersona tipoDePersona;
-    private Integer puntosObtenidos;
+    private Double puntosObtenidos;
+    private Double puntosCanjeados;
     private InfoJuridica informacionJuridica;
     private InfoHumana informacionHumana;
 
