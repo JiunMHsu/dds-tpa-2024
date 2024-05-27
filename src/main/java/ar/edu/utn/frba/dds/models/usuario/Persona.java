@@ -32,7 +32,21 @@ public class Persona {
     private String apellido;
     private LocalDate fechaNacimiento;
 
-    public Persona(){
+    public Persona(Usuario usuario){
+        this.direccion = null;
+        this.formaDeColaborar = null;
+        this.datosAdicionales = null;
+        this.usuario = usuario;
+        this.contacto = null;
+        this.tipoDePersona = null;
+        this.puntosObtenidos = null;
+        this.puntosCanjeados = null;
+        this.razonSocial = null;
+        this.tipoRazonSocial = null;
+        this.rubro = null;
+        this.nombre = null;
+        this.apellido = null;
+        this.fechaNacimiento = null;
 
     }
 }
