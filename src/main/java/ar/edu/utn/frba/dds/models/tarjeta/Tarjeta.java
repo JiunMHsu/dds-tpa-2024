@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.models.colaboracion;
+package ar.edu.utn.frba.dds.models.tarjeta;
 
 import ar.edu.utn.frba.dds.models.usuario.PersonaVulnerable;
 import java.time.LocalDate;

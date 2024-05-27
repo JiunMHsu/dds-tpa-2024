@@ -7,14 +7,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
 public class HacerseCargoHeladera {
 
     private Heladera heladeraACargo;
 
     private Persona colaborador;
 
-    public HacerseCargoHeladera() {
+    public HacerseCargoHeladera(Persona colaborador, Heladera heladeraACargo) {
+        this.colaborador = colaborador;
+        this.heladeraACargo = heladeraACargo;
     }
 
 }

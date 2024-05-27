@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.models.calculadorDePuntos;
 
 import ar.edu.utn.frba.dds.models.colaboracion.Colaboracion;
-import ar.edu.utn.frba.dds.models.colaboracion.Tarjeta;
+import ar.edu.utn.frba.dds.models.tarjeta.Tarjeta;
 import ar.edu.utn.frba.dds.models.usuario.Persona;
 
 import java.util.List;
