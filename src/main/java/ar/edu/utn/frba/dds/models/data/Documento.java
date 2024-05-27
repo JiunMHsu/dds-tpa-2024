@@ -1,29 +1,16 @@
 package ar.edu.utn.frba.dds.models.data;
 
-import java.util.*;
-
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
-
 public class Documento {
 
-    /**
-     * Default constructor
-     */
-    public Documento() {
-    }
-
-    /**
-     * 
-     */
     private Integer numero;
 
-    /**
-     * 
-     */
     private TipoDocumento tipo;
 
+    public Documento(Integer numero, TipoDocumento tipo) {
+        this.numero = numero;
+        this.tipo = tipo;
+    }
 }

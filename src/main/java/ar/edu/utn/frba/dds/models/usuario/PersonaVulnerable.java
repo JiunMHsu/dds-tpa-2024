@@ -3,8 +3,7 @@ package ar.edu.utn.frba.dds.models.usuario;
 import ar.edu.utn.frba.dds.models.data.Direccion;
 import ar.edu.utn.frba.dds.models.data.Documento;
 
-import java.time.LocalDateTime;
-import java.util.*;
+import java.time.LocalDate;
 
 /**
  * 
@@ -25,12 +24,12 @@ public class PersonaVulnerable {
     /**
      * 
      */
-    private LocalDateTime fechaNacimiento;
+    private LocalDate fechaNacimiento;
 
     /**
      * 
      */
-    private LocalDateTime fechaRegistro;
+    private LocalDate fechaRegistro;
 
     /**
      * 
