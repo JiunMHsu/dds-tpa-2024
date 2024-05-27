@@ -3,13 +3,15 @@ package ar.edu.utn.frba.dds.models.heladera;
 import ar.edu.utn.frba.dds.models.data.Direccion;
 import ar.edu.utn.frba.dds.models.vianda.Vianda;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 
- */
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Heladera {
 
     /**
@@ -19,10 +21,11 @@ public class Heladera {
     } //??
     private String nombre;
     private Direccion direccion;
-    private LocalDateTime fechaInicioFuncionamiento;
+    private LocalDate fechaInicioFuncionamiento;
     private Integer capacidad;
     private List<Vianda> contenido;
     private Float ultimaTemperatura;
+    private Boolean estaActiva;
 
     public void agregarVianda(Vianda vianda) throws CapacidadExcedidaException {
         if (contenido == null){
