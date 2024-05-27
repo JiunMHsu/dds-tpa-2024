@@ -7,20 +7,14 @@ import java.util.*;
  */
 public class Documento {
 
-    /**
-     * Default constructor
-     */
-    public Documento() {
-    }
-
-    /**
-     * 
-     */
     private Integer numero;
 
     /**
      * 
      */
     private TipoDocumento tipo;
+
+    public Documento() {
+    }
 
 }

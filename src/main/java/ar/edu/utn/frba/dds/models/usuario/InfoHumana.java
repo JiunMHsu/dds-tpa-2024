@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.models.usuario;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 /**
  * 
@@ -9,7 +9,7 @@ public class InfoHumana {
 
     private String nombre;
     private String apellido;
-    private LocalDateTime fechaNacimiento;
+    private LocalDate fechaNacimiento;
     public InfoHumana() {
     }
 }

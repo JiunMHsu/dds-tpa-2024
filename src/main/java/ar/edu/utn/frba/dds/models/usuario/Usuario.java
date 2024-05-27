@@ -1,7 +1,5 @@
 package ar.edu.utn.frba.dds.models.usuario;
 
-import java.util.*;
-
 /**
  * 
  */
