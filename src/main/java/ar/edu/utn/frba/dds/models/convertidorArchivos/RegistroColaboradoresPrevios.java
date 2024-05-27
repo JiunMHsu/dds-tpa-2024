@@ -1,0 +1,44 @@
+package ar.edu.utn.frba.dds.models.convertidorArchivos;
+
+import ar.edu.utn.frba.dds.models.mailSender.MailSender;
+import ar.edu.utn.frba.dds.models.usuario.Usuario;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class RegistroColaboradoresPrevios {
+
+    private CargadorColaboraciones conversor;
+    private MailSender mailSender;
+    private GeneradorDeCredencial  generadorDeCredencial;
+    private List<ColaboradoresPrevios> colaboradoresPrevios;
+
+
+     public void generCredencial(String destinatario, String credencial){
+
+         Usuario usuario = generadorDeCredencial.generCredencial(destinatario); 
+
+         String asunto = "Credencial de usuario";
+         String cuerpo = "Estimado colaborador,\n\nSu credencial de usuario es: CREDENCIAL";
+         mailSender.enviarMail(destinatario, asunto, cuerpo);
+     }
+
+   /* public cargarColaboraciones(){
+        // TODO
+    }
+    */
+
+    public List<ColaboradoresPrevios> colaboradoresNoRegistrados(){
+
+        List<ColaboradoresPrevios> noRegistrados = colaboradoresPrevios.stream()
+                .filter(colaborador -> !colaborador.estaRegistrado())
+                .collect(Collectors.toList());
+
+        return noRegistrados;
+    }
+
+    /* public registrarColaboradores(){ // Para los q no tienen usuario
+        // TODO
+    } */
+
+}

@@ -19,6 +19,7 @@
   </properties>
 
   <dependencies>
+    
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
@@ -32,6 +33,19 @@
       <version>1.18.32</version>
       <scope>provided</scope>
     </dependency>
+    
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-csv</artifactId>
+      <version>1.11.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>jakarta.mail</groupId>
+      <artifactId>jakarta.mail-api</artifactId>
+      <version>2.1.3</version>
+    </dependency>
+    
   </dependencies>
 
   <build>
