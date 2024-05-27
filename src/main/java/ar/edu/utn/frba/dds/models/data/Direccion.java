@@ -1,25 +1,17 @@
 package ar.edu.utn.frba.dds.models.data;
 
-import java.util.*;
+import lombok.Getter;
 
-/**
- * 
- */
+@Getter
 public class Direccion {
 
-    private String Calle;
-
-    /**
-     * 
-     */
-    private Integer Altura;
-
-    /**
-     * 
-     */
+    private String calle;
+    private Integer altura;
     private Ubicacion ubicacion;
 
-    public Direccion() {
+    public Direccion(String Cclle, Integer altura, Ubicacion ubicacion) {
+        this.calle = Cclle;
+        this.altura = altura;
+        this.ubicacion = ubicacion;
     }
-
 }
