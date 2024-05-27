@@ -1,12 +1,48 @@
 package ar.edu.utn.frba.dds.models.convertidorArchivos;
 
 import ar.edu.utn.frba.dds.models.usuario.Usuario;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GeneradorDeCredencial {
 
     public Usuario generCredencial(String mail) {
-        Usuario nuevoUsuario = new Usuario(); // Momentaneo ya que para mi el usuario
-                                              // lo deberia crear la persona en si en otra capa
+
+        String nombreProvicional = nombreAleatorio();
+        String contraseniaProvicional = contraseniaAleatorio();
+
+        Usuario nuevoUsuario = new Usuario(nombreProvicional, contraseniaProvicional, mail);
+
         return nuevoUsuario;
+    }
+
+    public String nombreAleatorio() {
+
+        String banco = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        String nombreUsuario = "";
+
+        for (int i = 0; i < 6; i++) {
+            int indiceAleatorio = numeroAleatorioEnRango(0, banco.length() - 1);
+            char caracterAleatorio = banco.charAt(indiceAleatorio);
+            nombreUsuario += caracterAleatorio;
+        }
+        return nombreUsuario;
+    }
+
+    public String contraseniaAleatorio() {
+
+        String banco = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        String contraseniaUsuario = "";
+
+        for (int i = 0; i < 6; i++) {
+            int indiceAleatorio = numeroAleatorioEnRango(0, banco.length() - 1);
+            char caracterAleatorio = banco.charAt(indiceAleatorio);
+            contraseniaUsuario += caracterAleatorio;
+        }
+        return contraseniaUsuario;
+    }
+
+    public static int numeroAleatorioEnRango(int minimo, int maximo) {
+
+        return ThreadLocalRandom.current().nextInt(minimo, maximo + 1);
     }
 }
