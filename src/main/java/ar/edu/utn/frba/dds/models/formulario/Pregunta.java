@@ -1,15 +1,13 @@
 package ar.edu.utn.frba.dds.models.formulario;
 
-import java.util.*;
+import lombok.Getter;
 
-/**
- * 
- */
+@Getter
 public class Pregunta {
-
-    public Pregunta() {
-    }
 
     private String contenido;
 
+    public Pregunta(String pregunta) {
+        this.contenido = pregunta;
+    }
 }
