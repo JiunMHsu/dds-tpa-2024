@@ -4,35 +4,8 @@ import ar.edu.utn.frba.dds.models.data.Comida;
 
 import java.time.LocalDateTime;
 
-/**
- * 
- */
 public class Vianda {
-
-    /**
-     * Default constructor
-     */
-    public Vianda() {
-    }
-
-    /**
-     * 
-     */
     private Comida comida;
-
-    /**
-     * 
-     */
     private LocalDateTime fechaCaducidad;
-
-    /**
-     * 
-     */
     private Integer peso;
-
-    /**
-     * 
-     */
-    private Comida comida;
-
 }

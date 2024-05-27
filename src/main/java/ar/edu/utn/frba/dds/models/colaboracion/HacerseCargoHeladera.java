@@ -1,29 +1,21 @@
 package ar.edu.utn.frba.dds.models.colaboracion;
 
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.usuario.PersonaJuridica;
+import ar.edu.utn.frba.dds.models.usuario.InfoJuridica;
 
-import java.util.*;
+import ar.edu.utn.frba.dds.models.usuario.Persona;
+import lombok.Getter;
+import lombok.Setter;
 
-/**
- * 
- */
+@Getter
+@Setter
 public class HacerseCargoHeladera {
 
-    /**
-     * Default constructor
-     */
-    public HacerseCargoHeladera() {
-    }
-
-    /**
-     * 
-     */
     private Heladera heladeraACargo;
 
-    /**
-     * 
-     */
-    private PersonaJuridica colaboradorJuridico;
+    private Persona colaborador;
+
+    public HacerseCargoHeladera() {
+    }
 
 }

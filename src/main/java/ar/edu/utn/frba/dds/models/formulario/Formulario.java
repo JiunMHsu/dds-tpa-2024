@@ -1,39 +1,22 @@
 package ar.edu.utn.frba.dds.models.formulario;
 
-import java.util.*;
+import java.util.ArrayList;
+import lombok.Getter;
 
-/**
- * 
- */
+@Getter
 public class Formulario {
 
-    /**
-     * Default constructor
-     */
+    private ArrayList<Pregunta> preguntas;
+
     public Formulario() {
+        preguntas = new ArrayList<>();
     }
 
-    /**
-     * 
-     */
-    public List<Pregunta> preguntas;
-
-    /**
-     * @param pregunta 
-     * @return
-     */
     public void agregarCampo(Pregunta pregunta) {
-        // TODO implement here
-        return null;
+        preguntas.add(pregunta);
     }
 
-    /**
-     * @param pregunta 
-     * @return
-     */
     public void quitarCampo(Pregunta pregunta) {
-        // TODO implement here
-        return null;
+        preguntas.remove(pregunta);
     }
-
 }
