@@ -9,6 +9,7 @@ public class CalculadorDePuntos {
 //                +PuntosHeladerasActivas.calcularPuntos(persona)
                 +PuntosDistribucionViandas.calcularPuntos(persona)
                 +PuntosDonacionViandas.calcularPuntos(persona)
-                +PuntosTarjetasDonadas.calcularPuntos(persona);
+                +PuntosTarjetasDonadas.calcularPuntos(persona)
+                -persona.getPuntosCanjeados();
     }
 }
