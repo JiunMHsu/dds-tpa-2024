@@ -1,7 +1,6 @@
 package ar.edu.utn.frba.dds.models.colaboracion;
 
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.usuario.InfoHumana;
 import ar.edu.utn.frba.dds.models.vianda.Vianda;
 
 import java.time.LocalDate;
