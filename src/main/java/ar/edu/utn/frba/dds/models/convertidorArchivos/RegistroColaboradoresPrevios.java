@@ -12,22 +12,24 @@ public class RegistroColaboradoresPrevios {
     private List<ColaboradoresPrevios> colaboradoresPrevios;
 
 
-    public otorgarCredencialA(){
+    /* public otorgarCredencialA(){
         /* TODO
            falta el mailSender pero seria enviar mail a los no registrados
-         */
-    }
+
+    } */
 
    /* public cargarColaboraciones(){
         // TODO
     }
     */
 
-    public colaboradoresNoRegistrados(){
+    public List<ColaboradoresPrevios> colaboradoresNoRegistrados(){
 
-        colaboradoresPrevios.stream()
-                            .filter(colaborador -> !colaborador.estaRegistrado())
-                            .collect(Collectors.toList());
+        List<ColaboradoresPrevios> noRegistrados = colaboradoresPrevios.stream()
+                .filter(colaborador -> !colaborador.estaRegistrado())
+                .collect(Collectors.toList());
+
+        return noRegistrados;
     }
 
     /* public registrarColaboradores(){ // Para los q no tienen usuario
