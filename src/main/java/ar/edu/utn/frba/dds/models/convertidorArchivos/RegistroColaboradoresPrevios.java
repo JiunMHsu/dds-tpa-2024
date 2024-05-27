@@ -13,13 +13,15 @@ public class RegistroColaboradoresPrevios {
     private GeneradorDeCredencial  generadorDeCredencial;
     private List<ColaboradoresPrevios> colaboradoresPrevios;
 
-
      public void generCredencial(String destinatario, String credencial){
 
          Usuario usuario = generadorDeCredencial.generCredencial(destinatario); 
 
          String asunto = "Credencial de usuario";
-         String cuerpo = "Estimado colaborador,\n\nSu credencial de usuario es: CREDENCIAL";
+         String cuerpo = "Esta es la credencial:" +
+                         " - Nombre de usuario provicional: " + usuario.getNombreUsuario() +
+                         " - Contrasenia de usuario provicional: " + usuario.getContrasenia();
+
          mailSender.enviarMail(destinatario, asunto, cuerpo);
      }
 

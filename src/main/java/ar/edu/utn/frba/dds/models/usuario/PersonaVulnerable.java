@@ -5,45 +5,23 @@ import ar.edu.utn.frba.dds.models.data.Documento;
 
 import java.time.LocalDate;
 
-/**
- * 
- */
+import lombok.Getter;
+@Getter
 public class PersonaVulnerable {
-
-    /**
-     * Default constructor
-     */
-    public PersonaVulnerable() {
-    }
-
-    /**
-     * 
-     */
     private String nombre;
-
-    /**
-     * 
-     */
     private LocalDate fechaNacimiento;
-
-    /**
-     * 
-     */
     private LocalDate fechaRegistro;
-
-    /**
-     * 
-     */
     private Direccion domicilio;
-
-    /**
-     * 
-     */
     private Documento documento;
-
-    /**
-     * 
-     */
     private Integer menoresACargo;
+
+    public PersonaVulnerable() {
+        this.nombre = null;
+        this.fechaNacimiento = null;
+        this.fechaRegistro = null;
+        this.domicilio = null;
+        this.documento = null;
+        this.menoresACargo = null;
+    }
 
 }
