@@ -7,7 +7,7 @@ import ar.edu.utn.frba.dds.models.usuario.Persona;
 import java.util.List;
 
 public class PuntosDonacionViandas {
-    private double variable = 1.5;
+    private static double variable = 1.5;
 
     public static Double calcularPuntos(Persona persona){
         List<DonacionVianda> listaViandasDonadas = Colaboracion.obtenerViandasDonadas(persona);

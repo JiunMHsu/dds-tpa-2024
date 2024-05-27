@@ -8,7 +8,7 @@ import java.util.List;
 
 public class PuntosDistribucionViandas {
 
-    private double variable = 1;
+    private static double variable = 1;
 
     public static Double calcularPuntos(Persona persona){
         List<DistribucionViandas> listaViandasDistribuidas = Colaboracion.obtenerViandasDistribuidas(persona);
