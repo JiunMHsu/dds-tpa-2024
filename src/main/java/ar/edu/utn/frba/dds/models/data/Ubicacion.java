@@ -1,33 +1,14 @@
 package ar.edu.utn.frba.dds.models.data;
 
-import java.util.*;
+import lombok.Getter;
 
-/**
- * 
- */
+@Getter
 public class Ubicacion {
+    private Integer latitud;
+    private Integer longitud;
 
-    /**
-     * Default constructor
-     */
-    public Ubicacion() {
-    }
-
-    /**
-     * 
-     */
-    private Integer Latitud;
-
-    /**
-     * 
-     */
-    private Integer Longitud;
-
-    public Integer getLatitud() {
-        return Latitud;
-    }
-
-    public Integer getLongitud() {
-        return Longitud;
+    public Ubicacion(Integer latitud, Integer longitud) {
+        this.latitud = latitud;
+        this.longitud = longitud;
     }
 }

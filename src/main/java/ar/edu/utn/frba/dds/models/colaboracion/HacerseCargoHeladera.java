@@ -1,7 +1,6 @@
 package ar.edu.utn.frba.dds.models.colaboracion;
 
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.usuario.InfoJuridica;
 
 import ar.edu.utn.frba.dds.models.usuario.Persona;
 import lombok.Getter;

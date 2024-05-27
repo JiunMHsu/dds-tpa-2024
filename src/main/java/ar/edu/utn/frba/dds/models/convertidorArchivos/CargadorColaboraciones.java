@@ -37,10 +37,8 @@ public class CargadorColaboraciones {
 
            for (CSVRecord csvRecord : csvParser) {
                ColaboradoresPrevios colaborador = new ColaboradoresPrevios();
-               Documento documento = new Documento();
-
-               documento.setTipo(TipoDocumento.valueOf(csvRecord.get("Tipo Doc")));
-               documento.setNumero(Integer.parseInt(csvRecord.get("Numero")));
+               Documento documento = new Documento(Integer.parseInt(csvRecord.get("Numero")),
+                                                   TipoDocumento.valueOf(csvRecord.get("Tipo Doc")));
 
                colaborador.setDocumento(documento);
                colaborador.setNombre(csvRecord.get("Nombre"));
