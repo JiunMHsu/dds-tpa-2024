@@ -11,14 +11,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PuntosHeladerasActivas {
-    private double variable = 5;
+    private static double variable = 5;
     private int mesesActivas;
-    public int calcularMesesActiva(LocalDate fechaInicio){
+    public static int calcularMesesActiva(LocalDate fechaInicio){
         LocalDate fechaActual = LocalDate.now();
         Period periodo = Period.between(fechaInicio, fechaActual);
         return periodo.getYears() * 12 + periodo.getMonths();
     }
-    public Double calcularPuntos(Persona persona){
+    public static Double calcularPuntos(Persona persona){
         List<HacerseCargoHeladera> listaHeladerasACargo = Colaboracion.obtenerHeladerasACargo(persona);
         List<Heladera> listaHeladerasActivas = listaHeladerasACargo.stream()
                 .map(HacerseCargoHeladera :: getHeladeraACargo)
@@ -26,7 +26,7 @@ public class PuntosHeladerasActivas {
                 .collect(Collectors.toList());
         int heladerasActivas = listaHeladerasActivas.size();
         int mesesActivas = listaHeladerasActivas.stream()
-                                                .mapToInt(heladera -> this.calcularMesesActiva(heladera.getFechaInicioFuncionamiento()))
+                                                .mapToInt(heladera -> PuntosHeladerasActivas.calcularMesesActiva(heladera.getFechaInicioFuncionamiento()))
                                                 .sum();
         return heladerasActivas * mesesActivas * variable;
     }
