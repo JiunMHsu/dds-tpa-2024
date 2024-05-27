@@ -9,5 +9,5 @@ public enum TipoColaboracion {
     DistribucionViandas,
     HacerseCargoHeladera,
     RepartirTarjeta,
-    OfrecerProducto
+    OfrecerProductos
 }
