@@ -12,6 +12,13 @@ public class MailSender {
     private String host; // de un supuesto servidor
     private String port; // de un supuesto servidor
 
+    public MailSender(String nombreUsuario, String contrasenia, String host, String port) {
+
+        this.nombreUsuario = nombreUsuario;
+        this.contrasenia = contrasenia;
+        this.host = host;
+        this.port = port;
+    }
     public void enviarMail(String destinatario, String asunto, String cuerpo) {
 
         Properties props = new Properties();
