@@ -52,8 +52,8 @@ public class CargadorColaboraciones {
 
                listaDeColaboradores.add(colaborador);
            }
-       } catch (IOException e) {
-           e.printStackTrace();
+       } catch (IOException error) {
+           error.printStackTrace();
        }
 
        return listaDeColaboradores;
