@@ -3,8 +3,6 @@ package ar.edu.utn.frba.dds.models.usuario;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.*;
-
 @Getter
 @Setter
 

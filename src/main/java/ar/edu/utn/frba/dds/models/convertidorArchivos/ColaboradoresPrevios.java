@@ -19,8 +19,17 @@ public class ColaboradoresPrevios {
     private LocalDateTime fechaDeColaboracion;
     private TipoColaboracion formaDeColaboracion;
     private Integer cantidad;
-
     private Boolean resgistrado;
+    public ColaboradoresPrevios(){
+        this.documento = null;
+        this.nombre = "nombre";
+        this.apellido = "apellido";
+        this.email = "email";
+        this.fechaDeColaboracion = null;
+        this.formaDeColaboracion = null;
+        this.cantidad = null;
+        this.resgistrado = null;
+    }
 
     public boolean estaRegistrado() {
         return resgistrado;
