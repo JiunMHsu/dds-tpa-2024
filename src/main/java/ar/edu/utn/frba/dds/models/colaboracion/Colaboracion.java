@@ -9,7 +9,7 @@ public class Colaboracion {
         //TO DO
         return null;
     }
-    public static List<DonacionVianda> obtenerDonacionesVianda(Persona persona){
+    public static List<DonacionVianda> obtenerViandasDonadas(Persona persona){
         //TO DO
         return null;
     }
@@ -17,12 +17,15 @@ public class Colaboracion {
         //TO DO
         return null;
     }
-    public static List<DistribucionViandas> obtenerDistribucionesDeViandas(Persona persona){
+    public static List<DistribucionViandas> obtenerViandasDistribuidas(Persona persona){
         //TO DO
         return null;
     }
     public static List<OfrecerProducto> obtenerOfertasDeProductos(Persona persona){
         //TO DO
+        return null;
+    }
+    public static List<Tarjeta> obtenerTarjetasRepartidas(Persona persona){
         return null;
     }
 }

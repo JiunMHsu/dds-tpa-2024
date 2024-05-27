@@ -7,11 +7,13 @@ import ar.edu.utn.frba.dds.models.usuario.Persona;
 import java.util.List;
 
 public class PuntosDonacionDinero {
-    private Float variable;
+    private double variable = 0.5;
 
-    public Float calcularPuntos(Persona persona){
+    public Double calcularPuntos(Persona persona){
         List<DonacionDinero> listaDonacionesDinero = Colaboracion.obtenerDonacionesDinero(persona);
-//        listaDonacionesDinero.stream()
-//                             .mapToInt()
+        int pesosDonados = listaDonacionesDinero.stream()
+                             .mapToInt(DonacionDinero :: getMonto)
+                             .sum();
+        return pesosDonados * variable;
     }
 }
