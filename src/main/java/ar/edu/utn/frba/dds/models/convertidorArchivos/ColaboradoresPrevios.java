@@ -16,4 +16,10 @@ public class ColaboradoresPrevios {
     private TipoColaboracion formaDeColaboracion;
     private Integer cantidad:
 
+    private Boolean resgistrado;
+
+    public boolean estaRegistrado() {
+        return resgistrado;
+    }
+
 }
