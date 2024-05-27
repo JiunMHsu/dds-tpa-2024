@@ -17,8 +17,6 @@ public class Heladera {
     /**
      * Default constructor
      */
-    public Heladera() {
-    } //??
     private String nombre;
     private Direccion direccion;
     private LocalDate fechaInicioFuncionamiento;
@@ -26,6 +24,16 @@ public class Heladera {
     private List<Vianda> contenido;
     private Float ultimaTemperatura;
     private Boolean estaActiva;
+
+    public Heladera(String nombre, Direccion direccion, LocalDate fechaInicioFuncionamiento, Integer capacidad, List<Vianda> contenido, Float ultimaTemperatura, Boolean estaActiva) {
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.fechaInicioFuncionamiento = fechaInicioFuncionamiento;
+        this.capacidad = capacidad;
+        this.contenido = contenido;
+        this.ultimaTemperatura = ultimaTemperatura;
+        this.estaActiva = estaActiva;
+    }
 
     public void agregarVianda(Vianda vianda) throws CapacidadExcedidaException {
         if (contenido == null){
