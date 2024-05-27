@@ -6,21 +6,6 @@ import java.util.*;
  * 
  */
 public class Comida {
-
-    /**
-     * Default constructor
-     */
-    public Comida() {
-    }
-
-    /**
-     * 
-     */
     private String nombre;
-
-    /**
-     * 
-     */
     private Integer calorias;
-
 }
