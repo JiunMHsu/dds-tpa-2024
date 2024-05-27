@@ -14,7 +14,7 @@ public class PuntosHeladerasActivas {
     private double variable = 5;
     private int mesesActivas;
 
-    public Double calcularPuntos(Persona persona){
+    public static Double calcularPuntos(Persona persona){
         List<HacerseCargoHeladera> listaHeladerasACargo = Colaboracion.obtenerHeladerasACargo(persona);
         List<Heladera> listaHeladerasActivas = listaHeladerasACargo.stream()
                 .map(HacerseCargoHeladera :: getHeladeraACargo)

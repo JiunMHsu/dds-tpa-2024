@@ -8,7 +8,7 @@ import java.util.List;
 public class PuntosTarjetasDonadas {
     private double variable = 2;
 
-    public Double calcularPuntos(Persona persona){
+    public static Double calcularPuntos(Persona persona){
         List<Tarjeta> listaTarjetasRepartidas = Colaboracion.obtenerTarjetasRepartidas(persona);
         int tarjetasRepartidas = listaTarjetasRepartidas.size();
         return tarjetasRepartidas * variable;

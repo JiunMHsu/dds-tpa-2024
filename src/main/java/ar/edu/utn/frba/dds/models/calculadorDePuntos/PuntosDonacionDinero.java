@@ -9,7 +9,7 @@ import java.util.List;
 public class PuntosDonacionDinero {
     private double variable = 0.5;
 
-    public Double calcularPuntos(Persona persona){
+    public static Double calcularPuntos(Persona persona){
         List<DonacionDinero> listaDonacionesDinero = Colaboracion.obtenerDonacionesDinero(persona);
         int pesosDonados = listaDonacionesDinero.stream()
                              .mapToInt(DonacionDinero :: getMonto)

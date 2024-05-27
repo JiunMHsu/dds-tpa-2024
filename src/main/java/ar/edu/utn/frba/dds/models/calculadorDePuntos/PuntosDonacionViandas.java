@@ -9,7 +9,7 @@ import java.util.List;
 public class PuntosDonacionViandas {
     private double variable = 1.5;
 
-    public Double calcularPuntos(Persona persona){
+    public static Double calcularPuntos(Persona persona){
         List<DonacionVianda> listaViandasDonadas = Colaboracion.obtenerViandasDonadas(persona);
         int viandasDonadas = listaViandasDonadas.size();
         return viandasDonadas * variable;

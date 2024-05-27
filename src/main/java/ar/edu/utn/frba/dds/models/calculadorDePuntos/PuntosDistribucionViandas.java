@@ -10,7 +10,7 @@ public class PuntosDistribucionViandas {
 
     private double variable = 1;
 
-    public Double calcularPuntos(Persona persona){
+    public static Double calcularPuntos(Persona persona){
         List<DistribucionViandas> listaViandasDistribuidas = Colaboracion.obtenerViandasDistribuidas(persona);
         int viandasDistribuidas = listaViandasDistribuidas.size();
         return viandasDistribuidas * variable;
