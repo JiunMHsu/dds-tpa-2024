@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Tarjeta {
-  private String codigo;
+  private String codigo; // Agregar generador
   private PersonaVulnerable persona;
   private Integer usosDia;
   private Integer usosPorDia;
