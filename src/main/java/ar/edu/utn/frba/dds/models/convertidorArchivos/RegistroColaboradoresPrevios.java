@@ -2,9 +2,14 @@ package ar.edu.utn.frba.dds.models.convertidorArchivos;
 
 import ar.edu.utn.frba.dds.models.mailSender.MailSender;
 import ar.edu.utn.frba.dds.models.usuario.Usuario;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+@Getter
+@Setter
 
 public class RegistroColaboradoresPrevios {
 
