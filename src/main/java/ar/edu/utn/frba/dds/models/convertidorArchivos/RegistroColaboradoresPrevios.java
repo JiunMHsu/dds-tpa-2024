@@ -5,6 +5,7 @@ import ar.edu.utn.frba.dds.models.usuario.Usuario;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,7 +19,10 @@ public class RegistroColaboradoresPrevios {
     private GeneradorDeCredencial  generadorDeCredencial;
     private List<ColaboradoresPrevios> colaboradoresPrevios;
 
-     public void generCredencial(String destinatario, String credencial){
+    public RegistroColaboradoresPrevios() {
+        this.colaboradoresPrevios = new ArrayList<>();
+    }
+    public void generCredencial(String destinatario, String credencial){
 
          Usuario usuario = generadorDeCredencial.generCredencial(destinatario); 
 
@@ -28,7 +32,7 @@ public class RegistroColaboradoresPrevios {
                          " - Contrasenia de usuario provicional: " + usuario.getContrasenia();
 
          mailSender.enviarMail(destinatario, asunto, cuerpo);
-     }
+    }
 
    /* public cargarColaboraciones(){
         // TODO

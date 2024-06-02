@@ -22,7 +22,7 @@ public class Tarjeta {
   private Integer usosDia;
   private Integer usosPorDia;
   private LocalTime horaMedianoche = LocalTime.of(0, 0, 0);
-  private List<RegistroTarjetas> registro = new ArrayList<>();
+  private List<RegistroTarjetas> registro;
 
   public Tarjeta(String codigo, PersonaVulnerable persona, Integer usosDia, Integer usosPorDia, LocalTime horaMedianoche, List<RegistroTarjetas> registro) {
     this.codigo = codigo;
@@ -30,7 +30,7 @@ public class Tarjeta {
     this.usosDia = usosDia;
     this.usosPorDia = usosPorDia;
     this.horaMedianoche = horaMedianoche;
-    this.registro = registro;
+    this.registro = new ArrayList<>();
   }
 
   public Boolean puedeUsar() {
