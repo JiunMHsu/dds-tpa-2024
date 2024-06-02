@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds;
 
 import ar.edu.utn.frba.dds.models.colaboracion.RepartoDeTarjetas;
 import ar.edu.utn.frba.dds.models.tarjeta.Tarjeta;
+import ar.edu.utn.frba.dds.models.tarjeta.GeneradorDeCodigo;
 import ar.edu.utn.frba.dds.models.usuario.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.data.Direccion;
@@ -10,11 +11,10 @@ import ar.edu.utn.frba.dds.models.data.TipoDocumento;
 
 import ar.edu.utn.frba.dds.models.usuario.Persona;
 import ar.edu.utn.frba.dds.models.usuario.Usuario;
-import ar.edu.utn.frba.dds.models.usuario.TipoDePersona;
-import ar.edu.utn.frba.dds.models.usuario.Sujeto;
 import ar.edu.utn.frba.dds.models.colaboracion.TipoColaboracion;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -62,12 +62,14 @@ public class TestRegistroPV {
         Persona personaColaborador = new Persona(new Usuario("usuario1Test", "pancho", "pancho@gmail.com"));
         personaColaborador.setFormaDeColaborar(colaboraciones);
 
-        Persona personaQueNoRegistro = new Persona(new Usuario("usuario2Test", "pancho", "panchoo@gmail.com"))
+        Persona personaQueNoRegistro = new Persona(new Usuario("usuario2Test", "pancho", "panchoo@gmail.com"));
         personaQueNoRegistro.setFormaDeColaborar(colaboraciones);
 
         // Resgistro
 
-        RepartoDeTarjetas repartoTest = new RepartoDeTarjetas(personaColaborador, new Tarjeta(), personaRegistrada);
+        Tarjeta tarjeta = new Tarjeta(null, personaRegistrada, null, null, null, null);
+
+        RepartoDeTarjetas repartoTest = new RepartoDeTarjetas(personaColaborador, tarjeta, personaRegistrada);
 
         Assertions.assertEquals(personaColaborador, repartoTest.getColaborador(),
                 "La persona que le entregó la tarjeta a personaRegistrada debería ser personaColaborador.");

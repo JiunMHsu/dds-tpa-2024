@@ -22,9 +22,9 @@ public class TestCalculadorDePuntos {
     @DisplayName("Los puntos por repartir tarjetas son la cantidad de tarjetas repartidas multiplicado por 2")
     public void puntosTarjetas() {
         calculadorTarjetasDonadas.setListaTarjetasRepartidas(new ArrayList<Tarjeta>(){{
-            add(new Tarjeta());
-            add(new Tarjeta());
-            add(new Tarjeta());
+            add(new Tarjeta(null, null, null, null, null, null));
+            add(new Tarjeta(null, null, null, null, null, null));
+            add(new Tarjeta(null, null, null, null, null, null));
         }});
         Assertions.assertEquals(calculadorTarjetasDonadas.calcularPuntos(persona), 6.0);
     }

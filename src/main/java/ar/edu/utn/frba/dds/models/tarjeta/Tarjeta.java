@@ -24,6 +24,15 @@ public class Tarjeta {
   private LocalTime horaMedianoche = LocalTime.of(0, 0, 0);
   private List<RegistroTarjetas> registro = new ArrayList<>();
 
+  public Tarjeta(String codigo, PersonaVulnerable persona, Integer usosDia, Integer usosPorDia, LocalTime horaMedianoche, List<RegistroTarjetas> registro) {
+    this.codigo = codigo;
+    this.persona = persona;
+    this.usosDia = usosDia;
+    this.usosPorDia = usosPorDia;
+    this.horaMedianoche = horaMedianoche;
+    this.registro = registro;
+  }
+
   public Boolean puedeUsar() {
     if (usosDia > 0) {
       usosDia--;
@@ -44,5 +53,9 @@ public class Tarjeta {
     if (LocalTime.now().equals(horaMedianoche)) {
       usosDia = usosPorDia;
     }
+  }
+
+  public void calcularUsosTarjeta(Tarjeta tarjeta) {
+    usosPorDia = 4 + persona.getMenoresACargo()*2;
   }
 }
