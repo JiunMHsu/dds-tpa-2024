@@ -2,15 +2,12 @@ package ar.edu.utn.frba.dds;
 
 import ar.edu.utn.frba.dds.models.convertidorArchivos.CargadorColaboraciones;
 import ar.edu.utn.frba.dds.models.convertidorArchivos.ColaboradoresPrevios;
-import ar.edu.utn.frba.dds.models.convertidorArchivos.GeneradorDeCredencial;
 import ar.edu.utn.frba.dds.models.convertidorArchivos.RegistroColaboradoresPrevios;
 import ar.edu.utn.frba.dds.models.mailSender.MailSender;
 
-import java.net.URL;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
@@ -30,9 +27,11 @@ public class TestCargaMasiva {
 
     public void comprobarCargaMasiva() {
 
-        Path path = Paths.get("src/test/resources/ar/edu/utn/frba/dds/csvEntrega2.csv");
+        List<ColaboradoresPrevios> listaDeResgistrados = new ArrayList<>();
+        List<ColaboradoresPrevios> listaTest = new ArrayList<>();
 
-        registro.setColaboradoresPrevios(cargador.convertirALista(path));
+        Path path = Paths.get("src/test/resources/ar/edu/utn/frba/dds/csvEntrega2.csv");
+        registro.cargarColaboraciones(path);
 
         // Comprobar que se haga bien la carga
 
@@ -40,17 +39,20 @@ public class TestCargaMasiva {
         Assertions.assertFalse(registro.getColaboradoresPrevios().isEmpty());
 
         int tamanio = registro.getColaboradoresPrevios().size();
-        int mitad = tamanio / 2 + (tamanio % 2);
+        int mitad = tamanio / 2;
 
-        for (int i = 0; i < mitad; i++) {
-            registro.getColaboradoresPrevios().get(i).setRegistrado(true);
+        for (int i = 0; i < tamanio; i++) {
+            listaDeResgistrados.add(registro.getColaboradoresPrevios().get(i));
         }
 
-        // Comprobar que la mitad no este registrada
+        for (int i = 42; i > mitad; i--) {
+            listaTest.add(registro.getColaboradoresPrevios().get(i));
+        }
 
-        Assertions.assertEquals(mitad, registro.colaboradoresNoRegistrados().size());
+        List<ColaboradoresPrevios> listaNueva = registro.colaboradoresNoRegistrados(listaDeResgistrados);
 
-
-
+        for (int i = 0; i < listaNueva.size(); i++) {
+            Assertions.assertTrue(listaNueva.contains(listaTest.get(i)));
+        }
     }
 }

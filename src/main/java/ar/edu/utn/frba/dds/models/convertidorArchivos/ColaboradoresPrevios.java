@@ -31,8 +31,4 @@ public class ColaboradoresPrevios {
         this.registrado = false;
     }
 
-    public boolean estaRegistrado() {
-        return registrado != null && registrado.booleanValue();
-    }
-
 }
