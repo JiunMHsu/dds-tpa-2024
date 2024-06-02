@@ -86,7 +86,7 @@ public class TestTarjetas {
         Assertions.assertFalse(tarjeta3.getUsosDia() == tarjeta3.getUsosPorDia());
     }
 
-    /* @Test
+    @Test
     @DisplayName("Uso tarjeta en una heladera")
     public void registrarUsoTarjeta(){
 
@@ -100,8 +100,9 @@ public class TestTarjetas {
 
         tarjeta1.registrarUsoTarjeta(heladera1);
 
-        Assertions.assertTrue(tarjeta1.getUsosDia() == 4);
-    } */
+        Assertions.assertTrue(tarjeta1.getRegistro().size() == 1);
+
+    }
 
 }
 

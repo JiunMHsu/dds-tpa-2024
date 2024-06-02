@@ -9,6 +9,7 @@ import org.apache.commons.csv.CSVRecord;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -17,43 +18,43 @@ import java.util.List;
 
 public class CargadorColaboraciones {
 
-    public List<ColaboradoresPrevios> convertirALista(String path) {
+    public List<ColaboradoresPrevios> convertirALista(Path path) {
 
         List<ColaboradoresPrevios> listaDeColaboradores = new ArrayList<>();
 
-       try {
-           CSVParser csvParser = CSVParser.parse(Files.newBufferedReader(Paths.get(path)), CSVFormat.DEFAULT
-                   .withHeader("Tipo Doc",
-                               "Documento",
-                               "Nombre",
-                               "Apellido",
-                               "Mail",
-                               "Fecha de colaboración",
-                               "Forma de colaboración",
-                               "Cantidad")
-                   .withFirstRecordAsHeader());
+        try {
+            CSVParser csvParser = CSVParser.parse(Files.newBufferedReader(path), CSVFormat.DEFAULT
+                    .withHeader("Tipo Doc",
+                            "Documento",
+                            "Nombre",
+                            "Apellido",
+                            "Mail",
+                            "Fecha de colaboración",
+                            "Forma de colaboración",
+                            "Cantidad")
+                    .withFirstRecordAsHeader());
 
-           DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-           for (CSVRecord csvRecord : csvParser) {
-               ColaboradoresPrevios colaborador = new ColaboradoresPrevios();
-               Documento documento = new Documento(Integer.parseInt(csvRecord.get("Numero")),
-                                                   TipoDocumento.valueOf(csvRecord.get("Tipo Doc")));
+            for (CSVRecord csvRecord : csvParser) {
+                ColaboradoresPrevios colaborador = new ColaboradoresPrevios();
+                Documento documento = new Documento(Integer.parseInt(csvRecord.get("Documento")),
+                        TipoDocumento.valueOf(csvRecord.get("Tipo Doc")));
 
-               colaborador.setDocumento(documento);
-               colaborador.setNombre(csvRecord.get("Nombre"));
-               colaborador.setApellido(csvRecord.get("Apellido"));
-               colaborador.setEmail(csvRecord.get("Mail"));
-               colaborador.setFechaDeColaboracion(LocalDate.parse(csvRecord.get("Fecha de colaboración"), formatter).atStartOfDay());
-               colaborador.setFormaDeColaboracion(TipoColaboracion.valueOf(csvRecord.get("Forma de colaboración")));
-               colaborador.setCantidad(Integer.parseInt(csvRecord.get("Cantidad")));
+                colaborador.setDocumento(documento);
+                colaborador.setNombre(csvRecord.get("Nombre"));
+                colaborador.setApellido(csvRecord.get("Apellido"));
+                colaborador.setEmail(csvRecord.get("Mail"));
+                colaborador.setFechaDeColaboracion(LocalDate.parse(csvRecord.get("Fecha de colaboración"), formatter).atStartOfDay());
+                colaborador.setFormaDeColaboracion(TipoColaboracion.valueOf(csvRecord.get("Forma de colaboración")));
+                colaborador.setCantidad(Integer.parseInt(csvRecord.get("Cantidad")));
 
-               listaDeColaboradores.add(colaborador);
-           }
-       } catch (IOException error) {
-           error.printStackTrace();
-       }
+                listaDeColaboradores.add(colaborador);
+            }
+        } catch (IOException error) {
+            error.printStackTrace();
+        }
 
-       return listaDeColaboradores;
+        return listaDeColaboradores;
     }
 }

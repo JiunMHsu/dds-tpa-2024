@@ -57,7 +57,7 @@ public class TestRegistroPV {
 
         // Colaborador
 
-        List<TipoColaboracion> colaboraciones = Collections.singletonList(TipoColaboracion.RepartirTarjeta);
+        List<TipoColaboracion> colaboraciones = Collections.singletonList(TipoColaboracion.ENTREGA_TARJETAS);
 
         Persona personaColaborador = new Persona(new Usuario("usuario1Test", "pancho", "pancho@gmail.com"));
         personaColaborador.setFormaDeColaborar(colaboraciones);
