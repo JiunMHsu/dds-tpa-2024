@@ -24,13 +24,11 @@ public class GeneradorDeCodigo {
         return codigoTarjeta;
     }
 
-    public static int numeroAleatorioEnRango(int minimo, int maximo) {
-
+    private int numeroAleatorioEnRango(int minimo, int maximo) {
         return ThreadLocalRandom.current().nextInt(minimo, maximo + 1);
     }
 
-    public static Boolean comprobarCodigosRepetidos(String codigo, RegistroTarjetas registroTarjetas) {
-        List<Tarjeta> tarjetasRegistradas = registroTarjetas.getTarjetasRegistradas();
+    private boolean comprobarCodigosRepetidos(String codigo, RegistroTarjetas registroTarjetas) {
         for (Tarjeta tarjeta : tarjetasRegistradas) {
             if (tarjeta.getCodigo().equals(codigo)) {
                 return true;

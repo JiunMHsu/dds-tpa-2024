@@ -26364,7 +26364,7 @@
 											"top": 876,
 											"width": 400.2294921875,
 											"height": 13,
-											"text": "+comprobarRepetidos(codigo: String): String",
+											"text": "-comprobarRepetidos(codigo: String): String",
 											"horizontalAlignment": 0
 										},
 										{
@@ -26382,7 +26382,7 @@
 											"top": 891,
 											"width": 400.2294921875,
 											"height": 13,
-											"text": "+numeroAleatorioEnRango(minimo: Integer, maximo Integer): Integer",
+											"text": "-numeroAleatorioEnRango(minimo: Integer, maximo Integer): Integer",
 											"horizontalAlignment": 0
 										}
 									],
@@ -36346,6 +36346,7 @@
 								"$ref": "AAAAAAGPv0bTzsvaR+8="
 							},
 							"name": "comprobarRepetidos",
+							"visibility": "private",
 							"parameters": [
 								{
 									"_type": "UMLParameter",
@@ -36374,6 +36375,7 @@
 								"$ref": "AAAAAAGPv0bTzsvaR+8="
 							},
 							"name": "numeroAleatorioEnRango",
+							"visibility": "private",
 							"parameters": [
 								{
 									"_type": "UMLParameter",
