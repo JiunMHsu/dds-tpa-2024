@@ -57,23 +57,26 @@ public class TestRegistroPV {
 
         // Colaborador
 
-        Usuario usuario = new Usuario("usuarioTest", "pancho", "pancho@gmail.com");
-
         List<TipoColaboracion> colaboraciones = Collections.singletonList(TipoColaboracion.RepartirTarjeta);
-        TipoDePersona tipoDePersona = new TipoDePersona(Sujeto.Humana, colaboraciones);
 
-        Persona personaColaborador = new Persona(usuario);
-        personaColaborador.setTipoDePersona(tipoDePersona);
+        Persona personaColaborador = new Persona(new Usuario("usuario1Test", "pancho", "pancho@gmail.com"));
+        personaColaborador.setFormaDeColaborar(colaboraciones);
+
+        Persona personaQueNoRegistro = new Persona(new Usuario("usuario2Test", "pancho", "panchoo@gmail.com"))
+        personaQueNoRegistro.setFormaDeColaborar(colaboraciones);
 
         // Resgistro
 
         RepartoDeTarjetas repartoTest = new RepartoDeTarjetas(personaColaborador, new Tarjeta(), personaRegistrada);
 
-        Assertions.assertEquals(personaRegistrada, repartoTest.getPersonaVulnerable(),
-                "La persona registrada no está correctamente registrada.");
+        Assertions.assertEquals(personaColaborador, repartoTest.getColaborador(),
+                "La persona que le entregó la tarjeta a personaRegistrada debería ser personaColaborador.");
 
-        Assertions.assertNotEquals(personaNoRegistrada, repartoTest.getPersonaVulnerable(),
-                "La persona no está registrada dado que no recibio una tarjeta.");
+        Assertions.assertNotEquals(personaQueNoRegistro, repartoTest.getColaborador(),
+                "La persona que le entregó la tarjeta a personaRegistrada no debería ser personaQueNoRegistro.");
+
+        Assertions.assertEquals(personaColaborador, repartoTest.getColaborador(),
+                "La persona le entrego una tarjeta y fue registrada correctament.");
     }
 }
 

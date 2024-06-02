@@ -1,16 +1,18 @@
 package ar.edu.utn.frba.dds.models.calculadorDePuntos;
 
-import ar.edu.utn.frba.dds.models.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.colaboracion.DonacionDinero;
 import ar.edu.utn.frba.dds.models.usuario.Persona;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
-
-public class PuntosDonacionDinero {
+@Setter
+public class PuntosDonacionDinero implements CalculadorDe{
     private static double variable = 0.5;
-
-    public static Double calcularPuntos(Persona persona){
-        List<DonacionDinero> listaDonacionesDinero = Colaboracion.obtenerDonacionesDinero(persona);
+    private List<DonacionDinero> listaDonacionesDinero = new ArrayList<>();
+    public Double calcularPuntos(Persona persona){
+        // TODO cuando veamos base de datos
         int pesosDonados = listaDonacionesDinero.stream()
                              .mapToInt(DonacionDinero :: getMonto)
                              .sum();

@@ -1,25 +1,28 @@
 package ar.edu.utn.frba.dds.models.calculadorDePuntos;
 
-import ar.edu.utn.frba.dds.models.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.colaboracion.HacerseCargoHeladera;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.usuario.Persona;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-public class PuntosHeladerasActivas {
+@Setter
+public class PuntosHeladerasActivas implements CalculadorDe{
     private static double variable = 5;
     private int mesesActivas;
+    private List<HacerseCargoHeladera> listaHeladerasACargo = new ArrayList<>();
     public static int calcularMesesActiva(LocalDate fechaInicio){
         LocalDate fechaActual = LocalDate.now();
         Period periodo = Period.between(fechaInicio, fechaActual);
         return periodo.getYears() * 12 + periodo.getMonths();
     }
-    public static Double calcularPuntos(Persona persona){
-        List<HacerseCargoHeladera> listaHeladerasACargo = Colaboracion.obtenerHeladerasACargo(persona);
+    public Double calcularPuntos(Persona persona){
+        // TODO cuando veamos base de datos
         List<Heladera> listaHeladerasActivas = listaHeladerasACargo.stream()
                 .map(HacerseCargoHeladera :: getHeladeraACargo)
                 .filter(Heladera :: getEstaActiva)

@@ -2,14 +2,21 @@ package ar.edu.utn.frba.dds.models.calculadorDePuntos;
 
 import ar.edu.utn.frba.dds.models.usuario.Persona;
 
+import java.util.List;
+
 public class CalculadorDePuntos {
 
+
+    private List<CalculadorDe> calculadores;
+
+    public CalculadorDePuntos(List<CalculadorDe> calculadores) {
+        this.calculadores = calculadores;
+    }
+
     public Double calcularPuntos(Persona persona){
-        return PuntosDonacionDinero.calcularPuntos(persona)
-                + PuntosHeladerasActivas.calcularPuntos(persona)
-                + PuntosDistribucionViandas.calcularPuntos(persona)
-                + PuntosDonacionViandas.calcularPuntos(persona)
-                + PuntosTarjetasDonadas.calcularPuntos(persona)
-                - persona.getPuntosCanjeados();
+        double puntos = calculadores.stream()
+                    .mapToDouble(calculador -> calculador.calcularPuntos((persona)))
+                    .sum();
+        return puntos - persona.getPuntosCanjeados();
     }
 }
