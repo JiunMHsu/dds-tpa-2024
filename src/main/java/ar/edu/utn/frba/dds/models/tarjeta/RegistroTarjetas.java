@@ -14,7 +14,6 @@ public class RegistroTarjetas {
 
   private Heladera heladera;
   private LocalDateTime horarioUsoTarjeta;
-  private List<Tarjeta> tarjetasRegistradas; // hardcodeado para los test
 
   public RegistroTarjetas(Heladera heladera) {
     this.heladera = heladera;
