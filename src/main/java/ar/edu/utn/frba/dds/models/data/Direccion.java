@@ -9,8 +9,9 @@ public class Direccion {
     private Integer altura;
     private Ubicacion ubicacion;
 
-    public Direccion(String Calle, Integer altura, Ubicacion ubicacion) {
-        this.calle = Calle;
+
+    public Direccion(String calle, Integer altura, Ubicacion ubicacion) {
+        this.calle = calle;
         this.altura = altura;
         this.ubicacion = ubicacion;
     }
