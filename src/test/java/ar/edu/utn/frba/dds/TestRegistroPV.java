@@ -1,5 +1,7 @@
 package ar.edu.utn.frba.dds;
 
+import ar.edu.utn.frba.dds.models.colaboracion.RepartoDeTarjetas;
+import ar.edu.utn.frba.dds.models.tarjeta.Tarjeta;
 import ar.edu.utn.frba.dds.models.usuario.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.data.Direccion;
@@ -58,15 +60,20 @@ public class TestRegistroPV {
         Usuario usuario = new Usuario("usuarioTest", "pancho", "pancho@gmail.com");
 
         List<TipoColaboracion> colaboraciones = Collections.singletonList(TipoColaboracion.RepartirTarjeta);
-
         TipoDePersona tipoDePersona = new TipoDePersona(Sujeto.Humana, colaboraciones);
 
         Persona personaColaborador = new Persona(usuario);
-        personaColaborador.setNombre("NombrePrueba");
-        personaColaborador.setApellido("ApellidoPrueba");
         personaColaborador.setTipoDePersona(tipoDePersona);
 
+        // Resgistro
 
+        RepartoDeTarjetas repartoTest = new RepartoDeTarjetas(personaColaborador, new Tarjeta(), personaRegistrada);
+
+        Assertions.assertEquals(personaRegistrada, repartoTest.getPersonaVulnerable(),
+                "La persona registrada no está correctamente registrada.");
+
+        Assertions.assertNotEquals(personaNoRegistrada, repartoTest.getPersonaVulnerable(),
+                "La persona no está registrada dado que no recibio una tarjeta.");
     }
 }
 
