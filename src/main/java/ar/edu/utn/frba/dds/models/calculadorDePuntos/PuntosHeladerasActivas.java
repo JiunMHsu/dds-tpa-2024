@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 @Setter
 public class PuntosHeladerasActivas implements CalculadorDe{
     private static double variable = 5;
-    private int mesesActivas;
     private List<HacerseCargoHeladera> listaHeladerasACargo = new ArrayList<>();
     public static int calcularMesesActiva(LocalDate fechaInicio){
         LocalDate fechaActual = LocalDate.now();
