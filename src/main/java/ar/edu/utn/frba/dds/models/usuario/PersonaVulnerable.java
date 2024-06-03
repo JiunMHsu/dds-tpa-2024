@@ -6,7 +6,11 @@ import ar.edu.utn.frba.dds.models.data.Documento;
 import java.time.LocalDate;
 
 import lombok.Getter;
+import lombok.Setter;
+
 @Getter
+@Setter
+
 public class PersonaVulnerable {
     private String nombre;
     private LocalDate fechaNacimiento;

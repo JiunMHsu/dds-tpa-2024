@@ -5,6 +5,8 @@ import ar.edu.utn.frba.dds.models.usuario.Usuario;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,7 +20,12 @@ public class RegistroColaboradoresPrevios {
     private GeneradorDeCredencial  generadorDeCredencial;
     private List<ColaboradoresPrevios> colaboradoresPrevios;
 
-     public void generCredencial(String destinatario, String credencial){
+    public RegistroColaboradoresPrevios() {
+        this.conversor = new CargadorColaboraciones();
+        this.colaboradoresPrevios = new ArrayList<>();
+    }
+
+    public void generCredencial(String destinatario, String credencial){
 
          Usuario usuario = generadorDeCredencial.generCredencial(destinatario); 
 
@@ -28,17 +35,18 @@ public class RegistroColaboradoresPrevios {
                          " - Contrasenia de usuario provicional: " + usuario.getContrasenia();
 
          mailSender.enviarMail(destinatario, asunto, cuerpo);
-     }
-
-   /* public cargarColaboraciones(){
-        // TODO
     }
-    */
 
-    public List<ColaboradoresPrevios> colaboradoresNoRegistrados(){
+    public void cargarColaboraciones(Path path){
 
-        List<ColaboradoresPrevios> noRegistrados = colaboradoresPrevios.stream()
-                .filter(colaborador -> !colaborador.estaRegistrado())
+        this.colaboradoresPrevios.addAll(conversor.convertirALista(path));
+    }
+
+
+    public List<ColaboradoresPrevios> colaboradoresNoRegistrados(List<ColaboradoresPrevios> listaEntrada){
+
+        List<ColaboradoresPrevios> noRegistrados = listaEntrada.stream()
+                .filter(colaborador -> !listaEntrada.contains(colaborador))
                 .collect(Collectors.toList());
 
         return noRegistrados;
