@@ -14,31 +14,25 @@ import lombok.Setter;
 @Setter
 public class Heladera {
 
-    /**
-     * Default constructor
-     */
     private String nombre;
     private Direccion direccion;
     private LocalDate fechaInicioFuncionamiento;
     private Integer capacidad;
     private List<Vianda> contenido;
     private Float ultimaTemperatura;
-    private Boolean estaActiva;
+    private RangoTemperatura rangoTemperatura;
 
-    public Heladera(String nombre, Direccion direccion, LocalDate fechaInicioFuncionamiento, Integer capacidad, List<Vianda> contenido, Float ultimaTemperatura, Boolean estaActiva) {
+    public Heladera(String nombre, Direccion direccion, Integer capacidad, Float ultimaTemperatura, RangoTemperatura rangoTemperatura) {
         this.nombre = nombre;
         this.direccion = direccion;
-        this.fechaInicioFuncionamiento = fechaInicioFuncionamiento;
+        this.fechaInicioFuncionamiento = LocalDate.now();
         this.capacidad = capacidad;
-        this.contenido = contenido;
+        this.contenido = new ArrayList<>();
         this.ultimaTemperatura = ultimaTemperatura;
-        this.estaActiva = estaActiva;
+        this.rangoTemperatura = rangoTemperatura;
     }
 
     public void agregarVianda(Vianda vianda) throws CapacidadExcedidaException {
-        if (contenido == null){
-            contenido = new ArrayList<>();
-        }
         if(chequearCapacidad()){
             contenido.add(vianda);
         }
@@ -53,12 +47,21 @@ public class Heladera {
             throw new ViandaNoEncontradaException("La vianda no se encontro en la lista o no hay lista de viandas");
         }
     }
+
     private Boolean chequearCapacidad() {
         return contenido.size() < capacidad;
     }
-    private Float obtenerTemperatura(SensorTemperatura sensor){
-        ultimaTemperatura = sensor.consultarTemperatura(this);
-        return ultimaTemperatura;
+
+    public Boolean verificarTemperatura(Float temperaturaActual) {
+        ultimaTemperatura = temperaturaActual;
+
+        Float maxima = this.rangoTemperatura.getTemperaturaMaxima();
+        Float minima = this.rangoTemperatura.getTemperaturaMinima();
+        if (temperaturaActual < minima || temperaturaActual > maxima) {
+            return false;
+        }
+
+        return true;
     }
 
 }

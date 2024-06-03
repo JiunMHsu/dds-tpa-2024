@@ -1,5 +1,6 @@
-package validador;
+package ar.edu.utn.frba.dds.validador;
 
+import ar.edu.utn.frba.dds.validador.ValidadorDeContrasenias;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
