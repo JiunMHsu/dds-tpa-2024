@@ -28,7 +28,7 @@ public class TestCargaMasiva {
     List<ColaboradoresPrevios> listaDeResgistrados = new ArrayList<>();
     List<ColaboradoresPrevios> listaTest = new ArrayList<>();
 
-    Path path = Paths.get("src/consultaUbicacionesRecomendadas/resources/ar/edu/utn/frba/dds/csvEntrega2.csv");
+    Path path = Paths.get("src/test/resources/ar/edu/utn/frba/dds/csvEntrega2.csv");
     registro.cargarColaboraciones(path);
 
     // Comprobar que se haga bien la carga
