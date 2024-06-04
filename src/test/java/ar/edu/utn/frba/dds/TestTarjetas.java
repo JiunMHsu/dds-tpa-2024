@@ -96,7 +96,7 @@ public class TestTarjetas {
         tarjeta1 = new Tarjeta(null, persona1, 5, null, null, null);
         tarjeta1.calcularUsosTarjeta(tarjeta1);
 
-        heladera1 = new Heladera("Pancho", null, null, null, null, null, true);
+        heladera1 = new Heladera("Pancho", null, null, null);
 
         tarjeta1.registrarUsoTarjeta(heladera1);
 

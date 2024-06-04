@@ -4,10 +4,10 @@ import lombok.Getter;
 
 @Getter
 public class RangoTemperatura {
-  private Float temperaturaMaxima;
-  private Float temperaturaMinima;
+  private Double temperaturaMaxima;
+  private Double temperaturaMinima;
 
-  public RangoTemperatura(Float temperaturaMaxima, Float temperaturaMinima) {
+  public RangoTemperatura(Double temperaturaMaxima, Double temperaturaMinima) {
     this.temperaturaMaxima = temperaturaMaxima;
     this.temperaturaMinima = temperaturaMinima;
   }

@@ -19,17 +19,19 @@ public class Heladera {
     private LocalDate fechaInicioFuncionamiento;
     private Integer capacidad;
     private List<Vianda> contenido;
-    private Float ultimaTemperatura;
+    private Double ultimaTemperatura;
     private RangoTemperatura rangoTemperatura;
+    private EstadoHeladera estado;
 
-    public Heladera(String nombre, Direccion direccion, Integer capacidad, Float ultimaTemperatura, RangoTemperatura rangoTemperatura) {
+    public Heladera(String nombre, Direccion direccion, Integer capacidad, RangoTemperatura rangoTemperatura) {
         this.nombre = nombre;
         this.direccion = direccion;
         this.fechaInicioFuncionamiento = LocalDate.now();
         this.capacidad = capacidad;
         this.contenido = new ArrayList<>();
-        this.ultimaTemperatura = ultimaTemperatura;
+        this.ultimaTemperatura = null;
         this.rangoTemperatura = rangoTemperatura;
+        this.estado = EstadoHeladera.Activa;
     }
 
     public void agregarVianda(Vianda vianda) throws CapacidadExcedidaException {
@@ -52,16 +54,20 @@ public class Heladera {
         return contenido.size() < capacidad;
     }
 
-    public Boolean verificarTemperatura(Float temperaturaActual) {
+    public Boolean verificarTemperatura(Double temperaturaActual) {
         ultimaTemperatura = temperaturaActual;
 
-        Float maxima = this.rangoTemperatura.getTemperaturaMaxima();
-        Float minima = this.rangoTemperatura.getTemperaturaMinima();
+        Double maxima = this.rangoTemperatura.getTemperaturaMaxima();
+        Double minima = this.rangoTemperatura.getTemperaturaMinima();
         if (temperaturaActual < minima || temperaturaActual > maxima) {
             return false;
         }
 
         return true;
+    }
+
+    public Boolean estaActiva() {
+        return estado == EstadoHeladera.Activa;
     }
 
 }

@@ -4,7 +4,7 @@ public class SensorTemperatura {
 
   public SensorTemperatura() {}
 
-  public void recibirTemperatura(Float temperatura, Heladera heladera) {
+  public void recibirTemperatura(Double temperatura, Heladera heladera) {
     heladera.verificarTemperatura(temperatura);
   }
 }
