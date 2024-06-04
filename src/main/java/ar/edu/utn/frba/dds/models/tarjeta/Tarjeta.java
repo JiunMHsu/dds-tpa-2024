@@ -2,29 +2,22 @@ package ar.edu.utn.frba.dds.models.tarjeta;
 
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.usuario.PersonaVulnerable;
-import ar.edu.utn.frba.dds.models.tarjeta.RegistroTarjetas;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
-
 @Setter
 @Getter
-
 public class Tarjeta {
   private String codigo;
   private PersonaVulnerable persona;
   private Integer usosDia;
   private Integer usosPorDia;
-  private LocalTime horaMedianoche = LocalTime.of(0, 0, 0);
-  private List<RegistroTarjetas> registro;
+  private LocalTime horaMedianoche;
+  private ArrayList<RegistroTarjetas> registro;
 
-  public Tarjeta(String codigo, PersonaVulnerable persona, Integer usosDia, Integer usosPorDia, LocalTime horaMedianoche, List<RegistroTarjetas> registro) {
+  public Tarjeta(String codigo, PersonaVulnerable persona, Integer usosDia, Integer usosPorDia, LocalTime horaMedianoche) {
     this.codigo = codigo;
     this.persona = persona;
     this.usosDia = usosDia;
