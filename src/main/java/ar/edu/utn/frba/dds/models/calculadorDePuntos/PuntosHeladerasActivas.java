@@ -24,7 +24,7 @@ public class PuntosHeladerasActivas implements CalculadorDe{
         // TODO cuando veamos base de datos
         List<Heladera> listaHeladerasActivas = listaHeladerasACargo.stream()
                 .map(HacerseCargoHeladera :: getHeladeraACargo)
-                .filter(Heladera :: getEstaActiva)
+                .filter(Heladera :: estaActiva)
                 .collect(Collectors.toList());
         int heladerasActivas = listaHeladerasActivas.size();
         int mesesActivas = listaHeladerasActivas.stream()

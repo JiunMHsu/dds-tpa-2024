@@ -67,7 +67,7 @@ public class TestRegistroPV {
 
         // Resgistro
 
-        Tarjeta tarjeta = new Tarjeta(null, personaRegistrada, null, null, null, null);
+        Tarjeta tarjeta = new Tarjeta(null, personaRegistrada, null, null, null);
 
         RepartoDeTarjetas repartoTest = new RepartoDeTarjetas(personaColaborador, tarjeta, personaRegistrada);
 

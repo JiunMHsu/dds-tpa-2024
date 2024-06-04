@@ -1,8 +1,10 @@
 package ar.edu.utn.frba.dds.models.heladera;
 
 public class SensorTemperatura {
-  public Float consultarTemperatura(Heladera heladera) {
-    //a implementar
-    return null;
+
+  public SensorTemperatura() {}
+
+  public void recibirTemperatura(Double temperatura, Heladera heladera) {
+    heladera.verificarTemperatura(temperatura);
   }
 }
