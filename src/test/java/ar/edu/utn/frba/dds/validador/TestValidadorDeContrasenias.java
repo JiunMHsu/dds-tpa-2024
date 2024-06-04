@@ -1,4 +1,4 @@
-package validador;
+package ar.edu.utn.frba.dds.validador;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

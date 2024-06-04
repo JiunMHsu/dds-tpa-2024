@@ -1,0 +1,41 @@
+package ar.edu.utn.frba.dds;
+
+import ar.edu.utn.frba.dds.models.data.Ubicacion;
+import ar.edu.utn.frba.dds.models.puntoIdeal.AdapterPuntoIdeal;
+import static org.mockito.Mockito.*;
+import ar.edu.utn.frba.dds.models.puntoIdeal.PuntoIdeal;
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+public class TestPuntoIdeal {
+
+  AdapterPuntoIdeal adapterPuntoIdeal;
+  PuntoIdeal puntoIdeal;
+  Ubicacion unaUbicacion, otraUbicacion;
+  List<Ubicacion> puntosRecomendados;
+
+  @BeforeEach
+  public void setup() {
+    unaUbicacion = new Ubicacion(761, 345);
+    otraUbicacion = new Ubicacion(84, 198);
+    puntosRecomendados = new ArrayList<>();
+    puntosRecomendados.add(unaUbicacion);
+    puntosRecomendados.add(otraUbicacion);
+
+    adapterPuntoIdeal = mock(AdapterPuntoIdeal.class);
+    when(adapterPuntoIdeal.puntoIdeal(976, 987, 5)).thenReturn(puntosRecomendados);
+
+    puntoIdeal = new PuntoIdeal(adapterPuntoIdeal);
+  }
+
+  @Test
+  @DisplayName("Se puede consultar Ubicaciones recomendadas.")
+  public void consultaUbicacionesRecomendadas() {
+    Ubicacion unaUbicacion = new Ubicacion(976, 987);
+    Assertions.assertIterableEquals(puntoIdeal.puntosIdeales(unaUbicacion, 5), puntosRecomendados);
+  }
+}

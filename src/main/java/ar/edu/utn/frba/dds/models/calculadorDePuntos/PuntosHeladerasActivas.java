@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 @Setter
 public class PuntosHeladerasActivas implements CalculadorDe{
     private static double variable = 5;
-    private int mesesActivas;
     private List<HacerseCargoHeladera> listaHeladerasACargo = new ArrayList<>();
     public static int calcularMesesActiva(LocalDate fechaInicio){
         LocalDate fechaActual = LocalDate.now();
@@ -25,7 +24,7 @@ public class PuntosHeladerasActivas implements CalculadorDe{
         // TODO cuando veamos base de datos
         List<Heladera> listaHeladerasActivas = listaHeladerasACargo.stream()
                 .map(HacerseCargoHeladera :: getHeladeraACargo)
-                .filter(Heladera :: getEstaActiva)
+                .filter(Heladera :: estaActiva)
                 .collect(Collectors.toList());
         int heladerasActivas = listaHeladerasActivas.size();
         int mesesActivas = listaHeladerasActivas.stream()

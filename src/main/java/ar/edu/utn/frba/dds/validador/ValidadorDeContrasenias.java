@@ -1,4 +1,4 @@
-package validador;
+package ar.edu.utn.frba.dds.validador;
 
 import java.io.IOException;
 import java.nio.file.Files;
