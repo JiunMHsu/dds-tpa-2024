@@ -16,9 +16,7 @@ import org.junit.jupiter.api.Test;
 
 public class TestCargaMasiva {
 
-  CargadorColaboraciones cargador = new CargadorColaboraciones();
   RegistroColaboradoresPrevios registro = new RegistroColaboradoresPrevios();
-  MailSender mailSender = new MailSender(null, null, null, null);
 
   @Test
   @DisplayName("Cargar el archivo de prueba")
