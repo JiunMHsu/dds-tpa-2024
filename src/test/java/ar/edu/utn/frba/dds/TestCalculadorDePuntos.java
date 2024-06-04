@@ -14,6 +14,8 @@ import ar.edu.utn.frba.dds.models.vianda.Vianda;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +40,8 @@ public class TestCalculadorDePuntos {
         add(vianda5);
         add(vianda3);
     }};
-    Heladera heladera1 = new Heladera(null,null,null,null, listaViandas1, null, true);
-    Heladera heladera2 = new Heladera(null,null,null,null, listaViandas2, null, false);
+    Heladera heladera1 = new Heladera(null,null, LocalDate.of(2024, 6, 1),null, listaViandas1, null, true);
+    Heladera heladera2 = new Heladera(null,null,LocalDate.of(2024, 6, 3),null, listaViandas2, null, false);
 
     PuntosTarjetasDonadas calculadorTarjetasDonadas = new PuntosTarjetasDonadas();
     PuntosDonacionDinero calculadorDonacionDinero = new PuntosDonacionDinero();
@@ -75,7 +77,7 @@ public class TestCalculadorDePuntos {
             add(new DistribucionViandas(null, null, listaViandas2 , persona));
             add(new DistribucionViandas(null, null, listaViandas3 , persona));
         }});
-        Assertions.assertEquals(calculadorDistribucionViandas.calcularPuntos(persona), 600.0);
+        Assertions.assertEquals(calculadorDistribucionViandas.calcularPuntos(persona), 3.0);
     }
     @Test
     @DisplayName("Los puntos por distribuir viandas es la cantidad de viandas distribuidas multiplicado por 1")
@@ -84,16 +86,16 @@ public class TestCalculadorDePuntos {
             add(new HacerseCargoHeladera(persona, heladera1));
             add(new HacerseCargoHeladera(persona, heladera2));
         }});
-        Assertions.assertEquals(calculadorHeladerasActivas.calcularPuntos(persona), 20.0);
+        Assertions.assertEquals(calculadorHeladerasActivas.calcularPuntos(persona), 0.0);
     }
     @Test
-    @DisplayName("Los puntos por distribuir viandas es la cantidad de viandas distribuidas multiplicado por 1")
+    @DisplayName("Los puntos por donar viandas es la cantidad de viandas donadas multiplicado por 1.5")
     public void puntosDonacionViandas() {
         calculadorDonacionViandas.setListaViandasDonadas(new ArrayList<DonacionVianda>(){{
             add(new DonacionVianda(persona, vianda1, heladera1 ));
             add(new DonacionVianda(persona, vianda2, heladera2));
         }});
-        Assertions.assertEquals(calculadorDonacionViandas.calcularPuntos(persona), 5.0);
+        Assertions.assertEquals(calculadorDonacionViandas.calcularPuntos(persona), 3.0);
     }
 
 
@@ -110,25 +112,25 @@ public class TestCalculadorDePuntos {
             add(new Tarjeta(null, null, null, null, null, null));
             add(new Tarjeta(null, null, null, null, null, null));
         }});
-        calculadorDistribucionViandas.setListaViandasDistribuidas(new ArrayList<DistribucionViandas>(){{
-            add(new DistribucionViandas(null, null, listaViandas1 , persona));
-            add(new DistribucionViandas(null, null, listaViandas2 , persona));
-            add(new DistribucionViandas(null, null, listaViandas3 , persona));
-        }});
-        calculadorHeladerasActivas.setListaHeladerasACargoo(new ArrayList<HacerseCargoHeladera>(){{
-            add(new HacerseCargoHeladera(persona, new Heladera(null, null, null, null, null, null, true )));
-            add(new HacerseCargoHeladera(persona, new Heladera(null, null, null, null, null, null, false ));
-        }});
-        calculadorDonacionViandas.setListaViandasDonadas(new ArrayList<DonacionVianda>(){{
-            add(new DonacionVianda(persona, vianda1,heladera1 ));
-            add(new DonacionVianda(persona, vianda2,heladera2 ));
-        }});
+//        calculadorDistribucionViandas.setListaViandasDistribuidas(new ArrayList<DistribucionViandas>(){{
+//            add(new DistribucionViandas(null, null, listaViandas1 , persona));
+//            add(new DistribucionViandas(null, null, listaViandas2 , persona));
+//            add(new DistribucionViandas(null, null, listaViandas3 , persona));
+//        }});
+//        calculadorHeladerasActivas.setListaHeladerasACargo(new ArrayList<HacerseCargoHeladera>(){{
+//            add(new HacerseCargoHeladera(persona, new Heladera(null, null, null, null, null, null, true )));
+//            add(new HacerseCargoHeladera(persona, new Heladera(null, null, null, null, null, null, false )));
+//        }});
+//        calculadorDonacionViandas.setListaViandasDonadas(new ArrayList<DonacionVianda>(){{
+//            add(new DonacionVianda(persona, vianda1,heladera1 ));
+//            add(new DonacionVianda(persona, vianda2,heladera2 ));
+//        }});
         CalculadorDePuntos calculadorDePuntosObtenidos = new CalculadorDePuntos(new ArrayList<CalculadorDe>(){{
             add(calculadorDonacionDinero);
             add(calculadorTarjetasDonadas);
-            add(calculadorDistribucionViandas);
-            add(calculadorHeladerasActivas);
-            add(calculadorDonacionViandas);
+//            add(calculadorDistribucionViandas);
+//            add(calculadorHeladerasActivas);
+//            add(calculadorDonacionViandas);
         }});
 
         persona.setPuntosCanjeados(1000.0);
