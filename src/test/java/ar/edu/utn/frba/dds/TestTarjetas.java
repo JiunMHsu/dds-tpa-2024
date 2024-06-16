@@ -33,9 +33,9 @@ public class TestTarjetas {
   @Test
   @DisplayName("Se generan codigos no repetidos")
   public void comprobarCodigosRepetidos() {
-    tarjeta1 = new Tarjeta("1af56789d87", null, null, null, null);
-    tarjeta2 = new Tarjeta("82df498ad23", null, null, null, null);
-    tarjeta3 = new Tarjeta("12d34r325qw", null, null, null, null);
+    tarjeta1 = Tarjeta.with("1af56789d87");
+    tarjeta2 = Tarjeta.with("82df498ad23");
+    tarjeta3 = Tarjeta.with("12d34r325qw");
 
     tarjetasExistentes = new ArrayList<>();
     tarjetasExistentes.add(tarjeta1);
@@ -55,21 +55,17 @@ public class TestTarjetas {
   @DisplayName("Usos de la tarjeta")
   public void puedeUsar() {
 
-    persona1 = new PersonaVulnerable();
-    persona2 = new PersonaVulnerable();
-    persona3 = new PersonaVulnerable();
+    persona1 = PersonaVulnerable.with(1);
+    persona2 = PersonaVulnerable.with(0);
+    persona3 = PersonaVulnerable.with(0);
 
-    persona1.setMenoresACargo(1);
-    persona2.setMenoresACargo(0);
-    persona3.setMenoresACargo(0);
-
-    tarjeta1 = new Tarjeta(null, persona1, 5, null, null);
+    tarjeta1 = Tarjeta.with( persona1, 5);
     tarjeta1.calcularUsosTarjeta(tarjeta1);
 
-    tarjeta2 = new Tarjeta(null, persona2, 0, null, null);
+    tarjeta2 = Tarjeta.with(persona2, 0);
     tarjeta2.calcularUsosTarjeta(tarjeta2);
 
-    tarjeta3 = new Tarjeta(null, persona3, 0, null, mediaNoche);
+    tarjeta3 = Tarjeta.with( persona3, 0, mediaNoche);
     tarjeta3.calcularUsosTarjeta(tarjeta3);
     tarjeta3.verificarMedianoche();
 
@@ -92,7 +88,7 @@ public class TestTarjetas {
     persona1 = new PersonaVulnerable();
     persona1.setMenoresACargo(1);
 
-    tarjeta1 = new Tarjeta(null, persona1, 5, null, null);
+    tarjeta1 = Tarjeta.with(persona1, 5);
     tarjeta1.calcularUsosTarjeta(tarjeta1);
 
     heladera1 = Heladera.with(8);

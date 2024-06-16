@@ -17,13 +17,46 @@ public class Tarjeta {
   private LocalTime horaMedianoche;
   private ArrayList<RegistroTarjetas> registro;
 
-  public Tarjeta(String codigo, PersonaVulnerable persona, Integer usosDia, Integer usosPorDia, LocalTime horaMedianoche) {
-    this.codigo = codigo;
-    this.persona = persona;
-    this.usosDia = usosDia;
-    this.usosPorDia = usosPorDia;
-    this.horaMedianoche = horaMedianoche;
-    this.registro = new ArrayList<>();
+  public static Tarjeta with(String codigo, PersonaVulnerable persona, Integer usosDia){
+    return Tarjeta
+        .builder()
+        .codigo(codigo)
+        .persona(persona)
+        .usosDia(usosDia)
+        .registro(new ArrayList<>())
+        .build();
+  }
+  public static Tarjeta with(String codigo, PersonaVulnerable persona){
+    return Tarjeta
+        .builder()
+        .codigo(codigo)
+        .persona(persona)
+        .registro(new ArrayList<>())
+        .build();
+  }
+  public static Tarjeta with(String codigo){
+    return Tarjeta
+        .builder()
+        .codigo(codigo)
+        .registro(new ArrayList<>())
+        .build();
+  }
+  public static Tarjeta with( PersonaVulnerable persona, Integer usosDia){
+    return Tarjeta
+        .builder()
+        .persona(persona)
+        .usosDia(usosDia)
+        .registro(new ArrayList<>())
+        .build();
+  }
+  public static Tarjeta with( PersonaVulnerable persona, Integer usosDia, LocalTime horaMedianoche ){
+    return Tarjeta
+        .builder()
+        .persona(persona)
+        .usosDia(usosDia)
+        .horaMedianoche(horaMedianoche)
+        .registro(new ArrayList<>())
+        .build();
   }
 
   public Boolean puedeUsar() {
