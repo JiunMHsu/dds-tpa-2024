@@ -8,13 +8,13 @@ import lombok.Getter;
 @Getter
 
 public class Vianda {
-    private Comida comida;
-    private LocalDate fechaCaducidad;
-    private Integer peso;
+  private Comida comida;
+  private LocalDate fechaCaducidad;
+  private Integer peso;
 
-    public Vianda(Comida comida, LocalDate fechaCaducidad, Integer peso){
-        this.comida = comida;
-        this.fechaCaducidad = fechaCaducidad;
-        this.peso = peso;
-    }
+  public Vianda(Comida comida, LocalDate fechaCaducidad, Integer peso) {
+    this.comida = comida;
+    this.fechaCaducidad = fechaCaducidad;
+    this.peso = peso;
+  }
 }

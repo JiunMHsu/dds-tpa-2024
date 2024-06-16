@@ -23,62 +23,61 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 
-
 public class TestRegistroPV {
 
-    @Test
-    @DisplayName("Test del registro de persona vulnerable")
+  @Test
+  @DisplayName("Test del registro de persona vulnerable")
 
-    public void testResgistroPersonaVulnerable() {
+  public void testResgistroPersonaVulnerable() {
 
-        Ubicacion ubicacionTest = new Ubicacion( 48, 84);
-        Direccion direccionTest = new Direccion("Aguero", 1281, ubicacionTest);
-        Documento documentoTest = new Documento(12345678, TipoDocumento.DNI);
+    Ubicacion ubicacionTest = new Ubicacion(48, 84);
+    Direccion direccionTest = new Direccion("Aguero", 1281, ubicacionTest);
+    Documento documentoTest = new Documento(12345678, TipoDocumento.DNI);
 
-        // Personas Vulnerables
+    // Personas Vulnerables
 
-        PersonaVulnerable personaRegistrada = new PersonaVulnerable();
+    PersonaVulnerable personaRegistrada = new PersonaVulnerable();
 
-        personaRegistrada.setNombre("Joaquin");
-        personaRegistrada.setFechaNacimiento(LocalDate.of(2000, 1, 1));
-        personaRegistrada.setFechaRegistro(LocalDate.of(2023, 5, 1));
-        personaRegistrada.setDomicilio(direccionTest);
-        personaRegistrada.setDocumento(documentoTest);
-        personaRegistrada.setMenoresACargo(2);
+    personaRegistrada.setNombre("Joaquin");
+    personaRegistrada.setFechaNacimiento(LocalDate.of(2000, 1, 1));
+    personaRegistrada.setFechaRegistro(LocalDate.of(2023, 5, 1));
+    personaRegistrada.setDomicilio(direccionTest);
+    personaRegistrada.setDocumento(documentoTest);
+    personaRegistrada.setMenoresACargo(2);
 
-        PersonaVulnerable personaNoRegistrada = new PersonaVulnerable();
+    PersonaVulnerable personaNoRegistrada = new PersonaVulnerable();
 
-        personaNoRegistrada.setNombre("Matias");
-        personaNoRegistrada.setFechaNacimiento(LocalDate.of(2010, 2, 23));
-        personaNoRegistrada.setFechaRegistro(LocalDate.of(2022, 4, 12));
-        personaNoRegistrada.setDomicilio(direccionTest);
-        personaNoRegistrada.setDocumento(documentoTest);
-        personaNoRegistrada.setMenoresACargo(2);
+    personaNoRegistrada.setNombre("Matias");
+    personaNoRegistrada.setFechaNacimiento(LocalDate.of(2010, 2, 23));
+    personaNoRegistrada.setFechaRegistro(LocalDate.of(2022, 4, 12));
+    personaNoRegistrada.setDomicilio(direccionTest);
+    personaNoRegistrada.setDocumento(documentoTest);
+    personaNoRegistrada.setMenoresACargo(2);
 
-        // Colaborador
+    // Colaborador
 
-        List<TipoColaboracion> colaboraciones = Collections.singletonList(TipoColaboracion.ENTREGA_TARJETAS);
+    List<TipoColaboracion> colaboraciones = Collections.singletonList(TipoColaboracion.ENTREGA_TARJETAS);
 
-        Persona personaColaborador = new Persona(new Usuario("usuario1Test", "pancho", "pancho@gmail.com"));
-        personaColaborador.setFormaDeColaborar(colaboraciones);
+    Persona personaColaborador = Persona.persona();
+    personaColaborador.setFormaDeColaborar(colaboraciones);
 
-        Persona personaQueNoRegistro = new Persona(new Usuario("usuario2Test", "pancho", "panchoo@gmail.com"));
-        personaQueNoRegistro.setFormaDeColaborar(colaboraciones);
+    Persona personaQueNoRegistro = Persona.persona();
+    personaQueNoRegistro.setFormaDeColaborar(colaboraciones);
 
-        // Resgistro
+    // Resgistro
 
-        Tarjeta tarjeta = new Tarjeta(null, personaRegistrada, null, null, null);
+    Tarjeta tarjeta = new Tarjeta(null, personaRegistrada, null, null, null);
 
-        RepartoDeTarjetas repartoTest = new RepartoDeTarjetas(personaColaborador, tarjeta, personaRegistrada);
+    RepartoDeTarjetas repartoTest = new RepartoDeTarjetas(personaColaborador, tarjeta, personaRegistrada);
 
-        Assertions.assertEquals(personaColaborador, repartoTest.getColaborador(),
-                "La persona que le entregó la tarjeta a personaRegistrada debería ser personaColaborador.");
+    Assertions.assertEquals(personaColaborador, repartoTest.getColaborador(),
+        "La persona que le entregó la tarjeta a personaRegistrada debería ser personaColaborador.");
 
-        Assertions.assertNotEquals(personaQueNoRegistro, repartoTest.getColaborador(),
-                "La persona que le entregó la tarjeta a personaRegistrada no debería ser personaQueNoRegistro.");
+    Assertions.assertNotEquals(personaQueNoRegistro, repartoTest.getColaborador(),
+        "La persona que le entregó la tarjeta a personaRegistrada no debería ser personaQueNoRegistro.");
 
-        Assertions.assertEquals(personaColaborador, repartoTest.getColaborador(),
-                "La persona le entrego una tarjeta y fue registrada correctament.");
-    }
+    Assertions.assertEquals(personaColaborador, repartoTest.getColaborador(),
+        "La persona le entrego una tarjeta y fue registrada correctament.");
+  }
 }
 
