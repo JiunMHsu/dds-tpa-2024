@@ -8,13 +8,10 @@ import ar.edu.utn.frba.dds.models.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.data.Direccion;
 import ar.edu.utn.frba.dds.models.data.Documento;
 import ar.edu.utn.frba.dds.models.data.TipoDocumento;
-
 import ar.edu.utn.frba.dds.models.usuario.Persona;
-import ar.edu.utn.frba.dds.models.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.colaboracion.TipoColaboracion;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,24 +32,14 @@ public class TestRegistroPV {
     Documento documentoTest = new Documento(12345678, TipoDocumento.DNI);
 
     // Personas Vulnerables
-
-    PersonaVulnerable personaRegistrada = new PersonaVulnerable();
-
-    personaRegistrada.setNombre("Joaquin");
+    PersonaVulnerable personaRegistrada = PersonaVulnerable.with("Joaquin", direccionTest, documentoTest, 2);
     personaRegistrada.setFechaNacimiento(LocalDate.of(2000, 1, 1));
     personaRegistrada.setFechaRegistro(LocalDate.of(2023, 5, 1));
-    personaRegistrada.setDomicilio(direccionTest);
-    personaRegistrada.setDocumento(documentoTest);
-    personaRegistrada.setMenoresACargo(2);
 
-    PersonaVulnerable personaNoRegistrada = new PersonaVulnerable();
-
-    personaNoRegistrada.setNombre("Matias");
+    PersonaVulnerable personaNoRegistrada = PersonaVulnerable.with("Matias", direccionTest, documentoTest, 2);
     personaNoRegistrada.setFechaNacimiento(LocalDate.of(2010, 2, 23));
     personaNoRegistrada.setFechaRegistro(LocalDate.of(2022, 4, 12));
-    personaNoRegistrada.setDomicilio(direccionTest);
-    personaNoRegistrada.setDocumento(documentoTest);
-    personaNoRegistrada.setMenoresACargo(2);
+
 
     // Colaborador
 
@@ -65,9 +52,7 @@ public class TestRegistroPV {
     personaQueNoRegistro.setFormaDeColaborar(colaboraciones);
 
     // Resgistro
-
-    Tarjeta tarjeta = new Tarjeta(null, personaRegistrada, null, null, null);
-
+    Tarjeta tarjeta = Tarjeta.with(GeneradorDeCodigo.generadorCodigo());
     RepartoDeTarjetas repartoTest = new RepartoDeTarjetas(personaColaborador, tarjeta, personaRegistrada);
 
     Assertions.assertEquals(personaColaborador, repartoTest.getColaborador(),

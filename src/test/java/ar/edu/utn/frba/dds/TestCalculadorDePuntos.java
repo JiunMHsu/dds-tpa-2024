@@ -1,25 +1,20 @@
 package ar.edu.utn.frba.dds;
 
 import ar.edu.utn.frba.dds.models.calculadorDePuntos.*;
-import ar.edu.utn.frba.dds.models.colaboracion.DistribucionViandas;
-import ar.edu.utn.frba.dds.models.colaboracion.DonacionDinero;
-import ar.edu.utn.frba.dds.models.colaboracion.DonacionVianda;
-import ar.edu.utn.frba.dds.models.colaboracion.HacerseCargoHeladera;
+import ar.edu.utn.frba.dds.models.colaboracion.*;
 import ar.edu.utn.frba.dds.models.data.Comida;
-import ar.edu.utn.frba.dds.models.heladera.EstadoHeladera;
-import ar.edu.utn.frba.dds.models.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.tarjeta.Tarjeta;
+import ar.edu.utn.frba.dds.models.heladera.*;
+import ar.edu.utn.frba.dds.models.tarjeta.*;
 import ar.edu.utn.frba.dds.models.usuario.Persona;
-import ar.edu.utn.frba.dds.models.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.vianda.Vianda;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class TestCalculadorDePuntos {
   Persona persona = Persona.persona();
@@ -54,9 +49,9 @@ public class TestCalculadorDePuntos {
   @DisplayName("Los puntos por repartir tarjetas es la cantidad de tarjetas repartidas multiplicado por 2")
   public void puntosTarjetas() {
     calculadorTarjetasDonadas.setListaTarjetasRepartidas(new ArrayList<Tarjeta>() {{
-      add(new Tarjeta(null, null, null, null, null));
-      add(new Tarjeta(null, null, null, null, null));
-      add(new Tarjeta(null, null, null, null, null));
+      add(Tarjeta.with(GeneradorDeCodigo.generadorCodigo()));
+      add(Tarjeta.with(GeneradorDeCodigo.generadorCodigo()));
+      add(Tarjeta.with(GeneradorDeCodigo.generadorCodigo()));
     }});
     Assertions.assertEquals(calculadorTarjetasDonadas.calcularPuntos(persona), 6.0);
   }
@@ -86,15 +81,16 @@ public class TestCalculadorDePuntos {
   @Test
   @DisplayName("Los puntos por hacerse cargo de heladeras activas es la cantidad de heladeras activas multiplicado por la sumatoria de meses activa y por 5")
   public void puntosHeladerasActivas() {
-
     heladera1.setFechaInicioFuncionamiento(LocalDate.of(2024, 3, 2));
     heladera3.setFechaInicioFuncionamiento(LocalDate.of(2024, 1, 1));
     heladera2.setEstado(EstadoHeladera.Inactiva);
+
     calculadorHeladerasActivas.setListaHeladerasACargo(new ArrayList<>() {{
       add(new HacerseCargoHeladera(persona, heladera1));
       add(new HacerseCargoHeladera(persona, heladera2));
       add(new HacerseCargoHeladera(persona, heladera3));
     }});
+
     Assertions.assertEquals(calculadorHeladerasActivas.calcularPuntos(persona), 80.0);
   }
 
@@ -118,9 +114,9 @@ public class TestCalculadorDePuntos {
       add(new DonacionDinero(persona, 10000));
     }});
     calculadorTarjetasDonadas.setListaTarjetasRepartidas(new ArrayList<>() {{
-      add(new Tarjeta(null, null, null, null, null));
-      add(new Tarjeta(null, null, null, null, null));
-      add(new Tarjeta(null, null, null, null, null));
+      add(Tarjeta.with(GeneradorDeCodigo.generadorCodigo()));
+      add(Tarjeta.with(GeneradorDeCodigo.generadorCodigo()));
+      add(Tarjeta.with(GeneradorDeCodigo.generadorCodigo()));
     }});
     CalculadorDePuntos calculadorDePuntosObtenidos = new CalculadorDePuntos(new ArrayList<>() {{
       add(calculadorDonacionDinero);

@@ -4,11 +4,13 @@ import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.usuario.PersonaVulnerable;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
+@Builder
 public class Tarjeta {
   private String codigo;
   private PersonaVulnerable persona;
@@ -17,7 +19,7 @@ public class Tarjeta {
   private LocalTime horaMedianoche;
   private ArrayList<RegistroTarjetas> registro;
 
-  public static Tarjeta with(String codigo, PersonaVulnerable persona, Integer usosDia){
+  public static Tarjeta with(String codigo, PersonaVulnerable persona, Integer usosDia) {
     return Tarjeta
         .builder()
         .codigo(codigo)
@@ -26,7 +28,8 @@ public class Tarjeta {
         .registro(new ArrayList<>())
         .build();
   }
-  public static Tarjeta with(String codigo, PersonaVulnerable persona){
+
+  public static Tarjeta with(String codigo, PersonaVulnerable persona) {
     return Tarjeta
         .builder()
         .codigo(codigo)
@@ -34,14 +37,16 @@ public class Tarjeta {
         .registro(new ArrayList<>())
         .build();
   }
-  public static Tarjeta with(String codigo){
+
+  public static Tarjeta with(String codigo) {
     return Tarjeta
         .builder()
         .codigo(codigo)
         .registro(new ArrayList<>())
         .build();
   }
-  public static Tarjeta with( PersonaVulnerable persona, Integer usosDia){
+
+  public static Tarjeta with(PersonaVulnerable persona, Integer usosDia) {
     return Tarjeta
         .builder()
         .persona(persona)
@@ -49,7 +54,8 @@ public class Tarjeta {
         .registro(new ArrayList<>())
         .build();
   }
-  public static Tarjeta with( PersonaVulnerable persona, Integer usosDia, LocalTime horaMedianoche ){
+
+  public static Tarjeta with(PersonaVulnerable persona, Integer usosDia, LocalTime horaMedianoche) {
     return Tarjeta
         .builder()
         .persona(persona)
@@ -82,6 +88,6 @@ public class Tarjeta {
   }
 
   public void calcularUsosTarjeta(Tarjeta tarjeta) {
-    usosPorDia = 4 + persona.getMenoresACargo()*2;
+    usosPorDia = 4 + persona.getMenoresACargo() * 2;
   }
 }
