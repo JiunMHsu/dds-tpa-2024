@@ -1,36 +1,62 @@
 package ar.edu.utn.frba.dds;
 
-import ar.edu.utn.frba.dds.models.convertidorArchivos.CargadorColaboraciones;
 import ar.edu.utn.frba.dds.models.convertidorArchivos.ColaboradoresPrevios;
 import ar.edu.utn.frba.dds.models.convertidorArchivos.RegistroColaboradoresPrevios;
-import ar.edu.utn.frba.dds.models.mailSender.MailSender;
+import ar.edu.utn.frba.dds.models.convertidorArchivos.GeneradorDeCredencial;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.edu.utn.frba.dds.models.mailSender.MailSender;
+import ar.edu.utn.frba.dds.models.usuario.Usuario;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+
 public class TestCargaMasiva {
 
-  RegistroColaboradoresPrevios registro = new RegistroColaboradoresPrevios();
+  RegistroColaboradoresPrevios registro;
+  GeneradorDeCredencial generador;
+  MailSender mailSender;
+  Integer mailEnviados;
+  List<ColaboradoresPrevios> listaDeResgistrados;
+  List<ColaboradoresPrevios> listaTest;
 
-  @Test
-  @DisplayName("Cargar el archivo de prueba")
+  @BeforeEach
+  public void setup() {
 
-  public void comprobarCargaMasiva() {
+    registro = new RegistroColaboradoresPrevios();
 
-    List<ColaboradoresPrevios> listaDeResgistrados = new ArrayList<>();
-    List<ColaboradoresPrevios> listaTest = new ArrayList<>();
+    generador = new GeneradorDeCredencial();
+
+    listaDeResgistrados = new ArrayList<>();
+    listaTest = new ArrayList<>();
 
     Path path = Paths.get("src/test/resources/ar/edu/utn/frba/dds/csvEntrega2.csv");
     registro.cargarColaboraciones(path);
 
-    // Comprobar que se haga bien la carga
+    mailEnviados = 0;
 
+    mailSender = mock(MailSender.class);
+
+    doAnswer(invocation -> {
+      mailEnviados++;
+      return null;
+    }).when(mailSender).enviarMail(anyString(), anyString(), anyString());
+  }
+
+  @Test
+  @DisplayName("Cargar el archivo de prueba")
+  public void cargarArchivos() {
+
+    // Comprobar que se haga bien la carga
     Assertions.assertNotNull(registro.getColaboradoresPrevios());
     Assertions.assertFalse(registro.getColaboradoresPrevios().isEmpty());
 
@@ -46,9 +72,21 @@ public class TestCargaMasiva {
     }
 
     List<ColaboradoresPrevios> listaNueva = registro.colaboradoresNoRegistrados(listaDeResgistrados);
+    Boolean resultado = true;
 
     for (int i = 0; i < listaNueva.size(); i++) {
-      Assertions.assertTrue(listaNueva.contains(listaTest.get(i)));
+      resultado = listaNueva.contains(listaTest.get(i)) && resultado;
     }
+
+    Assertions.assertTrue(resultado);
+
+    // Enviarle credenciales a los colaboradores no registrados
+
+    for (int i = 0; i < listaNueva.size(); i++) {
+      registro.generCredencial(listaNueva.get(i).getEmail());
+    }
+
+    Assertions.assertEquals(listaNueva.size(), mailEnviados);
   }
 }
+

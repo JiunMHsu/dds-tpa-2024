@@ -22,8 +22,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-
-
 public class TestRegistroPV {
 
     @Test
@@ -77,7 +75,7 @@ public class TestRegistroPV {
         Assertions.assertNotEquals(personaQueNoRegistro, repartoTest.getColaborador(),
                 "La persona que le entregó la tarjeta a personaRegistrada no debería ser personaQueNoRegistro.");
 
-        Assertions.assertEquals(personaColaborador, repartoTest.getColaborador(),
+        Assertions.assertEquals(personaRegistrada, repartoTest.getPersonaVulnerable(),
                 "La persona le entrego una tarjeta y fue registrada correctament.");
     }
 }
