@@ -5,11 +5,13 @@ import ar.edu.utn.frba.dds.models.vianda.Vianda;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
 public class Heladera {
   private String nombre;
   private Direccion direccion;
@@ -20,15 +22,44 @@ public class Heladera {
   private RangoTemperatura rangoTemperatura;
   private EstadoHeladera estado;
 
-  public Heladera(String nombre, Direccion direccion, Integer capacidad, RangoTemperatura rangoTemperatura) {
-    this.nombre = nombre;
-    this.direccion = direccion;
-    this.fechaInicioFuncionamiento = LocalDate.now();
-    this.capacidad = capacidad;
-    this.contenido = new ArrayList<>();
-    this.ultimaTemperatura = null;
-    this.rangoTemperatura = rangoTemperatura;
-    this.estado = EstadoHeladera.Activa;
+  public static Heladera with(String nombre, Direccion direccion, Integer capacidad, RangoTemperatura rangoTemperatura, EstadoHeladera estado) {
+    return Heladera
+        .builder()
+        .nombre(nombre)
+        .direccion(direccion)
+        .capacidad(capacidad)
+        .rangoTemperatura(rangoTemperatura)
+        .estado(estado)
+        .contenido(new ArrayList<>())
+        .build();
+  }
+
+  public static Heladera with(String nombre, Direccion direccion, Integer capacidad, RangoTemperatura rangoTemperatura) {
+    return Heladera
+        .builder()
+        .nombre(nombre)
+        .direccion(direccion)
+        .capacidad(capacidad)
+        .rangoTemperatura(rangoTemperatura)
+        .contenido(new ArrayList<>())
+        .build();
+  }
+
+  public static Heladera with(String nombre, Direccion direccion, Integer capacidad) {
+    return Heladera
+        .builder()
+        .nombre(nombre)
+        .direccion(direccion)
+        .capacidad(capacidad)
+        .build();
+  }
+
+  public static Heladera with(Integer capacidad) {
+    return Heladera
+        .builder()
+        .capacidad(capacidad)
+        .contenido(new ArrayList<>())
+        .build();
   }
 
   public void agregarVianda(Vianda vianda) throws CapacidadExcedidaException {

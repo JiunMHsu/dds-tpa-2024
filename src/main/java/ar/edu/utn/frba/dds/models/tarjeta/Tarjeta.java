@@ -4,11 +4,13 @@ import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.usuario.PersonaVulnerable;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
+@Builder
 public class Tarjeta {
   private String codigo;
   private PersonaVulnerable persona;
@@ -17,13 +19,50 @@ public class Tarjeta {
   private LocalTime horaMedianoche;
   private ArrayList<RegistroTarjetas> registro;
 
-  public Tarjeta(String codigo, PersonaVulnerable persona, Integer usosDia, Integer usosPorDia, LocalTime horaMedianoche) {
-    this.codigo = codigo;
-    this.persona = persona;
-    this.usosDia = usosDia;
-    this.usosPorDia = usosPorDia;
-    this.horaMedianoche = horaMedianoche;
-    this.registro = new ArrayList<>();
+  public static Tarjeta with(String codigo, PersonaVulnerable persona, Integer usosDia) {
+    return Tarjeta
+        .builder()
+        .codigo(codigo)
+        .persona(persona)
+        .usosDia(usosDia)
+        .registro(new ArrayList<>())
+        .build();
+  }
+
+  public static Tarjeta with(String codigo, PersonaVulnerable persona) {
+    return Tarjeta
+        .builder()
+        .codigo(codigo)
+        .persona(persona)
+        .registro(new ArrayList<>())
+        .build();
+  }
+
+  public static Tarjeta with(String codigo) {
+    return Tarjeta
+        .builder()
+        .codigo(codigo)
+        .registro(new ArrayList<>())
+        .build();
+  }
+
+  public static Tarjeta with(PersonaVulnerable persona, Integer usosDia) {
+    return Tarjeta
+        .builder()
+        .persona(persona)
+        .usosDia(usosDia)
+        .registro(new ArrayList<>())
+        .build();
+  }
+
+  public static Tarjeta with(PersonaVulnerable persona, Integer usosDia, LocalTime horaMedianoche) {
+    return Tarjeta
+        .builder()
+        .persona(persona)
+        .usosDia(usosDia)
+        .horaMedianoche(horaMedianoche)
+        .registro(new ArrayList<>())
+        .build();
   }
 
   public Boolean puedeUsar() {
@@ -49,6 +88,6 @@ public class Tarjeta {
   }
 
   public void calcularUsosTarjeta(Tarjeta tarjeta) {
-    usosPorDia = 4 + persona.getMenoresACargo()*2;
+    usosPorDia = 4 + persona.getMenoresACargo() * 2;
   }
 }

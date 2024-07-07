@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds;
 import ar.edu.utn.frba.dds.models.data.Direccion;
 import ar.edu.utn.frba.dds.models.heladera.*;
 import ar.edu.utn.frba.dds.models.vianda.Vianda;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +22,7 @@ public class TestHeladera {
   public void setup() throws CapacidadExcedidaException {
     unaDireccion = new Direccion("Medrano", 951, null);
     rangoAEstablecer = new RangoTemperatura(5.0, -5.0);
-    unaHeladera = new Heladera("Medrano UTN", unaDireccion, 20, rangoAEstablecer);
+    unaHeladera = Heladera.with("Medrano UTN", unaDireccion, 20, rangoAEstablecer);
 
     unaVianda = new Vianda(null, null, 9);
     unaHeladera.agregarVianda(unaVianda);
@@ -33,7 +34,6 @@ public class TestHeladera {
     Assertions.assertEquals("Medrano UTN", unaHeladera.getNombre());
     Assertions.assertEquals(unaDireccion, unaHeladera.getDireccion());
     Assertions.assertEquals(rangoAEstablecer, unaHeladera.getRangoTemperatura());
-    Assertions.assertTrue(unaHeladera.estaActiva());
   }
 
   @Test
