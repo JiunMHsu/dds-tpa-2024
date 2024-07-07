@@ -25,7 +25,7 @@ public class RegistroColaboradoresPrevios {
         this.colaboradoresPrevios = new ArrayList<>();
     }
 
-    public void generCredencial(String destinatario, String credencial){
+    public void generCredencial(String destinatario){
 
          Usuario usuario = generadorDeCredencial.generCredencial(destinatario); 
 

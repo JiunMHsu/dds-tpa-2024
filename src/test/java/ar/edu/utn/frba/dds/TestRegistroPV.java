@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-
 public class TestRegistroPV {
 
   @Test
@@ -65,4 +64,3 @@ public class TestRegistroPV {
         "La persona le entrego una tarjeta y fue registrada correctament.");
   }
 }
-
