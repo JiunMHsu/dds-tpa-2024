@@ -5,44 +5,45 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class GeneradorDeCredencial {
 
-    public Usuario generCredencial(String mail) {
+  public static int numeroAleatorioEnRango(int minimo, int maximo) {
 
-        String nombreProvicional = nombreAleatorio();
-        String contraseniaProvicional = contraseniaAleatorio();
+    return ThreadLocalRandom.current().nextInt(minimo, maximo + 1);
+  }
 
-        Usuario nuevoUsuario = new Usuario(nombreProvicional, contraseniaProvicional, mail);
+  public Usuario generCredencial(String mail) {
 
-        return nuevoUsuario;
+    String nombreProvicional = nombreAleatorio();
+    String contraseniaProvicional = contraseniaAleatorio();
+
+    Usuario nuevoUsuario = new Usuario(nombreProvicional, contraseniaProvicional, mail);
+
+    return nuevoUsuario;
+  }
+
+  public String nombreAleatorio() {
+
+    String banco = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+    String nombreUsuario = "";
+
+    for (int i = 0; i < 6; i++) {
+      int indiceAleatorio = numeroAleatorioEnRango(0, banco.length() - 1);
+      char caracterAleatorio = banco.charAt(indiceAleatorio);
+      nombreUsuario += caracterAleatorio;
     }
+    
+    return nombreUsuario;
+  }
 
-    public String nombreAleatorio() {
+  public String contraseniaAleatorio() {
 
-        String banco = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        String nombreUsuario = "";
+    String banco = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+    String contraseniaUsuario = "";
 
-        for (int i = 0; i < 6; i++) {
-            int indiceAleatorio = numeroAleatorioEnRango(0, banco.length() - 1);
-            char caracterAleatorio = banco.charAt(indiceAleatorio);
-            nombreUsuario += caracterAleatorio;
-        }
-        return nombreUsuario;
+    for (int i = 0; i < 6; i++) {
+      int indiceAleatorio = numeroAleatorioEnRango(0, banco.length() - 1);
+      char caracterAleatorio = banco.charAt(indiceAleatorio);
+      contraseniaUsuario += caracterAleatorio;
     }
-
-    public String contraseniaAleatorio() {
-
-        String banco = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        String contraseniaUsuario = "";
-
-        for (int i = 0; i < 6; i++) {
-            int indiceAleatorio = numeroAleatorioEnRango(0, banco.length() - 1);
-            char caracterAleatorio = banco.charAt(indiceAleatorio);
-            contraseniaUsuario += caracterAleatorio;
-        }
-        return contraseniaUsuario;
-    }
-
-    public static int numeroAleatorioEnRango(int minimo, int maximo) {
-
-        return ThreadLocalRandom.current().nextInt(minimo, maximo + 1);
-    }
+    return contraseniaUsuario;
+  }
 }

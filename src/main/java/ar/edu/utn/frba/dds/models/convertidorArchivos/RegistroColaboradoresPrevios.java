@@ -15,42 +15,42 @@ import java.util.stream.Collectors;
 
 public class RegistroColaboradoresPrevios {
 
-    private CargadorColaboraciones conversor;
-    private MailSender mailSender;
-    private GeneradorDeCredencial  generadorDeCredencial;
-    private List<ColaboradoresPrevios> colaboradoresPrevios;
+  private CargadorColaboraciones conversor;
+  private MailSender mailSender;
+  private GeneradorDeCredencial generadorDeCredencial;
+  private List<ColaboradoresPrevios> colaboradoresPrevios;
 
-    public RegistroColaboradoresPrevios() {
-        this.conversor = new CargadorColaboraciones();
-        this.colaboradoresPrevios = new ArrayList<>();
-    }
+  public RegistroColaboradoresPrevios() {
+    this.conversor = new CargadorColaboraciones();
+    this.colaboradoresPrevios = new ArrayList<>();
+  }
 
-    public void generCredencial(String destinatario){
+  public void generCredencial(String destinatario) {
 
-         Usuario usuario = generadorDeCredencial.generCredencial(destinatario); 
+    Usuario usuario = generadorDeCredencial.generCredencial(destinatario);
 
-         String asunto = "Credencial de usuario";
-         String cuerpo = "Esta es la credencial:" +
-                         " - Nombre de usuario provicional: " + usuario.getNombreUsuario() +
-                         " - Contrasenia de usuario provicional: " + usuario.getContrasenia();
+    String asunto = "Credencial de usuario";
+    String cuerpo = "Esta es la credencial:" +
+        " - Nombre de usuario provicional: " + usuario.getNombreUsuario() +
+        " - Contrasenia de usuario provicional: " + usuario.getContrasenia();
 
-         mailSender.enviarMail(destinatario, asunto, cuerpo);
-    }
+    mailSender.enviarMail(destinatario, asunto, cuerpo);
+  }
 
-    public void cargarColaboraciones(Path path){
+  public void cargarColaboraciones(Path path) {
 
-        this.colaboradoresPrevios.addAll(conversor.convertirALista(path));
-    }
+    this.colaboradoresPrevios.addAll(conversor.convertirALista(path));
+  }
 
 
-    public List<ColaboradoresPrevios> colaboradoresNoRegistrados(List<ColaboradoresPrevios> listaEntrada){
+  public List<ColaboradoresPrevios> colaboradoresNoRegistrados(List<ColaboradoresPrevios> listaEntrada) {
 
-        List<ColaboradoresPrevios> noRegistrados = listaEntrada.stream()
-                .filter(colaborador -> !listaEntrada.contains(colaborador))
-                .collect(Collectors.toList());
+    List<ColaboradoresPrevios> noRegistrados = listaEntrada.stream()
+        .filter(colaborador -> !listaEntrada.contains(colaborador))
+        .collect(Collectors.toList());
 
-        return noRegistrados;
-    }
+    return noRegistrados;
+  }
 
     /* public registrarColaboradores(){ // Para los q no tienen usuario
         // TODO

@@ -12,23 +12,25 @@ import lombok.Setter;
 
 public class ColaboradoresPrevios {
 
-    private Documento documento;
-    private String nombre;
-    private String apellido;
-    private String email;
-    private LocalDateTime fechaDeColaboracion;
-    private TipoColaboracion formaDeColaboracion;
-    private Integer cantidad;
-    private Boolean registrado;
-    public ColaboradoresPrevios(){
-        this.documento = null;
-        this.nombre = "nombre";
-        this.apellido = "apellido";
-        this.email = "email";
-        this.fechaDeColaboracion = null;
-        this.formaDeColaboracion = null;
-        this.cantidad = null;
-        this.registrado = false;
-    }
+
+  private Documento documento;
+  private String nombre;
+  private String apellido;
+  private String email;
+  private LocalDateTime fechaDeColaboracion;
+  private TipoColaboracion formaDeColaboracion;
+  private Integer cantidad;
+  private Boolean registrado;
+
+  public ColaboradoresPrevios() {
+    this.documento = null;
+    this.nombre = "nombre";
+    this.apellido = "apellido";
+    this.email = "email";
+    this.fechaDeColaboracion = null;
+    this.formaDeColaboracion = null;
+    this.cantidad = null;
+    this.registrado = false;
+  }
 
 }
