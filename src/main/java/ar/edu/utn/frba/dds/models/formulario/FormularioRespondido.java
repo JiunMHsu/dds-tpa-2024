@@ -5,18 +5,15 @@ import lombok.Getter;
 
 @Getter
 public class FormularioRespondido {
+  private ArrayList<Respuesta> respuestas;
+  private Formulario formulario;
 
-    private ArrayList<Respuesta> respuestas;
+  public FormularioRespondido(Formulario formulario) {
+    this.formulario = formulario;
+    this.respuestas = new ArrayList<>();
+  }
 
-    private Formulario formulario;
-
-    public FormularioRespondido(Formulario formulario) {
-        this.formulario = formulario;
-        this.respuestas = new ArrayList<>();
-    }
-
-    public void responderFormulario(ArrayList<Respuesta> respuestas) {
-        // debería ser respuesta al formulario entero o pregunta por pregunta?
-        this.respuestas.addAll(respuestas);
-    }
+  public void responderFormulario(ArrayList<Respuesta> respuestas) {
+    this.respuestas.addAll(respuestas);
+  }
 }

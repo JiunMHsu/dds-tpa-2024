@@ -5,18 +5,17 @@ import lombok.Getter;
 
 @Getter
 public class Formulario {
+  private ArrayList<Pregunta> preguntas;
 
-    private ArrayList<Pregunta> preguntas;
+  public Formulario() {
+    preguntas = new ArrayList<>();
+  }
 
-    public Formulario() {
-        preguntas = new ArrayList<>();
-    }
+  public void agregarCampo(Pregunta pregunta) {
+    preguntas.add(pregunta);
+  }
 
-    public void agregarCampo(Pregunta pregunta) {
-        preguntas.add(pregunta);
-    }
-
-    public void quitarCampo(Pregunta pregunta) {
-        preguntas.remove(pregunta);
-    }
+  public void quitarCampo(Pregunta pregunta) {
+    preguntas.remove(pregunta);
+  }
 }
