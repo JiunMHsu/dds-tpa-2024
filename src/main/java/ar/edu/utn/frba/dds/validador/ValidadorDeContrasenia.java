@@ -11,7 +11,7 @@ import java.util.List;
  * <p/>
  * Véase: <a href="https://pages.nist.gov/800-63-3/sp800-63b.html#memsecret"> Memorized Secret Verifiers </a>
  */
-public class ValidadorDeContrasenias {
+public class ValidadorDeContrasenia {
   public boolean esValida(String unaClave) {
     return this.tieneMasDeOchoCaracteres(unaClave)
         && this.esFuerte(unaClave)

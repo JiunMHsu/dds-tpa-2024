@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 public class TestValidadorDeContrasenias {
 
-  ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
+  ValidadorDeContrasenia validador = new ValidadorDeContrasenia();
 
   @Test
   @DisplayName("Una clave es fuerte si no pertenece a las 10000 claves debiles")
