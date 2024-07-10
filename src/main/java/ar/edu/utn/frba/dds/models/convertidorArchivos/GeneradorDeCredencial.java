@@ -6,7 +6,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class GeneradorDeCredencial {
 
   public static int numeroAleatorioEnRango(int minimo, int maximo) {
-
     return ThreadLocalRandom.current().nextInt(minimo, maximo + 1);
   }
 
@@ -21,7 +20,6 @@ public class GeneradorDeCredencial {
   }
 
   public String nombreAleatorio() {
-
     String banco = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
     String nombreUsuario = "";
 
@@ -30,7 +28,7 @@ public class GeneradorDeCredencial {
       char caracterAleatorio = banco.charAt(indiceAleatorio);
       nombreUsuario += caracterAleatorio;
     }
-    
+
     return nombreUsuario;
   }
 
