@@ -1,37 +1,11 @@
 package ar.edu.utn.frba.dds.models.colaboracion;
 
-import ar.edu.utn.frba.dds.models.tarjeta.Tarjeta;
-import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
-import java.util.List;
-
-public class Colaboracion {
-  public static List<DonacionDinero> obtenerDonacionesDinero(Colaborador persona) {
-    // TODO
-    return null;
-  }
-
-  public static List<DonacionVianda> obtenerViandasDonadas(Colaborador persona) {
-    // TODO
-    return null;
-  }
-
-  public static List<HacerseCargoHeladera> obtenerHeladerasACargo(Colaborador persona) {
-    // TODO
-    return null;
-  }
-
-  public static List<DistribucionViandas> obtenerViandasDistribuidas(Colaborador persona) {
-    // TODO
-    return null;
-  }
-
-  public static List<OfrecerProducto> obtenerOfertasDeProductos(Colaborador persona) {
-    // TODO
-    return null;
-  }
-
-  public static List<Tarjeta> obtenerTarjetasRepartidas(Colaborador persona) {
-    // TODO
-    return null;
-  }
+public enum Colaboracion {
+  DONACION_VIANDAS,
+  DONACION_DINERO,
+  DISTRIBUCION_VIANDAS,
+  ENTREGA_VIANDA,
+  HACERSE_CARGO_HELADERA,
+  OFERTA_DE_PRODUCTOS,
+  REPARTO_DE_TARJETAS,
 }

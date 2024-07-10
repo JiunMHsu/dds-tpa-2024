@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.models.colaborador;
 
-import ar.edu.utn.frba.dds.models.colaboracion.TipoColaboracion;
+import ar.edu.utn.frba.dds.models.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.data.Contacto;
 import ar.edu.utn.frba.dds.models.data.Direccion;
 import ar.edu.utn.frba.dds.models.data.TipoRazonSocial;
@@ -21,7 +21,7 @@ public class Colaborador {
   private Contacto contacto;
   private Direccion direccion;
   private FormularioRespondido datosAdicionales;
-  private List<TipoColaboracion> formaDeColaborar;
+  private List<Colaboracion> formaDeColaborar;
   private String razonSocial;
   private TipoRazonSocial tipoRazonSocial;
   private String rubro;
@@ -33,7 +33,7 @@ public class Colaborador {
   // private Double puntosObtenidos;
   // private Double puntosCanjeados;
 
-  public static Colaborador juridica(Usuario usuario, String razonSocial, TipoRazonSocial tipoRazonSocial, String rubro, Contacto contacto, Direccion direccion, List<TipoColaboracion> formaDeColaborar) {
+  public static Colaborador juridica(Usuario usuario, String razonSocial, TipoRazonSocial tipoRazonSocial, String rubro, Contacto contacto, Direccion direccion, List<Colaboracion> formaDeColaborar) {
     return Colaborador
         .builder()
         .usuario(usuario)
@@ -57,7 +57,7 @@ public class Colaborador {
         .build();
   }
 
-  public static Colaborador humana(Usuario usuario, String nombre, String apellido, LocalDate fechaNacimiento, Contacto contacto, Direccion direccion, List<TipoColaboracion> formaDeColaborar) {
+  public static Colaborador humana(Usuario usuario, String nombre, String apellido, LocalDate fechaNacimiento, Contacto contacto, Direccion direccion, List<Colaboracion> formaDeColaborar) {
     return Colaborador
         .builder()
         .usuario(usuario)

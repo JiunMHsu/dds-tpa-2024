@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.models.convertidorArchivos;
 
-import ar.edu.utn.frba.dds.models.colaboracion.TipoColaboracion;
+import ar.edu.utn.frba.dds.models.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.data.Documento;
 import ar.edu.utn.frba.dds.models.data.TipoDocumento;
 
@@ -46,7 +46,7 @@ public class CargadorColaboraciones {
         colaborador.setApellido(csvRecord.get("Apellido"));
         colaborador.setEmail(csvRecord.get("Mail"));
         colaborador.setFechaDeColaboracion(LocalDate.parse(csvRecord.get("Fecha de colaboración"), formatter).atStartOfDay());
-        colaborador.setFormaDeColaboracion(TipoColaboracion.valueOf(csvRecord.get("Forma de colaboración")));
+        colaborador.setFormaDeColaboracion(Colaboracion.valueOf(csvRecord.get("Forma de colaboración")));
         colaborador.setCantidad(Integer.parseInt(csvRecord.get("Cantidad")));
 
         listaDeColaboradores.add(colaborador);

@@ -9,7 +9,7 @@ import ar.edu.utn.frba.dds.models.data.Direccion;
 import ar.edu.utn.frba.dds.models.data.Documento;
 import ar.edu.utn.frba.dds.models.data.TipoDocumento;
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.models.colaboracion.TipoColaboracion;
+import ar.edu.utn.frba.dds.models.colaboracion.Colaboracion;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -42,7 +42,7 @@ public class TestRegistroPV {
 
     // Colaborador
 
-    List<TipoColaboracion> colaboraciones = Collections.singletonList(TipoColaboracion.ENTREGA_TARJETAS);
+    List<Colaboracion> colaboraciones = Collections.singletonList(Colaboracion.REPARTO_DE_TARJETAS);
 
     Colaborador personaColaborador = Colaborador.persona();
     personaColaborador.setFormaDeColaborar(colaboraciones);

@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.models.convertidorArchivos;
 
 import ar.edu.utn.frba.dds.models.data.Documento;
-import ar.edu.utn.frba.dds.models.colaboracion.TipoColaboracion;
+import ar.edu.utn.frba.dds.models.colaboracion.Colaboracion;
 import java.time.LocalDateTime;
 
 import lombok.Getter;
@@ -18,7 +18,7 @@ public class ColaboradoresPrevios {
   private String apellido;
   private String email;
   private LocalDateTime fechaDeColaboracion;
-  private TipoColaboracion formaDeColaboracion;
+  private Colaboracion formaDeColaboracion;
   private Integer cantidad;
   private Boolean registrado;
 

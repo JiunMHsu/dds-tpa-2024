@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.models.colaborador;
 
-import ar.edu.utn.frba.dds.models.colaboracion.TipoColaboracion;
+import ar.edu.utn.frba.dds.models.colaboracion.Colaboracion;
 import java.util.List;
 import lombok.Getter;
 
@@ -8,9 +8,9 @@ import lombok.Getter;
 public class TipoColaborador {
 
   private TipoPersona tipo;
-  private List<TipoColaboracion> colaboraciones;
+  private List<Colaboracion> colaboraciones;
 
-  public TipoColaborador(TipoPersona tipo, List<TipoColaboracion> colaboraciones) {
+  public TipoColaborador(TipoPersona tipo, List<Colaboracion> colaboraciones) {
     this.tipo = tipo;
     this.colaboraciones = colaboraciones;
   }
