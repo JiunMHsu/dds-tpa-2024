@@ -83,7 +83,7 @@ public class TestCalculadorDePuntos {
   public void puntosHeladerasActivas() {
     heladera1.setFechaInicioFuncionamiento(LocalDate.of(2024, 3, 2));
     heladera3.setFechaInicioFuncionamiento(LocalDate.of(2024, 1, 1));
-    heladera2.setEstado(EstadoHeladera.Inactiva);
+    heladera2.setEstado(EstadoHeladera.INACTIVA);
 
     calculadorHeladerasActivas.setListaHeladerasACargo(new ArrayList<>() {{
       add(new HacerseCargoHeladera(persona, heladera1));

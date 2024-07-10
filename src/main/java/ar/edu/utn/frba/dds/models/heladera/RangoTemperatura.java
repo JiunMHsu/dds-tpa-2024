@@ -4,11 +4,15 @@ import lombok.Getter;
 
 @Getter
 public class RangoTemperatura {
-  private Double temperaturaMaxima;
-  private Double temperaturaMinima;
+  private Double maxima;
+  private Double minima;
 
-  public RangoTemperatura(Double temperaturaMaxima, Double temperaturaMinima) {
-    this.temperaturaMaxima = temperaturaMaxima;
-    this.temperaturaMinima = temperaturaMinima;
+  public RangoTemperatura(Double maxima, Double minima) {
+    this.maxima = maxima;
+    this.minima = minima;
+  }
+
+  public Boolean incluye(Double temperatura) {
+    return (temperatura < maxima) && (temperatura > minima);
   }
 }

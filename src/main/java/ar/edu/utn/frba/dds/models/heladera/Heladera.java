@@ -13,16 +13,21 @@ import lombok.Setter;
 @Setter
 @Builder
 public class Heladera {
+
   private String nombre;
   private Direccion direccion;
-  private LocalDate fechaInicioFuncionamiento;
+  private LocalDate inicioFuncionamiento;
   private Integer capacidad;
-  private List<Vianda> contenido;
-  private Double ultimaTemperatura;
   private RangoTemperatura rangoTemperatura;
+  private Double ultimaTemperatura;
   private EstadoHeladera estado;
+  private List<Vianda> contenido;
 
-  public static Heladera with(String nombre, Direccion direccion, Integer capacidad, RangoTemperatura rangoTemperatura, EstadoHeladera estado) {
+  public static Heladera with(String nombre,
+                              Direccion direccion,
+                              Integer capacidad,
+                              RangoTemperatura rangoTemperatura,
+                              EstadoHeladera estado) {
     return Heladera
         .builder()
         .nombre(nombre)
@@ -34,7 +39,10 @@ public class Heladera {
         .build();
   }
 
-  public static Heladera with(String nombre, Direccion direccion, Integer capacidad, RangoTemperatura rangoTemperatura) {
+  public static Heladera with(String nombre,
+                              Direccion direccion,
+                              Integer capacidad,
+                              RangoTemperatura rangoTemperatura) {
     return Heladera
         .builder()
         .nombre(nombre)
@@ -63,7 +71,7 @@ public class Heladera {
   }
 
   public void agregarVianda(Vianda vianda) throws CapacidadExcedidaException {
-    if (!this.chequearCapacidad()) {
+    if (!this.puedeAgregarVianda()) {
       throw new CapacidadExcedidaException("La capacidad de la heladera esta excedida");
     }
     contenido.add(vianda);
@@ -75,20 +83,11 @@ public class Heladera {
     }
   }
 
-  private Boolean chequearCapacidad() {
-    return contenido.size() < capacidad;
-  }
-
-  public Boolean verificarTemperatura(Double temperaturaActual) {
-    ultimaTemperatura = temperaturaActual;
-
-    Double maxima = this.rangoTemperatura.getTemperaturaMaxima();
-    Double minima = this.rangoTemperatura.getTemperaturaMinima();
-    return temperaturaActual >= minima && temperaturaActual <= maxima;
+  private Boolean puedeAgregarVianda() {
+    return this.estaActiva() && (contenido.size() < capacidad);
   }
 
   public Boolean estaActiva() {
-    return estado == EstadoHeladera.Activa;
+    return estado == EstadoHeladera.ACTIVA;
   }
-
 }
