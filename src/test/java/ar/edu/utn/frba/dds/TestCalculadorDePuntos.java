@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds;
 
-import ar.edu.utn.frba.dds.models.calculadorDePuntos.*;
+import ar.edu.utn.frba.dds.models.puntosDeColaboracion.*;
 import ar.edu.utn.frba.dds.models.colaboracion.*;
 import ar.edu.utn.frba.dds.models.data.Comida;
 import ar.edu.utn.frba.dds.models.heladera.*;
@@ -119,7 +119,7 @@ public class TestCalculadorDePuntos {
       add(TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generarCodigoTarjeta()));
       add(TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generarCodigoTarjeta()));
     }});
-    CalculadorDePuntos calculadorDePuntosObtenidos = new CalculadorDePuntos(new ArrayList<>() {{
+    PuntosPorColaboracion calculadorDePuntosObtenidos = new PuntosPorColaboracion(new ArrayList<>() {{
       add(calculadorDonacionDinero);
       add(calculadorTarjetasDonadas);
     }});
