@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.models.data;
 
-import ar.edu.utn.frba.dds.validador.ValidadorDeMail;
+import ar.edu.utn.frba.dds.utils.ValidadorDeMail;
 import lombok.Getter;
 
 @Getter

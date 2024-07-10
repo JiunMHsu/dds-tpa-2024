@@ -1,8 +1,8 @@
 package ar.edu.utn.frba.dds;
 
 import ar.edu.utn.frba.dds.models.colaboracion.RepartoDeTarjetas;
-import ar.edu.utn.frba.dds.models.tarjeta.Tarjeta;
-import ar.edu.utn.frba.dds.models.tarjeta.GeneradorDeCodigo;
+import ar.edu.utn.frba.dds.models.tarjeta.TarjetaPersonaVulnerable;
+import ar.edu.utn.frba.dds.utils.GeneradorDeCodigoTarjeta;
 import ar.edu.utn.frba.dds.models.personaVulnerable.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.data.Direccion;
@@ -51,7 +51,7 @@ public class TestRegistroPV {
     personaQueNoRegistro.setFormaDeColaborar(colaboraciones);
 
     // Resgistro
-    Tarjeta tarjeta = Tarjeta.with(GeneradorDeCodigo.generadorCodigo());
+    TarjetaPersonaVulnerable tarjeta = TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generarCodigoTarjeta());
     RepartoDeTarjetas repartoTest = new RepartoDeTarjetas(personaColaborador, tarjeta, personaRegistrada);
 
     Assertions.assertEquals(personaColaborador, repartoTest.getColaborador(),

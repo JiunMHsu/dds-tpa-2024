@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.models.convertidorArchivos;
+package ar.edu.utn.frba.dds.utils;
 
 import ar.edu.utn.frba.dds.models.colaborador.Usuario;
 import java.util.concurrent.ThreadLocalRandom;

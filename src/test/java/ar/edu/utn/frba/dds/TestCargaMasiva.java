@@ -2,12 +2,13 @@ package ar.edu.utn.frba.dds;
 
 import ar.edu.utn.frba.dds.models.convertidorArchivos.*;
 
+import ar.edu.utn.frba.dds.utils.GeneradorDeCredencial;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import ar.edu.utn.frba.dds.models.mailSender.MailSender;
+import ar.edu.utn.frba.dds.senders.MailSender;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

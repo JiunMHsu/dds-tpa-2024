@@ -8,6 +8,7 @@ import ar.edu.utn.frba.dds.models.tarjeta.*;
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.vianda.Vianda;
 
+import ar.edu.utn.frba.dds.utils.GeneradorDeCodigoTarjeta;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,10 +49,10 @@ public class TestCalculadorDePuntos {
   @Test
   @DisplayName("Los puntos por repartir tarjetas es la cantidad de tarjetas repartidas multiplicado por 2")
   public void puntosTarjetas() {
-    calculadorTarjetasDonadas.setListaTarjetasRepartidas(new ArrayList<Tarjeta>() {{
-      add(Tarjeta.with(GeneradorDeCodigo.generadorCodigo()));
-      add(Tarjeta.with(GeneradorDeCodigo.generadorCodigo()));
-      add(Tarjeta.with(GeneradorDeCodigo.generadorCodigo()));
+    calculadorTarjetasDonadas.setListaTarjetasRepartidas(new ArrayList<TarjetaPersonaVulnerable>() {{
+      add(TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generarCodigoTarjeta()));
+      add(TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generarCodigoTarjeta()));
+      add(TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generarCodigoTarjeta()));
     }});
     Assertions.assertEquals(calculadorTarjetasDonadas.calcularPuntos(persona), 6.0);
   }
@@ -114,9 +115,9 @@ public class TestCalculadorDePuntos {
       add(new DonacionDinero(persona, 10000));
     }});
     calculadorTarjetasDonadas.setListaTarjetasRepartidas(new ArrayList<>() {{
-      add(Tarjeta.with(GeneradorDeCodigo.generadorCodigo()));
-      add(Tarjeta.with(GeneradorDeCodigo.generadorCodigo()));
-      add(Tarjeta.with(GeneradorDeCodigo.generadorCodigo()));
+      add(TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generarCodigoTarjeta()));
+      add(TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generarCodigoTarjeta()));
+      add(TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generarCodigoTarjeta()));
     }});
     CalculadorDePuntos calculadorDePuntosObtenidos = new CalculadorDePuntos(new ArrayList<>() {{
       add(calculadorDonacionDinero);

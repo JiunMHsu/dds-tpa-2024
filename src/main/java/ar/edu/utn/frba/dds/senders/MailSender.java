@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.models.mailSender;
+package ar.edu.utn.frba.dds.senders;
 
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;

@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.models.calculadorDePuntos;
 
-import ar.edu.utn.frba.dds.models.tarjeta.Tarjeta;
+import ar.edu.utn.frba.dds.models.tarjeta.TarjetaPersonaVulnerable;
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import lombok.Setter;
 
@@ -11,7 +11,7 @@ import java.util.List;
 public class PuntosTarjetasDonadas implements CalculadorDe {
   private static double variable = 2;
 
-  private List<Tarjeta> listaTarjetasRepartidas = new ArrayList<>();
+  private List<TarjetaPersonaVulnerable> listaTarjetasRepartidas = new ArrayList<>();
 
   public Double calcularPuntos(Colaborador persona) {
     // TODO cuando veamos base de datos

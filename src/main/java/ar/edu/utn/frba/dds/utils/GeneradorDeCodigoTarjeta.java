@@ -1,19 +1,15 @@
-package ar.edu.utn.frba.dds.models.tarjeta;
+package ar.edu.utn.frba.dds.utils;
 
 import java.util.concurrent.ThreadLocalRandom;
-import lombok.Getter;
-import lombok.Setter;
 
-@Setter
-@Getter
-public class GeneradorDeCodigo {
+public class GeneradorDeCodigoTarjeta {
 
-  public static String generadorCodigo() {
+  public static String generarCodigoTarjeta() {
     String banco = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-
     StringBuilder codigoBuilder = new StringBuilder();
+
     for (int i = 0; i < 10; i++) {
-      int indiceAleatorio = GeneradorDeCodigo.numeroAleatorioEnRango(0, banco.length() - 1);
+      int indiceAleatorio = GeneradorDeCodigoTarjeta.numeroAleatorioEnRango(0, banco.length() - 1);
       char caracterAleatorio = banco.charAt(indiceAleatorio);
       codigoBuilder.append(caracterAleatorio);
     }

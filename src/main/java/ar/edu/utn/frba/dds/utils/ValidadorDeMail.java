@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.validador;
+package ar.edu.utn.frba.dds.utils;
 
 public class ValidadorDeMail {
 

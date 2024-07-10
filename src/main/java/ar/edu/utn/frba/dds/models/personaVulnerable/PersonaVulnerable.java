@@ -11,37 +11,53 @@ import lombok.Setter;
 @Setter
 @Builder
 public class PersonaVulnerable {
+
   private String nombre;
+  private Documento documento;
   private LocalDate fechaNacimiento;
   private LocalDate fechaRegistro;
   private Direccion domicilio;
-  private Documento documento;
   private Integer menoresACargo;
 
-  public static PersonaVulnerable with(String nombre, Direccion domicilio, Documento documento, Integer menoresACargo) {
+  public static PersonaVulnerable with(String nombre,
+                                       Documento documento,
+                                       LocalDate fechaNacimiento,
+                                       LocalDate fechaRegistro,
+                                       Direccion domicilio,
+                                       Integer menoresACargo) {
     return PersonaVulnerable
         .builder()
         .nombre(nombre)
+        .documento(documento)
+        .fechaNacimiento(fechaNacimiento)
+        .fechaRegistro(fechaRegistro)
         .domicilio(domicilio)
+        .menoresACargo(menoresACargo)
+        .build();
+  }
+
+  public static PersonaVulnerable with(String nombre, Documento documento, Integer menoresACargo) {
+    return PersonaVulnerable
+        .builder()
+        .nombre(nombre)
         .documento(documento)
         .menoresACargo(menoresACargo)
         .build();
   }
 
-  public static PersonaVulnerable with(String nombre, Direccion domicilio, Documento documento) {
+  public static PersonaVulnerable with(String nombre, Documento documento) {
     return PersonaVulnerable
         .builder()
         .nombre(nombre)
-        .domicilio(domicilio)
         .documento(documento)
         .build();
   }
 
-  public static PersonaVulnerable with(String nombre, Direccion domicilio) {
+  public static PersonaVulnerable with(String nombre, Integer menoresACargo) {
     return PersonaVulnerable
         .builder()
         .nombre(nombre)
-        .domicilio(domicilio)
+        .menoresACargo(menoresACargo)
         .build();
   }
 
@@ -51,13 +67,5 @@ public class PersonaVulnerable {
         .nombre(nombre)
         .build();
   }
-
-  public static PersonaVulnerable with(Integer menoresACargo) {
-    return PersonaVulnerable
-        .builder()
-        .menoresACargo(menoresACargo)
-        .build();
-  }
-
 }
 

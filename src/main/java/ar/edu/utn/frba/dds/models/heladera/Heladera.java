@@ -1,6 +1,8 @@
 package ar.edu.utn.frba.dds.models.heladera;
 
 import ar.edu.utn.frba.dds.models.data.Direccion;
+import ar.edu.utn.frba.dds.models.tarjeta.Tarjeta;
+import ar.edu.utn.frba.dds.models.tarjeta.TarjetaColaborador;
 import ar.edu.utn.frba.dds.models.vianda.Vianda;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -89,5 +91,12 @@ public class Heladera {
 
   public Boolean estaActiva() {
     return estado == EstadoHeladera.ACTIVA;
+  }
+
+  // TODO
+  public Boolean haySolicitudDeAperturaPor(TarjetaColaborador tarjeta) {
+    // sería consultar si hay alguna solicitud para la tarjeta
+    // dentro del rango de 3 horas
+    return true;
   }
 }
