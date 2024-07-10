@@ -2,8 +2,7 @@ package ar.edu.utn.frba.dds.models.calculadorDePuntos;
 
 import ar.edu.utn.frba.dds.models.colaboracion.HacerseCargoHeladera;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.usuario.Persona;
-import lombok.Getter;
+import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -23,7 +22,7 @@ public class PuntosHeladerasActivas implements CalculadorDe {
     return periodo.getYears() * 12 + periodo.getMonths();
   }
 
-  public Double calcularPuntos(Persona persona) {
+  public Double calcularPuntos(Colaborador persona) {
     // TODO cuando veamos base de datos
     List<Heladera> listaHeladerasActivas = listaHeladerasACargo.stream()
         .map(HacerseCargoHeladera::getHeladeraACargo)

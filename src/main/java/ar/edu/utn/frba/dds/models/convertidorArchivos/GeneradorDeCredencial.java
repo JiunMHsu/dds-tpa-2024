@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.models.convertidorArchivos;
 
-import ar.edu.utn.frba.dds.models.usuario.Usuario;
+import ar.edu.utn.frba.dds.models.colaborador.Usuario;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GeneradorDeCredencial {

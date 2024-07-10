@@ -1,14 +1,12 @@
-package ar.edu.utn.frba.dds.models.usuario;
+package ar.edu.utn.frba.dds.models.colaborador;
 
 import ar.edu.utn.frba.dds.models.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.data.Contacto;
 import ar.edu.utn.frba.dds.models.data.Direccion;
 import ar.edu.utn.frba.dds.models.data.TipoRazonSocial;
 import ar.edu.utn.frba.dds.models.formulario.FormularioRespondido;
-
 import java.time.LocalDate;
 import java.util.List;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,16 +14,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class Persona {
+public class Colaborador {
 
-  private Direccion direccion;
-  private List<TipoColaboracion> formaDeColaborar;
-  private FormularioRespondido datosAdicionales;
+  private TipoColaborador tipoColaborador;
   private Usuario usuario;
   private Contacto contacto;
-  private TipoDePersona tipoDePersona;
-  private Double puntosObtenidos;
-  private Double puntosCanjeados;
+  private Direccion direccion;
+  private FormularioRespondido datosAdicionales;
+  private List<TipoColaboracion> formaDeColaborar;
   private String razonSocial;
   private TipoRazonSocial tipoRazonSocial;
   private String rubro;
@@ -33,8 +29,12 @@ public class Persona {
   private String apellido;
   private LocalDate fechaNacimiento;
 
-  public static Persona juridica(Usuario usuario, String razonSocial, TipoRazonSocial tipoRazonSocial, String rubro, Contacto contacto, Direccion direccion, List<TipoColaboracion> formaDeColaborar) {
-    return Persona
+
+  // private Double puntosObtenidos;
+  // private Double puntosCanjeados;
+
+  public static Colaborador juridica(Usuario usuario, String razonSocial, TipoRazonSocial tipoRazonSocial, String rubro, Contacto contacto, Direccion direccion, List<TipoColaboracion> formaDeColaborar) {
+    return Colaborador
         .builder()
         .usuario(usuario)
         .razonSocial(razonSocial)
@@ -46,8 +46,8 @@ public class Persona {
         .build();
   }
 
-  public static Persona juridica(Usuario usuario, String razonSocial, TipoRazonSocial tipoRazonSocial, Contacto contacto, Direccion direccion) {
-    return Persona
+  public static Colaborador juridica(Usuario usuario, String razonSocial, TipoRazonSocial tipoRazonSocial, Contacto contacto, Direccion direccion) {
+    return Colaborador
         .builder()
         .usuario(usuario)
         .razonSocial(razonSocial)
@@ -57,8 +57,8 @@ public class Persona {
         .build();
   }
 
-  public static Persona humana(Usuario usuario, String nombre, String apellido, LocalDate fechaNacimiento, Contacto contacto, Direccion direccion, List<TipoColaboracion> formaDeColaborar) {
-    return Persona
+  public static Colaborador humana(Usuario usuario, String nombre, String apellido, LocalDate fechaNacimiento, Contacto contacto, Direccion direccion, List<TipoColaboracion> formaDeColaborar) {
+    return Colaborador
         .builder()
         .usuario(usuario)
         .nombre(nombre)
@@ -70,8 +70,8 @@ public class Persona {
         .build();
   }
 
-  public static Persona humana(Usuario usuario, String nombre, String apellido, LocalDate fechaNacimiento) {
-    return Persona
+  public static Colaborador humana(Usuario usuario, String nombre, String apellido, LocalDate fechaNacimiento) {
+    return Colaborador
         .builder()
         .usuario(usuario)
         .nombre(nombre)
@@ -80,15 +80,15 @@ public class Persona {
         .build();
   }
 
-  public static Persona persona(Usuario usuario) {
-    return Persona
+  public static Colaborador persona(Usuario usuario) {
+    return Colaborador
         .builder()
         .usuario(usuario)
         .build();
   }
 
-  public static Persona persona() {
-    return Persona
+  public static Colaborador persona() {
+    return Colaborador
         .builder()
         .build();
   }

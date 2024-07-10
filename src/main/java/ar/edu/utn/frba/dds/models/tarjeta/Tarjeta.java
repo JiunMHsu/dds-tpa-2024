@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.models.tarjeta;
 
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.usuario.PersonaVulnerable;
+import ar.edu.utn.frba.dds.models.personaVulnerable.PersonaVulnerable;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import lombok.Builder;

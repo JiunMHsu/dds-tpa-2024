@@ -3,12 +3,12 @@ package ar.edu.utn.frba.dds;
 import ar.edu.utn.frba.dds.models.colaboracion.RepartoDeTarjetas;
 import ar.edu.utn.frba.dds.models.tarjeta.Tarjeta;
 import ar.edu.utn.frba.dds.models.tarjeta.GeneradorDeCodigo;
-import ar.edu.utn.frba.dds.models.usuario.PersonaVulnerable;
+import ar.edu.utn.frba.dds.models.personaVulnerable.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.data.Direccion;
 import ar.edu.utn.frba.dds.models.data.Documento;
 import ar.edu.utn.frba.dds.models.data.TipoDocumento;
-import ar.edu.utn.frba.dds.models.usuario.Persona;
+import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.colaboracion.TipoColaboracion;
 
 import java.time.LocalDate;
@@ -44,10 +44,10 @@ public class TestRegistroPV {
 
     List<TipoColaboracion> colaboraciones = Collections.singletonList(TipoColaboracion.ENTREGA_TARJETAS);
 
-    Persona personaColaborador = Persona.persona();
+    Colaborador personaColaborador = Colaborador.persona();
     personaColaborador.setFormaDeColaborar(colaboraciones);
 
-    Persona personaQueNoRegistro = Persona.persona();
+    Colaborador personaQueNoRegistro = Colaborador.persona();
     personaQueNoRegistro.setFormaDeColaborar(colaboraciones);
 
     // Resgistro

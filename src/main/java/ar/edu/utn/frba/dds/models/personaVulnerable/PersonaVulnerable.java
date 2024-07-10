@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.models.usuario;
+package ar.edu.utn.frba.dds.models.personaVulnerable;
 
 import ar.edu.utn.frba.dds.models.data.Direccion;
 import ar.edu.utn.frba.dds.models.data.Documento;

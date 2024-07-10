@@ -1186,7 +1186,7 @@
 											"top": 492,
 											"width": 108,
 											"height": 13,
-											"text": "Registrar ar.edu.utn.frba.dds.models.usuario.Usuario"
+											"text": "Registrar ar.edu.utn.frba.dds.models.colaborador.Usuario"
 										},
 										{
 											"_type": "LabelView",
@@ -6003,7 +6003,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFElm6BOFNpegQ="
 					},
-					"name": "Registrar ar.edu.utn.frba.dds.models.usuario.Usuario"
+					"name": "Registrar ar.edu.utn.frba.dds.models.colaborador.Usuario"
 				},
 				{
 					"_type": "UMLUseCase",

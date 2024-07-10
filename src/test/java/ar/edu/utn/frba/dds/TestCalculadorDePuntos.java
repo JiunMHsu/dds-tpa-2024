@@ -5,7 +5,7 @@ import ar.edu.utn.frba.dds.models.colaboracion.*;
 import ar.edu.utn.frba.dds.models.data.Comida;
 import ar.edu.utn.frba.dds.models.heladera.*;
 import ar.edu.utn.frba.dds.models.tarjeta.*;
-import ar.edu.utn.frba.dds.models.usuario.Persona;
+import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.vianda.Vianda;
 
 import java.time.LocalDate;
@@ -17,7 +17,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class TestCalculadorDePuntos {
-  Persona persona = Persona.persona();
+  Colaborador persona = Colaborador.persona();
   Vianda vianda1 = new Vianda(new Comida("arroz", 400), null, 23);
   Vianda vianda2 = new Vianda(new Comida("pollo", 520), null, 24);
   Vianda vianda3 = new Vianda(new Comida("carne", 600), null, 27);
