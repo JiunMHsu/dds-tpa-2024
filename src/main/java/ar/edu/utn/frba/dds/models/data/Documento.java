@@ -4,13 +4,11 @@ import lombok.Getter;
 
 @Getter
 public class Documento {
-
-    private Integer numero;
-
-    private TipoDocumento tipo;
-
-    public Documento(Integer numero, TipoDocumento tipo) {
-        this.numero = numero;
-        this.tipo = tipo;
-    }
+  private TipoDocumento tipo;
+  private Integer numero;
+  
+  public Documento(Integer numero, TipoDocumento tipo) {
+    this.numero = numero;
+    this.tipo = tipo;
+  }
 }

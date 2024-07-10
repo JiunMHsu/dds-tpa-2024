@@ -4,15 +4,13 @@ import lombok.Getter;
 
 @Getter
 public class Direccion {
+  private Calle calle;
+  private Integer altura;
+  private Ubicacion ubicacion;
 
-    private String calle;
-    private Integer altura;
-    private Ubicacion ubicacion;
-
-
-    public Direccion(String calle, Integer altura, Ubicacion ubicacion) {
-        this.calle = calle;
-        this.altura = altura;
-        this.ubicacion = ubicacion;
-    }
+  public Direccion(Calle calle, Integer altura, Ubicacion ubicacion) {
+    this.calle = calle;
+    this.altura = altura;
+    this.ubicacion = ubicacion;
+  }
 }
