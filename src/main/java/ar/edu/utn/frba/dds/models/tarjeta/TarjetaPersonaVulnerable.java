@@ -30,7 +30,7 @@ public class TarjetaPersonaVulnerable implements Tarjeta {
 
   public Boolean puedeUsar(Heladera heladera) {
     if (LocalDate.now().isAfter(ultimoUso)) {
-      return heladera.estaActiva();
+      this.setUsosEnElDia(0);
     }
     return heladera.estaActiva() && (usosEnElDia < this.usosMaximos());
   }
