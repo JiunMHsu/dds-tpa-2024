@@ -21,7 +21,7 @@ public class TarjetaPersonaVulnerable implements Tarjeta {
   public static TarjetaPersonaVulnerable with(PersonaVulnerable duenio) {
     return TarjetaPersonaVulnerable
         .builder()
-        .codigo(GeneradorDeCodigoTarjeta.generarCodigoTarjeta())
+        .codigo(GeneradorDeCodigoTarjeta.generar())
         .duenio(duenio)
         .usosEnElDia(0)
         .ultimoUso(null)

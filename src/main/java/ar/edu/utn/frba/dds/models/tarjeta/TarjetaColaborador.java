@@ -16,7 +16,7 @@ public class TarjetaColaborador implements Tarjeta {
   public static TarjetaColaborador with(Colaborador duenio) {
     return TarjetaColaborador
         .builder()
-        .codigo(GeneradorDeCodigoTarjeta.generarCodigoTarjeta())
+        .codigo(GeneradorDeCodigoTarjeta.generar())
         .duenio(duenio)
         .build();
   }

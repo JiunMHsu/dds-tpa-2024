@@ -1,20 +1,17 @@
 package ar.edu.utn.frba.dds.models.data;
 
-import ar.edu.utn.frba.dds.utils.ValidadorDeMail;
 import lombok.Getter;
 
 @Getter
 public class Mail {
-  private String address;
 
-  private Mail(String address) {
-    this.address = address;
-  }
+  private String destinatario;
+  private String asunto;
+  private String cuerpo;
 
-  public static Mail crear(String address) {
-    if (ValidadorDeMail.esValido(address)) {
-      return new Mail(address);
-    }
-    return null;
+  public Mail(String destinatario, String asunto, String cuerpo) {
+    this.destinatario = destinatario;
+    this.asunto = asunto;
+    this.cuerpo = cuerpo;
   }
 }

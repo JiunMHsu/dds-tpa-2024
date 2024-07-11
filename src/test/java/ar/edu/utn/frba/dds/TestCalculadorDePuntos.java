@@ -50,9 +50,9 @@ public class TestCalculadorDePuntos {
   @DisplayName("Los puntos por repartir tarjetas es la cantidad de tarjetas repartidas multiplicado por 2")
   public void puntosTarjetas() {
     calculadorTarjetasDonadas.setListaTarjetasRepartidas(new ArrayList<TarjetaPersonaVulnerable>() {{
-      add(TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generarCodigoTarjeta()));
-      add(TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generarCodigoTarjeta()));
-      add(TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generarCodigoTarjeta()));
+      add(TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generar()));
+      add(TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generar()));
+      add(TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generar()));
     }});
     Assertions.assertEquals(calculadorTarjetasDonadas.calcularPuntos(persona), 6.0);
   }
@@ -115,9 +115,9 @@ public class TestCalculadorDePuntos {
       add(new DonacionDinero(persona, 10000));
     }});
     calculadorTarjetasDonadas.setListaTarjetasRepartidas(new ArrayList<>() {{
-      add(TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generarCodigoTarjeta()));
-      add(TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generarCodigoTarjeta()));
-      add(TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generarCodigoTarjeta()));
+      add(TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generar()));
+      add(TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generar()));
+      add(TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generar()));
     }});
     PuntosPorColaboracion calculadorDePuntosObtenidos = new PuntosPorColaboracion(new ArrayList<>() {{
       add(calculadorDonacionDinero);

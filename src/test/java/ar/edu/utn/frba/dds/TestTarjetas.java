@@ -32,16 +32,16 @@ public class TestTarjetas {
   @Test
   @DisplayName("Se generan codigos no repetidos")
   public void comprobarCodigosRepetidos() {
-    tarjeta1 = TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generarCodigoTarjeta());
-    tarjeta2 = TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generarCodigoTarjeta());
-    tarjeta3 = TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generarCodigoTarjeta());
+    tarjeta1 = TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generar());
+    tarjeta2 = TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generar());
+    tarjeta3 = TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generar());
 
     tarjetasExistentes = new ArrayList<>();
     tarjetasExistentes.add(tarjeta1);
     tarjetasExistentes.add(tarjeta2);
     tarjetasExistentes.add(tarjeta3);
 
-    String nuevoCodigo = GeneradorDeCodigoTarjeta.generarCodigoTarjeta();
+    String nuevoCodigo = GeneradorDeCodigoTarjeta.generar();
 
     Assertions.assertFalse(tarjetasExistentes.stream().anyMatch(tarjeta -> tarjeta.getCodigo().equals(nuevoCodigo)),
         "El código generado ya existe en la lista de tarjetas existentes.");

@@ -51,7 +51,7 @@ public class TestRegistroPV {
     personaQueNoRegistro.setFormaDeColaborar(colaboraciones);
 
     // Resgistro
-    TarjetaPersonaVulnerable tarjeta = TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generarCodigoTarjeta());
+    TarjetaPersonaVulnerable tarjeta = TarjetaPersonaVulnerable.with(GeneradorDeCodigoTarjeta.generar());
     RepartoDeTarjetas repartoTest = new RepartoDeTarjetas(personaColaborador, tarjeta, personaRegistrada);
 
     Assertions.assertEquals(personaColaborador, repartoTest.getColaborador(),

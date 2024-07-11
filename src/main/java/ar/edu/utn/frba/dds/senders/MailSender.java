@@ -1,46 +1,50 @@
 package ar.edu.utn.frba.dds.senders;
 
+import ar.edu.utn.frba.dds.models.data.Mail;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import java.util.Properties;
+import lombok.Getter;
 
+@Getter
 public class MailSender {
 
   private String nombreUsuario;
   private String contrasenia;
-  private String host; // de un supuesto servidor
-  private String port; // de un supuesto servidor
+  private String host;
+  private String port;
 
-  public MailSender(String nombreUsuario, String contrasenia, String host, String port) {
-
-    this.nombreUsuario = nombreUsuario;
-    this.contrasenia = contrasenia;
-    this.host = host;
-    this.port = port;
+  public MailSender() {
+    this.nombreUsuario = "";
+    this.contrasenia = "";
+    this.host = "";
+    this.port = "";
   }
 
-  public void enviarMail(String destinatario, String asunto, String cuerpo) {
+  public static void enviarMail(MailSender sender, Mail content) {
+
+    // MailSender sender = new MailSender();
 
     Properties props = new Properties();
     props.put("mail.smtp.auth", "true");
     props.put("mail.smtp.starttls.enable", "true");
-    props.put("mail.smtp.host", host); // Para el supuesto servidor
-    props.put("mail.smtp.port", port); // Para el supuesto servidor
+    props.put("mail.smtp.host", sender.getHost());
+    props.put("mail.smtp.port", sender.getPort());
 
     Session session = Session.getInstance(props, new Authenticator() {
       @Override
       protected PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication(nombreUsuario, contrasenia);
+        return new PasswordAuthentication(sender.getNombreUsuario(), sender.getContrasenia());
       }
     });
 
     try {
       Message message = new MimeMessage(session);
       message.setFrom(new InternetAddress("your-email@example.com"));
-      message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario));
-      message.setSubject(asunto);
-      message.setText(cuerpo);
+      message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(content.getDestinatario()));
+      message.setSubject(content.getAsunto());
+      message.setText(content.getCuerpo());
 
       Transport.send(message);
 

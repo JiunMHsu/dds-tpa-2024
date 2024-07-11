@@ -4,7 +4,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class GeneradorDeCodigoTarjeta {
 
-  public static String generarCodigoTarjeta() {
+  public static String generar() {
     String banco = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
     StringBuilder codigoBuilder = new StringBuilder();
 

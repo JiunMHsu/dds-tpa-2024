@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds;
 
+import ar.edu.utn.frba.dds.models.data.Calle;
 import ar.edu.utn.frba.dds.models.data.Direccion;
 import ar.edu.utn.frba.dds.models.heladera.*;
 import ar.edu.utn.frba.dds.models.vianda.Vianda;
@@ -17,10 +18,9 @@ public class TestHeladera {
 
   private Vianda unaVianda;
 
-
   @BeforeEach
   public void setup() throws CapacidadExcedidaException {
-    unaDireccion = new Direccion("Medrano", 951, null);
+    unaDireccion = new Direccion(new Calle("Medrano"), 951, null);
     rangoAEstablecer = new RangoTemperatura(5.0, -5.0);
     unaHeladera = Heladera.with("Medrano UTN", unaDireccion, 20, rangoAEstablecer);
 
@@ -62,8 +62,8 @@ public class TestHeladera {
     Double unaTemperatura = 9.0;
     Double otraTemperatura = 1.0;
 
-    Assertions.assertFalse(unaHeladera.verificarTemperatura(unaTemperatura));
-    Assertions.assertTrue(unaHeladera.verificarTemperatura(otraTemperatura));
+    Assertions.assertFalse(unaHeladera.getRangoTemperatura().incluye(unaTemperatura));
+    Assertions.assertTrue(unaHeladera.getRangoTemperatura().incluye(otraTemperatura));
   }
 
   @Test
@@ -72,8 +72,8 @@ public class TestHeladera {
     Double temperaturaActual = 9.0;
     RangoTemperatura nuevoRango = new RangoTemperatura(10.0, -10.0);
 
-    Assertions.assertFalse(unaHeladera.verificarTemperatura(temperaturaActual));
+    Assertions.assertFalse(unaHeladera.getRangoTemperatura().incluye(temperaturaActual));
     unaHeladera.setRangoTemperatura(nuevoRango);
-    Assertions.assertTrue(unaHeladera.verificarTemperatura(temperaturaActual));
+    Assertions.assertTrue(unaHeladera.getRangoTemperatura().incluye(temperaturaActual));
   }
 }
