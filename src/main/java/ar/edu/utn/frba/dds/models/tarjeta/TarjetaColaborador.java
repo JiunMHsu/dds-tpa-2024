@@ -23,5 +23,7 @@ public class TarjetaColaborador implements Tarjeta {
 
   // TODO
   public void registrarUso(Heladera heladera) {
+
+    // validar el uso (buscar solicitud)
   }
 }
