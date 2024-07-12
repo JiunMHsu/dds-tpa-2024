@@ -30488,7 +30488,7 @@
 											"top": 1710,
 											"width": 203.46484375,
 											"height": 13,
-											"text": "+tecnico: Tecnico",
+											"text": "-tecnico: Tecnico",
 											"horizontalAlignment": 0
 										},
 										{
@@ -30505,7 +30505,7 @@
 											"top": 1725,
 											"width": 203.46484375,
 											"height": 13,
-											"text": "+heladera: Heladera",
+											"text": "-heladera: Heladera",
 											"horizontalAlignment": 0
 										},
 										{
@@ -30522,7 +30522,7 @@
 											"top": 1740,
 											"width": 203.46484375,
 											"height": 13,
-											"text": "+fechaHora: LocalDateTime",
+											"text": "-fechaHora: LocalDateTime",
 											"horizontalAlignment": 0
 										},
 										{
@@ -30539,7 +30539,7 @@
 											"top": 1755,
 											"width": 203.46484375,
 											"height": 13,
-											"text": "+descripcion: String",
+											"text": "-descripcion: String",
 											"horizontalAlignment": 0
 										},
 										{
@@ -30556,7 +30556,7 @@
 											"top": 1770,
 											"width": 203.46484375,
 											"height": 13,
-											"text": "+foto: Imagen",
+											"text": "-foto: Imagen",
 											"horizontalAlignment": 0
 										}
 									],
@@ -45798,6 +45798,7 @@
 								"$ref": "AAAAAAGQnRD23OJ8fSk="
 							},
 							"name": "tecnico",
+							"visibility": "private",
 							"type": {
 								"$ref": "AAAAAAGQlKVcCbcWqHU="
 							}
@@ -45809,6 +45810,7 @@
 								"$ref": "AAAAAAGQnRD23OJ8fSk="
 							},
 							"name": "heladera",
+							"visibility": "private",
 							"type": {
 								"$ref": "AAAAAAGQlArr1G0PAyU="
 							}
@@ -45820,6 +45822,7 @@
 								"$ref": "AAAAAAGQnRD23OJ8fSk="
 							},
 							"name": "fechaHora",
+							"visibility": "private",
 							"type": "LocalDateTime"
 						},
 						{
@@ -45829,6 +45832,7 @@
 								"$ref": "AAAAAAGQnRD23OJ8fSk="
 							},
 							"name": "descripcion",
+							"visibility": "private",
 							"type": "String"
 						},
 						{
@@ -45838,6 +45842,7 @@
 								"$ref": "AAAAAAGQnRD23OJ8fSk="
 							},
 							"name": "foto",
+							"visibility": "private",
 							"type": {
 								"$ref": "AAAAAAGQlAGmzXcKn/4="
 							}
