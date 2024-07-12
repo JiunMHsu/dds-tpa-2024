@@ -15,7 +15,6 @@ public class TestCalculadorDePuntos {
   public void puntosTarjetas() {
   }
 
-
   @Test
   @DisplayName("Los puntos por donar dinero es la cantidad de dinero donado multiplicado por 0.5")
   public void puntosDonacionDinero() {

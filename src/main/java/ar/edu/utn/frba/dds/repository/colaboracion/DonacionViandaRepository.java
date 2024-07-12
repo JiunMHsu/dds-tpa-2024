@@ -9,6 +9,10 @@ import java.util.List;
 public class DonacionViandaRepository {
   private static final List<DonacionVianda> db = new ArrayList<>();
 
+  private static void agregar(DonacionVianda colaboracion) {
+    db.add(colaboracion);
+  }
+
   public static List<DonacionVianda> obtenerPorColaborador(Colaborador colaborador) {
     return db.stream()
         .filter(colab -> colab.getColaborador().equals(colaborador))
@@ -21,5 +25,5 @@ public class DonacionViandaRepository {
         .filter(colab -> colab.getFechaDonacion().isAfter(fecha))
         .toList();
   }
-  
+
 }
