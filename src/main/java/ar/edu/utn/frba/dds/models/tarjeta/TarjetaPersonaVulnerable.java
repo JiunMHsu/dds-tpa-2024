@@ -2,7 +2,7 @@ package ar.edu.utn.frba.dds.models.tarjeta;
 
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.personaVulnerable.PersonaVulnerable;
-import ar.edu.utn.frba.dds.utils.GeneradorDeCodigoTarjeta;
+import ar.edu.utn.frba.dds.utils.GeneradorDeCodigosTarjeta;
 import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,10 +21,17 @@ public class TarjetaPersonaVulnerable implements Tarjeta {
   public static TarjetaPersonaVulnerable with(PersonaVulnerable duenio) {
     return TarjetaPersonaVulnerable
         .builder()
-        .codigo(GeneradorDeCodigoTarjeta.generar())
+        .codigo(GeneradorDeCodigosTarjeta.generar())
         .duenio(duenio)
         .usosEnElDia(0)
         .ultimoUso(null)
+        .build();
+  }
+
+  public static TarjetaPersonaVulnerable with() {
+    return TarjetaPersonaVulnerable
+        .builder()
+        .codigo(GeneradorDeCodigosTarjeta.generar())
         .build();
   }
 
@@ -32,18 +39,19 @@ public class TarjetaPersonaVulnerable implements Tarjeta {
     if (LocalDate.now().isAfter(ultimoUso)) {
       this.setUsosEnElDia(0);
     }
-    return heladera.estaActiva() && (usosEnElDia < this.usosMaximos());
+    return heladera.estaActiva() && (usosEnElDia < this.usosPorDia());
   }
 
   // TODO
   public void registrarUso(Heladera heladera) {
     usosEnElDia++;
     ultimoUso = LocalDate.now();
+    heladera.quitarVianda();
 
     // habría que registrar el "retiro de vianda" con la información correspondiente
   }
 
-  public Integer usosMaximos() {
+  public Integer usosPorDia() {
     return 4 + duenio.getMenoresACargo() * 2;
   }
 }

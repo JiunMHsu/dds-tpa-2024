@@ -3,7 +3,6 @@ package ar.edu.utn.frba.dds;
 import ar.edu.utn.frba.dds.models.data.Calle;
 import ar.edu.utn.frba.dds.models.data.Direccion;
 import ar.edu.utn.frba.dds.models.heladera.*;
-import ar.edu.utn.frba.dds.models.vianda.Vianda;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,16 +15,14 @@ public class TestHeladera {
   private RangoTemperatura rangoAEstablecer;
   private Heladera unaHeladera;
 
-  private Vianda unaVianda;
-
   @BeforeEach
   public void setup() throws CapacidadExcedidaException {
-    unaDireccion = new Direccion(new Calle("Medrano"), 951, null);
+    unaDireccion = Direccion.with(new Calle("Medrano"), 951);
     rangoAEstablecer = new RangoTemperatura(5.0, -5.0);
-    unaHeladera = Heladera.with("Medrano UTN", unaDireccion, 20, rangoAEstablecer);
+    unaHeladera = Heladera.with("Medrano UTN", unaDireccion, 2, rangoAEstablecer);
+    unaHeladera.setEstado(EstadoHeladera.ACTIVA);
 
-    unaVianda = new Vianda(null, null, 9);
-    unaHeladera.agregarVianda(unaVianda);
+    unaHeladera.agregarVianda();
   }
 
   @Test
@@ -38,21 +35,37 @@ public class TestHeladera {
 
   @Test
   @DisplayName("Se puede retirar una vianda de la heladera")
-  public void canjeVianda() throws ViandaNoEncontradaException {
-    unaHeladera.quitarVianda(unaVianda);
-    Assertions.assertFalse(unaHeladera.getContenido().contains(unaVianda));
+  public void canjeVianda() {
+    unaHeladera.quitarVianda();
+    Assertions.assertEquals(0, unaHeladera.getViandas(),
+        "Al retirar la única vianda que quedaba de la Heladera, no quedan más viandas.");
   }
 
   @Test
-  @DisplayName("Si se intenta retirar una vianda que la heladera no tiene, falla")
-  public void falloViandaInexistente() {
-    Vianda viandaQueNoExisteEnHeladera = new Vianda(null, null, 12);
+  @DisplayName("Se puede agregar una vianda a la heladera")
+  public void agregarVianda() {
+    Assertions.assertEquals(1, unaHeladera.getViandas());
 
     try {
-      unaHeladera.quitarVianda(viandaQueNoExisteEnHeladera);
-      Assertions.fail("Debería fallar");
-    } catch (ViandaNoEncontradaException e) {
-      Assertions.assertEquals("Vianda no existe en la heladera", e.getMessage());
+      unaHeladera.agregarVianda();
+      Assertions.assertEquals(2, unaHeladera.getViandas(),
+          "Al agregar una vianda a la Heladera que ya tenía una, ahora tiene dos.");
+    } catch (CapacidadExcedidaException e) {
+      Assertions.fail("No se pudo agregar la vianda.");
+    }
+  }
+
+  @Test
+  @DisplayName("No se puede agregar más viandas si la heladera está llena")
+  public void agregarViandaAHeladeraLlena() {
+    Assertions.assertEquals(2, unaHeladera.getCapacidad());
+    Assertions.assertEquals(1, unaHeladera.getViandas());
+
+    try {
+      unaHeladera.agregarViandas(2);
+      Assertions.fail("No hubo excepción.");
+    } catch (CapacidadExcedidaException e) {
+      Assertions.assertNotNull(e);
     }
   }
 

@@ -1,12 +1,8 @@
 package ar.edu.utn.frba.dds.models.heladera;
 
 import ar.edu.utn.frba.dds.models.data.Direccion;
-import ar.edu.utn.frba.dds.models.tarjeta.Tarjeta;
 import ar.edu.utn.frba.dds.models.tarjeta.TarjetaColaborador;
-import ar.edu.utn.frba.dds.models.vianda.Vianda;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +19,8 @@ public class Heladera {
   private RangoTemperatura rangoTemperatura;
   private Double ultimaTemperatura;
   private EstadoHeladera estado;
-  private List<Vianda> contenido;
+  // private List<Vianda> contenido;
+  private Integer viandas;
 
   public static Heladera with(String nombre,
                               Direccion direccion,
@@ -37,7 +34,8 @@ public class Heladera {
         .capacidad(capacidad)
         .rangoTemperatura(rangoTemperatura)
         .estado(estado)
-        .contenido(new ArrayList<>())
+        // .contenido(new ArrayList<>())
+        .viandas(0)
         .build();
   }
 
@@ -51,7 +49,8 @@ public class Heladera {
         .direccion(direccion)
         .capacidad(capacidad)
         .rangoTemperatura(rangoTemperatura)
-        .contenido(new ArrayList<>())
+        // .contenido(new ArrayList<>())
+        .viandas(0)
         .build();
   }
 
@@ -61,6 +60,7 @@ public class Heladera {
         .nombre(nombre)
         .direccion(direccion)
         .capacidad(capacidad)
+        .viandas(0)
         .build();
   }
 
@@ -68,25 +68,34 @@ public class Heladera {
     return Heladera
         .builder()
         .capacidad(capacidad)
-        .contenido(new ArrayList<>())
+        // .contenido(new ArrayList<>())
+        .viandas(0)
         .build();
   }
 
-  public void agregarVianda(Vianda vianda) throws CapacidadExcedidaException {
+  public void agregarVianda() throws CapacidadExcedidaException {
     if (!this.puedeAgregarVianda()) {
       throw new CapacidadExcedidaException("La capacidad de la heladera esta excedida");
     }
-    contenido.add(vianda);
+    // contenido.add(vianda);
+    viandas += 1;
   }
 
-  public void quitarVianda(Vianda vianda) throws ViandaNoEncontradaException {
-    if (!contenido.remove(vianda)) {
-      throw new ViandaNoEncontradaException("Vianda no existe en la heladera");
+  public void agregarViandas(Integer cantViandas) throws CapacidadExcedidaException {
+    for (int i = 0; i < cantViandas; i++) {
+      this.agregarVianda();
     }
   }
 
+  public void quitarVianda() {
+    // if (!contenido.remove(vianda)) {
+    //   throw new ViandaNoEncontradaException("Vianda no existe en la heladera");
+    // }
+    viandas -= 1;
+  }
+
   private Boolean puedeAgregarVianda() {
-    return this.estaActiva() && (contenido.size() < capacidad);
+    return this.estaActiva() && (this.getViandas() < capacidad);
   }
 
   public Boolean estaActiva() {

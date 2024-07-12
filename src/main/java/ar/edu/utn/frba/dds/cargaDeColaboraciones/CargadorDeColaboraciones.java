@@ -5,8 +5,8 @@ import ar.edu.utn.frba.dds.models.colaborador.Usuario;
 import ar.edu.utn.frba.dds.models.data.Documento;
 import ar.edu.utn.frba.dds.models.data.Mail;
 import ar.edu.utn.frba.dds.models.data.TipoDocumento;
-import ar.edu.utn.frba.dds.senders.MailSender;
-import ar.edu.utn.frba.dds.utils.GeneradorDeCredencial;
+import ar.edu.utn.frba.dds.mensajeria.MailSender;
+import ar.edu.utn.frba.dds.utils.GeneradorDeCredenciales;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -65,7 +65,7 @@ public class CargadorDeColaboraciones {
     // Si no, crear el usuario, el colaborador, cargar la colaboración
     // y enviar las credenciales generadas
 
-    Usuario usuario = GeneradorDeCredencial
+    Usuario usuario = GeneradorDeCredenciales
         .generarUsuario(colaboracionPrevia.getNombre(), colaboracionPrevia.getEmail());
 
     CargadorDeColaboraciones.enviarCredencial(usuario);

@@ -2,7 +2,7 @@ package ar.edu.utn.frba.dds.models.tarjeta;
 
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
-import ar.edu.utn.frba.dds.utils.GeneradorDeCodigoTarjeta;
+import ar.edu.utn.frba.dds.utils.GeneradorDeCodigosTarjeta;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -16,7 +16,7 @@ public class TarjetaColaborador implements Tarjeta {
   public static TarjetaColaborador with(Colaborador duenio) {
     return TarjetaColaborador
         .builder()
-        .codigo(GeneradorDeCodigoTarjeta.generar())
+        .codigo(GeneradorDeCodigosTarjeta.generar())
         .duenio(duenio)
         .build();
   }

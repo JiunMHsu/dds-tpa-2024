@@ -1,12 +1,13 @@
-package ar.edu.utn.frba.dds.utils;
+package ar.edu.utn.frba.dds.testUtils;
 
+import ar.edu.utn.frba.dds.utils.ValidadorDeContrasenias;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class TestValidadorDeContrasenias {
 
-  ValidadorDeContrasenia validador = new ValidadorDeContrasenia();
+  ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
 
   @Test
   @DisplayName("Una clave es fuerte si no pertenece a las 10000 claves debiles")

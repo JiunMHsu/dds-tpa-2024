@@ -3,10 +3,10 @@ package ar.edu.utn.frba.dds.utils;
 import ar.edu.utn.frba.dds.models.colaborador.Usuario;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class GeneradorDeCredencial {
+public class GeneradorDeCredenciales {
 
   public static Usuario generarUsuario(String nombre, String mail) {
-    return new Usuario(nombre, GeneradorDeCredencial.generarContrasenia(), mail);
+    return new Usuario(nombre, GeneradorDeCredenciales.generarContrasenia(), mail);
   }
 
   private static String generarContrasenia() {

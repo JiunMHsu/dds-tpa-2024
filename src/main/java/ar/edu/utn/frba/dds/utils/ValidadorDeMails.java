@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.utils;
 
-public class ValidadorDeMail {
+public class ValidadorDeMails {
 
   // TODO
   // Hacer la validación de verdad
