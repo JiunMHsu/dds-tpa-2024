@@ -18,7 +18,7 @@ public class VarianteCalculoDePuntos {
    * de mes en mes.
    */
   public VarianteCalculoDePuntos() {
-    this.donacionDinero = 5.0;
+    this.donacionDinero = 0.5;
     this.distribucionViandas = 1.0;
     this.donacionVianda = 1.5;
     this.repartoTarjeta = 2.0;

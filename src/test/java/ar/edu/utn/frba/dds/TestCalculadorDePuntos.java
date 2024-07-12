@@ -32,7 +32,7 @@ public class TestCalculadorDePuntos {
     DonacionDineroRepository.agregar(donacionDinero3);
 
     // Distribucion Viandas. Los puntos por distribuir viandas es la cantidad de viandas distribuidas multiplicado por 1
-    // Puntos : (1+1+1)*1 = 3
+    // Puntos : (4+10+6)*1 = 20
     DistribucionViandas distribucion1 = DistribucionViandas.by(persona, LocalDate.of(2024, 3, 2),4);
     DistribucionViandas distribucion2 = DistribucionViandas.by(persona, LocalDate.of(2024, 4, 2),10);
     DistribucionViandas distribucion3 = DistribucionViandas.by(persona, LocalDate.of(2024, 5, 2),6);
@@ -62,7 +62,8 @@ public class TestCalculadorDePuntos {
     RepartoDeTarjetasRepository.agregar(repartoDeTarjetas3);
 
     // Hacerse Cargo Heladera. Los puntos por hacerse cargo de heladeras activas es la cantidad de heladeras activas multiplicado por la sumatoria de meses activa y por 5
-    // Puntos : (1+1) * (4+6) * 5 = 100
+    // Puntos : (1+1) * (4+6) * 5 = 100 POR MES DE JULIO
+    // Revisar cuentas segun mes
     Heladera heladera1 = Heladera.with(10);
     Heladera heladera2 = Heladera.with(10);
     Heladera heladera3 = Heladera.with(10);
@@ -86,7 +87,7 @@ public class TestCalculadorDePuntos {
   @Test
   @DisplayName("Los puntos obtenidos de una persona es la sumatoria de los puntos por cada forma colaborada restado a sus puntos canjeados")
   public void puntosObtenidos() {
-    Assertions.assertEquals(calculadorDePuntos.calcularPuntos(), 5463.5);
+    Assertions.assertEquals(calculadorDePuntos.calcularPuntos(), 5480.5);
   }
 }
 //  @Test

@@ -26,7 +26,7 @@ public class PuntosPorColaboracion {
     PuntosPorColaboracionBuilder puntosPorColaboracion = PuntosPorColaboracion
         .builder()
         .colaborador(colaborador)
-        .fechaUltimoCanje(LocalDate.now())
+        .fechaUltimoCanje(null)
         .puntosSobrantes(0)
         .variante(new VarianteCalculoDePuntos());
 
@@ -56,7 +56,10 @@ public class PuntosPorColaboracion {
         .mapToDouble(DonacionDinero::getMonto)
         .sum();
 
-    return pesosDonados * variante.getDonacionDinero();
+    Double puntaje = pesosDonados * variante.getDonacionDinero();
+    System.out.println("donacion dinero");
+    System.out.println(puntaje);
+    return puntaje;
   }
 
   private Double calcularPorViandasDistribuidas() {
@@ -67,7 +70,10 @@ public class PuntosPorColaboracion {
         .mapToDouble(DistribucionViandas::getViandas)
         .sum();
 
-    return viandasDistribuidas * variante.getDistribucionViandas();
+    Double puntaje = viandasDistribuidas * variante.getDistribucionViandas();
+    System.out.println("viandas distribuidas");
+    System.out.println(puntaje);
+    return puntaje;
   }
 
   private Double calcularPorViandasDonadas() {
@@ -75,7 +81,11 @@ public class PuntosPorColaboracion {
         .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
     Double viandasDonadas = (double) listaViandasDonadas.size();
-    return viandasDonadas * variante.getDonacionVianda();
+
+    Double puntaje =  viandasDonadas * variante.getDonacionVianda();
+    System.out.println("viandas donadas");
+    System.out.println(puntaje);
+    return puntaje;
   }
 
   private Double calcularPorTarjetasRepartidas() {
@@ -84,7 +94,10 @@ public class PuntosPorColaboracion {
 
     Double tarjetasRepartidas = (double) listaTarjetasRepartidas.size();
 
-    return tarjetasRepartidas * variante.getRepartoTarjeta();
+    Double puntaje = tarjetasRepartidas * variante.getRepartoTarjeta();
+    System.out.println("tarjeras repartidas");
+    System.out.println(puntaje);
+    return puntaje;
   }
 
   private Double calcularPorHeladerasActivas() {
@@ -103,7 +116,10 @@ public class PuntosPorColaboracion {
         .mapToDouble(heladera -> this.calcularMesesActiva(heladera.getInicioFuncionamiento()))
         .sum();
 
-    return heladerasActivas * mesesActivas * variante.getHeladerasActivas();
+    Double puntaje = heladerasActivas * mesesActivas * variante.getHeladerasActivas();
+    System.out.println("hacerse cargo heladera");
+    System.out.println(puntaje);
+    return puntaje;
   }
 
   /**
