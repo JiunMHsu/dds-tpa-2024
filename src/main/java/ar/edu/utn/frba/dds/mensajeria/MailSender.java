@@ -22,20 +22,17 @@ public class MailSender {
     this.port = "";
   }
 
-  public static void enviarMail(MailSender sender, Mail content) {
-
-    // MailSender sender = new MailSender();
-
+  public void enviarMail(Mail content) {
     Properties props = new Properties();
     props.put("mail.smtp.auth", "true");
     props.put("mail.smtp.starttls.enable", "true");
-    props.put("mail.smtp.host", sender.getHost());
-    props.put("mail.smtp.port", sender.getPort());
+    props.put("mail.smtp.host", host);
+    props.put("mail.smtp.port", port);
 
     Session session = Session.getInstance(props, new Authenticator() {
       @Override
       protected PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication(sender.getNombreUsuario(), sender.getContrasenia());
+        return new PasswordAuthentication(nombreUsuario, contrasenia);
       }
     });
 

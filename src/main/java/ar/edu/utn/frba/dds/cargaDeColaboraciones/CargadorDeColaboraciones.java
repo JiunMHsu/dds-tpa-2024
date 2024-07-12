@@ -130,6 +130,6 @@ public class CargadorDeColaboraciones {
         + " - Nombre de usuario provicional: " + usuario.getNombre()
         + " - Contrasenia de usuario provicional: " + usuario.getContrasenia();
 
-    MailSender.enviarMail(mailSender, new Mail(usuario.getEmail(), asunto, cuerpo));
+    mailSender.enviarMail(Mail.to(usuario.getEmail(), asunto, cuerpo));
   }
 }
