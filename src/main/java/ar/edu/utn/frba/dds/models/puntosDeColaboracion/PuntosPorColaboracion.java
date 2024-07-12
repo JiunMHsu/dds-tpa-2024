@@ -3,7 +3,7 @@ package ar.edu.utn.frba.dds.models.puntosDeColaboracion;
 import ar.edu.utn.frba.dds.models.colaboracion.*;
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
-import ar.edu.utn.frba.dds.repository.canjeDePuntosRepository.CanjeDePuntosRepository;
+import ar.edu.utn.frba.dds.repository.canjeDePuntos.CanjeDePuntosRepository;
 import ar.edu.utn.frba.dds.repository.colaboracion.DistribucionViandasRepository;
 import ar.edu.utn.frba.dds.repository.colaboracion.DonacionDineroRepository;
 import ar.edu.utn.frba.dds.repository.colaboracion.DonacionViandaRepository;

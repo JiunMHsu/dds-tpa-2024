@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.repository.canjeDePuntosRepository;
+package ar.edu.utn.frba.dds.repository.canjeDePuntos;
 
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.puntosDeColaboracion.CanjeDePuntos;

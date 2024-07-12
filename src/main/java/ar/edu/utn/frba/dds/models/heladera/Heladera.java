@@ -2,7 +2,9 @@ package ar.edu.utn.frba.dds.models.heladera;
 
 import ar.edu.utn.frba.dds.models.data.Direccion;
 import ar.edu.utn.frba.dds.models.tarjeta.TarjetaColaborador;
+import ar.edu.utn.frba.dds.repository.heladera.SolicitudDeAperturaRepository;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +21,6 @@ public class Heladera {
   private RangoTemperatura rangoTemperatura;
   private Double ultimaTemperatura;
   private EstadoHeladera estado;
-  // private List<Vianda> contenido;
   private Integer viandas;
 
   public static Heladera with(String nombre,
@@ -34,7 +35,6 @@ public class Heladera {
         .capacidad(capacidad)
         .rangoTemperatura(rangoTemperatura)
         .estado(estado)
-        // .contenido(new ArrayList<>())
         .viandas(0)
         .build();
   }
@@ -49,7 +49,6 @@ public class Heladera {
         .direccion(direccion)
         .capacidad(capacidad)
         .rangoTemperatura(rangoTemperatura)
-        // .contenido(new ArrayList<>())
         .viandas(0)
         .build();
   }
@@ -68,7 +67,6 @@ public class Heladera {
     return Heladera
         .builder()
         .capacidad(capacidad)
-        // .contenido(new ArrayList<>())
         .viandas(0)
         .build();
   }
@@ -77,7 +75,6 @@ public class Heladera {
     if (!this.puedeAgregarVianda()) {
       throw new CapacidadExcedidaException("La capacidad de la heladera esta excedida");
     }
-    // contenido.add(vianda);
     viandas += 1;
   }
 
@@ -88,9 +85,6 @@ public class Heladera {
   }
 
   public void quitarVianda() {
-    // if (!contenido.remove(vianda)) {
-    //   throw new ViandaNoEncontradaException("Vianda no existe en la heladera");
-    // }
     viandas -= 1;
   }
 
@@ -102,10 +96,8 @@ public class Heladera {
     return estado == EstadoHeladera.ACTIVA;
   }
 
-  // TODO
   public Boolean haySolicitudDeAperturaPor(TarjetaColaborador tarjeta) {
-    // sería consultar si hay alguna solicitud para la tarjeta
-    // dentro del rango de 3 horas
-    return true;
+    LocalDateTime haceTresHoras = LocalDateTime.now().minusHours(3);
+    return SolicitudDeAperturaRepository.obtenerPorTarjeta(tarjeta.getCodigo(), haceTresHoras) != null;
   }
 }

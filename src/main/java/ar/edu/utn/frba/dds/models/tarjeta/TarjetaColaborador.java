@@ -22,9 +22,10 @@ public class TarjetaColaborador implements Tarjeta {
   }
 
   public Boolean puedeUsar(Heladera heladera) {
-    return heladera.estaActiva() && heladera.haySolicitudDeAperturaPor(this);
+    return heladera.haySolicitudDeAperturaPor(this);
   }
 
+  // TODO
   public void registrarUso(Heladera heladera) {
   }
 }

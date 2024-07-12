@@ -13,6 +13,7 @@ public class DonacionVianda {
   private Colaborador colaborador;
   private LocalDate fechaDonacion;
   private Vianda vianda;
+  private Boolean esEntregada;
 
   public static DonacionVianda by(Colaborador colaborador, Vianda vianda) {
     return DonacionVianda
