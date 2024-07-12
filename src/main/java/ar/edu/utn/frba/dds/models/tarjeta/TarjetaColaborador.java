@@ -21,10 +21,6 @@ public class TarjetaColaborador implements Tarjeta {
         .build();
   }
 
-  public Boolean puedeUsar(Heladera heladera) {
-    return heladera.haySolicitudDeAperturaPor(this);
-  }
-
   // TODO
   public void registrarUso(Heladera heladera) {
   }

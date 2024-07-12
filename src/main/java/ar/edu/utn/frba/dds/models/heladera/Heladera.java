@@ -1,10 +1,7 @@
 package ar.edu.utn.frba.dds.models.heladera;
 
 import ar.edu.utn.frba.dds.models.data.Direccion;
-import ar.edu.utn.frba.dds.models.tarjeta.TarjetaColaborador;
-import ar.edu.utn.frba.dds.repository.heladera.SolicitudDeAperturaRepository;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -71,14 +68,14 @@ public class Heladera {
         .build();
   }
 
-  public void agregarVianda() throws CapacidadExcedidaException {
+  public void agregarVianda() throws ExcepcionCapacidadExcedida {
     if (!this.puedeAgregarVianda()) {
-      throw new CapacidadExcedidaException("La capacidad de la heladera esta excedida");
+      throw new ExcepcionCapacidadExcedida("La capacidad de la heladera esta excedida");
     }
     viandas += 1;
   }
 
-  public void agregarViandas(Integer cantViandas) throws CapacidadExcedidaException {
+  public void agregarViandas(Integer cantViandas) throws ExcepcionCapacidadExcedida {
     for (int i = 0; i < cantViandas; i++) {
       this.agregarVianda();
     }
@@ -96,8 +93,4 @@ public class Heladera {
     return estado == EstadoHeladera.ACTIVA;
   }
 
-  public Boolean haySolicitudDeAperturaPor(TarjetaColaborador tarjeta) {
-    LocalDateTime haceTresHoras = LocalDateTime.now().minusHours(3);
-    return SolicitudDeAperturaRepository.obtenerPorTarjeta(tarjeta.getCodigo(), haceTresHoras) != null;
-  }
 }

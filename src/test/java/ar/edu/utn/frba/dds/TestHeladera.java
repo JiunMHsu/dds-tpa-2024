@@ -16,7 +16,7 @@ public class TestHeladera {
   private Heladera unaHeladera;
 
   @BeforeEach
-  public void setup() throws CapacidadExcedidaException {
+  public void setup() throws ExcepcionCapacidadExcedida {
     unaDireccion = Direccion.with(new Calle("Medrano"), 951);
     rangoAEstablecer = new RangoTemperatura(5.0, -5.0);
     unaHeladera = Heladera.with("Medrano UTN", unaDireccion, 2, rangoAEstablecer);
@@ -50,7 +50,7 @@ public class TestHeladera {
       unaHeladera.agregarVianda();
       Assertions.assertEquals(2, unaHeladera.getViandas(),
           "Al agregar una vianda a la Heladera que ya tenía una, ahora tiene dos.");
-    } catch (CapacidadExcedidaException e) {
+    } catch (ExcepcionCapacidadExcedida e) {
       Assertions.fail("No se pudo agregar la vianda.");
     }
   }
@@ -64,7 +64,7 @@ public class TestHeladera {
     try {
       unaHeladera.agregarViandas(2);
       Assertions.fail("No hubo excepción.");
-    } catch (CapacidadExcedidaException e) {
+    } catch (ExcepcionCapacidadExcedida e) {
       Assertions.assertNotNull(e);
     }
   }

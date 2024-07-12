@@ -2,8 +2,10 @@ package ar.edu.utn.frba.dds.models.tarjeta;
 
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.personaVulnerable.PersonaVulnerable;
+import ar.edu.utn.frba.dds.repository.tarjeta.RetiroDeViandaRepository;
 import ar.edu.utn.frba.dds.utils.GeneradorDeCodigosTarjeta;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,7 +26,7 @@ public class TarjetaPersonaVulnerable implements Tarjeta {
         .codigo(GeneradorDeCodigosTarjeta.generar())
         .duenio(duenio)
         .usosEnElDia(0)
-        .ultimoUso(null)
+        .ultimoUso(LocalDate.now())
         .build();
   }
 
@@ -35,20 +37,32 @@ public class TarjetaPersonaVulnerable implements Tarjeta {
         .build();
   }
 
-  public Boolean puedeUsar(Heladera heladera) {
+  private Boolean puedeUsar() {
     if (LocalDate.now().isAfter(ultimoUso)) {
       this.setUsosEnElDia(0);
     }
-    return heladera.estaActiva() && (usosEnElDia < this.usosPorDia());
+    return usosEnElDia < this.usosPorDia();
   }
 
-  // TODO
-  public void registrarUso(Heladera heladera) {
+  public void registrarUso(Heladera heladera) throws ExcepcionUsoInvalido {
+    if (!heladera.estaActiva()) {
+      throw new ExcepcionUsoInvalido("Heladera Inactiva");
+    }
+
+    // quizá evaluar el caso de heladera vacía
+
+    if (!this.puedeUsar()) {
+      throw new ExcepcionUsoInvalido("No quedan usos disponibles");
+    }
+
     usosEnElDia++;
     ultimoUso = LocalDate.now();
     heladera.quitarVianda();
-
-    // habría que registrar el "retiro de vianda" con la información correspondiente
+    RetiroDeViandaRepository.agregar(RetiroDeVianda.by(
+        this,
+        heladera,
+        LocalDateTime.now()
+    ));
   }
 
   public Integer usosPorDia() {

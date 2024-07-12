@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds;
 
-import ar.edu.utn.frba.dds.models.heladera.CapacidadExcedidaException;
+import ar.edu.utn.frba.dds.models.heladera.ExcepcionCapacidadExcedida;
 import ar.edu.utn.frba.dds.models.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.tarjeta.*;
@@ -74,13 +74,17 @@ public class TestTarjetas {
     Assertions.assertEquals(4, tarjeta3.usosPorDia(),
         "La tarjeta3 pertenece a una persona sin menor a cargo, por lo que tiene 4 usos diarios.");
 
-    tarjeta3.registrarUso(heladera1);
-    tarjeta3.registrarUso(heladera1);
-    tarjeta3.registrarUso(heladera1);
-    tarjeta3.registrarUso(heladera1);
+    try {
+      tarjeta3.registrarUso(heladera1);
+      tarjeta3.registrarUso(heladera1);
+      tarjeta3.registrarUso(heladera1);
+      tarjeta3.registrarUso(heladera1);
+      tarjeta3.registrarUso(heladera1);
 
-    Assertions.assertFalse(tarjeta3.puedeUsar(heladera1),
-        "Después de 4 usos, la tarjeta3 ya no puede usarse en el día.");
+      Assertions.fail("No tiro Excepción.");
+    } catch (ExcepcionUsoInvalido e) {
+      Assertions.assertNotNull(e, e.getMessage());
+    }
   }
 
   @Test
@@ -88,14 +92,19 @@ public class TestTarjetas {
   public void registrarUsoTarjeta() {
     try {
       heladera1.agregarViandas(4);
-    } catch (CapacidadExcedidaException e) {
+    } catch (ExcepcionCapacidadExcedida e) {
       Assertions.fail("Capacidad excedida.");
     }
     Assertions.assertEquals(4, heladera1.getViandas());
 
-    tarjeta3.registrarUso(heladera1);
-    Assertions.assertEquals(3, heladera1.getViandas(),
-        "Al registrar el uso de una tarjeta, la cantidad de viandas en la Heladera usada decrementa.");
+    try {
+      tarjeta3.registrarUso(heladera1);
+      Assertions.assertEquals(3, heladera1.getViandas(),
+          "Al registrar el uso de una tarjeta, la cantidad de viandas en la Heladera usada decrementa.");
+
+    } catch (ExcepcionUsoInvalido e) {
+      Assertions.fail("No se pudo registrar el uso de la tarjeta.");
+    }
   }
 }
 
