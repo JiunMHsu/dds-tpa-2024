@@ -21,8 +21,13 @@ public class RepartoDeTarjetasRepository {
 
   public static List<RepartoDeTarjetas> obtenerPorColaboradorAPartirDe(Colaborador colaborador,
                                                                        LocalDate fecha) {
-    return RepartoDeTarjetasRepository.obtenerPorColaborador(colaborador).stream()
-        .filter(colab -> colab.getFechaReparto().isAfter(fecha))
-        .toList();
+
+    if(fecha != null){
+      return RepartoDeTarjetasRepository.obtenerPorColaborador(colaborador).stream()
+              .filter(colab -> colab.getFechaReparto().isAfter(fecha))
+              .toList();
+    } else{
+      return RepartoDeTarjetasRepository.obtenerPorColaborador(colaborador);
+    }
   }
 }

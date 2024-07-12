@@ -21,9 +21,15 @@ public class DonacionDineroRepository {
 
   public static List<DonacionDinero> obtenerPorColaboradorAPartirDe(Colaborador colaborador,
                                                                     LocalDate fecha) {
-    return DonacionDineroRepository.obtenerPorColaborador(colaborador).stream()
-        .filter(colab -> colab.getFechaDonacion().isAfter(fecha))
-        .toList();
+    if(fecha != null){
+      return DonacionDineroRepository.obtenerPorColaborador(colaborador).stream()
+              .filter(colab -> colab.getFechaDonacion().isAfter(fecha))
+              .toList();
+    } else{
+      return DonacionDineroRepository.obtenerPorColaborador(colaborador);
+    }
+
+
   }
 
 }

@@ -21,9 +21,13 @@ public class DistribucionViandasRepository {
 
   public static List<DistribucionViandas> obtenerPorColaboradorAPartirDe(Colaborador colaborador,
                                                                          LocalDate fecha) {
-    return DistribucionViandasRepository.obtenerPorColaborador(colaborador).stream()
-        .filter(colab -> colab.getFechaDistribucion().isAfter(fecha))
-        .toList();
+    if(fecha != null){
+      return DistribucionViandasRepository.obtenerPorColaborador(colaborador).stream()
+              .filter(colab -> colab.getFechaDistribucion().isAfter(fecha))
+              .toList();
+    } else{
+      return DistribucionViandasRepository.obtenerPorColaborador(colaborador);
+    }
   }
 
 }

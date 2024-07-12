@@ -17,5 +17,4 @@ public class HacerseCargoHeladeraRepository {
         .filter(colab -> colab.getColaborador().equals(colaborador))
         .toList();
   }
-
 }
