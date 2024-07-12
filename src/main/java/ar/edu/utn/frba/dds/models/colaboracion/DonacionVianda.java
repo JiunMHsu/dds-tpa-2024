@@ -14,12 +14,20 @@ public class DonacionVianda {
   private LocalDate fechaDonacion;
   private Vianda vianda;
 
-  public static DonacionVianda with(Colaborador colaborador, Vianda vianda) {
+  public static DonacionVianda by(Colaborador colaborador, Vianda vianda) {
     return DonacionVianda
         .builder()
         .colaborador(colaborador)
         .fechaDonacion(LocalDate.now())
         .vianda(vianda)
+        .build();
+  }
+
+  public static DonacionVianda by(Colaborador colaborador, LocalDate fechaDonacion) {
+    return DonacionVianda
+        .builder()
+        .colaborador(colaborador)
+        .fechaDonacion(fechaDonacion)
         .build();
   }
 }

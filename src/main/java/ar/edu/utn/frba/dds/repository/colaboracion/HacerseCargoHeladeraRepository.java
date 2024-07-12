@@ -8,7 +8,7 @@ import java.util.List;
 public class HacerseCargoHeladeraRepository {
   private static final List<HacerseCargoHeladera> db = new ArrayList<>();
 
-  private static void agregar(HacerseCargoHeladera colaboracion) {
+  public static void agregar(HacerseCargoHeladera colaboracion) {
     db.add(colaboracion);
   }
 

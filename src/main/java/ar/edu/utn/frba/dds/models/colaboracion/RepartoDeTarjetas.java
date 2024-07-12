@@ -16,15 +16,24 @@ public class RepartoDeTarjetas {
   private TarjetaPersonaVulnerable tarjeta;
   private PersonaVulnerable personaVulnerable;
 
-  public static RepartoDeTarjetas with(Colaborador colaborador,
-                                       TarjetaPersonaVulnerable tarjeta,
-                                       PersonaVulnerable personaVulnerable) {
+  public static RepartoDeTarjetas by(Colaborador colaborador,
+                                     TarjetaPersonaVulnerable tarjeta,
+                                     PersonaVulnerable personaVulnerable) {
     return RepartoDeTarjetas
         .builder()
         .colaborador(colaborador)
         .fechaReparto(LocalDate.now())
         .tarjeta(tarjeta)
         .personaVulnerable(personaVulnerable)
+        .build();
+  }
+
+  public static RepartoDeTarjetas by(Colaborador colaborador,
+                                     LocalDate fechaReparto) {
+    return RepartoDeTarjetas
+        .builder()
+        .colaborador(colaborador)
+        .fechaReparto(fechaReparto)
         .build();
   }
 }

@@ -2,10 +2,7 @@ package ar.edu.utn.frba.dds.models.colaboracion;
 
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.vianda.Vianda;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -17,14 +14,14 @@ public class DistribucionViandas {
   private LocalDate fechaDistribucion;
   private Heladera origen;
   private Heladera destino;
-  private List<Vianda> viandas;
+  private Integer viandas;
   private String motivo;
 
-  public static DistribucionViandas with(Colaborador colaboradorHumano,
-                                         Heladera origen,
-                                         Heladera destino,
-                                         List<Vianda> viandas,
-                                         String motivo) {
+  public static DistribucionViandas by(Colaborador colaboradorHumano,
+                                       Heladera origen,
+                                       Heladera destino,
+                                       Integer viandas,
+                                       String motivo) {
     return DistribucionViandas
         .builder()
         .colaborador(colaboradorHumano)
@@ -36,10 +33,10 @@ public class DistribucionViandas {
         .build();
   }
 
-  public static DistribucionViandas with(Colaborador colaboradorHumano,
-                                         Heladera origen,
-                                         Heladera destino,
-                                         List<Vianda> viandas) {
+  public static DistribucionViandas by(Colaborador colaboradorHumano,
+                                       Heladera origen,
+                                       Heladera destino,
+                                       Integer viandas) {
     return DistribucionViandas
         .builder()
         .colaborador(colaboradorHumano)
@@ -50,12 +47,12 @@ public class DistribucionViandas {
         .build();
   }
 
-  public static DistribucionViandas with(Colaborador colaborador) {
+  public static DistribucionViandas by(Colaborador colaborador, LocalDate fechaDistribucion, Integer viandas) {
     return DistribucionViandas
         .builder()
         .colaborador(colaborador)
-        .fechaDistribucion(LocalDate.now())
-        .viandas(new ArrayList<>())
+        .fechaDistribucion(fechaDistribucion)
+        .viandas(viandas)
         .build();
   }
 }

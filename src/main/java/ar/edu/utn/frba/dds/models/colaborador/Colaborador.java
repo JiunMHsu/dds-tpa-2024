@@ -29,10 +29,6 @@ public class Colaborador {
   private String apellido;
   private LocalDate fechaNacimiento;
 
-
-  // private Double puntosObtenidos;
-  // private Double puntosCanjeados;
-
   public static Colaborador juridica(Usuario usuario, String razonSocial, TipoRazonSocial tipoRazonSocial, String rubro, Contacto contacto, Direccion direccion, List<Colaboracion> formaDeColaborar) {
     return Colaborador
         .builder()
@@ -80,16 +76,11 @@ public class Colaborador {
         .build();
   }
 
-  public static Colaborador persona(Usuario usuario) {
+  public static Colaborador colaborador(Usuario usuario) {
     return Colaborador
         .builder()
         .usuario(usuario)
         .build();
   }
 
-  public static Colaborador persona() {
-    return Colaborador
-        .builder()
-        .build();
-  }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 public class DonacionDineroRepository {
   private static final List<DonacionDinero> db = new ArrayList<>();
 
-  private static void agregar(DonacionDinero colaboracion) {
+  public static void agregar(DonacionDinero colaboracion) {
     db.add(colaboracion);
   }
 

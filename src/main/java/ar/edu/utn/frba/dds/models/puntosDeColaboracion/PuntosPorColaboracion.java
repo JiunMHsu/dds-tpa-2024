@@ -52,8 +52,8 @@ public class PuntosPorColaboracion {
     List<DonacionDinero> listaDonacionesDinero = DonacionDineroRepository
         .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
-    Double pesosDonados = (double) listaDonacionesDinero.stream()
-        .mapToInt(DonacionDinero::getMonto)
+    Double pesosDonados = listaDonacionesDinero.stream()
+        .mapToDouble(DonacionDinero::getMonto)
         .sum();
 
     return pesosDonados * variante.getDonacionDinero();
@@ -63,7 +63,10 @@ public class PuntosPorColaboracion {
     List<DistribucionViandas> listaViandasDistribuidas = DistribucionViandasRepository
         .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
-    Double viandasDistribuidas = (double) listaViandasDistribuidas.size();
+    Double viandasDistribuidas = listaViandasDistribuidas.stream()
+        .mapToDouble(DistribucionViandas::getViandas)
+        .sum();
+
     return viandasDistribuidas * variante.getDistribucionViandas();
   }
 

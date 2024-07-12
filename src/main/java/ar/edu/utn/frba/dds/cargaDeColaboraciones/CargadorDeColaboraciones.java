@@ -1,11 +1,20 @@
 package ar.edu.utn.frba.dds.cargaDeColaboraciones;
 
-import ar.edu.utn.frba.dds.models.colaboracion.Colaboracion;
+import ar.edu.utn.frba.dds.models.colaboracion.DistribucionViandas;
+import ar.edu.utn.frba.dds.models.colaboracion.DonacionDinero;
+import ar.edu.utn.frba.dds.models.colaboracion.DonacionVianda;
+import ar.edu.utn.frba.dds.models.colaboracion.RepartoDeTarjetas;
+import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.colaborador.Usuario;
 import ar.edu.utn.frba.dds.models.data.Documento;
 import ar.edu.utn.frba.dds.models.data.Mail;
 import ar.edu.utn.frba.dds.models.data.TipoDocumento;
 import ar.edu.utn.frba.dds.mensajeria.MailSender;
+import ar.edu.utn.frba.dds.repository.colaboracion.DistribucionViandasRepository;
+import ar.edu.utn.frba.dds.repository.colaboracion.DonacionDineroRepository;
+import ar.edu.utn.frba.dds.repository.colaboracion.DonacionViandaRepository;
+import ar.edu.utn.frba.dds.repository.colaboracion.RepartoDeTarjetasRepository;
+import ar.edu.utn.frba.dds.repository.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.utils.GeneradorDeCredenciales;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,7 +27,13 @@ import org.apache.commons.csv.CSVRecord;
 
 public class CargadorDeColaboraciones {
 
-  public static void cargarColaboraciones(Path csv) {
+  private MailSender mailSender;
+
+  public CargadorDeColaboraciones(MailSender mailSender) {
+    this.mailSender = mailSender;
+  }
+
+  public void cargarColaboraciones(Path csv) {
 
     try {
       CSVParser csvParser = CSVParser.parse(Files.newBufferedReader(csv), CSVFormat.DEFAULT
@@ -44,12 +59,23 @@ public class CargadorDeColaboraciones {
             csvRecord.get("Nombre"),
             csvRecord.get("Apellido"),
             csvRecord.get("Mail"),
-            LocalDate.parse(csvRecord.get("Fecha de colaboración"), formatter).atStartOfDay(),
-            Colaboracion.valueOf(csvRecord.get("Forma de colaboración")),
+            LocalDate.parse(csvRecord.get("Fecha de colaboración"), formatter),
+            csvRecord.get("Forma de colaboración"),
             Integer.parseInt(csvRecord.get("Cantidad"))
         );
 
-        CargadorDeColaboraciones.registrarColaboracion(colaboracionPrevia);
+
+        Colaborador colaborador = ColaboradorRepository.obtenerPorEmail(colaboracionPrevia.getEmail());
+
+        if (colaborador == null) {
+          Usuario usuario = GeneradorDeCredenciales.generarUsuario(
+              colaboracionPrevia.getNombre(),
+              colaboracionPrevia.getEmail());
+
+          colaborador = Colaborador.colaborador(usuario);
+          this.enviarCredencial(usuario);
+        }
+        this.registrarColaboracion(colaboracionPrevia, colaborador);
       }
 
     } catch (IOException error) {
@@ -58,25 +84,52 @@ public class CargadorDeColaboraciones {
 
   }
 
-  // TODO
-  private static void registrarColaboracion(ColaboracionPrevia colaboracionPrevia) {
-    // Tratar de buscar si existe algún usuario que tenga dicho mail.
-    // Si la hay, actualizar el colaborador asociado,
-    // Si no, crear el usuario, el colaborador, cargar la colaboración
-    // y enviar las credenciales generadas
+  private void registrarColaboracion(ColaboracionPrevia colaboracionPrevia, Colaborador colaborador) {
 
-    Usuario usuario = GeneradorDeCredenciales
-        .generarUsuario(colaboracionPrevia.getNombre(), colaboracionPrevia.getEmail());
+    switch (colaboracionPrevia.getFormaDeColaboracion()) {
+      case "DINERO":
+        DonacionDinero donacionDinero = DonacionDinero.by(
+            colaborador,
+            colaboracionPrevia.getFechaDeColaboracion(),
+            colaboracionPrevia.getCantidad());
+        DonacionDineroRepository.agregar(donacionDinero);
+        break;
 
-    CargadorDeColaboraciones.enviarCredencial(usuario);
+      case "DONACION_VIANDAS":
+        for (int i = 0; i < colaboracionPrevia.getCantidad(); i++) {
+          DonacionVianda donacionVianda = DonacionVianda.by(
+              colaborador,
+              colaboracionPrevia.getFechaDeColaboracion());
+          DonacionViandaRepository.agregar(donacionVianda);
+        }
+        break;
+
+      case "REDISTRIBUCION_VIANDAS":
+        DistribucionViandas distribucionViandas = DistribucionViandas.by(
+            colaborador,
+            colaboracionPrevia.getFechaDeColaboracion(),
+            colaboracionPrevia.getCantidad());
+        DistribucionViandasRepository.agregar(distribucionViandas);
+        break;
+
+      case "ENTREGA_TARJETAS":
+        for (int i = 0; i < colaboracionPrevia.getCantidad(); i++) {
+          RepartoDeTarjetas repartoDeTarjetas = RepartoDeTarjetas.by(
+              colaborador,
+              colaboracionPrevia.getFechaDeColaboracion());
+          RepartoDeTarjetasRepository.agregar(repartoDeTarjetas);
+        }
+        break;
+    }
+
   }
 
-  public static void enviarCredencial(Usuario usuario) {
+  private void enviarCredencial(Usuario usuario) {
     String asunto = "Credencial de usuario";
     String cuerpo = "Esta es la credencial:"
         + " - Nombre de usuario provicional: " + usuario.getNombre()
         + " - Contrasenia de usuario provicional: " + usuario.getContrasenia();
 
-    MailSender.enviarMail(new MailSender(), new Mail(usuario.getEmail(), asunto, cuerpo));
+    MailSender.enviarMail(mailSender, new Mail(usuario.getEmail(), asunto, cuerpo));
   }
 }

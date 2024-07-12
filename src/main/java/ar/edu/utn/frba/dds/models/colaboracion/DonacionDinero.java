@@ -15,7 +15,7 @@ public class DonacionDinero {
   private Integer monto;
   private Period frecuencia;
 
-  public static DonacionDinero with(Colaborador colaborador, Integer monto, Period frecuencia) {
+  public static DonacionDinero by(Colaborador colaborador, Integer monto, Period frecuencia) {
     return DonacionDinero
         .builder()
         .colaborador(colaborador)
@@ -25,7 +25,16 @@ public class DonacionDinero {
         .build();
   }
 
-  public static DonacionDinero with(Colaborador colaborador, Integer monto) {
+  public static DonacionDinero by(Colaborador colaborador, LocalDate fechaDonacion, Integer monto) {
+    return DonacionDinero
+        .builder()
+        .colaborador(colaborador)
+        .fechaDonacion(fechaDonacion)
+        .monto(monto)
+        .build();
+  }
+
+  public static DonacionDinero by(Colaborador colaborador, Integer monto) {
     return DonacionDinero
         .builder()
         .colaborador(colaborador)
@@ -33,6 +42,7 @@ public class DonacionDinero {
         .monto(monto)
         .build();
   }
+
 
   public void setPeriod(Period frecuencia) {
     this.frecuencia = frecuencia;
