@@ -3,33 +3,40 @@ package ar.edu.utn.frba.dds.models.puntosDeColaboracion;
 import ar.edu.utn.frba.dds.models.colaboracion.*;
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
+import ar.edu.utn.frba.dds.repository.canjeDePuntosRepository.CanjeDePuntosRepository;
+import ar.edu.utn.frba.dds.repository.colaboracion.DistribucionViandasRepository;
+import ar.edu.utn.frba.dds.repository.colaboracion.DonacionDineroRepository;
+import ar.edu.utn.frba.dds.repository.colaboracion.DonacionViandaRepository;
+import ar.edu.utn.frba.dds.repository.colaboracion.HacerseCargoHeladeraRepository;
+import ar.edu.utn.frba.dds.repository.colaboracion.RepartoDeTarjetasRepository;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.Builder;
 
-/**
- * Todas las listas de colaboraciones usadas para los cálculos
- * están inicializadas como lista vacía, los cuales deberían ser reemplazadas
- * al momento de implementar persistencia.
- * Esos datos se obtendrán por consulta a la DB.
- */
 @Builder
 public class PuntosPorColaboracion {
 
   private Colaborador colaborador;
   private LocalDate fechaUltimoCanje;
+  private Integer puntosSobrantes;
   private VarianteCalculoDePuntos variante;
 
   public static PuntosPorColaboracion of(Colaborador colaborador) {
-    LocalDate ultimoCanje = LocalDate.now(); // Se debería hacer una búsqueda
-    return PuntosPorColaboracion
+    PuntosPorColaboracionBuilder puntosPorColaboracion = PuntosPorColaboracion
         .builder()
         .colaborador(colaborador)
-        .fechaUltimoCanje(ultimoCanje)
-        .variante(new VarianteCalculoDePuntos())
-        .build();
+        .fechaUltimoCanje(LocalDate.now())
+        .puntosSobrantes(0)
+        .variante(new VarianteCalculoDePuntos());
+
+    CanjeDePuntos ultimoCanjeo = CanjeDePuntosRepository.obtenerUltimoPorColaborador(colaborador);
+    if (ultimoCanjeo != null) {
+      puntosPorColaboracion.puntosSobrantes(ultimoCanjeo.getPuntosRestantes());
+      puntosPorColaboracion.fechaUltimoCanje(ultimoCanjeo.getFechaCanjeo());
+    }
+
+    return puntosPorColaboracion.build();
   }
 
   public Double calcularPuntos() {
@@ -37,11 +44,14 @@ public class PuntosPorColaboracion {
         + this.calcularPorViandasDistribuidas()
         + this.calcularPorViandasDonadas()
         + this.calcularPorTarjetasRepartidas()
-        + this.calcularPorHeladerasActivas();
+        + this.calcularPorHeladerasActivas()
+        + puntosSobrantes;
   }
 
   private Double calcularPorPesosDonados() {
-    List<DonacionDinero> listaDonacionesDinero = new ArrayList<>();
+    List<DonacionDinero> listaDonacionesDinero = DonacionDineroRepository
+        .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
+
     Double pesosDonados = (double) listaDonacionesDinero.stream()
         .mapToInt(DonacionDinero::getMonto)
         .sum();
@@ -50,28 +60,37 @@ public class PuntosPorColaboracion {
   }
 
   private Double calcularPorViandasDistribuidas() {
-    List<DistribucionViandas> listaViandasDistribuidas = new ArrayList<>();
-    Double viandasDistribuidas = (double) listaViandasDistribuidas.size();
+    List<DistribucionViandas> listaViandasDistribuidas = DistribucionViandasRepository
+        .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
+    Double viandasDistribuidas = (double) listaViandasDistribuidas.size();
     return viandasDistribuidas * variante.getDistribucionViandas();
   }
 
   private Double calcularPorViandasDonadas() {
-    List<DonacionVianda> listaViandasDonadas = new ArrayList<>();
-    Double viandasDonadas = (double) listaViandasDonadas.size();
+    List<DonacionVianda> listaViandasDonadas = DonacionViandaRepository
+        .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
+    Double viandasDonadas = (double) listaViandasDonadas.size();
     return viandasDonadas * variante.getDonacionVianda();
   }
 
   private Double calcularPorTarjetasRepartidas() {
-    List<RepartoDeTarjetas> listaTarjetasRepartidas = new ArrayList<>();
+    List<RepartoDeTarjetas> listaTarjetasRepartidas = RepartoDeTarjetasRepository
+        .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
+
     Double tarjetasRepartidas = (double) listaTarjetasRepartidas.size();
 
     return tarjetasRepartidas * variante.getRepartoTarjeta();
   }
 
   private Double calcularPorHeladerasActivas() {
-    List<Heladera> listaHeladerasACargo = new ArrayList<>();
+    List<Heladera> listaHeladerasACargo = HacerseCargoHeladeraRepository
+        .obtenerPorColaborador(colaborador)
+        .stream()
+        .map(HacerseCargoHeladera::getHeladeraACargo)
+        .toList();
+
     List<Heladera> listHeladerasActivas = listaHeladerasACargo.stream()
         .filter(Heladera::estaActiva)
         .toList();
@@ -84,6 +103,10 @@ public class PuntosPorColaboracion {
     return heladerasActivas * mesesActivas * variante.getHeladerasActivas();
   }
 
+  /**
+   * Supone que desde la 'fechaInicio' hasta la fecha de llamada
+   * siempre estuvo activa.
+   */
   private Integer calcularMesesActiva(LocalDate fechaInicio) {
     LocalDate fechaActual = LocalDate.now();
     Period periodo = Period.between(fechaInicio, fechaActual);
