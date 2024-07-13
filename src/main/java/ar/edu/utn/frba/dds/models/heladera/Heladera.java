@@ -144,4 +144,12 @@ public class Heladera {
         .forEach(observer -> observer.serNotificado(viandas));
   }
 
+  public void suscribirAMovimientoDeViandas(ISuscipcionMovimientoVianda suscriptor) {
+    observersMovimiento.add(suscriptor);
+  }
+
+  public void suscribirAFallas(SuscripcionFallaHeladera suscriptor) {
+    observersFalla.add(suscriptor);
+  }
+
 }

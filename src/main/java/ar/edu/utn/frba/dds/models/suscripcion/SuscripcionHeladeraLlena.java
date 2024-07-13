@@ -18,6 +18,7 @@ public class SuscripcionHeladeraLlena extends Suscripcion implements ISuscipcion
 
   @Override
   public void suscribirAHeladera() {
+    getHeladera().suscribirAMovimientoDeViandas(this);
   }
 
   public void serNotificado(Integer cantViandas) {
