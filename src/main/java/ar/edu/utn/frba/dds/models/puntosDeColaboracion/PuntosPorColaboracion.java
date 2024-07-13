@@ -84,7 +84,7 @@ public class PuntosPorColaboracion {
 
     Double viandasDonadas = (double) listaViandasDonadas.size();
 
-    Double puntaje =  viandasDonadas * variante.getDonacionVianda();
+    Double puntaje = viandasDonadas * variante.getDonacionVianda();
     System.out.println("viandas donadas");
     System.out.println(puntaje);
     return puntaje;
@@ -120,11 +120,12 @@ public class PuntosPorColaboracion {
 
     Double puntajeTotalActual = heladerasActivas * mesesActivas * variante.getHeladerasActivas();
     Double puntajeAnterior;
-    if(fechaUltimoCanje==null){
+    if (fechaUltimoCanje == null) {
       puntajeAnterior = 0.0;
-    } else{
-      puntajeAnterior = this.calcularPorHeladederasAnteriorCanje( listHeladerasActivas);
+    } else {
+      puntajeAnterior = this.calcularPorHeladederasAnteriorCanje(listHeladerasActivas);
     }
+    
     Double puntaje = puntajeTotalActual - puntajeAnterior;
     System.out.println("hacerse cargo heladera");
     System.out.println(puntaje);
@@ -140,14 +141,15 @@ public class PuntosPorColaboracion {
     Period periodo = Period.between(fechaInicio, fechaActual);
     return periodo.getYears() * 12 + periodo.getMonths();
   }
-  private Double calcularPorHeladederasAnteriorCanje(List <Heladera> listHeladerasActivas){
-    List <Heladera> heladerasActivasAntesDelUltimoCanje = listHeladerasActivas.stream()
-            .filter(heladera -> heladera.getInicioFuncionamiento().isBefore(fechaUltimoCanje))
-            .toList();
+
+  private Double calcularPorHeladederasAnteriorCanje(List<Heladera> listHeladerasActivas) {
+    List<Heladera> heladerasActivasAntesDelUltimoCanje = listHeladerasActivas.stream()
+        .filter(heladera -> heladera.getInicioFuncionamiento().isBefore(fechaUltimoCanje))
+        .toList();
     Double heladerasActivas = (double) heladerasActivasAntesDelUltimoCanje.size();
     Double mesesActivas = heladerasActivasAntesDelUltimoCanje.stream()
-            .mapToDouble(heladera -> this.calcularMesesActiva(heladera.getInicioFuncionamiento(), fechaUltimoCanje))
-            .sum();
+        .mapToDouble(heladera -> this.calcularMesesActiva(heladera.getInicioFuncionamiento(), fechaUltimoCanje))
+        .sum();
 
     Double puntaje = heladerasActivas * mesesActivas * variante.getHeladerasActivas();
     System.out.println("heladera anterior puntaje");
