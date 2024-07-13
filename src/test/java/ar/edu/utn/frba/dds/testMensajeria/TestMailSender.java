@@ -14,6 +14,6 @@ public class TestMailSender {
         "smtp.gmail.com",
         "587");
 
-    mailSender.enviarMail(Mail.to("jhsu@frba.utn.edu.ar", "Test Mail Sender", "test"));
+    mailSender.enviarMail(Mail.to("utn.dds.g22@gmail.com", "Test Mail Sender", "test"));
   }
 }
