@@ -5,7 +5,9 @@ import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.colaborador.Usuario;
 import ar.edu.utn.frba.dds.models.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
+import ar.edu.utn.frba.dds.models.puntosDeColaboracion.CanjeDePuntos;
 import ar.edu.utn.frba.dds.models.puntosDeColaboracion.PuntosPorColaboracion;
+import ar.edu.utn.frba.dds.repository.canjeDePuntos.CanjeDePuntosRepository;
 import ar.edu.utn.frba.dds.repository.colaboracion.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,15 +19,16 @@ import java.time.LocalDate;
 public class TestCalculadorDePuntos {
 
   Colaborador persona = Colaborador.colaborador(new Usuario("", "", ""));
+  Colaborador otraPersona = Colaborador.colaborador(new Usuario("", "", ""));
   PuntosPorColaboracion calculadorDePuntos = PuntosPorColaboracion.of(persona);
 
   @BeforeEach
   public void setup() {
     // Donacion Dinero. Los puntos por donar dinero es la cantidad de dinero donado multiplicado por 0.5
     // Puntos : (500+200+10000)*0.5 = 5350
-    DonacionDinero donacionDinero1 = DonacionDinero.by(persona, 500);
-    DonacionDinero donacionDinero2 = DonacionDinero.by(persona, 200);
-    DonacionDinero donacionDinero3 = DonacionDinero.by(persona, 10000);
+    DonacionDinero donacionDinero1 = DonacionDinero.by(persona, LocalDate.of(2024, 2, 1) , 500);
+    DonacionDinero donacionDinero2 = DonacionDinero.by(persona,LocalDate.of(2024, 2, 1) , 200);
+    DonacionDinero donacionDinero3 = DonacionDinero.by(persona,LocalDate.of(2024, 2, 1) , 10000);
 
     DonacionDineroRepository.agregar(donacionDinero1);
     DonacionDineroRepository.agregar(donacionDinero2);
@@ -44,7 +47,7 @@ public class TestCalculadorDePuntos {
     // Donacion Viandas. Los puntos por donar viandas es la cantidad de viandas donadas multiplicado por 1.5
     // Puntos : (1+1+1)*1.5 = 4.5
     DonacionVianda donacionVianda1 = DonacionVianda.by(persona, LocalDate.of(2024, 5, 6));
-    DonacionVianda donacionVianda2 = DonacionVianda.by(persona, LocalDate.of(2024, 8, 12));
+    DonacionVianda donacionVianda2 = DonacionVianda.by(persona, LocalDate.of(2024, 2, 12));
     DonacionVianda donacionVianda3 = DonacionVianda.by(persona, LocalDate.of(2024, 1, 8));
 
     DonacionViandaRepository.agregar(donacionVianda1);
@@ -86,8 +89,21 @@ public class TestCalculadorDePuntos {
   }
 
   @Test
-  @DisplayName("Los puntos obtenidos de una persona es la sumatoria de los puntos por cada forma colaborada restado a sus puntos canjeados")
-  public void puntosObtenidos() {
+  @DisplayName("Los puntos obtenidos de una persona, si no hubo un canjeo anterior, es la sumatoria de los puntos por cada forma colaborada")
+  public void puntosObtenidosPrimerCanjeo() {
     Assertions.assertEquals(calculadorDePuntos.calcularPuntos(), 5480.5);
+  }
+
+  @Test
+  @DisplayName("Los puntos obtenidos de una persona, si hubo canjeos anteriores, es la sumatoria de los puntos por cada forma colaborada realizada luego del ultimo canjeo, sumado a los puntos sobrantes")
+  public void puntosObtenidosConCanjeoAnterior() {
+
+    // canjeo anterior
+    calculadorDePuntos.calcularPuntos();
+    OfertaDeProductos ofertaDeProductos = OfertaDeProductos.with(otraPersona,"lapiz" , 480.5); //en vez de calcularlo a mano capaz mejor que haga la cuenta la compu, pero no se
+    CanjeDePuntos primerCanjeo = CanjeDePuntos.with(persona, LocalDate.of(2024,7,12), 480.5, 5000.0, ofertaDeProductos);
+    CanjeDePuntosRepository.agregar(primerCanjeo);
+    PuntosPorColaboracion calculadorDePuntos2 = PuntosPorColaboracion.of(persona);
+    Assertions.assertEquals(calculadorDePuntos2.calcularPuntos(), 5000.0);
   }
 }
