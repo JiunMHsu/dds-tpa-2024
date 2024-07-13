@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class TarjetaColaborador implements Tarjeta {
+public class TarjetaColaborador implements ITarjeta {
 
   private String codigo;
   private Colaborador duenio;

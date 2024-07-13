@@ -4,9 +4,9 @@ import ar.edu.utn.frba.dds.models.data.Ubicacion;
 import java.util.List;
 
 public class PuntoIdeal {
-  private AdapterPuntoIdeal adapterPuntoIdeal;
+  private IAdapterPuntoIdeal adapterPuntoIdeal;
 
-  public PuntoIdeal(AdapterPuntoIdeal adapterPuntoIdeal) {
+  public PuntoIdeal(IAdapterPuntoIdeal adapterPuntoIdeal) {
     this.adapterPuntoIdeal = adapterPuntoIdeal;
   }
 
