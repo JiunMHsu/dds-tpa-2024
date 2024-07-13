@@ -8,7 +8,7 @@ import java.util.Properties;
 import lombok.Getter;
 
 @Getter
-public class MailSender {
+public class MailSender implements Notificador {
 
   private String nombreUsuario;
   private String contrasenia;
@@ -20,6 +20,11 @@ public class MailSender {
     this.contrasenia = "";
     this.host = "";
     this.port = "";
+  }
+
+  @Override
+  public void enviarMensaje(String mensaje) {
+
   }
 
   public void enviarMail(Mail content) {
@@ -52,6 +57,6 @@ public class MailSender {
       System.err.println("Error al enviar el mail D: : " + error.getMessage());
     }
   }
-
+  
   // ACLARACION: Por ahora no hago la logica para recibir los mails, no parece ser necesario en base al enunciado
 }

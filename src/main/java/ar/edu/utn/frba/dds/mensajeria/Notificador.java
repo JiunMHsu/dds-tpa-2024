@@ -1,4 +1,5 @@
 package ar.edu.utn.frba.dds.mensajeria;
 
-public class Notificador {
+public interface Notificador {
+  void enviarMensaje(String mensaje);
 }
