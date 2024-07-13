@@ -31,6 +31,8 @@ public class Heladera {
   private String topicSensorTemperatura;
   private String topicSensorMovimiento;
   private String topicLectorTarjeta;
+
+  // No se que tan correcto es
   private SensorTemperatura sensorTemperatura;
   private SensorMovimiento sensorMovimiento;
   private LectorTarjeta lectorTarjeta;

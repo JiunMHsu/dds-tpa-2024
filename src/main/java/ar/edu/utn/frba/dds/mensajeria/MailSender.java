@@ -5,6 +5,7 @@ import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import java.util.Properties;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -14,6 +15,13 @@ public class MailSender implements INotificador {
   private String contrasenia;
   private String host;
   private String port;
+
+  public MailSender(String nombreUsuario, String contrasenia, String host, String port) {
+    this.nombreUsuario = nombreUsuario;
+    this.contrasenia = contrasenia;
+    this.host = host;
+    this.port = port;
+  }
 
   public MailSender() {
     this.nombreUsuario = "";
@@ -33,9 +41,9 @@ public class MailSender implements INotificador {
     props.put("mail.smtp.starttls.enable", "true");
     props.put("mail.smtp.host", host);
     props.put("mail.smtp.port", port);
+    props.put("mail.debug", "true");
 
     Session session = Session.getInstance(props, new Authenticator() {
-      @Override
       protected PasswordAuthentication getPasswordAuthentication() {
         return new PasswordAuthentication(nombreUsuario, contrasenia);
       }

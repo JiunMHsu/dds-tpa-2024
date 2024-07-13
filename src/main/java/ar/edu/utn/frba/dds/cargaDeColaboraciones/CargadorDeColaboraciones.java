@@ -37,7 +37,8 @@ public class CargadorDeColaboraciones {
 
     try {
       CSVParser csvParser = CSVParser.parse(Files.newBufferedReader(csv), CSVFormat.DEFAULT
-          .withHeader("Tipo Doc",
+          .withHeader(
+              "Tipo Doc",
               "Documento",
               "Nombre",
               "Apellido",
@@ -50,7 +51,6 @@ public class CargadorDeColaboraciones {
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
       for (CSVRecord csvRecord : csvParser) {
-
         Documento documento = new Documento(Integer.parseInt(csvRecord.get("Documento")),
             TipoDocumento.valueOf(csvRecord.get("Tipo Doc")));
 
@@ -64,7 +64,6 @@ public class CargadorDeColaboraciones {
             Integer.parseInt(csvRecord.get("Cantidad"))
         );
 
-
         Colaborador colaborador = ColaboradorRepository.obtenerPorEmail(colaboracionPrevia.getEmail());
 
         if (colaborador == null) {
@@ -73,6 +72,7 @@ public class CargadorDeColaboraciones {
               colaboracionPrevia.getEmail());
 
           colaborador = Colaborador.colaborador(usuario);
+          ColaboradorRepository.agregar(colaborador);
           this.enviarCredencial(usuario);
         }
         this.registrarColaboracion(colaboracionPrevia, colaborador);
