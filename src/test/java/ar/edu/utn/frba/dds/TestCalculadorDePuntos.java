@@ -95,15 +95,25 @@ public class TestCalculadorDePuntos {
   }
 
   @Test
-  @DisplayName("Los puntos obtenidos de una persona, si hubo canjeos anteriores, es la sumatoria de los puntos por cada forma colaborada realizada luego del ultimo canjeo, sumado a los puntos sobrantes")
+  @DisplayName("Los puntos obtenidos de una persona, si hubo canjeos anteriores, es los nuevos puntos por heladeras activas mas los puntos sobrantes")
   public void puntosObtenidosConCanjeoAnterior() {
 
-    // canjeo anterior
-    calculadorDePuntos.calcularPuntos();
-    OfertaDeProductos ofertaDeProductos = OfertaDeProductos.with(otraPersona,"lapiz" , 480.5); //en vez de calcularlo a mano capaz mejor que haga la cuenta la compu, pero no se
-    CanjeDePuntos primerCanjeo = CanjeDePuntos.with(persona, LocalDate.of(2024,7,12), 480.5, 5000.0, ofertaDeProductos);
+    // puntos totales del canjeo anterior mayo: 5440.5
+    OfertaDeProductos ofertaDeProductos = OfertaDeProductos.with(otraPersona,"lapiz" , 440.5); //en vez de calcularlo a mano capaz mejor que haga la cuenta la compu, pero no se
+    CanjeDePuntos primerCanjeo = CanjeDePuntos.with(persona, LocalDate.of(2024,5,12), 440.5, 5000.0, ofertaDeProductos);
     CanjeDePuntosRepository.agregar(primerCanjeo);
     PuntosPorColaboracion calculadorDePuntos2 = PuntosPorColaboracion.of(persona);
-    Assertions.assertEquals(calculadorDePuntos2.calcularPuntos(), 5000.0);
+    Assertions.assertEquals(calculadorDePuntos2.calcularPuntos(), 5040.0);
+
   }
+  @Test
+  @DisplayName("Los puntos obtenidos de una persona, si hubo canjeos anteriores y nuevas colaboraciones, es la sumatoria de los puntos por cada forma colaborada realizada luego del ultimo canjeo, sumado a los puntos sobrantes")
+  public void puntosObtenidosConCanjeoAnteriorMasNuevasColab() {
+
+
+  }
+
 }
+
+
+
