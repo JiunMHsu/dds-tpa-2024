@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.heladera;
 
 import ar.edu.utn.frba.dds.models.data.Direccion;
+import ar.edu.utn.frba.dds.models.sensor.*;
 import ar.edu.utn.frba.dds.models.suscripcion.ISuscipcionMovimientoVianda;
 import ar.edu.utn.frba.dds.models.suscripcion.SuscripcionFallaHeladera;
 import java.time.LocalDate;
@@ -23,8 +24,16 @@ public class Heladera {
   private Double ultimaTemperatura;
   private EstadoHeladera estado;
   private Integer viandas;
-  private List<ISuscipcionMovimientoVianda> observersMovimiento;
+
+  private List<ISuscipcionMovimientoVianda> observersMovimientoVianda;
   private List<SuscripcionFallaHeladera> observersFalla;
+
+  private String topicSensorTemperatura;
+  private String topicSensorMovimiento;
+  private String topicLectorTarjeta;
+  private SensorTemperatura sensorTemperatura;
+  private SensorMovimiento sensorMovimiento;
+  private LectorTarjeta lectorTarjeta;
 
   public static Heladera with(String nombre,
                               Direccion direccion,
@@ -46,7 +55,7 @@ public class Heladera {
         .ultimaTemperatura(ultimaTemperatura)
         .estado(estado)
         .viandas(viandas)
-        .observersMovimiento(observersMovimiento)
+        .observersMovimientoVianda(observersMovimiento)
         .observersFalla(observersFalla)
         .build();
   }
@@ -99,8 +108,14 @@ public class Heladera {
     return Heladera
         .builder()
         .viandas(0)
-        .observersMovimiento(new ArrayList<>())
+        .observersMovimientoVianda(new ArrayList<>())
         .observersFalla(new ArrayList<>());
+  }
+
+  public void inicializarSensores() {
+    sensorTemperatura = new SensorTemperatura(this);
+    sensorMovimiento = new SensorMovimiento(this);
+    lectorTarjeta = new LectorTarjeta(this);
   }
 
   public void agregarVianda() throws ExcepcionCapacidadExcedida {
@@ -139,16 +154,16 @@ public class Heladera {
   }
 
   private void notificarObserversMovimiento() {
-    this.observersMovimiento
+    this.observersMovimientoVianda
         .parallelStream()
         .forEach(observer -> observer.serNotificado(viandas));
   }
 
-  public void suscribirAMovimientoDeViandas(ISuscipcionMovimientoVianda suscriptor) {
-    observersMovimiento.add(suscriptor);
+  public void serSuscriptoPor(ISuscipcionMovimientoVianda suscriptor) {
+    observersMovimientoVianda.add(suscriptor);
   }
 
-  public void suscribirAFallas(SuscripcionFallaHeladera suscriptor) {
+  public void serSuscriptoPor(SuscripcionFallaHeladera suscriptor) {
     observersFalla.add(suscriptor);
   }
 

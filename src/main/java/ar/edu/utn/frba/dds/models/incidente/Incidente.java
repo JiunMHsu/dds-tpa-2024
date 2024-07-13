@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.models.incidente;
 
-import ar.edu.utn.frba.dds.models.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.reportes.RegistroIncidente;
 import java.time.LocalDateTime;
