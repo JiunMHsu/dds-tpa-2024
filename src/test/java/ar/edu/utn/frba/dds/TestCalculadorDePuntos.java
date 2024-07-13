@@ -20,7 +20,6 @@ public class TestCalculadorDePuntos {
 
   Colaborador persona = Colaborador.colaborador(new Usuario("", "", ""));
   Colaborador otraPersona = Colaborador.colaborador(new Usuario("", "", ""));
-  PuntosPorColaboracion calculadorDePuntos = PuntosPorColaboracion.of(persona);
 
   @BeforeEach
   public void setup() {
@@ -37,8 +36,8 @@ public class TestCalculadorDePuntos {
     // Distribucion Viandas. Los puntos por distribuir viandas es la cantidad de viandas distribuidas multiplicado por 1
     // Puntos : (4+10+6)*1 = 20
     DistribucionViandas distribucion1 = DistribucionViandas.by(persona, LocalDate.of(2024, 3, 2), 4);
-    DistribucionViandas distribucion2 = DistribucionViandas.by(persona, LocalDate.of(2024, 4, 2), 10);
-    DistribucionViandas distribucion3 = DistribucionViandas.by(persona, LocalDate.of(2024, 5, 2), 6);
+    DistribucionViandas distribucion2 = DistribucionViandas.by(persona, LocalDate.of(2024, 3, 2), 10);
+    DistribucionViandas distribucion3 = DistribucionViandas.by(persona, LocalDate.of(2024, 3, 2), 6);
 
     DistribucionViandasRepository.agregar(distribucion1);
     DistribucionViandasRepository.agregar(distribucion2);
@@ -46,7 +45,7 @@ public class TestCalculadorDePuntos {
 
     // Donacion Viandas. Los puntos por donar viandas es la cantidad de viandas donadas multiplicado por 1.5
     // Puntos : (1+1+1)*1.5 = 4.5
-    DonacionVianda donacionVianda1 = DonacionVianda.by(persona, LocalDate.of(2024, 5, 6));
+    DonacionVianda donacionVianda1 = DonacionVianda.by(persona, LocalDate.of(2024, 1, 6));
     DonacionVianda donacionVianda2 = DonacionVianda.by(persona, LocalDate.of(2024, 2, 12));
     DonacionVianda donacionVianda3 = DonacionVianda.by(persona, LocalDate.of(2024, 1, 8));
 
@@ -56,9 +55,9 @@ public class TestCalculadorDePuntos {
 
     // Reparto Tarjetas. Los puntos por repartir tarjetas es la cantidad de tarjetas repartidas multiplicado por 2
     // Puntos : (1+1+1)*2 = 6
-    RepartoDeTarjetas repartoDeTarjetas1 = RepartoDeTarjetas.by(persona, LocalDate.of(2024, 5, 5));
-    RepartoDeTarjetas repartoDeTarjetas2 = RepartoDeTarjetas.by(persona, LocalDate.of(2024, 5, 5));
-    RepartoDeTarjetas repartoDeTarjetas3 = RepartoDeTarjetas.by(persona, LocalDate.of(2024, 5, 5));
+    RepartoDeTarjetas repartoDeTarjetas1 = RepartoDeTarjetas.by(persona, LocalDate.of(2024, 1, 5));
+    RepartoDeTarjetas repartoDeTarjetas2 = RepartoDeTarjetas.by(persona, LocalDate.of(2024, 1, 5));
+    RepartoDeTarjetas repartoDeTarjetas3 = RepartoDeTarjetas.by(persona, LocalDate.of(2024, 1, 5));
 
     RepartoDeTarjetasRepository.agregar(repartoDeTarjetas1);
     RepartoDeTarjetasRepository.agregar(repartoDeTarjetas2);
@@ -91,6 +90,7 @@ public class TestCalculadorDePuntos {
   @Test
   @DisplayName("Los puntos obtenidos de una persona, si no hubo un canjeo anterior, es la sumatoria de los puntos por cada forma colaborada")
   public void puntosObtenidosPrimerCanjeo() {
+    PuntosPorColaboracion calculadorDePuntos = PuntosPorColaboracion.of(persona);
     Assertions.assertEquals(calculadorDePuntos.calcularPuntos(), 5480.5);
   }
 
@@ -98,19 +98,53 @@ public class TestCalculadorDePuntos {
   @DisplayName("Los puntos obtenidos de una persona, si hubo canjeos anteriores, es los nuevos puntos por heladeras activas mas los puntos sobrantes")
   public void puntosObtenidosConCanjeoAnterior() {
 
-    // puntos totales del canjeo anterior mayo: 5440.5
-    OfertaDeProductos ofertaDeProductos = OfertaDeProductos.with(otraPersona,"lapiz" , 440.5); //en vez de calcularlo a mano capaz mejor que haga la cuenta la compu, pero no se
-    CanjeDePuntos primerCanjeo = CanjeDePuntos.with(persona, LocalDate.of(2024,5,12), 440.5, 5000.0, ofertaDeProductos);
+    // puntos totales mes abril: 5420.5
+    OfertaDeProductos ofertaDeProductos = OfertaDeProductos.with(otraPersona,"lapiz" , 420.5); //en vez de calcularlo a mano capaz mejor que haga la cuenta la compu, pero no se
+    CanjeDePuntos primerCanjeo = CanjeDePuntos.with(persona, LocalDate.of(2024,4,12), 420.5, 5000.0, ofertaDeProductos);
     CanjeDePuntosRepository.agregar(primerCanjeo);
+    // puntos totales mayo luego de primer canjeo: 5020.0
+    OfertaDeProductos ofertaDeProductos2 = OfertaDeProductos.with(otraPersona,"birome" , 120.0); //en vez de calcularlo a mano capaz mejor que haga la cuenta la compu, pero no se
+    CanjeDePuntos segundoCanjeo = CanjeDePuntos.with(persona, LocalDate.of(2024,5,20), 120.0, 4900.0, ofertaDeProductos2);
+    CanjeDePuntosRepository.agregar(segundoCanjeo);
+
     PuntosPorColaboracion calculadorDePuntos2 = PuntosPorColaboracion.of(persona);
-    Assertions.assertEquals(calculadorDePuntos2.calcularPuntos(), 5040.0);
+    Assertions.assertEquals(calculadorDePuntos2.calcularPuntos(), 4940.0);
 
   }
   @Test
   @DisplayName("Los puntos obtenidos de una persona, si hubo canjeos anteriores y nuevas colaboraciones, es la sumatoria de los puntos por cada forma colaborada realizada luego del ultimo canjeo, sumado a los puntos sobrantes")
   public void puntosObtenidosConCanjeoAnteriorMasNuevasColab() {
+    // puntos totales abril: 5420.5
+    OfertaDeProductos ofertaDeProductos = OfertaDeProductos.with(otraPersona,"lapiz" , 420.5); //en vez de calcularlo a mano capaz mejor que haga la cuenta la compu, pero no se
+    CanjeDePuntos primerCanjeo = CanjeDePuntos.with(persona, LocalDate.of(2024,4,12), 420.5, 5000.0, ofertaDeProductos);
+    CanjeDePuntosRepository.agregar(primerCanjeo);
+    // puntos totales mayo luego de primer canjeo: 5020.0
+    OfertaDeProductos ofertaDeProductos2 = OfertaDeProductos.with(otraPersona,"birome" , 120.0); //en vez de calcularlo a mano capaz mejor que haga la cuenta la compu, pero no se
+    CanjeDePuntos segundoCanjeo = CanjeDePuntos.with(persona, LocalDate.of(2024,5,20), 120.0, 4900.0, ofertaDeProductos2);
+    CanjeDePuntosRepository.agregar(segundoCanjeo);
 
+    //nuevas colaboraciones
+    //puntaje donacion dinero : 1000 * 0.5 = 500
+    DonacionDinero donacionDinero4 = DonacionDinero.by(persona,LocalDate.of(2024, 6, 1) , 1000);
+    DonacionDineroRepository.agregar(donacionDinero4);
+    //puntaje distribucion viandas : 20
+    DistribucionViandas distribucion4 = DistribucionViandas.by(persona, LocalDate.of(2024, 5, 2), 20);
+    DistribucionViandasRepository.agregar(distribucion4);
+    //puntaje heladeras : 3((6-3)+(6-1)+(6-5))5 - 2((5-3)+(5-1))5 = 135 - 60 = 75
+    Heladera heladera4 = Heladera.with(10);
+    heladera4.setEstado(EstadoHeladera.ACTIVA);
+    heladera4.setInicioFuncionamiento(LocalDate.of(2024, 5, 8));
+    HacerseCargoHeladera hacerseCargoHeladera4 = HacerseCargoHeladera.with(persona, heladera4);
+    HacerseCargoHeladeraRepository.agregar(hacerseCargoHeladera4);
+    //puntaje total julio antes tercer canje0 : 4940.0 + 595.0 = 5535.0
 
+    OfertaDeProductos ofertaDeProductos3 = OfertaDeProductos.with(otraPersona,"pluma" , 535.0); //en vez de calcularlo a mano capaz mejor que haga la cuenta la compu, pero no se
+    CanjeDePuntos tercerCanjeo = CanjeDePuntos.with(persona, LocalDate.of(2024,6,20), 535.0, 5000.0, ofertaDeProductos3);
+    CanjeDePuntosRepository.agregar(tercerCanjeo);
+
+    //heladeras : 3((7-3)+(7-1)+(7-5))5 - 3((6-3)+(6-1)+(6-5))5 = 180 - 135 = 45
+    PuntosPorColaboracion calculadorDePuntos3 = PuntosPorColaboracion.of(persona);
+    Assertions.assertEquals(calculadorDePuntos3.calcularPuntos(), 5045.0);
   }
 
 }
