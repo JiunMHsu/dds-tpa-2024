@@ -11,14 +11,14 @@ import lombok.Getter;
 public class CanjeDePuntos {
   private Colaborador colaborador;
   private LocalDate fechaCanjeo;
-  private Integer puntosCanjeados;
-  private Integer puntosRestantes;
+  private Double puntosCanjeados;
+  private Double puntosRestantes;
   private OfertaDeProductos oferta;
 
   public static CanjeDePuntos with(Colaborador colaborador,
                                    LocalDate fechaCanjeo,
-                                   Integer puntosCanjeados,
-                                   Integer puntosRestantes,
+                                   Double puntosCanjeados,
+                                   Double puntosRestantes,
                                    OfertaDeProductos oferta) {
     return CanjeDePuntos
         .builder()
