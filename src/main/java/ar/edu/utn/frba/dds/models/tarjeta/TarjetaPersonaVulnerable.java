@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.tarjeta;
 
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
+import ar.edu.utn.frba.dds.models.heladera.RetiroDeVianda;
 import ar.edu.utn.frba.dds.models.personaVulnerable.PersonaVulnerable;
 import ar.edu.utn.frba.dds.repository.tarjeta.RetiroDeViandaRepository;
 import ar.edu.utn.frba.dds.utils.GeneradorDeCodigosTarjeta;
@@ -13,7 +14,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Builder
-public class TarjetaPersonaVulnerable implements Tarjeta {
+public class TarjetaPersonaVulnerable implements ITarjeta {
 
   private String codigo;
   private PersonaVulnerable duenio;

@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 
 public class TestPuntoIdeal {
 
-  AdapterPuntoIdeal adapterPuntoIdeal;
+  IAdapterPuntoIdeal adapterPuntoIdeal;
   PuntoIdeal puntoIdeal;
   Ubicacion unaUbicacion, otraUbicacion;
   List<Ubicacion> puntosRecomendados;
@@ -28,7 +28,7 @@ public class TestPuntoIdeal {
     puntosRecomendados.add(unaUbicacion);
     puntosRecomendados.add(otraUbicacion);
 
-    adapterPuntoIdeal = mock(AdapterPuntoIdeal.class);
+    adapterPuntoIdeal = mock(IAdapterPuntoIdeal.class);
     when(adapterPuntoIdeal.puntoIdeal(976, 987, 5)).thenReturn(puntosRecomendados);
 
     puntoIdeal = new PuntoIdeal(adapterPuntoIdeal);
