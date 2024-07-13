@@ -9,7 +9,6 @@ import lombok.Getter;
 @Getter
 @Builder
 public class DonacionDinero {
-
   private Colaborador colaborador;
   private LocalDate fechaDonacion;
   private Integer monto;

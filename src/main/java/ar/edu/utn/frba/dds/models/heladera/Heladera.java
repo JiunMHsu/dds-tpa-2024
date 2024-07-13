@@ -6,6 +6,7 @@ import ar.edu.utn.frba.dds.models.suscripcion.SuscripcionFallaHeladera;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import ar.edu.utn.frba.dds.reportes.RegistroMovimiento;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -108,6 +109,7 @@ public class Heladera {
       throw new ExcepcionCapacidadExcedida("La capacidad de la heladera esta excedida");
     }
     viandas += 1;
+    RegistroMovimiento.agregarViandaPorHeladera( nombre);
     this.notificarObserversMovimiento();
   }
 
@@ -117,16 +119,28 @@ public class Heladera {
     }
   }
 
-  public void quitarVianda() {
-    // excepción para no quitar viandas que no existen (cantidad = 0)
+  public void quitarVianda() throws ExcepcionCapacidadExcedida {
+    if (!this.puedeQuitarVianda()) {
+      throw new ExcepcionCapacidadExcedida("La heladera esta vacia");
+    }
     viandas -= 1;
+    RegistroMovimiento.quitarViandaPorHeladera(nombre);
     this.notificarObserversMovimiento();
+  }
+
+  public void quitarViandas(Integer cantViandas) throws ExcepcionCapacidadExcedida {
+    for (int i = 0; i < cantViandas; i++) {
+      this.quitarVianda();
+    }
   }
 
   private Boolean puedeAgregarVianda() {
     return this.estaActiva() && (this.getViandas() < capacidad);
   }
 
+  private boolean puedeQuitarVianda() {
+    return (viandas != 0);
+  }
   public Boolean estaActiva() {
     return estado == EstadoHeladera.ACTIVA;
   }
