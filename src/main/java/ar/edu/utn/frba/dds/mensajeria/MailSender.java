@@ -8,7 +8,7 @@ import java.util.Properties;
 import lombok.Getter;
 
 @Getter
-public class MailSender {
+public class MailSender implements INotificador {
 
   private String nombreUsuario;
   private String contrasenia;
@@ -20,6 +20,11 @@ public class MailSender {
     this.contrasenia = "";
     this.host = "";
     this.port = "";
+  }
+
+  @Override
+  public void enviarMensaje(String mensaje) {
+
   }
 
   public void enviarMail(Mail content) {

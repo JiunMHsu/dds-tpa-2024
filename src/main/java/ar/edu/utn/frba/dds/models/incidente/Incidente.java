@@ -21,7 +21,7 @@ public class Incidente {
         .fechaHora(fechaHora)
         .build();
 
-    heladera.setEstado(EstadoHeladera.INACTIVA);
+    heladera.setEstadoDeFalla();
     RegistroIncidente.registrarIncidente(incidente);
     // notificar técnico
   }

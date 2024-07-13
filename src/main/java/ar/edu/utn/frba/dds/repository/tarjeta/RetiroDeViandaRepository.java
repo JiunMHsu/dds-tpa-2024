@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.repository.tarjeta;
 
-import ar.edu.utn.frba.dds.models.tarjeta.RetiroDeVianda;
+import ar.edu.utn.frba.dds.models.heladera.RetiroDeVianda;
 import java.util.ArrayList;
 import java.util.List;
 

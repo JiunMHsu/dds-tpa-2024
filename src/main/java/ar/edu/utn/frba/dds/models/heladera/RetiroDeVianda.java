@@ -1,6 +1,6 @@
-package ar.edu.utn.frba.dds.models.tarjeta;
+package ar.edu.utn.frba.dds.models.heladera;
 
-import ar.edu.utn.frba.dds.models.heladera.Heladera;
+import ar.edu.utn.frba.dds.models.tarjeta.TarjetaPersonaVulnerable;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
