@@ -169,4 +169,5 @@ public class Heladera {
     observersFalla.add(suscriptor);
   }
 
+  public Integer espacioRestante(){return capacidad - viandas;}
 }

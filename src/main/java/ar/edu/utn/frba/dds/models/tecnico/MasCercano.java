@@ -3,20 +3,36 @@ package ar.edu.utn.frba.dds.models.tecnico;
 import ar.edu.utn.frba.dds.models.data.Area;
 import ar.edu.utn.frba.dds.models.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
+import ar.edu.utn.frba.dds.repository.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.repository.tecnico.TecnicoRepository;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
-
 public class MasCercano {
+
+    public List<Heladera> heladerasMasCercanasA(Heladera heladera){
+        List<Heladera> listaHeladerasOrdenadasPorCercania = HeladeraRepository.obtenerTodos().stream()
+                .sorted(Comparator.comparingDouble(heladera1 -> calcularDistanciaEntreUbicaciones(heladera1.getDireccion().getUbicacion(), heladera.getDireccion().getUbicacion())))
+                .toList();
+        List<Heladera> heladerasSeleccionadas = new ArrayList<>();
+        Integer cantViandasATransportar = heladera.getViandas();
+        for (Heladera heladera1 : listaHeladerasOrdenadasPorCercania) {
+            if (cantViandasATransportar <= 0) {
+                break;
+            }
+            heladerasSeleccionadas.add(heladera1);
+            cantViandasATransportar -= heladera1.espacioRestante();
+        }
+        return heladerasSeleccionadas;
+    }
+    // sera mejor el filtro en el TecnicoRepository, no creo
     public Tecnico tecnicoMasCercanoA(Heladera heladera) {
         List<Tecnico> listaTecnicos = TecnicoRepository.obtenerTodos();
         return listaTecnicos.stream()
                 .min(Comparator.comparingDouble(tecnico -> MasCercano.calcularDistanciaTecnicoHeladera(tecnico.getAreaDeCobertura(), heladera.getDireccion().getUbicacion())))
                 .orElseThrow(() -> new RuntimeException("No se encontró ningún técnico."));
     }
-
     public static double calcularDistanciaTecnicoHeladera(Area areaTecnico , Ubicacion ubicHeladera){
         double distanciaEntreCoordenadas = MasCercano.calcularDistanciaEntreUbicaciones(areaTecnico.getUbicacion(), ubicHeladera);
         return distanciaEntreCoordenadas - areaTecnico.getRadio();
