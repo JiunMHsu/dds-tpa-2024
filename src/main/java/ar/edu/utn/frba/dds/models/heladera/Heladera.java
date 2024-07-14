@@ -166,4 +166,7 @@ public class Heladera {
     observersFalla.add(suscriptor);
   }
 
+  public String getNombre() {
+    return nombre;
+  }
 }

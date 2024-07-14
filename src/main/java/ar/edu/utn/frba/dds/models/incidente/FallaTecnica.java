@@ -4,6 +4,8 @@ import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.data.Imagen;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import java.time.LocalDateTime;
+import ar.edu.utn.frba.dds.reportes.RegistroDonacion;
+import ar.edu.utn.frba.dds.reportes.RegistroIncidente;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -15,6 +17,9 @@ public class FallaTecnica {
   private Heladera heladera;
   private String descripcion;
   private Imagen foto;
+  public void agregarFallaTecnica(){
+    RegistroIncidente.incidentePorHeladeras(heladera);
+  }
 
   public static FallaTecnica with(Colaborador colaborador, Heladera heladera, String descripcion, Imagen foto) {
     return FallaTecnica

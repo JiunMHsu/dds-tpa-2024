@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RegistroMovimiento {
-  private static Map<String, Integer> viandasAgregadas;
-  private static Map<String, Integer> viandasQuitadas;
+  public static Map<String, Integer> viandasAgregadas;
+  public static Map<String, Integer> viandasQuitadas;
 
   public RegistroMovimiento(){
     viandasAgregadas = new HashMap();

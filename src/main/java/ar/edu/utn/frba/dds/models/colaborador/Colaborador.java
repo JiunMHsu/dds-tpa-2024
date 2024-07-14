@@ -83,4 +83,7 @@ public class Colaborador {
         .build();
   }
 
+  public String getNombre() {
+    return nombre;
+  }
 }

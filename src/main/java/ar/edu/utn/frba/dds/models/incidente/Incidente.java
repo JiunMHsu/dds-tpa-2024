@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.models.incidente;
 import ar.edu.utn.frba.dds.models.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.reportes.RegistroIncidente;
+
 import java.time.LocalDateTime;
 import lombok.Builder;
 
@@ -22,7 +23,7 @@ public class Incidente {
         .build();
 
     heladera.setEstadoDeFalla();
-    RegistroIncidente.registrarIncidente(incidente);
+    RegistroIncidente.incidentePorHeladeras(heladera);
     // notificar técnico
   }
 }

@@ -4,7 +4,6 @@ import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.vianda.Vianda;
 import java.time.LocalDate;
 import ar.edu.utn.frba.dds.reportes.RegistroDonacion;
-import ar.edu.utn.frba.dds.reportes.RegistroMovimiento;
 import lombok.Builder;
 import lombok.Getter;
 
