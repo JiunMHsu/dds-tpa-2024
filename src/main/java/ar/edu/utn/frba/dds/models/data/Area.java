@@ -5,9 +5,9 @@ import lombok.Getter;
 @Getter
 public class Area {
   private Ubicacion ubicacion;
-  private Integer radio;
+  private Double radio;
 
-  public Area(Ubicacion ubicacion, Integer radio) {
+  public Area(Ubicacion ubicacion, Double radio) {
     this.ubicacion = ubicacion;
     this.radio = radio;
   }

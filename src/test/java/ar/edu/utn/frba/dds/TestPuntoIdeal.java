@@ -22,8 +22,8 @@ public class TestPuntoIdeal {
 
   @BeforeEach
   public void setup() {
-    unaUbicacion = new Ubicacion(761, 345);
-    otraUbicacion = new Ubicacion(84, 198);
+    unaUbicacion = new Ubicacion(761.0, 345.0);
+    otraUbicacion = new Ubicacion(84.0, 198.0);
     puntosRecomendados = new ArrayList<>();
     puntosRecomendados.add(unaUbicacion);
     puntosRecomendados.add(otraUbicacion);
@@ -37,7 +37,7 @@ public class TestPuntoIdeal {
   @Test
   @DisplayName("Se puede consultar Ubicaciones recomendadas.")
   public void consultaUbicacionesRecomendadas() {
-    Ubicacion unaUbicacion = new Ubicacion(976, 987);
+    Ubicacion unaUbicacion = new Ubicacion(976.0, 987.0);
     Assertions.assertIterableEquals(puntoIdeal.puntosIdeales(unaUbicacion, 5), puntosRecomendados);
   }
 }
