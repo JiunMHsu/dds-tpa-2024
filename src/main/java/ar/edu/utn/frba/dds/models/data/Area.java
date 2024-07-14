@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.models.data;
 
+import ar.edu.utn.frba.dds.models.tecnico.MasCercano;
 import lombok.Getter;
 
 @Getter
@@ -10,5 +11,10 @@ public class Area {
   public Area(Ubicacion ubicacion, Double radio) {
     this.ubicacion = ubicacion;
     this.radio = radio;
+  }
+
+  public double calcularDistanciaAUbicacion(Ubicacion ubicacion2){
+    double distanciaEntreUbicaciones = ubicacion.calcularDistanciaEntreUbicaciones(ubicacion2);
+    return distanciaEntreUbicaciones - radio;
   }
 }
