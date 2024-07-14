@@ -1,11 +1,18 @@
 package ar.edu.utn.frba.dds.models.incidente;
 
+import ar.edu.utn.frba.dds.mensajeria.NotificadorFactory;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
+import ar.edu.utn.frba.dds.models.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.reportes.RegistroIncidente;
+import ar.edu.utn.frba.dds.mensajeria.INotificador;
 import java.time.LocalDateTime;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 @Builder
+@Getter
+@Setter
 public class Incidente {
 
   private TipoIncidente tipo;
@@ -22,6 +29,19 @@ public class Incidente {
 
     heladera.setEstadoDeFalla();
     RegistroIncidente.registrarIncidente(incidente);
+
     // notificar técnico
+
+    // Tecnico tecnicoMasCercano = // obtener tecnico x cercania
+
+    String mensaje = generadorMensajeTecnico(incidente, heladera);
+    INotificador notificador = NotificadorFactory.of(tecnicoMasCercano.getMedioDeNotificacion());
+    notificador.enviarMensaje(mensaje);
+  }
+
+  private static String generadorMensajeTecnico(Incidente incidente, Heladera heladera) {
+    return "Incidente reportado: " + incidente.getTipo() +
+            " en la heladera: " + heladera.getNombre() + // Verno pl si esta bn que sea el "el nombre de la heladera"
+            " a las: " + incidente.getFechaHora();
   }
 }
