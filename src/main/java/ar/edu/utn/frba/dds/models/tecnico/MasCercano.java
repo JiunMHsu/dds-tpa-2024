@@ -27,11 +27,6 @@ public class MasCercano {
         return heladerasSeleccionadas;
     }
     // sera mejor el filtro en el TecnicoRepository, no creo
-    public Tecnico tecnicoMasCercanoA(Heladera heladera) {
-        List<Tecnico> listaTecnicos = TecnicoRepository.obtenerTodos();
-        return listaTecnicos.stream()
-                .min(Comparator.comparingDouble(tecnico -> tecnico.getAreaDeCobertura().calcularDistanciaAUbicacion(heladera.getDireccion().getUbicacion())))
-                .orElseThrow(() -> new RuntimeException("No se encontró ningún técnico."));
-    }
+
 
 }
