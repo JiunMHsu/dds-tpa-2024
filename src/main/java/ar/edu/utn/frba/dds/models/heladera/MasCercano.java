@@ -12,7 +12,7 @@ public class MasCercano {
                 .filter(Heladera::estaActiva)
                 .filter(Heladera::noEstaLlena)
                 .toList();
-        List<Heladera> listaHeladerasOrdenadasPorCercania = listaHeladerasActivas.stream()
+        List<Heladera> listaHeladerasOrdenadasPorCercania = listaHeladerasActivasConEspacio.stream()
                 .sorted(Comparator.comparingDouble(heladera1 -> heladera1.getDireccion().getUbicacion().calcularDistanciaEntreUbicaciones(heladera.getDireccion().getUbicacion())))
                 .toList();
         List<Heladera> heladerasSeleccionadas = new ArrayList<>();

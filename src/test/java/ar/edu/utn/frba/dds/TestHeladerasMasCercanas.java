@@ -13,14 +13,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TestHeladerasMasCercanas {
-    Heladera heladeraFallada = Heladera.with("", Direccion.with(new Calle(""),0, new Ubicacion(-34.603722, -58.381592)),50);
-    Heladera heladera1 = Heladera.with("", Direccion.with(new Calle(""),0, new Ubicacion(-34.615803, -58.433298)),50);
-    Heladera heladera2 = Heladera.with("", Direccion.with(new Calle(""),0, new Ubicacion(-31.420083, -64.188776)),50);
-    Heladera heladera3 = Heladera.with("", Direccion.with(new Calle(""),0, new Ubicacion(-24.782932, -65.423197)),50);
-    Heladera heladera4 = Heladera.with("", Direccion.with(new Calle(""),0, new Ubicacion(-34.615800, -58.433290)),50);
-    Heladera heladera5 = Heladera.with("", Direccion.with(new Calle(""),0, new Ubicacion(-54.801912, -68.302951)),50);
-    Heladera heladera6 = Heladera.with("", Direccion.with(new Calle(""),0, new Ubicacion(-34.615810, -58.433280)),50);
+    Heladera heladeraFallada = Heladera.with("fallada", Direccion.with(new Calle(""),0, new Ubicacion(-34.603722, -58.381592)),50);
+    Heladera heladera1 = Heladera.with("1", Direccion.with(new Calle(""),0, new Ubicacion(-34.615803, -58.433298)),50);
+    Heladera heladera2 = Heladera.with("2", Direccion.with(new Calle(""),0, new Ubicacion(-31.420083, -64.188776)),50);
+    Heladera heladera3 = Heladera.with("3", Direccion.with(new Calle(""),0, new Ubicacion(-24.782932, -65.423197)),50);
+    Heladera heladera4 = Heladera.with("4", Direccion.with(new Calle(""),0, new Ubicacion(-34.615800, -58.433290)),50);
+    Heladera heladera5 = Heladera.with("5", Direccion.with(new Calle(""),0, new Ubicacion(-54.801912, -68.302951)),50);
+    Heladera heladera6 = Heladera.with("6", Direccion.with(new Calle(""),0, new Ubicacion(-34.615810, -58.433280)),50);
     @Test
     @DisplayName("El tecnico mas cercano a una heladera es el que tenga menor distancia entre las dos ubicaciones restando el radio de su area de cobertura")
     public void heladerasMasCercanas(){
@@ -58,8 +61,21 @@ public class TestHeladerasMasCercanas {
         HeladeraRepository.agregar(heladera5);
         HeladeraRepository.agregar(heladera6);
 
+//        List<Heladera> heladerasSeleccionadas = new ArrayList<>();
+//        heladerasSeleccionadas.add(heladera1);
+//        heladerasSeleccionadas.add(heladera6);
+//
+//        List<Heladera> heladerasSeleccionadas2 = MasCercano.heladerasMasCercanasA(heladeraFallada);
+//
+//        heladerasSeleccionadas2.stream()
+//                        .map(Heladera::getNombre)
+//                        .toList();
+//        System.out.println(HeladeraRepository.obtenerTodos());
+//        System.out.println(heladerasSeleccionadas2);
+//
+//        Assertions.assertTrue(true);
 
-        //Assertions.assertEquals(MasCercano.heladerasMasCercanasA(heladeraFallada),);
+       // Assertions.assertTrue(MasCercano.heladerasMasCercanasA(heladeraFallada).containsAll(heladerasSeleccionadas));
 
     }
 }
