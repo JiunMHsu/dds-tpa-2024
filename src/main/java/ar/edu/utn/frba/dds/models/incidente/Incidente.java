@@ -49,7 +49,7 @@ public class Incidente {
             " a las: " + incidente.getFechaHora();
   }
 
-  private static Tecnico tecnicoMasCercanoA(Heladera heladera) {
+  public static Tecnico tecnicoMasCercanoA(Heladera heladera) {
     List<Tecnico> listaTecnicos = TecnicoRepository.obtenerTodos();
     return listaTecnicos.stream()
             .min(Comparator.comparingDouble(tecnico -> tecnico.getAreaDeCobertura().calcularDistanciaAUbicacion(heladera.getDireccion().getUbicacion())))
