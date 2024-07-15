@@ -1,18 +1,18 @@
-package ar.edu.utn.frba.dds.models.tecnico;
+package ar.edu.utn.frba.dds.models.heladera;
 
-import ar.edu.utn.frba.dds.models.data.Area;
-import ar.edu.utn.frba.dds.models.data.Ubicacion;
-import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.repository.heladera.HeladeraRepository;
-import ar.edu.utn.frba.dds.repository.tecnico.TecnicoRepository;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 public class MasCercano {
 
-    public List<Heladera> heladerasMasCercanasA(Heladera heladera){
-        List<Heladera> listaHeladerasOrdenadasPorCercania = HeladeraRepository.obtenerTodos().stream()
+    public static List<Heladera> heladerasMasCercanasA(Heladera heladera){
+        List<Heladera> listaHeladerasActivasConEspacio = HeladeraRepository.obtenerTodos().stream()
+                .filter(Heladera::estaActiva)
+                .filter(Heladera::noEstaLlena)
+                .toList();
+        List<Heladera> listaHeladerasOrdenadasPorCercania = listaHeladerasActivas.stream()
                 .sorted(Comparator.comparingDouble(heladera1 -> heladera1.getDireccion().getUbicacion().calcularDistanciaEntreUbicaciones(heladera.getDireccion().getUbicacion())))
                 .toList();
         List<Heladera> heladerasSeleccionadas = new ArrayList<>();
@@ -26,7 +26,4 @@ public class MasCercano {
         }
         return heladerasSeleccionadas;
     }
-    // sera mejor el filtro en el TecnicoRepository, no creo
-
-
 }

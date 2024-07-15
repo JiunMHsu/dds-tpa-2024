@@ -170,4 +170,6 @@ public class Heladera {
   }
 
   public Integer espacioRestante(){return capacidad - viandas;}
+
+  public Boolean noEstaLlena(){return this.espacioRestante()>0;}
 }
