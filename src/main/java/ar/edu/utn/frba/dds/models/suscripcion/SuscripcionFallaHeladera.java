@@ -14,7 +14,7 @@ public class SuscripcionFallaHeladera extends Suscripcion {
 
   @Override
   public void suscribirAHeladera() {
-    getHeladera().suscribirAFallas(this);
+    getHeladera().serSuscriptoPor(this);
   }
 
   public void serNotificado() {

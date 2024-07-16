@@ -10,7 +10,7 @@ public class PuntoIdeal {
     this.adapterPuntoIdeal = adapterPuntoIdeal;
   }
 
-  public List<Ubicacion> puntosIdeales(Ubicacion ubicacion, Integer radio) {
+  public List<Ubicacion> puntosIdeales(Ubicacion ubicacion, Double radio) {
     return this.adapterPuntoIdeal.puntoIdeal(ubicacion.getLatitud(), ubicacion.getLongitud(), radio);
   }
 }

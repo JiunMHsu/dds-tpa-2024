@@ -3,7 +3,7 @@ package ar.edu.utn.frba.dds.models.tarjeta;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.heladera.RetiroDeVianda;
 import ar.edu.utn.frba.dds.models.personaVulnerable.PersonaVulnerable;
-import ar.edu.utn.frba.dds.repository.tarjeta.RetiroDeViandaRepository;
+import ar.edu.utn.frba.dds.repository.heladera.RetiroDeViandaRepository;
 import ar.edu.utn.frba.dds.utils.GeneradorDeCodigosTarjeta;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

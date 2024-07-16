@@ -13,13 +13,13 @@ public class OfertaDeProductos {
   private Colaborador colaborador;
   private LocalDate fechaOferta;
   private String nombre;
-  private Integer puntosNecesarios;
+  private Double puntosNecesarios;
   private RubroOferta rubro;
   private Imagen imagen;
 
   public static OfertaDeProductos with(Colaborador colaborador,
                                        String nombre,
-                                       Integer puntosNecesarios,
+                                       Double puntosNecesarios,
                                        RubroOferta rubro,
                                        Imagen imagen) {
     return OfertaDeProductos
@@ -35,7 +35,7 @@ public class OfertaDeProductos {
 
   public static OfertaDeProductos with(Colaborador colaborador,
                                        String nombre,
-                                       Integer puntosNecesarios) {
+                                       Double puntosNecesarios) {
     return OfertaDeProductos
         .builder()
         .colaborador(colaborador)

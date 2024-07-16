@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.repository.tarjeta;
+package ar.edu.utn.frba.dds.repository.heladera;
 
 import ar.edu.utn.frba.dds.models.heladera.RetiroDeVianda;
 import java.util.ArrayList;

@@ -41,7 +41,6 @@ public class TestTarjetas {
     heladera1.setEstado(EstadoHeladera.ACTIVA);
   }
 
-
   @Test
   @DisplayName("Se generan codigos no repetidos")
   public void comprobarCodigosRepetidos() {

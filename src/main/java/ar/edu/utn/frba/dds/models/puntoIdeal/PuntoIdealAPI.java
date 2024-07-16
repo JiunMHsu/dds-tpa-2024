@@ -6,7 +6,7 @@ import java.util.List;
 public class PuntoIdealAPI implements IAdapterPuntoIdeal {
   //  TODO
   @Override
-  public List<Ubicacion> puntoIdeal(Integer latitud, Integer longitud, Integer radio) {
+  public List<Ubicacion> puntoIdeal(Double latitud, Double longitud, Double radio) {
     return null;
   }
 }

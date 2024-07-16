@@ -1,12 +1,16 @@
 package ar.edu.utn.frba.dds.models.heladera;
 
 import ar.edu.utn.frba.dds.models.data.Direccion;
+import ar.edu.utn.frba.dds.models.sensor.*;
 import ar.edu.utn.frba.dds.models.suscripcion.ISuscipcionMovimientoVianda;
 import ar.edu.utn.frba.dds.models.suscripcion.SuscripcionFallaHeladera;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import ar.edu.utn.frba.dds.reportes.RegistroMovimiento;
+import ar.edu.utn.frba.dds.models.tecnico.Tecnico;
+import ar.edu.utn.frba.dds.repository.heladera.HeladeraRepository;
+import ar.edu.utn.frba.dds.repository.tecnico.TecnicoRepository;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,8 +28,18 @@ public class Heladera {
   private Double ultimaTemperatura;
   private EstadoHeladera estado;
   private Integer viandas;
-  private List<ISuscipcionMovimientoVianda> observersMovimiento;
+
+  private List<ISuscipcionMovimientoVianda> observersMovimientoVianda;
   private List<SuscripcionFallaHeladera> observersFalla;
+
+  private String topicSensorTemperatura;
+  private String topicSensorMovimiento;
+  private String topicLectorTarjeta;
+
+  // No se que tan correcto es
+  private SensorTemperatura sensorTemperatura;
+  private SensorMovimiento sensorMovimiento;
+  private LectorTarjeta lectorTarjeta;
 
   public static Heladera with(String nombre,
                               Direccion direccion,
@@ -47,7 +61,7 @@ public class Heladera {
         .ultimaTemperatura(ultimaTemperatura)
         .estado(estado)
         .viandas(viandas)
-        .observersMovimiento(observersMovimiento)
+        .observersMovimientoVianda(observersMovimiento)
         .observersFalla(observersFalla)
         .build();
   }
@@ -100,8 +114,14 @@ public class Heladera {
     return Heladera
         .builder()
         .viandas(0)
-        .observersMovimiento(new ArrayList<>())
+        .observersMovimientoVianda(new ArrayList<>())
         .observersFalla(new ArrayList<>());
+  }
+
+  public void inicializarSensores() {
+    sensorTemperatura = new SensorTemperatura(this);
+    sensorMovimiento = new SensorMovimiento(this);
+    lectorTarjeta = new LectorTarjeta(this);
   }
 
   public void agregarVianda() throws ExcepcionCapacidadExcedida {
@@ -153,20 +173,52 @@ public class Heladera {
   }
 
   private void notificarObserversMovimiento() {
-    this.observersMovimiento
+    this.observersMovimientoVianda
         .parallelStream()
         .forEach(observer -> observer.serNotificado(viandas));
   }
 
-  public void suscribirAMovimientoDeViandas(ISuscipcionMovimientoVianda suscriptor) {
-    observersMovimiento.add(suscriptor);
+  public void serSuscriptoPor(ISuscipcionMovimientoVianda suscriptor) {
+    observersMovimientoVianda.add(suscriptor);
   }
 
-  public void suscribirAFallas(SuscripcionFallaHeladera suscriptor) {
+  public void serSuscriptoPor(SuscripcionFallaHeladera suscriptor) {
     observersFalla.add(suscriptor);
   }
 
-  public String getNombre() {
-    return nombre;
+  public Integer espacioRestante() {
+    return capacidad - viandas;
+  }
+
+  public Boolean estaLlena() {
+    return this.espacioRestante() == 0;
+  }
+
+  public Tecnico tecnicoMasCercano() {
+    List<Tecnico> listaTecnicos = TecnicoRepository.obtenerTodos();
+    return listaTecnicos.stream()
+        .min(Comparator.comparingDouble(tecnico -> tecnico.getAreaDeCobertura().calcularDistanciaAUbicacion(direccion.getUbicacion())))
+        .orElseThrow(() -> new RuntimeException("No se encontró ningún técnico."));
+  }
+
+  public List<Heladera> heladerasRecomendadasPorFalla() {
+    List<Heladera> listaHeladerasActivasConEspacio = HeladeraRepository.obtenerTodos().stream()
+        .filter(Heladera::estaActiva)
+        .filter(heladera -> !heladera.estaLlena())
+        .toList();
+
+    List<Heladera> listaHeladerasOrdenadasPorCercania = listaHeladerasActivasConEspacio.stream()
+        .sorted(Comparator.comparingDouble(heladera1 -> heladera1.getDireccion().getUbicacion().calcularDistanciaEntreUbicaciones(direccion.getUbicacion())))
+        .toList();
+
+    List<Heladera> heladerasSeleccionadas = new ArrayList<>();
+    Integer cantViandasATransportar = viandas;
+    for (int i = 0; cantViandasATransportar > 0; i++) {
+      Heladera heladeraX = listaHeladerasOrdenadasPorCercania.get(i);
+      heladerasSeleccionadas.add(heladeraX);
+      cantViandasATransportar -= heladeraX.espacioRestante();
+    }
+
+    return heladerasSeleccionadas;
   }
 }
