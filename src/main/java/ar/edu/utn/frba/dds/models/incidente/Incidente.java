@@ -6,6 +6,10 @@ import ar.edu.utn.frba.dds.models.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.reportes.RegistroIncidente;
 import ar.edu.utn.frba.dds.mensajeria.INotificador;
 import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
+
+import ar.edu.utn.frba.dds.repository.tecnico.TecnicoRepository;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,11 +36,11 @@ public class Incidente {
 
     // notificar técnico
 
-    // Tecnico tecnicoMasCercano = // obtener tecnico x cercania
+    Tecnico tecnicoMasCercano = heladera.tecnicoMasCercano();
 
     String mensaje = generadorMensajeTecnico(incidente, heladera);
-    INotificador notificador = NotificadorFactory.of(tecnicoMasCercano.getMedioDeNotificacion());
-    notificador.enviarMensaje(mensaje);
+    //INotificador notificador = NotificadorFactory.of(tecnicoMasCercano.getMedioDeNotificacion());
+    //notificador.enviarMensaje(mensaje);
   }
 
   private static String generadorMensajeTecnico(Incidente incidente, Heladera heladera) {

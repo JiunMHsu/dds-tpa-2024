@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.models.data;
 
-import ar.edu.utn.frba.dds.models.tecnico.MasCercano;
 import lombok.Getter;
 
 @Getter
