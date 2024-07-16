@@ -17,9 +17,6 @@ public class FallaTecnica {
   private Heladera heladera;
   private String descripcion;
   private Imagen foto;
-  public void agregarFallaTecnica(){
-    RegistroIncidente.incidentePorHeladeras(heladera);
-  }
 
   public static FallaTecnica with(Colaborador colaborador, Heladera heladera, String descripcion, Imagen foto) {
     return FallaTecnica

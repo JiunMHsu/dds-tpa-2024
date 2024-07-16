@@ -18,10 +18,6 @@ public class Incidente {
   private Heladera heladera;
   private LocalDateTime fechaHora;
 
-  public void agregarIncidente(){
-    RegistroIncidente.incidentePorHeladeras(heladera);
-  }
-
   public static void reportar(TipoIncidente tipo, Heladera heladera, LocalDateTime fechaHora) {
     Incidente incidente = Incidente
         .builder()
@@ -31,7 +27,7 @@ public class Incidente {
         .build();
 
     heladera.setEstadoDeFalla();
-    RegistroIncidente.registrarIncidente(incidente);
+    RegistroIncidente.incidentePorHeladeras(heladera);
 
     Tecnico tecnicoMasCercano = heladera.tecnicoMasCercano();
     tecnicoMasCercano.notificarPorIncidente(incidente);

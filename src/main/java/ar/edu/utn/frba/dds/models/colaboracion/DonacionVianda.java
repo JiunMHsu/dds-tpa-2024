@@ -10,15 +10,10 @@ import lombok.Getter;
 @Getter
 @Builder
 public class DonacionVianda {
-
   private Colaborador colaborador;
   private LocalDate fechaDonacion;
   private Vianda vianda;
   private Boolean esEntregada;
-
-  public void agregarVianda(){
-    RegistroDonacion.viandasPorColaborador(colaborador);
-  }
 
   public static DonacionVianda by(Colaborador colaborador, Vianda vianda) {
     return DonacionVianda

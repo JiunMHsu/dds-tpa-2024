@@ -28,8 +28,6 @@ public class DonacionViandaRepository {
     } else{
       return DonacionViandaRepository.obtenerPorColaborador(colaborador);
     }
-
-
   }
 
 }
