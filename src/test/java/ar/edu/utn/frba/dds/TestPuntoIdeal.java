@@ -29,7 +29,7 @@ public class TestPuntoIdeal {
     puntosRecomendados.add(otraUbicacion);
 
     adapterPuntoIdeal = mock(IAdapterPuntoIdeal.class);
-    when(adapterPuntoIdeal.puntoIdeal(97.000000, 98.70000, 5.0)).thenReturn(puntosRecomendados);
+    when(adapterPuntoIdeal.puntoIdeal(976.0, 987.0, 5.0)).thenReturn(puntosRecomendados);
 
     puntoIdeal = new PuntoIdeal(adapterPuntoIdeal);
   }
@@ -38,6 +38,6 @@ public class TestPuntoIdeal {
   @DisplayName("Se puede consultar Ubicaciones recomendadas.")
   public void consultaUbicacionesRecomendadas() {
     Ubicacion unaUbicacion = new Ubicacion(976.0, 987.0);
-    Assertions.assertIterableEquals(puntoIdeal.puntosIdeales(unaUbicacion, 5.0), puntosRecomendados);
+    Assertions.assertIterableEquals(puntosRecomendados, puntoIdeal.puntosIdeales(unaUbicacion, 5.0));
   }
 }
