@@ -6,7 +6,12 @@ import ar.edu.utn.frba.dds.models.suscripcion.ISuscipcionMovimientoVianda;
 import ar.edu.utn.frba.dds.models.suscripcion.SuscripcionFallaHeladera;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+
+import ar.edu.utn.frba.dds.models.tecnico.Tecnico;
+import ar.edu.utn.frba.dds.repository.heladera.HeladeraRepository;
+import ar.edu.utn.frba.dds.repository.tecnico.TecnicoRepository;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -172,4 +177,32 @@ public class Heladera {
   public Integer espacioRestante(){return capacidad - viandas;}
 
   public Boolean noEstaLlena(){return this.espacioRestante()>0;}
+
+  public Tecnico tecnicoMasCercano() {
+    List<Tecnico> listaTecnicos = TecnicoRepository.obtenerTodos();
+    return listaTecnicos.stream()
+            .min(Comparator.comparingDouble(tecnico -> tecnico.getAreaDeCobertura().calcularDistanciaAUbicacion(direccion.getUbicacion())))
+            .orElseThrow(() -> new RuntimeException("No se encontró ningún técnico."));
+  }
+
+  public List<Heladera> heladerasRecomendadasPorFalla(){
+    List<Heladera> listaHeladerasActivasConEspacio = HeladeraRepository.obtenerTodos().stream()
+            .filter(Heladera::estaActiva)
+            .filter(Heladera::noEstaLlena)
+            .toList();
+    List<Heladera> listaHeladerasOrdenadasPorCercania = listaHeladerasActivasConEspacio.stream()
+            .sorted(Comparator.comparingDouble(heladera1 -> heladera1.getDireccion().getUbicacion().calcularDistanciaEntreUbicaciones(direccion.getUbicacion())))
+            .toList();
+
+    List<Heladera> heladerasSeleccionadas = new ArrayList<>();
+    Integer cantViandasATransportar = viandas;
+    int i = 0;
+    while (cantViandasATransportar>0) {
+      Heladera heladeraX = listaHeladerasOrdenadasPorCercania.get(i);
+      heladerasSeleccionadas.add(heladeraX);
+      cantViandasATransportar -= heladeraX.espacioRestante();
+      i++;
+    }
+    return heladerasSeleccionadas;
+  }
 }

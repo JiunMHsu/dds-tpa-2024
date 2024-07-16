@@ -23,7 +23,7 @@ public class TestTecnicoMasCercano {
         TecnicoRepository.agregar(tecnico2);
         TecnicoRepository.agregar(tecnico3);
 
-        Assertions.assertEquals(Incidente.tecnicoMasCercanoA(heladera),tecnico1);
+        Assertions.assertEquals(heladera.tecnicoMasCercano(),tecnico1);
 
     }
 }

@@ -36,7 +36,7 @@ public class Incidente {
 
     // notificar técnico
 
-    Tecnico tecnicoMasCercano = Incidente.tecnicoMasCercanoA(heladera);
+    Tecnico tecnicoMasCercano = heladera.tecnicoMasCercano();
 
     String mensaje = generadorMensajeTecnico(incidente, heladera);
     //INotificador notificador = NotificadorFactory.of(tecnicoMasCercano.getMedioDeNotificacion());
@@ -47,12 +47,5 @@ public class Incidente {
     return "Incidente reportado: " + incidente.getTipo() +
             " en la heladera: " + heladera.getNombre() + // Verno pl si esta bn que sea el "el nombre de la heladera"
             " a las: " + incidente.getFechaHora();
-  }
-
-  public static Tecnico tecnicoMasCercanoA(Heladera heladera) {
-    List<Tecnico> listaTecnicos = TecnicoRepository.obtenerTodos();
-    return listaTecnicos.stream()
-            .min(Comparator.comparingDouble(tecnico -> tecnico.getAreaDeCobertura().calcularDistanciaAUbicacion(heladera.getDireccion().getUbicacion())))
-            .orElseThrow(() -> new RuntimeException("No se encontró ningún técnico."));
   }
 }
