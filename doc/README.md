@@ -21,6 +21,14 @@ colaborador tendrá siempre ciertos atributos nulos, ya que no corresponden al c
 cuestión. Ejemplo: `razónSocial` y `fechaNacimiento`, `razónSocial` corresponde únicamente a una
 entidad jurídica mientras que `fechaNacimiento` pertenece únicamente a una persona humana.
 
+La razón principal por el cual se modela una única clase de `colaborador` y diferenciarlos por
+atributo, es el hecho de que no se presenta realmente comportamientos diferentes entre colaboradores
+humanos y colaboradores jurídicos. Además, en más una ocasión se requiere tratarlos por igual, por
+lo que si se hubiera planteado como dos clases (`ColaboradorHumano` y `ColaboradorJuridico`), ambos
+deberían ser herencia de una misma superclase o implementación de una misma interfaz; no obstante,
+ninguna de las dos clases tendría método siquiera, con lo cual no amerita modelar una interfaz y
+menos, una superclase.
+
 Como requerimiento del dominio, se debe poder adicionar campos al formulario de registro; es decir,
 además de los datos básicos, la ONG a cargo del sistema debe poder definir nuevos campos del
 formulario. Para la realización de éste, se define una clase `Fomulario`, el cual contiene una lista
@@ -29,9 +37,9 @@ respondió. Los colaboradores simplemente tendrán una instancia del `Formulario
 
 ![](https://github.com/dds-utn/2024-tpa-ma-ma-grupo-22/blob/main/doc/images/esquema-formulario.png)
 
-### Heladeras
-
 ### Colaboraciones
+
+### Heladeras
 
 ### Tarjetas
 
