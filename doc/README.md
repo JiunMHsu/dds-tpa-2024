@@ -12,6 +12,23 @@ corregidas según el caso.
 
 ### Colaboradores
 
+Para el registro de colaboradores se dispone de una clase `Colaborador`, el cual se usa para los dos
+tipos de colaboradores que existen en el dominio (Humano y Jurídico). Es posible diferenciarlos
+mediante el atributo `tipoColaborador`; de esta forma se evita también realizar lecturas sobre
+campos `null` y, eventualmente causar `NullPointerException`, este último se debe a que existen
+algunos campos de información compartida como algunos que no, con lo cual, una instancia de
+colaborador tendrá siempre ciertos atributos nulos, ya que no corresponden al colaborador en
+cuestión. Ejemplo: `razónSocial` y `fechaNacimiento`, `razónSocial` corresponde únicamente a una
+entidad jurídica mientras que `fechaNacimiento` pertenece únicamente a una persona humana.
+
+Como requerimiento del dominio, se debe poder adicionar campos al formulario de registro; es decir,
+además de los datos básicos, la ONG a cargo del sistema debe poder definir nuevos campos del
+formulario. Para la realización de éste, se define una clase `Fomulario`, el cual contiene una lista
+de preguntas, y otra clase `FormularioRepondido` que tiene las respuestas y el formulario al que
+respondió. Los colaboradores simplemente tendrán una instancia del `FormularioRepondido`.
+
+![](https://github.com/dds-utn/2024-tpa-ma-ma-grupo-22/tree/main/doc/images/esquema-formulario.png)
+
 ### Heladeras
 
 ### Colaboraciones
