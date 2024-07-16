@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.models.colaboracion;
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.vianda.Vianda;
 import java.time.LocalDate;
+import ar.edu.utn.frba.dds.reportes.RegistroDonacion;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -14,6 +15,10 @@ public class DonacionVianda {
   private LocalDate fechaDonacion;
   private Vianda vianda;
   private Boolean esEntregada;
+
+  public void agregarVianda(){
+    RegistroDonacion.viandasPorColaborador(colaborador);
+  }
 
   public static DonacionVianda by(Colaborador colaborador, Vianda vianda) {
     return DonacionVianda
