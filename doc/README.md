@@ -27,7 +27,7 @@ formulario. Para la realización de éste, se define una clase `Fomulario`, el c
 de preguntas, y otra clase `FormularioRepondido` que tiene las respuestas y el formulario al que
 respondió. Los colaboradores simplemente tendrán una instancia del `FormularioRepondido`.
 
-![](https://github.com/dds-utn/2024-tpa-ma-ma-grupo-22/tree/main/doc/images/esquema-formulario.png)
+![](https://github.com/dds-utn/2024-tpa-ma-ma-grupo-22/blob/main/doc/images/esquema-formulario.png)
 
 ### Heladeras
 
