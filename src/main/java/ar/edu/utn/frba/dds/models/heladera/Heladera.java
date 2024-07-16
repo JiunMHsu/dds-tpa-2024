@@ -174,35 +174,39 @@ public class Heladera {
     observersFalla.add(suscriptor);
   }
 
-  public Integer espacioRestante(){return capacidad - viandas;}
+  public Integer espacioRestante() {
+    return capacidad - viandas;
+  }
 
-  public Boolean noEstaLlena(){return this.espacioRestante()>0;}
+  public Boolean estaLlena() {
+    return this.espacioRestante() == 0;
+  }
 
   public Tecnico tecnicoMasCercano() {
     List<Tecnico> listaTecnicos = TecnicoRepository.obtenerTodos();
     return listaTecnicos.stream()
-            .min(Comparator.comparingDouble(tecnico -> tecnico.getAreaDeCobertura().calcularDistanciaAUbicacion(direccion.getUbicacion())))
-            .orElseThrow(() -> new RuntimeException("No se encontró ningún técnico."));
+        .min(Comparator.comparingDouble(tecnico -> tecnico.getAreaDeCobertura().calcularDistanciaAUbicacion(direccion.getUbicacion())))
+        .orElseThrow(() -> new RuntimeException("No se encontró ningún técnico."));
   }
 
-  public List<Heladera> heladerasRecomendadasPorFalla(){
+  public List<Heladera> heladerasRecomendadasPorFalla() {
     List<Heladera> listaHeladerasActivasConEspacio = HeladeraRepository.obtenerTodos().stream()
-            .filter(Heladera::estaActiva)
-            .filter(Heladera::noEstaLlena)
-            .toList();
+        .filter(Heladera::estaActiva)
+        .filter(heladera -> !heladera.estaLlena())
+        .toList();
+
     List<Heladera> listaHeladerasOrdenadasPorCercania = listaHeladerasActivasConEspacio.stream()
-            .sorted(Comparator.comparingDouble(heladera1 -> heladera1.getDireccion().getUbicacion().calcularDistanciaEntreUbicaciones(direccion.getUbicacion())))
-            .toList();
+        .sorted(Comparator.comparingDouble(heladera1 -> heladera1.getDireccion().getUbicacion().calcularDistanciaEntreUbicaciones(direccion.getUbicacion())))
+        .toList();
 
     List<Heladera> heladerasSeleccionadas = new ArrayList<>();
     Integer cantViandasATransportar = viandas;
-    int i = 0;
-    while (cantViandasATransportar>0) {
+    for (int i = 0; cantViandasATransportar > 0; i++) {
       Heladera heladeraX = listaHeladerasOrdenadasPorCercania.get(i);
       heladerasSeleccionadas.add(heladeraX);
       cantViandasATransportar -= heladeraX.espacioRestante();
-      i++;
     }
+
     return heladerasSeleccionadas;
   }
 }

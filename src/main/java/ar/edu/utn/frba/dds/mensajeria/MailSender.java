@@ -35,7 +35,7 @@ public class MailSender implements INotificador {
 
   }
 
-  public void enviarMail(Mail content) {
+  public void enviarMail(Mail mail) {
     Properties props = new Properties();
     props.put("mail.smtp.auth", "true");
     props.put("mail.smtp.starttls.enable", "true");
@@ -52,9 +52,9 @@ public class MailSender implements INotificador {
     try {
       Message message = new MimeMessage(session);
       message.setFrom(new InternetAddress("your-email@example.com"));
-      message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(content.getDestinatario()));
-      message.setSubject(content.getAsunto());
-      message.setText(content.getCuerpo());
+      message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mail.getDestinatario()));
+      message.setSubject(mail.getAsunto());
+      message.setText(mail.getCuerpo());
 
       Transport.send(message);
 
