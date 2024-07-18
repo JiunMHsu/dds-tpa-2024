@@ -25,4 +25,8 @@ public class MensajeRepository {
             return null;
         }
     }
+
+    public static void limpiar() {
+        db.clear(); // Limpiar todos los mensajes del repositorio
+    }
 }
