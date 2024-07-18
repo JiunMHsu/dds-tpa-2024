@@ -30,4 +30,3 @@ target/**
 .idea/**
 
 # Generated PDF Documents
-*.pdf
