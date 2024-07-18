@@ -5,7 +5,7 @@ import static org.mockito.Mockito.*;
 import ar.edu.utn.frba.dds.reportes.GeneradorDeReporte;
 import com.aspose.pdf.Document;
 import com.aspose.pdf.Page;
-import com.aspose.pdf.TextFragment;
+import com.aspose.pdf.TextAbsorber;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -37,7 +37,7 @@ public class TestGeneradorDeReporte {
   }
 
   @Test
-  public void testGeneradorDeReporte() throws IOException {
+  public void testGeneradorDeReporte() {
     // Datos de prueba
     Map<String, Integer> incidentesPorHeladera = new HashMap<>();
     incidentesPorHeladera.put("Heladera1", 5);
@@ -62,6 +62,7 @@ public class TestGeneradorDeReporte {
         "reporte_test_viandas_agregadas.pdf",
         "reporte_test_viandas_colaborador.pdf"
     };
+
     reporte.generadorDeReporte();
 
     mockDocument.save(pdfFilePaths[0]);
@@ -69,29 +70,31 @@ public class TestGeneradorDeReporte {
     mockDocument.save(pdfFilePaths[2]);
     mockDocument.save(pdfFilePaths[3]);
 
-    for (String pdfFilePath : pdfFilePaths) {
-      File pdfFile = new File(pdfFilePath);
+    String[] expectedContents = {
+        "Cantidad de Fallas por Heladera",
+        "Cantidad de Viandas Retiradas por Heladera",
+        "Cantidad de Viandas Agregadas por Heladera",
+        "Cantidad de Viandas por Colaborador"
+    };
+
+    for (int i = 0; i < pdfFilePaths.length; i++) {
+      File pdfFile = new File(pdfFilePaths[i]);
       assertTrue(pdfFile.exists());
 
-      // verificar el contenido del PDF
-      Document pdfDocument = new Document(pdfFilePath);
-      Page firstPage = pdfDocument.getPages().get_Item(1);
+      Document pdfDocument = new Document(pdfFilePaths[i]);
 
-      // Verificar que el contenido de la primera página contiene el texto esperado
-      boolean contieneTextoEsperado = false;
-      for (TextFragment fragment : firstPage.getParagraphs().getTextFragments()) {
-        if (fragment.getText().contains("Cantidad de Fallas por Heladera") ||
-            fragment.getText().contains("Cantidad de Viandas Retiradas por Heladera") ||
-            fragment.getText().contains("Cantidad de Viandas Agregadas por Heladera") ||
-            fragment.getText().contains("Cantidad de Viandas por Colaborador")) {
-          contieneTextoEsperado = true;
-          break;
-        }
+      // para extraer el texto de la primera página
+      TextAbsorber textAbsorber = new TextAbsorber();
+      pdfDocument.getPages().accept(textAbsorber);
+      String pageText = textAbsorber.getText();
+
+      assertTrue(pageText.contains(expectedContents[i]));
+
+      try {
+        Files.delete(pdfFile.toPath());
+      } catch (IOException e) {
+        e.printStackTrace();
       }
-
-      assertTrue(contieneTextoEsperado);
-
-      Files.delete(pdfFile.toPath());
     }
   }
 }
