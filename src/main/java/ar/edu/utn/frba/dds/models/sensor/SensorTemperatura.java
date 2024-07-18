@@ -37,11 +37,13 @@ public class SensorTemperatura extends ClienteMqtt {
   }
 
   private void lanzarAlertaTemperatura() {
-    Incidente.reportar(TipoIncidente.FALLA_TEMPERATURA, heladera, LocalDateTime.now());
+    Incidente fallaTemperatura = Incidente.of(TipoIncidente.FALLA_TEMPERATURA, heladera, LocalDateTime.now());
+    fallaTemperatura.reportar();
   }
 
   private void lanzarFallaConexion() {
-    Incidente.reportar(TipoIncidente.FALLA_CONEXION, heladera, LocalDateTime.now());
+    Incidente fallaConexion = Incidente.of(TipoIncidente.FALLA_CONEXION, heladera, LocalDateTime.now());
+    fallaConexion.reportar();
   }
 
 

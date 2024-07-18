@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.models.tarjeta;
 
+import ar.edu.utn.frba.dds.models.heladera.ExcepcionCantidadDeViandas;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.heladera.RetiroDeVianda;
 import ar.edu.utn.frba.dds.models.personaVulnerable.PersonaVulnerable;
@@ -50,20 +51,22 @@ public class TarjetaPersonaVulnerable implements ITarjeta {
       throw new ExcepcionUsoInvalido("Heladera Inactiva");
     }
 
-    // quizá evaluar el caso de heladera vacía
-
     if (!this.puedeUsar()) {
       throw new ExcepcionUsoInvalido("No quedan usos disponibles");
     }
 
-    usosEnElDia++;
-    ultimoUso = LocalDate.now();
-    heladera.quitarVianda();
-    RetiroDeViandaRepository.agregar(RetiroDeVianda.by(
-        this,
-        heladera,
-        LocalDateTime.now()
-    ));
+    try {
+      heladera.quitarVianda();
+      usosEnElDia++;
+      ultimoUso = LocalDate.now();
+      RetiroDeViandaRepository.agregar(RetiroDeVianda.by(
+          this,
+          heladera,
+          LocalDateTime.now()
+      ));
+    } catch (ExcepcionCantidadDeViandas e) {
+      throw new ExcepcionUsoInvalido("No quedan viandas disponibles");
+    }
   }
 
   public Integer usosPorDia() {

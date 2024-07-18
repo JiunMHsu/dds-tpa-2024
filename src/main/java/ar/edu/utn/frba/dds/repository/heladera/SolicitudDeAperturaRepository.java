@@ -15,11 +15,11 @@ public class SolicitudDeAperturaRepository {
   /**
    * Retorna la última solicitud realizada luego de 'fechaHora'
    */
-  public static SolicitudDeApertura obtenerPorTarjeta(String codigoTarjeta, LocalDateTime fechaHora) {
+  public static List<SolicitudDeApertura> obtenerPorTarjeta(String codigoTarjeta, LocalDateTime fechaHora) {
     return db.stream()
         .filter(solicitud -> solicitud.getTarjeta().getCodigo().equals(codigoTarjeta))
         .filter(solicitud -> solicitud.getFechaHora().isAfter(fechaHora))
-        .findFirst().orElse(null);
+        .toList();
   }
 
   public static List<SolicitudDeApertura> obtenerPorTarjeta(String codigoTarjeta) {

@@ -6,6 +6,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class RegistroMovimiento {
+
   public static Map<String, Integer> viandasAgregadas = new HashMap();
   public static Map<String, Integer> viandasQuitadas = new HashMap();
 
@@ -15,8 +16,9 @@ public class RegistroMovimiento {
   public static void agregarViandaPorHeladera(String nombreHeladera){
     viandasAgregadas.put(nombreHeladera, viandasAgregadas.getOrDefault(nombreHeladera, 0) + 1);
   }
-  public static void quitarViandaPorHeladera(String nombreHeladera){
-    viandasAgregadas.put(nombreHeladera, viandasQuitadas.getOrDefault(nombreHeladera, 0)  + 1);
+
+  public static void quitarViandaPorHeladera(String nombreHeladera) {
+    viandasAgregadas.put(nombreHeladera, viandasQuitadas.getOrDefault(nombreHeladera, 0) + 1);
   }
   private static void iniciarReinicioSemanal(){
     Timer timer = new Timer();

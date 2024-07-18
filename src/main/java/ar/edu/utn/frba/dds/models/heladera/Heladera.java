@@ -4,6 +4,7 @@ import ar.edu.utn.frba.dds.models.data.Direccion;
 import ar.edu.utn.frba.dds.models.sensor.*;
 import ar.edu.utn.frba.dds.models.suscripcion.ISuscipcionMovimientoVianda;
 import ar.edu.utn.frba.dds.models.suscripcion.SuscripcionFallaHeladera;
+import ar.edu.utn.frba.dds.reportes.RegistroMovimiento;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -125,31 +126,31 @@ public class Heladera {
     lectorTarjeta = new LectorTarjeta(this);
   }
 
-  public void agregarVianda() throws ExcepcionCapacidadExcedida {
+  public void agregarVianda() throws ExcepcionCantidadDeViandas {
     if (!this.puedeAgregarVianda()) {
-      throw new ExcepcionCapacidadExcedida("La capacidad de la heladera esta excedida");
+      throw new ExcepcionCantidadDeViandas("La capacidad de la heladera esta excedida");
     }
     viandas += 1;
-    RegistroMovimiento.agregarViandaPorHeladera( nombre);
+    RegistroMovimiento.agregarViandaPorHeladera(nombre);
     this.notificarObserversMovimiento();
   }
 
-  public void agregarViandas(Integer cantViandas) throws ExcepcionCapacidadExcedida {
+  public void agregarViandas(Integer cantViandas) throws ExcepcionCantidadDeViandas {
     for (int i = 0; i < cantViandas; i++) {
       this.agregarVianda();
     }
   }
 
-  public void quitarVianda() throws ExcepcionCapacidadExcedida {
+  public void quitarVianda() throws ExcepcionCantidadDeViandas {
     if (!this.puedeQuitarVianda()) {
-      throw new ExcepcionCapacidadExcedida("La heladera esta vacia");
+      throw new ExcepcionCantidadDeViandas("La heladera esta vacia");
     }
     viandas -= 1;
     RegistroMovimiento.quitarViandaPorHeladera(nombre);
     this.notificarObserversMovimiento();
   }
 
-  public void quitarViandas(Integer cantViandas) throws ExcepcionCapacidadExcedida {
+  public void quitarViandas(Integer cantViandas) throws ExcepcionCantidadDeViandas {
     for (int i = 0; i < cantViandas; i++) {
       this.quitarVianda();
     }
@@ -160,8 +161,9 @@ public class Heladera {
   }
 
   private boolean puedeQuitarVianda() {
-    return (viandas != 0);
+    return this.estaActiva() && (viandas != 0);
   }
+
   public Boolean estaActiva() {
     return estado == EstadoHeladera.ACTIVA;
   }
@@ -171,6 +173,10 @@ public class Heladera {
     this.observersFalla
         .parallelStream()
         .forEach(SuscripcionFallaHeladera::serNotificado);
+  }
+
+  public void reanudarFuncionamiento() {
+    this.estado = EstadoHeladera.ACTIVA;
   }
 
   private void notificarObserversMovimiento() {
@@ -195,13 +201,13 @@ public class Heladera {
     return this.espacioRestante() == 0;
   }
 
-  public Tecnico tecnicoMasCercano() {
-    List<Tecnico> listaTecnicos = TecnicoRepository.obtenerTodos();
+  public Tecnico tecnicoMasCercano(List<Tecnico> listaTecnicos) {
     return listaTecnicos.stream()
         .min(Comparator.comparingDouble(tecnico -> tecnico.getAreaDeCobertura().calcularDistanciaAUbicacion(direccion.getUbicacion())))
         .orElseThrow(() -> new RuntimeException("No se encontró ningún técnico."));
   }
 
+  // TODO REFACTOR
   public List<Heladera> heladerasRecomendadasPorFalla() {
     List<Heladera> listaHeladerasActivasConEspacio = HeladeraRepository.obtenerTodos().stream()
         .filter(Heladera::estaActiva)

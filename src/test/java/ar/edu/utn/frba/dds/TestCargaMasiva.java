@@ -28,27 +28,27 @@ public class TestCargaMasiva {
     mailSender = mock(MailSender.class);
     cargadorDeColaboraciones = new CargadorDeColaboraciones(mailSender);
 
-    ColaboradorRepository.agregar(Colaborador.colaborador(new Usuario("", "", "juan.perez@mail.com")));
-    ColaboradorRepository.agregar(Colaborador.colaborador(new Usuario("", "", "maria.gomez@ejemplo.com")));
-    ColaboradorRepository.agregar(Colaborador.colaborador(new Usuario("", "", "carlos@mail.com")));
-    ColaboradorRepository.agregar(Colaborador.colaborador(new Usuario("", "", "ana.martinez@gmail.com")));
-    ColaboradorRepository.agregar(Colaborador.colaborador(new Usuario("", "", "pedro.fernandez@hotmail.com")));
-    ColaboradorRepository.agregar(Colaborador.colaborador(new Usuario("", "", "lau.garcia@outlook.com")));
-    ColaboradorRepository.agregar(Colaborador.colaborador(new Usuario("", "", "javi.sanchez@yahoo.com")));
-    ColaboradorRepository.agregar(Colaborador.colaborador(new Usuario("", "", "sofia.ramirez@empresa.com")));
-    ColaboradorRepository.agregar(Colaborador.colaborador(new Usuario("", "", "martin.diaz@mail.com")));
-    ColaboradorRepository.agregar(Colaborador.colaborador(new Usuario("", "", "cmorales@ejemplo.org")));
-    ColaboradorRepository.agregar(Colaborador.colaborador(new Usuario("", "", "tomas.romero@gmail.com")));
-    ColaboradorRepository.agregar(Colaborador.colaborador(new Usuario("", "", "flor.nunez@empresa.com")));
-    ColaboradorRepository.agregar(Colaborador.colaborador(new Usuario("", "", "nico.herrera@hotmail.com")));
-    ColaboradorRepository.agregar(Colaborador.colaborador(new Usuario("", "", "lcastro@outlook.com")));
-    ColaboradorRepository.agregar(Colaborador.colaborador(new Usuario("", "", "egutierrez@yahoo.com")));
-    ColaboradorRepository.agregar(Colaborador.colaborador(new Usuario("", "", "cami.gimenez@mail.com")));
-    ColaboradorRepository.agregar(Colaborador.colaborador(new Usuario("", "", "matias.lopez@gmail.com")));
-    ColaboradorRepository.agregar(Colaborador.colaborador(new Usuario("", "", "vruiz@empresa.com")));
-    ColaboradorRepository.agregar(Colaborador.colaborador(new Usuario("", "", "santi.gomez@hotmail.com")));
-    ColaboradorRepository.agregar(Colaborador.colaborador(new Usuario("", "", "cata@outlook.com")));
-    ColaboradorRepository.agregar(Colaborador.colaborador(new Usuario("", "", "emilio.gonzalez@yahoo.com")));
+    ColaboradorRepository.agregar(Colaborador.colaborador(Usuario.withEmail("juan.perez@mail.com")));
+    ColaboradorRepository.agregar(Colaborador.colaborador(Usuario.withEmail("maria.gomez@ejemplo.com")));
+    ColaboradorRepository.agregar(Colaborador.colaborador(Usuario.withEmail("carlos@mail.com")));
+    ColaboradorRepository.agregar(Colaborador.colaborador(Usuario.withEmail("ana.martinez@gmail.com")));
+    ColaboradorRepository.agregar(Colaborador.colaborador(Usuario.withEmail("pedro.fernandez@hotmail.com")));
+    ColaboradorRepository.agregar(Colaborador.colaborador(Usuario.withEmail("lau.garcia@outlook.com")));
+    ColaboradorRepository.agregar(Colaborador.colaborador(Usuario.withEmail("javi.sanchez@yahoo.com")));
+    ColaboradorRepository.agregar(Colaborador.colaborador(Usuario.withEmail("sofia.ramirez@empresa.com")));
+    ColaboradorRepository.agregar(Colaborador.colaborador(Usuario.withEmail("martin.diaz@mail.com")));
+    ColaboradorRepository.agregar(Colaborador.colaborador(Usuario.withEmail("cmorales@ejemplo.org")));
+    ColaboradorRepository.agregar(Colaborador.colaborador(Usuario.withEmail("tomas.romero@gmail.com")));
+    ColaboradorRepository.agregar(Colaborador.colaborador(Usuario.withEmail("flor.nunez@empresa.com")));
+    ColaboradorRepository.agregar(Colaborador.colaborador(Usuario.withEmail("nico.herrera@hotmail.com")));
+    ColaboradorRepository.agregar(Colaborador.colaborador(Usuario.withEmail("lcastro@outlook.com")));
+    ColaboradorRepository.agregar(Colaborador.colaborador(Usuario.withEmail("egutierrez@yahoo.com")));
+    ColaboradorRepository.agregar(Colaborador.colaborador(Usuario.withEmail("cami.gimenez@mail.com")));
+    ColaboradorRepository.agregar(Colaborador.colaborador(Usuario.withEmail("matias.lopez@gmail.com")));
+    ColaboradorRepository.agregar(Colaborador.colaborador(Usuario.withEmail("vruiz@empresa.com")));
+    ColaboradorRepository.agregar(Colaborador.colaborador(Usuario.withEmail("santi.gomez@hotmail.com")));
+    ColaboradorRepository.agregar(Colaborador.colaborador(Usuario.withEmail("cata@outlook.com")));
+    ColaboradorRepository.agregar(Colaborador.colaborador(Usuario.withEmail("emilio.gonzalez@yahoo.com")));
 
     /**
      * Tipo Doc,Documento,Nombre,Apellido,Mail,Fecha de colaboración,Forma de colaboración,Cantidad

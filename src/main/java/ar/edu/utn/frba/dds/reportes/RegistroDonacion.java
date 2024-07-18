@@ -12,6 +12,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class RegistroDonacion {
+
   public static Map<String, Integer> viandasPorColaborador = new HashMap();
 
   public static void actualizarViandasPorColaboradorSemanal(){
@@ -39,5 +40,6 @@ public class RegistroDonacion {
       }
     };
     timer.scheduleAtFixedRate(tareaSemanal, 0, 604800000);
+
   }
 }

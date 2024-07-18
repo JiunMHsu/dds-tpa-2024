@@ -11,7 +11,7 @@ import lombok.Builder;
 public class SensorMovimiento extends ClienteMqtt {
 
   private Heladera heladera;
-  
+
   public SensorMovimiento(Heladera heladera) {
     super();
     this.heladera = heladera;
@@ -20,6 +20,7 @@ public class SensorMovimiento extends ClienteMqtt {
 
   @Override
   public void recibirMensaje(String mensaje) {
-    Incidente.reportar(TipoIncidente.FRAUDE, this.heladera, LocalDateTime.now());
+    Incidente alertaMovimiento = Incidente.of(TipoIncidente.FRAUDE, this.heladera, LocalDateTime.now());
+    alertaMovimiento.reportar();
   }
 }
