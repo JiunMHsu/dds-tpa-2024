@@ -5,7 +5,6 @@ import static ar.edu.utn.frba.dds.reportes.RegistroMovimiento.viandasAgregadas;
 import static ar.edu.utn.frba.dds.reportes.RegistroMovimiento.viandasQuitadas;
 import static ar.edu.utn.frba.dds.reportes.RegistroIncidente.incidentesPorHeladera;
 
-
 import com.aspose.pdf.Document;
 import com.aspose.pdf.Page;
 import com.aspose.pdf.Paragraphs;
@@ -16,8 +15,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class GeneradorDeReporte {
-  public static void generadorDeReporte() {
 
+  static {
+    iniciarActualizacionSemanal();
+  }
+
+  public static void generadorDeReporte() {
     crearPDF("Cantidad de Fallas por Heladera", incidentesPorHeladera);
     crearPDF("Cantidad de Viandas Retiradas por Heladera", viandasQuitadas);
     crearPDF("Cantidad de Viandas Agregadas por Heladera", viandasAgregadas);
@@ -44,14 +47,15 @@ public class GeneradorDeReporte {
   }
 
   private static void agregarDatos(Page page, Map<String, Integer> datos) {
-    for (String nombre : datos.keySet()) {
-      Paragraphs textFragments = page.getParagraphs();
-      TextFragment textFragment = new TextFragment(nombre + ": " + datos.get(nombre));
+    Paragraphs textFragments = page.getParagraphs();
+    for (Map.Entry<String, Integer> entry : datos.entrySet()) {
+      String nombre = entry.getKey();
+      Integer cantidad = entry.getValue();
+      TextFragment textFragment = new TextFragment(nombre + " = " + cantidad);
       textFragment.getTextState().setFontSize(12);
       textFragments.add(textFragment);
     }
   }
-
 
   public static void iniciarActualizacionSemanal() {
     Timer timer = new Timer();
@@ -64,5 +68,3 @@ public class GeneradorDeReporte {
     timer.scheduleAtFixedRate(tareaSemanal, 0, 604800000);
   }
 }
-
-

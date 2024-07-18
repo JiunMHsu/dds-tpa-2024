@@ -1,11 +1,13 @@
 package ar.edu.utn.frba.dds;
 
 import ar.edu.utn.frba.dds.reportes.GeneradorDeReporte;
+import ar.edu.utn.frba.dds.reportes.RegistroDonacion;
+import ar.edu.utn.frba.dds.reportes.RegistroIncidente;
+import ar.edu.utn.frba.dds.reportes.RegistroMovimiento;
 import com.aspose.pdf.Document;
 import com.aspose.pdf.TextAbsorber;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.io.File;
@@ -15,36 +17,39 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.*;
 
 public class TestGeneradorDeReporte {
-
-  private GeneradorDeReporte reporte;
 
   @BeforeEach
   public void setUp() {
     MockitoAnnotations.openMocks(this);
-    reporte = spy(new GeneradorDeReporte());
+    inicializarDatosDePrueba();
+  }
+
+  private void inicializarDatosDePrueba() {
+    // Datos de prueba
+    RegistroIncidente.incidentesPorHeladera = new HashMap<>();
+    RegistroIncidente.incidentesPorHeladera.put("Heladera1", 5);
+    RegistroIncidente.incidentesPorHeladera.put("Heladera2", 3);
+
+    RegistroMovimiento.viandasQuitadas = new HashMap<>();
+    RegistroMovimiento.viandasQuitadas.put("Heladera1", 10);
+    RegistroMovimiento.viandasQuitadas.put("Heladera2", 8);
+
+    RegistroMovimiento.viandasAgregadas = new HashMap<>();
+    RegistroMovimiento.viandasAgregadas.put("Heladera1", 15);
+    RegistroMovimiento.viandasAgregadas.put("Heladera2", 12);
+
+    RegistroDonacion.viandasPorColaborador = new HashMap<>();
+    RegistroDonacion.viandasPorColaborador.put("Colaborador1", 20);
+    RegistroDonacion.viandasPorColaborador.put("Colaborador2", 18);
   }
 
   @Test
   public void testGeneradorDeReporte() {
-    // Datos de prueba
-    Map<String, Integer> incidentesPorHeladera = new HashMap<>();
-    incidentesPorHeladera.put("Heladera1", 5);
-    incidentesPorHeladera.put("Heladera2", 3);
 
-    Map<String, Integer> viandasQuitadas = new HashMap<>();
-    viandasQuitadas.put("Heladera1", 10);
-    viandasQuitadas.put("Heladera2", 8);
+    GeneradorDeReporte.generadorDeReporte();
 
-    Map<String, Integer> viandasAgregadas = new HashMap<>();
-    viandasAgregadas.put("Heladera1", 15);
-    viandasAgregadas.put("Heladera2", 12);
-
-    Map<String, Integer> viandasPorColaborador = new HashMap<>();
-    viandasPorColaborador.put("Colaborador1", 20);
-    viandasPorColaborador.put("Colaborador2", 18);
 
     String[] pdfFilePaths = {
         "Cantidad_de_Fallas_por_Heladera.pdf",
@@ -53,14 +58,18 @@ public class TestGeneradorDeReporte {
         "Cantidad_de_Viandas_por_Colaborador.pdf"
     };
 
-    GeneradorDeReporte.generadorDeReporte();
-
-    //titulos esperados
     String[] expectedTitles = {
         "Cantidad de Fallas por Heladera",
         "Cantidad de Viandas Retiradas por Heladera",
         "Cantidad de Viandas Agregadas por Heladera",
         "Cantidad de Viandas por Colaborador"
+    };
+
+    Map<String, Integer>[] expectedData = new Map[]{
+        RegistroIncidente.incidentesPorHeladera,
+        RegistroMovimiento.viandasQuitadas,
+        RegistroMovimiento.viandasAgregadas,
+        RegistroDonacion.viandasPorColaborador
     };
 
     for (int i = 0; i < pdfFilePaths.length; i++) {
@@ -69,12 +78,22 @@ public class TestGeneradorDeReporte {
 
       Document pdfDocument = new Document(pdfFilePaths[i]);
 
-      // para tener el texto de la primera página
+
       TextAbsorber textAbsorber = new TextAbsorber();
       pdfDocument.getPages().accept(textAbsorber);
       String pageText = textAbsorber.getText();
 
+      // Verificar el título
       assertTrue(pageText.contains(expectedTitles[i]), "El título esperado no se encuentra en el PDF " + pdfFilePaths[i]);
+
+      // Verificar los datos
+      for (Map.Entry<String, Integer> entry : expectedData[i].entrySet()) {
+        String nombre = entry.getKey();
+        Integer cantidad = entry.getValue();
+        String expectedText = nombre + " = " + cantidad;
+        System.out.println("Verificando: " + expectedText + " en " + pdfFilePaths[i]); // Añadir esta línea para depuración
+        assertTrue(pageText.contains(expectedText), "El dato esperado (" + expectedText + ") no se encuentra en el PDF " + pdfFilePaths[i]);
+      }
 
       try {
         Files.delete(pdfFile.toPath());
