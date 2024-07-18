@@ -10,4 +10,8 @@ public class IncidenteRepository {
   public static void agregar(Incidente incidente) {
     db.add(incidente);
   }
+
+  public static List<Incidente> obtenerTodos() {
+    return new ArrayList<>(db);
+  }
 }

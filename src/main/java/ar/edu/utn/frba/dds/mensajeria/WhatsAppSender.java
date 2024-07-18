@@ -18,27 +18,27 @@ public class WhatsAppSender implements INotificador {
   @Override
   public void enviarMensaje(String mensaje, Contacto contacto) {
     try {
-      CamelContext camelContext = new DefaultCamelContext();
-
-      camelContext.addRoutes(new RouteBuilder() {
-        @Override
-        public void configure() {
-          from("direct:start")
-              .process(exchange -> {
-                TextMessageRequest request = new TextMessageRequest();
-                request.setTo(contacto.getWhatsApp());
-                request.setText(new TextMessage());
-                request.getText().setBody(mensaje);
-
-                exchange.getIn().setBody(request);
-              })
-              .toF("whatsapp:%s?authorizationToken=%s", PHONE_NUMBER_ID, AUTHORIZATION_TOKEN);
-        }
-      });
-
-      camelContext.start();
-      camelContext.createProducerTemplate().sendBody("direct:start", "");
-      camelContext.stop();
+//      CamelContext camelContext = new DefaultCamelContext();
+//
+//      camelContext.addRoutes(new RouteBuilder() {
+//        @Override
+//        public void configure() {
+//          from("direct:start")
+//              .process(exchange -> {
+//                TextMessageRequest request = new TextMessageRequest();
+//                request.setTo(contacto.getWhatsApp());
+//                request.setText(new TextMessage());
+//                request.getText().setBody(mensaje);
+//
+//                exchange.getIn().setBody(request);
+//              })
+//              .toF("whatsapp:%s?authorizationToken=%s", PHONE_NUMBER_ID, AUTHORIZATION_TOKEN);
+//        }
+//      });
+//
+//      camelContext.start();
+//      camelContext.createProducerTemplate().sendBody("direct:start", "");
+//      camelContext.stop();
 
       Mensaje registroMensaje = Mensaje.create(
           mensaje,
