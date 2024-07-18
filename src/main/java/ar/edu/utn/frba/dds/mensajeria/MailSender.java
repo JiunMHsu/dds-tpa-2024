@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.mensajeria;
 
+import ar.edu.utn.frba.dds.models.data.Contacto;
 import ar.edu.utn.frba.dds.models.data.Mail;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
@@ -31,7 +32,7 @@ public class MailSender implements INotificador {
   }
 
   @Override
-  public void enviarMensaje(String mensaje) {
+  public void enviarMensaje(String mensaje, Contacto contacto) {
 
   }
 

@@ -76,6 +76,6 @@ public class Tecnico {
     String mensaje = generadorMensajeTecnico(incidente);
 
     INotificador notificador = NotificadorFactory.of(this.getMedioDeNotificacion());
-    notificador.enviarMensaje(mensaje);
+    notificador.enviarMensaje(mensaje, contacto);
   }
 }
