@@ -16,53 +16,53 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class GeneradorDeReporte {
+  public static void generadorDeReporte() {
 
-    public static void generadorDeReporte(){
+    crearPDF("Cantidad de Fallas por Heladera", incidentesPorHeladera);
+    crearPDF("Cantidad de Viandas Retiradas por Heladera", viandasQuitadas);
+    crearPDF("Cantidad de Viandas Agregadas por Heladera", viandasAgregadas);
+    crearPDF("Cantidad de Viandas por Colaborador", viandasPorColaborador);
 
-      Document pdfDocument = new Document();
-      Page page = pdfDocument.getPages().add();
+    System.out.println("Reportes generados correctamente.");
+  }
 
-      agregarTitulo(page, "Cantidad de Fallas por Heladera");
-      agregarDatos(page, incidentesPorHeladera);
+  public static void crearPDF(String titulo, Map<String, Integer> datos) {
+    Document pdfDocument = new Document();
+    Page page = pdfDocument.getPages().add();
 
-      agregarTitulo(page, "Cantidad de Viandas Retiradas por Heladera");
-      agregarDatos(page, viandasQuitadas);
+    agregarTitulo(page, titulo);
+    agregarDatos(page, datos);
 
-      agregarTitulo(page, "Cantidad de Viandas Agregadas por Heladera");
-      agregarDatos(page, viandasAgregadas);
+    pdfDocument.save(titulo.replace(" ", "_") + ".pdf");
+  }
 
-      agregarTitulo(page, "Cantidad de Viandas por Colaborador");
-      agregarDatos(page, viandasPorColaborador);
+  private static void agregarTitulo(Page page, String titulo) {
+    Paragraphs textFragments = page.getParagraphs();
+    TextFragment textFragment = new TextFragment(titulo);
+    textFragment.getTextState().setFontSize(14);
+    textFragments.add(textFragment);
+  }
 
-      // Guardar el PDF
-      pdfDocument.save("Reporte.pdf");
-      System.out.println("Reporte generado correctamente.");
-    }
-
-    private static void agregarTitulo(Page page, String titulo) {
+  private static void agregarDatos(Page page, Map<String, Integer> datos) {
+    for (String nombre : datos.keySet()) {
       Paragraphs textFragments = page.getParagraphs();
-      TextFragment textFragment = new TextFragment(titulo);
-      textFragment.getTextState().setFontSize(14);
+      TextFragment textFragment = new TextFragment(nombre + ": " + datos.get(nombre));
+      textFragment.getTextState().setFontSize(12);
       textFragments.add(textFragment);
     }
+  }
 
-    private static void agregarDatos(Page page, Map<String, Integer> datos) {
-      for (String nombre : datos.keySet()) {
-        Paragraphs textFragments = page.getParagraphs();
-        TextFragment textFragment = new TextFragment(nombre + ": " + datos.get(nombre));
-        textFragment.getTextState().setFontSize(12);
-        textFragments.add(textFragment);
-      }
-    }
-  public static void iniciarActualizacionSemanal(){
+
+  public static void iniciarActualizacionSemanal() {
     Timer timer = new Timer();
-    TimerTask tareaSemanal = new TimerTask(){
+    TimerTask tareaSemanal = new TimerTask() {
       @Override
-      public void run(){
+      public void run() {
         generadorDeReporte();
       }
     };
     timer.scheduleAtFixedRate(tareaSemanal, 0, 604800000);
   }
 }
+
 
