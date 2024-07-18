@@ -4,6 +4,7 @@ import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.reportes.RegistroIncidente;
 
+import ar.edu.utn.frba.dds.repository.incidente.IncidenteRepository;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,19 +19,21 @@ public class Incidente {
   private Heladera heladera;
   private LocalDateTime fechaHora;
 
-  public static void reportar(TipoIncidente tipo, Heladera heladera, LocalDateTime fechaHora) {
-    Incidente incidente = Incidente
+  public static Incidente of(TipoIncidente tipo, Heladera heladera, LocalDateTime fechaHora) {
+    return Incidente
         .builder()
         .tipo(tipo)
         .heladera(heladera)
         .fechaHora(fechaHora)
         .build();
+  }
 
+  public void reportar() {
     heladera.setEstadoDeFalla();
     RegistroIncidente.incidentePorHeladeras(heladera);
-
+    IncidenteRepository.agregar(this);
+    
     Tecnico tecnicoMasCercano = heladera.tecnicoMasCercano();
-    tecnicoMasCercano.notificarPorIncidente(incidente);
-
+    tecnicoMasCercano.notificarPorIncidente(this);
   }
 }

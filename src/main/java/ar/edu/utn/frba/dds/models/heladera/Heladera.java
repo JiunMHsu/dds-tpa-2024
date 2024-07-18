@@ -160,7 +160,7 @@ public class Heladera {
   }
 
   private boolean puedeQuitarVianda() {
-    return (viandas != 0);
+    return this.estaActiva() && (viandas != 0);
   }
 
   public Boolean estaActiva() {
@@ -172,6 +172,10 @@ public class Heladera {
     this.observersFalla
         .parallelStream()
         .forEach(SuscripcionFallaHeladera::serNotificado);
+  }
+
+  public void reanudarFuncionamiento() {
+    this.estado = EstadoHeladera.ACTIVA;
   }
 
   private void notificarObserversMovimiento() {
@@ -196,13 +200,13 @@ public class Heladera {
     return this.espacioRestante() == 0;
   }
 
-  public Tecnico tecnicoMasCercano() {
-    List<Tecnico> listaTecnicos = TecnicoRepository.obtenerTodos();
+  public Tecnico tecnicoMasCercano(List<Tecnico> listaTecnicos) {
     return listaTecnicos.stream()
         .min(Comparator.comparingDouble(tecnico -> tecnico.getAreaDeCobertura().calcularDistanciaAUbicacion(direccion.getUbicacion())))
         .orElseThrow(() -> new RuntimeException("No se encontró ningún técnico."));
   }
 
+  // TODO REFACTOR
   public List<Heladera> heladerasRecomendadasPorFalla() {
     List<Heladera> listaHeladerasActivasConEspacio = HeladeraRepository.obtenerTodos().stream()
         .filter(Heladera::estaActiva)

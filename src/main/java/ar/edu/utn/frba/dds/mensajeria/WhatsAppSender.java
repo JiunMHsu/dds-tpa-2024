@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.mensajeria;
 
-import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.data.Contacto;
 import ar.edu.utn.frba.dds.models.data.Mensaje;
 import ar.edu.utn.frba.dds.repository.mensajeria.MensajeRepository;
@@ -27,7 +26,7 @@ public class WhatsAppSender implements INotificador {
           from("direct:start")
               .process(exchange -> {
                 TextMessageRequest request = new TextMessageRequest();
-                request.setTo("recipient_phone_number");
+                request.setTo(contacto.getWhatsApp());
                 request.setText(new TextMessage());
                 request.getText().setBody(mensaje);
 
@@ -41,15 +40,13 @@ public class WhatsAppSender implements INotificador {
       camelContext.createProducerTemplate().sendBody("direct:start", "");
       camelContext.stop();
 
-      // Repository
-      Mensaje mensajeObj = Mensaje.builder()
-          .body(mensaje)
-          .fechaEnvio(LocalDateTime.now())
-          .destinatario(contacto)
-          .medio(MedioDeNotificacion.WHATSAPP) // Suponiendo que tienes un enum para los medios
-          .build();
+      Mensaje registroMensaje = Mensaje.create(
+          mensaje,
+          LocalDateTime.now(),
+          contacto,
+          MedioDeNotificacion.WHATSAPP);
 
-      MensajeRepository.agregar(mensajeObj);
+      MensajeRepository.agregar(registroMensaje);
 
     } catch (Exception error) {
       error.printStackTrace();

@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.mensajeria;
 
-import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.data.Contacto;
 import ar.edu.utn.frba.dds.models.data.Mensaje;
 import ar.edu.utn.frba.dds.repository.mensajeria.MensajeRepository;
@@ -24,15 +23,13 @@ public class TelegramSender implements INotificador {
       ProducerTemplate producerTemplate = context.createProducerTemplate();
       producerTemplate.sendBody(TELEGRAM_ENDPOINT, mensaje);
 
-      // Repository
-      Mensaje mensajeObj = Mensaje.builder()
-              .body(mensaje)
-              .fechaEnvio(LocalDateTime.now())
-              .destinatario(contacto)
-              .medio(MedioDeNotificacion.TELEGRAM)
-              .build();
+      Mensaje registroMensaje = Mensaje.create(
+          mensaje,
+          LocalDateTime.now(),
+          contacto,
+          MedioDeNotificacion.TELEGRAM);
 
-      MensajeRepository.agregar(mensajeObj);
+      MensajeRepository.agregar(registroMensaje);
 
     } catch (Exception error) {
       error.printStackTrace();

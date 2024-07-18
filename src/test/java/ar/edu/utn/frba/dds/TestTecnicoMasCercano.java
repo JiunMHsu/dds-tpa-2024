@@ -10,9 +10,9 @@ import org.junit.jupiter.api.Test;
 
 public class TestTecnicoMasCercano {
 
-  Tecnico tecnico1 = Tecnico.with("1", new Contacto("", "", ""), new Area(new Ubicacion(-34.615803, -58.433298), 9.0));
-  Tecnico tecnico2 = Tecnico.with("2", new Contacto("", "", ""), new Area(new Ubicacion(-34.615803, -58.433298), 6.0));
-  Tecnico tecnico3 = Tecnico.with("3", new Contacto("", "", ""), new Area(new Ubicacion(-31.420083, -64.188776), 5.0));
+  Tecnico tecnico1 = Tecnico.with("1", Contacto.empty(), new Area(new Ubicacion(-34.615803, -58.433298), 9.0));
+  Tecnico tecnico2 = Tecnico.with("2", Contacto.empty(), new Area(new Ubicacion(-34.615803, -58.433298), 6.0));
+  Tecnico tecnico3 = Tecnico.with("3", Contacto.empty(), new Area(new Ubicacion(-31.420083, -64.188776), 5.0));
 
   Heladera heladera = Heladera.with("", Direccion.with(new Calle(""), 0, new Ubicacion(-34.603722, -58.381592)), 70);
 
@@ -23,6 +23,6 @@ public class TestTecnicoMasCercano {
     TecnicoRepository.agregar(tecnico2);
     TecnicoRepository.agregar(tecnico3);
 
-    Assertions.assertEquals(heladera.tecnicoMasCercano(), tecnico1);
+    Assertions.assertEquals(tecnico1, heladera.tecnicoMasCercano());
   }
 }
