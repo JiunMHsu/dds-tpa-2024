@@ -5,8 +5,8 @@ import java.util.Map;
 
 public class RegistroMovimiento {
 
-  public static Map<String, Integer> viandasAgregadas = new HashMap<>();
-  public static Map<String, Integer> viandasQuitadas = new HashMap<>();
+  private static final Map<String, Integer> viandasAgregadas = new HashMap<>();
+  private static final Map<String, Integer> viandasQuitadas = new HashMap<>();
 
   public static void agregarViandaPorHeladera(String nombreHeladera) {
     viandasAgregadas.put(nombreHeladera, viandasAgregadas.getOrDefault(nombreHeladera, 0) + 1);

@@ -1,9 +1,6 @@
 package ar.edu.utn.frba.dds;
 
 import ar.edu.utn.frba.dds.reportes.GeneradorDeReporte;
-import ar.edu.utn.frba.dds.reportes.RegistroDonacion;
-import ar.edu.utn.frba.dds.reportes.RegistroIncidente;
-import ar.edu.utn.frba.dds.reportes.RegistroMovimiento;
 import com.aspose.pdf.Document;
 import com.aspose.pdf.TextAbsorber;
 import org.junit.jupiter.api.BeforeEach;
