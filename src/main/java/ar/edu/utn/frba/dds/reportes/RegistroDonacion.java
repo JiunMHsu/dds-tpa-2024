@@ -5,12 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RegistroDonacion {
-  public static Map<String, Integer> viandasPorColaborador;
+  public static final Map<String, Integer> viandasPorColaborador = new HashMap();
 
-  public RegistroDonacion(){
-    viandasPorColaborador = new HashMap();
-  }
-  public static void viandasPorColaborador(Colaborador colaborador){
+  public static void viandasPorColaborador(Colaborador colaborador) {
     viandasPorColaborador.put(colaborador.getNombre(), viandasPorColaborador.getOrDefault(colaborador.getNombre(), 0) + 1);
   }
 }

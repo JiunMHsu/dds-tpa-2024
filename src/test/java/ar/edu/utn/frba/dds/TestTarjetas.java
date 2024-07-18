@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds;
 
-import ar.edu.utn.frba.dds.models.heladera.ExcepcionCapacidadExcedida;
+import ar.edu.utn.frba.dds.models.heladera.ExcepcionCantidadDeViandas;
 import ar.edu.utn.frba.dds.models.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.tarjeta.*;
@@ -61,8 +61,8 @@ public class TestTarjetas {
   }
 
   @Test
-  @DisplayName("Usos de la tarjeta")
-  public void puedeUsar() {
+  @DisplayName("Autorizado de uso por Personas Vulnerables")
+  public void personaVulnerablePuedeUsar() {
 
     Assertions.assertEquals(6, tarjeta1.usosPorDia(),
         "La tarjeta1 pertenece a una persona con 1 menor a cargo, por lo que tiene 6 usos diarios.");
@@ -87,11 +87,11 @@ public class TestTarjetas {
   }
 
   @Test
-  @DisplayName("Uso tarjeta en una heladera")
-  public void registrarUsoTarjeta() {
+  @DisplayName("Registro de uso por personas vulnerables")
+  public void registrarUsoTarjetaPersonaVulnerable() {
     try {
       heladera1.agregarViandas(4);
-    } catch (ExcepcionCapacidadExcedida e) {
+    } catch (ExcepcionCantidadDeViandas e) {
       Assertions.fail("Capacidad excedida.");
     }
     Assertions.assertEquals(4, heladera1.getViandas());
@@ -104,6 +104,18 @@ public class TestTarjetas {
     } catch (ExcepcionUsoInvalido e) {
       Assertions.fail("No se pudo registrar el uso de la tarjeta.");
     }
+  }
+
+  @Test
+  @DisplayName("Autorizado de uso por Colaboradores")
+  public void colaboradoresPuedeUsar() {
+    // TODO
+  }
+
+  @Test
+  @DisplayName("Registro de uso por Colaboradores")
+  public void registrarUsoTarjetaColaborador() {
+    // TODO
   }
 }
 

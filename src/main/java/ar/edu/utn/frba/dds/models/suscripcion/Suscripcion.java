@@ -21,9 +21,7 @@ public abstract class Suscripcion {
   }
 
   public abstract void suscribirAHeladera();
-
-  // TODO
-  // Ver el tema de mensaje, String u otra Clase
+  
   protected void notificarAColaborador(String mensaje) {
     INotificador notificador = NotificadorFactory.of(medioDeNotificacion);
     notificador.enviarMensaje(mensaje, colaborador.getContacto());

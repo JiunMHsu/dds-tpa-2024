@@ -10,8 +10,10 @@ import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.incidente.Incidente;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Builder
 public class Tecnico {
 
@@ -66,14 +68,10 @@ public class Tecnico {
         .build();
   }
 
-  private static String generadorMensajeTecnico(Incidente incidente) {
-    return "Incidente reportado: " + incidente.getTipo() +
-        " en la heladera: " + incidente.getHeladera().getNombre() + // Verno pl si esta bn que sea el "el nombre de la heladera"
-        " a las: " + incidente.getFechaHora();
-  }
-
   public void notificarPorIncidente(Incidente incidente) {
-    String mensaje = generadorMensajeTecnico(incidente);
+    String mensaje = "Incidente reportado: " + incidente.getTipo()
+        + " en la heladera: " + incidente.getHeladera().getNombre()
+        + " a las: " + incidente.getFechaHora();
 
     INotificador notificador = NotificadorFactory.of(this.getMedioDeNotificacion());
     notificador.enviarMensaje(mensaje, contacto);
