@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import ar.edu.utn.frba.dds.models.tecnico.Tecnico;
+import ar.edu.utn.frba.dds.reportes.RegistroMovimiento;
 import ar.edu.utn.frba.dds.repository.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.repository.tecnico.TecnicoRepository;
 import lombok.Builder;

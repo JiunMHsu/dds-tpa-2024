@@ -13,10 +13,12 @@ import com.aspose.pdf.TextFragment;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
-  public class GeneradorDeReporte {
+public class GeneradorDeReporte {
 
-    public static void main(String[] args) throws IOException {
+    public static void generarPdf(){
 
       Document pdfDocument = new Document();
       Page page = pdfDocument.getPages().add();
@@ -53,5 +55,15 @@ import java.util.Map;
         textFragments.add(textFragment);
       }
     }
+  public static void iniciarActualizacionSemanal(){
+    Timer timer = new Timer();
+    TimerTask tareaSemanal = new TimerTask(){
+      @Override
+      public void run(){
+        generarPdf();
+      }
+    };
+    timer.scheduleAtFixedRate(tareaSemanal, 0, 604800000);
+  }
   }
 
