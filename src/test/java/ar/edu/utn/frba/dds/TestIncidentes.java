@@ -48,6 +48,8 @@ public class TestIncidentes {
   public void avisoTecnico() {
     incidente = Incidente.of(TipoIncidente.FRAUDE, heladera, LocalDateTime.now());
     incidente.reportar();
+
+    // TODO
   }
 
 }

@@ -109,12 +109,13 @@ public class TestTarjetas {
   @Test
   @DisplayName("Autorizado de uso por Colaboradores")
   public void colaboradoresPuedeUsar() {
+    // TODO
   }
 
   @Test
   @DisplayName("Registro de uso por Colaboradores")
   public void registrarUsoTarjetaColaborador() {
-
+    // TODO
   }
 }
 
