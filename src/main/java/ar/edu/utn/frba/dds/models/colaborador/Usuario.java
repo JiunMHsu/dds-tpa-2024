@@ -1,17 +1,35 @@
 package ar.edu.utn.frba.dds.models.colaborador;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 public class Usuario {
 
   private String nombre;
   private String contrasenia;
   private String email;
 
-  public Usuario(String nombreUsuario, String contrasenia, String email) {
-    this.nombre = nombreUsuario;
-    this.contrasenia = contrasenia;
-    this.email = email;
+  public static Usuario with(String nombreUsuario, String contrasenia, String email) {
+    return Usuario
+        .builder()
+        .nombre(nombreUsuario)
+        .contrasenia(contrasenia)
+        .email(email)
+        .build();
+  }
+
+  public static Usuario withEmail(String email) {
+    return Usuario
+        .builder()
+        .email(email)
+        .build();
+  }
+
+  public static Usuario empty() {
+    return Usuario
+        .builder()
+        .build();
   }
 }
