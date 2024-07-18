@@ -11,8 +11,11 @@ import lombok.Getter;
 public class RegistroIncidente {
   
   public static Map<String, Integer> incidentesPorHeladera = new HashMap();
+
+  public static void incidentePorHeladeras(Heladera heladera){
     incidentesPorHeladera.put(heladera.getNombre(), incidentesPorHeladera.getOrDefault(heladera.getNombre(), 0) + 1);
   }
+
 
   private static void iniciarReinicioSemanal(){
     Timer timer = new Timer();
