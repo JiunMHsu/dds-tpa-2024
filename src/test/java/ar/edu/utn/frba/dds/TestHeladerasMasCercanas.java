@@ -5,11 +5,14 @@ import ar.edu.utn.frba.dds.models.data.Direccion;
 import ar.edu.utn.frba.dds.models.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
+import ar.edu.utn.frba.dds.models.incidente.Incidente;
+import ar.edu.utn.frba.dds.models.incidente.TipoIncidente;
 import ar.edu.utn.frba.dds.repository.heladera.HeladeraRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,7 +65,9 @@ public class TestHeladerasMasCercanas {
     heladerasSeleccionadas.add(heladera1);
     heladerasSeleccionadas.add(heladera6);
 
-    Assertions.assertTrue(heladeraFallada.heladerasRecomendadasPorFalla().containsAll(heladerasSeleccionadas));
+    Incidente incidente = Incidente.of(TipoIncidente.FRAUDE,heladeraFallada, LocalDateTime.now());
+
+    Assertions.assertTrue(incidente.heladerasRecomendadasPorFalla().containsAll(heladerasSeleccionadas));
 
   }
 }
