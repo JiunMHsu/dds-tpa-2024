@@ -5,10 +5,12 @@ import ar.edu.utn.frba.dds.models.data.Contacto;
 
 import java.time.LocalDateTime;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.Setter;
 
 @Builder
 @Setter
+@Getter
 public class Mensaje {
 
     private String body;

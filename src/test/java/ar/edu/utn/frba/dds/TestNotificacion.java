@@ -1,32 +1,77 @@
 package ar.edu.utn.frba.dds;
 
-import ar.edu.utn.frba.dds.mensajeria.INotificador;
-
-import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.models.tecnico.Tecnico;
-
-import org.junit.jupiter.api.BeforeEach;
+import ar.edu.utn.frba.dds.mensajeria.*;
+import ar.edu.utn.frba.dds.models.data.Contacto;
+import ar.edu.utn.frba.dds.models.data.Mensaje;
+import ar.edu.utn.frba.dds.repository.mensajeria.MensajeRepository;
+import java.time.LocalDateTime;
 
 import static org.mockito.Mockito.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-public class TestNotificacion {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-    INotificador notificador;
+    public class TestNotificacion {
 
-    Colaborador colaborador;
+        @Mock
+        private MensajeRepository mensajeRepository;
 
-    Tecnico tecnico;
+        private Contacto contacto;
 
-    @BeforeEach
-    public void setup() {
+        @BeforeEach
+        public void setUp() {
+            MockitoAnnotations.openMocks(this);
+            contacto = new Contacto("jgandola@frba.utn.edu.ar", "1132420699", "ni idea");
+        }
 
-        colaborador = new Colaborador();
-        tecnico = new Tecnico("", "", "", );
+        private void verificarMensajeRegistrado(String mensaje, MedioDeNotificacion medio) {
+            ArgumentCaptor<Mensaje> mensajeCaptor = ArgumentCaptor.forClass(Mensaje.class);
+            verify(mensajeRepository, times(1)).agregar(mensajeCaptor.capture());
 
-        notificador = mock(INotificador.class);
+            Mensaje mensajeRegistrado = mensajeCaptor.getValue();
+            assertEquals(mensaje, mensajeRegistrado.getBody());
+            assertEquals(medio, mensajeRegistrado.getMedio());
+            assertEquals(contacto, mensajeRegistrado.getDestinatario());
+            assertEquals(LocalDateTime.now().getDayOfMonth(), mensajeRegistrado.getFechaEnvio().getDayOfMonth());
+        }
 
+        @Test
+        public void testEnviarMensajeWhatsApp() {
+            String mensaje = "Prueba por WhatsApp.";
+            INotificador notificador = mock(WhatsAppSender.class);
 
+            doNothing().when(notificador).enviarMensaje(mensaje, contacto);
+            notificador.enviarMensaje(mensaje, contacto);
 
-    }
+            verify(notificador, times(1)).enviarMensaje(mensaje, contacto);
+            verificarMensajeRegistrado(mensaje, MedioDeNotificacion.WHATSAPP);
+        }
 
+        @Test
+        public void testEnviarMensajeTelegram() {
+            String mensaje = "Prueba por Telegram.";
+            INotificador notificador = mock(TelegramSender.class);
+
+            doNothing().when(notificador).enviarMensaje(mensaje, contacto);
+            notificador.enviarMensaje(mensaje, contacto);
+
+            verify(notificador, times(1)).enviarMensaje(mensaje, contacto);
+            verificarMensajeRegistrado(mensaje, MedioDeNotificacion.TELEGRAM);
+        }
+
+        @Test
+        public void testEnviarMensajeMail() {
+            String mensaje = "Prueba por Mail.";
+            INotificador notificador = mock(MailSender.class);
+
+            doNothing().when(notificador).enviarMensaje(mensaje, contacto);
+            notificador.enviarMensaje(mensaje, contacto);
+
+            verify(notificador, times(1)).enviarMensaje(mensaje, contacto);
+            verificarMensajeRegistrado(mensaje, MedioDeNotificacion.MAIL);
+        }
 }

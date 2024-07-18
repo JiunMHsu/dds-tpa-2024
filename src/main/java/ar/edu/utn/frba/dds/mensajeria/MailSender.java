@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.mensajeria;
 
-import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.data.Contacto;
 import ar.edu.utn.frba.dds.models.data.Mail;
 import jakarta.mail.*;
