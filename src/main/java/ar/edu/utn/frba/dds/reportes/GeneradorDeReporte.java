@@ -11,14 +11,13 @@ import com.aspose.pdf.Page;
 import com.aspose.pdf.Paragraphs;
 import com.aspose.pdf.TextFragment;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class GeneradorDeReporte {
 
-    public static void generarPdf(){
+    public static void generadorDeReporte(){
 
       Document pdfDocument = new Document();
       Page page = pdfDocument.getPages().add();
@@ -60,10 +59,10 @@ public class GeneradorDeReporte {
     TimerTask tareaSemanal = new TimerTask(){
       @Override
       public void run(){
-        generarPdf();
+        generadorDeReporte();
       }
     };
     timer.scheduleAtFixedRate(tareaSemanal, 0, 604800000);
   }
-  }
+}
 
