@@ -23,6 +23,7 @@ public class SuscripcionFaltaVianda extends Suscripcion implements ISuscipcionMo
     getHeladera().serSuscriptoPor(this);
   }
 
+  // TODO
   public void serNotificado(Integer cantViandas) {
     if (cantViandas <= viandasRestantes) {
       this.notificarAColaborador("");

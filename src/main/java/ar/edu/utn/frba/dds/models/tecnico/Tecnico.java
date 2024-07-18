@@ -69,7 +69,7 @@ public class Tecnico {
   }
 
   public void notificarPorIncidente(Incidente incidente) {
-    String mensaje = "Incidente reportado: " + incidente.getTipo()
+    String mensaje = "Incidente reportado: " + incidente.getTipo().toString()
         + " en la heladera: " + incidente.getHeladera().getNombre()
         + " a las: " + incidente.getFechaHora();
 

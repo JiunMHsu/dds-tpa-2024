@@ -17,8 +17,9 @@ public class SuscripcionFallaHeladera extends Suscripcion {
     getHeladera().serSuscriptoPor(this);
   }
 
+  // TODO
   public void serNotificado() {
-    this.notificarAColaborador("");
+    this.notificarAColaborador("La Heradera " + getHeladera().getNombre() + " sufrió fallas");
   }
 
 }

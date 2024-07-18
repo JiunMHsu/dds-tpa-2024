@@ -21,6 +21,7 @@ public class SuscripcionHeladeraLlena extends Suscripcion implements ISuscipcion
     getHeladera().serSuscriptoPor(this);
   }
 
+  // TODO
   public void serNotificado(Integer cantViandas) {
     int faltantes = this.getHeladera().getCapacidad() - cantViandas;
     if (faltantes <= viandasFaltantes) {

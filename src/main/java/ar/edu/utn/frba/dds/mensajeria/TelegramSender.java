@@ -19,9 +19,9 @@ public class TelegramSender implements INotificador {
     CamelContext context = new DefaultCamelContext();
 
     try {
-      context.start();
-      ProducerTemplate producerTemplate = context.createProducerTemplate();
-      producerTemplate.sendBody(TELEGRAM_ENDPOINT, mensaje);
+//      context.start();
+//      ProducerTemplate producerTemplate = context.createProducerTemplate();
+//      producerTemplate.sendBody(TELEGRAM_ENDPOINT, mensaje);
 
       Mensaje registroMensaje = Mensaje.create(
           mensaje,
@@ -35,11 +35,11 @@ public class TelegramSender implements INotificador {
       error.printStackTrace();
 
     } finally {
-      try {
-        context.stop();
-      } catch (Exception error) {
-        error.printStackTrace();
-      }
+//      try {
+//        context.stop();
+//      } catch (Exception error) {
+//        error.printStackTrace();
+//      }
     }
   }
 }
