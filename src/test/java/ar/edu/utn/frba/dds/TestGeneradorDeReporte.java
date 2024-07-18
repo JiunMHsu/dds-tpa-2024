@@ -18,7 +18,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ReporteTest {
+public class TestGeneradorDeReporte {
 
   @Mock
   private Document mockDocument;
@@ -54,11 +54,6 @@ public class ReporteTest {
     Map<String, Integer> viandasPorColaborador = new HashMap<>();
     viandasPorColaborador.put("Colaborador1", 20);
     viandasPorColaborador.put("Colaborador2", 18);
-
-    reporte.setIncidentesPorHeladera(incidentesPorHeladera);
-    reporte.setViandasQuitadas(viandasQuitadas);
-    reporte.setViandasAgregadas(viandasAgregadas);
-    reporte.setViandasPorColaborador(viandasPorColaborador);
 
     // Generar los reportes y guardar los PDFs en archivos temporales
     String[] pdfFilePaths = {
