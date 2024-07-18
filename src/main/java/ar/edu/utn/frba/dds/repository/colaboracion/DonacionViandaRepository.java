@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DonacionViandaRepository {
-  private static final List<DonacionVianda> db = new ArrayList<>();
+  public static final List<DonacionVianda> db = new ArrayList<>();
 
   public static void agregar(DonacionVianda colaboracion) {
     db.add(colaboracion);
