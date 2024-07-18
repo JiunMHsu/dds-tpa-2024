@@ -5,6 +5,7 @@ import ar.edu.utn.frba.dds.models.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.reportes.RegistroIncidente;
 
 import ar.edu.utn.frba.dds.repository.incidente.IncidenteRepository;
+import ar.edu.utn.frba.dds.repository.tecnico.TecnicoRepository;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,8 +33,10 @@ public class Incidente {
     heladera.setEstadoDeFalla();
     RegistroIncidente.incidentePorHeladeras(heladera);
     IncidenteRepository.agregar(this);
-    
-    Tecnico tecnicoMasCercano = heladera.tecnicoMasCercano();
+
+    Tecnico tecnicoMasCercano = heladera.tecnicoMasCercano(
+        TecnicoRepository.obtenerTodos()
+    );
     tecnicoMasCercano.notificarPorIncidente(this);
   }
 }

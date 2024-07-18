@@ -4,6 +4,8 @@ import ar.edu.utn.frba.dds.models.data.*;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.repository.tecnico.TecnicoRepository;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,10 +21,11 @@ public class TestTecnicoMasCercano {
   @Test
   @DisplayName("El tecnico mas cercano a una heladera es el que tenga menor distancia entre las dos ubicaciones restando el radio de su area de cobertura")
   public void tecnicoMasCercano() {
-    TecnicoRepository.agregar(tecnico1);
-    TecnicoRepository.agregar(tecnico2);
-    TecnicoRepository.agregar(tecnico3);
+    List<Tecnico> listaTecnicos = new ArrayList<>();
+    listaTecnicos.add(tecnico1);
+    listaTecnicos.add(tecnico2);
+    listaTecnicos.add(tecnico3);
 
-    Assertions.assertEquals(tecnico1, heladera.tecnicoMasCercano());
+    Assertions.assertEquals(tecnico1, heladera.tecnicoMasCercano(listaTecnicos));
   }
 }
