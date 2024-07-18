@@ -207,25 +207,10 @@ public class Heladera {
         .orElseThrow(() -> new RuntimeException("No se encontró ningún técnico."));
   }
 
-  // TODO REFACTOR
-  public List<Heladera> heladerasRecomendadasPorFalla() {
-    List<Heladera> listaHeladerasActivasConEspacio = HeladeraRepository.obtenerTodos().stream()
+  public List<Heladera> heladerasActivasMasCercanas() {
+    return HeladeraRepository.obtenerTodos().stream()
         .filter(Heladera::estaActiva)
-        .filter(heladera -> !heladera.estaLlena())
-        .toList();
-
-    List<Heladera> listaHeladerasOrdenadasPorCercania = listaHeladerasActivasConEspacio.stream()
         .sorted(Comparator.comparingDouble(heladera1 -> heladera1.getDireccion().getUbicacion().calcularDistanciaEntreUbicaciones(direccion.getUbicacion())))
         .toList();
-
-    List<Heladera> heladerasSeleccionadas = new ArrayList<>();
-    Integer cantViandasATransportar = viandas;
-    for (int i = 0; cantViandasATransportar > 0; i++) {
-      Heladera heladeraX = listaHeladerasOrdenadasPorCercania.get(i);
-      heladerasSeleccionadas.add(heladeraX);
-      cantViandasATransportar -= heladeraX.espacioRestante();
-    }
-
-    return heladerasSeleccionadas;
   }
 }
