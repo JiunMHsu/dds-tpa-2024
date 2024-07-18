@@ -21,7 +21,6 @@ public class PuntosPorColaboracion {
   private LocalDate fechaUltimoCanje;
   private Double puntosSobrantes;
   private VarianteCalculoDePuntos variante;
-  private Double puntajeHeladeraAnterior;
 
   public static PuntosPorColaboracion of(Colaborador colaborador) {
     PuntosPorColaboracionBuilder puntosPorColaboracion = PuntosPorColaboracion
