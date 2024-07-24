@@ -48903,14 +48903,6 @@
 				},
 				{
 					"_type": "UMLClass",
-					"_id": "AAAAAAGQlMKGPFCZnmA=",
-					"_parent": {
-						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
-					},
-					"name": "RegistroDonacion"
-				},
-				{
-					"_type": "UMLClass",
 					"_id": "AAAAAAGQlMKqN1rI/QU=",
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
