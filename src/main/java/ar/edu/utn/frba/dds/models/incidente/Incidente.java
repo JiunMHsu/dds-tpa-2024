@@ -36,7 +36,6 @@ public class Incidente {
 
   public void reportar() {
     heladera.setEstadoDeFalla();
-    RegistroIncidente.incidentePorHeladeras(heladera);
     IncidenteRepository.agregar(this);
 
     Tecnico tecnicoMasCercano = heladera.tecnicoMasCercano(
@@ -45,10 +44,10 @@ public class Incidente {
     tecnicoMasCercano.notificarPorIncidente(this);
   }
 
-  public List<Heladera> heladerasRecomendadasPorFalla(){
+  public List<Heladera> heladerasRecomendadasPorFalla() {
     List<Heladera> listaHeladerasActivasMasCercanasConEspacio = heladera.heladerasActivasMasCercanas().stream()
-            .filter(heladera -> !heladera.estaLlena())
-            .toList();
+        .filter(heladera -> !heladera.estaLlena())
+        .toList();
     List<Heladera> heladerasSeleccionadas = new ArrayList<>();
     Integer cantViandasATransportar = heladera.getViandas();
     for (int i = 0; cantViandasATransportar > 0; i++) {

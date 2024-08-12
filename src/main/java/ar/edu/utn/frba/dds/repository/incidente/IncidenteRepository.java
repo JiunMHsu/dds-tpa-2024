@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.repository.incidente;
 
 import ar.edu.utn.frba.dds.models.incidente.Incidente;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,5 +14,11 @@ public class IncidenteRepository {
 
   public static List<Incidente> obtenerTodos() {
     return new ArrayList<>(db);
+  }
+
+  public static List<Incidente> obtenerAPartirDe(LocalDateTime fechaHora) {
+    return db.stream()
+        .filter(incidente -> incidente.getFechaHora().isAfter(fechaHora))
+        .toList();
   }
 }
