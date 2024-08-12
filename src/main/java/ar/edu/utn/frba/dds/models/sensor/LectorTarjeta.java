@@ -1,12 +1,12 @@
 package ar.edu.utn.frba.dds.models.sensor;
 
-import ar.edu.utn.frba.dds.broker.ClienteMqtt;
+import ar.edu.utn.frba.dds.broker.SuscriptorMqtt;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.tarjeta.ExcepcionUsoInvalido;
 import ar.edu.utn.frba.dds.models.tarjeta.ITarjeta;
 import ar.edu.utn.frba.dds.repository.tarjeta.TarjetaRepository;
 
-public class LectorTarjeta extends ClienteMqtt {
+public class LectorTarjeta implements SuscriptorMqtt {
 
   private final Heladera heladera;
   // TODO
