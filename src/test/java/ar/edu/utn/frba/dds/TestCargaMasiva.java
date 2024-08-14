@@ -4,7 +4,7 @@ import ar.edu.utn.frba.dds.cargaDeColaboraciones.CargadorDeColaboraciones;
 import ar.edu.utn.frba.dds.mensajeria.MailSender;
 
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.models.colaborador.Usuario;
+import ar.edu.utn.frba.dds.models.usuario.Usuario;
 import ar.edu.utn.frba.dds.repository.colaborador.ColaboradorRepository;
 import java.nio.file.Path;
 import java.nio.file.Paths;

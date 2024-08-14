@@ -73,38 +73,19 @@ public class TestTarjetas {
     Assertions.assertEquals(4, tarjeta3.usosPorDia(),
         "La tarjeta3 pertenece a una persona sin menor a cargo, por lo que tiene 4 usos diarios.");
 
-    try {
-      tarjeta3.registrarUso(heladera1);
-      tarjeta3.registrarUso(heladera1);
-      tarjeta3.registrarUso(heladera1);
-      tarjeta3.registrarUso(heladera1);
-      tarjeta3.registrarUso(heladera1);
-
-      Assertions.fail("No tiro Excepción.");
-    } catch (ExcepcionUsoInvalido e) {
-      Assertions.assertNotNull(e, e.getMessage());
-    }
+//    try {
+//      tarjeta3.registrarUso(heladera1);
+//      tarjeta3.registrarUso(heladera1);
+//      tarjeta3.registrarUso(heladera1);
+//      tarjeta3.registrarUso(heladera1);
+//      tarjeta3.registrarUso(heladera1);
+//
+//      Assertions.fail("No tiro Excepción.");
+//    } catch (ExcepcionUsoInvalido e) {
+//      Assertions.assertNotNull(e, e.getMessage());
+//    }
   }
 
-  @Test
-  @DisplayName("Registro de uso por personas vulnerables")
-  public void registrarUsoTarjetaPersonaVulnerable() {
-    try {
-      heladera1.agregarViandas(4);
-    } catch (ExcepcionCantidadDeViandas e) {
-      Assertions.fail("Capacidad excedida.");
-    }
-    Assertions.assertEquals(4, heladera1.getViandas());
-
-    try {
-      tarjeta3.registrarUso(heladera1);
-      Assertions.assertEquals(3, heladera1.getViandas(),
-          "Al registrar el uso de una tarjeta, la cantidad de viandas en la Heladera usada decrementa.");
-
-    } catch (ExcepcionUsoInvalido e) {
-      Assertions.fail("No se pudo registrar el uso de la tarjeta.");
-    }
-  }
 
   @Test
   @DisplayName("Autorizado de uso por Colaboradores")
@@ -112,10 +93,5 @@ public class TestTarjetas {
     // TODO
   }
 
-  @Test
-  @DisplayName("Registro de uso por Colaboradores")
-  public void registrarUsoTarjetaColaborador() {
-    // TODO
-  }
 }
 

@@ -6,7 +6,6 @@ import ar.edu.utn.frba.dds.mensajeria.NotificadorFactory;
 import ar.edu.utn.frba.dds.models.data.Area;
 import ar.edu.utn.frba.dds.models.data.Contacto;
 import ar.edu.utn.frba.dds.models.data.Documento;
-import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.incidente.Incidente;
 import lombok.Builder;
 import lombok.Getter;

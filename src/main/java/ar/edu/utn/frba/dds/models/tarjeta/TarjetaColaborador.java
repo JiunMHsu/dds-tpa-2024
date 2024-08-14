@@ -1,10 +1,8 @@
 package ar.edu.utn.frba.dds.models.tarjeta;
 
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.models.heladera.AperturaHeladera;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.heladera.SolicitudDeApertura;
-import ar.edu.utn.frba.dds.repository.heladera.AperturaHeladeraRepository;
 import ar.edu.utn.frba.dds.repository.heladera.SolicitudDeAperturaRepository;
 import ar.edu.utn.frba.dds.utils.GeneradorDeCodigosTarjeta;
 import java.time.LocalDateTime;
@@ -14,7 +12,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class TarjetaColaborador implements ITarjeta {
+public class TarjetaColaborador implements Tarjeta {
 
   private String codigo;
   private Colaborador duenio;
@@ -27,7 +25,7 @@ public class TarjetaColaborador implements ITarjeta {
         .build();
   }
 
-  public void registrarUso(Heladera heladera) throws ExcepcionUsoInvalido {
+  public Boolean puedeUsarseEn(Heladera heladera) {
     List<SolicitudDeApertura> solicitudes = SolicitudDeAperturaRepository
         .obtenerPorTarjeta(codigo, LocalDateTime.now().minusHours(3));
 
@@ -35,10 +33,6 @@ public class TarjetaColaborador implements ITarjeta {
         .filter(s -> s.getHeladera().equals(heladera))
         .findFirst().orElse(null);
 
-    if (solicitud == null) {
-      throw new ExcepcionUsoInvalido("No hay Solicitud de Apertura");
-    }
-    
-    AperturaHeladeraRepository.agregar(AperturaHeladera.by(this, heladera, LocalDateTime.now()));
+    return solicitud != null;
   }
 }

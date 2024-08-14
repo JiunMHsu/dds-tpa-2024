@@ -8,7 +8,7 @@ import java.util.UUID;
 /**
  * Cliente Mqtt.
  */
-public abstract class ClienteMqtt {
+public class ClienteMqtt {
 
   Mqtt5BlockingClient client;
   SuscriptorMqtt suscriptor;
@@ -30,10 +30,13 @@ public abstract class ClienteMqtt {
         .serverPort(1883)
         .buildBlocking();
 
-    client.connect();
+    int minuto = 60;
+    client.connectWith()
+        .keepAlive(5 * minuto)
+        .send();
 
     client.toAsync().subscribeWith()
-        .topicFilter(suscriptor.getTopic())
+        .topicFilter(suscriptor.topic())
         .qos(MqttQos.AT_MOST_ONCE)
         .callback(mqtt5Publish -> suscriptor.recibirMensaje(mqtt5Publish.toString()))
         .send();

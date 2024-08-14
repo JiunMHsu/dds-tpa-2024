@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.models.incidente;
 
+import ar.edu.utn.frba.dds.models.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.reportes.RegistroIncidente;
@@ -35,7 +36,7 @@ public class Incidente {
   }
 
   public void reportar() {
-    heladera.setEstadoDeFalla();
+    heladera.setEstado(EstadoHeladera.INACTIVA);
     IncidenteRepository.agregar(this);
 
     Tecnico tecnicoMasCercano = heladera.tecnicoMasCercano(

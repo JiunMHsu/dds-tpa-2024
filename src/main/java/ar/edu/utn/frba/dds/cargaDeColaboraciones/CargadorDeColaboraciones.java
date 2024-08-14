@@ -5,7 +5,7 @@ import ar.edu.utn.frba.dds.models.colaboracion.DonacionDinero;
 import ar.edu.utn.frba.dds.models.colaboracion.DonacionVianda;
 import ar.edu.utn.frba.dds.models.colaboracion.RepartoDeTarjetas;
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.models.colaborador.Usuario;
+import ar.edu.utn.frba.dds.models.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.data.Documento;
 import ar.edu.utn.frba.dds.models.data.Mail;
 import ar.edu.utn.frba.dds.models.data.TipoDocumento;

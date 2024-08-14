@@ -8,12 +8,8 @@ public class FormularioRespondido {
   private ArrayList<Respuesta> respuestas;
   private Formulario formulario;
 
-  public FormularioRespondido(Formulario formulario) {
+  public FormularioRespondido(Formulario formulario, ArrayList<Respuesta> respuestas) {
     this.formulario = formulario;
-    this.respuestas = new ArrayList<>();
-  }
-
-  public void responderFormulario(ArrayList<Respuesta> respuestas) {
-    this.respuestas.addAll(respuestas);
+    this.respuestas = respuestas;
   }
 }

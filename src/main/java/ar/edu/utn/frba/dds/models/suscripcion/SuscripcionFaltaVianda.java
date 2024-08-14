@@ -20,7 +20,7 @@ public class SuscripcionFaltaVianda extends Suscripcion implements ISuscipcionMo
 
   @Override
   public void suscribirAHeladera() {
-    getHeladera().serSuscriptoPor(this);
+    // getHeladera().serSuscriptoPor(this);
   }
 
   // TODO

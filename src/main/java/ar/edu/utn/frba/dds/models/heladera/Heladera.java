@@ -1,18 +1,12 @@
 package ar.edu.utn.frba.dds.models.heladera;
 
 import ar.edu.utn.frba.dds.models.data.Direccion;
-import ar.edu.utn.frba.dds.models.sensor.*;
-import ar.edu.utn.frba.dds.models.suscripcion.ISuscipcionMovimientoVianda;
-import ar.edu.utn.frba.dds.models.suscripcion.SuscripcionFallaHeladera;
-import ar.edu.utn.frba.dds.reportes.RegistroMovimiento;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 import ar.edu.utn.frba.dds.models.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.reportes.RegistroMovimiento;
 import ar.edu.utn.frba.dds.repository.heladera.HeladeraRepository;
-import ar.edu.utn.frba.dds.repository.tecnico.TecnicoRepository;
+import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,18 +25,6 @@ public class Heladera {
   private EstadoHeladera estado;
   private Integer viandas;
 
-  private List<ISuscipcionMovimientoVianda> observersMovimientoVianda;
-  private List<SuscripcionFallaHeladera> observersFalla;
-
-  private String topicSensorTemperatura;
-  private String topicSensorMovimiento;
-  private String topicLectorTarjeta;
-
-  // No se que tan correcto es
-  private SensorTemperatura sensorTemperatura;
-  private SensorMovimiento sensorMovimiento;
-  private LectorTarjeta lectorTarjeta;
-
   public static Heladera with(String nombre,
                               Direccion direccion,
                               LocalDate inicioFuncionamiento,
@@ -50,9 +32,7 @@ public class Heladera {
                               RangoTemperatura rangoTemperatura,
                               Double ultimaTemperatura,
                               EstadoHeladera estado,
-                              Integer viandas,
-                              List<ISuscipcionMovimientoVianda> observersMovimiento,
-                              List<SuscripcionFallaHeladera> observersFalla) {
+                              Integer viandas) {
     return Heladera
         .builder()
         .nombre(nombre)
@@ -63,8 +43,6 @@ public class Heladera {
         .ultimaTemperatura(ultimaTemperatura)
         .estado(estado)
         .viandas(viandas)
-        .observersMovimientoVianda(observersMovimiento)
-        .observersFalla(observersFalla)
         .build();
   }
 
@@ -74,7 +52,7 @@ public class Heladera {
                               RangoTemperatura rangoTemperatura,
                               EstadoHeladera estado) {
     return Heladera
-        .pointerSafeBuider()
+        .builder()
         .nombre(nombre)
         .direccion(direccion)
         .capacidad(capacidad)
@@ -88,7 +66,7 @@ public class Heladera {
                               Integer capacidad,
                               RangoTemperatura rangoTemperatura) {
     return Heladera
-        .pointerSafeBuider()
+        .builder()
         .nombre(nombre)
         .direccion(direccion)
         .capacidad(capacidad)
@@ -98,7 +76,7 @@ public class Heladera {
 
   public static Heladera with(String nombre, Direccion direccion, Integer capacidad) {
     return Heladera
-        .pointerSafeBuider()
+        .builder()
         .nombre(nombre)
         .direccion(direccion)
         .capacidad(capacidad)
@@ -107,23 +85,9 @@ public class Heladera {
 
   public static Heladera with(Integer capacidad) {
     return Heladera
-        .pointerSafeBuider()
+        .builder()
         .capacidad(capacidad)
         .build();
-  }
-
-  private static HeladeraBuilder pointerSafeBuider() {
-    return Heladera
-        .builder()
-        .viandas(0)
-        .observersMovimientoVianda(new ArrayList<>())
-        .observersFalla(new ArrayList<>());
-  }
-
-  public void inicializarSensores() {
-    sensorTemperatura = new SensorTemperatura(this);
-    sensorMovimiento = new SensorMovimiento(this);
-    lectorTarjeta = new LectorTarjeta(this);
   }
 
   public void agregarVianda() throws ExcepcionCantidadDeViandas {
@@ -131,8 +95,9 @@ public class Heladera {
       throw new ExcepcionCantidadDeViandas("La capacidad de la heladera esta excedida");
     }
     viandas += 1;
+
+    // TODO (no deberia estar esto)
     RegistroMovimiento.agregarViandaPorHeladera(nombre);
-    this.notificarObserversMovimiento();
   }
 
   public void agregarViandas(Integer cantViandas) throws ExcepcionCantidadDeViandas {
@@ -146,8 +111,9 @@ public class Heladera {
       throw new ExcepcionCantidadDeViandas("La heladera esta vacia");
     }
     viandas -= 1;
+
+    // TODO (no deberia estar esto)
     RegistroMovimiento.quitarViandaPorHeladera(nombre);
-    this.notificarObserversMovimiento();
   }
 
   public void quitarViandas(Integer cantViandas) throws ExcepcionCantidadDeViandas {
@@ -157,40 +123,15 @@ public class Heladera {
   }
 
   private Boolean puedeAgregarVianda() {
-    return this.estaActiva() && (this.getViandas() < capacidad);
+    return viandas < capacidad;
   }
 
   private boolean puedeQuitarVianda() {
-    return this.estaActiva() && (viandas != 0);
+    return viandas > 0;
   }
 
   public Boolean estaActiva() {
     return estado == EstadoHeladera.ACTIVA;
-  }
-
-  public void setEstadoDeFalla() {
-    this.estado = EstadoHeladera.INACTIVA;
-    this.observersFalla
-        .parallelStream()
-        .forEach(SuscripcionFallaHeladera::serNotificado);
-  }
-
-  public void reanudarFuncionamiento() {
-    this.estado = EstadoHeladera.ACTIVA;
-  }
-
-  private void notificarObserversMovimiento() {
-    this.observersMovimientoVianda
-        .parallelStream()
-        .forEach(observer -> observer.serNotificado(viandas));
-  }
-
-  public void serSuscriptoPor(ISuscipcionMovimientoVianda suscriptor) {
-    observersMovimientoVianda.add(suscriptor);
-  }
-
-  public void serSuscriptoPor(SuscripcionFallaHeladera suscriptor) {
-    observersFalla.add(suscriptor);
   }
 
   public Integer espacioRestante() {
@@ -199,6 +140,10 @@ public class Heladera {
 
   public Boolean estaLlena() {
     return this.espacioRestante() == 0;
+  }
+
+  public Boolean admiteTemperatura(Double unaTemperatura) {
+    return rangoTemperatura.incluye(unaTemperatura);
   }
 
   public Tecnico tecnicoMasCercano(List<Tecnico> listaTecnicos) {
@@ -213,4 +158,5 @@ public class Heladera {
         .sorted(Comparator.comparingDouble(heladera1 -> heladera1.getDireccion().getUbicacion().calcularDistanciaEntreUbicaciones(direccion.getUbicacion())))
         .toList();
   }
+
 }

@@ -2,7 +2,7 @@ package ar.edu.utn.frba.dds;
 
 import ar.edu.utn.frba.dds.models.colaboracion.*;
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.models.colaborador.Usuario;
+import ar.edu.utn.frba.dds.models.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.puntosDeColaboracion.CanjeDePuntos;
@@ -91,7 +91,7 @@ public class TestCalculadorDePuntos {
   @DisplayName("Los puntos obtenidos de una persona, si no hubo un canjeo anterior, es la sumatoria de los puntos por cada forma colaborada")
   public void puntosObtenidosPrimerCanjeo() {
     PuntosPorColaboracion calculadorDePuntos = PuntosPorColaboracion.of(persona);
-    Assertions.assertEquals(calculadorDePuntos.calcularPuntos(), 5480.5);
+    Assertions.assertEquals(5480.5, calculadorDePuntos.calcularPuntos());
   }
 
   @Test

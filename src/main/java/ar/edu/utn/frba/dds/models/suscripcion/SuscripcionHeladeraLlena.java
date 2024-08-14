@@ -18,7 +18,7 @@ public class SuscripcionHeladeraLlena extends Suscripcion implements ISuscipcion
 
   @Override
   public void suscribirAHeladera() {
-    getHeladera().serSuscriptoPor(this);
+    // getHeladera().serSuscriptoPor(this);
   }
 
   // TODO

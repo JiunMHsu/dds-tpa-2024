@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.models.colaborador;
+package ar.edu.utn.frba.dds.models.usuario;
 
 import lombok.Builder;
 import lombok.Getter;
