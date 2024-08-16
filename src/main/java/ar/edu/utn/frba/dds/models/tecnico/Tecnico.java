@@ -16,7 +16,7 @@ public class Tecnico {
   private String nombre;
   private String apellido;
   private Documento documento;
-  private Long cuit;
+  private String cuit;
   private Contacto contacto;
   private MedioDeNotificacion medioDeNotificacion;
   private Area areaDeCobertura;
@@ -24,7 +24,7 @@ public class Tecnico {
   public static Tecnico with(String nombre,
                              String apellido,
                              Documento documento,
-                             Long cuit,
+                             String cuit,
                              Contacto contacto,
                              MedioDeNotificacion medioDeNotificacion,
                              Area areaDeCobertura) {

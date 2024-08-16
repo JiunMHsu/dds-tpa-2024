@@ -51,7 +51,7 @@ public class CargadorDeColaboraciones {
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
       for (CSVRecord csvRecord : csvParser) {
-        Documento documento = new Documento(Integer.parseInt(csvRecord.get("Documento")),
+        Documento documento = new Documento(csvRecord.get("Documento"),
             TipoDocumento.valueOf(csvRecord.get("Tipo Doc")));
 
         ColaboracionPrevia colaboracionPrevia = ColaboracionPrevia.of(
