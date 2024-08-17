@@ -66,9 +66,9 @@ public class TestCalculadorDePuntos {
     // Hacerse Cargo Heladera. Los puntos por hacerse cargo de heladeras activas es la cantidad de heladeras activas multiplicado por la sumatoria de meses activa y por 5
     // Puntos : (1+1) * (4+6) * 5 = 100 POR MES DE JULIO
     // Revisar cuentas segun mes
-    Heladera heladera1 = Heladera.with(10);
-    Heladera heladera2 = Heladera.with(10);
-    Heladera heladera3 = Heladera.with(10);
+    Heladera heladera1 = Heladera.con(10);
+    Heladera heladera2 = Heladera.con(10);
+    Heladera heladera3 = Heladera.con(10);
 
     heladera1.setEstado(EstadoHeladera.ACTIVA);
     heladera2.setEstado(EstadoHeladera.INACTIVA);
@@ -100,11 +100,11 @@ public class TestCalculadorDePuntos {
 
     // puntos totales mes abril: 5420.5
     OfertaDeProductos ofertaDeProductos = OfertaDeProductos.with(otraPersona, "lapiz", 420.5); //en vez de calcularlo a mano capaz mejor que haga la cuenta la compu, pero no se
-    CanjeDePuntos primerCanjeo = CanjeDePuntos.with(persona, LocalDate.of(2024, 4, 12), 420.5, 5000.0, ofertaDeProductos);
+    CanjeDePuntos primerCanjeo = CanjeDePuntos.por(persona, LocalDate.of(2024, 4, 12), 420.5, 5000.0, ofertaDeProductos);
     CanjeDePuntosRepository.agregar(primerCanjeo);
     // puntos totales mayo luego de primer canjeo: 5020.0
     OfertaDeProductos ofertaDeProductos2 = OfertaDeProductos.with(otraPersona, "birome", 120.0); //en vez de calcularlo a mano capaz mejor que haga la cuenta la compu, pero no se
-    CanjeDePuntos segundoCanjeo = CanjeDePuntos.with(persona, LocalDate.of(2024, 5, 20), 120.0, 4900.0, ofertaDeProductos2);
+    CanjeDePuntos segundoCanjeo = CanjeDePuntos.por(persona, LocalDate.of(2024, 5, 20), 120.0, 4900.0, ofertaDeProductos2);
     CanjeDePuntosRepository.agregar(segundoCanjeo);
 
     PuntosPorColaboracion calculadorDePuntos2 = PuntosPorColaboracion.of(persona);
@@ -117,11 +117,11 @@ public class TestCalculadorDePuntos {
   public void puntosObtenidosConCanjeoAnteriorMasNuevasColab() {
     // puntos totales abril: 5420.5
     OfertaDeProductos ofertaDeProductos = OfertaDeProductos.with(otraPersona, "lapiz", 420.5); //en vez de calcularlo a mano capaz mejor que haga la cuenta la compu, pero no se
-    CanjeDePuntos primerCanjeo = CanjeDePuntos.with(persona, LocalDate.of(2024, 4, 12), 420.5, 5000.0, ofertaDeProductos);
+    CanjeDePuntos primerCanjeo = CanjeDePuntos.por(persona, LocalDate.of(2024, 4, 12), 420.5, 5000.0, ofertaDeProductos);
     CanjeDePuntosRepository.agregar(primerCanjeo);
     // puntos totales mayo luego de primer canjeo: 5020.0
     OfertaDeProductos ofertaDeProductos2 = OfertaDeProductos.with(otraPersona, "birome", 120.0); //en vez de calcularlo a mano capaz mejor que haga la cuenta la compu, pero no se
-    CanjeDePuntos segundoCanjeo = CanjeDePuntos.with(persona, LocalDate.of(2024, 5, 20), 120.0, 4900.0, ofertaDeProductos2);
+    CanjeDePuntos segundoCanjeo = CanjeDePuntos.por(persona, LocalDate.of(2024, 5, 20), 120.0, 4900.0, ofertaDeProductos2);
     CanjeDePuntosRepository.agregar(segundoCanjeo);
 
     //nuevas colaboraciones
@@ -132,7 +132,7 @@ public class TestCalculadorDePuntos {
     DistribucionViandas distribucion4 = DistribucionViandas.by(persona, LocalDate.of(2024, 5, 2), 20);
     DistribucionViandasRepository.agregar(distribucion4);
     //puntaje heladeras : 3((6-3)+(6-1)+(6-5))5 - 2((5-3)+(5-1))5 = 135 - 60 = 75
-    Heladera heladera4 = Heladera.with(10);
+    Heladera heladera4 = Heladera.con(10);
     heladera4.setEstado(EstadoHeladera.ACTIVA);
     heladera4.setInicioFuncionamiento(LocalDate.of(2024, 5, 8));
     HacerseCargoHeladera hacerseCargoHeladera4 = HacerseCargoHeladera.with(persona, heladera4);
@@ -140,7 +140,7 @@ public class TestCalculadorDePuntos {
     //puntaje total julio antes tercer canje0 : 4940.0 + 595.0 = 5535.0
 
     OfertaDeProductos ofertaDeProductos3 = OfertaDeProductos.with(otraPersona, "pluma", 535.0); //en vez de calcularlo a mano capaz mejor que haga la cuenta la compu, pero no se
-    CanjeDePuntos tercerCanjeo = CanjeDePuntos.with(persona, LocalDate.of(2024, 6, 20), 535.0, 5000.0, ofertaDeProductos3);
+    CanjeDePuntos tercerCanjeo = CanjeDePuntos.por(persona, LocalDate.of(2024, 6, 20), 535.0, 5000.0, ofertaDeProductos3);
     CanjeDePuntosRepository.agregar(tercerCanjeo);
 
     //heladeras : 3((7-3)+(7-1)+(7-5))5 - 3((6-3)+(6-1)+(6-5))5 = 180 - 135 = 45

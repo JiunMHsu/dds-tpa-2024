@@ -2,7 +2,6 @@ package ar.edu.utn.frba.dds.models.heladera;
 
 import ar.edu.utn.frba.dds.models.data.Direccion;
 import ar.edu.utn.frba.dds.models.tecnico.Tecnico;
-import ar.edu.utn.frba.dds.reportes.RegistroMovimiento;
 import ar.edu.utn.frba.dds.repository.heladera.HeladeraRepository;
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -25,14 +24,14 @@ public class Heladera {
   private EstadoHeladera estado;
   private Integer viandas;
 
-  public static Heladera with(String nombre,
-                              Direccion direccion,
-                              LocalDate inicioFuncionamiento,
-                              Integer capacidad,
-                              RangoTemperatura rangoTemperatura,
-                              Double ultimaTemperatura,
-                              EstadoHeladera estado,
-                              Integer viandas) {
+  public static Heladera con(String nombre,
+                             Direccion direccion,
+                             LocalDate inicioFuncionamiento,
+                             Integer capacidad,
+                             RangoTemperatura rangoTemperatura,
+                             Double ultimaTemperatura,
+                             EstadoHeladera estado,
+                             Integer viandas) {
     return Heladera
         .builder()
         .nombre(nombre)
@@ -46,11 +45,11 @@ public class Heladera {
         .build();
   }
 
-  public static Heladera with(String nombre,
-                              Direccion direccion,
-                              Integer capacidad,
-                              RangoTemperatura rangoTemperatura,
-                              EstadoHeladera estado) {
+  public static Heladera con(String nombre,
+                             Direccion direccion,
+                             Integer capacidad,
+                             RangoTemperatura rangoTemperatura,
+                             EstadoHeladera estado) {
     return Heladera
         .builder()
         .nombre(nombre)
@@ -61,10 +60,10 @@ public class Heladera {
         .build();
   }
 
-  public static Heladera with(String nombre,
-                              Direccion direccion,
-                              Integer capacidad,
-                              RangoTemperatura rangoTemperatura) {
+  public static Heladera con(String nombre,
+                             Direccion direccion,
+                             Integer capacidad,
+                             RangoTemperatura rangoTemperatura) {
     return Heladera
         .builder()
         .nombre(nombre)
@@ -74,7 +73,7 @@ public class Heladera {
         .build();
   }
 
-  public static Heladera with(String nombre, Direccion direccion, Integer capacidad) {
+  public static Heladera con(String nombre, Direccion direccion, Integer capacidad) {
     return Heladera
         .builder()
         .nombre(nombre)
@@ -83,51 +82,55 @@ public class Heladera {
         .build();
   }
 
-  public static Heladera with(Integer capacidad) {
+  public static Heladera con(Integer capacidad) {
     return Heladera
         .builder()
         .capacidad(capacidad)
         .build();
   }
 
-  public void agregarVianda() throws ExcepcionCantidadDeViandas {
-    if (!this.puedeAgregarVianda()) {
-      throw new ExcepcionCantidadDeViandas("La capacidad de la heladera esta excedida");
-    }
-    viandas += 1;
-
-    // TODO (no deberia estar esto)
-    RegistroMovimiento.agregarViandaPorHeladera(nombre);
-  }
+  //  private void agregarVianda() throws ExcepcionCantidadDeViandas {
+  //    if (!this.puedeAgregarVianda()) {
+  //      throw new ExcepcionCantidadDeViandas("La capacidad de la heladera esta excedida");
+  //    }
+  //    viandas += 1;
+  //
+  //    // TODO (no deberia estar esto)
+  //    RegistroMovimiento.agregarViandaPorHeladera(nombre);
+  //  }
+  //
+  //  private void quitarVianda() throws ExcepcionCantidadDeViandas {
+  //    if (!this.puedeQuitarVianda()) {
+  //      throw new ExcepcionCantidadDeViandas("La heladera esta vacia");
+  //    }
+  //    viandas -= 1;
+  //
+  //    // TODO (no deberia estar esto)
+  //    RegistroMovimiento.quitarViandaPorHeladera(nombre);
+  //  }
 
   public void agregarViandas(Integer cantViandas) throws ExcepcionCantidadDeViandas {
-    for (int i = 0; i < cantViandas; i++) {
-      this.agregarVianda();
+    if (!this.puedeAgregarViandas(cantViandas)) {
+      throw new ExcepcionCantidadDeViandas("La capacidad de la heladera esta excedida");
     }
-  }
 
-  public void quitarVianda() throws ExcepcionCantidadDeViandas {
-    if (!this.puedeQuitarVianda()) {
-      throw new ExcepcionCantidadDeViandas("La heladera esta vacia");
-    }
-    viandas -= 1;
-
-    // TODO (no deberia estar esto)
-    RegistroMovimiento.quitarViandaPorHeladera(nombre);
+    viandas += cantViandas;
   }
 
   public void quitarViandas(Integer cantViandas) throws ExcepcionCantidadDeViandas {
-    for (int i = 0; i < cantViandas; i++) {
-      this.quitarVianda();
+    if (!this.puedeQuitarViandas(cantViandas)) {
+      throw new ExcepcionCantidadDeViandas("La heladera esta vacia");
     }
+
+    viandas -= cantViandas;
   }
 
-  private Boolean puedeAgregarVianda() {
-    return viandas < capacidad;
+  public Boolean puedeAgregarViandas(Integer cantidad) {
+    return (viandas + cantidad) < capacidad;
   }
 
-  private boolean puedeQuitarVianda() {
-    return viandas > 0;
+  public Boolean puedeQuitarViandas(Integer cantidad) {
+    return (viandas - cantidad) >= 0;
   }
 
   public Boolean estaActiva() {

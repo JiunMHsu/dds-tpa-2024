@@ -14,10 +14,10 @@ public class SolicitudDeApertura {
   private LocalDateTime fechaHora;
   private MotivoDeApertura motivo;
 
-  public static SolicitudDeApertura with(TarjetaColaborador tarjeta,
-                                         Heladera heladera,
-                                         LocalDateTime fechaHora,
-                                         MotivoDeApertura motivo) {
+  public static SolicitudDeApertura por(TarjetaColaborador tarjeta,
+                                        Heladera heladera,
+                                        LocalDateTime fechaHora,
+                                        MotivoDeApertura motivo) {
     return SolicitudDeApertura
         .builder()
         .tarjeta(tarjeta)
@@ -27,8 +27,8 @@ public class SolicitudDeApertura {
         .build();
   }
 
-  public static SolicitudDeApertura with(TarjetaColaborador tarjeta,
-                                         Heladera heladera) {
+  public static SolicitudDeApertura por(TarjetaColaborador tarjeta,
+                                        Heladera heladera) {
     return SolicitudDeApertura
         .builder()
         .tarjeta(tarjeta)

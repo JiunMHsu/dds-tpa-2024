@@ -16,11 +16,11 @@ public class FallaTecnica implements Incidente {
   private String descripcion;
   private Imagen foto;
 
-  public static FallaTecnica with(Heladera heladera,
-                                  LocalDateTime fechaHora,
-                                  Colaborador colaborador,
-                                  String descripcion,
-                                  Imagen foto) {
+  public static FallaTecnica de(Heladera heladera,
+                                LocalDateTime fechaHora,
+                                Colaborador colaborador,
+                                String descripcion,
+                                Imagen foto) {
     return FallaTecnica
         .builder()
         .heladera(heladera)
@@ -31,7 +31,7 @@ public class FallaTecnica implements Incidente {
         .build();
   }
 
-  public static FallaTecnica with(Colaborador colaborador, Heladera heladera) {
+  public static FallaTecnica de(Heladera heladera, Colaborador colaborador) {
     return FallaTecnica
         .builder()
         .colaborador(colaborador)

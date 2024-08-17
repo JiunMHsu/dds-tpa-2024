@@ -12,9 +12,9 @@ public class RetiroDeVianda {
   private Heladera heladera;
   private LocalDateTime fechaHora;
 
-  public static RetiroDeVianda by(TarjetaPersonaVulnerable tarjetaPersonaVulnerable,
-                                  Heladera heladera,
-                                  LocalDateTime fechaHora) {
+  public static RetiroDeVianda por(TarjetaPersonaVulnerable tarjetaPersonaVulnerable,
+                                   Heladera heladera,
+                                   LocalDateTime fechaHora) {
     return RetiroDeVianda
         .builder()
         .tarjetaPersonaVulnerable(tarjetaPersonaVulnerable)

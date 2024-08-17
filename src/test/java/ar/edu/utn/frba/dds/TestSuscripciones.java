@@ -7,7 +7,6 @@ import ar.edu.utn.frba.dds.models.data.Contacto;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.suscripcion.SuscripcionFallaHeladera;
 import ar.edu.utn.frba.dds.models.suscripcion.SuscripcionFaltaVianda;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,7 +28,7 @@ public class TestSuscripciones {
         "1169228334")
     );
 
-    unaHeladera = Heladera.with(20);
+    unaHeladera = Heladera.con(20);
     unaHeladera.setNombre("UTN Medrano");
 
     suscripcionPorFalla = new SuscripcionFallaHeladera(
@@ -60,7 +59,7 @@ public class TestSuscripciones {
 //  @DisplayName("Cuando un determinado evento ocurre, los suscriptores de dicho evento son notificados")
 //  public void notificadoDelEvento() {
 //    suscripcionPorFalla.suscribirAHeladera();
-//    Incidente unIncidente = Incidente.of(TipoIncidente.FRAUDE, unaHeladera, LocalDateTime.now());
+//    Incidente unIncidente = Incidente.de(TipoIncidente.FRAUDE, unaHeladera, LocalDateTime.now());
 //    unIncidente.reportar();
 //
 //    List<Mensaje> mensajesRegistrados = MensajeRepository.obtenerTodos();

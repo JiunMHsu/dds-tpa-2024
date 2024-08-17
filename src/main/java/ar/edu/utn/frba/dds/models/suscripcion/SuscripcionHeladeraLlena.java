@@ -15,7 +15,7 @@ public class SuscripcionHeladeraLlena {
   private MedioDeNotificacion medioDeNotificacion;
   private Integer viandasFaltantes;
 
-  public static SuscripcionHeladeraLlena of(Colaborador colaborador,
+  public static SuscripcionHeladeraLlena de(Colaborador colaborador,
                                             Heladera heladera,
                                             MedioDeNotificacion medioDeNotificacion,
                                             Integer viandasFaltantes) {

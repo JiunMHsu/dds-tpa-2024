@@ -21,7 +21,7 @@ public class TarjetaColaborador implements Tarjeta {
   private Boolean esActiva;
 
 
-  public static TarjetaColaborador of(String codigo,
+  public static TarjetaColaborador de(String codigo,
                                       Colaborador duenio,
                                       LocalDate fechaAlta,
                                       Boolean esActiva) {
@@ -34,7 +34,7 @@ public class TarjetaColaborador implements Tarjeta {
         .build();
   }
 
-  public static TarjetaColaborador of(Colaborador duenio) {
+  public static TarjetaColaborador de(Colaborador duenio) {
     return TarjetaColaborador
         .builder()
         .codigo(GeneradorDeCodigosTarjeta.generar())

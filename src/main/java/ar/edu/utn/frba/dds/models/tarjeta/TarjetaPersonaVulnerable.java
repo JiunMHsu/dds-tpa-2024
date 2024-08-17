@@ -18,7 +18,7 @@ public class TarjetaPersonaVulnerable implements Tarjeta {
   private Integer usosEnElDia;
   private LocalDate ultimoUso;
 
-  public static TarjetaPersonaVulnerable with(PersonaVulnerable duenio) {
+  public static TarjetaPersonaVulnerable de(PersonaVulnerable duenio) {
     return TarjetaPersonaVulnerable
         .builder()
         .codigo(GeneradorDeCodigosTarjeta.generar())
@@ -28,7 +28,7 @@ public class TarjetaPersonaVulnerable implements Tarjeta {
         .build();
   }
 
-  public static TarjetaPersonaVulnerable with() {
+  public static TarjetaPersonaVulnerable de() {
     return TarjetaPersonaVulnerable
         .builder()
         .codigo(GeneradorDeCodigosTarjeta.generar())

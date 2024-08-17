@@ -43,7 +43,7 @@ public class TestIncidentes {
         new Area(new Ubicacion(-31.420083, -64.188776), 5.0));
     TecnicoRepository.agregar(tecnico3);
 
-    heladera = Heladera.with("Medrano UTN",
+    heladera = Heladera.con("Medrano UTN",
         Direccion.with(new Calle(""), 0, new Ubicacion(-34.603722, -58.381592)),
         70);
   }

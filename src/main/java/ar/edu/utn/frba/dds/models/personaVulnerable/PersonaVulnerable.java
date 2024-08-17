@@ -19,12 +19,12 @@ public class PersonaVulnerable {
   private Direccion domicilio;
   private Integer menoresACargo;
 
-  public static PersonaVulnerable with(String nombre,
-                                       Documento documento,
-                                       LocalDate fechaNacimiento,
-                                       LocalDate fechaRegistro,
-                                       Direccion domicilio,
-                                       Integer menoresACargo) {
+  public static PersonaVulnerable con(String nombre,
+                                      Documento documento,
+                                      LocalDate fechaNacimiento,
+                                      LocalDate fechaRegistro,
+                                      Direccion domicilio,
+                                      Integer menoresACargo) {
     return PersonaVulnerable
         .builder()
         .nombre(nombre)
@@ -36,7 +36,7 @@ public class PersonaVulnerable {
         .build();
   }
 
-  public static PersonaVulnerable with(String nombre, Documento documento, Integer menoresACargo) {
+  public static PersonaVulnerable con(String nombre, Documento documento, Integer menoresACargo) {
     return PersonaVulnerable
         .builder()
         .nombre(nombre)
@@ -45,7 +45,7 @@ public class PersonaVulnerable {
         .build();
   }
 
-  public static PersonaVulnerable with(String nombre, Documento documento) {
+  public static PersonaVulnerable con(String nombre, Documento documento) {
     return PersonaVulnerable
         .builder()
         .nombre(nombre)
@@ -53,7 +53,7 @@ public class PersonaVulnerable {
         .build();
   }
 
-  public static PersonaVulnerable with(String nombre, Integer menoresACargo) {
+  public static PersonaVulnerable con(String nombre, Integer menoresACargo) {
     return PersonaVulnerable
         .builder()
         .nombre(nombre)
@@ -61,7 +61,7 @@ public class PersonaVulnerable {
         .build();
   }
 
-  public static PersonaVulnerable with(String nombre) {
+  public static PersonaVulnerable con(String nombre) {
     return PersonaVulnerable
         .builder()
         .nombre(nombre)

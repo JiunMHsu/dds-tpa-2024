@@ -15,11 +15,11 @@ public class CanjeDePuntos {
   private Double puntosRestantes;
   private OfertaDeProductos oferta;
 
-  public static CanjeDePuntos with(Colaborador colaborador,
-                                   LocalDate fechaCanjeo,
-                                   Double puntosCanjeados,
-                                   Double puntosRestantes,
-                                   OfertaDeProductos oferta) {
+  public static CanjeDePuntos por(Colaborador colaborador,
+                                  LocalDate fechaCanjeo,
+                                  Double puntosCanjeados,
+                                  Double puntosRestantes,
+                                  OfertaDeProductos oferta) {
     return CanjeDePuntos
         .builder()
         .colaborador(colaborador)

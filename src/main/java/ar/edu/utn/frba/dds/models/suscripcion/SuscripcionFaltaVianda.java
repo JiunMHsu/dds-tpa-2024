@@ -15,7 +15,7 @@ public class SuscripcionFaltaVianda {
   private MedioDeNotificacion medioDeNotificacion;
   private Integer viandasRestantes;
 
-  public static SuscripcionFaltaVianda of(Colaborador colaborador,
+  public static SuscripcionFaltaVianda de(Colaborador colaborador,
                                           Heladera heladera,
                                           MedioDeNotificacion medioDeNotificacion,
                                           Integer viandasRestantes) {

@@ -19,7 +19,7 @@ public class SugerenciaTrasladoVianda {
   private Colaborador colaborador;
   private EstadoSugerencia estado;
 
-  public static SugerenciaTrasladoVianda of(Heladera heladeraOrigen,
+  public static SugerenciaTrasladoVianda de(Heladera heladeraOrigen,
                                             List<Heladera> heladerasDestino,
                                             Colaborador colaborador,
                                             EstadoSugerencia estado) {
