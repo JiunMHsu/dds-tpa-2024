@@ -9,7 +9,7 @@ import ar.edu.utn.frba.dds.models.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.data.Documento;
 import ar.edu.utn.frba.dds.models.data.Mail;
 import ar.edu.utn.frba.dds.models.data.TipoDocumento;
-import ar.edu.utn.frba.dds.mensajeria.MailSender;
+import ar.edu.utn.frba.dds.mensajeria.EmailSender;
 import ar.edu.utn.frba.dds.repository.colaboracion.DistribucionViandasRepository;
 import ar.edu.utn.frba.dds.repository.colaboracion.DonacionDineroRepository;
 import ar.edu.utn.frba.dds.repository.colaboracion.DonacionViandaRepository;
@@ -27,9 +27,9 @@ import org.apache.commons.csv.CSVRecord;
 
 public class CargadorDeColaboraciones {
 
-  private MailSender mailSender;
+  private EmailSender mailSender;
 
-  public CargadorDeColaboraciones(MailSender mailSender) {
+  public CargadorDeColaboraciones(EmailSender mailSender) {
     this.mailSender = mailSender;
   }
 

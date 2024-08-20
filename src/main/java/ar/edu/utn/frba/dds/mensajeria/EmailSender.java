@@ -1,30 +1,28 @@
 package ar.edu.utn.frba.dds.mensajeria;
 
-import ar.edu.utn.frba.dds.models.data.Contacto;
 import ar.edu.utn.frba.dds.models.data.Mail;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import java.util.Properties;
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class MailSender implements INotificador {
+public class EmailSender implements Sender {
 
   private String nombreUsuario;
   private String contrasenia;
   private String host;
   private String port;
 
-  public MailSender(String nombreUsuario, String contrasenia, String host, String port) {
+  public EmailSender(String nombreUsuario, String contrasenia, String host, String port) {
     this.nombreUsuario = nombreUsuario;
     this.contrasenia = contrasenia;
     this.host = host;
     this.port = port;
   }
 
-  public MailSender() {
+  public EmailSender() {
     this.nombreUsuario = "";
     this.contrasenia = "";
     this.host = "";
@@ -32,7 +30,7 @@ public class MailSender implements INotificador {
   }
 
   @Override
-  public void enviarMensaje(String mensaje, Contacto contacto) {
+  public void enviarMensaje(String receptor, String asunto, String cuerpo) {
 
   }
 

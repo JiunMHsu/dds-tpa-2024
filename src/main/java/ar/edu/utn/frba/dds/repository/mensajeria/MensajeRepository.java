@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.repository.mensajeria;
 
-import ar.edu.utn.frba.dds.models.data.Mensaje;
+import ar.edu.utn.frba.dds.mensajeria.Mensaje;
 
 import lombok.Getter;
 import java.util.ArrayList;

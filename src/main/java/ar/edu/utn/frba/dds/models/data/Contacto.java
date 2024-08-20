@@ -45,7 +45,7 @@ public class Contacto {
     return switch (medioDeNotificacion) {
       case WHATSAPP -> this.getWhatsApp();
       case TELEGRAM -> this.getTelegram();
-      case MAIL -> this.getEmail();
+      case EMAIL -> this.getEmail();
     };
   }
 }

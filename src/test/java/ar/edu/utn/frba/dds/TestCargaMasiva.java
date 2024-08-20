@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds;
 
 import ar.edu.utn.frba.dds.cargaDeColaboraciones.CargadorDeColaboraciones;
-import ar.edu.utn.frba.dds.mensajeria.MailSender;
+import ar.edu.utn.frba.dds.mensajeria.EmailSender;
 
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.usuario.Usuario;
@@ -19,13 +19,13 @@ import static org.mockito.Mockito.mock;
 public class TestCargaMasiva {
 
   CargadorDeColaboraciones cargadorDeColaboraciones;
-  MailSender mailSender;
+  EmailSender mailSender;
   Path path;
 
   @BeforeEach
   public void setup() {
     path = Paths.get("src/test/resources/ar/edu/utn/frba/dds/csvEntrega2.csv");
-    mailSender = mock(MailSender.class);
+    mailSender = mock(EmailSender.class);
     cargadorDeColaboraciones = new CargadorDeColaboraciones(mailSender);
 
     ColaboradorRepository.agregar(Colaborador.colaborador(Usuario.withEmail("juan.perez@mail.com")));
