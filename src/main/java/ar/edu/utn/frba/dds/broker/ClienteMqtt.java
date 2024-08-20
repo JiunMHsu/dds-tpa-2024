@@ -41,5 +41,4 @@ public class ClienteMqtt {
         .callback(mqtt5Publish -> suscriptor.recibirMensaje(mqtt5Publish.toString()))
         .send();
   }
-
 }
