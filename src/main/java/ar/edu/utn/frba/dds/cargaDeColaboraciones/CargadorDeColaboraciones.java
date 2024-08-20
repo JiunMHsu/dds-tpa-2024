@@ -5,11 +5,11 @@ import ar.edu.utn.frba.dds.models.colaboracion.DonacionDinero;
 import ar.edu.utn.frba.dds.models.colaboracion.DonacionVianda;
 import ar.edu.utn.frba.dds.models.colaboracion.RepartoDeTarjetas;
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.models.colaborador.Usuario;
+import ar.edu.utn.frba.dds.models.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.data.Documento;
 import ar.edu.utn.frba.dds.models.data.Mail;
 import ar.edu.utn.frba.dds.models.data.TipoDocumento;
-import ar.edu.utn.frba.dds.mensajeria.MailSender;
+import ar.edu.utn.frba.dds.mensajeria.EmailSender;
 import ar.edu.utn.frba.dds.repository.colaboracion.DistribucionViandasRepository;
 import ar.edu.utn.frba.dds.repository.colaboracion.DonacionDineroRepository;
 import ar.edu.utn.frba.dds.repository.colaboracion.DonacionViandaRepository;
@@ -27,9 +27,9 @@ import org.apache.commons.csv.CSVRecord;
 
 public class CargadorDeColaboraciones {
 
-  private MailSender mailSender;
+  private EmailSender mailSender;
 
-  public CargadorDeColaboraciones(MailSender mailSender) {
+  public CargadorDeColaboraciones(EmailSender mailSender) {
     this.mailSender = mailSender;
   }
 
@@ -51,7 +51,7 @@ public class CargadorDeColaboraciones {
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
       for (CSVRecord csvRecord : csvParser) {
-        Documento documento = new Documento(Integer.parseInt(csvRecord.get("Documento")),
+        Documento documento = new Documento(csvRecord.get("Documento"),
             TipoDocumento.valueOf(csvRecord.get("Tipo Doc")));
 
         ColaboracionPrevia colaboracionPrevia = ColaboracionPrevia.of(

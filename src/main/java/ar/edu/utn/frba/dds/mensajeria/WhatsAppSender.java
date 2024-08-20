@@ -1,22 +1,15 @@
 package ar.edu.utn.frba.dds.mensajeria;
 
-import ar.edu.utn.frba.dds.models.data.Contacto;
-import ar.edu.utn.frba.dds.models.data.Mensaje;
 import ar.edu.utn.frba.dds.repository.mensajeria.MensajeRepository;
-import org.apache.camel.CamelContext;
-import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.impl.DefaultCamelContext;
-import org.apache.camel.component.whatsapp.model.TextMessageRequest;
-import org.apache.camel.component.whatsapp.model.TextMessage;
 
 import java.time.LocalDateTime;
 
-public class WhatsAppSender implements INotificador {
+public class WhatsAppSender implements Sender {
   private static String PHONE_NUMBER_ID; // Deberia ser el bot por ahora lo dejo asi
   private static String AUTHORIZATION_TOKEN;
 
   @Override
-  public void enviarMensaje(String mensaje, Contacto contacto) {
+  public void enviarMensaje(String receptor, String asunto, String cuerpo) {
     try {
 //      CamelContext camelContext = new DefaultCamelContext();
 //
@@ -41,7 +34,7 @@ public class WhatsAppSender implements INotificador {
 //      camelContext.stop();
 
       Mensaje registroMensaje = Mensaje.create(
-          mensaje,
+          receptor,
           LocalDateTime.now(),
           contacto,
           MedioDeNotificacion.WHATSAPP);

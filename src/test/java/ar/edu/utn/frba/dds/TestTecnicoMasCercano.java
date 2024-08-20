@@ -3,7 +3,6 @@ package ar.edu.utn.frba.dds;
 import ar.edu.utn.frba.dds.models.data.*;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.tecnico.Tecnico;
-import ar.edu.utn.frba.dds.repository.tecnico.TecnicoRepository;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -16,7 +15,7 @@ public class TestTecnicoMasCercano {
   Tecnico tecnico2 = Tecnico.with("2", Contacto.empty(), new Area(new Ubicacion(-34.615803, -58.433298), 6.0));
   Tecnico tecnico3 = Tecnico.with("3", Contacto.empty(), new Area(new Ubicacion(-31.420083, -64.188776), 5.0));
 
-  Heladera heladera = Heladera.with("", Direccion.with(new Calle(""), 0, new Ubicacion(-34.603722, -58.381592)), 70);
+  Heladera heladera = Heladera.con("", Direccion.with(new Calle(""), 0, new Ubicacion(-34.603722, -58.381592)), 70);
 
   @Test
   @DisplayName("El tecnico mas cercano a una heladera es el que tenga menor distancia entre las dos ubicaciones restando el radio de su area de cobertura")

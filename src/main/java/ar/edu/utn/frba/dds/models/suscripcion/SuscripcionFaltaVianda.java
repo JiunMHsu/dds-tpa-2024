@@ -3,31 +3,32 @@ package ar.edu.utn.frba.dds.models.suscripcion;
 import ar.edu.utn.frba.dds.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class SuscripcionFaltaVianda extends Suscripcion implements ISuscipcionMovimientoVianda {
+@Builder
+public class SuscripcionFaltaVianda {
 
+  private Colaborador colaborador;
+  private Heladera heladera;
+  private MedioDeNotificacion medioDeNotificacion;
   private Integer viandasRestantes;
 
-  public SuscripcionFaltaVianda(Colaborador colaborador,
-                                Heladera heladera,
-                                MedioDeNotificacion medioDeNotificacion,
-                                Integer viandasRestantes) {
-    super(colaborador, heladera, medioDeNotificacion);
-    this.viandasRestantes = viandasRestantes;
+  public static SuscripcionFaltaVianda de(Colaborador colaborador,
+                                          Heladera heladera,
+                                          MedioDeNotificacion medioDeNotificacion,
+                                          Integer viandasRestantes) {
+    return SuscripcionFaltaVianda
+        .builder()
+        .colaborador(colaborador)
+        .heladera(heladera)
+        .medioDeNotificacion(medioDeNotificacion)
+        .viandasRestantes(viandasRestantes)
+        .build();
   }
 
-  @Override
-  public void suscribirAHeladera() {
-    getHeladera().serSuscriptoPor(this);
+  public Boolean debeSerNotificado(Integer cantViandasRestantes) {
+    return cantViandasRestantes <= viandasRestantes;
   }
-
-  // TODO
-  public void serNotificado(Integer cantViandas) {
-    if (cantViandas <= viandasRestantes) {
-      this.notificarAColaborador("");
-    }
-  }
-
 }

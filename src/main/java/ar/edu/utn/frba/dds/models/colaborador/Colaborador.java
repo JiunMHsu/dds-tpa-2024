@@ -5,6 +5,7 @@ import ar.edu.utn.frba.dds.models.data.Contacto;
 import ar.edu.utn.frba.dds.models.data.Direccion;
 import ar.edu.utn.frba.dds.models.data.TipoRazonSocial;
 import ar.edu.utn.frba.dds.models.formulario.FormularioRespondido;
+import ar.edu.utn.frba.dds.models.usuario.Usuario;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.Builder;

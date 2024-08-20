@@ -1,13 +1,9 @@
 package ar.edu.utn.frba.dds.models.tecnico;
 
-import ar.edu.utn.frba.dds.mensajeria.INotificador;
 import ar.edu.utn.frba.dds.mensajeria.MedioDeNotificacion;
-import ar.edu.utn.frba.dds.mensajeria.NotificadorFactory;
 import ar.edu.utn.frba.dds.models.data.Area;
 import ar.edu.utn.frba.dds.models.data.Contacto;
 import ar.edu.utn.frba.dds.models.data.Documento;
-import ar.edu.utn.frba.dds.models.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.incidente.Incidente;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +16,7 @@ public class Tecnico {
   private String nombre;
   private String apellido;
   private Documento documento;
-  private Long cuit;
+  private String cuit;
   private Contacto contacto;
   private MedioDeNotificacion medioDeNotificacion;
   private Area areaDeCobertura;
@@ -28,7 +24,7 @@ public class Tecnico {
   public static Tecnico with(String nombre,
                              String apellido,
                              Documento documento,
-                             Long cuit,
+                             String cuit,
                              Contacto contacto,
                              MedioDeNotificacion medioDeNotificacion,
                              Area areaDeCobertura) {
@@ -68,12 +64,4 @@ public class Tecnico {
         .build();
   }
 
-  public void notificarPorIncidente(Incidente incidente) {
-    String mensaje = "Incidente reportado: " + incidente.getTipo().toString()
-        + " en la heladera: " + incidente.getHeladera().getNombre()
-        + " a las: " + incidente.getFechaHora();
-
-    INotificador notificador = NotificadorFactory.of(this.getMedioDeNotificacion());
-    notificador.enviarMensaje(mensaje, contacto);
-  }
 }

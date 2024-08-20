@@ -5,9 +5,9 @@ import lombok.Getter;
 @Getter
 public class Documento {
   private TipoDocumento tipo;
-  private Integer numero;
+  private String numero;
   
-  public Documento(Integer numero, TipoDocumento tipo) {
+  public Documento(String numero, TipoDocumento tipo) {
     this.numero = numero;
     this.tipo = tipo;
   }
