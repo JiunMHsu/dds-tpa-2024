@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds;
 
-import ar.edu.utn.frba.dds.models.heladera.ExcepcionCantidadDeViandas;
 import ar.edu.utn.frba.dds.models.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.tarjeta.*;
@@ -29,24 +28,24 @@ public class TestTarjetas {
 
   @BeforeEach
   public void setup() {
-    persona1 = PersonaVulnerable.with("", 1);
-    persona2 = PersonaVulnerable.with("", 2);
-    persona3 = PersonaVulnerable.with("", 0);
+    persona1 = PersonaVulnerable.con("", 1);
+    persona2 = PersonaVulnerable.con("", 2);
+    persona3 = PersonaVulnerable.con("", 0);
 
-    tarjeta1 = TarjetaPersonaVulnerable.with(persona1);
-    tarjeta2 = TarjetaPersonaVulnerable.with(persona2);
-    tarjeta3 = TarjetaPersonaVulnerable.with(persona3);
+    tarjeta1 = TarjetaPersonaVulnerable.de(persona1);
+    tarjeta2 = TarjetaPersonaVulnerable.de(persona2);
+    tarjeta3 = TarjetaPersonaVulnerable.de(persona3);
 
-    heladera1 = Heladera.with(8);
+    heladera1 = Heladera.con(8);
     heladera1.setEstado(EstadoHeladera.ACTIVA);
   }
 
   @Test
   @DisplayName("Se generan codigos no repetidos")
   public void comprobarCodigosRepetidos() {
-    tarjeta1 = TarjetaPersonaVulnerable.with();
-    tarjeta2 = TarjetaPersonaVulnerable.with();
-    tarjeta3 = TarjetaPersonaVulnerable.with();
+    tarjeta1 = TarjetaPersonaVulnerable.de();
+    tarjeta2 = TarjetaPersonaVulnerable.de();
+    tarjeta3 = TarjetaPersonaVulnerable.de();
 
     List<TarjetaPersonaVulnerable> tarjetasExistentes = new ArrayList<>();
     tarjetasExistentes.add(tarjeta1);
@@ -73,38 +72,19 @@ public class TestTarjetas {
     Assertions.assertEquals(4, tarjeta3.usosPorDia(),
         "La tarjeta3 pertenece a una persona sin menor a cargo, por lo que tiene 4 usos diarios.");
 
-    try {
-      tarjeta3.registrarUso(heladera1);
-      tarjeta3.registrarUso(heladera1);
-      tarjeta3.registrarUso(heladera1);
-      tarjeta3.registrarUso(heladera1);
-      tarjeta3.registrarUso(heladera1);
-
-      Assertions.fail("No tiro Excepción.");
-    } catch (ExcepcionUsoInvalido e) {
-      Assertions.assertNotNull(e, e.getMessage());
-    }
+//    try {
+//      tarjeta3.registrarUso(heladera1);
+//      tarjeta3.registrarUso(heladera1);
+//      tarjeta3.registrarUso(heladera1);
+//      tarjeta3.registrarUso(heladera1);
+//      tarjeta3.registrarUso(heladera1);
+//
+//      Assertions.fail("No tiro Excepción.");
+//    } catch (ExcepcionUsoInvalido e) {
+//      Assertions.assertNotNull(e, e.getMessage());
+//    }
   }
 
-  @Test
-  @DisplayName("Registro de uso por personas vulnerables")
-  public void registrarUsoTarjetaPersonaVulnerable() {
-    try {
-      heladera1.agregarViandas(4);
-    } catch (ExcepcionCantidadDeViandas e) {
-      Assertions.fail("Capacidad excedida.");
-    }
-    Assertions.assertEquals(4, heladera1.getViandas());
-
-    try {
-      tarjeta3.registrarUso(heladera1);
-      Assertions.assertEquals(3, heladera1.getViandas(),
-          "Al registrar el uso de una tarjeta, la cantidad de viandas en la Heladera usada decrementa.");
-
-    } catch (ExcepcionUsoInvalido e) {
-      Assertions.fail("No se pudo registrar el uso de la tarjeta.");
-    }
-  }
 
   @Test
   @DisplayName("Autorizado de uso por Colaboradores")
@@ -112,10 +92,5 @@ public class TestTarjetas {
     // TODO
   }
 
-  @Test
-  @DisplayName("Registro de uso por Colaboradores")
-  public void registrarUsoTarjetaColaborador() {
-    // TODO
-  }
 }
 

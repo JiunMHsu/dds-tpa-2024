@@ -13,9 +13,9 @@ public class AperturaHeladera {
   private Heladera heladera;
   private LocalDateTime fechaHora;
 
-  public static AperturaHeladera by(TarjetaColaborador tarjetaColaborador,
-                                    Heladera heladera,
-                                    LocalDateTime fechaHora) {
+  public static AperturaHeladera por(TarjetaColaborador tarjetaColaborador,
+                                     Heladera heladera,
+                                     LocalDateTime fechaHora) {
     return AperturaHeladera
         .builder()
         .tarjetaColaborador(tarjetaColaborador)

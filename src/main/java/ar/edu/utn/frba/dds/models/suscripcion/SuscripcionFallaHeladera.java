@@ -3,23 +3,26 @@ package ar.edu.utn.frba.dds.models.suscripcion;
 import ar.edu.utn.frba.dds.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
+import lombok.Builder;
+import lombok.Getter;
 
-public class SuscripcionFallaHeladera extends Suscripcion {
+@Getter
+@Builder
+public class SuscripcionFallaHeladera {
 
-  public SuscripcionFallaHeladera(Colaborador colaborador,
-                                  Heladera heladera,
-                                  MedioDeNotificacion medioDeNotificacion) {
-    super(colaborador, heladera, medioDeNotificacion);
-  }
+  private Colaborador colaborador;
+  private Heladera heladera;
+  private MedioDeNotificacion medioDeNotificacion;
 
-  @Override
-  public void suscribirAHeladera() {
-    getHeladera().serSuscriptoPor(this);
-  }
-
-  // TODO
-  public void serNotificado() {
-    this.notificarAColaborador("La Heradera " + getHeladera().getNombre() + " sufrió fallas");
+  public static SuscripcionFallaHeladera de(Colaborador colaborador,
+                                            Heladera heladera,
+                                            MedioDeNotificacion medioDeNotificacion) {
+    return SuscripcionFallaHeladera
+        .builder()
+        .colaborador(colaborador)
+        .heladera(heladera)
+        .medioDeNotificacion(medioDeNotificacion)
+        .build();
   }
 
 }

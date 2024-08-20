@@ -19,7 +19,7 @@ public class TestHeladera {
   public void setup() throws ExcepcionCantidadDeViandas {
     unaDireccion = Direccion.with(new Calle("Medrano"), 951);
     rangoAEstablecer = new RangoTemperatura(5.0, -5.0);
-    unaHeladera = Heladera.with("Medrano UTN", unaDireccion, 2, rangoAEstablecer);
+    unaHeladera = Heladera.con("Medrano UTN", unaDireccion, 2, rangoAEstablecer);
     unaHeladera.setEstado(EstadoHeladera.ACTIVA);
 
     unaHeladera.agregarVianda();
