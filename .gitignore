@@ -30,4 +30,8 @@ target/**
 .idea/**
 
 # Generated PDF Documents
-*.pfd
+*.pdf
+
+src/main/resources/META-INF/persistence.xml
+src/test/resources/META-INF/persistence.xml
+
