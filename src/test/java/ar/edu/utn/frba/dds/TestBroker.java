@@ -8,8 +8,9 @@ import org.junit.jupiter.api.Test;
 
 public class TestBroker {
 
-  SuscriptorMqtt unSuscriptor;
-  ClienteMqtt cliente;
+  private SuscriptorMqtt unSuscriptor;
+  private ClienteMqtt cliente;
+  private final String topic = "dds/g22/test";
 
   @BeforeEach
   public void setUp() {
@@ -17,7 +18,7 @@ public class TestBroker {
     class SuscriptorTest implements SuscriptorMqtt {
       @Override
       public String topic() {
-        return "dds/g22/test";
+        return topic;
       }
 
       @Override
@@ -27,11 +28,19 @@ public class TestBroker {
     }
 
     unSuscriptor = new SuscriptorTest();
+    cliente = new ClienteMqtt();
   }
 
   @Test
-  @DisplayName("")
-  public void testSuscripcion() {
-    cliente = new ClienteMqtt(unSuscriptor);
+  @DisplayName("El Suscriptor puede recibir correctamente los mensajes publicados en el topic específico")
+  public void testSuscripcion() throws InterruptedException {
+    cliente.suscribirPara(unSuscriptor);
+    ClienteMqtt clientePublicador = new ClienteMqtt();
+
+    for (int i = 0; i < 5; i++) {
+      clientePublicador.publicarMensaje(topic, "dds-test");
+      Thread.sleep(500);
+    }
   }
+
 }
