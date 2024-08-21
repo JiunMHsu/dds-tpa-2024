@@ -8,8 +8,8 @@ import lombok.Getter;
 @Builder
 public class Contacto {
   private String email;
-  private String telefono;
-  private String whatsApp;
+  private String telefono; // Chat ID
+  private String whatsApp; // Chat ID
   private String telegram;
 
   public static Contacto with(String email, String telefono, String whatsApp, String telegram) {

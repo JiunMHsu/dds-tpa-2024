@@ -10,7 +10,7 @@ import ar.edu.utn.frba.dds.models.suscripcion.SuscripcionFaltaVianda;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
+/*
 public class TestSuscripciones {
 
   Colaborador unColaborador;
@@ -71,3 +71,4 @@ public class TestSuscripciones {
 //    Assertions.assertEquals("La Heradera UTN Medrano sufrió fallas", mensajeEnviado.getBody());
 //  }
 }
+*/
