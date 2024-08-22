@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public class RangoTemperatura {
-  private Double maxima;
-  private Double minima;
+  private final Double maxima;
+  private final Double minima;
 
   public RangoTemperatura(Double maxima, Double minima) {
     this.maxima = maxima;

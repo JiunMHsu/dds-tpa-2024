@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class Pregunta {
-  private String contenido;
+  private final String contenido;
 
   public Pregunta(String pregunta) {
     this.contenido = pregunta;

@@ -2,13 +2,11 @@ package ar.edu.utn.frba.dds;
 
 import ar.edu.utn.frba.dds.cargaDeColaboraciones.CargadorDeColaboraciones;
 import ar.edu.utn.frba.dds.mensajeria.EmailSender;
-
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.usuario.Usuario;
 import ar.edu.utn.frba.dds.repository.colaborador.ColaboradorRepository;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -49,13 +47,6 @@ public class TestCargaMasiva {
     ColaboradorRepository.agregar(Colaborador.colaborador(Usuario.withEmail("santi.gomez@hotmail.com")));
     ColaboradorRepository.agregar(Colaborador.colaborador(Usuario.withEmail("cata@outlook.com")));
     ColaboradorRepository.agregar(Colaborador.colaborador(Usuario.withEmail("emilio.gonzalez@yahoo.com")));
-
-    /**
-     * Tipo Doc,Documento,Nombre,Apellido,Mail,Fecha de colaboración,Forma de colaboración,Cantidad
-     * DNI,36985214,Juan,Pérez,juan.perez@mail.com,18/05/2024,DINERO,5000
-     * ...
-     * LE,57418269,Emilio,González,emilio.gonzalez@yahoo.com,26/05/2024,DINERO,4500
-     */
   }
 
   @Test

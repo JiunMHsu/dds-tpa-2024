@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.mensajeria;
 import java.time.LocalDateTime;
 
 public class Notificador {
+
   private Sender sender;
 
   public Notificador(Sender sender) {

@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public class Documento {
-  private TipoDocumento tipo;
-  private String numero;
+  private final TipoDocumento tipo;
+  private final String numero;
   
   public Documento(String numero, TipoDocumento tipo) {
     this.numero = numero;

@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public class Comida {
-  private String nombre;
-  private Integer calorias;
+  private final String nombre;
+  private final Integer calorias;
 
   public Comida(String nombre, Integer calorias) {
     this.nombre = nombre;

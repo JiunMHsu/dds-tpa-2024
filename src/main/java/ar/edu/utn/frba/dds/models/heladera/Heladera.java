@@ -98,26 +98,6 @@ public class Heladera {
         .build();
   }
 
-  //  private void agregarVianda() throws ExcepcionCantidadDeViandas {
-  //    if (!this.puedeAgregarVianda()) {
-  //      throw new ExcepcionCantidadDeViandas("La capacidad de la heladera esta excedida");
-  //    }
-  //    viandas += 1;
-  //
-  //    // TODO (no deberia estar esto)
-  //    RegistroMovimiento.agregarViandaPorHeladera(nombre);
-  //  }
-  //
-  //  private void quitarVianda() throws ExcepcionCantidadDeViandas {
-  //    if (!this.puedeQuitarVianda()) {
-  //      throw new ExcepcionCantidadDeViandas("La heladera esta vacia");
-  //    }
-  //    viandas -= 1;
-  //
-  //    // TODO (no deberia estar esto)
-  //    RegistroMovimiento.quitarViandaPorHeladera(nombre);
-  //  }
-
   public void agregarViandas(Integer cantViandas) throws ExcepcionCantidadDeViandas {
     if (!this.puedeAgregarViandas(cantViandas)) {
       throw new ExcepcionCantidadDeViandas("La capacidad de la heladera esta excedida");

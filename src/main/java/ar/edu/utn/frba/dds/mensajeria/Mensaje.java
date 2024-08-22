@@ -6,14 +6,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Builder
-@Setter
 @Getter
 public class Mensaje {
 
   private String asunto;
   private String cuerpo;
   private String receptor;
+
+  @Setter
   private MedioDeNotificacion medio;
+
+  @Setter
   private LocalDateTime fechaEnvio;
 
   public static Mensaje con(String asunto,

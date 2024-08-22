@@ -4,8 +4,9 @@ import lombok.Getter;
 
 @Getter
 public class Ubicacion {
-  private Double latitud;
-  private Double longitud;
+
+  private final Double latitud;
+  private final Double longitud;
 
   public Ubicacion(Double latitud, Double longitud) {
     this.latitud = latitud;
@@ -23,9 +24,8 @@ public class Ubicacion {
     double dlat = lat2 - lat1;
     double dlon = lon2 - lon1;
 
-    double a = Math.sin(dlat / 2) * Math.sin(dlat / 2) +
-            Math.cos(lat1) * Math.cos(lat2) *
-                    Math.sin(dlon / 2) * Math.sin(dlon / 2);
+    double a = Math.sin(dlat / 2) * Math.sin(dlat / 2)
+        + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dlon / 2) * Math.sin(dlon / 2);
     double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
     return RADIO_TIERRA_KM * c;
