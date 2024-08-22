@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class MotivoDeApertura {
-  private String descripcion;
+  private final String descripcion;
 
   public MotivoDeApertura(String descripcion) {
     this.descripcion = descripcion;

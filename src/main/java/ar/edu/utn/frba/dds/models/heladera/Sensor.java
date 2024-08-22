@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class Sensor {
+
   private Heladera heladera;
   private String topic;
 

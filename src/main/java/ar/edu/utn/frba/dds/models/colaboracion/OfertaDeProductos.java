@@ -17,15 +17,16 @@ public class OfertaDeProductos {
   private RubroOferta rubro;
   private Imagen imagen;
 
-  public static OfertaDeProductos with(Colaborador colaborador,
-                                       String nombre,
-                                       Double puntosNecesarios,
-                                       RubroOferta rubro,
-                                       Imagen imagen) {
+  public static OfertaDeProductos por(Colaborador colaborador,
+                                      LocalDate fechaOferta,
+                                      String nombre,
+                                      Double puntosNecesarios,
+                                      RubroOferta rubro,
+                                      Imagen imagen) {
     return OfertaDeProductos
         .builder()
         .colaborador(colaborador)
-        .fechaOferta(LocalDate.now())
+        .fechaOferta(fechaOferta)
         .nombre(nombre)
         .puntosNecesarios(puntosNecesarios)
         .rubro(rubro)
@@ -33,15 +34,15 @@ public class OfertaDeProductos {
         .build();
   }
 
-  public static OfertaDeProductos with(Colaborador colaborador,
-                                       String nombre,
-                                       Double puntosNecesarios) {
+  public static OfertaDeProductos por(Colaborador colaborador,
+                                      String nombre,
+                                      Double puntosNecesarios) {
     return OfertaDeProductos
         .builder()
         .colaborador(colaborador)
-        .fechaOferta(LocalDate.now())
         .nombre(nombre)
         .puntosNecesarios(puntosNecesarios)
         .build();
   }
+
 }

@@ -5,11 +5,11 @@ import lombok.Getter;
 @Getter
 public class VarianteCalculoDePuntos {
 
-  private Double donacionDinero;
-  private Double distribucionViandas;
-  private Double donacionVianda;
-  private Double repartoTarjeta;
-  private Double heladerasActivas;
+  private final Double donacionDinero;
+  private final Double distribucionViandas;
+  private final Double donacionVianda;
+  private final Double repartoTarjeta;
+  private final Double heladerasActivas;
 
   /**
    * Por el momento esta harcodeado, pero la idea sería

@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class Calle {
-  private String nombre;
+  private final String nombre;
 
   public Calle(String nombre) {
     this.nombre = nombre;

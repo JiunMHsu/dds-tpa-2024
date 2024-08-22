@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class Direccion {
+
   private Calle calle;
   private Integer altura;
   private Ubicacion ubicacion;

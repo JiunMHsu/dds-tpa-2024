@@ -7,8 +7,8 @@ import lombok.Getter;
 
 @Getter
 public abstract class SuscriptorSensor implements SuscriptorMqtt {
-  private ClienteMqtt clienteMqtt;
-  private Sensor suscriptorSensor;
+  private final ClienteMqtt clienteMqtt;
+  private final Sensor suscriptorSensor;
 
   protected SuscriptorSensor(ClienteMqtt cliente, Sensor suscriptor) {
     this.clienteMqtt = cliente;

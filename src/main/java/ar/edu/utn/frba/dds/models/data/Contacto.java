@@ -7,10 +7,11 @@ import lombok.Getter;
 @Getter
 @Builder
 public class Contacto {
+
   private String email;
-  private String telefono; // Chat ID
+  private String telefono;
   private String whatsApp; // Chat ID
-  private String telegram;
+  private String telegram; // Chat ID
 
   public static Contacto with(String email, String telefono, String whatsApp, String telegram) {
     return Contacto

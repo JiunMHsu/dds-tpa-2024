@@ -8,6 +8,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class RetiroDeVianda {
+
   private TarjetaPersonaVulnerable tarjetaPersonaVulnerable;
   private Heladera heladera;
   private LocalDateTime fechaHora;

@@ -1,14 +1,14 @@
 package ar.edu.utn.frba.dds.models.formulario;
 
-import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 
 @Getter
 public class Formulario {
-  private ArrayList<Pregunta> preguntas;
+  private final List<Pregunta> preguntas;
 
-  public Formulario() {
-    preguntas = new ArrayList<>();
+  public Formulario(List<Pregunta> preguntas) {
+    this.preguntas = preguntas;
   }
 
   public void agregarCampo(Pregunta pregunta) {

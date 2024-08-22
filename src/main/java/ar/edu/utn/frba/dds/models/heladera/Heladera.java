@@ -11,17 +11,26 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
 @Builder
 public class Heladera {
 
   private String nombre;
   private Direccion direccion;
-  private LocalDate inicioFuncionamiento;
   private Integer capacidad;
+
+  @Setter
+  private LocalDate inicioFuncionamiento;
+
+  @Setter
   private RangoTemperatura rangoTemperatura;
+
+  @Setter
   private Double ultimaTemperatura;
+
+  @Setter
   private EstadoHeladera estado;
+
+  @Setter
   private Integer viandas;
 
   public static Heladera con(String nombre,
@@ -88,26 +97,6 @@ public class Heladera {
         .capacidad(capacidad)
         .build();
   }
-
-  //  private void agregarVianda() throws ExcepcionCantidadDeViandas {
-  //    if (!this.puedeAgregarVianda()) {
-  //      throw new ExcepcionCantidadDeViandas("La capacidad de la heladera esta excedida");
-  //    }
-  //    viandas += 1;
-  //
-  //    // TODO (no deberia estar esto)
-  //    RegistroMovimiento.agregarViandaPorHeladera(nombre);
-  //  }
-  //
-  //  private void quitarVianda() throws ExcepcionCantidadDeViandas {
-  //    if (!this.puedeQuitarVianda()) {
-  //      throw new ExcepcionCantidadDeViandas("La heladera esta vacia");
-  //    }
-  //    viandas -= 1;
-  //
-  //    // TODO (no deberia estar esto)
-  //    RegistroMovimiento.quitarViandaPorHeladera(nombre);
-  //  }
 
   public void agregarViandas(Integer cantViandas) throws ExcepcionCantidadDeViandas {
     if (!this.puedeAgregarViandas(cantViandas)) {

@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class Imagen {
-  private String path;
+  private final String path;
 
   public Imagen(String path) {
     this.path = path;

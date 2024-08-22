@@ -4,11 +4,9 @@ import ar.edu.utn.frba.dds.models.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.tarjeta.*;
 import ar.edu.utn.frba.dds.models.personaVulnerable.PersonaVulnerable;
-
 import ar.edu.utn.frba.dds.utils.GeneradorDeCodigosTarjeta;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,17 +18,13 @@ public class TestTarjetas {
   private TarjetaPersonaVulnerable tarjeta2;
   private TarjetaPersonaVulnerable tarjeta3;
 
-  private PersonaVulnerable persona1;
-  private PersonaVulnerable persona2;
-  private PersonaVulnerable persona3;
-
   private Heladera heladera1;
 
   @BeforeEach
   public void setup() {
-    persona1 = PersonaVulnerable.con("", 1);
-    persona2 = PersonaVulnerable.con("", 2);
-    persona3 = PersonaVulnerable.con("", 0);
+    PersonaVulnerable persona1 = PersonaVulnerable.con("", 1);
+    PersonaVulnerable persona2 = PersonaVulnerable.con("", 2);
+    PersonaVulnerable persona3 = PersonaVulnerable.con("", 0);
 
     tarjeta1 = TarjetaPersonaVulnerable.de(persona1);
     tarjeta2 = TarjetaPersonaVulnerable.de(persona2);
@@ -72,19 +66,13 @@ public class TestTarjetas {
     Assertions.assertEquals(4, tarjeta3.usosPorDia(),
         "La tarjeta3 pertenece a una persona sin menor a cargo, por lo que tiene 4 usos diarios.");
 
-//    try {
-//      tarjeta3.registrarUso(heladera1);
-//      tarjeta3.registrarUso(heladera1);
-//      tarjeta3.registrarUso(heladera1);
-//      tarjeta3.registrarUso(heladera1);
-//      tarjeta3.registrarUso(heladera1);
-//
-//      Assertions.fail("No tiro Excepción.");
-//    } catch (ExcepcionUsoInvalido e) {
-//      Assertions.assertNotNull(e, e.getMessage());
-//    }
-  }
+    tarjeta3.sumarUso();
+    tarjeta3.sumarUso();
+    tarjeta3.sumarUso();
+    tarjeta3.sumarUso();
 
+    Assertions.assertFalse(tarjeta3.puedeUsarseEn(heladera1));
+  }
 
   @Test
   @DisplayName("Autorizado de uso por Colaboradores")

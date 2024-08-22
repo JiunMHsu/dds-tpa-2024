@@ -8,14 +8,18 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
+
 @Getter
 @Builder
 public class TarjetaPersonaVulnerable implements Tarjeta {
 
   private String codigo;
   private PersonaVulnerable duenio;
+
+  @Setter
   private Integer usosEnElDia;
+
+  @Setter
   private LocalDate ultimoUso;
 
   public static TarjetaPersonaVulnerable de(PersonaVulnerable duenio) {
@@ -48,5 +52,9 @@ public class TarjetaPersonaVulnerable implements Tarjeta {
 
   public Integer usosPorDia() {
     return 4 + duenio.getMenoresACargo() * 2;
+  }
+
+  public void sumarUso() {
+    usosEnElDia += 1;
   }
 }

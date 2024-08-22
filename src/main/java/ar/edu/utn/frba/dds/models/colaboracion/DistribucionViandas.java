@@ -17,15 +17,16 @@ public class DistribucionViandas {
   private Integer viandas;
   private String motivo;
 
-  public static DistribucionViandas by(Colaborador colaboradorHumano,
-                                       Heladera origen,
-                                       Heladera destino,
-                                       Integer viandas,
-                                       String motivo) {
+  public static DistribucionViandas por(Colaborador colaboradorHumano,
+                                        LocalDate fechaDistribucion,
+                                        Heladera origen,
+                                        Heladera destino,
+                                        Integer viandas,
+                                        String motivo) {
     return DistribucionViandas
         .builder()
         .colaborador(colaboradorHumano)
-        .fechaDistribucion(LocalDate.now())
+        .fechaDistribucion(fechaDistribucion)
         .origen(origen)
         .destino(destino)
         .viandas(viandas)
@@ -33,26 +34,15 @@ public class DistribucionViandas {
         .build();
   }
 
-  public static DistribucionViandas by(Colaborador colaboradorHumano,
-                                       Heladera origen,
-                                       Heladera destino,
-                                       Integer viandas) {
+  public static DistribucionViandas por(Colaborador colaboradorHumano,
+                                        LocalDate fechaDistribucion,
+                                        Integer viandas) {
     return DistribucionViandas
         .builder()
         .colaborador(colaboradorHumano)
-        .fechaDistribucion(LocalDate.now())
-        .origen(origen)
-        .destino(destino)
-        .viandas(viandas)
-        .build();
-  }
-
-  public static DistribucionViandas by(Colaborador colaborador, LocalDate fechaDistribucion, Integer viandas) {
-    return DistribucionViandas
-        .builder()
-        .colaborador(colaborador)
         .fechaDistribucion(fechaDistribucion)
         .viandas(viandas)
         .build();
   }
+
 }

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-/*
+
 public class TestHeladera {
 
   private Direccion unaDireccion;
@@ -22,7 +22,7 @@ public class TestHeladera {
     unaHeladera = Heladera.con("Medrano UTN", unaDireccion, 2, rangoAEstablecer);
     unaHeladera.setEstado(EstadoHeladera.ACTIVA);
 
-    unaHeladera.agregarVianda();
+    unaHeladera.agregarViandas(1);
   }
 
   @Test
@@ -37,7 +37,7 @@ public class TestHeladera {
   @DisplayName("Se puede retirar una vianda de la heladera")
   public void canjeVianda() {
     try {
-      unaHeladera.quitarVianda();
+      unaHeladera.quitarViandas(1);
       Assertions.assertEquals(0, unaHeladera.getViandas(),
           "Al retirar la única vianda que quedaba de la Heladera, no quedan más viandas.");
     } catch (ExcepcionCantidadDeViandas e) {
@@ -51,7 +51,7 @@ public class TestHeladera {
     Assertions.assertEquals(1, unaHeladera.getViandas());
 
     try {
-      unaHeladera.agregarVianda();
+      unaHeladera.agregarViandas(1);
       Assertions.assertEquals(2, unaHeladera.getViandas(),
           "Al agregar una vianda a la Heladera que ya tenía una, ahora tiene dos.");
     } catch (ExcepcionCantidadDeViandas e) {
@@ -94,4 +94,3 @@ public class TestHeladera {
     Assertions.assertTrue(unaHeladera.getRangoTemperatura().incluye(temperaturaActual));
   }
 }
-*/
