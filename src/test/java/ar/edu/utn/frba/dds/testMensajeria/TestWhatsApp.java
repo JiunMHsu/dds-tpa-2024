@@ -5,14 +5,11 @@ import org.junit.jupiter.api.Test;
 
 public class TestWhatsApp {
     @Test
-    public void enviarWhatsApp(){
-
+    public void enviarWhatsApp() {
         WhatsAppSender whatsAppSender = new WhatsAppSender(
                 "394679593732404",
-                "EAAKQbkh4qmYBOyJiLWtbBanMzcJIgtplrcqTg0xqQZCY0yxZCIkk25jTKZCsg0nAjwf5jPXP59aGcm2DD9EboUnkpBZCzJPPVyPsUh7pvGuhtxemYvrGJKMwIItqicjIpln99wdd92X2ZAUISNFKiEp6jMe1Ppe0woBacUwE2GLX75irhDTuM7fcOjfQKZCvVQkVOwJLPZA1mhcibBhrVMZD");
+                "EAAKQbkh4qmYBO3LIZAXW6CGxsgrJyutZA2WDeZBO375LZClhZA6MpME2q5AcmHSQnPbUxrbWl6WQomkcSF3ECOyffr2vZBHYZBtkEZAukvIXNOksIHRtEu7vjQdoImIBaBYbFJnXChpBRK5nuHiqUXbPxX5tJ2QaylQZAFZBjFCBVow5xBSxWgb1p8noDyWlLuk1jsYkNGeDsHI0Tw36niGycZD");
 
-        whatsAppSender.enviarMensaje("1132420699", "test", "Test - Grupo 22");
+        whatsAppSender.enviarMensaje("541142420699", "test", "Test - Grupo 22");
     }
 }
-
-// El Authorization Token se vence cada 24 hs, si veo que lo usamos lo configuro par aque sea permanente

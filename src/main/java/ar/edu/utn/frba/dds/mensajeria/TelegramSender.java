@@ -2,30 +2,49 @@ package ar.edu.utn.frba.dds.mensajeria;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
+import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.impl.DefaultCamelContext;
 
 public class TelegramSender implements Sender {
 
-  private static String TELEGRAM_ENDPOINT; // Deberia ser el bot por ahora lo dejo asi
+  private final String AUTHORIZATION_TOKEN;
+  private final String CHAT_ID;
+  private CamelContext camelContext;
 
-  public void enviarMensaje(String receptor, String asunto, String cuerpo) {
-
-    CamelContext context = new DefaultCamelContext();
+  public TelegramSender(String authorizationToken, String chatID) {
+    this.AUTHORIZATION_TOKEN = authorizationToken;
+    this.CHAT_ID = chatID;
+    this.camelContext = new DefaultCamelContext();
 
     try {
-      context.start();
-      ProducerTemplate producerTemplate = context.createProducerTemplate();
-      producerTemplate.sendBody(TELEGRAM_ENDPOINT, asunto + "\n" + cuerpo);
+      camelContext.addRoutes(new RouteBuilder() {
+        @Override
+        public void configure() {
+          from("direct:sendMessage")
+                  .toF("telegram:bots/?authorizationToken=%s&chatId=%s", AUTHORIZATION_TOKEN, CHAT_ID);
+        }
+      });
+      camelContext.start();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 
-    } catch (Exception error) {
-      error.printStackTrace();
+  @Override
+  public void enviarMensaje(String receptor, String asunto, String cuerpo) {
+    ProducerTemplate producerTemplate = camelContext.createProducerTemplate();
+    try {
+      producerTemplate.sendBody("direct:sendMessage", asunto + "\n" + cuerpo);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 
-    } finally {
-      try {
-        context.stop();
-      } catch (Exception error) {
-        error.printStackTrace();
-      }
+  public void stop() {
+    try {
+      camelContext.stop();
+    } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 }
