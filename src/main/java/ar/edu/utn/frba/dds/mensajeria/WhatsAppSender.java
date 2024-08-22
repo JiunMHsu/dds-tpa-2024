@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Getter
 @Setter
-public class WhatsAppSender {
+public class WhatsAppSender implements Sender{
 
     private final String phoneNumberId;
     private final String authorizationToken;
@@ -26,6 +26,7 @@ public class WhatsAppSender {
         this.authorizationToken = authorizationToken;
     }
 
+    @Override
     public void enviarMensaje(String receptor, String asunto, String cuerpo) {
         try {
             if (camelContext == null) {
