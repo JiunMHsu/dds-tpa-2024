@@ -7,16 +7,19 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.impl.DefaultCamelContext;
 
 public class TelegramSender implements Sender {
-  private final String botToken;
-  private String chatId; // Inicialmente null
+  private final String AUTHORIZATION_TOKEN;
+  private String CHAT_ID;
   private final CamelContext camelContext;
   private final ProducerTemplate producerTemplate;
 
   public TelegramSender() {
-    this.botToken = AppConfig.getProperty("TELEGRAM_AUTHORIZATION_TOKEN");
+    this.AUTHORIZATION_TOKEN = AppConfig.getProperty("TELEGRAM_AUTHORIZATION_TOKEN");
     this.camelContext = new DefaultCamelContext();
     this.producerTemplate = camelContext.createProducerTemplate();
     configurarCamelContext();
+    if (CHAT_ID == null) {
+      obtenerChatId();
+    }
   }
 
   private void configurarCamelContext() {
@@ -24,23 +27,20 @@ public class TelegramSender implements Sender {
       camelContext.addRoutes(new RouteBuilder() {
         @Override
         public void configure() {
-          // Ruta para obtener el chatId
-          from("telegram:bots?authorizationToken=" + botToken)
+          from("telegram:bots?authorizationToken=" + AUTHORIZATION_TOKEN)
                   .to("log:INFO?showHeaders=true")
                   .process(exchange -> {
-                    // Obtener el chatId de los headers
                     String receivedChatId = exchange.getIn().getHeader("CamelTelegramChatId", String.class);
                     if (receivedChatId != null) {
-                      chatId = receivedChatId;
-                      System.out.println("Chat ID obtenido: " + chatId);
+                      CHAT_ID = receivedChatId;
+                      System.out.println("Chat ID obtenido: " + CHAT_ID);
                     }
                   });
 
-          // Ruta para enviar mensajes, utiliza el chatId cuando está disponible
           from("direct:sendToTelegram")
                   .choice()
-                  .when(exchange -> chatId != null)
-                  .to("telegram:bots?authorizationToken=" + botToken + "&chatId=" + chatId)
+                  .when(exchange -> CHAT_ID != null)
+                  .to("telegram:bots?authorizationToken=" + AUTHORIZATION_TOKEN + "&chatId=" + CHAT_ID)
                   .otherwise()
                   .log("Chat ID no disponible. No se puede enviar el mensaje.");
         }
@@ -53,17 +53,17 @@ public class TelegramSender implements Sender {
 
   public void obtenerChatId() {
     try {
-      producerTemplate.sendBody("telegram:bots?authorizationToken=" + botToken, "Obteniendo Chat ID");
-    } catch (Exception e) {
+      System.out.println("Esperando recibir un mensaje para obtener el Chat ID...");
+      Thread.sleep(10000); // Espera de 10 segundos para recibir mensajes
+    } catch (InterruptedException e) {
       e.printStackTrace();
     }
   }
 
   @Override
   public void enviarMensaje(String receptor, String asunto, String cuerpo) {
-    ProducerTemplate producerTemplate = camelContext.createProducerTemplate();
     try {
-      producerTemplate.sendBody("direct:sendMessage", asunto + "\n" + cuerpo);
+      producerTemplate.sendBody("direct:sendToTelegram", asunto + "\n" + cuerpo);
     } catch (Exception e) {
       e.printStackTrace();
     }
