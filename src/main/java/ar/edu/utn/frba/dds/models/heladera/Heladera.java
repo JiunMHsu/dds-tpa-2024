@@ -11,17 +11,26 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
 @Builder
 public class Heladera {
 
   private String nombre;
   private Direccion direccion;
-  private LocalDate inicioFuncionamiento;
   private Integer capacidad;
+
+  @Setter
+  private LocalDate inicioFuncionamiento;
+
+  @Setter
   private RangoTemperatura rangoTemperatura;
+
+  @Setter
   private Double ultimaTemperatura;
+
+  @Setter
   private EstadoHeladera estado;
+
+  @Setter
   private Integer viandas;
 
   public static Heladera con(String nombre,

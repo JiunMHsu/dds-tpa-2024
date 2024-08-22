@@ -87,7 +87,7 @@ public class CargadorDeColaboraciones {
 
     switch (colaboracionPrevia.getFormaDeColaboracion()) {
       case "DINERO":
-        DonacionDinero donacionDinero = DonacionDinero.by(
+        DonacionDinero donacionDinero = DonacionDinero.por(
             colaborador,
             colaboracionPrevia.getFechaDeColaboracion(),
             colaboracionPrevia.getCantidad());
@@ -96,7 +96,7 @@ public class CargadorDeColaboraciones {
 
       case "DONACION_VIANDAS":
         for (int i = 0; i < colaboracionPrevia.getCantidad(); i++) {
-          DonacionVianda donacionVianda = DonacionVianda.by(
+          DonacionVianda donacionVianda = DonacionVianda.por(
               colaborador,
               colaboracionPrevia.getFechaDeColaboracion());
           DonacionViandaRepository.agregar(donacionVianda);
@@ -104,7 +104,7 @@ public class CargadorDeColaboraciones {
         break;
 
       case "REDISTRIBUCION_VIANDAS":
-        DistribucionViandas distribucionViandas = DistribucionViandas.by(
+        DistribucionViandas distribucionViandas = DistribucionViandas.por(
             colaborador,
             colaboracionPrevia.getFechaDeColaboracion(),
             colaboracionPrevia.getCantidad());
@@ -113,7 +113,7 @@ public class CargadorDeColaboraciones {
 
       case "ENTREGA_TARJETAS":
         for (int i = 0; i < colaboracionPrevia.getCantidad(); i++) {
-          RepartoDeTarjetas repartoDeTarjetas = RepartoDeTarjetas.by(
+          RepartoDeTarjetas repartoDeTarjetas = RepartoDeTarjetas.por(
               colaborador,
               colaboracionPrevia.getFechaDeColaboracion());
           RepartoDeTarjetasRepository.agregar(repartoDeTarjetas);

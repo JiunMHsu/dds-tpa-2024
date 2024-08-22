@@ -9,6 +9,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class CanjeDePuntos {
+
   private Colaborador colaborador;
   private LocalDate fechaCanjeo;
   private Double puntosCanjeados;

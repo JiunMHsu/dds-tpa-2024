@@ -14,12 +14,24 @@ public class HacerseCargoHeladera {
   private LocalDate fecha;
   private Heladera heladeraACargo;
 
-  public static HacerseCargoHeladera with(Colaborador colaborador, Heladera heladeraACargo) {
+  public static HacerseCargoHeladera por(Colaborador colaborador,
+                                         LocalDate fecha,
+                                         Heladera heladeraACargo) {
     return HacerseCargoHeladera
         .builder()
         .colaborador(colaborador)
-        .fecha(LocalDate.now())
+        .fecha(fecha)
         .heladeraACargo(heladeraACargo)
         .build();
   }
+
+  public static HacerseCargoHeladera por(Colaborador colaborador,
+                                         Heladera heladeraACargo) {
+    return HacerseCargoHeladera
+        .builder()
+        .colaborador(colaborador)
+        .heladeraACargo(heladeraACargo)
+        .build();
+  }
+
 }

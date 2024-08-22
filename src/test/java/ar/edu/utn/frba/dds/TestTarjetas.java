@@ -72,17 +72,12 @@ public class TestTarjetas {
     Assertions.assertEquals(4, tarjeta3.usosPorDia(),
         "La tarjeta3 pertenece a una persona sin menor a cargo, por lo que tiene 4 usos diarios.");
 
-//    try {
-//      tarjeta3.registrarUso(heladera1);
-//      tarjeta3.registrarUso(heladera1);
-//      tarjeta3.registrarUso(heladera1);
-//      tarjeta3.registrarUso(heladera1);
-//      tarjeta3.registrarUso(heladera1);
-//
-//      Assertions.fail("No tiro Excepción.");
-//    } catch (ExcepcionUsoInvalido e) {
-//      Assertions.assertNotNull(e, e.getMessage());
-//    }
+    tarjeta3.sumarUso();
+    tarjeta3.sumarUso();
+    tarjeta3.sumarUso();
+    tarjeta3.sumarUso();
+
+    Assertions.assertFalse(tarjeta3.puedeUsarseEn(heladera1));
   }
 
 

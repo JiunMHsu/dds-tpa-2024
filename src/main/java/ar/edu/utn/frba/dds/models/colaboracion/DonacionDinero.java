@@ -5,26 +5,35 @@ import java.time.LocalDate;
 import java.time.Period;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Builder
 public class DonacionDinero {
+
   private Colaborador colaborador;
   private LocalDate fechaDonacion;
   private Integer monto;
+
+  @Setter
   private Period frecuencia;
 
-  public static DonacionDinero by(Colaborador colaborador, Integer monto, Period frecuencia) {
+  public static DonacionDinero por(Colaborador colaborador,
+                                   LocalDate fechaDonacion,
+                                   Integer monto,
+                                   Period frecuencia) {
     return DonacionDinero
         .builder()
         .colaborador(colaborador)
-        .fechaDonacion(LocalDate.now())
+        .fechaDonacion(fechaDonacion)
         .monto(monto)
         .frecuencia(frecuencia)
         .build();
   }
 
-  public static DonacionDinero by(Colaborador colaborador, LocalDate fechaDonacion, Integer monto) {
+  public static DonacionDinero por(Colaborador colaborador,
+                                   LocalDate fechaDonacion,
+                                   Integer monto) {
     return DonacionDinero
         .builder()
         .colaborador(colaborador)
@@ -33,17 +42,4 @@ public class DonacionDinero {
         .build();
   }
 
-  public static DonacionDinero by(Colaborador colaborador, Integer monto) {
-    return DonacionDinero
-        .builder()
-        .colaborador(colaborador)
-        .fechaDonacion(LocalDate.now())
-        .monto(monto)
-        .build();
-  }
-
-
-  public void setPeriod(Period frecuencia) {
-    this.frecuencia = frecuencia;
-  }
 }
