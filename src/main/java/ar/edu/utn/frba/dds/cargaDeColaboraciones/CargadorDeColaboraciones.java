@@ -7,7 +7,6 @@ import ar.edu.utn.frba.dds.models.colaboracion.RepartoDeTarjetas;
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.data.Documento;
-import ar.edu.utn.frba.dds.models.data.Mail;
 import ar.edu.utn.frba.dds.models.data.TipoDocumento;
 import ar.edu.utn.frba.dds.mensajeria.EmailSender;
 import ar.edu.utn.frba.dds.repository.colaboracion.DistribucionViandasRepository;
@@ -27,7 +26,7 @@ import org.apache.commons.csv.CSVRecord;
 
 public class CargadorDeColaboraciones {
 
-  private EmailSender mailSender;
+  private final EmailSender mailSender;
 
   public CargadorDeColaboraciones(EmailSender mailSender) {
     this.mailSender = mailSender;
@@ -124,12 +123,13 @@ public class CargadorDeColaboraciones {
 
   }
 
+  // TODO
   private void enviarCredencial(Usuario usuario) {
     String asunto = "Credencial de usuario";
     String cuerpo = "Esta es la credencial:"
         + " - Nombre de usuario provicional: " + usuario.getNombre()
         + " - Contrasenia de usuario provicional: " + usuario.getContrasenia();
 
-    mailSender.enviarMail(Mail.to(usuario.getEmail(), asunto, cuerpo));
+    // mailSender.enviarMail(Mail.to(usuario.getEmail(), asunto, cuerpo));
   }
 }
