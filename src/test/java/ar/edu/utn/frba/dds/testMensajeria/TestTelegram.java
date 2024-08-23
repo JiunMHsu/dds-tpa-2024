@@ -8,12 +8,8 @@ public class TestTelegram {
     @Test
     public void enviarTelegram() {
         TelegramSender telegramSender = new TelegramSender();
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        telegramSender.enviarMensaje("", "test", "Test - Grupo 22");
+
+        telegramSender.enviarMensaje("", "**** TEST DE TELEGRAM ****", "Si te llego este mensaje significa que el test funciono =D");
     }
 }
 
