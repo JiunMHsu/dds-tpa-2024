@@ -15,16 +15,15 @@ public class EmailSender implements Sender {
   private final String usuario;
   private final String contrasenia;
 
-  public EmailSender(String nombreUsuario, String contrasenia, String host, String port) {
-    this.usuario = nombreUsuario;
-    this.contrasenia = contrasenia;
+  public EmailSender(String host, String port, String nombreUsuario, String contrasenia) {
     this.host = host;
     this.port = port;
+    this.usuario = nombreUsuario;
+    this.contrasenia = contrasenia;
   }
 
   public EmailSender() {
     this.host = AppConfig.getProperty("EMAIL_HOST");
-    System.out.println(AppConfig.getProperty("EMAIL_HOST"));
     this.port = AppConfig.getProperty("EMAIL_PORT");
     this.usuario = AppConfig.getProperty("EMAIL_USER");
     this.contrasenia = AppConfig.getProperty("EMAIL_PASSWORD");
