@@ -26,16 +26,16 @@ public class TelegramSender implements Sender {
     try {
       this.camelContext = new DefaultCamelContext();
       this.producerTemplate = camelContext.createProducerTemplate();
-
+      
       camelContext.addRoutes(new RouteBuilder() {
         @Override
         public void configure() {
           from("direct:sendToTelegram")
-                  .choice()
-                  .when(exchange -> CHAT_ID != null)
-                  .toF("telegram:bots/?authorizationToken=%s&chatId=%s", AUTHORIZATION_TOKEN, CHAT_ID)
-                  .otherwise()
-                  .log("Chat ID no disponible. No se puede enviar el mensaje.");
+              .choice()
+              .when(exchange -> CHAT_ID != null)
+              .toF("telegram:bots/?authorizationToken=%s&chatId=%s", AUTHORIZATION_TOKEN, CHAT_ID)
+              .otherwise()
+              .log("Chat ID no disponible. No se puede enviar el mensaje.");
         }
       });
 

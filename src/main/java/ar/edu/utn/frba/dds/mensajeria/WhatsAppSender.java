@@ -1,79 +1,82 @@
 package ar.edu.utn.frba.dds.mensajeria;
 
+import ar.edu.utn.frba.dds.AppConfig;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.component.whatsapp.WhatsAppComponent;
 import org.apache.camel.component.whatsapp.model.TextMessage;
 import org.apache.camel.component.whatsapp.model.TextMessageRequest;
 import org.apache.camel.impl.DefaultCamelContext;
-
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Map;
-
 @Getter
 @Setter
-public class WhatsAppSender implements Sender{
+public class WhatsAppSender implements Sender {
 
-    private final String phoneNumberId;
-    private final String authorizationToken;
-    private CamelContext camelContext;
+  private final String phoneNumberId;
+  private final String authorizationToken;
+  private CamelContext camelContext;
 
-    public WhatsAppSender(String phoneNumberId, String authorizationToken) {
-        this.phoneNumberId = phoneNumberId;
-        this.authorizationToken = authorizationToken;
-    }
+  public WhatsAppSender(String phoneNumberId, String authorizationToken) {
+    this.phoneNumberId = phoneNumberId;
+    this.authorizationToken = authorizationToken;
+    this.camelContext = new DefaultCamelContext();
+    setupRoutes();
+  }
 
-    @Override
-    public void enviarMensaje(String receptor, String asunto, String cuerpo) {
-        try {
-            if (camelContext == null) {
-                camelContext = new DefaultCamelContext();
-                configurarRuta();
-                camelContext.start();
-                System.out.println("CamelContext configurado e iniciado correctamente.");
-            }
+  public WhatsAppSender() {
+    this.phoneNumberId = AppConfig.getProperty("WHATSAPP_PHONE_NUMBER_ID");
+    this.authorizationToken = AppConfig.getProperty("WHATSAPP_AUTHORIZATION_TOKEN");
+    this.camelContext = new DefaultCamelContext();
+    setupRoutes();
+  }
 
-            ProducerTemplate producerTemplate = camelContext.createProducerTemplate();
-            Exchange exchange = producerTemplate.send("direct:start", e -> {
-                TextMessageRequest request = new TextMessageRequest();
-                request.setTo(receptor);
-                request.setText(new TextMessage());
-                request.getText().setBody(cuerpo);
-
-                e.getIn().setBody(request);
-            });
-
-            String response = exchange.getMessage().getBody(String.class);
-            System.out.println("Respuesta de la API: " + response);
-
-        } catch (Exception e) {
-
-            System.err.println("Error al enviar el mensaje: " + e.getMessage());
-
-        } finally {
-            try {
-                if (camelContext != null) {
-                    camelContext.stop();
-                }
-            } catch (Exception e) {
-
-                System.err.println("Error al detener CamelContext: " + e.getMessage());
-            }
+  private void setupRoutes() {
+    try {
+      camelContext.addRoutes(new RouteBuilder() {
+        @Override
+        public void configure() {
+          from("direct:start")
+              .toF("whatsapp:%s?authorizationToken=%s", phoneNumberId, authorizationToken);
         }
+      });
+      // camelContext.addComponent("whatsapp", new WhatsAppComponent());
+      camelContext.start();
+      System.out.println("CamelContext configurado e iniciado correctamente.");
+    } catch (Exception e) {
+      System.err.println("Error al configurar CamelContext: " + e.getMessage());
     }
+  }
 
-    private void configurarRuta() throws Exception {
-        camelContext.addRoutes(new RouteBuilder() {
-            @Override
-            public void configure() {
-                from("direct:start")
-                        .log("Enviando mensaje a WhatsApp con encabezados: ${headers}")
-                        .toF("whatsapp:%s/?authorizationToken=%s", phoneNumberId, authorizationToken)
-                        .log("Respuesta de WhatsApp: ${body}");
-            }
-        });
+  @Override
+  public void enviarMensaje(String receptor, String asunto, String cuerpo) {
+    try {
+      TextMessageRequest request = new TextMessageRequest();
+      request.setTo(receptor);
+      request.setText(new TextMessage());
+      request.getText().setPreviewUrl(false);
+      request.getText().setBody(asunto + "\n" + cuerpo);
+
+      ProducerTemplate producerTemplate = camelContext.createProducerTemplate();
+      producerTemplate.requestBody("direct:start", request);
+
+    } catch (Exception e) {
+      System.err.println("Error al enviar el mensaje: " + e.getMessage());
+    } finally {
+      stopContext();
     }
+  }
+
+  public void stopContext() {
+    try {
+      if (camelContext != null) {
+        camelContext.stop();
+      }
+    } catch (Exception e) {
+      System.err.println("Error al detener CamelContext: " + e.getMessage());
+    }
+  }
 }
