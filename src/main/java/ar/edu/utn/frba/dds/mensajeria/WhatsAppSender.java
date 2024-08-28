@@ -2,10 +2,8 @@ package ar.edu.utn.frba.dds.mensajeria;
 
 import ar.edu.utn.frba.dds.AppConfig;
 import org.apache.camel.CamelContext;
-import org.apache.camel.Exchange;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.component.whatsapp.WhatsAppComponent;
 import org.apache.camel.component.whatsapp.model.TextMessage;
 import org.apache.camel.component.whatsapp.model.TextMessageRequest;
 import org.apache.camel.impl.DefaultCamelContext;
@@ -43,7 +41,6 @@ public class WhatsAppSender implements Sender {
               .toF("whatsapp:%s?authorizationToken=%s", phoneNumberId, authorizationToken);
         }
       });
-      // camelContext.addComponent("whatsapp", new WhatsAppComponent());
       camelContext.start();
       System.out.println("CamelContext configurado e iniciado correctamente.");
     } catch (Exception e) {
