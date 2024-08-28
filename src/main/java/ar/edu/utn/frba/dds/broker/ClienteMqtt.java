@@ -12,7 +12,6 @@ import java.util.UUID;
 public class ClienteMqtt {
 
   private final Mqtt5BlockingClient client;
-  // SuscriptorMqtt suscriptor;
 
   /**
    * Constructor de un cliente Mqtt.
