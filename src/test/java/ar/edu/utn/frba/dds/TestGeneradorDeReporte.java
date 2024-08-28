@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,8 +50,11 @@ public class TestGeneradorDeReporte {
   @DisplayName("Se puden generar los pdf a partir de diccionarios")
   public void testGeneracionDeReporte() {
     String title = "Cantidad de Fallas por Heladera";
-    String path = "Cantidad_de_Fallas_por_Heladera.pdf";
-    GeneradorDeReporte.crearPDF(title, incidentesPorHeladera);
+    String fechaActual = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+    String tipo = "FallasPorHeladera";
+    String path = "C:\\Diseno de Sistemas\\2024-tpa-ma-ma-grupo-22\\doc\\archivos\\" + fechaActual + "-" + tipo + ".pdf";
+
+    GeneradorDeReporte.crearPDF(title,tipo, incidentesPorHeladera);
 
     File pdfFile = new File(path);
     assertTrue(pdfFile.exists());
@@ -80,26 +85,23 @@ public class TestGeneradorDeReporte {
   }
 
   @Test
-  @DisplayName("")
+  @DisplayName("Generacion de multiples reportes")
   public void testGeneradorDeReporte() {
-
-    GeneradorDeReporte.crearPDF("Cantidad de Fallas por Heladera", incidentesPorHeladera);
-    GeneradorDeReporte.crearPDF("Cantidad de Viandas Retiradas por Heladera", viandasQuitadas);
-    GeneradorDeReporte.crearPDF("Cantidad de Viandas Agregadas por Heladera", viandasAgregadas);
-    GeneradorDeReporte.crearPDF("Cantidad de Viandas por Colaborador", viandasPorColaborador);
+    String fechaActual = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+    GeneradorDeReporte.crearPDF("Cantidad de Fallas por Heladera", "FallasPorHeladera", incidentesPorHeladera);
+    GeneradorDeReporte.crearPDFCombinado("Cantidad de Viandas Retiradas/Colocadas por Heladera","ViandasretiradasOColocadasPorHeladera", viandasQuitadas, viandasAgregadas);
+    GeneradorDeReporte.crearPDF("Cantidad de Viandas por Colaborador", "ViandasPorColaborador", viandasPorColaborador);
 
     String[] pdfFilePaths = {
-        "Cantidad_de_Fallas_por_Heladera.pdf",
-        "Cantidad_de_Viandas_por_Colaborador.pdf",
-        "Cantidad_de_Viandas_Agregadas_por_Heladera.pdf",
-        "Cantidad_de_Viandas_Retiradas_por_Heladera.pdf"
+        "C:\\Diseno de Sistemas\\2024-tpa-ma-ma-grupo-22\\doc\\archivos\\" + fechaActual + "-FallasPorHeladera.pdf",
+        "C:\\Diseno de Sistemas\\2024-tpa-ma-ma-grupo-22\\doc\\archivos\\" + fechaActual + "-ViandasPorColaborador.pdf",
+        "C:\\Diseno de Sistemas\\2024-tpa-ma-ma-grupo-22\\doc\\archivos\\" + fechaActual + "-ViandasRetiradasOColocadasPorHeladera.pdf"
     };
 
     String[] expectedTitles = {
         "Cantidad de Fallas por Heladera",
         "Cantidad de Viandas por Colaborador",
-        "Cantidad de Viandas Agregadas por Heladera",
-        "Cantidad de Viandas Retiradas por Heladera"
+        "Cantidad de Viandas Retiradas/Colocadas por Heladera"
     };
 
     Map<String, Integer>[] expectedData = new Map[]{
