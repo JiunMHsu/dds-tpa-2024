@@ -9,12 +9,11 @@ import java.util.Map;
 
 public class RegistroDonacion {
 
-  public static Map<String, Integer> donacionesPorColaborador() {
+  public Map<String, Integer> donacionesPorColaborador(LocalDate fecha) {
+
+    List<DonacionVianda> donaciones = DonacionViandaRepository.obtenerAPartirDe(fecha);
+
     Map<String, Integer> viandasPorColaborador = new HashMap<>();
-    LocalDate haceUnaSemana = LocalDate.now().minusWeeks(1);
-
-    List<DonacionVianda> donaciones = DonacionViandaRepository.obtenerAPartirDe(haceUnaSemana);
-
     for (DonacionVianda donacion : donaciones) {
       // Tampoco es la forma más segura, habría que hacer por email o algo así
       String key = donacion.getColaborador().getNombre() + " " + donacion.getColaborador().getApellido();
@@ -24,5 +23,4 @@ public class RegistroDonacion {
 
     return viandasPorColaborador;
   }
-
 }
