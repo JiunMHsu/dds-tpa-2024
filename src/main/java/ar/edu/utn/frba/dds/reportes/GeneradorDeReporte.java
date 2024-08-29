@@ -3,16 +3,13 @@ package ar.edu.utn.frba.dds.reportes;
 import ar.edu.utn.frba.dds.AppConfig;
 import com.aspose.pdf.Color;
 import com.aspose.pdf.Document;
-import com.aspose.pdf.FontRepository;
 import com.aspose.pdf.HtmlFragment;
 import com.aspose.pdf.Page;
-import com.aspose.pdf.Paragraphs;
 import com.aspose.pdf.TextFragment;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -63,10 +60,8 @@ public class GeneradorDeReporte {
   }
 
   public void generarReporteSemanal() {
-
-    LocalDate haceUnaSemana = LocalDate.now().minusWeeks(1);
-    Map<String, Integer> incidentesPorHeladera = registroIncidente.incidentesPorHeladera(haceUnaSemana);
-    Map<String, Integer> donacionPorColaborador = registroDonacion.donacionesPorColaborador(haceUnaSemana);
+    Map<String, Integer> incidentesPorHeladera = registroIncidente.incidentesPorHeladera();
+    Map<String, Integer> donacionPorColaborador = registroDonacion.donacionesPorColaborador();
     Map<String, Integer> viandasAgregadas = registroMovimiento.getViandasAgregadas();
     Map<String, Integer> viandasQuitadas = registroMovimiento.getViandasQuitadas();
 
@@ -81,9 +76,10 @@ public class GeneradorDeReporte {
 
   public void crearPDF(String titulo, String tipo, Map<String, Integer> datos) {
     try (Document pdfDocument = new Document()) {
-
       Page page = pdfDocument.getPages().add();
+
       agregarTitulo(page, titulo);
+      System.out.println("Creando PDF...");
       agregarDatos(page, datos);
 
       guardarDocumento(pdfDocument, tipo);
@@ -95,8 +91,8 @@ public class GeneradorDeReporte {
 
   public void crearPDFCombinado(String titulo, String tipo, Map<String, Integer> datos1, Map<String, Integer> datos2) {
     try (Document pdfDocument = new Document()) {
-
       Page page = pdfDocument.getPages().add();
+      System.out.println("Creando PDF...");
 
       agregarTitulo(page, titulo);
       agregarTitulo(page, "Cantidad de Viandas Retiradas por Heladera");
@@ -113,31 +109,42 @@ public class GeneradorDeReporte {
 
   private void guardarDocumento(Document documento, String nombre) {
     Path rutaReportes = Paths.get(directorioReportes);
-
+    System.out.println("Guardando Documento..." + rutaReportes.toAbsolutePath());
     File carpeta = rutaReportes.toFile();
     if (carpeta.exists() || carpeta.mkdirs()) {
       String fechaActual = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
       Path rutaArchivo = Paths.get(directorioReportes, fechaActual + "-" + nombre + ".pdf");
+      System.out.println(rutaArchivo.toAbsolutePath());
       documento.save(rutaArchivo.toAbsolutePath().toString());
     }
   }
 
   private void agregarTitulo(Page page, String titulo) {
-    Paragraphs textFragments = page.getParagraphs();
     TextFragment textFragment = new TextFragment(titulo);
     textFragment.getTextState().setFontSize(18);
-    textFragment.getTextState().setFont(FontRepository.findFont("Courier New"));
     textFragment.getTextState().setForegroundColor(Color.getBlack());
-    textFragments.add(textFragment);
+    page.getParagraphs().add(textFragment);
   }
 
   private void agregarDatos(Page page, Map<String, Integer> datos) {
     StringBuilder htmlContent = new StringBuilder();
-    htmlContent.append("<table style='width: 100%; font-family: Courier New; color: black;'>");
+
+    // htmlContent.append("<div>");
+    // htmlContent.append("\n");
+    // htmlContent.append("\n");
+    // htmlContent.append("</div>");
+
+    htmlContent.append("<table style='width: 100%; font-family: Monospaced; color: black;'>");
     for (Map.Entry<String, Integer> entry : datos.entrySet()) {
-      htmlContent.append("<tr><td>").append(entry.getKey()).append("</td><td>").append(entry.getValue()).append("</td></tr>");
+      htmlContent
+          .append("<tr><td>")
+          .append(entry.getKey())
+          .append("</td><td>")
+          .append(entry.getValue())
+          .append("</td></tr>");
     }
+
     htmlContent.append("</table>");
     HtmlFragment htmlFragment = new HtmlFragment(htmlContent.toString());
     page.getParagraphs().add(htmlFragment);

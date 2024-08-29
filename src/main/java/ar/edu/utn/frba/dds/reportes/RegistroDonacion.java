@@ -9,9 +9,9 @@ import java.util.Map;
 
 public class RegistroDonacion {
 
-  public Map<String, Integer> donacionesPorColaborador(LocalDate fecha) {
-
-    List<DonacionVianda> donaciones = DonacionViandaRepository.obtenerAPartirDe(fecha);
+  public Map<String, Integer> donacionesPorColaborador() {
+    LocalDate haceUnaSemana = LocalDate.now().minusWeeks(1);
+    List<DonacionVianda> donaciones = DonacionViandaRepository.obtenerAPartirDe(haceUnaSemana);
 
     Map<String, Integer> viandasPorColaborador = new HashMap<>();
     for (DonacionVianda donacion : donaciones) {
