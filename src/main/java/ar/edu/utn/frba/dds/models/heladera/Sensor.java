@@ -10,7 +10,7 @@ public class Sensor {
   private Heladera heladera;
   private String topic;
 
-  public Sensor de(Heladera heladera, String topic) {
+  public static Sensor de(Heladera heladera, String topic) {
     return Sensor
         .builder()
         .heladera(heladera)
@@ -24,7 +24,7 @@ public class Sensor {
    * @param heladera una Heladera.
    * @return Sensor con topic vacío ("").
    */
-  public Sensor de(Heladera heladera) {
+  public static Sensor de(Heladera heladera) {
     return Sensor
         .builder()
         .heladera(heladera)
@@ -38,7 +38,7 @@ public class Sensor {
    * @param topic una topic de suscripción.
    * @return Sensor con una heladera de capacidad 10.
    */
-  public Sensor de(String topic) {
+  public static Sensor de(String topic) {
     return Sensor
         .builder()
         .heladera(Heladera.con(10))
