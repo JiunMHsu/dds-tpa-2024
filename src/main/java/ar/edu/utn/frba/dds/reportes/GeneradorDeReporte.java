@@ -130,10 +130,7 @@ public class GeneradorDeReporte {
   private void agregarDatos(Page page, Map<String, Integer> datos) {
     StringBuilder htmlContent = new StringBuilder();
 
-    // htmlContent.append("<div>");
-    // htmlContent.append("\n");
-    // htmlContent.append("\n");
-    // htmlContent.append("</div>");
+    htmlContent.append("<br>");
 
     htmlContent.append("<table style='width: 100%; font-family: Monospaced; color: black;'>");
     for (Map.Entry<String, Integer> entry : datos.entrySet()) {
@@ -146,6 +143,7 @@ public class GeneradorDeReporte {
     }
 
     htmlContent.append("</table>");
+
     HtmlFragment htmlFragment = new HtmlFragment(htmlContent.toString());
     page.getParagraphs().add(htmlFragment);
   }
