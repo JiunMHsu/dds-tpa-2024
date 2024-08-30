@@ -1,13 +1,13 @@
 package ar.edu.utn.frba.dds;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import ar.edu.utn.frba.dds.models.data.Ubicacion;
-import ar.edu.utn.frba.dds.models.puntoIdeal.*;
-
-import static org.mockito.Mockito.*;
-
+import ar.edu.utn.frba.dds.models.puntoIdeal.IAdapterPuntoIdeal;
+import ar.edu.utn.frba.dds.models.puntoIdeal.PuntoIdeal;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -26,7 +26,7 @@ public class ValidadorDeContrasenias {
 
   private boolean esFuerte(String unaClave) {
     try {
-      List<String> peoresContrasenias = Files.readAllLines(Paths.get("contraseniasComunes.txt"));
+      List<String> peoresContrasenias = Files.readAllLines(Paths.get("src/main/resources/contraseniasComunes.txt"));
       return !peoresContrasenias.contains(unaClave);
     } catch (IOException error) {
       error.printStackTrace();

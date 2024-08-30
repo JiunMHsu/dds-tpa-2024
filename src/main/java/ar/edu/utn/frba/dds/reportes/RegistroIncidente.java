@@ -6,17 +6,15 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import lombok.Getter;
 
-@Getter
 public class RegistroIncidente {
 
-  public static Map<String, Integer> incidentesPorHeladera() {
-    Map<String, Integer> incidentesPorHeladera = new HashMap<>();
+  public Map<String, Integer> incidentesPorHeladera() {
+    
     LocalDate haceUnaSemana = LocalDate.now().minusWeeks(1);
-
     List<Incidente> incidentesDeLaSemana = IncidenteRepository.obtenerAPartirDe(haceUnaSemana.atStartOfDay());
 
+    Map<String, Integer> incidentesPorHeladera = new HashMap<>();
     for (Incidente incidente : incidentesDeLaSemana) {
       int cantidad = incidentesPorHeladera.getOrDefault(incidente.getHeladera().getNombre(), 0) + 1;
       incidentesPorHeladera.put(incidente.getHeladera().getNombre(), cantidad);

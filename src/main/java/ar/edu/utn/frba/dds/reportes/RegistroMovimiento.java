@@ -5,27 +5,42 @@ import java.util.Map;
 
 public class RegistroMovimiento {
 
-  private static final Map<String, Integer> viandasAgregadas = new HashMap<>();
-  private static final Map<String, Integer> viandasQuitadas = new HashMap<>();
+  private static RegistroMovimiento instancia;
+  private final Map<String, Integer> viandasAgregadas;
+  private final Map<String, Integer> viandasQuitadas;
 
-  public static void agregarViandaPorHeladera(String nombreHeladera) {
-    viandasAgregadas.put(nombreHeladera, viandasAgregadas.getOrDefault(nombreHeladera, 0) + 1);
+  private RegistroMovimiento() {
+    viandasAgregadas = new HashMap<>();
+    viandasQuitadas = new HashMap<>();
   }
 
-  public static void quitarViandaPorHeladera(String nombreHeladera) {
-    viandasAgregadas.put(nombreHeladera, viandasQuitadas.getOrDefault(nombreHeladera, 0) + 1);
+  public static RegistroMovimiento getInstancia() {
+    if (instancia == null) {
+      instancia = new RegistroMovimiento();
+    }
+
+    return instancia;
   }
 
-  public static Map<String, Integer> getViandasAgregadas() {
+  public Map<String, Integer> getViandasAgregadas() {
     return new HashMap<>(viandasAgregadas);
   }
 
-  public static Map<String, Integer> getViandasQuitadas() {
+  public Map<String, Integer> getViandasQuitadas() {
     return new HashMap<>(viandasQuitadas);
   }
 
-  public static void vaciarHashMap() {
+  public void vaciarRegistro() {
     viandasAgregadas.clear();
     viandasQuitadas.clear();
   }
+
+  public void quitarViandaPara(String nombreHeladera) {
+    viandasAgregadas.put(nombreHeladera, viandasQuitadas.getOrDefault(nombreHeladera, 0) + 1);
+  }
+
+  public void sumarViandaPara(String nombreHeladera) {
+    viandasAgregadas.put(nombreHeladera, viandasAgregadas.getOrDefault(nombreHeladera, 0) + 1);
+  }
+
 }
