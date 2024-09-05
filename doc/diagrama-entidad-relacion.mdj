@@ -1,0 +1,105 @@
+{
+	"_type": "Project",
+	"_id": "AAAAAAFF+h6SjaM2Hec=",
+	"name": "Untitled",
+	"ownedElements": [
+		{
+			"_type": "UMLModel",
+			"_id": "AAAAAAFF+qBWK6M3Z8Y=",
+			"_parent": {
+				"$ref": "AAAAAAFF+h6SjaM2Hec="
+			},
+			"name": "Model",
+			"ownedElements": [
+				{
+					"_type": "UMLClassDiagram",
+					"_id": "AAAAAAFF+qBtyKM79qY=",
+					"_parent": {
+						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
+					},
+					"name": "Main",
+					"defaultDiagram": true
+				}
+			]
+		},
+		{
+			"_type": "ERDDataModel",
+			"_id": "AAAAAAGRvn6DBWnm6GY=",
+			"_parent": {
+				"$ref": "AAAAAAFF+h6SjaM2Hec="
+			},
+			"name": "Data Model1",
+			"ownedElements": [
+				{
+					"_type": "ERDDiagram",
+					"_id": "AAAAAAGRvn6DBmnnKbA=",
+					"_parent": {
+						"$ref": "AAAAAAGRvn6DBWnm6GY="
+					},
+					"name": "ERDDiagram1",
+					"ownedViews": [
+						{
+							"_type": "ERDEntityView",
+							"_id": "AAAAAAGRvn6LIGntyXE=",
+							"_parent": {
+								"$ref": "AAAAAAGRvn6DBmnnKbA="
+							},
+							"model": {
+								"$ref": "AAAAAAGRvn6LH2nr7d0="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGRvn6LIGnu08w=",
+									"_parent": {
+										"$ref": "AAAAAAGRvn6LIGntyXE="
+									},
+									"font": "Arial;13;1",
+									"left": 808,
+									"top": 453,
+									"width": 53.341796875,
+									"height": 13,
+									"text": "Entity1"
+								},
+								{
+									"_type": "ERDColumnCompartmentView",
+									"_id": "AAAAAAGRvn6LIGnvxNE=",
+									"_parent": {
+										"$ref": "AAAAAAGRvn6LIGntyXE="
+									},
+									"model": {
+										"$ref": "AAAAAAGRvn6LH2nr7d0="
+									},
+									"font": "Arial;13;0",
+									"left": 808,
+									"top": 471,
+									"width": 53.341796875,
+									"height": 10
+								}
+							],
+							"font": "Arial;13;0",
+							"left": 808,
+							"top": 448,
+							"width": 53.341796875,
+							"height": 33,
+							"nameLabel": {
+								"$ref": "AAAAAAGRvn6LIGnu08w="
+							},
+							"columnCompartment": {
+								"$ref": "AAAAAAGRvn6LIGnvxNE="
+							}
+						}
+					]
+				},
+				{
+					"_type": "ERDEntity",
+					"_id": "AAAAAAGRvn6LH2nr7d0=",
+					"_parent": {
+						"$ref": "AAAAAAGRvn6DBWnm6GY="
+					},
+					"name": "Entity1"
+				}
+			]
+		}
+	]
+}
