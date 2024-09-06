@@ -8,26 +8,55 @@ import ar.edu.utn.frba.dds.models.formulario.FormularioRespondido;
 import ar.edu.utn.frba.dds.models.usuario.Usuario;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "colaborador")
 public class Colaborador {
 
-  private TipoColaborador tipoColaborador;
+  @Id
+  @GeneratedValue(generator = "uuid")
+  private UUID id;
+
+  // private TipoColaborador tipoColaborador;
+
   private Usuario usuario;
   private Contacto contacto;
   private Direccion direccion;
   private FormularioRespondido datosAdicionales;
   private List<Colaboracion> formaDeColaborar;
+
+  @Column(name = "razon_social")
   private String razonSocial;
+
+  @Column(name = "tipo")
   private TipoRazonSocial tipoRazonSocial;
+
+  @Column(name = "rubro")
   private String rubro;
+
+  @Column(name = "nombre")
   private String nombre;
+
+  @Column(name = "apellido")
   private String apellido;
+
+  @Column(name = "fecha_nacimiento", columnDefinition = "DATE")
   private LocalDate fechaNacimiento;
 
   public static Colaborador juridica(Usuario usuario, String razonSocial, TipoRazonSocial tipoRazonSocial, String rubro, Contacto contacto, Direccion direccion, List<Colaboracion> formaDeColaborar) {
