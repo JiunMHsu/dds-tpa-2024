@@ -6,31 +6,61 @@ import ar.edu.utn.frba.dds.repository.heladera.HeladeraRepository;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "heladera")
 public class Heladera {
 
+  @Id
+  @GeneratedValue(generator = "uuid")
+  private UUID id;
+
+  @Column(name = "nombre", nullable = false)
   private String nombre;
+
+  // TODO - Hacer mapeo de la dirección, @Embedded o @OneToOne?
   private Direccion direccion;
+
+  @Column(name = "capacidad", columnDefinition = "SMALLINT", nullable = false)
   private Integer capacidad;
 
   @Setter
+  @Column(name = "inicio_funcionamiento", columnDefinition = "DATE", nullable = false)
   private LocalDate inicioFuncionamiento;
 
   @Setter
+  @Embedded
   private RangoTemperatura rangoTemperatura;
 
   @Setter
+  @Column(name = "ultima_temperatura", columnDefinition = "DOUBLE")
   private Double ultimaTemperatura;
 
   @Setter
+  @Enumerated(EnumType.STRING)
+  @Column(name = "estado", nullable = false)
   private EstadoHeladera estado;
 
   @Setter
+  @Column(name = "cant_viandas", columnDefinition = "SMALLINT", nullable = false)
   private Integer viandas;
 
   public static Heladera con(String nombre,

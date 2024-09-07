@@ -4082,7 +4082,8 @@
 								},
 								"reference": {
 									"$ref": "AAAAAAGRw7mLAPBUkcQ="
-								}
+								},
+								"cardinality": "1..*"
 							}
 						}
 					],

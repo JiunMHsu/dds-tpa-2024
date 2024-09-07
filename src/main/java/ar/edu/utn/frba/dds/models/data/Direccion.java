@@ -7,9 +7,10 @@ import lombok.Getter;
 @Builder
 public class Direccion {
 
+  private Barrio barrio;
   private Calle calle;
   private Integer altura;
-  private Ubicacion ubicacion;
+  private Ubicacion ubicacion; // Embedded
 
   public static Direccion with(Calle calle, Integer altura, Ubicacion ubicacion) {
     return Direccion

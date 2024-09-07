@@ -1,16 +1,30 @@
 package ar.edu.utn.frba.dds.models.data;
 
 import ar.edu.utn.frba.dds.mensajeria.MedioDeNotificacion;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Embeddable
 public class Contacto {
 
+  @Column(name = "email")
   private String email;
+
+  @Column(name = "telefono")
   private String telefono;
+
+  @Column(name = "whatsapp")
   private String whatsApp; // Chat ID
+
+  @Column(name = "telegram")
   private String telegram; // Chat ID
 
   public static Contacto with(String email, String telefono, String whatsApp, String telegram) {

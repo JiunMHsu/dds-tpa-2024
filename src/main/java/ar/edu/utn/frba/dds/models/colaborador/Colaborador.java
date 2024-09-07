@@ -12,10 +12,14 @@ import java.util.UUID;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -37,14 +41,22 @@ public class Colaborador {
   @GeneratedValue(generator = "uuid")
   private UUID id;
 
+  @ManyToOne
+  @JoinColumn(name = "tipo_colaborador_id")
   private TipoColaborador tipoColaborador;
 
   @OneToOne
   @JoinColumn(name = "usuario_id")
   private Usuario usuario;
 
-  private Contacto contacto; // Embedded
-  private Direccion direccion; // Embedded
+  @Embedded
+  private Contacto contacto;
+
+  // TODO - Hacer mapeo de la dirección, @Embedded o @OneToOne?
+  private Direccion direccion;
+
+  @OneToOne
+  @JoinColumn(name = "formulario_respondiso_id")
   private FormularioRespondido datosAdicionales;
 
   @ElementCollection
@@ -55,6 +67,7 @@ public class Colaborador {
   @Column(name = "razon_social")
   private String razonSocial;
 
+  @Enumerated(EnumType.STRING)
   @Column(name = "tipo")
   private TipoRazonSocial tipoRazonSocial;
 

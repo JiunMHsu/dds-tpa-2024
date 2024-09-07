@@ -2,41 +2,68 @@ package ar.edu.utn.frba.dds.models.colaboracion;
 
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.vianda.Vianda;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.UUID;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "donacion_vianda")
 public class DonacionVianda {
 
+  @Id
+  @GeneratedValue(generator = "uuid")
+  private UUID id;
+
+  @ManyToOne
+  @JoinColumn(name = "colaborador_id", nullable = false)
   private Colaborador colaborador;
-  private LocalDate fechaDonacion;
+
+  @Column(name = "fecha_hora", columnDefinition = "DATETIME", nullable = false)
+  private LocalDateTime fechaHora;
+
+  @OneToOne
+  @JoinColumn(name = "vianda_id", nullable = false)
   private Vianda vianda;
 
   @Setter
+  @Column(name = "es_entregada", nullable = false)
   private Boolean esEntregada;
 
   public static DonacionVianda por(Colaborador colaborador,
-                                   LocalDate fechaDonacion,
+                                   LocalDateTime fechaDonacion,
                                    Vianda vianda,
                                    Boolean esEntregada) {
     return DonacionVianda
         .builder()
         .colaborador(colaborador)
-        .fechaDonacion(fechaDonacion)
+        .fechaHora(fechaDonacion)
         .vianda(vianda)
         .esEntregada(esEntregada)
         .build();
   }
 
   public static DonacionVianda por(Colaborador colaborador,
-                                   LocalDate fechaDonacion) {
+                                   LocalDateTime fechaDonacion) {
     return DonacionVianda
         .builder()
         .colaborador(colaborador)
-        .fechaDonacion(fechaDonacion)
+        .fechaHora(fechaDonacion)
         .build();
   }
 
