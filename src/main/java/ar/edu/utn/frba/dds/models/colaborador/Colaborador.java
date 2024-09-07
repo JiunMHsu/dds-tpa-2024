@@ -9,10 +9,14 @@ import ar.edu.utn.frba.dds.models.usuario.Usuario;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,12 +37,19 @@ public class Colaborador {
   @GeneratedValue(generator = "uuid")
   private UUID id;
 
-  // private TipoColaborador tipoColaborador;
+  private TipoColaborador tipoColaborador;
 
+  @OneToOne
+  @JoinColumn(name = "usuario_id")
   private Usuario usuario;
-  private Contacto contacto;
-  private Direccion direccion;
+
+  private Contacto contacto; // Embedded
+  private Direccion direccion; // Embedded
   private FormularioRespondido datosAdicionales;
+
+  @ElementCollection
+  @CollectionTable(name = "formas_de_colaborar", joinColumns = @JoinColumn(name = "colaborador_id"))
+  @Column(name = "colaboracion")
   private List<Colaboracion> formaDeColaborar;
 
   @Column(name = "razon_social")
