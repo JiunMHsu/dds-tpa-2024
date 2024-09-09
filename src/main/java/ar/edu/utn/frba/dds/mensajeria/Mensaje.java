@@ -1,22 +1,40 @@
 package ar.edu.utn.frba.dds.mensajeria;
 
 import java.time.LocalDateTime;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.UUID;
+
+import lombok.*;
+
+import javax.persistence.*;
 
 @Builder
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "mensaje")
 public class Mensaje {
 
+  @Id
+  @GeneratedValue(generator = "uuid")
+  private UUID id;
+
+  @Column (name = "asunto")
   private String asunto;
+
+  @Column (name = "cuerpo")
   private String cuerpo;
-  private String receptor;
+
+  @Column (name = "receptor")
+  private String receptor; // Ver el tema de receptor, osea cmo es dado que seria diferente para email, wpp o telegram si no me equivoco UwU
 
   @Setter
+  @Enumerated
+  @Column (name = "medio_notificacion")
   private MedioDeNotificacion medio;
 
   @Setter
+  @Column (name = "fecha_envio")
   private LocalDateTime fechaEnvio;
 
   public static Mensaje con(String asunto,
