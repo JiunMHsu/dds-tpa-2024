@@ -4,22 +4,33 @@ import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.personaVulnerable.PersonaVulnerable;
 import ar.edu.utn.frba.dds.utils.GeneradorDeCodigosTarjeta;
 import java.time.LocalDate;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.UUID;
 
+import lombok.*;
+
+import javax.persistence.*;
 
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "tarjeta_vulnerable")
 public class TarjetaPersonaVulnerable implements Tarjeta {
 
+  @Id
   private String codigo;
+
+  @OneToOne
+  @JoinColumn(name = "vulnerable_id", unique = true, nullable = false)
   private PersonaVulnerable duenio;
 
   @Setter
+  @Column (name = "usos_dia")
   private Integer usosEnElDia;
 
   @Setter
+  @Column (name = "fecha_ultimo_uso")
   private LocalDate ultimoUso;
 
   public static TarjetaPersonaVulnerable de(PersonaVulnerable duenio) {

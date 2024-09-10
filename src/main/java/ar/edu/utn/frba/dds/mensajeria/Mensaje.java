@@ -19,22 +19,22 @@ public class Mensaje {
   @GeneratedValue(generator = "uuid")
   private UUID id;
 
-  @Column (name = "asunto")
+  @Column (name = "asunto", nullable = false)
   private String asunto;
 
-  @Column (name = "cuerpo")
+  @Column (name = "cuerpo", nullable = false)
   private String cuerpo;
 
-  @Column (name = "receptor")
+  @Column (name = "receptor", nullable = false)
   private String receptor; // Ver el tema de receptor, osea cmo es dado que seria diferente para email, wpp o telegram si no me equivoco UwU
 
   @Setter
   @Enumerated
-  @Column (name = "medio_notificacion")
+  @Column (name = "medio_notificacion", nullable = false)
   private MedioDeNotificacion medio;
 
   @Setter
-  @Column (name = "fecha_envio")
+  @Column (name = "fecha_envio", nullable = false)
   private LocalDateTime fechaEnvio;
 
   public static Mensaje con(String asunto,

@@ -4,21 +4,44 @@ import ar.edu.utn.frba.dds.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.models.data.Area;
 import ar.edu.utn.frba.dds.models.data.Contacto;
 import ar.edu.utn.frba.dds.models.data.Documento;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+import javax.persistence.*;
+import java.util.UUID;
 
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "tenico")
 public class Tecnico {
 
+  @Id
+  @GeneratedValue(generator = "uuid")
+  private UUID id;
+
+  @Column(name = "nombre", nullable = false)
   private String nombre;
+
+  @Column(name = "apellido", nullable = false)
   private String apellido;
+
+  @Embedded
   private Documento documento;
+
+  @Column(name = "cuit", nullable = false)
   private String cuit;
+
+  @Embedded
   private Contacto contacto;
+
+  @Enumerated
+  @Column (name = "medio_notificacion", nullable = false)
   private MedioDeNotificacion medioDeNotificacion;
+
+  @Embedded
   private Area areaDeCobertura;
 
   public static Tecnico with(String nombre,

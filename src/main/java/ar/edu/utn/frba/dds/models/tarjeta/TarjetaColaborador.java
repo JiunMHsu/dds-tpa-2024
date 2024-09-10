@@ -3,19 +3,31 @@ package ar.edu.utn.frba.dds.models.tarjeta;
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.utils.GeneradorDeCodigosTarjeta;
 import java.time.LocalDate;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+
+import lombok.*;
+
+import javax.persistence.*;
 
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "tarjeta_colaborador")
 public class TarjetaColaborador implements Tarjeta {
 
+  @Id
   private String codigo;
+
+  @ManyToOne
+  @JoinColumn(name = "colaborador_id", nullable = false)
   private Colaborador duenio;
+
+  @Column(name = "fecha_alta")
   private LocalDate fechaAlta;
 
   @Setter
+  @Column(name = "esta_activa")
   private Boolean esActiva;
 
   public static TarjetaColaborador de(String codigo,

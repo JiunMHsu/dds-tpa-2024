@@ -17,28 +17,28 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "canjePuntos")
+@Table(name = "canje_puntos")
 public class CanjeDePuntos {
 
   @Id
   @GeneratedValue(generator = "uuid")
   private UUID id;
 
-  @OneToOne
-  @JoinColumn(name = "colaborador_id", referencedColumnName = "id", unique = true)
+  @ManyToOne
+  @JoinColumn(name = "colaborador_id", nullable = false)
   private Colaborador colaborador;
 
-  @Column (name = "fecha_canjeo")
+  @Column (name = "fecha_canjeo", nullable = false)
   private LocalDate fechaCanjeo;
 
-  @Column (name = "puntos_canjeados")
+  @Column (name = "puntos_canjeados", nullable = false)
   private Double puntosCanjeados;
 
-  @Column (name = "puntos_restamtes")
+  @Column (name = "puntos_restamtes", nullable = false)
   private Double puntosRestantes;
 
   @ManyToOne
-  @JoinColumn(name = "oferta_id", referencedColumnName = "id", unique = true)
+  @JoinColumn(name = "oferta_id", nullable = false)
   private OfertaDeProductos oferta;
 
   public static CanjeDePuntos por(Colaborador colaborador,
