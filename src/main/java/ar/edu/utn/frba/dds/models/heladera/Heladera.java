@@ -14,6 +14,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,7 +38,8 @@ public class Heladera {
   @Column(name = "nombre", nullable = false)
   private String nombre;
 
-  // TODO - Hacer mapeo de la dirección, @Embedded o @OneToOne?
+  @OneToOne // TODO - Ver si hacer @Embedded
+  @JoinColumn(name = "direccion_id")
   private Direccion direccion;
 
   @Column(name = "capacidad", columnDefinition = "SMALLINT", nullable = false)

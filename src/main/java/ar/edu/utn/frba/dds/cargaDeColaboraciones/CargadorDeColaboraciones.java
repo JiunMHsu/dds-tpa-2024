@@ -36,7 +36,7 @@ public class CargadorDeColaboraciones {
     this.mailSender = mailSender;
   }
 
-  // TODO Revisar el retorno en caso de error
+  // TODO - Revisar el retorno en caso de error
   public void cargarColaboraciones(Path csv) {
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");

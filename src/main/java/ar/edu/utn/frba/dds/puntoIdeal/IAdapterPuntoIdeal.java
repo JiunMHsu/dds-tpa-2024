@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.models.puntoIdeal;
+package ar.edu.utn.frba.dds.puntoIdeal;
 
 import ar.edu.utn.frba.dds.models.data.Ubicacion;
 import java.util.List;

@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.broker.suscriptorSensor;
 
 import ar.edu.utn.frba.dds.broker.SuscriptorMqtt;
-import ar.edu.utn.frba.dds.models.heladera.Sensor;
+import ar.edu.utn.frba.dds.models.sensor.Sensor;
 import lombok.Getter;
 
 @Getter

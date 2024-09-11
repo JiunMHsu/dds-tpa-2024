@@ -52,11 +52,12 @@ public class Colaborador {
   @Embedded
   private Contacto contacto;
 
-  // TODO - Hacer mapeo de la dirección, @Embedded o @OneToOne?
+  @OneToOne // TODO - ver si hacer @Embedded
+  @JoinColumn(name = "direccion_id")
   private Direccion direccion;
 
   @OneToOne
-  @JoinColumn(name = "formulario_respondiso_id")
+  @JoinColumn(name = "formulario_respondido_id")
   private FormularioRespondido datosAdicionales;
 
   @ElementCollection

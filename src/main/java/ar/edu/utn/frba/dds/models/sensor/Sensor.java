@@ -1,14 +1,43 @@
-package ar.edu.utn.frba.dds.models.heladera;
+package ar.edu.utn.frba.dds.models.sensor;
 
+import ar.edu.utn.frba.dds.models.heladera.Heladera;
+import java.util.UUID;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "sensor")
 public class Sensor {
 
+  @Id
+  @GeneratedValue(generator = "uuid")
+  private UUID id;
+
+  @ManyToOne
+  @JoinColumn(name = "heladera_id", nullable = false)
   private Heladera heladera;
+
+  @Column(name = "topic", columnDefinition = "TEXT", nullable = false)
   private String topic;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "tipo")
+  private TipoSensor tipo;
 
   public static Sensor de(Heladera heladera, String topic) {
     return Sensor

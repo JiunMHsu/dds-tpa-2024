@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.broker.suscriptorSensor;
 
-import ar.edu.utn.frba.dds.models.heladera.Sensor;
+import ar.edu.utn.frba.dds.models.sensor.Sensor;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.Executors;
@@ -12,6 +12,14 @@ public class SuscriptorSensorTemperatura extends SuscriptorSensor {
   private Instant tiempoUltimoMensaje;
   private long milisegundosEntreMensajes;
 
+  private SuscriptorSensorTemperatura(Sensor suscriptor,
+                                      long intervaloDeMensajes,
+                                      int frecuenciaDeVerificacion) {
+    super(suscriptor);
+    milisegundosEntreMensajes = intervaloDeMensajes;
+    ScheduledExecutorService planificador = Executors.newScheduledThreadPool(1);
+    planificador.scheduleAtFixedRate(this::verificarRetrasoMensaje, 0, frecuenciaDeVerificacion, TimeUnit.SECONDS);
+  }
 
   public static SuscriptorSensorTemperatura para(Sensor suscriptor) {
     return new SuscriptorSensorTemperatura(suscriptor, 60000 * 5, 60);
@@ -23,15 +31,6 @@ public class SuscriptorSensorTemperatura extends SuscriptorSensor {
     return new SuscriptorSensorTemperatura(suscriptor, intervaloEntreMensajes, frecuenciaDeVerificacion);
   }
 
-  private SuscriptorSensorTemperatura(Sensor suscriptor,
-                                      long intervaloDeMensajes,
-                                      int frecuenciaDeVerificacion) {
-    super(suscriptor);
-    milisegundosEntreMensajes = intervaloDeMensajes;
-    ScheduledExecutorService planificador = Executors.newScheduledThreadPool(1);
-    planificador.scheduleAtFixedRate(this::verificarRetrasoMensaje, 0, frecuenciaDeVerificacion, TimeUnit.SECONDS);
-  }
-
   // TODO (delegar a controller? o este mismo cumple el rol de controller?)
   @Override
   public void recibirMensaje(String mensaje) {
@@ -39,7 +38,8 @@ public class SuscriptorSensorTemperatura extends SuscriptorSensor {
     tiempoUltimoMensaje = Instant.now();
   }
 
-  public void manejarRetrasoMensaje() {}
+  public void manejarRetrasoMensaje() {
+  }
 
   private void verificarRetrasoMensaje() {
     if (tiempoUltimoMensaje == null) {

@@ -21,7 +21,6 @@ public class ClienteMqtt {
     client.connectWith().send();
   }
 
-
   public void suscribirPara(SuscriptorMqtt suscriptor) {
     client.toAsync().subscribeWith()
         .topicFilter(suscriptor.topic())

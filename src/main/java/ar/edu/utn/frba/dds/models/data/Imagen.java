@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @Embeddable
 public class Imagen {
-
+  
   @Column(name = "ruta", columnDefinition = "TEXT")
   private String ruta;
 

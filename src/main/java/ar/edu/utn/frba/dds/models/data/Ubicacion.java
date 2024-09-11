@@ -10,7 +10,7 @@ public class Ubicacion {
 
   @Column(name = "latitud", nullable = false)
   private final Double latitud;
-
+  
   @Column(name = "longitud", nullable = false)
   private final Double longitud;
 

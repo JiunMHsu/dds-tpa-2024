@@ -4,10 +4,19 @@ import ar.edu.utn.frba.dds.models.data.Direccion;
 import ar.edu.utn.frba.dds.models.data.Documento;
 import java.time.LocalDate;
 import java.util.UUID;
-
-import lombok.*;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -15,7 +24,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "canje_puntos")
+@Table(name = "persona_vulnerable")
 public class PersonaVulnerable {
 
   @Id
@@ -28,16 +37,17 @@ public class PersonaVulnerable {
   @Embedded
   private Documento documento;
 
-  @Column (name = "fecha_nacimiento")
+  @Column(name = "fecha_nacimiento", columnDefinition = "DATET")
   private LocalDate fechaNacimiento;
 
-  @Column (name = "fecha_registro")
+  @Column(name = "fecha_registro")
   private LocalDate fechaRegistro;
 
-  // TODO - Hacer mapeo de la dirección, @Embedded o @OneToOne?
+  @OneToOne // TODO - Ver si hacer @Embedded
+  @JoinColumn(name = "direccion_id")
   private Direccion domicilio;
 
-  @Column (name = "menores_a_cargo")
+  @Column(name = "menores_a_cargo")
   private Integer menoresACargo;
 
   public static PersonaVulnerable con(String nombre,

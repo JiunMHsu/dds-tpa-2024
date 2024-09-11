@@ -3,15 +3,15 @@ package ar.edu.utn.frba.dds;
 import ar.edu.utn.frba.dds.broker.ClienteMqtt;
 import ar.edu.utn.frba.dds.broker.SuscriptorMqtt;
 import ar.edu.utn.frba.dds.broker.suscriptorSensor.SuscriptorSensorTemperatura;
-import ar.edu.utn.frba.dds.models.heladera.Sensor;
+import ar.edu.utn.frba.dds.models.sensor.Sensor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class TestBroker {
 
-  private ClienteMqtt cliente;
   private final String topic = "dds/g22/test";
+  private ClienteMqtt cliente;
 
   @BeforeEach
   public void setUp() {

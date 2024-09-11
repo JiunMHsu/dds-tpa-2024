@@ -9,10 +9,10 @@ import lombok.Getter;
 public class RangoTemperatura {
 
   @Column(name = "temperatura_maxima", nullable = false)
-  private final Double maxima;
+  private Double maxima;
 
   @Column(name = "temperatura_minima", nullable = false)
-  private final Double minima;
+  private Double minima;
 
   public RangoTemperatura(Double maxima, Double minima) {
     this.maxima = maxima;

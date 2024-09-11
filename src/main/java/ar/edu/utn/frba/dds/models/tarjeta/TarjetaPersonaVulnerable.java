@@ -4,33 +4,39 @@ import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.personaVulnerable.PersonaVulnerable;
 import ar.edu.utn.frba.dds.utils.GeneradorDeCodigosTarjeta;
 import java.time.LocalDate;
-import java.util.UUID;
-
-import lombok.*;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "tarjeta_vulnerable")
+@Table(name = "tarjeta_persona_vulnerable")
 public class TarjetaPersonaVulnerable implements Tarjeta {
 
   @Id
   private String codigo;
 
   @OneToOne
-  @JoinColumn(name = "vulnerable_id", unique = true, nullable = false)
+  @JoinColumn(name = "persona_vulnerable_id", unique = true, nullable = false)
   private PersonaVulnerable duenio;
 
   @Setter
-  @Column (name = "usos_dia")
+  @Column(name = "usos_del_dia")
   private Integer usosEnElDia;
 
   @Setter
-  @Column (name = "fecha_ultimo_uso")
+  @Column(name = "fecha_ultimo_uso", columnDefinition = "DATE")
   private LocalDate ultimoUso;
 
   public static TarjetaPersonaVulnerable de(PersonaVulnerable duenio) {
@@ -61,6 +67,7 @@ public class TarjetaPersonaVulnerable implements Tarjeta {
     return heladera.estaActiva() && this.puedeUsar();
   }
 
+  // TODO - Hacerlo atributo? como posible optimización
   public Integer usosPorDia() {
     return 4 + duenio.getMenoresACargo() * 2;
   }

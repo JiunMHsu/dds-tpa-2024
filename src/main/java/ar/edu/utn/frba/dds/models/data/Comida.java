@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @Embeddable
 public class Comida {
-
+  
   @Column(name = "comida_nombre", nullable = false)
   private String nombre;
 
