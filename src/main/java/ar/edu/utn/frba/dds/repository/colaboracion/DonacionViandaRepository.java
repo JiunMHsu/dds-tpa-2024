@@ -3,33 +3,23 @@ package ar.edu.utn.frba.dds.repository.colaboracion;
 import ar.edu.utn.frba.dds.models.colaboracion.DonacionVianda;
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class DonacionViandaRepository {
-  public static final List<DonacionVianda> db = new ArrayList<>();
-
   public static void agregar(DonacionVianda colaboracion) {
-    db.add(colaboracion);
   }
 
   public static List<DonacionVianda> obtenerPorColaborador(Colaborador colaborador) {
-    return db.stream()
-        .filter(colab -> colab.getColaborador().equals(colaborador))
-        .toList();
+    return null;
   }
 
   public static List<DonacionVianda> obtenerPorColaboradorAPartirDe(Colaborador colaborador,
                                                                     LocalDate fecha) {
-    return DonacionViandaRepository.obtenerPorColaborador(colaborador).stream()
-        .filter(colab -> colab.getFechaDonacion().isAfter(fecha))
-        .toList();
+    return null;
   }
 
   public static List<DonacionVianda> obtenerAPartirDe(LocalDate fecha) {
-    return db.stream()
-        .filter(colab -> colab.getFechaDonacion().isAfter(fecha))
-        .toList();
+    return null;
   }
 
 

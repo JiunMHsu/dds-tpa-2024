@@ -1,20 +1,28 @@
 package ar.edu.utn.frba.dds;
 
-import ar.edu.utn.frba.dds.models.colaboracion.*;
+import ar.edu.utn.frba.dds.models.colaboracion.DistribucionViandas;
+import ar.edu.utn.frba.dds.models.colaboracion.DonacionDinero;
+import ar.edu.utn.frba.dds.models.colaboracion.DonacionVianda;
+import ar.edu.utn.frba.dds.models.colaboracion.HacerseCargoHeladera;
+import ar.edu.utn.frba.dds.models.colaboracion.OfertaDeProductos;
+import ar.edu.utn.frba.dds.models.colaboracion.RepartoDeTarjetas;
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.models.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.puntosDeColaboracion.CanjeDePuntos;
 import ar.edu.utn.frba.dds.models.puntosDeColaboracion.PuntosPorColaboracion;
+import ar.edu.utn.frba.dds.models.usuario.Usuario;
 import ar.edu.utn.frba.dds.repository.canjeDePuntos.CanjeDePuntosRepository;
-import ar.edu.utn.frba.dds.repository.colaboracion.*;
+import ar.edu.utn.frba.dds.repository.colaboracion.DistribucionViandasRepository;
+import ar.edu.utn.frba.dds.repository.colaboracion.DonacionDineroRepository;
+import ar.edu.utn.frba.dds.repository.colaboracion.DonacionViandaRepository;
+import ar.edu.utn.frba.dds.repository.colaboracion.HacerseCargoHeladeraRepository;
+import ar.edu.utn.frba.dds.repository.colaboracion.RepartoDeTarjetasRepository;
+import java.time.LocalDate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
 
 public class TestCalculadorDePuntos {
 
@@ -28,9 +36,9 @@ public class TestCalculadorDePuntos {
 
     // Donacion Dinero. Los puntos por donar dinero es la cantidad de dinero donado multiplicado por 0.5
     // Puntos: (500 + 200 + 10000) * 0.5 = 5350
-    DonacionDinero donacionDinero1 = DonacionDinero.por(persona, LocalDate.of(2024, 2, 1), 500);
-    DonacionDinero donacionDinero2 = DonacionDinero.por(persona, LocalDate.of(2024, 2, 1), 200);
-    DonacionDinero donacionDinero3 = DonacionDinero.por(persona, LocalDate.of(2024, 2, 1), 10000);
+    DonacionDinero donacionDinero1 = DonacionDinero.por(persona, LocalDate.of(2024, 2, 1).atStartOfDay(), 500);
+    DonacionDinero donacionDinero2 = DonacionDinero.por(persona, LocalDate.of(2024, 2, 1).atStartOfDay(), 200);
+    DonacionDinero donacionDinero3 = DonacionDinero.por(persona, LocalDate.of(2024, 2, 1).atStartOfDay(), 10000);
 
     DonacionDineroRepository.agregar(donacionDinero1);
     DonacionDineroRepository.agregar(donacionDinero2);
@@ -38,9 +46,9 @@ public class TestCalculadorDePuntos {
 
     // Distribucion Viandas. Los puntos por distribuir viandas es la cantidad de viandas distribuidas multiplicada por 1
     // Puntos: (4 + 10 + 6) * 1 = 20
-    DistribucionViandas distribucion1 = DistribucionViandas.por(persona, LocalDate.of(2024, 3, 2), 4);
-    DistribucionViandas distribucion2 = DistribucionViandas.por(persona, LocalDate.of(2024, 3, 2), 10);
-    DistribucionViandas distribucion3 = DistribucionViandas.por(persona, LocalDate.of(2024, 3, 2), 6);
+    DistribucionViandas distribucion1 = DistribucionViandas.por(persona, LocalDate.of(2024, 3, 2).atStartOfDay(), 4);
+    DistribucionViandas distribucion2 = DistribucionViandas.por(persona, LocalDate.of(2024, 3, 2).atStartOfDay(), 10);
+    DistribucionViandas distribucion3 = DistribucionViandas.por(persona, LocalDate.of(2024, 3, 2).atStartOfDay(), 6);
 
     DistribucionViandasRepository.agregar(distribucion1);
     DistribucionViandasRepository.agregar(distribucion2);
@@ -48,9 +56,9 @@ public class TestCalculadorDePuntos {
 
     // Donacion Viandas. Los puntos por donar viandas es la cantidad de viandas donadas multiplicada por 1.5
     // Puntos: (1 + 1 + 1) * 1.5 = 4.5
-    DonacionVianda donacionVianda1 = DonacionVianda.por(persona, LocalDate.of(2024, 1, 6));
-    DonacionVianda donacionVianda2 = DonacionVianda.por(persona, LocalDate.of(2024, 2, 12));
-    DonacionVianda donacionVianda3 = DonacionVianda.por(persona, LocalDate.of(2024, 1, 8));
+    DonacionVianda donacionVianda1 = DonacionVianda.por(persona, LocalDate.of(2024, 1, 6).atStartOfDay());
+    DonacionVianda donacionVianda2 = DonacionVianda.por(persona, LocalDate.of(2024, 2, 12).atStartOfDay());
+    DonacionVianda donacionVianda3 = DonacionVianda.por(persona, LocalDate.of(2024, 1, 8).atStartOfDay());
 
     DonacionViandaRepository.agregar(donacionVianda1);
     DonacionViandaRepository.agregar(donacionVianda2);
@@ -58,9 +66,9 @@ public class TestCalculadorDePuntos {
 
     // Reparto Tarjetas. Los puntos por repartir tarjetas es la cantidad de tarjetas repartidas multiplicada por 2
     // Puntos: (1 + 1 + 1) * 2 = 6
-    RepartoDeTarjetas repartoDeTarjetas1 = RepartoDeTarjetas.por(persona, LocalDate.of(2024, 1, 5));
-    RepartoDeTarjetas repartoDeTarjetas2 = RepartoDeTarjetas.por(persona, LocalDate.of(2024, 1, 5));
-    RepartoDeTarjetas repartoDeTarjetas3 = RepartoDeTarjetas.por(persona, LocalDate.of(2024, 1, 5));
+    RepartoDeTarjetas repartoDeTarjetas1 = RepartoDeTarjetas.por(persona, LocalDate.of(2024, 1, 5).atStartOfDay());
+    RepartoDeTarjetas repartoDeTarjetas2 = RepartoDeTarjetas.por(persona, LocalDate.of(2024, 1, 5).atStartOfDay());
+    RepartoDeTarjetas repartoDeTarjetas3 = RepartoDeTarjetas.por(persona, LocalDate.of(2024, 1, 5).atStartOfDay());
 
     RepartoDeTarjetasRepository.agregar(repartoDeTarjetas1);
     RepartoDeTarjetasRepository.agregar(repartoDeTarjetas2);
@@ -133,11 +141,11 @@ public class TestCalculadorDePuntos {
 
     // nuevas colaboraciones
     // puntaje donacion dinero: 1000 * 0.5 = 500
-    DonacionDinero donacionDinero4 = DonacionDinero.por(persona, LocalDate.of(2024, 6, 1), 1000);
+    DonacionDinero donacionDinero4 = DonacionDinero.por(persona, LocalDate.of(2024, 6, 1).atStartOfDay(), 1000);
     DonacionDineroRepository.agregar(donacionDinero4);
 
     // puntaje distribucion viandas : 20
-    DistribucionViandas distribucion4 = DistribucionViandas.por(persona, LocalDate.of(2024, 5, 2), 20);
+    DistribucionViandas distribucion4 = DistribucionViandas.por(persona, LocalDate.of(2024, 5, 2).atStartOfDay(), 20);
     DistribucionViandasRepository.agregar(distribucion4);
 
     // puntaje heladeras : 3((6-3)+(6-1)+(6-5))5 - 2((5-3)+(5-1))5 = 135 - 60 = 75
