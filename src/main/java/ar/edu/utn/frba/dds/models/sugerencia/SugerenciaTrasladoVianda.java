@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,7 +36,8 @@ public class SugerenciaTrasladoVianda {
   @JoinColumn(name = "heladera_origen_id", nullable = false)
   private Heladera heladeraOrigen;
 
-  // TODO - Mapear lista de heladeras
+  @OneToMany
+  @JoinColumn(name = "sugerencia_traslado_id")
   private List<Heladera> heladerasDestino;
 
   @ManyToOne

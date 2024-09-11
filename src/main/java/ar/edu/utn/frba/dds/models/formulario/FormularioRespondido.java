@@ -4,6 +4,9 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Getter;
 
@@ -14,10 +17,14 @@ public class FormularioRespondido {
 
   @Id
   @GeneratedValue
-  private long id;
+  private Long id;
 
+  @OneToMany
+  @JoinColumn(name = "formulario_respondido_id")
   private List<Respuesta> respuestas;
 
+  @ManyToOne
+  @JoinColumn(name = "formulario_id")
   private Formulario formulario;
 
   public FormularioRespondido(Formulario formulario, List<Respuesta> respuestas) {
