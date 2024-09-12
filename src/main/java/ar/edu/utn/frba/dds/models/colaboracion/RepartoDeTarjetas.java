@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,8 +37,12 @@ public class RepartoDeTarjetas {
   @Column(name = "fecha_hora", columnDefinition = "DATETIME", nullable = false)
   private LocalDateTime fechaHora;
 
-  // TODO - Completar mapeo
+  @OneToOne
+  @JoinColumn(name = "tarjeta_vulnerable_id", nullable = false)
   private TarjetaPersonaVulnerable tarjeta;
+
+  @OneToOne
+  @JoinColumn(name = "persona_vulnerable_id", nullable = false)
   private PersonaVulnerable personaVulnerable;
 
   public static RepartoDeTarjetas por(Colaborador colaborador,
