@@ -1,6 +1,10 @@
 package ar.edu.utn.frba.dds.models.puntosDeColaboracion;
 
-import ar.edu.utn.frba.dds.models.colaboracion.*;
+import ar.edu.utn.frba.dds.models.colaboracion.DistribucionViandas;
+import ar.edu.utn.frba.dds.models.colaboracion.DonacionDinero;
+import ar.edu.utn.frba.dds.models.colaboracion.DonacionVianda;
+import ar.edu.utn.frba.dds.models.colaboracion.HacerseCargoHeladera;
+import ar.edu.utn.frba.dds.models.colaboracion.RepartoDeTarjetas;
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.repository.canjeDePuntos.CanjeDePuntosRepository;
@@ -124,7 +128,7 @@ public class PuntosPorColaboracion {
     } else {
       puntajeAnterior = this.calcularPorHeladederasAnteriorCanje(listHeladerasActivas);
     }
-    
+
     Double puntaje = puntajeTotalActual - puntajeAnterior;
     System.out.println("hacerse cargo heladera");
     System.out.println(puntaje);

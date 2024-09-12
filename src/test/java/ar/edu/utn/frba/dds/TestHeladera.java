@@ -2,8 +2,10 @@ package ar.edu.utn.frba.dds;
 
 import ar.edu.utn.frba.dds.models.data.Calle;
 import ar.edu.utn.frba.dds.models.data.Direccion;
-import ar.edu.utn.frba.dds.models.heladera.*;
-
+import ar.edu.utn.frba.dds.models.heladera.EstadoHeladera;
+import ar.edu.utn.frba.dds.models.heladera.ExcepcionCantidadDeViandas;
+import ar.edu.utn.frba.dds.models.heladera.Heladera;
+import ar.edu.utn.frba.dds.models.heladera.RangoTemperatura;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

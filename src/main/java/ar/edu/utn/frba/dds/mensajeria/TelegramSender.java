@@ -26,7 +26,7 @@ public class TelegramSender implements Sender {
     try {
       this.camelContext = new DefaultCamelContext();
       this.producerTemplate = camelContext.createProducerTemplate();
-      
+
       camelContext.addRoutes(new RouteBuilder() {
         @Override
         public void configure() {

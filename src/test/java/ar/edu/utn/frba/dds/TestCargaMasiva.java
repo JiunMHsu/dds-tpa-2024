@@ -1,5 +1,7 @@
 package ar.edu.utn.frba.dds;
 
+import static org.mockito.Mockito.mock;
+
 import ar.edu.utn.frba.dds.cargaDeColaboraciones.CargadorDeColaboraciones;
 import ar.edu.utn.frba.dds.mensajeria.EmailSender;
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
@@ -11,8 +13,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import static org.mockito.Mockito.mock;
 
 public class TestCargaMasiva {
 

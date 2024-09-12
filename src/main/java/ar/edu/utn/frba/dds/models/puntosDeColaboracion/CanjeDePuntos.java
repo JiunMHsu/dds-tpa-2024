@@ -4,13 +4,17 @@ import ar.edu.utn.frba.dds.models.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import java.time.LocalDate;
 import java.util.UUID;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 
 @Getter
 @Builder
@@ -28,13 +32,13 @@ public class CanjeDePuntos {
   @JoinColumn(name = "colaborador_id", nullable = false)
   private Colaborador colaborador;
 
-  @Column (name = "fecha_canjeo", nullable = false)
+  @Column(name = "fecha_canjeo", nullable = false)
   private LocalDate fechaCanjeo;
 
-  @Column (name = "puntos_canjeados", nullable = false)
+  @Column(name = "puntos_canjeados", nullable = false)
   private Double puntosCanjeados;
 
-  @Column (name = "puntos_restamtes", nullable = false)
+  @Column(name = "puntos_restamtes", nullable = false)
   private Double puntosRestantes;
 
   @ManyToOne

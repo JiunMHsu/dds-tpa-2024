@@ -10,7 +10,7 @@ import java.util.Map;
 public class RegistroIncidente {
 
   public Map<String, Integer> incidentesPorHeladera() {
-    
+
     LocalDate haceUnaSemana = LocalDate.now().minusWeeks(1);
     List<Incidente> incidentesDeLaSemana = IncidenteRepository.obtenerAPartirDe(haceUnaSemana.atStartOfDay());
 

@@ -1,6 +1,10 @@
 package ar.edu.utn.frba.dds;
 
-import ar.edu.utn.frba.dds.models.data.*;
+import ar.edu.utn.frba.dds.models.data.Area;
+import ar.edu.utn.frba.dds.models.data.Calle;
+import ar.edu.utn.frba.dds.models.data.Contacto;
+import ar.edu.utn.frba.dds.models.data.Direccion;
+import ar.edu.utn.frba.dds.models.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.tecnico.Tecnico;
 import java.util.ArrayList;

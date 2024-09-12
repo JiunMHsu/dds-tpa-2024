@@ -1,14 +1,14 @@
 package ar.edu.utn.frba.dds.mensajeria;
 
 import ar.edu.utn.frba.dds.AppConfig;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.whatsapp.model.TextMessage;
 import org.apache.camel.component.whatsapp.model.TextMessageRequest;
 import org.apache.camel.impl.DefaultCamelContext;
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @Setter

@@ -5,16 +5,11 @@ import ar.edu.utn.frba.dds.models.data.Direccion;
 import ar.edu.utn.frba.dds.models.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.incidente.Incidente;
-import ar.edu.utn.frba.dds.models.incidente.TipoIncidente;
 import ar.edu.utn.frba.dds.repository.heladera.HeladeraRepository;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class TestHeladerasMasCercanas {
   Heladera heladeraFallada = Heladera.con("fallada", Direccion.with(new Calle(""), 0, new Ubicacion(-34.603722, -58.381592)), 50);

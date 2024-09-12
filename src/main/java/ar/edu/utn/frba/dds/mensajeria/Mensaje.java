@@ -2,10 +2,17 @@ package ar.edu.utn.frba.dds.mensajeria;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-
-import lombok.*;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Builder
 @Getter
@@ -19,22 +26,22 @@ public class Mensaje {
   @GeneratedValue(generator = "uuid")
   private UUID id;
 
-  @Column (name = "asunto", nullable = false)
+  @Column(name = "asunto", nullable = false)
   private String asunto;
 
-  @Column (name = "cuerpo", nullable = false)
+  @Column(name = "cuerpo", nullable = false)
   private String cuerpo;
 
-  @Column (name = "receptor", nullable = false)
+  @Column(name = "receptor", nullable = false)
   private String receptor; // Ver el tema de receptor, osea cmo es dado que seria diferente para email, wpp o telegram si no me equivoco UwU
 
   @Setter
   @Enumerated
-  @Column (name = "medio_notificacion", nullable = false)
+  @Column(name = "medio_notificacion", nullable = false)
   private MedioDeNotificacion medio;
 
   @Setter
-  @Column (name = "fecha_envio", nullable = false)
+  @Column(name = "fecha_envio", nullable = false)
   private LocalDateTime fechaEnvio;
 
   public static Mensaje con(String asunto,
