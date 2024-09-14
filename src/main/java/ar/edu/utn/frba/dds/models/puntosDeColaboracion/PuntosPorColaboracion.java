@@ -25,8 +25,9 @@ public class PuntosPorColaboracion {
   private LocalDate fechaUltimoCanje;
   private Double puntosSobrantes;
   private VarianteCalculoDePuntos variante;
+  private CanjeDePuntosRepository canjeDePuntosRepository;
 
-  public static PuntosPorColaboracion of(Colaborador colaborador) {
+  public PuntosPorColaboracion of(Colaborador colaborador) {
     PuntosPorColaboracionBuilder puntosPorColaboracion = PuntosPorColaboracion
         .builder()
         .colaborador(colaborador)
@@ -34,7 +35,7 @@ public class PuntosPorColaboracion {
         .puntosSobrantes(0.0)
         .variante(new VarianteCalculoDePuntos());
 
-    CanjeDePuntos ultimoCanjeo = CanjeDePuntosRepository.obtenerUltimoPorColaborador(colaborador);
+    CanjeDePuntos ultimoCanjeo = canjeDePuntosRepository.obtenerUltimoPorColaborador(colaborador);
     if (ultimoCanjeo != null) {
       puntosPorColaboracion.puntosSobrantes(ultimoCanjeo.getPuntosRestantes());
       puntosPorColaboracion.fechaUltimoCanje(ultimoCanjeo.getFechaCanjeo());
