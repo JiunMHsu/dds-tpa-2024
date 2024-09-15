@@ -14,6 +14,7 @@ import ar.edu.utn.frba.dds.repository.colaboracion.DonacionViandaRepository;
 import ar.edu.utn.frba.dds.repository.colaboracion.HacerseCargoHeladeraRepository;
 import ar.edu.utn.frba.dds.repository.colaboracion.RepartoDeTarjetasRepository;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.List;
 import lombok.Builder;
@@ -22,10 +23,14 @@ import lombok.Builder;
 public class PuntosPorColaboracion {
 
   private Colaborador colaborador;
-  private LocalDate fechaUltimoCanje;
+  private LocalDateTime fechaUltimoCanje;
   private Double puntosSobrantes;
   private VarianteCalculoDePuntos variante;
   private CanjeDePuntosRepository canjeDePuntosRepository;
+  private DistribucionViandasRepository distribucionViandasRepository;
+  private DonacionDineroRepository donacionDineroRepository;
+
+  //private Repository Repository;
 
   public PuntosPorColaboracion of(Colaborador colaborador) {
     PuntosPorColaboracionBuilder puntosPorColaboracion = PuntosPorColaboracion
@@ -33,7 +38,8 @@ public class PuntosPorColaboracion {
         .colaborador(colaborador)
         .fechaUltimoCanje(null)
         .puntosSobrantes(0.0)
-        .variante(new VarianteCalculoDePuntos());
+        .variante(new VarianteCalculoDePuntos())
+        .canjeDePuntosRepository(new CanjeDePuntosRepository());
 
     CanjeDePuntos ultimoCanjeo = canjeDePuntosRepository.obtenerUltimoPorColaborador(colaborador);
     if (ultimoCanjeo != null) {
@@ -55,7 +61,7 @@ public class PuntosPorColaboracion {
   }
 
   private Double calcularPorPesosDonados() {
-    List<DonacionDinero> listaDonacionesDinero = DonacionDineroRepository
+    List<DonacionDinero> listaDonacionesDinero = donacionDineroRepository
         .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
     Double pesosDonados = listaDonacionesDinero.stream()
@@ -69,7 +75,7 @@ public class PuntosPorColaboracion {
   }
 
   private Double calcularPorViandasDistribuidas() {
-    List<DistribucionViandas> listaViandasDistribuidas = DistribucionViandasRepository
+    List<DistribucionViandas> listaViandasDistribuidas = distribucionViandasRepository
         .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
     Double viandasDistribuidas = listaViandasDistribuidas.stream()

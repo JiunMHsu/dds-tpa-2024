@@ -1,11 +1,37 @@
 package ar.edu.utn.frba.dds.repository.colaboracion;
 
+import ar.edu.utn.frba.dds.models.colaboracion.DistribucionViandas;
+import ar.edu.utn.frba.dds.models.colaboracion.DonacionVianda;
+import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
+import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
-public interface ColaboracionRepository<E> {
-  List<E> obtenerTodos();
+public abstract class ColaboracionRepository<T> implements WithSimplePersistenceUnit {
 
-  List<E> obtenerPorColaborador(String nombre);
+    private Class<T> type;
+    public ColaboracionRepository(Class<T> type) {
+        this.type = type;
+    }
+    public void agregar(T colaboracion) {
+        entityManager().persist(colaboracion);
+    }
 
-  E obtenerPorId(int id);
+    public List<T> obtenerPorColaborador(Colaborador unColaborador) {
+        return entityManager()
+                .createQuery("from " + type.getName() + " c where c.colaborador =: id_colaborador", type)
+                .setParameter("id_colaborador", unColaborador.getId())
+                .getResultList();
+    }
+
+    public List<T> obtenerPorColaboradorAPartirDe(Colaborador unColaborador, LocalDateTime fecha) {
+        return entityManager()
+                .createQuery("from " + type.getName() + " d where d.colaborador = :id_colaborador and d.fechaHora >= :fecha", type)
+                .setParameter("id_colaborador", unColaborador.getId())
+                .setParameter("fecha", fecha)
+                .getResultList();
+    }
 }
+

@@ -7,6 +7,7 @@ import java.util.List;
 
 public class DonacionViandaRepository {
   public static void agregar(DonacionVianda colaboracion) {
+    entityManager().persist(colaboracion);
   }
 
   public static List<DonacionVianda> obtenerPorColaborador(Colaborador colaborador) {
