@@ -14,14 +14,14 @@ public class MensajeRepository implements WithSimplePersistenceUnit {
     entityManager().persist(mensaje);
   }
 
-  public Mensaje obtenerUltimo() {
-    return entityManager()
-            .createQuery("from Mensaje m order by m.fechaEnvio desc", Mensaje.class)
-            .setMaxResults(1)
-            .getSingleResult();
-  }
+//  public Mensaje obtenerUltimo() {
+//    return entityManager()
+//            .createQuery("from Mensaje m order by m.fechaEnvio desc", Mensaje.class)
+//            .setMaxResults(1)
+//            .getSingleResult();
+//  }
 
-  public void limpiar() {
-    entityManager().createQuery("DELETE FROM Mensaje").executeUpdate();
-  }
+//  public void limpiar() {
+//    entityManager().createQuery("DELETE FROM Mensaje").executeUpdate();
+//  }
 }

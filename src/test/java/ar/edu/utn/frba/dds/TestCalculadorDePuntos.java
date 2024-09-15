@@ -29,10 +29,13 @@ public class TestCalculadorDePuntos {
   private Colaborador persona;
   private Colaborador otraPersona;
 
+  private CanjeDePuntosRepository canjeDePuntosRepository;
+
   @BeforeEach
   public void setup() {
     persona = Colaborador.colaborador(Usuario.empty());
     otraPersona = Colaborador.colaborador(Usuario.empty());
+    canjeDePuntosRepository = new CanjeDePuntosRepository();
 
     // Donacion Dinero. Los puntos por donar dinero es la cantidad de dinero donado multiplicado por 0.5
     // Puntos: (500 + 200 + 10000) * 0.5 = 5350
@@ -112,13 +115,13 @@ public class TestCalculadorDePuntos {
 
     // puntos totales mes abril: 5420.5
     OfertaDeProductos ofertaDeProductos = OfertaDeProductos.por(otraPersona, "lapiz", 420.5); //en vez de calcularlo a mano capaz mejor que haga la cuenta la compu, pero no se
-    CanjeDePuntos primerCanjeo = CanjeDePuntos.por(persona, LocalDate.of(2024, 4, 12), 420.5, 5000.0, ofertaDeProductos);
-    CanjeDePuntosRepository.agregar(primerCanjeo);
+    CanjeDePuntos primerCanjeo = CanjeDePuntos.por(persona, LocalDate.of(2024, 4, 12).atStartOfDay(), 420.5, 5000.0, ofertaDeProductos);
+    canjeDePuntosRepository.agregar(primerCanjeo);
 
     // puntos totales mayo luego de primer canjeo: 5020.0
     OfertaDeProductos ofertaDeProductos2 = OfertaDeProductos.por(otraPersona, "birome", 120.0); //en vez de calcularlo a mano capaz mejor que haga la cuenta la compu, pero no se
-    CanjeDePuntos segundoCanjeo = CanjeDePuntos.por(persona, LocalDate.of(2024, 5, 20), 120.0, 4900.0, ofertaDeProductos2);
-    CanjeDePuntosRepository.agregar(segundoCanjeo);
+    CanjeDePuntos segundoCanjeo = CanjeDePuntos.por(persona, LocalDate.of(2024, 5, 20).atStartOfDay(), 120.0, 4900.0, ofertaDeProductos2);
+    canjeDePuntosRepository.agregar(segundoCanjeo);
 
     PuntosPorColaboracion calculadorDePuntos2 = PuntosPorColaboracion.of(persona);
     Assertions.assertEquals(4940.0, calculadorDePuntos2.calcularPuntos());
@@ -157,8 +160,8 @@ public class TestCalculadorDePuntos {
     // puntaje total julio antes tercer canjeo: 4940.0 + 595.0 = 5535.0
 
     OfertaDeProductos ofertaDeProductos3 = OfertaDeProductos.por(otraPersona, "pluma", 535.0); //en vez de calcularlo a mano capaz mejor que haga la cuenta la compu, pero no se
-    CanjeDePuntos tercerCanjeo = CanjeDePuntos.por(persona, LocalDate.of(2024, 6, 20), 535.0, 5000.0, ofertaDeProductos3);
-    CanjeDePuntosRepository.agregar(tercerCanjeo);
+    CanjeDePuntos tercerCanjeo = CanjeDePuntos.por(persona, LocalDate.of(2024, 6, 20).atStartOfDay(), 535.0, 5000.0, ofertaDeProductos3);
+    canjeDePuntosRepository.agregar(tercerCanjeo);
 
     // heladeras : 3((7-3)+(7-1)+(7-5))5 - 3((6-3)+(6-1)+(6-5))5 = 180 - 135 = 45
     PuntosPorColaboracion calculadorDePuntos3 = PuntosPorColaboracion.of(persona);
