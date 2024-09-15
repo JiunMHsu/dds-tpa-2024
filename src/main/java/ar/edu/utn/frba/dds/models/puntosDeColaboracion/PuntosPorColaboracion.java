@@ -28,11 +28,6 @@ public class PuntosPorColaboracion {
   private Double puntosSobrantes;
   private VarianteCalculoDePuntos variante;
   private CanjeDePuntosRepository canjeDePuntosRepository;
-  private DistribucionViandasRepository distribucionViandasRepository;
-  private DonacionDineroRepository donacionDineroRepository;
-  private DonacionViandaRepository donacionViandaRepository;
-  private RepartoDeTarjetasRepository repartoDeTarjetasRepository;
-  private HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository;
 
   public PuntosPorColaboracion of(Colaborador colaborador) {
     PuntosPorColaboracionBuilder puntosPorColaboracion = PuntosPorColaboracion
@@ -42,11 +37,6 @@ public class PuntosPorColaboracion {
         .puntosSobrantes(0.0)
         .variante(new VarianteCalculoDePuntos())
         .canjeDePuntosRepository(new CanjeDePuntosRepository())
-        .distribucionViandasRepository(new DistribucionViandasRepository())
-        .donacionDineroRepository(new DonacionDineroRepository())
-        .donacionViandaRepository(new DonacionViandaRepository())
-        .repartoDeTarjetasRepository(new RepartoDeTarjetasRepository())
-        .hacerseCargoHeladeraRepository(new HacerseCargoHeladeraRepository());
 
 
 
@@ -69,7 +59,7 @@ public class PuntosPorColaboracion {
         + puntosSobrantes;
   }
 
-  private Double calcularPorPesosDonados() {
+  private Double calcularPorPesosDonados(DonacionDineroRepository donacionDineroRepository) {
     List<DonacionDinero> listaDonacionesDinero = donacionDineroRepository
         .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
@@ -83,7 +73,7 @@ public class PuntosPorColaboracion {
     return puntaje;
   }
 
-  private Double calcularPorViandasDistribuidas() {
+  private Double calcularPorViandasDistribuidas(DistribucionViandasRepository distribucionViandasRepository) {
     List<DistribucionViandas> listaViandasDistribuidas = distribucionViandasRepository
         .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
@@ -97,7 +87,7 @@ public class PuntosPorColaboracion {
     return puntaje;
   }
 
-  private Double calcularPorViandasDonadas() {
+  private Double calcularPorViandasDonadas(DonacionViandaRepository donacionViandaRepository) {
     List<DonacionVianda> listaViandasDonadas = donacionViandaRepository
         .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
@@ -109,7 +99,7 @@ public class PuntosPorColaboracion {
     return puntaje;
   }
 
-  private Double calcularPorTarjetasRepartidas() {
+  private Double calcularPorTarjetasRepartidas(RepartoDeTarjetasRepository repartoDeTarjetasRepository) {
     List<RepartoDeTarjetas> listaTarjetasRepartidas = repartoDeTarjetasRepository
         .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
@@ -121,7 +111,7 @@ public class PuntosPorColaboracion {
     return puntaje;
   }
 
-  private Double calcularPorHeladerasActivas() {
+  private Double calcularPorHeladerasActivas(HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository) {
     List<Heladera> listaHeladerasACargo = hacerseCargoHeladeraRepository
         .obtenerPorColaborador(colaborador)
         .stream()
@@ -134,7 +124,7 @@ public class PuntosPorColaboracion {
 
     Double heladerasActivas = (double) listHeladerasActivas.size();
     Double mesesActivas = listHeladerasActivas.stream()
-        .mapToDouble(heladera -> this.calcularMesesActiva(heladera.getInicioFuncionamiento(), LocalDate.now()))
+        .mapToDouble(heladera -> this.calcularMesesActiva(heladera.getInicioFuncionamiento(), LocalDateTime.now()))
         .sum();
 
     Double puntajeTotalActual = heladerasActivas * mesesActivas * variante.getHeladerasActivas();

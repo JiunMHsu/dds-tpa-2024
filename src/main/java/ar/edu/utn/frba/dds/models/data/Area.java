@@ -14,14 +14,19 @@ public class Area {
   @Column(name = "radio")
   private final Double radio;
 
-  public Area(Ubicacion ubicacion, Double radio) {
+  @Column (name = "barrio")
+  private final Barrio barrio;
+
+  public Area(Ubicacion ubicacion, Double radio, Barrio barrio) {
     this.ubicacion = ubicacion;
     this.radio = radio;
+    this.barrio = barrio;
   }
 
   public Area() {
     this.ubicacion = null;
     this.radio = null;
+    this.barrio = null;
   }
 
   public double calcularDistanciaAUbicacion(Ubicacion ubicacion2) {
