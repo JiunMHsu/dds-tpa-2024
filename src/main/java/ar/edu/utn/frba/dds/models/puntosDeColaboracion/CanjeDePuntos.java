@@ -2,7 +2,7 @@ package ar.edu.utn.frba.dds.models.puntosDeColaboracion;
 
 import ar.edu.utn.frba.dds.models.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,7 +33,7 @@ public class CanjeDePuntos {
   private Colaborador colaborador;
 
   @Column(name = "fecha_canjeo", nullable = false)
-  private LocalDate fechaCanjeo;
+  private LocalDateTime fechaCanjeo;
 
   @Column(name = "puntos_canjeados", nullable = false)
   private Double puntosCanjeados;
@@ -46,7 +46,7 @@ public class CanjeDePuntos {
   private OfertaDeProductos oferta;
 
   public static CanjeDePuntos por(Colaborador colaborador,
-                                  LocalDate fechaCanjeo,
+                                  LocalDateTime fechaCanjeo,
                                   Double puntosCanjeados,
                                   Double puntosRestantes,
                                   OfertaDeProductos oferta) {

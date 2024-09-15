@@ -4,11 +4,9 @@ import ar.edu.utn.frba.dds.models.colaboracion.HacerseCargoHeladera;
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import java.util.List;
 
-public class HacerseCargoHeladeraRepository {
-  public static void agregar(HacerseCargoHeladera colaboracion) {
-  }
+public class HacerseCargoHeladeraRepository extends ColaboracionRepository<HacerseCargoHeladera>{
 
-  public static List<HacerseCargoHeladera> obtenerPorColaborador(Colaborador colaborador) {
-    return null;
+  public HacerseCargoHeladeraRepository() {
+    super(HacerseCargoHeladera.class);
   }
 }

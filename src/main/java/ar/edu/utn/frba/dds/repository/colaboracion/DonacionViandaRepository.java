@@ -5,23 +5,16 @@ import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import java.time.LocalDate;
 import java.util.List;
 
-public class DonacionViandaRepository {
-  public static void agregar(DonacionVianda colaboracion) {
-    entityManager().persist(colaboracion);
-  }
+public class DonacionViandaRepository extends ColaboracionRepository<DonacionVianda>{
 
-  public static List<DonacionVianda> obtenerPorColaborador(Colaborador colaborador) {
-    return null;
+  public DonacionViandaRepository() {
+    super(DonacionVianda.class);
   }
-
-  public static List<DonacionVianda> obtenerPorColaboradorAPartirDe(Colaborador colaborador,
-                                                                    LocalDate fecha) {
-    return null;
+  public List<DonacionVianda> obtenerAPartirDe(LocalDate fecha) {
+    return entityManager()
+            .createQuery("from " + DonacionVianda.class.getName() + " d where  d.fechaHora >= :fecha", DonacionVianda.class)
+            .setParameter("fecha", fecha)
+            .getResultList();
   }
-
-  public static List<DonacionVianda> obtenerAPartirDe(LocalDate fecha) {
-    return null;
-  }
-
 
 }
