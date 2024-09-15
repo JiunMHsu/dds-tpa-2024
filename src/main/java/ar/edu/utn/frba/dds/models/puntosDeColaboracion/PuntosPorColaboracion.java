@@ -13,10 +13,9 @@ import ar.edu.utn.frba.dds.repository.colaboracion.DonacionDineroRepository;
 import ar.edu.utn.frba.dds.repository.colaboracion.DonacionViandaRepository;
 import ar.edu.utn.frba.dds.repository.colaboracion.HacerseCargoHeladeraRepository;
 import ar.edu.utn.frba.dds.repository.colaboracion.RepartoDeTarjetasRepository;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
-import java.time.chrono.ChronoLocalDate;
+import java.time.chrono.ChronoLocalDateTime;
 import java.util.List;
 import lombok.Builder;
 
@@ -36,7 +35,7 @@ public class PuntosPorColaboracion {
         .fechaUltimoCanje(null)
         .puntosSobrantes(0.0)
         .variante(new VarianteCalculoDePuntos())
-        .canjeDePuntosRepository(new CanjeDePuntosRepository())
+        .canjeDePuntosRepository(new CanjeDePuntosRepository());
 
 
 
@@ -51,11 +50,11 @@ public class PuntosPorColaboracion {
   public Double calcularPuntos() {
     System.out.println(puntosSobrantes);
     System.out.println(fechaUltimoCanje);
-    return this.calcularPorPesosDonados()
-        + this.calcularPorViandasDistribuidas()
-        + this.calcularPorViandasDonadas()
-        + this.calcularPorTarjetasRepartidas()
-        + this.calcularPorHeladerasActivas()
+    return this.calcularPorPesosDonados(new DonacionDineroRepository())
+        + this.calcularPorViandasDistribuidas(new DistribucionViandasRepository())
+        + this.calcularPorViandasDonadas(new DonacionViandaRepository())
+        + this.calcularPorTarjetasRepartidas(new RepartoDeTarjetasRepository())
+        + this.calcularPorHeladerasActivas(new HacerseCargoHeladeraRepository())
         + puntosSobrantes;
   }
 
@@ -153,7 +152,7 @@ public class PuntosPorColaboracion {
 
   private Double calcularPorHeladederasAnteriorCanje(List<Heladera> listHeladerasActivas) {
     List<Heladera> heladerasActivasAntesDelUltimoCanje = listHeladerasActivas.stream()
-        .filter(heladera -> heladera.getInicioFuncionamiento().isBefore(ChronoLocalDate.from(fechaUltimoCanje)))
+        .filter(heladera -> heladera.getInicioFuncionamiento().isBefore(ChronoLocalDateTime.from(fechaUltimoCanje)))
         .toList();
     Double heladerasActivas = (double) heladerasActivasAntesDelUltimoCanje.size();
     Double mesesActivas = heladerasActivasAntesDelUltimoCanje.stream()
