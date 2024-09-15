@@ -4,6 +4,7 @@ import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import java.util.Optional;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 
 public class ColaboradorRepository implements WithSimplePersistenceUnit {
@@ -17,6 +18,13 @@ public class ColaboradorRepository implements WithSimplePersistenceUnit {
             .getResultList();
   }
   public Colaborador buscarPorEmail(String email) {
-    return entityManager().find(Colaborador.class, email);
+    try {
+      return entityManager()
+              .createQuery("from Colaborador c where c.contacto.email = :email", Colaborador.class)
+              .setParameter("email", email)
+              .getSingleResult();
+    } catch (NoResultException e) {
+      return null;
+    }
   }
 }
