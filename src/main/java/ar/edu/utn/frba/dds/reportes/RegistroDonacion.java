@@ -9,7 +9,12 @@ import java.util.Map;
 
 public class RegistroDonacion {
   private DonacionViandaRepository donacionViandaRepository;
-  public Map<String, Integer> donacionesPorColaborador() {
+
+    public RegistroDonacion() {
+        this.donacionViandaRepository = new DonacionViandaRepository();
+    }
+
+    public Map<String, Integer> donacionesPorColaborador() {
     LocalDate haceUnaSemana = LocalDate.now().minusWeeks(1);
     List<DonacionVianda> donaciones = donacionViandaRepository.obtenerAPartirDe(haceUnaSemana);
 

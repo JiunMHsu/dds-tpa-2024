@@ -31,9 +31,18 @@ import org.apache.commons.csv.CSVRecord;
 public class CargadorDeColaboraciones {
 
   private final EmailSender mailSender;
-
+  private ColaboradorRepository colaboradorRepository;
+  private DistribucionViandasRepository distribucionViandasRepository;
+  private DonacionDineroRepository donacionDineroRepository;
+  private DonacionViandaRepository donacionViandaRepository;
+  private RepartoDeTarjetasRepository repartoDeTarjetasRepository;
   public CargadorDeColaboraciones(EmailSender mailSender) {
     this.mailSender = mailSender;
+    this.colaboradorRepository = new ColaboradorRepository();
+    this.distribucionViandasRepository=new DistribucionViandasRepository();
+    this.donacionDineroRepository=new DonacionDineroRepository();
+    this.donacionViandaRepository=new DonacionViandaRepository();
+    this.repartoDeTarjetasRepository=new RepartoDeTarjetasRepository();
   }
 
   // TODO - Revisar el retorno en caso de error
@@ -68,8 +77,8 @@ public class CargadorDeColaboraciones {
           Integer.parseInt(csvRecord.get("Cantidad"))
       );
 
-      Colaborador colaborador = ColaboradorRepository
-          .obtenerPorEmail(colaboracionPrevia.getEmail());
+      Colaborador colaborador = colaboradorRepository
+          .buscarPorEmail(colaboracionPrevia.getEmail());
 
       if (colaborador == null) {
         Usuario usuario = GeneradorDeCredenciales.generarUsuario(
@@ -78,7 +87,7 @@ public class CargadorDeColaboraciones {
         );
 
         colaborador = Colaborador.colaborador(usuario);
-        ColaboradorRepository.agregar(colaborador);
+        colaboradorRepository.agregar(colaborador);
         this.enviarCredencial(usuario);
       }
 
@@ -97,7 +106,7 @@ public class CargadorDeColaboraciones {
             // TODO - Revisar manejo de fecha
             colaboracionPrevia.getFechaDeColaboracion().atStartOfDay(),
             colaboracionPrevia.getCantidad());
-        DonacionDineroRepository.agregar(donacionDinero);
+        donacionDineroRepository.agregar(donacionDinero);
         break;
 
       case "DONACION_VIANDAS":
@@ -106,7 +115,7 @@ public class CargadorDeColaboraciones {
               colaborador,
               // TODO - Revisar manejo de fecha
               colaboracionPrevia.getFechaDeColaboracion().atStartOfDay());
-          DonacionViandaRepository.agregar(donacionVianda);
+          donacionViandaRepository.agregar(donacionVianda);
         }
         break;
 
@@ -116,7 +125,7 @@ public class CargadorDeColaboraciones {
             // TODO - Revisar manejo de fecha
             colaboracionPrevia.getFechaDeColaboracion().atStartOfDay(),
             colaboracionPrevia.getCantidad());
-        DistribucionViandasRepository.agregar(distribucionViandas);
+        distribucionViandasRepository.agregar(distribucionViandas);
         break;
 
       case "ENTREGA_TARJETAS":
@@ -125,7 +134,7 @@ public class CargadorDeColaboraciones {
               colaborador,
               // TODO - Revisar manejo de fecha
               colaboracionPrevia.getFechaDeColaboracion().atStartOfDay());
-          RepartoDeTarjetasRepository.agregar(repartoDeTarjetas);
+          repartoDeTarjetasRepository.agregar(repartoDeTarjetas);
         }
         break;
 

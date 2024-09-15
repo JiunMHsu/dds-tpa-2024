@@ -9,10 +9,16 @@ import java.util.Map;
 
 public class RegistroIncidente {
 
-  public Map<String, Integer> incidentesPorHeladera() {
+  private IncidenteRepository incidenteRepository;
+
+    public RegistroIncidente() {
+        this.incidenteRepository = new IncidenteRepository();
+    }
+
+    public Map<String, Integer> incidentesPorHeladera() {
 
     LocalDate haceUnaSemana = LocalDate.now().minusWeeks(1);
-    List<Incidente> incidentesDeLaSemana = IncidenteRepository.obtenerAPartirDe(haceUnaSemana.atStartOfDay());
+    List<Incidente> incidentesDeLaSemana = incidenteRepository.obtenerAPartirDe(haceUnaSemana.atStartOfDay());
 
     Map<String, Integer> incidentesPorHeladera = new HashMap<>();
     for (Incidente incidente : incidentesDeLaSemana) {
