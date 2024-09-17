@@ -3,7 +3,7 @@ package ar.edu.utn.frba.dds.models.heladera;
 import ar.edu.utn.frba.dds.models.data.Direccion;
 import ar.edu.utn.frba.dds.models.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.repository.heladera.HeladeraRepository;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -17,6 +17,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import ar.edu.utn.frba.dds.repository.tecnico.TecnicoRepository;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,7 +49,7 @@ public class Heladera {
 
   @Setter
   @Column(name = "inicio_funcionamiento", columnDefinition = "DATE", nullable = false)
-  private LocalDate inicioFuncionamiento;
+  private LocalDateTime inicioFuncionamiento;
 
   @Setter
   @Embedded
@@ -68,7 +70,7 @@ public class Heladera {
 
   public static Heladera con(String nombre,
                              Direccion direccion,
-                             LocalDate inicioFuncionamiento,
+                             LocalDateTime inicioFuncionamiento,
                              Integer capacidad,
                              RangoTemperatura rangoTemperatura,
                              Double ultimaTemperatura,
@@ -171,16 +173,17 @@ public class Heladera {
     return rangoTemperatura.incluye(unaTemperatura);
   }
 
-  public Tecnico tecnicoMasCercano(List<Tecnico> listaTecnicos) {
-    return listaTecnicos.stream()
-        .min(Comparator.comparingDouble(tecnico -> tecnico.getAreaDeCobertura().calcularDistanciaAUbicacion(direccion.getUbicacion())))
-        .orElseThrow(() -> new RuntimeException("No se encontró ningún técnico."));
+  public Tecnico tecnicoMasCercano(TecnicoRepository tecnicoRepository) {
+    return tecnicoRepository.obtenerPorBarrio(direccion.getBarrio()).get(0);
+//            .stream()
+//            .min(Comparator.comparingDouble(tecnico -> tecnico.getAreaDeCobertura()
+//            .calcularDistanciaAUbicacion(direccion.getUbicacion())))
+//            .orElseThrow(() -> new RuntimeException("No se encontró ningún técnico."));
   }
 
-  public List<Heladera> heladerasActivasMasCercanas() {
-    return HeladeraRepository.obtenerTodos().stream()
+  public List<Heladera> heladerasActivasMasCercanas(HeladeraRepository heladeraRepository) {
+    return heladeraRepository.obtenerPorBarrio(direccion.getBarrio()).stream()
         .filter(Heladera::estaActiva)
-        .sorted(Comparator.comparingDouble(heladera1 -> heladera1.getDireccion().getUbicacion().calcularDistanciaEntreUbicaciones(direccion.getUbicacion())))
         .toList();
   }
 

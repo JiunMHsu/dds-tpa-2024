@@ -2,22 +2,26 @@ package ar.edu.utn.frba.dds.repository.mensajeria;
 
 import ar.edu.utn.frba.dds.mensajeria.Mensaje;
 import java.util.List;
+
+import ar.edu.utn.frba.dds.models.puntosDeColaboracion.CanjeDePuntos;
+import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import lombok.Getter;
 
 @Getter
-public class MensajeRepository {
+public class MensajeRepository implements WithSimplePersistenceUnit {
 
-  public static void agregar(Mensaje mensaje) {
+  public void agregar(Mensaje mensaje) {
+    entityManager().persist(mensaje);
   }
 
-  public static List<Mensaje> obtenerTodos() {
-    return null;
-  }
+//  public Mensaje obtenerUltimo() {
+//    return entityManager()
+//            .createQuery("from Mensaje m order by m.fechaEnvio desc", Mensaje.class)
+//            .setMaxResults(1)
+//            .getSingleResult();
+//  }
 
-  public static Mensaje obtenerUltimo() {
-    return null;
-  }
-
-  public static void limpiar() {
-  }
+//  public void limpiar() {
+//    entityManager().createQuery("DELETE FROM Mensaje").executeUpdate();
+//  }
 }

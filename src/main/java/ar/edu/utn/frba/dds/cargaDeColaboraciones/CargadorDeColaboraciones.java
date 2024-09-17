@@ -24,16 +24,29 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
+import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
-public class CargadorDeColaboraciones {
+public class CargadorDeColaboraciones implements WithSimplePersistenceUnit {
 
   private final EmailSender mailSender;
-
+  private ColaboradorRepository colaboradorRepository;
+  private DistribucionViandasRepository distribucionViandasRepository;
+  private DonacionDineroRepository donacionDineroRepository;
+  private DonacionViandaRepository donacionViandaRepository;
+  private RepartoDeTarjetasRepository repartoDeTarjetasRepository;
+  private MensajeRepository mensajeRepository;
   public CargadorDeColaboraciones(EmailSender mailSender) {
     this.mailSender = mailSender;
+    this.colaboradorRepository = new ColaboradorRepository();
+    this.distribucionViandasRepository=new DistribucionViandasRepository();
+    this.donacionDineroRepository=new DonacionDineroRepository();
+    this.donacionViandaRepository=new DonacionViandaRepository();
+    this.repartoDeTarjetasRepository=new RepartoDeTarjetasRepository();
+    this.mensajeRepository = new MensajeRepository();
   }
 
   // TODO - Revisar el retorno en caso de error
@@ -68,8 +81,8 @@ public class CargadorDeColaboraciones {
           Integer.parseInt(csvRecord.get("Cantidad"))
       );
 
-      Colaborador colaborador = ColaboradorRepository
-          .obtenerPorEmail(colaboracionPrevia.getEmail());
+      Colaborador colaborador = colaboradorRepository
+          .buscarPorEmail(colaboracionPrevia.getEmail());
 
       if (colaborador == null) {
         Usuario usuario = GeneradorDeCredenciales.generarUsuario(
@@ -78,8 +91,10 @@ public class CargadorDeColaboraciones {
         );
 
         colaborador = Colaborador.colaborador(usuario);
-        ColaboradorRepository.agregar(colaborador);
+        beginTransaction();
+        colaboradorRepository.agregar(colaborador);
         this.enviarCredencial(usuario);
+        commitTransaction();
       }
 
       this.registrarColaboracion(colaboracionPrevia, colaborador);
@@ -97,7 +112,9 @@ public class CargadorDeColaboraciones {
             // TODO - Revisar manejo de fecha
             colaboracionPrevia.getFechaDeColaboracion().atStartOfDay(),
             colaboracionPrevia.getCantidad());
-        DonacionDineroRepository.agregar(donacionDinero);
+        beginTransaction();
+        donacionDineroRepository.agregar(donacionDinero);
+        commitTransaction();
         break;
 
       case "DONACION_VIANDAS":
@@ -106,7 +123,9 @@ public class CargadorDeColaboraciones {
               colaborador,
               // TODO - Revisar manejo de fecha
               colaboracionPrevia.getFechaDeColaboracion().atStartOfDay());
-          DonacionViandaRepository.agregar(donacionVianda);
+          beginTransaction();
+          donacionViandaRepository.agregar(donacionVianda);
+          commitTransaction();
         }
         break;
 
@@ -116,7 +135,9 @@ public class CargadorDeColaboraciones {
             // TODO - Revisar manejo de fecha
             colaboracionPrevia.getFechaDeColaboracion().atStartOfDay(),
             colaboracionPrevia.getCantidad());
-        DistribucionViandasRepository.agregar(distribucionViandas);
+        beginTransaction();
+        distribucionViandasRepository.agregar(distribucionViandas);
+        commitTransaction();
         break;
 
       case "ENTREGA_TARJETAS":
@@ -125,7 +146,9 @@ public class CargadorDeColaboraciones {
               colaborador,
               // TODO - Revisar manejo de fecha
               colaboracionPrevia.getFechaDeColaboracion().atStartOfDay());
-          RepartoDeTarjetasRepository.agregar(repartoDeTarjetas);
+          beginTransaction();
+          repartoDeTarjetasRepository.agregar(repartoDeTarjetas);
+          commitTransaction();
         }
         break;
 
@@ -146,7 +169,8 @@ public class CargadorDeColaboraciones {
 
     mailSender.enviarMensaje(mensaje.getReceptor(), mensaje.getAsunto(), mensaje.getCuerpo());
     mensaje.setFechaEnvio(LocalDateTime.now());
-
-    MensajeRepository.agregar(mensaje);
+    beginTransaction();
+    mensajeRepository.agregar(mensaje);
+    commitTransaction();
   }
 }

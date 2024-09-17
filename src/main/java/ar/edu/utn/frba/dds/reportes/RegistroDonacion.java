@@ -8,10 +8,15 @@ import java.util.List;
 import java.util.Map;
 
 public class RegistroDonacion {
+  private DonacionViandaRepository donacionViandaRepository;
 
-  public Map<String, Integer> donacionesPorColaborador() {
+    public RegistroDonacion() {
+        this.donacionViandaRepository = new DonacionViandaRepository();
+    }
+
+    public Map<String, Integer> donacionesPorColaborador() {
     LocalDate haceUnaSemana = LocalDate.now().minusWeeks(1);
-    List<DonacionVianda> donaciones = DonacionViandaRepository.obtenerAPartirDe(haceUnaSemana);
+    List<DonacionVianda> donaciones = donacionViandaRepository.obtenerAPartirDe(haceUnaSemana);
 
     Map<String, Integer> viandasPorColaborador = new HashMap<>();
     for (DonacionVianda donacion : donaciones) {

@@ -5,16 +5,9 @@ import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import java.time.LocalDate;
 import java.util.List;
 
-public class RepartoDeTarjetasRepository {
-  public static void agregar(RepartoDeTarjetas repartoDeTarjetas) {
-  }
+public class RepartoDeTarjetasRepository extends ColaboracionRepository<RepartoDeTarjetas>{
 
-  public static List<RepartoDeTarjetas> obtenerPorColaborador(Colaborador colaborador) {
-    return null;
-  }
-
-  public static List<RepartoDeTarjetas> obtenerPorColaboradorAPartirDe(Colaborador colaborador,
-                                                                       LocalDate fecha) {
-    return null;
+  public RepartoDeTarjetasRepository() {
+    super(RepartoDeTarjetas.class);
   }
 }

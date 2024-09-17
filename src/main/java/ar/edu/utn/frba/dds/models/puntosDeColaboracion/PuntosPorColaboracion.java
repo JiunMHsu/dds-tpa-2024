@@ -13,8 +13,9 @@ import ar.edu.utn.frba.dds.repository.colaboracion.DonacionDineroRepository;
 import ar.edu.utn.frba.dds.repository.colaboracion.DonacionViandaRepository;
 import ar.edu.utn.frba.dds.repository.colaboracion.HacerseCargoHeladeraRepository;
 import ar.edu.utn.frba.dds.repository.colaboracion.RepartoDeTarjetasRepository;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.chrono.ChronoLocalDateTime;
 import java.util.List;
 import lombok.Builder;
 
@@ -22,19 +23,23 @@ import lombok.Builder;
 public class PuntosPorColaboracion {
 
   private Colaborador colaborador;
-  private LocalDate fechaUltimoCanje;
+  private LocalDateTime fechaUltimoCanje;
   private Double puntosSobrantes;
   private VarianteCalculoDePuntos variante;
+  private CanjeDePuntosRepository canjeDePuntosRepository;
 
-  public static PuntosPorColaboracion of(Colaborador colaborador) {
+  public PuntosPorColaboracion of(Colaborador colaborador) {
     PuntosPorColaboracionBuilder puntosPorColaboracion = PuntosPorColaboracion
         .builder()
         .colaborador(colaborador)
         .fechaUltimoCanje(null)
         .puntosSobrantes(0.0)
-        .variante(new VarianteCalculoDePuntos());
+        .variante(new VarianteCalculoDePuntos())
+        .canjeDePuntosRepository(new CanjeDePuntosRepository());
 
-    CanjeDePuntos ultimoCanjeo = CanjeDePuntosRepository.obtenerUltimoPorColaborador(colaborador);
+
+
+    CanjeDePuntos ultimoCanjeo = canjeDePuntosRepository.obtenerUltimoPorColaborador(colaborador);
     if (ultimoCanjeo != null) {
       puntosPorColaboracion.puntosSobrantes(ultimoCanjeo.getPuntosRestantes());
       puntosPorColaboracion.fechaUltimoCanje(ultimoCanjeo.getFechaCanjeo());
@@ -45,16 +50,16 @@ public class PuntosPorColaboracion {
   public Double calcularPuntos() {
     System.out.println(puntosSobrantes);
     System.out.println(fechaUltimoCanje);
-    return this.calcularPorPesosDonados()
-        + this.calcularPorViandasDistribuidas()
-        + this.calcularPorViandasDonadas()
-        + this.calcularPorTarjetasRepartidas()
-        + this.calcularPorHeladerasActivas()
+    return this.calcularPorPesosDonados(new DonacionDineroRepository())
+        + this.calcularPorViandasDistribuidas(new DistribucionViandasRepository())
+        + this.calcularPorViandasDonadas(new DonacionViandaRepository())
+        + this.calcularPorTarjetasRepartidas(new RepartoDeTarjetasRepository())
+        + this.calcularPorHeladerasActivas(new HacerseCargoHeladeraRepository())
         + puntosSobrantes;
   }
 
-  private Double calcularPorPesosDonados() {
-    List<DonacionDinero> listaDonacionesDinero = DonacionDineroRepository
+  private Double calcularPorPesosDonados(DonacionDineroRepository donacionDineroRepository) {
+    List<DonacionDinero> listaDonacionesDinero = donacionDineroRepository
         .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
     Double pesosDonados = listaDonacionesDinero.stream()
@@ -67,8 +72,8 @@ public class PuntosPorColaboracion {
     return puntaje;
   }
 
-  private Double calcularPorViandasDistribuidas() {
-    List<DistribucionViandas> listaViandasDistribuidas = DistribucionViandasRepository
+  private Double calcularPorViandasDistribuidas(DistribucionViandasRepository distribucionViandasRepository) {
+    List<DistribucionViandas> listaViandasDistribuidas = distribucionViandasRepository
         .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
     Double viandasDistribuidas = listaViandasDistribuidas.stream()
@@ -81,8 +86,8 @@ public class PuntosPorColaboracion {
     return puntaje;
   }
 
-  private Double calcularPorViandasDonadas() {
-    List<DonacionVianda> listaViandasDonadas = DonacionViandaRepository
+  private Double calcularPorViandasDonadas(DonacionViandaRepository donacionViandaRepository) {
+    List<DonacionVianda> listaViandasDonadas = donacionViandaRepository
         .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
     Double viandasDonadas = (double) listaViandasDonadas.size();
@@ -93,8 +98,8 @@ public class PuntosPorColaboracion {
     return puntaje;
   }
 
-  private Double calcularPorTarjetasRepartidas() {
-    List<RepartoDeTarjetas> listaTarjetasRepartidas = RepartoDeTarjetasRepository
+  private Double calcularPorTarjetasRepartidas(RepartoDeTarjetasRepository repartoDeTarjetasRepository) {
+    List<RepartoDeTarjetas> listaTarjetasRepartidas = repartoDeTarjetasRepository
         .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
     Double tarjetasRepartidas = (double) listaTarjetasRepartidas.size();
@@ -105,8 +110,8 @@ public class PuntosPorColaboracion {
     return puntaje;
   }
 
-  private Double calcularPorHeladerasActivas() {
-    List<Heladera> listaHeladerasACargo = HacerseCargoHeladeraRepository
+  private Double calcularPorHeladerasActivas(HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository) {
+    List<Heladera> listaHeladerasACargo = hacerseCargoHeladeraRepository
         .obtenerPorColaborador(colaborador)
         .stream()
         .map(HacerseCargoHeladera::getHeladeraACargo)
@@ -118,7 +123,7 @@ public class PuntosPorColaboracion {
 
     Double heladerasActivas = (double) listHeladerasActivas.size();
     Double mesesActivas = listHeladerasActivas.stream()
-        .mapToDouble(heladera -> this.calcularMesesActiva(heladera.getInicioFuncionamiento(), LocalDate.now()))
+        .mapToDouble(heladera -> this.calcularMesesActiva(heladera.getInicioFuncionamiento(), LocalDateTime.now()))
         .sum();
 
     Double puntajeTotalActual = heladerasActivas * mesesActivas * variante.getHeladerasActivas();
@@ -140,14 +145,14 @@ public class PuntosPorColaboracion {
    * Supone que desde la 'fechaInicio' hasta la fecha de llamada
    * siempre estuvo activa.
    */
-  private Integer calcularMesesActiva(LocalDate fechaInicio, LocalDate fechaActual) {
-    Period periodo = Period.between(fechaInicio, fechaActual);
+  private Integer calcularMesesActiva(LocalDateTime fechaInicio, LocalDateTime fechaActual) {
+    Period periodo = Period.between(fechaInicio.toLocalDate(), fechaActual.toLocalDate());
     return periodo.getYears() * 12 + periodo.getMonths();
   }
 
   private Double calcularPorHeladederasAnteriorCanje(List<Heladera> listHeladerasActivas) {
     List<Heladera> heladerasActivasAntesDelUltimoCanje = listHeladerasActivas.stream()
-        .filter(heladera -> heladera.getInicioFuncionamiento().isBefore(fechaUltimoCanje))
+        .filter(heladera -> heladera.getInicioFuncionamiento().isBefore(ChronoLocalDateTime.from(fechaUltimoCanje)))
         .toList();
     Double heladerasActivas = (double) heladerasActivasAntesDelUltimoCanje.size();
     Double mesesActivas = heladerasActivasAntesDelUltimoCanje.stream()
