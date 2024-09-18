@@ -1,18 +1,15 @@
 package ar.edu.utn.frba.dds.repository.mensajeria;
 
 import ar.edu.utn.frba.dds.mensajeria.Mensaje;
-import java.util.List;
-
-import ar.edu.utn.frba.dds.models.puntosDeColaboracion.CanjeDePuntos;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import lombok.Getter;
 
 @Getter
 public class MensajeRepository implements WithSimplePersistenceUnit {
 
-  public void agregar(Mensaje mensaje) {
-    entityManager().persist(mensaje);
-  }
+    public void agregar(Mensaje mensaje) {
+        entityManager().persist(mensaje);
+    }
 
 //  public Mensaje obtenerUltimo() {
 //    return entityManager()

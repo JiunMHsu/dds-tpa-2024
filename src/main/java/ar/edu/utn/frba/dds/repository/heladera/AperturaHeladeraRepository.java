@@ -3,7 +3,7 @@ package ar.edu.utn.frba.dds.repository.heladera;
 import ar.edu.utn.frba.dds.models.heladera.AperturaHeladera;
 
 public class AperturaHeladeraRepository {
-  public static void agregar(AperturaHeladera apertura) {
-  }
+    public static void agregar(AperturaHeladera apertura) {
+    }
 
 }

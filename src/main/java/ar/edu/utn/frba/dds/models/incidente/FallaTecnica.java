@@ -26,52 +26,52 @@ import lombok.NoArgsConstructor;
 @Table(name = "falla_tecnica")
 public class FallaTecnica implements Incidente {
 
-  @Id
-  @GeneratedValue(generator = "uuid")
-  private UUID id;
+    @Id
+    @GeneratedValue(generator = "uuid")
+    private UUID id;
 
-  @ManyToOne
-  @JoinColumn(name = "heladera_id", nullable = false)
-  private Heladera heladera;
+    @ManyToOne
+    @JoinColumn(name = "heladera_id", nullable = false)
+    private Heladera heladera;
 
-  @Column(name = "fecha_hora")
-  private LocalDateTime fechaHora;
+    @Column(name = "fecha_hora")
+    private LocalDateTime fechaHora;
 
-  @ManyToOne
-  @JoinColumn(name = "colaborador_id", nullable = false)
-  private Colaborador colaborador;
+    @ManyToOne
+    @JoinColumn(name = "colaborador_id", nullable = false)
+    private Colaborador colaborador;
 
-  @Column(name = "descripcion", columnDefinition = "TEXT")
-  private String descripcion;
+    @Column(name = "descripcion", columnDefinition = "TEXT")
+    private String descripcion;
 
-  @Embedded
-  private Imagen foto;
+    @Embedded
+    private Imagen foto;
 
-  public static FallaTecnica de(Heladera heladera,
-                                LocalDateTime fechaHora,
-                                Colaborador colaborador,
-                                String descripcion,
-                                Imagen foto) {
-    return FallaTecnica
-        .builder()
-        .heladera(heladera)
-        .fechaHora(fechaHora)
-        .colaborador(colaborador)
-        .descripcion(descripcion)
-        .foto(foto)
-        .build();
-  }
+    public static FallaTecnica de(Heladera heladera,
+                                  LocalDateTime fechaHora,
+                                  Colaborador colaborador,
+                                  String descripcion,
+                                  Imagen foto) {
+        return FallaTecnica
+                .builder()
+                .heladera(heladera)
+                .fechaHora(fechaHora)
+                .colaborador(colaborador)
+                .descripcion(descripcion)
+                .foto(foto)
+                .build();
+    }
 
-  public static FallaTecnica de(Heladera heladera, Colaborador colaborador) {
-    return FallaTecnica
-        .builder()
-        .colaborador(colaborador)
-        .fechaHora(LocalDateTime.now())
-        .heladera(heladera)
-        .build();
-  }
+    public static FallaTecnica de(Heladera heladera, Colaborador colaborador) {
+        return FallaTecnica
+                .builder()
+                .colaborador(colaborador)
+                .fechaHora(LocalDateTime.now())
+                .heladera(heladera)
+                .build();
+    }
 
-  public TipoIncidente getTipo() {
-    return TipoIncidente.FALLA_TECNICA;
-  }
+    public TipoIncidente getTipo() {
+        return TipoIncidente.FALLA_TECNICA;
+    }
 }

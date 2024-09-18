@@ -14,66 +14,66 @@ import org.apache.camel.impl.DefaultCamelContext;
 @Setter
 public class WhatsAppSender implements Sender {
 
-  private final String phoneNumberId;
-  private final String authorizationToken;
-  private CamelContext camelContext;
+    private final String phoneNumberId;
+    private final String authorizationToken;
+    private CamelContext camelContext;
 
-  public WhatsAppSender(String phoneNumberId, String authorizationToken) {
-    this.phoneNumberId = phoneNumberId;
-    this.authorizationToken = authorizationToken;
-    this.camelContext = new DefaultCamelContext();
-    setupRoutes();
-  }
+    public WhatsAppSender(String phoneNumberId, String authorizationToken) {
+        this.phoneNumberId = phoneNumberId;
+        this.authorizationToken = authorizationToken;
+        this.camelContext = new DefaultCamelContext();
+        setupRoutes();
+    }
 
-  public WhatsAppSender() {
-    this.phoneNumberId = AppConfig.getProperty("WHATSAPP_PHONE_NUMBER_ID");
-    this.authorizationToken = AppConfig.getProperty("WHATSAPP_AUTHORIZATION_TOKEN");
-    this.camelContext = new DefaultCamelContext();
-    setupRoutes();
-  }
+    public WhatsAppSender() {
+        this.phoneNumberId = AppConfig.getProperty("WHATSAPP_PHONE_NUMBER_ID");
+        this.authorizationToken = AppConfig.getProperty("WHATSAPP_AUTHORIZATION_TOKEN");
+        this.camelContext = new DefaultCamelContext();
+        setupRoutes();
+    }
 
-  private void setupRoutes() {
-    try {
-      camelContext.addRoutes(new RouteBuilder() {
-        @Override
-        public void configure() {
-          from("direct:start")
-              .toF("whatsapp:%s?authorizationToken=%s", phoneNumberId, authorizationToken);
+    private void setupRoutes() {
+        try {
+            camelContext.addRoutes(new RouteBuilder() {
+                @Override
+                public void configure() {
+                    from("direct:start")
+                            .toF("whatsapp:%s?authorizationToken=%s", phoneNumberId, authorizationToken);
+                }
+            });
+            camelContext.start();
+            System.out.println("CamelContext configurado e iniciado correctamente.");
+        } catch (Exception e) {
+            System.err.println("Error al configurar CamelContext: " + e.getMessage());
         }
-      });
-      camelContext.start();
-      System.out.println("CamelContext configurado e iniciado correctamente.");
-    } catch (Exception e) {
-      System.err.println("Error al configurar CamelContext: " + e.getMessage());
     }
-  }
 
-  @Override
-  public void enviarMensaje(String receptor, String asunto, String cuerpo) {
-    try {
-      TextMessageRequest request = new TextMessageRequest();
-      request.setTo(receptor);
-      request.setText(new TextMessage());
-      request.getText().setPreviewUrl(false);
-      request.getText().setBody(asunto + "\n" + cuerpo);
+    @Override
+    public void enviarMensaje(String receptor, String asunto, String cuerpo) {
+        try {
+            TextMessageRequest request = new TextMessageRequest();
+            request.setTo(receptor);
+            request.setText(new TextMessage());
+            request.getText().setPreviewUrl(false);
+            request.getText().setBody(asunto + "\n" + cuerpo);
 
-      ProducerTemplate producerTemplate = camelContext.createProducerTemplate();
-      producerTemplate.requestBody("direct:start", request);
+            ProducerTemplate producerTemplate = camelContext.createProducerTemplate();
+            producerTemplate.requestBody("direct:start", request);
 
-    } catch (Exception e) {
-      System.err.println("Error al enviar el mensaje: " + e.getMessage());
-    } finally {
-      stopContext();
+        } catch (Exception e) {
+            System.err.println("Error al enviar el mensaje: " + e.getMessage());
+        } finally {
+            stopContext();
+        }
     }
-  }
 
-  public void stopContext() {
-    try {
-      if (camelContext != null) {
-        camelContext.stop();
-      }
-    } catch (Exception e) {
-      System.err.println("Error al detener CamelContext: " + e.getMessage());
+    public void stopContext() {
+        try {
+            if (camelContext != null) {
+                camelContext.stop();
+            }
+        } catch (Exception e) {
+            System.err.println("Error al detener CamelContext: " + e.getMessage());
+        }
     }
-  }
 }

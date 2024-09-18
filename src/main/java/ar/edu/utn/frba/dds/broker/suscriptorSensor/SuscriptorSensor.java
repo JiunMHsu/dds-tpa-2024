@@ -6,15 +6,15 @@ import lombok.Getter;
 
 @Getter
 public abstract class SuscriptorSensor implements SuscriptorMqtt {
-  private final Sensor suscriptorSensor;
+    private final Sensor suscriptorSensor;
 
-  protected SuscriptorSensor(Sensor suscriptor) {
-    this.suscriptorSensor = suscriptor;
-  }
+    protected SuscriptorSensor(Sensor suscriptor) {
+        this.suscriptorSensor = suscriptor;
+    }
 
-  public String topic() {
-    return this.suscriptorSensor.getTopic();
-  }
+    public String topic() {
+        return this.suscriptorSensor.getTopic();
+    }
 
-  public abstract void recibirMensaje(String mensaje);
+    public abstract void recibirMensaje(String mensaje);
 }

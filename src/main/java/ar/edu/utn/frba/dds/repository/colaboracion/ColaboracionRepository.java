@@ -2,17 +2,17 @@ package ar.edu.utn.frba.dds.repository.colaboracion;
 
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public abstract class ColaboracionRepository<T> implements WithSimplePersistenceUnit {
 
     private Class<T> type;
+
     public ColaboracionRepository(Class<T> type) {
         this.type = type;
     }
+
     public void agregar(T colaboracion) {
         entityManager().persist(colaboracion);
     }

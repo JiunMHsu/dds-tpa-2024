@@ -10,20 +10,20 @@ import lombok.Getter;
 @Embeddable
 public class Documento {
 
-  @Enumerated(EnumType.STRING)
-  @Column(name = "tipo_documento")
-  private final TipoDocumento tipo;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_documento")
+    private final TipoDocumento tipo;
 
-  @Column(name = "numero")
-  private final String numero;
+    @Column(name = "numero")
+    private final String numero;
 
-  public Documento(String numero, TipoDocumento tipo) {
-    this.numero = numero;
-    this.tipo = tipo;
-  }
+    public Documento(String numero, TipoDocumento tipo) {
+        this.numero = numero;
+        this.tipo = tipo;
+    }
 
-  public Documento() {
-    this.numero = null;
-    this.tipo = null;
-  }
+    public Documento() {
+        this.numero = null;
+        this.tipo = null;
+    }
 }

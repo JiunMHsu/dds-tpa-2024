@@ -24,57 +24,57 @@ import lombok.NoArgsConstructor;
 @Table(name = "distribucion_viandas")
 public class DistribucionViandas {
 
-  @Id
-  @GeneratedValue(generator = "uuid")
-  private UUID id;
+    @Id
+    @GeneratedValue(generator = "uuid")
+    private UUID id;
 
-  @ManyToOne
-  @JoinColumn(name = "colaborador_id", nullable = false)
-  private Colaborador colaborador;
+    @ManyToOne
+    @JoinColumn(name = "colaborador_id", nullable = false)
+    private Colaborador colaborador;
 
-  @Column(name = "fecha_hora", columnDefinition = "DATETIME", nullable = false)
-  private LocalDateTime fechaHora;
+    @Column(name = "fecha_hora", columnDefinition = "DATETIME", nullable = false)
+    private LocalDateTime fechaHora;
 
-  @ManyToOne
-  @JoinColumn(name = "heladera_origen_id", nullable = false)
-  private Heladera origen;
+    @ManyToOne
+    @JoinColumn(name = "heladera_origen_id", nullable = false)
+    private Heladera origen;
 
-  @ManyToOne
-  @JoinColumn(name = "heladera_destino_id", nullable = false)
-  private Heladera destino;
+    @ManyToOne
+    @JoinColumn(name = "heladera_destino_id", nullable = false)
+    private Heladera destino;
 
-  @Column(name = "cant_viandas", columnDefinition = "SMALLINT", nullable = false)
-  private Integer viandas;
+    @Column(name = "cant_viandas", columnDefinition = "SMALLINT", nullable = false)
+    private Integer viandas;
 
-  @Column(name = "motivo", columnDefinition = "TEXT")
-  private String motivo;
+    @Column(name = "motivo", columnDefinition = "TEXT")
+    private String motivo;
 
-  public static DistribucionViandas por(Colaborador colaboradorHumano,
-                                        LocalDateTime fechaDistribucion,
-                                        Heladera origen,
-                                        Heladera destino,
-                                        Integer viandas,
-                                        String motivo) {
-    return DistribucionViandas
-        .builder()
-        .colaborador(colaboradorHumano)
-        .fechaHora(fechaDistribucion)
-        .origen(origen)
-        .destino(destino)
-        .viandas(viandas)
-        .motivo(motivo)
-        .build();
-  }
+    public static DistribucionViandas por(Colaborador colaboradorHumano,
+                                          LocalDateTime fechaDistribucion,
+                                          Heladera origen,
+                                          Heladera destino,
+                                          Integer viandas,
+                                          String motivo) {
+        return DistribucionViandas
+                .builder()
+                .colaborador(colaboradorHumano)
+                .fechaHora(fechaDistribucion)
+                .origen(origen)
+                .destino(destino)
+                .viandas(viandas)
+                .motivo(motivo)
+                .build();
+    }
 
-  public static DistribucionViandas por(Colaborador colaboradorHumano,
-                                        LocalDateTime fechaDistribucion,
-                                        Integer viandas) {
-    return DistribucionViandas
-        .builder()
-        .colaborador(colaboradorHumano)
-        .fechaHora(fechaDistribucion)
-        .viandas(viandas)
-        .build();
-  }
+    public static DistribucionViandas por(Colaborador colaboradorHumano,
+                                          LocalDateTime fechaDistribucion,
+                                          Integer viandas) {
+        return DistribucionViandas
+                .builder()
+                .colaborador(colaboradorHumano)
+                .fechaHora(fechaDistribucion)
+                .viandas(viandas)
+                .build();
+    }
 
 }

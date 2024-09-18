@@ -8,34 +8,34 @@ import java.util.UUID;
 
 public class ClienteMqtt {
 
-  private final Mqtt5BlockingClient client;
+    private final Mqtt5BlockingClient client;
 
-  public ClienteMqtt() {
-    client = Mqtt5Client
-        .builder()
-        .identifier(UUID.randomUUID().toString())
-        .serverHost("broker.hivemq.com")
-        .serverPort(1883)
-        .buildBlocking();
+    public ClienteMqtt() {
+        client = Mqtt5Client
+                .builder()
+                .identifier(UUID.randomUUID().toString())
+                .serverHost("broker.hivemq.com")
+                .serverPort(1883)
+                .buildBlocking();
 
-    client.connectWith().send();
-  }
+        client.connectWith().send();
+    }
 
-  public void suscribirPara(SuscriptorMqtt suscriptor) {
-    client.toAsync().subscribeWith()
-        .topicFilter(suscriptor.topic())
-        .qos(MqttQos.AT_MOST_ONCE)
-        .callback(mqtt5Publish -> suscriptor.recibirMensaje(
-            StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString()
-        ))
-        .send();
-  }
+    public void suscribirPara(SuscriptorMqtt suscriptor) {
+        client.toAsync().subscribeWith()
+                .topicFilter(suscriptor.topic())
+                .qos(MqttQos.AT_MOST_ONCE)
+                .callback(mqtt5Publish -> suscriptor.recibirMensaje(
+                        StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString()
+                ))
+                .send();
+    }
 
-  public void publicarMensaje(String topic, String payload) {
-    client.publishWith()
-        .topic(topic)
-        .payload(payload.getBytes(StandardCharsets.UTF_8))
-        .qos(MqttQos.AT_MOST_ONCE)
-        .send();
-  }
+    public void publicarMensaje(String topic, String payload) {
+        client.publishWith()
+                .topic(topic)
+                .payload(payload.getBytes(StandardCharsets.UTF_8))
+                .qos(MqttQos.AT_MOST_ONCE)
+                .send();
+    }
 }

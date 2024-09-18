@@ -24,54 +24,54 @@ import lombok.NoArgsConstructor;
 @Table(name = "sensor")
 public class Sensor {
 
-  @Id
-  @GeneratedValue(generator = "uuid")
-  private UUID id;
+    @Id
+    @GeneratedValue(generator = "uuid")
+    private UUID id;
 
-  @ManyToOne
-  @JoinColumn(name = "heladera_id", nullable = false)
-  private Heladera heladera;
+    @ManyToOne
+    @JoinColumn(name = "heladera_id", nullable = false)
+    private Heladera heladera;
 
-  @Column(name = "topic", columnDefinition = "TEXT", nullable = false)
-  private String topic;
+    @Column(name = "topic", columnDefinition = "TEXT", nullable = false)
+    private String topic;
 
-  @Enumerated(EnumType.STRING)
-  @Column(name = "tipo")
-  private TipoSensor tipo;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo")
+    private TipoSensor tipo;
 
-  public static Sensor de(Heladera heladera, String topic) {
-    return Sensor
-        .builder()
-        .heladera(heladera)
-        .topic(topic)
-        .build();
-  }
+    public static Sensor de(Heladera heladera, String topic) {
+        return Sensor
+                .builder()
+                .heladera(heladera)
+                .topic(topic)
+                .build();
+    }
 
-  /**
-   * Buider de Suscriptor de Sensor de heladeras.
-   *
-   * @param heladera una Heladera.
-   * @return Sensor con topic vacío ("").
-   */
-  public static Sensor de(Heladera heladera) {
-    return Sensor
-        .builder()
-        .heladera(heladera)
-        .topic("")
-        .build();
-  }
+    /**
+     * Buider de Suscriptor de Sensor de heladeras.
+     *
+     * @param heladera una Heladera.
+     * @return Sensor con topic vacío ("").
+     */
+    public static Sensor de(Heladera heladera) {
+        return Sensor
+                .builder()
+                .heladera(heladera)
+                .topic("")
+                .build();
+    }
 
-  /**
-   * Buider de Suscriptor de Sensor de heladeras.
-   *
-   * @param topic una topic de suscripción.
-   * @return Sensor con una heladera de capacidad 10.
-   */
-  public static Sensor de(String topic) {
-    return Sensor
-        .builder()
-        .heladera(Heladera.con(10))
-        .topic(topic)
-        .build();
-  }
+    /**
+     * Buider de Suscriptor de Sensor de heladeras.
+     *
+     * @param topic una topic de suscripción.
+     * @return Sensor con una heladera de capacidad 10.
+     */
+    public static Sensor de(String topic) {
+        return Sensor
+                .builder()
+                .heladera(Heladera.con(10))
+                .topic(topic)
+                .build();
+    }
 }

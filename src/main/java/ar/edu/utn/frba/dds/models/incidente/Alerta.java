@@ -25,28 +25,28 @@ import lombok.NoArgsConstructor;
 @Table(name = "alerta")
 public class Alerta implements Incidente {
 
-  @Id
-  @GeneratedValue(generator = "uuid")
-  private UUID id;
+    @Id
+    @GeneratedValue(generator = "uuid")
+    private UUID id;
 
-  @Enumerated(EnumType.ORDINAL)
-  @Column(name = "tipo")
-  private TipoIncidente tipo;
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "tipo")
+    private TipoIncidente tipo;
 
-  @ManyToOne
-  @JoinColumn(name = "heladera_id", nullable = false)
-  private Heladera heladera;
+    @ManyToOne
+    @JoinColumn(name = "heladera_id", nullable = false)
+    private Heladera heladera;
 
-  @Column(name = "fecha_hora", columnDefinition = "DATETIME")
-  private LocalDateTime fechaHora;
+    @Column(name = "fecha_hora", columnDefinition = "DATETIME")
+    private LocalDateTime fechaHora;
 
-  public static Alerta por(TipoIncidente tipo, Heladera heladera, LocalDateTime fechaHora) {
-    return Alerta
-        .builder()
-        .tipo(tipo)
-        .heladera(heladera)
-        .fechaHora(fechaHora)
-        .build();
-  }
+    public static Alerta por(TipoIncidente tipo, Heladera heladera, LocalDateTime fechaHora) {
+        return Alerta
+                .builder()
+                .tipo(tipo)
+                .heladera(heladera)
+                .fechaHora(fechaHora)
+                .build();
+    }
 
 }

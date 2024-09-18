@@ -19,38 +19,38 @@ import lombok.NoArgsConstructor;
 @Table(name = "usuario")
 public class Usuario {
 
-  @Id
-  @GeneratedValue(generator = "uuid")
-  private UUID id;
+    @Id
+    @GeneratedValue(generator = "uuid")
+    private UUID id;
 
-  @Column(name = "nombre")
-  private String nombre;
+    @Column(name = "nombre")
+    private String nombre;
 
-  @Column(name = "contrasenia")
-  private String contrasenia;
+    @Column(name = "contrasenia")
+    private String contrasenia;
 
-  @Column(name = "email")
-  private String email;
+    @Column(name = "email")
+    private String email;
 
-  public static Usuario with(String nombreUsuario, String contrasenia, String email) {
-    return Usuario
-        .builder()
-        .nombre(nombreUsuario)
-        .contrasenia(contrasenia)
-        .email(email)
-        .build();
-  }
+    public static Usuario with(String nombreUsuario, String contrasenia, String email) {
+        return Usuario
+                .builder()
+                .nombre(nombreUsuario)
+                .contrasenia(contrasenia)
+                .email(email)
+                .build();
+    }
 
-  public static Usuario withEmail(String email) {
-    return Usuario
-        .builder()
-        .email(email)
-        .build();
-  }
+    public static Usuario withEmail(String email) {
+        return Usuario
+                .builder()
+                .email(email)
+                .build();
+    }
 
-  public static Usuario empty() {
-    return Usuario
-        .builder()
-        .build();
-  }
+    public static Usuario empty() {
+        return Usuario
+                .builder()
+                .build();
+    }
 }

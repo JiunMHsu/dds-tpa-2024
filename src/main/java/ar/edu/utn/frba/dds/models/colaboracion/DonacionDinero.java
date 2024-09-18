@@ -25,50 +25,50 @@ import lombok.Setter;
 @Table(name = "donacion_dinero")
 public class DonacionDinero {
 
-  @Id
-  @GeneratedValue(generator = "uuid")
-  private UUID id;
+    @Id
+    @GeneratedValue(generator = "uuid")
+    private UUID id;
 
-  @ManyToOne
-  @JoinColumn(name = "colaborador_id", nullable = false)
-  private Colaborador colaborador;
+    @ManyToOne
+    @JoinColumn(name = "colaborador_id", nullable = false)
+    private Colaborador colaborador;
 
-  @Column(name = "fecha_hora", columnDefinition = "DATETIME", nullable = false)
-  private LocalDateTime fechaHora;
+    @Column(name = "fecha_hora", columnDefinition = "DATETIME", nullable = false)
+    private LocalDateTime fechaHora;
 
-  @Column(name = "monto", nullable = false)
-  private Integer monto;
+    @Column(name = "monto", nullable = false)
+    private Integer monto;
 
-  // TODO - Ver como persistir Period
-  // Podria realizarse una conversion del dato a string??
-  // existe la funcion PERIOD_ADD() pero se maneja en meses nada mas, no estoy seguro de que sirva
+    // TODO - Ver como persistir Period
+    // Podria realizarse una conversion del dato a string??
+    // existe la funcion PERIOD_ADD() pero se maneja en meses nada mas, no estoy seguro de que sirva
 
-  @Setter
-  @Column(name = "frecuencia")
-  private Period frecuencia;
+    @Setter
+    @Column(name = "frecuencia")
+    private Period frecuencia;
 
-  public static DonacionDinero por(Colaborador colaborador,
-                                   LocalDateTime fechaDonacion,
-                                   Integer monto,
-                                   Period frecuencia) {
-    return DonacionDinero
-        .builder()
-        .colaborador(colaborador)
-        .fechaHora(fechaDonacion)
-        .monto(monto)
-        .frecuencia(frecuencia)
-        .build();
-  }
+    public static DonacionDinero por(Colaborador colaborador,
+                                     LocalDateTime fechaDonacion,
+                                     Integer monto,
+                                     Period frecuencia) {
+        return DonacionDinero
+                .builder()
+                .colaborador(colaborador)
+                .fechaHora(fechaDonacion)
+                .monto(monto)
+                .frecuencia(frecuencia)
+                .build();
+    }
 
-  public static DonacionDinero por(Colaborador colaborador,
-                                   LocalDateTime fechaDonacion,
-                                   Integer monto) {
-    return DonacionDinero
-        .builder()
-        .colaborador(colaborador)
-        .fechaHora(fechaDonacion)
-        .monto(monto)
-        .build();
-  }
+    public static DonacionDinero por(Colaborador colaborador,
+                                     LocalDateTime fechaDonacion,
+                                     Integer monto) {
+        return DonacionDinero
+                .builder()
+                .colaborador(colaborador)
+                .fechaHora(fechaDonacion)
+                .monto(monto)
+                .build();
+    }
 
 }

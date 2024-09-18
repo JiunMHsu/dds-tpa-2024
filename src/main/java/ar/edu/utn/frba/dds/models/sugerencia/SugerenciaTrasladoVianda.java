@@ -26,38 +26,38 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "sugerencia_traslado_vianda")
 public class SugerenciaTrasladoVianda {
-  // ¿Debería conocer al incidente también?
+    // ¿Debería conocer al incidente también?
 
-  @Id
-  @GeneratedValue(generator = "uuid")
-  private UUID id;
+    @Id
+    @GeneratedValue(generator = "uuid")
+    private UUID id;
 
-  @ManyToOne
-  @JoinColumn(name = "heladera_origen_id", nullable = false)
-  private Heladera heladeraOrigen;
+    @ManyToOne
+    @JoinColumn(name = "heladera_origen_id", nullable = false)
+    private Heladera heladeraOrigen;
 
-  @OneToMany
-  @JoinColumn(name = "sugerencia_traslado_id")
-  private List<Heladera> heladerasDestino;
+    @OneToMany
+    @JoinColumn(name = "sugerencia_traslado_id")
+    private List<Heladera> heladerasDestino;
 
-  @ManyToOne
-  @JoinColumn(name = "colaborador_id", nullable = false)
-  private Colaborador colaborador;
+    @ManyToOne
+    @JoinColumn(name = "colaborador_id", nullable = false)
+    private Colaborador colaborador;
 
-  @Enumerated(EnumType.STRING)
-  @Column(name = "estado", nullable = false)
-  private EstadoSugerencia estado;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado", nullable = false)
+    private EstadoSugerencia estado;
 
-  public static SugerenciaTrasladoVianda de(Heladera heladeraOrigen,
-                                            List<Heladera> heladerasDestino,
-                                            Colaborador colaborador,
-                                            EstadoSugerencia estado) {
-    return SugerenciaTrasladoVianda
-        .builder()
-        .heladeraOrigen(heladeraOrigen)
-        .heladerasDestino(heladerasDestino)
-        .colaborador(colaborador)
-        .estado(estado)
-        .build();
-  }
+    public static SugerenciaTrasladoVianda de(Heladera heladeraOrigen,
+                                              List<Heladera> heladerasDestino,
+                                              Colaborador colaborador,
+                                              EstadoSugerencia estado) {
+        return SugerenciaTrasladoVianda
+                .builder()
+                .heladeraOrigen(heladeraOrigen)
+                .heladerasDestino(heladerasDestino)
+                .colaborador(colaborador)
+                .estado(estado)
+                .build();
+    }
 }

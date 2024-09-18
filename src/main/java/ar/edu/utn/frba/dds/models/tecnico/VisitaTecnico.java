@@ -25,53 +25,53 @@ import lombok.NoArgsConstructor;
 @Table(name = "visita_tenico")
 public class VisitaTecnico {
 
-  @Id
-  @GeneratedValue(generator = "uuid")
-  private UUID id;
+    @Id
+    @GeneratedValue(generator = "uuid")
+    private UUID id;
 
-  @ManyToOne
-  @JoinColumn(name = "tecnico_id", nullable = false)
-  private Tecnico tecnico;
+    @ManyToOne
+    @JoinColumn(name = "tecnico_id", nullable = false)
+    private Tecnico tecnico;
 
-  @ManyToOne
-  @JoinColumn(name = "heladera_id", nullable = false)
-  private Heladera heladera;
+    @ManyToOne
+    @JoinColumn(name = "heladera_id", nullable = false)
+    private Heladera heladera;
 
-  @Column(name = "fecha_hora", columnDefinition = "DATETIME", nullable = false)
-  private LocalDateTime fechaHora;
+    @Column(name = "fecha_hora", columnDefinition = "DATETIME", nullable = false)
+    private LocalDateTime fechaHora;
 
-  @Column(name = "descripcion", columnDefinition = "TEXT", nullable = false)
-  private String descripcion;
+    @Column(name = "descripcion", columnDefinition = "TEXT", nullable = false)
+    private String descripcion;
 
-  @Embedded
-  private Imagen foto;
+    @Embedded
+    private Imagen foto;
 
-  @Column(name = "fue_resuelta", nullable = false)
-  private Boolean fallaResuelta;
+    @Column(name = "fue_resuelta", nullable = false)
+    private Boolean fallaResuelta;
 
-  public static VisitaTecnico by(Tecnico tecnico,
-                                 Heladera heladera,
-                                 LocalDateTime fechaHora,
-                                 String descripcion,
-                                 Imagen foto,
-                                 Boolean fallaResuelta) {
-    return VisitaTecnico
-        .builder()
-        .tecnico(tecnico)
-        .heladera(heladera)
-        .fechaHora(fechaHora)
-        .descripcion(descripcion)
-        .foto(foto)
-        .fallaResuelta(fallaResuelta)
-        .build();
-  }
+    public static VisitaTecnico by(Tecnico tecnico,
+                                   Heladera heladera,
+                                   LocalDateTime fechaHora,
+                                   String descripcion,
+                                   Imagen foto,
+                                   Boolean fallaResuelta) {
+        return VisitaTecnico
+                .builder()
+                .tecnico(tecnico)
+                .heladera(heladera)
+                .fechaHora(fechaHora)
+                .descripcion(descripcion)
+                .foto(foto)
+                .fallaResuelta(fallaResuelta)
+                .build();
+    }
 
-  public static VisitaTecnico by(Tecnico tecnico,
-                                 Heladera heladera) {
-    return VisitaTecnico
-        .builder()
-        .tecnico(tecnico)
-        .heladera(heladera)
-        .build();
-  }
+    public static VisitaTecnico by(Tecnico tecnico,
+                                   Heladera heladera) {
+        return VisitaTecnico
+                .builder()
+                .tecnico(tecnico)
+                .heladera(heladera)
+                .build();
+    }
 }

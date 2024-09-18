@@ -22,51 +22,51 @@ import lombok.Setter;
 @Table(name = "mensaje")
 public class Mensaje {
 
-  @Id
-  @GeneratedValue(generator = "uuid")
-  private UUID id;
+    @Id
+    @GeneratedValue(generator = "uuid")
+    private UUID id;
 
-  @Column(name = "asunto", nullable = false)
-  private String asunto;
+    @Column(name = "asunto", nullable = false)
+    private String asunto;
 
-  @Column(name = "cuerpo", nullable = false)
-  private String cuerpo;
+    @Column(name = "cuerpo", nullable = false)
+    private String cuerpo;
 
-  @Column(name = "receptor", nullable = false)
-  private String receptor; // Ver el tema de receptor, osea cmo es dado que seria diferente para email, wpp o telegram si no me equivoco UwU
+    @Column(name = "receptor", nullable = false)
+    private String receptor; // Ver el tema de receptor, osea cmo es dado que seria diferente para email, wpp o telegram si no me equivoco UwU
 
-  @Setter
-  @Enumerated
-  @Column(name = "medio_notificacion", nullable = false)
-  private MedioDeNotificacion medio;
+    @Setter
+    @Enumerated
+    @Column(name = "medio_notificacion", nullable = false)
+    private MedioDeNotificacion medio;
 
-  @Setter
-  @Column(name = "fecha_envio", nullable = false)
-  private LocalDateTime fechaEnvio;
+    @Setter
+    @Column(name = "fecha_envio", nullable = false)
+    private LocalDateTime fechaEnvio;
 
-  public static Mensaje con(String asunto,
-                            String cuerpo,
-                            String receptor,
-                            MedioDeNotificacion medio,
-                            LocalDateTime fechaEnvio) {
-    return Mensaje
-        .builder()
-        .asunto(asunto)
-        .cuerpo(cuerpo)
-        .receptor(receptor)
-        .medio(medio)
-        .fechaEnvio(fechaEnvio)
-        .build();
-  }
+    public static Mensaje con(String asunto,
+                              String cuerpo,
+                              String receptor,
+                              MedioDeNotificacion medio,
+                              LocalDateTime fechaEnvio) {
+        return Mensaje
+                .builder()
+                .asunto(asunto)
+                .cuerpo(cuerpo)
+                .receptor(receptor)
+                .medio(medio)
+                .fechaEnvio(fechaEnvio)
+                .build();
+    }
 
-  public static Mensaje con(String asunto,
-                            String cuerpo,
-                            String receptor) {
-    return Mensaje
-        .builder()
-        .asunto(asunto)
-        .cuerpo(cuerpo)
-        .receptor(receptor)
-        .build();
-  }
+    public static Mensaje con(String asunto,
+                              String cuerpo,
+                              String receptor) {
+        return Mensaje
+                .builder()
+                .asunto(asunto)
+                .cuerpo(cuerpo)
+                .receptor(receptor)
+                .build();
+    }
 }

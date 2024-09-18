@@ -26,45 +26,45 @@ import lombok.NoArgsConstructor;
 @Table(name = "reparto_tarjetas")
 public class RepartoDeTarjetas {
 
-  @Id
-  @GeneratedValue(generator = "uuid")
-  private UUID id;
+    @Id
+    @GeneratedValue(generator = "uuid")
+    private UUID id;
 
-  @ManyToOne
-  @JoinColumn(name = "colaborador_id", nullable = false)
-  private Colaborador colaborador;
+    @ManyToOne
+    @JoinColumn(name = "colaborador_id", nullable = false)
+    private Colaborador colaborador;
 
-  @Column(name = "fecha_hora", columnDefinition = "DATETIME", nullable = false)
-  private LocalDateTime fechaHora;
+    @Column(name = "fecha_hora", columnDefinition = "DATETIME", nullable = false)
+    private LocalDateTime fechaHora;
 
-  @OneToOne
-  @JoinColumn(name = "tarjeta_vulnerable_id", nullable = false)
-  private TarjetaPersonaVulnerable tarjeta;
+    @OneToOne
+    @JoinColumn(name = "tarjeta_vulnerable_id", nullable = false)
+    private TarjetaPersonaVulnerable tarjeta;
 
-  @OneToOne
-  @JoinColumn(name = "persona_vulnerable_id", nullable = false)
-  private PersonaVulnerable personaVulnerable;
+    @OneToOne
+    @JoinColumn(name = "persona_vulnerable_id", nullable = false)
+    private PersonaVulnerable personaVulnerable;
 
-  public static RepartoDeTarjetas por(Colaborador colaborador,
-                                      LocalDateTime fechaHoraReparto,
-                                      TarjetaPersonaVulnerable tarjeta,
-                                      PersonaVulnerable personaVulnerable) {
-    return RepartoDeTarjetas
-        .builder()
-        .colaborador(colaborador)
-        .fechaHora(fechaHoraReparto)
-        .tarjeta(tarjeta)
-        .personaVulnerable(personaVulnerable)
-        .build();
-  }
+    public static RepartoDeTarjetas por(Colaborador colaborador,
+                                        LocalDateTime fechaHoraReparto,
+                                        TarjetaPersonaVulnerable tarjeta,
+                                        PersonaVulnerable personaVulnerable) {
+        return RepartoDeTarjetas
+                .builder()
+                .colaborador(colaborador)
+                .fechaHora(fechaHoraReparto)
+                .tarjeta(tarjeta)
+                .personaVulnerable(personaVulnerable)
+                .build();
+    }
 
-  public static RepartoDeTarjetas por(Colaborador colaborador,
-                                      LocalDateTime fechaHoraReparto) {
-    return RepartoDeTarjetas
-        .builder()
-        .colaborador(colaborador)
-        .fechaHora(fechaHoraReparto)
-        .build();
-  }
+    public static RepartoDeTarjetas por(Colaborador colaborador,
+                                        LocalDateTime fechaHoraReparto) {
+        return RepartoDeTarjetas
+                .builder()
+                .colaborador(colaborador)
+                .fechaHora(fechaHoraReparto)
+                .build();
+    }
 
 }

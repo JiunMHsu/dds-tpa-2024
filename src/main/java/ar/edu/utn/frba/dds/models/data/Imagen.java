@@ -8,14 +8,14 @@ import lombok.Getter;
 @Embeddable
 public class Imagen {
 
-  @Column(name = "ruta", columnDefinition = "TEXT")
-  private String ruta;
+    @Column(name = "ruta", columnDefinition = "TEXT")
+    private String ruta;
 
-  public Imagen(String ruta) {
-    this.ruta = ruta;
-  }
+    public Imagen(String ruta) {
+        this.ruta = ruta;
+    }
 
-  public Imagen() {
-    this.ruta = null;
-  }
+    public Imagen() {
+        this.ruta = null;
+    }
 }

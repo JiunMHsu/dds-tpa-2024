@@ -23,29 +23,29 @@ import lombok.NoArgsConstructor;
 @Table(name = "retiro_vianda")
 public class RetiroDeVianda {
 
-  @Id
-  @GeneratedValue(generator = "uuid")
-  private UUID id;
+    @Id
+    @GeneratedValue(generator = "uuid")
+    private UUID id;
 
-  @ManyToOne
-  @JoinColumn(name = "tarjeta_id", nullable = false)
-  private TarjetaPersonaVulnerable tarjetaPersonaVulnerable;
+    @ManyToOne
+    @JoinColumn(name = "tarjeta_id", nullable = false)
+    private TarjetaPersonaVulnerable tarjetaPersonaVulnerable;
 
-  @ManyToOne
-  @JoinColumn(name = "heladera_id", nullable = false)
-  private Heladera heladera;
+    @ManyToOne
+    @JoinColumn(name = "heladera_id", nullable = false)
+    private Heladera heladera;
 
-  @Column(name = "fecha_hora", columnDefinition = "DATETIME")
-  private LocalDateTime fechaHora;
+    @Column(name = "fecha_hora", columnDefinition = "DATETIME")
+    private LocalDateTime fechaHora;
 
-  public static RetiroDeVianda por(TarjetaPersonaVulnerable tarjetaPersonaVulnerable,
-                                   Heladera heladera,
-                                   LocalDateTime fechaHora) {
-    return RetiroDeVianda
-        .builder()
-        .tarjetaPersonaVulnerable(tarjetaPersonaVulnerable)
-        .heladera(heladera)
-        .fechaHora(fechaHora)
-        .build();
-  }
+    public static RetiroDeVianda por(TarjetaPersonaVulnerable tarjetaPersonaVulnerable,
+                                     Heladera heladera,
+                                     LocalDateTime fechaHora) {
+        return RetiroDeVianda
+                .builder()
+                .tarjetaPersonaVulnerable(tarjetaPersonaVulnerable)
+                .heladera(heladera)
+                .fechaHora(fechaHora)
+                .build();
+    }
 }

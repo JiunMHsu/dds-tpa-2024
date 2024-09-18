@@ -26,31 +26,31 @@ import lombok.NoArgsConstructor;
 @Table(name = "suscripcion_falla_heladera")
 public class SuscripcionFallaHeladera {
 
-  @Id
-  @GeneratedValue(generator = "uuid")
-  private UUID id;
+    @Id
+    @GeneratedValue(generator = "uuid")
+    private UUID id;
 
-  @ManyToOne
-  @JoinColumn(name = "colaborador_id", nullable = false)
-  private Colaborador colaborador;
+    @ManyToOne
+    @JoinColumn(name = "colaborador_id", nullable = false)
+    private Colaborador colaborador;
 
-  @ManyToOne
-  @JoinColumn(name = "heladera_id", nullable = false)
-  private Heladera heladera;
+    @ManyToOne
+    @JoinColumn(name = "heladera_id", nullable = false)
+    private Heladera heladera;
 
-  @Enumerated(EnumType.STRING)
-  @Column(name = "medio_notificacion", nullable = false)
-  private MedioDeNotificacion medioDeNotificacion;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "medio_notificacion", nullable = false)
+    private MedioDeNotificacion medioDeNotificacion;
 
-  public static SuscripcionFallaHeladera de(Colaborador colaborador,
-                                            Heladera heladera,
-                                            MedioDeNotificacion medioDeNotificacion) {
-    return SuscripcionFallaHeladera
-        .builder()
-        .colaborador(colaborador)
-        .heladera(heladera)
-        .medioDeNotificacion(medioDeNotificacion)
-        .build();
-  }
+    public static SuscripcionFallaHeladera de(Colaborador colaborador,
+                                              Heladera heladera,
+                                              MedioDeNotificacion medioDeNotificacion) {
+        return SuscripcionFallaHeladera
+                .builder()
+                .colaborador(colaborador)
+                .heladera(heladera)
+                .medioDeNotificacion(medioDeNotificacion)
+                .build();
+    }
 
 }

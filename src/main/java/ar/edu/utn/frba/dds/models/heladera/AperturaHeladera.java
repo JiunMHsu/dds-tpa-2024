@@ -23,29 +23,29 @@ import lombok.NoArgsConstructor;
 @Table(name = "apertura_heladera")
 public class AperturaHeladera {
 
-  @Id
-  @GeneratedValue(generator = "uuid")
-  private UUID id;
+    @Id
+    @GeneratedValue(generator = "uuid")
+    private UUID id;
 
-  @ManyToOne
-  @JoinColumn(name = "tarjeta_id", nullable = false)
-  private TarjetaColaborador tarjetaColaborador;
+    @ManyToOne
+    @JoinColumn(name = "tarjeta_id", nullable = false)
+    private TarjetaColaborador tarjetaColaborador;
 
-  @ManyToOne
-  @JoinColumn(name = "heladera_id", nullable = false)
-  private Heladera heladera;
+    @ManyToOne
+    @JoinColumn(name = "heladera_id", nullable = false)
+    private Heladera heladera;
 
-  @Column(name = "fecha_hora")
-  private LocalDateTime fechaHora;
+    @Column(name = "fecha_hora")
+    private LocalDateTime fechaHora;
 
-  public static AperturaHeladera por(TarjetaColaborador tarjetaColaborador,
-                                     Heladera heladera,
-                                     LocalDateTime fechaHora) {
-    return AperturaHeladera
-        .builder()
-        .tarjetaColaborador(tarjetaColaborador)
-        .heladera(heladera)
-        .fechaHora(fechaHora)
-        .build();
-  }
+    public static AperturaHeladera por(TarjetaColaborador tarjetaColaborador,
+                                       Heladera heladera,
+                                       LocalDateTime fechaHora) {
+        return AperturaHeladera
+                .builder()
+                .tarjetaColaborador(tarjetaColaborador)
+                .heladera(heladera)
+                .fechaHora(fechaHora)
+                .build();
+    }
 }

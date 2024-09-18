@@ -7,13 +7,13 @@ import lombok.Getter;
 @Getter
 @Embeddable
 public class Barrio {
-  @Column(name = "barrio_nombre", unique = true)
-  private String nombre;
+    @Column(name = "barrio_nombre", unique = true)
+    private String nombre;
 
-  public Barrio(String nombre) {
-    this.nombre = nombre;
-  }
+    public Barrio(String nombre) {
+        this.nombre = nombre;
+    }
 
-  public Barrio() {
-  }
+    public Barrio() {
+    }
 }

@@ -20,22 +20,22 @@ import lombok.NoArgsConstructor;
 @Table(name = "vianda")
 public class Vianda {
 
-  @Id
-  @GeneratedValue(generator = "uuid")
-  private UUID id;
+    @Id
+    @GeneratedValue(generator = "uuid")
+    private UUID id;
 
-  @Embedded
-  private Comida comida;
+    @Embedded
+    private Comida comida;
 
-  @Column(name = "fecha_caducidad", columnDefinition = "DATE", nullable = false)
-  private LocalDate fechaCaducidad;
+    @Column(name = "fecha_caducidad", columnDefinition = "DATE", nullable = false)
+    private LocalDate fechaCaducidad;
 
-  @Column(name = "peso", nullable = false)
-  private Integer peso;
+    @Column(name = "peso", nullable = false)
+    private Integer peso;
 
-  public Vianda(Comida comida, LocalDate fechaCaducidad, Integer peso) {
-    this.comida = comida;
-    this.fechaCaducidad = fechaCaducidad;
-    this.peso = peso;
-  }
+    public Vianda(Comida comida, LocalDate fechaCaducidad, Integer peso) {
+        this.comida = comida;
+        this.fechaCaducidad = fechaCaducidad;
+        this.peso = peso;
+    }
 }

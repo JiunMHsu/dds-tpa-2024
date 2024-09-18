@@ -5,42 +5,42 @@ import java.util.Map;
 
 public class RegistroMovimiento {
 
-  private static RegistroMovimiento instancia;
-  private final Map<String, Integer> viandasAgregadas;
-  private final Map<String, Integer> viandasQuitadas;
+    private static RegistroMovimiento instancia;
+    private final Map<String, Integer> viandasAgregadas;
+    private final Map<String, Integer> viandasQuitadas;
 
-  private RegistroMovimiento() {
-    viandasAgregadas = new HashMap<>();
-    viandasQuitadas = new HashMap<>();
-  }
-
-  public static RegistroMovimiento getInstancia() {
-    if (instancia == null) {
-      instancia = new RegistroMovimiento();
+    private RegistroMovimiento() {
+        viandasAgregadas = new HashMap<>();
+        viandasQuitadas = new HashMap<>();
     }
 
-    return instancia;
-  }
+    public static RegistroMovimiento getInstancia() {
+        if (instancia == null) {
+            instancia = new RegistroMovimiento();
+        }
 
-  public Map<String, Integer> getViandasAgregadas() {
-    return new HashMap<>(viandasAgregadas);
-  }
+        return instancia;
+    }
 
-  public Map<String, Integer> getViandasQuitadas() {
-    return new HashMap<>(viandasQuitadas);
-  }
+    public Map<String, Integer> getViandasAgregadas() {
+        return new HashMap<>(viandasAgregadas);
+    }
 
-  public void vaciarRegistro() {
-    viandasAgregadas.clear();
-    viandasQuitadas.clear();
-  }
+    public Map<String, Integer> getViandasQuitadas() {
+        return new HashMap<>(viandasQuitadas);
+    }
 
-  public void quitarViandaPara(String nombreHeladera) {
-    viandasAgregadas.put(nombreHeladera, viandasQuitadas.getOrDefault(nombreHeladera, 0) + 1);
-  }
+    public void vaciarRegistro() {
+        viandasAgregadas.clear();
+        viandasQuitadas.clear();
+    }
 
-  public void sumarViandaPara(String nombreHeladera) {
-    viandasAgregadas.put(nombreHeladera, viandasAgregadas.getOrDefault(nombreHeladera, 0) + 1);
-  }
+    public void quitarViandaPara(String nombreHeladera) {
+        viandasAgregadas.put(nombreHeladera, viandasQuitadas.getOrDefault(nombreHeladera, 0) + 1);
+    }
+
+    public void sumarViandaPara(String nombreHeladera) {
+        viandasAgregadas.put(nombreHeladera, viandasAgregadas.getOrDefault(nombreHeladera, 0) + 1);
+    }
 
 }

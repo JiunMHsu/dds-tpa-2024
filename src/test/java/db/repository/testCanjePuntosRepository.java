@@ -6,8 +6,9 @@ import org.junit.jupiter.api.Test;
 public class testCanjePuntosRepository {
 
     private CanjeDePuntosRepository canjePuntosRepository;
-@Test
-public void testAgregar(){
 
-}
+    @Test
+    public void testAgregar() {
+
+    }
 }

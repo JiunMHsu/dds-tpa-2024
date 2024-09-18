@@ -4,13 +4,13 @@ import ar.edu.utn.frba.dds.models.sensor.Sensor;
 
 public class SuscriptorSensorMovimiento extends SuscriptorSensor {
 
-  public SuscriptorSensorMovimiento(Sensor suscriptor) {
-    super(suscriptor);
-  }
+    public SuscriptorSensorMovimiento(Sensor suscriptor) {
+        super(suscriptor);
+    }
 
-  // TODO (delegar a controller? o este mismo cumple el rol de controller?)
-  @Override
-  public void recibirMensaje(String mensaje) {
-  }
+    // TODO (delegar a controller? o este mismo cumple el rol de controller?)
+    @Override
+    public void recibirMensaje(String mensaje) {
+    }
 
 }

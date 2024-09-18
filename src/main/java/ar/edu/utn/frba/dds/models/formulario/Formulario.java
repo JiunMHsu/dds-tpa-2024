@@ -14,27 +14,27 @@ import lombok.Getter;
 @Table(name = "formulario")
 public class Formulario {
 
-  @Id
-  @GeneratedValue
-  private Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-  @OneToMany
-  @JoinColumn(name = "formulario_id")
-  private List<Pregunta> preguntas;
+    @OneToMany
+    @JoinColumn(name = "formulario_id")
+    private List<Pregunta> preguntas;
 
-  public Formulario(List<Pregunta> preguntas) {
-    this.preguntas = preguntas;
-  }
+    public Formulario(List<Pregunta> preguntas) {
+        this.preguntas = preguntas;
+    }
 
-  public Formulario() {
-    preguntas = null;
-  }
+    public Formulario() {
+        preguntas = null;
+    }
 
-  public void agregarCampo(Pregunta pregunta) {
-    preguntas.add(pregunta);
-  }
+    public void agregarCampo(Pregunta pregunta) {
+        preguntas.add(pregunta);
+    }
 
-  public void quitarCampo(Pregunta pregunta) {
-    preguntas.remove(pregunta);
-  }
+    public void quitarCampo(Pregunta pregunta) {
+        preguntas.remove(pregunta);
+    }
 }

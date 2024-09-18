@@ -10,46 +10,46 @@ import org.junit.jupiter.api.Test;
 
 public class TestBroker {
 
-  private final String topic = "dds/g22/test";
-  private ClienteMqtt cliente;
+    private final String topic = "dds/g22/test";
+    private ClienteMqtt cliente;
 
-  @BeforeEach
-  public void setUp() {
-    cliente = new ClienteMqtt();
-  }
-
-  @Test
-  @DisplayName("El Suscriptor puede recibir correctamente los mensajes publicados en el topic específico")
-  public void testSuscripcion() throws InterruptedException {
-    class SuscriptorTest implements SuscriptorMqtt {
-      @Override
-      public String topic() {
-        return topic;
-      }
-
-      @Override
-      public void recibirMensaje(String mensaje) {
-        System.out.println(mensaje);
-      }
+    @BeforeEach
+    public void setUp() {
+        cliente = new ClienteMqtt();
     }
 
-    SuscriptorMqtt unSuscriptor = new SuscriptorTest();
-    cliente.suscribirPara(unSuscriptor);
-    ClienteMqtt clientePublicador = new ClienteMqtt();
+    @Test
+    @DisplayName("El Suscriptor puede recibir correctamente los mensajes publicados en el topic específico")
+    public void testSuscripcion() throws InterruptedException {
+        class SuscriptorTest implements SuscriptorMqtt {
+            @Override
+            public String topic() {
+                return topic;
+            }
 
-    for (int i = 0; i < 5; i++) {
-      clientePublicador.publicarMensaje(topic, "dds-test");
-      Thread.sleep(500);
+            @Override
+            public void recibirMensaje(String mensaje) {
+                System.out.println(mensaje);
+            }
+        }
+
+        SuscriptorMqtt unSuscriptor = new SuscriptorTest();
+        cliente.suscribirPara(unSuscriptor);
+        ClienteMqtt clientePublicador = new ClienteMqtt();
+
+        for (int i = 0; i < 5; i++) {
+            clientePublicador.publicarMensaje(topic, "dds-test");
+            Thread.sleep(500);
+        }
     }
-  }
 
-  @Test
-  public void mensajeFueraDeTiempo() throws InterruptedException {
-    SuscriptorSensorTemperatura unSuscriptor = SuscriptorSensorTemperatura.para(Sensor.de(topic), 3000, 1);
-    ClienteMqtt clientePublicador = new ClienteMqtt();
-    cliente.suscribirPara(unSuscriptor);
-    clientePublicador.publicarMensaje(topic, "dds-test");
+    @Test
+    public void mensajeFueraDeTiempo() throws InterruptedException {
+        SuscriptorSensorTemperatura unSuscriptor = SuscriptorSensorTemperatura.para(Sensor.de(topic), 3000, 1);
+        ClienteMqtt clientePublicador = new ClienteMqtt();
+        cliente.suscribirPara(unSuscriptor);
+        clientePublicador.publicarMensaje(topic, "dds-test");
 
-    Thread.sleep(5000);
-  }
+        Thread.sleep(5000);
+    }
 }

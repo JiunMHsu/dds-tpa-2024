@@ -5,9 +5,9 @@ import java.time.LocalDateTime;
 
 public interface Incidente {
 
-  TipoIncidente getTipo();
+    TipoIncidente getTipo();
 
-  Heladera getHeladera();
+    Heladera getHeladera();
 
-  LocalDateTime getFechaHora();
+    LocalDateTime getFechaHora();
 }

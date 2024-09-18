@@ -5,14 +5,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class SolicitudDeAperturaRepository {
-  public static void agregar(SolicitudDeApertura solicitud) {
-  }
+    public static void agregar(SolicitudDeApertura solicitud) {
+    }
 
-  public static List<SolicitudDeApertura> obtenerPorTarjeta(String codigoTarjeta, LocalDateTime fechaHora) {
-    return null;
-  }
+    public static List<SolicitudDeApertura> obtenerPorTarjeta(String codigoTarjeta, LocalDateTime fechaHora) {
+        return null;
+    }
 
-  public static List<SolicitudDeApertura> obtenerPorTarjeta(String codigoTarjeta) {
-    return null;
-  }
+    public static List<SolicitudDeApertura> obtenerPorTarjeta(String codigoTarjeta) {
+        return null;
+    }
 }

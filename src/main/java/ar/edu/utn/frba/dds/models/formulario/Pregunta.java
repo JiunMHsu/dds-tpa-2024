@@ -12,17 +12,17 @@ import lombok.Getter;
 @Table(name = "pregunta")
 public class Pregunta {
 
-  @Id
-  @GeneratedValue
-  private Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-  @Column(name = "contenido", columnDefinition = "TEXT", nullable = false)
-  private String contenido;
+    @Column(name = "contenido", columnDefinition = "TEXT", nullable = false)
+    private String contenido;
 
-  public Pregunta(String pregunta) {
-    this.contenido = pregunta;
-  }
+    public Pregunta(String pregunta) {
+        this.contenido = pregunta;
+    }
 
-  public Pregunta() {
-  }
+    public Pregunta() {
+    }
 }

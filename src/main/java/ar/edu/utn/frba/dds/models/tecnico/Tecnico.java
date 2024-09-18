@@ -28,73 +28,73 @@ import lombok.Setter;
 @Table(name = "tenico")
 public class Tecnico {
 
-  @Id
-  @GeneratedValue(generator = "uuid")
-  private UUID id;
+    @Id
+    @GeneratedValue(generator = "uuid")
+    private UUID id;
 
-  @Column(name = "nombre", nullable = false)
-  private String nombre;
+    @Column(name = "nombre", nullable = false)
+    private String nombre;
 
-  @Column(name = "apellido", nullable = false)
-  private String apellido;
+    @Column(name = "apellido", nullable = false)
+    private String apellido;
 
-  @Embedded
-  private Documento documento;
+    @Embedded
+    private Documento documento;
 
-  @Column(name = "cuit", nullable = false)
-  private String cuit;
+    @Column(name = "cuit", nullable = false)
+    private String cuit;
 
-  @Embedded
-  private Contacto contacto;
+    @Embedded
+    private Contacto contacto;
 
-  @Enumerated(EnumType.STRING)
-  @Column(name = "medio_notificacion", nullable = false)
-  private MedioDeNotificacion medioDeNotificacion;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "medio_notificacion", nullable = false)
+    private MedioDeNotificacion medioDeNotificacion;
 
-  @Embedded
-  private Area areaDeCobertura;
+    @Embedded
+    private Area areaDeCobertura;
 
-  public static Tecnico with(String nombre,
-                             String apellido,
-                             Documento documento,
-                             String cuit,
-                             Contacto contacto,
-                             MedioDeNotificacion medioDeNotificacion,
-                             Area areaDeCobertura) {
-    return Tecnico
-        .builder()
-        .nombre(nombre)
-        .apellido(apellido)
-        .documento(documento)
-        .cuit(cuit)
-        .contacto(contacto)
-        .medioDeNotificacion(medioDeNotificacion)
-        .areaDeCobertura(areaDeCobertura)
-        .build();
-  }
+    public static Tecnico with(String nombre,
+                               String apellido,
+                               Documento documento,
+                               String cuit,
+                               Contacto contacto,
+                               MedioDeNotificacion medioDeNotificacion,
+                               Area areaDeCobertura) {
+        return Tecnico
+                .builder()
+                .nombre(nombre)
+                .apellido(apellido)
+                .documento(documento)
+                .cuit(cuit)
+                .contacto(contacto)
+                .medioDeNotificacion(medioDeNotificacion)
+                .areaDeCobertura(areaDeCobertura)
+                .build();
+    }
 
-  public static Tecnico with(String nombre,
-                             Contacto contacto,
-                             MedioDeNotificacion medioDeNotificacion,
-                             Area areaDeCobertura) {
-    return Tecnico
-        .builder()
-        .nombre(nombre)
-        .contacto(contacto)
-        .medioDeNotificacion(medioDeNotificacion)
-        .areaDeCobertura(areaDeCobertura)
-        .build();
-  }
+    public static Tecnico with(String nombre,
+                               Contacto contacto,
+                               MedioDeNotificacion medioDeNotificacion,
+                               Area areaDeCobertura) {
+        return Tecnico
+                .builder()
+                .nombre(nombre)
+                .contacto(contacto)
+                .medioDeNotificacion(medioDeNotificacion)
+                .areaDeCobertura(areaDeCobertura)
+                .build();
+    }
 
-  public static Tecnico with(String nombre,
-                             Contacto contacto,
-                             Area areaDeCobertura) {
-    return Tecnico
-        .builder()
-        .nombre(nombre)
-        .contacto(contacto)
-        .areaDeCobertura(areaDeCobertura)
-        .build();
-  }
+    public static Tecnico with(String nombre,
+                               Contacto contacto,
+                               Area areaDeCobertura) {
+        return Tecnico
+                .builder()
+                .nombre(nombre)
+                .contacto(contacto)
+                .areaDeCobertura(areaDeCobertura)
+                .build();
+    }
 
 }

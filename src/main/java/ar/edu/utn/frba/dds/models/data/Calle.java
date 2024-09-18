@@ -7,13 +7,13 @@ import lombok.Getter;
 @Getter
 @Embeddable
 public class Calle {
-  @Column(name = "calle_nombre")
-  private String nombre;
+    @Column(name = "calle_nombre")
+    private String nombre;
 
-  public Calle(String nombre) {
-    this.nombre = nombre;
-  }
+    public Calle(String nombre) {
+        this.nombre = nombre;
+    }
 
-  public Calle() {
-  }
+    public Calle() {
+    }
 }
