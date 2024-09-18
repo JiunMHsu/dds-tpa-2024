@@ -40,6 +40,9 @@ public class DonacionDinero {
   private Integer monto;
 
   // TODO - Ver como persistir Period
+  // Podria realizarse una conversion del dato a string??
+  // existe la funcion PERIOD_ADD() pero se maneja en meses nada mas, no estoy seguro de que sirva
+
   @Setter
   @Column(name = "frecuencia")
   private Period frecuencia;

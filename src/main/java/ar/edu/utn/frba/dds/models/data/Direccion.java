@@ -1,11 +1,7 @@
 package ar.edu.utn.frba.dds.models.data;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Embeddable
 @Entity
 @Table(name = "direccion")
 public class Direccion {
@@ -33,7 +30,7 @@ public class Direccion {
   private Integer altura;
 
   @Embedded
-  private Ubicacion ubicacion; // Embedded
+  private Ubicacion ubicacion;
 
   public static Direccion with(Calle calle, Integer altura, Ubicacion ubicacion) {
     return Direccion

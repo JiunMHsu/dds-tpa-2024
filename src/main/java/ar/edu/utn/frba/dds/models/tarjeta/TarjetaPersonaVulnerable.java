@@ -68,6 +68,10 @@ public class TarjetaPersonaVulnerable implements Tarjeta {
   }
 
   // TODO - Hacerlo atributo? como posible optimización
+  // Para mi es innecesario, porque:
+  // - No es un metodo que se utilice de manera frecuente (tengo entendido que solo cuando se entrega una tarjeta o se modifica la cantidad de menoresACargo)
+  // - Es una pavada el metodo en si
+  // - En caso que se considere adecuado persisitirlo puede ser, pero cmo solo se utilizar para validad que la persona pueda utilizar la taerjeta, en mi opinion, no lo es
   public Integer usosPorDia() {
     return 4 + duenio.getMenoresACargo() * 2;
   }

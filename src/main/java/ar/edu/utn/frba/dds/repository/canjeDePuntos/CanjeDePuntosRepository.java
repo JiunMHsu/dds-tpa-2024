@@ -10,7 +10,9 @@ import lombok.Getter;
 public class CanjeDePuntosRepository implements WithSimplePersistenceUnit {
 
   public void agregar(CanjeDePuntos canjeDePuntos) {
+    beginTransaction();
     entityManager().persist(canjeDePuntos);
+    commitTransaction();
   }
 
   @SuppressWarnings("unchecked")
