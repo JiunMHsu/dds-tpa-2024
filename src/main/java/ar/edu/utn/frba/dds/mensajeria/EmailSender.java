@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.mensajeria;
 
 import ar.edu.utn.frba.dds.AppConfig;
+import ar.edu.utn.frba.dds.models.data.Contacto;
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
@@ -35,7 +36,9 @@ public class EmailSender implements Sender {
     }
 
     @Override
-    public void enviarMensaje(String receptor, String asunto, String cuerpo) {
+    public void enviarMensaje(Contacto contacto, String asunto, String cuerpo) {
+        String receptor = contacto.getContacto(MedioDeNotificacion.EMAIL);
+
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");

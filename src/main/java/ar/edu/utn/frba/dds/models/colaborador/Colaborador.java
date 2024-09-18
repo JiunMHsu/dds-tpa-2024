@@ -52,8 +52,7 @@ public class Colaborador {
     @Embedded
     private Contacto contacto;
 
-    @OneToOne // TODO - ver si hacer @Embedded
-    @JoinColumn(name = "direccion_id")
+    @Embedded
     private Direccion direccion;
 
     @OneToOne

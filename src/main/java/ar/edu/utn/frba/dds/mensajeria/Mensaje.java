@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.mensajeria;
 
+import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -7,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,8 +35,9 @@ public class Mensaje {
     @Column(name = "cuerpo", nullable = false)
     private String cuerpo;
 
-    @Column(name = "receptor", nullable = false)
-    private String receptor; // Ver el tema de receptor, osea cmo es dado que seria diferente para email, wpp o telegram si no me equivoco UwU
+    @ManyToOne
+    @JoinColumn(name = "colaborador_id", nullable = false)
+    private Colaborador receptor;
 
     @Setter
     @Enumerated
@@ -46,7 +50,7 @@ public class Mensaje {
 
     public static Mensaje con(String asunto,
                               String cuerpo,
-                              String receptor,
+                              Colaborador receptor,
                               MedioDeNotificacion medio,
                               LocalDateTime fechaEnvio) {
         return Mensaje
@@ -61,7 +65,7 @@ public class Mensaje {
 
     public static Mensaje con(String asunto,
                               String cuerpo,
-                              String receptor) {
+                              Colaborador receptor) {
         return Mensaje
                 .builder()
                 .asunto(asunto)

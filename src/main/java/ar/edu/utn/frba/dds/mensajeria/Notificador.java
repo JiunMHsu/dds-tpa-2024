@@ -11,7 +11,7 @@ public class Notificador {
     }
 
     public void enviarNotificacion(Mensaje mensaje) {
-        sender.enviarMensaje(mensaje.getReceptor(), mensaje.getAsunto(), mensaje.getCuerpo());
+        sender.enviarMensaje(mensaje.getReceptor().getContacto(), mensaje.getAsunto(), mensaje.getCuerpo());
         mensaje.setFechaEnvio(LocalDateTime.now());
     }
 }

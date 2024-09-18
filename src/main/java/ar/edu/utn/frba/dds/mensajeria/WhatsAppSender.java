@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.mensajeria;
 
 import ar.edu.utn.frba.dds.AppConfig;
+import ar.edu.utn.frba.dds.models.data.Contacto;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.camel.CamelContext;
@@ -49,10 +50,12 @@ public class WhatsAppSender implements Sender {
     }
 
     @Override
-    public void enviarMensaje(String receptor, String asunto, String cuerpo) {
+    public void enviarMensaje(Contacto contacto, String asunto, String cuerpo) {
+        String numero_receptor = contacto.getContacto(MedioDeNotificacion.WHATSAPP);
+
         try {
             TextMessageRequest request = new TextMessageRequest();
-            request.setTo(receptor);
+            request.setTo(numero_receptor);
             request.setText(new TextMessage());
             request.getText().setPreviewUrl(false);
             request.getText().setBody(asunto + "\n" + cuerpo);

@@ -37,17 +37,24 @@ public class Contacto {
                 .build();
     }
 
-    public static Contacto ofTelegram(String telegram) {
+    public static Contacto conTelegram(String telegram) {
         return Contacto
                 .builder()
                 .telegram(telegram)
                 .build();
     }
 
-    public static Contacto ofWhatsApp(String whatsApp) {
+    public static Contacto conWhatsApp(String whatsApp) {
         return Contacto
                 .builder()
                 .whatsApp(whatsApp)
+                .build();
+    }
+
+    public static Contacto conEmail(String email) {
+        return Contacto
+                .builder()
+                .email(email)
                 .build();
     }
 

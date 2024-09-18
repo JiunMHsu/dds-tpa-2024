@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.testMensajeria;
 
 import ar.edu.utn.frba.dds.mensajeria.TelegramSender;
+import ar.edu.utn.frba.dds.models.data.Contacto;
 import org.junit.jupiter.api.Test;
 
 public class TestTelegram {
@@ -9,7 +10,11 @@ public class TestTelegram {
     public void enviarTelegram() {
         TelegramSender telegramSender = new TelegramSender();
 
-        telegramSender.enviarMensaje("", "**** TEST DE TELEGRAM ****", "Si te llego este mensaje significa que el test funciono =D");
+        telegramSender.enviarMensaje(
+                Contacto.conTelegram(""),
+                "**** TEST DE TELEGRAM ****",
+                "Si te llego este mensaje significa que el test funciono =D"
+        );
     }
 }
 

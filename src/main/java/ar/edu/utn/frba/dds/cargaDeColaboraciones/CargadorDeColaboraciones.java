@@ -94,7 +94,8 @@ public class CargadorDeColaboraciones implements WithSimplePersistenceUnit {
 
                     colaborador = Colaborador.colaborador(usuario);
                     colaboradorRepository.agregar(colaborador);
-                    this.enviarCredencial(usuario);
+                    // TODO - Guardar usuario también?
+                    this.enviarCredencial(colaborador);
                 }
 
                 this.registrarColaboracion(colaboracionPrevia, colaborador);
@@ -151,17 +152,19 @@ public class CargadorDeColaboraciones implements WithSimplePersistenceUnit {
         }
     }
 
-    private void enviarCredencial(Usuario usuario) {
+    private void enviarCredencial(Colaborador colaborador) {
+
+        Usuario usuario = colaborador.getUsuario();
 
         String asunto = "Credencial de usuario";
         String cuerpo = "Esta es la credencial:"
                 + " - Nombre de usuario provicional: " + usuario.getNombre()
                 + " - Contrasenia de usuario provicional: " + usuario.getContrasenia();
 
-        Mensaje mensaje = Mensaje.con(asunto, cuerpo, usuario.getEmail());
+        Mensaje mensaje = Mensaje.con(asunto, cuerpo, colaborador);
         mensaje.setMedio(MedioDeNotificacion.EMAIL);
 
-        mailSender.enviarMensaje(mensaje.getReceptor(), mensaje.getAsunto(), mensaje.getCuerpo());
+        mailSender.enviarMensaje(colaborador.getContacto(), mensaje.getAsunto(), mensaje.getCuerpo());
         mensaje.setFechaEnvio(LocalDateTime.now());
         mensajeRepository.agregar(mensaje);
     }

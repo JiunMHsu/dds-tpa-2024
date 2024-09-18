@@ -1,5 +1,7 @@
 package ar.edu.utn.frba.dds.mensajeria;
 
+import ar.edu.utn.frba.dds.models.data.Contacto;
+
 public interface Sender {
-    void enviarMensaje(String receptor, String asunto, String cuerpo);
+    void enviarMensaje(Contacto contacto, String asunto, String cuerpo);
 }

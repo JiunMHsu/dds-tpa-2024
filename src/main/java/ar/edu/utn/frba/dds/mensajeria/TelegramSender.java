@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.mensajeria;
 
 import ar.edu.utn.frba.dds.AppConfig;
+import ar.edu.utn.frba.dds.models.data.Contacto;
 import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.builder.RouteBuilder;
@@ -46,7 +47,7 @@ public class TelegramSender implements Sender {
     }
 
     @Override
-    public void enviarMensaje(String receptor, String asunto, String cuerpo) {
+    public void enviarMensaje(Contacto contacto, String asunto, String cuerpo) {
         if (camelContext == null || producerTemplate == null) {
             configurarCamelContext();
         }

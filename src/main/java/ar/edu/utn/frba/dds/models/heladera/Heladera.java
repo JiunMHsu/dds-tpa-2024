@@ -37,7 +37,7 @@ public class Heladera {
     private String nombre;
 
     @Embedded
-    private Direccion direccion; // Lo hicimos por Embedded :D
+    private Direccion direccion;
 
     @Column(name = "capacidad", columnDefinition = "SMALLINT", nullable = false)
     private Integer capacidad;
