@@ -1,10 +1,23 @@
 package ar.edu.utn.frba.dds.utils;
 
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
 public class ValidadorDeMails {
 
-  // TODO
-  // Hacer la validación de verdad
+  // TODO - Hacer la validacion
+  // Por ahora dejo esto (validar el formato del mail)
+  // No se si era eso lo que se refiere el TDO o si validar que realmente exista el mail cort posta
+
+  private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+  private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
+
   public static Boolean esValido(String email) {
-    return email != null && email.contains("@");
+    if (email == null) {
+      return false;
+    }
+
+    Matcher matcher = EMAIL_PATTERN.matcher(email);
+    return matcher.matches();
   }
 }

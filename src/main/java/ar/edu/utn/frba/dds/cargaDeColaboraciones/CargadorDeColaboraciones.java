@@ -39,6 +39,7 @@ public class CargadorDeColaboraciones implements WithSimplePersistenceUnit {
   private DonacionViandaRepository donacionViandaRepository;
   private RepartoDeTarjetasRepository repartoDeTarjetasRepository;
   private MensajeRepository mensajeRepository;
+
   public CargadorDeColaboraciones(EmailSender mailSender) {
     this.mailSender = mailSender;
     this.colaboradorRepository = new ColaboradorRepository();
@@ -50,6 +51,7 @@ public class CargadorDeColaboraciones implements WithSimplePersistenceUnit {
   }
 
   // TODO - Revisar el retorno en caso de error
+  // Por ahora dejo este mensajitos, pero se deberia ver la respuesta el controller... (cuando tengamos uno...)
   public void cargarColaboraciones(Path csv) {
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -57,49 +59,50 @@ public class CargadorDeColaboraciones implements WithSimplePersistenceUnit {
 
     try {
       csvParser = CSVParser.parse(
-          Files.newBufferedReader(csv),
-          CSVFormat.Builder.create().setHeader().build()
+              Files.newBufferedReader(csv),
+              CSVFormat.Builder.create().setHeader().build()
       );
     } catch (IOException error) {
-      error.printStackTrace();
+      System.err.println("Error al leer el archivo CSV: " + error.getMessage());
       return;
     }
 
-    for (CSVRecord csvRecord : csvParser) {
-      Documento documento = new Documento(
-          csvRecord.get("Documento"),
-          TipoDocumento.valueOf(csvRecord.get("Tipo Doc"))
-      );
-
-      ColaboracionPrevia colaboracionPrevia = ColaboracionPrevia.of(
-          documento,
-          csvRecord.get("Nombre"),
-          csvRecord.get("Apellido"),
-          csvRecord.get("Mail"),
-          LocalDate.parse(csvRecord.get("Fecha de colaboración"), formatter),
-          csvRecord.get("Forma de colaboración"),
-          Integer.parseInt(csvRecord.get("Cantidad"))
-      );
-
-      Colaborador colaborador = colaboradorRepository
-          .buscarPorEmail(colaboracionPrevia.getEmail());
-
-      if (colaborador == null) {
-        Usuario usuario = GeneradorDeCredenciales.generarUsuario(
-            colaboracionPrevia.getNombre(),
-            colaboracionPrevia.getEmail()
+    try {
+      for (CSVRecord csvRecord : csvParser) {
+        Documento documento = new Documento(
+                csvRecord.get("Documento"),
+                TipoDocumento.valueOf(csvRecord.get("Tipo Doc"))
         );
 
-        colaborador = Colaborador.colaborador(usuario);
-        beginTransaction();
-        colaboradorRepository.agregar(colaborador);
-        this.enviarCredencial(usuario);
-        commitTransaction();
+        ColaboracionPrevia colaboracionPrevia = ColaboracionPrevia.of(
+                documento,
+                csvRecord.get("Nombre"),
+                csvRecord.get("Apellido"),
+                csvRecord.get("Mail"),
+                LocalDate.parse(csvRecord.get("Fecha de colaboración"), formatter),
+                csvRecord.get("Forma de colaboración"),
+                Integer.parseInt(csvRecord.get("Cantidad"))
+        );
+
+        Colaborador colaborador = colaboradorRepository
+                .buscarPorEmail(colaboracionPrevia.getEmail());
+
+        if (colaborador == null) {
+          Usuario usuario = GeneradorDeCredenciales.generarUsuario(
+                  colaboracionPrevia.getNombre(),
+                  colaboracionPrevia.getEmail()
+          );
+
+          colaborador = Colaborador.colaborador(usuario);
+          colaboradorRepository.agregar(colaborador);
+          this.enviarCredencial(usuario);
+        }
+
+        this.registrarColaboracion(colaboracionPrevia, colaborador);
       }
-
-      this.registrarColaboracion(colaboracionPrevia, colaborador);
+    } catch (Exception e) {
+        System.err.println("Error al procesar el archivo CSV: " + e.getMessage());
     }
-
   }
 
   private void registrarColaboracion(ColaboracionPrevia colaboracionPrevia,
@@ -112,9 +115,7 @@ public class CargadorDeColaboraciones implements WithSimplePersistenceUnit {
             // TODO - Revisar manejo de fecha
             colaboracionPrevia.getFechaDeColaboracion().atStartOfDay(),
             colaboracionPrevia.getCantidad());
-        beginTransaction();
         donacionDineroRepository.agregar(donacionDinero);
-        commitTransaction();
         break;
 
       case "DONACION_VIANDAS":
@@ -123,9 +124,7 @@ public class CargadorDeColaboraciones implements WithSimplePersistenceUnit {
               colaborador,
               // TODO - Revisar manejo de fecha
               colaboracionPrevia.getFechaDeColaboracion().atStartOfDay());
-          beginTransaction();
           donacionViandaRepository.agregar(donacionVianda);
-          commitTransaction();
         }
         break;
 
@@ -135,9 +134,7 @@ public class CargadorDeColaboraciones implements WithSimplePersistenceUnit {
             // TODO - Revisar manejo de fecha
             colaboracionPrevia.getFechaDeColaboracion().atStartOfDay(),
             colaboracionPrevia.getCantidad());
-        beginTransaction();
         distribucionViandasRepository.agregar(distribucionViandas);
-        commitTransaction();
         break;
 
       case "ENTREGA_TARJETAS":
@@ -146,9 +143,7 @@ public class CargadorDeColaboraciones implements WithSimplePersistenceUnit {
               colaborador,
               // TODO - Revisar manejo de fecha
               colaboracionPrevia.getFechaDeColaboracion().atStartOfDay());
-          beginTransaction();
           repartoDeTarjetasRepository.agregar(repartoDeTarjetas);
-          commitTransaction();
         }
         break;
 
@@ -169,8 +164,6 @@ public class CargadorDeColaboraciones implements WithSimplePersistenceUnit {
 
     mailSender.enviarMensaje(mensaje.getReceptor(), mensaje.getAsunto(), mensaje.getCuerpo());
     mensaje.setFechaEnvio(LocalDateTime.now());
-    beginTransaction();
     mensajeRepository.agregar(mensaje);
-    commitTransaction();
   }
 }

@@ -1,8 +1,10 @@
 package ar.edu.utn.frba.dds;
 
+import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.personaVulnerable.PersonaVulnerable;
+import ar.edu.utn.frba.dds.models.tarjeta.TarjetaColaborador;
 import ar.edu.utn.frba.dds.models.tarjeta.TarjetaPersonaVulnerable;
 import ar.edu.utn.frba.dds.utils.GeneradorDeCodigosTarjeta;
 import java.util.ArrayList;
@@ -17,7 +19,6 @@ public class TestTarjetas {
   private TarjetaPersonaVulnerable tarjeta1;
   private TarjetaPersonaVulnerable tarjeta2;
   private TarjetaPersonaVulnerable tarjeta3;
-
   private Heladera heladera1;
 
   @BeforeEach
@@ -78,7 +79,8 @@ public class TestTarjetas {
   @DisplayName("Autorizado de uso por Colaboradores")
   public void colaboradoresPuedeUsar() {
     // TODO
+    // Entiendo que esto es por medio de broker
+    // Igualmente agrego una funcion
   }
-
 }
 

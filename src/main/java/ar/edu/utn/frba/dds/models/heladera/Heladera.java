@@ -40,9 +40,8 @@ public class Heladera {
   @Column(name = "nombre", nullable = false)
   private String nombre;
 
-  @OneToOne // TODO - Ver si hacer @Embedded
-  @JoinColumn(name = "direccion_id")
-  private Direccion direccion;
+  @Embedded
+  private Direccion direccion; // Lo hicimos por Embedded :D
 
   @Column(name = "capacidad", columnDefinition = "SMALLINT", nullable = false)
   private Integer capacidad;

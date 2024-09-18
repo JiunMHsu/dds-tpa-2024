@@ -43,9 +43,9 @@ public class PersonaVulnerable {
   @Column(name = "fecha_registro")
   private LocalDate fechaRegistro;
 
-  @OneToOne // TODO - Ver si hacer @Embedded
-  @JoinColumn(name = "direccion_id")
-  private Direccion domicilio;
+  @Embedded
+  private Direccion domicilio; // Lo hicimos por Embedded :D
+
 
   @Column(name = "menores_a_cargo")
   private Integer menoresACargo;
