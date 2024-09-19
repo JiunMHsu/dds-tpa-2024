@@ -22,7 +22,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "tarjeta_persona_vulnerable")
-public class TarjetaPersonaVulnerable implements Tarjeta {
+public class TarjetaPersonaVulnerable {
 
     @Id
     private String codigo;

@@ -54,6 +54,7 @@ public class TestCargaMasiva {
     @Test
     @DisplayName("Carga de Colaboraciones Previas")
     public void cargarColaboracionesPrevias() {
+        // TODO - No involucrar el repo
         Assertions.assertEquals(21, colaboradorRepository.obtenerTodos().size());
         cargadorDeColaboraciones.cargarColaboraciones(path);
         Assertions.assertEquals(43, colaboradorRepository.obtenerTodos().size());

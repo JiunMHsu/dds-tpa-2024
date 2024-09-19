@@ -11,6 +11,12 @@ public class TecnicoRepository implements WithSimplePersistenceUnit {
         entityManager().persist(tecnico);
     }
 
+    // TODO - Update
+
+    // TODO - Remove
+
+    // TODO - Obtencion por cuit
+
     public List<Tecnico> obtenerPorBarrio(Barrio barrio) {
         return entityManager()
                 .createQuery("from Tecnico t where t.areaDeCobertura.barrio =: barrio", Tecnico.class)

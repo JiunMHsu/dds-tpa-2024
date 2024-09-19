@@ -1,4 +1,11 @@
 package ar.edu.utn.frba.dds.persistencia;
 
-public class EntidadPersistente {
+import java.util.UUID;
+
+// TODO - Hacer heredar las entidades necesarias
+public abstract class EntidadPersistente {
+
+    private UUID id;
+
+    private Boolean active;
 }

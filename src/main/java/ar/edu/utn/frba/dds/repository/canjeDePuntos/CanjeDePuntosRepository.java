@@ -11,18 +11,17 @@ public class CanjeDePuntosRepository implements WithSimplePersistenceUnit {
         entityManager().persist(canjeDePuntos);
     }
 
-    @SuppressWarnings("unchecked")
     public List<CanjeDePuntos> obtenerPorColaborador(Colaborador unColaborador) {
         return entityManager()
-                .createQuery("from CanjeDePuntos c where c.colaborador = :id_colaborador")
-                .setParameter("id_colaborador", unColaborador.getId())
+                .createQuery("from CanjeDePuntos c where c.colaborador = :colaborador", CanjeDePuntos.class)
+                .setParameter("colaborador", unColaborador)
                 .getResultList();
     }
 
     public CanjeDePuntos obtenerUltimoPorColaborador(Colaborador unColaborador) {
         return entityManager()
-                .createQuery("from CanjeDePuntos c where c.colaborador = :id_colaborador order by c.fechaCanjeo desc", CanjeDePuntos.class)
-                .setParameter("id_colaborador", unColaborador.getId())
+                .createQuery("from CanjeDePuntos c where c.colaborador = :colaborador order by c.fechaCanjeo desc", CanjeDePuntos.class)
+                .setParameter("colaborador", unColaborador)
                 .setMaxResults(1)
                 .getSingleResult();
     }

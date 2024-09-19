@@ -6,4 +6,5 @@ public class AperturaHeladeraRepository {
     public static void agregar(AperturaHeladera apertura) {
     }
 
+    // TODO - Get por tarjeta colab
 }

@@ -8,15 +8,20 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class HeladeraRepository implements WithSimplePersistenceUnit {
-    
+
     public void guardar(Heladera heladera) {
         withTransaction(() -> entityManager().persist(heladera));
     }
+
+    // TODO - Update
+
+    // TODO - Remove
 
     public Optional<Heladera> obtenerPorId(UUID id) {
         return Optional.ofNullable(entityManager().find(Heladera.class, id));
     }
 
+    // TODO - Correegir HQL
     public Optional<Heladera> obtenerPorNombre(String nombre) {
         return Optional.ofNullable((Heladera) entityManager()
                 .createQuery("from " + Heladera.class.getName() + " where nombre = :name")
@@ -24,6 +29,7 @@ public class HeladeraRepository implements WithSimplePersistenceUnit {
                 .getSingleResult());
     }
 
+    // TODO - Correegir HQL
     @SuppressWarnings("unchecked")
     public List<Heladera> obtenerPorBarrio(Barrio barrio) {
         return entityManager()

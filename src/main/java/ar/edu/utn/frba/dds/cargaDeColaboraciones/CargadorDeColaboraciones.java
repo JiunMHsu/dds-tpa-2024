@@ -118,7 +118,7 @@ public class CargadorDeColaboraciones implements WithSimplePersistenceUnit {
                         // TODO - Revisar manejo de fecha
                         colaboracionPrevia.getFechaDeColaboracion().atStartOfDay(),
                         colaboracionPrevia.getCantidad());
-                donacionDineroRepository.agregar(donacionDinero);
+                donacionDineroRepository.guardar(donacionDinero);
                 break;
 
             case "DONACION_VIANDAS":
@@ -127,7 +127,7 @@ public class CargadorDeColaboraciones implements WithSimplePersistenceUnit {
                             colaborador,
                             // TODO - Revisar manejo de fecha
                             colaboracionPrevia.getFechaDeColaboracion().atStartOfDay());
-                    donacionViandaRepository.agregar(donacionVianda);
+                    donacionViandaRepository.guardar(donacionVianda);
                 }
                 break;
 
@@ -137,7 +137,7 @@ public class CargadorDeColaboraciones implements WithSimplePersistenceUnit {
                         // TODO - Revisar manejo de fecha
                         colaboracionPrevia.getFechaDeColaboracion().atStartOfDay(),
                         colaboracionPrevia.getCantidad());
-                distribucionViandasRepository.agregar(distribucionViandas);
+                distribucionViandasRepository.guardar(distribucionViandas);
                 break;
 
             case "ENTREGA_TARJETAS":
@@ -146,7 +146,7 @@ public class CargadorDeColaboraciones implements WithSimplePersistenceUnit {
                             colaborador,
                             // TODO - Revisar manejo de fecha
                             colaboracionPrevia.getFechaDeColaboracion().atStartOfDay());
-                    repartoDeTarjetasRepository.agregar(repartoDeTarjetas);
+                    repartoDeTarjetasRepository.guardar(repartoDeTarjetas);
                 }
                 break;
 

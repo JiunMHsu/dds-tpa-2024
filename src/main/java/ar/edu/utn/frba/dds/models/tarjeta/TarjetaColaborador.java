@@ -21,7 +21,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "tarjeta_colaborador")
-public class TarjetaColaborador implements Tarjeta {
+public class TarjetaColaborador {
 
     @Id
     private String codigo;

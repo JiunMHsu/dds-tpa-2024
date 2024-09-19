@@ -13,7 +13,7 @@ public abstract class ColaboracionRepository<T> implements WithSimplePersistence
         this.type = type;
     }
 
-    public void agregar(T colaboracion) {
+    public void guardar(T colaboracion) {
         entityManager().persist(colaboracion);
     }
 

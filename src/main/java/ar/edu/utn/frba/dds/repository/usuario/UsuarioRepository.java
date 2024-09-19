@@ -8,4 +8,10 @@ public class UsuarioRepository implements WithSimplePersistenceUnit {
     public void guardar(Usuario usuario) {
         entityManager().persist(usuario);
     }
+
+    // TODO - Update
+
+    // TODO - Remove
+
+    // TODO - Obtener por email
 }
