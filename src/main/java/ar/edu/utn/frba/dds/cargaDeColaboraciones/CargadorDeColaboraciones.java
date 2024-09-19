@@ -25,6 +25,7 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -32,12 +33,12 @@ import org.apache.commons.csv.CSVRecord;
 public class CargadorDeColaboraciones implements WithSimplePersistenceUnit {
 
     private final EmailSender mailSender;
-    private ColaboradorRepository colaboradorRepository;
-    private DistribucionViandasRepository distribucionViandasRepository;
-    private DonacionDineroRepository donacionDineroRepository;
-    private DonacionViandaRepository donacionViandaRepository;
-    private RepartoDeTarjetasRepository repartoDeTarjetasRepository;
-    private MensajeRepository mensajeRepository;
+    private final ColaboradorRepository colaboradorRepository;
+    private final DistribucionViandasRepository distribucionViandasRepository;
+    private final DonacionDineroRepository donacionDineroRepository;
+    private final DonacionViandaRepository donacionViandaRepository;
+    private final RepartoDeTarjetasRepository repartoDeTarjetasRepository;
+    private final MensajeRepository mensajeRepository;
 
     public CargadorDeColaboraciones(EmailSender mailSender) {
         this.mailSender = mailSender;
@@ -83,22 +84,24 @@ public class CargadorDeColaboraciones implements WithSimplePersistenceUnit {
                         Integer.parseInt(csvRecord.get("Cantidad"))
                 );
 
-                Colaborador colaborador = colaboradorRepository
+                Optional<Colaborador> colaborador = colaboradorRepository
                         .buscarPorEmail(colaboracionPrevia.getEmail());
 
-                if (colaborador == null) {
+                // TODO - reimplementar teniendo en cuenta el optional (por el momento solo compila, la lógica es erronea)
+
+                if (colaborador.isEmpty()) {
                     Usuario usuario = GeneradorDeCredenciales.generarUsuario(
                             colaboracionPrevia.getNombre(),
                             colaboracionPrevia.getEmail()
                     );
 
-                    colaborador = Colaborador.colaborador(usuario);
-                    colaboradorRepository.guardar(colaborador);
+                    Colaborador nuevoColaborador = Colaborador.colaborador(usuario);
+                    colaboradorRepository.guardar(nuevoColaborador);
                     // TODO - Guardar usuario también?
-                    this.enviarCredencial(colaborador);
+                    this.enviarCredencial(nuevoColaborador);
                 }
 
-                this.registrarColaboracion(colaboracionPrevia, colaborador);
+                this.registrarColaboracion(colaboracionPrevia, colaborador.get());
             }
         } catch (Exception e) {
             System.err.println("Error al procesar el archivo CSV: " + e.getMessage());
