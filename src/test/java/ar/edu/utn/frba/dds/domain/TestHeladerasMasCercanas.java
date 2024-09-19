@@ -53,12 +53,12 @@ public class TestHeladerasMasCercanas {
         heladera5.setViandas(40);
         heladera6.setViandas(45);
 
-        heladeraRepository.agregar(heladera1);
-        heladeraRepository.agregar(heladera2);
-        heladeraRepository.agregar(heladera3);
-        heladeraRepository.agregar(heladera4);
-        heladeraRepository.agregar(heladera5);
-        heladeraRepository.agregar(heladera6);
+        heladeraRepository.guardar(heladera1);
+        heladeraRepository.guardar(heladera2);
+        heladeraRepository.guardar(heladera3);
+        heladeraRepository.guardar(heladera4);
+        heladeraRepository.guardar(heladera5);
+        heladeraRepository.guardar(heladera6);
 
         List<Heladera> heladerasSeleccionadas = new ArrayList<>();
         heladerasSeleccionadas.add(heladera1);

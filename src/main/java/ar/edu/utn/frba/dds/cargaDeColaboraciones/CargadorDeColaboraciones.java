@@ -93,7 +93,7 @@ public class CargadorDeColaboraciones implements WithSimplePersistenceUnit {
                     );
 
                     colaborador = Colaborador.colaborador(usuario);
-                    colaboradorRepository.agregar(colaborador);
+                    colaboradorRepository.guardar(colaborador);
                     // TODO - Guardar usuario también?
                     this.enviarCredencial(colaborador);
                 }

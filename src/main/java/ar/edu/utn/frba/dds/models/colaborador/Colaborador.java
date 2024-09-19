@@ -46,7 +46,7 @@ public class Colaborador {
     private TipoColaborador tipoColaborador;
 
     @OneToOne
-    @JoinColumn(name = "usuario_id")
+    @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
     @Embedded

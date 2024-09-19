@@ -7,16 +7,14 @@ import java.util.List;
 
 public class CanjeDePuntosRepository implements WithSimplePersistenceUnit {
 
-    public void agregar(CanjeDePuntos canjeDePuntos) {
-        beginTransaction();
+    public void guardar(CanjeDePuntos canjeDePuntos) {
         entityManager().persist(canjeDePuntos);
-        commitTransaction();
     }
 
     @SuppressWarnings("unchecked")
     public List<CanjeDePuntos> obtenerPorColaborador(Colaborador unColaborador) {
         return entityManager()
-                .createQuery("from CanjeDePuntos c where c.colaborador =: id_colaborador")
+                .createQuery("from CanjeDePuntos c where c.colaborador = :id_colaborador")
                 .setParameter("id_colaborador", unColaborador.getId())
                 .getResultList();
     }

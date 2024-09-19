@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @Embeddable
 public class Barrio {
-    @Column(name = "barrio_nombre", unique = true)
+    @Column(name = "barrio_nombre")
     private String nombre;
 
     public Barrio(String nombre) {

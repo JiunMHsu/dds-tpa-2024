@@ -4,11 +4,10 @@ import ar.edu.utn.frba.dds.models.data.Barrio;
 import ar.edu.utn.frba.dds.models.tecnico.Tecnico;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
-import lombok.Getter;
 
-@Getter
 public class TecnicoRepository implements WithSimplePersistenceUnit {
-    public void agregar(Tecnico tecnico) {
+
+    public void guardar(Tecnico tecnico) {
         entityManager().persist(tecnico);
     }
 
