@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.testUtils;
+package ar.edu.utn.frba.dds.utils;
 
 public class TestValidadorDeMails {
 }

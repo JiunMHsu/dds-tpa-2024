@@ -7,7 +7,7 @@ import java.util.List;
 
 public abstract class ColaboracionRepository<T> implements WithSimplePersistenceUnit {
 
-    private Class<T> type;
+    private final Class<T> type;
 
     public ColaboracionRepository(Class<T> type) {
         this.type = type;

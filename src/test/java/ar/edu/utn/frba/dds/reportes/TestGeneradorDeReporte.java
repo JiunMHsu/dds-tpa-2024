@@ -1,12 +1,8 @@
-package ar.edu.utn.frba.dds;
+package ar.edu.utn.frba.dds.reportes;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import ar.edu.utn.frba.dds.reportes.GeneradorDeReporte;
-import ar.edu.utn.frba.dds.reportes.RegistroDonacion;
-import ar.edu.utn.frba.dds.reportes.RegistroIncidente;
-import ar.edu.utn.frba.dds.reportes.RegistroMovimiento;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;

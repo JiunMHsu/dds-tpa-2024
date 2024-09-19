@@ -4,17 +4,32 @@ import ar.edu.utn.frba.dds.models.data.Barrio;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public class HeladeraRepository implements WithSimplePersistenceUnit {
-    public static void agregar(Heladera heladera) {
+
+
+    public void agregar(Heladera heladera) {
+        withTransaction(() -> entityManager().persist(heladera));
     }
 
-    public static List<Heladera> obtenerTodos() {
-        return null;
+    public Optional<Heladera> buscarPorId(UUID id) {
+        return Optional.ofNullable(entityManager().find(Heladera.class, id));
     }
 
-    private static Heladera buscarPor(String nombre) {
-        return null;
+    public Heladera buscarPorNombre(String nombre) {
+        return (Heladera) entityManager()
+                .createQuery("from " + Heladera.class.getName() + " where nombre = :name")
+                .setParameter("name", nombre)
+                .getSingleResult();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Heladera> obtenerTodos() {
+        return entityManager()
+                .createQuery("from " + Heladera.class.getName())
+                .getResultList();
     }
 
     public List<Heladera> obtenerPorBarrio(Barrio barrio) {

@@ -1,6 +1,5 @@
-package ar.edu.utn.frba.dds.testMensajeria;
+package ar.edu.utn.frba.dds.mensajeria;
 
-import ar.edu.utn.frba.dds.mensajeria.WhatsAppSender;
 import ar.edu.utn.frba.dds.models.data.Contacto;
 import org.junit.jupiter.api.Test;
 

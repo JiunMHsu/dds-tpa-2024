@@ -1,7 +1,5 @@
-package ar.edu.utn.frba.dds;
+package ar.edu.utn.frba.dds.broker;
 
-import ar.edu.utn.frba.dds.broker.ClienteMqtt;
-import ar.edu.utn.frba.dds.broker.SuscriptorMqtt;
 import ar.edu.utn.frba.dds.broker.suscriptorSensor.SuscriptorSensorTemperatura;
 import ar.edu.utn.frba.dds.models.sensor.Sensor;
 import org.junit.jupiter.api.BeforeEach;

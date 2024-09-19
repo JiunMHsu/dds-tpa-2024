@@ -27,9 +27,10 @@ public class Direccion {
     @Embedded
     private Ubicacion ubicacion;
 
-    public static Direccion with(Calle calle, Integer altura, Ubicacion ubicacion) {
+    public static Direccion with(Barrio barrio, Calle calle, Integer altura, Ubicacion ubicacion) {
         return Direccion
                 .builder()
+                .barrio(barrio)
                 .calle(calle)
                 .altura(altura)
                 .ubicacion(ubicacion)

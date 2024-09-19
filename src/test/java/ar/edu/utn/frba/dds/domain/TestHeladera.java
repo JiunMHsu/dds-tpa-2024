@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds;
+package ar.edu.utn.frba.dds.domain;
 
 import ar.edu.utn.frba.dds.models.data.Calle;
 import ar.edu.utn.frba.dds.models.data.Direccion;

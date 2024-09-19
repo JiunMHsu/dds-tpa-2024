@@ -1,5 +1,6 @@
-package ar.edu.utn.frba.dds;
+package ar.edu.utn.frba.dds.domain;
 
+import ar.edu.utn.frba.dds.models.data.Barrio;
 import ar.edu.utn.frba.dds.models.data.Calle;
 import ar.edu.utn.frba.dds.models.data.Direccion;
 import ar.edu.utn.frba.dds.models.data.Ubicacion;
@@ -12,13 +13,16 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class TestHeladerasMasCercanas {
-    Heladera heladeraFallada = Heladera.con("fallada", Direccion.with(new Calle(""), 0, new Ubicacion(-34.603722, -58.381592)), 50);
-    Heladera heladera1 = Heladera.con("1", Direccion.with(new Calle(""), 0, new Ubicacion(-34.615803, -58.433298)), 50);
-    Heladera heladera2 = Heladera.con("2", Direccion.with(new Calle(""), 0, new Ubicacion(-31.420083, -64.188776)), 50);
-    Heladera heladera3 = Heladera.con("3", Direccion.with(new Calle(""), 0, new Ubicacion(-24.782932, -65.423197)), 50);
-    Heladera heladera4 = Heladera.con("4", Direccion.with(new Calle(""), 0, new Ubicacion(-34.615800, -58.433290)), 50);
-    Heladera heladera5 = Heladera.con("5", Direccion.with(new Calle(""), 0, new Ubicacion(-54.801912, -68.302951)), 50);
-    Heladera heladera6 = Heladera.con("6", Direccion.with(new Calle(""), 0, new Ubicacion(-34.615810, -58.433280)), 50);
+
+    HeladeraRepository heladeraRepository = new HeladeraRepository();
+
+    Heladera heladeraFallada = Heladera.con("fallada", Direccion.with(new Barrio(""), new Calle(""), 0, new Ubicacion(-34.603722, -58.381592)), 50);
+    Heladera heladera1 = Heladera.con("1", Direccion.with(new Barrio(""), new Calle(""), 0, new Ubicacion(-34.615803, -58.433298)), 50);
+    Heladera heladera2 = Heladera.con("2", Direccion.with(new Barrio(""), new Calle(""), 0, new Ubicacion(-31.420083, -64.188776)), 50);
+    Heladera heladera3 = Heladera.con("3", Direccion.with(new Barrio(""), new Calle(""), 0, new Ubicacion(-24.782932, -65.423197)), 50);
+    Heladera heladera4 = Heladera.con("4", Direccion.with(new Barrio(""), new Calle(""), 0, new Ubicacion(-34.615800, -58.433290)), 50);
+    Heladera heladera5 = Heladera.con("5", Direccion.with(new Barrio(""), new Calle(""), 0, new Ubicacion(-54.801912, -68.302951)), 50);
+    Heladera heladera6 = Heladera.con("6", Direccion.with(new Barrio(""), new Calle(""), 0, new Ubicacion(-34.615810, -58.433280)), 50);
 
     @Test
     @DisplayName("El tecnico mas cercano a una heladera es el que tenga menor distancia entre las dos ubicaciones restando el radio de su area de cobertura")
@@ -49,12 +53,12 @@ public class TestHeladerasMasCercanas {
         heladera5.setViandas(40);
         heladera6.setViandas(45);
 
-        HeladeraRepository.agregar(heladera1);
-        HeladeraRepository.agregar(heladera2);
-        HeladeraRepository.agregar(heladera3);
-        HeladeraRepository.agregar(heladera4);
-        HeladeraRepository.agregar(heladera5);
-        HeladeraRepository.agregar(heladera6);
+        heladeraRepository.agregar(heladera1);
+        heladeraRepository.agregar(heladera2);
+        heladeraRepository.agregar(heladera3);
+        heladeraRepository.agregar(heladera4);
+        heladeraRepository.agregar(heladera5);
+        heladeraRepository.agregar(heladera6);
 
         List<Heladera> heladerasSeleccionadas = new ArrayList<>();
         heladerasSeleccionadas.add(heladera1);

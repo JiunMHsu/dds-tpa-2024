@@ -1,28 +1,4 @@
-package ar.edu.utn.frba.dds;
-
-import ar.edu.utn.frba.dds.models.colaboracion.DistribucionViandas;
-import ar.edu.utn.frba.dds.models.colaboracion.DonacionDinero;
-import ar.edu.utn.frba.dds.models.colaboracion.DonacionVianda;
-import ar.edu.utn.frba.dds.models.colaboracion.HacerseCargoHeladera;
-import ar.edu.utn.frba.dds.models.colaboracion.OfertaDeProductos;
-import ar.edu.utn.frba.dds.models.colaboracion.RepartoDeTarjetas;
-import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.models.heladera.EstadoHeladera;
-import ar.edu.utn.frba.dds.models.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.puntosDeColaboracion.CanjeDePuntos;
-import ar.edu.utn.frba.dds.models.puntosDeColaboracion.PuntosPorColaboracion;
-import ar.edu.utn.frba.dds.models.usuario.Usuario;
-import ar.edu.utn.frba.dds.repository.canjeDePuntos.CanjeDePuntosRepository;
-import ar.edu.utn.frba.dds.repository.colaboracion.DistribucionViandasRepository;
-import ar.edu.utn.frba.dds.repository.colaboracion.DonacionDineroRepository;
-import ar.edu.utn.frba.dds.repository.colaboracion.DonacionViandaRepository;
-import ar.edu.utn.frba.dds.repository.colaboracion.HacerseCargoHeladeraRepository;
-import ar.edu.utn.frba.dds.repository.colaboracion.RepartoDeTarjetasRepository;
-import java.time.LocalDate;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+package ar.edu.utn.frba.dds.domain;
 
 public class TestCalculadorDePuntos {
 

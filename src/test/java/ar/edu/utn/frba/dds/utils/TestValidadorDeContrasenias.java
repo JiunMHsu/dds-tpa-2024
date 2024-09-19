@@ -1,6 +1,5 @@
-package ar.edu.utn.frba.dds.testUtils;
+package ar.edu.utn.frba.dds.utils;
 
-import ar.edu.utn.frba.dds.utils.ValidadorDeContrasenias;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

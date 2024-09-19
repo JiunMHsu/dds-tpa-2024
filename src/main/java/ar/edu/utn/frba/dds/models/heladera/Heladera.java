@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,7 +34,7 @@ public class Heladera {
     @GeneratedValue(generator = "uuid")
     private UUID id;
 
-    @Column(name = "nombre", nullable = false)
+    @Column(name = "nombre", unique = true, nullable = false)
     private String nombre;
 
     @Embedded
@@ -42,24 +43,19 @@ public class Heladera {
     @Column(name = "capacidad", columnDefinition = "SMALLINT", nullable = false)
     private Integer capacidad;
 
-    @Setter
-    @Column(name = "inicio_funcionamiento", columnDefinition = "DATE", nullable = false)
+    @Column(name = "inicio_funcionamiento", columnDefinition = "DATE")
     private LocalDateTime inicioFuncionamiento;
 
-    @Setter
     @Embedded
     private RangoTemperatura rangoTemperatura;
 
-    @Setter
     @Column(name = "ultima_temperatura", columnDefinition = "DOUBLE")
     private Double ultimaTemperatura;
 
-    @Setter
     @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false)
     private EstadoHeladera estado;
 
-    @Setter
     @Column(name = "cant_viandas", columnDefinition = "SMALLINT", nullable = false)
     private Integer viandas;
 

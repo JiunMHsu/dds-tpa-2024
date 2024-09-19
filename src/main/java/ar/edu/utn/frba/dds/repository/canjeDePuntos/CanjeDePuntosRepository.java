@@ -4,9 +4,7 @@ import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.puntosDeColaboracion.CanjeDePuntos;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
-import lombok.Getter;
 
-@Getter
 public class CanjeDePuntosRepository implements WithSimplePersistenceUnit {
 
     public void agregar(CanjeDePuntos canjeDePuntos) {
@@ -30,6 +28,5 @@ public class CanjeDePuntosRepository implements WithSimplePersistenceUnit {
                 .setMaxResults(1)
                 .getSingleResult();
     }
-
 
 }
