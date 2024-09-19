@@ -2,19 +2,14 @@ package ar.edu.utn.frba.dds.models.personaVulnerable;
 
 import ar.edu.utn.frba.dds.models.data.Direccion;
 import ar.edu.utn.frba.dds.models.data.Documento;
-import java.time.LocalDate;
-import java.util.UUID;
+import ar.edu.utn.frba.dds.persistencia.EntidadPersistente;
+import lombok.*;
+
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -23,11 +18,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "persona_vulnerable")
-public class PersonaVulnerable {
-
-    @Id
-    @GeneratedValue(generator = "uuid")
-    private UUID id;
+public class PersonaVulnerable extends EntidadPersistente {
 
     @Column(name = "nombre")
     private String nombre;

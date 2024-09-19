@@ -4,20 +4,10 @@ import ar.edu.utn.frba.dds.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.models.data.Area;
 import ar.edu.utn.frba.dds.models.data.Contacto;
 import ar.edu.utn.frba.dds.models.data.Documento;
-import java.util.UUID;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import ar.edu.utn.frba.dds.persistencia.EntidadPersistente;
+import lombok.*;
+
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -26,11 +16,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "tecnico")
-public class Tecnico {
-
-    @Id
-    @GeneratedValue(generator = "uuid")
-    private UUID id;
+public class Tecnico extends EntidadPersistente {
 
     @Column(name = "nombre", nullable = false)
     private String nombre;

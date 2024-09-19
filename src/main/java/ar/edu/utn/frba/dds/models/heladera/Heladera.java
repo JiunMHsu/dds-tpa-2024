@@ -2,24 +2,14 @@ package ar.edu.utn.frba.dds.models.heladera;
 
 import ar.edu.utn.frba.dds.models.data.Direccion;
 import ar.edu.utn.frba.dds.models.tecnico.Tecnico;
+import ar.edu.utn.frba.dds.persistencia.EntidadPersistente;
 import ar.edu.utn.frba.dds.repository.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.repository.tecnico.TecnicoRepository;
+import lombok.*;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @Setter
@@ -28,11 +18,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "heladera")
-public class Heladera {
-
-    @Id
-    @GeneratedValue(generator = "uuid")
-    private UUID id;
+public class Heladera extends EntidadPersistente {
 
     @Column(name = "nombre", unique = true, nullable = false)
     private String nombre;

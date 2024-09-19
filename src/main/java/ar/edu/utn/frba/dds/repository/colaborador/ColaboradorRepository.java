@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.repository.colaborador;
 
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+
 import java.util.Optional;
 
 public class ColaboradorRepository implements WithSimplePersistenceUnit {
@@ -10,9 +11,16 @@ public class ColaboradorRepository implements WithSimplePersistenceUnit {
         entityManager().persist(colaborador);
     }
 
-    // TODO - Update
+    public void actualizar(Colaborador colaborador) {
+        withTransaction(() -> {
+            entityManager().merge(colaborador);
+        });
+    }
 
-    // TODO - Remove
+    public void eliminar(Colaborador colaborador) {
+        colaborador.setAlta(false);
+        entityManager().merge(colaborador);
+    }
 
     //    public List<Colaborador> obtenerTodos() {
     //        return entityManager()

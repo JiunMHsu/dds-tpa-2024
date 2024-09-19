@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.repository.tecnico;
 import ar.edu.utn.frba.dds.models.data.Barrio;
 import ar.edu.utn.frba.dds.models.tecnico.Tecnico;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+
 import java.util.List;
 
 public class TecnicoRepository implements WithSimplePersistenceUnit {
@@ -11,11 +12,24 @@ public class TecnicoRepository implements WithSimplePersistenceUnit {
         entityManager().persist(tecnico);
     }
 
-    // TODO - Update
+    public void actualizar(Tecnico tecnico) {
+        withTransaction(() -> {
+            entityManager().merge(tecnico);
+        });
+    }
 
-    // TODO - Remove
+    public void eliminar(Tecnico tecnico) {
+        tecnico.setAlta(false);
+        entityManager().merge(tecnico);
+    }
 
-    // TODO - Obtencion por cuit
+    public Tecnico obtenerPorCuit(String cuit) {
+        return entityManager()
+                .createQuery("from Tecnico t where t.cuit =: cuit", Tecnico.class)
+                .setParameter("cuit", cuit)
+                .getSingleResult();
+    }
+
 
     public List<Tecnico> obtenerPorBarrio(Barrio barrio) {
         return entityManager()

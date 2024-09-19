@@ -3,39 +3,21 @@ package ar.edu.utn.frba.dds.models.incidente;
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.data.Imagen;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
-import java.time.LocalDateTime;
-import java.util.UUID;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "falla_tecnica")
-public class FallaTecnica implements Incidente {
-
-    @Id
-    @GeneratedValue(generator = "uuid")
-    private UUID id;
-
-    @ManyToOne
-    @JoinColumn(name = "heladera_id", nullable = false)
-    private Heladera heladera;
-
-    @Column(name = "fecha_hora")
-    private LocalDateTime fechaHora;
+@DiscriminatorValue("falla_tecnica")
+public class FallaTecnica extends Incidente {
 
     @ManyToOne
     @JoinColumn(name = "colaborador_id", nullable = false)
@@ -47,31 +29,39 @@ public class FallaTecnica implements Incidente {
     @Embedded
     private Imagen foto;
 
-    public static FallaTecnica de(Heladera heladera,
-                                  LocalDateTime fechaHora,
-                                  Colaborador colaborador,
+//    public FallaTecnica(Heladera heladera,
+//                        LocalDateTime fechaHora,
+//                        TipoIncidente tipoIncidente,
+//                        Colaborador colaborador,
+//                        String descripcion,
+//                        Imagen foto) {
+//
+//        super(heladera, fechaHora, tipoIncidente);
+//        this.colaborador = colaborador;
+//        this.descripcion = descripcion;
+//        this.foto = foto;
+//    }
+//
+//    public FallaTecnica() {
+//        super();
+//    }
+
+    public static FallaTecnica de(Colaborador colaborador,
                                   String descripcion,
                                   Imagen foto) {
         return FallaTecnica
                 .builder()
-                .heladera(heladera)
-                .fechaHora(fechaHora)
                 .colaborador(colaborador)
                 .descripcion(descripcion)
                 .foto(foto)
                 .build();
     }
 
-    public static FallaTecnica de(Heladera heladera, Colaborador colaborador) {
+    public static FallaTecnica de(Colaborador colaborador) {
         return FallaTecnica
                 .builder()
                 .colaborador(colaborador)
-                .fechaHora(LocalDateTime.now())
-                .heladera(heladera)
                 .build();
     }
 
-    public TipoIncidente getTipo() {
-        return TipoIncidente.FALLA_TECNICA;
-    }
 }

@@ -1,19 +1,12 @@
 package ar.edu.utn.frba.dds.models.tarjeta;
 
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.persistencia.EntidadPersistente;
 import ar.edu.utn.frba.dds.utils.GeneradorDeCodigosTarjeta;
+import lombok.*;
+
+import javax.persistence.*;
 import java.time.LocalDate;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @Builder
@@ -21,9 +14,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "tarjeta_colaborador")
-public class TarjetaColaborador {
+public class TarjetaColaborador extends EntidadPersistente {
 
-    @Id
+    @Column(name = "codigo", nullable = false)
     private String codigo;
 
     @ManyToOne

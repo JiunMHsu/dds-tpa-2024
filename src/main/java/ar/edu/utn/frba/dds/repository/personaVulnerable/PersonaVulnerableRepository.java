@@ -1,8 +1,12 @@
 package ar.edu.utn.frba.dds.repository.personaVulnerable;
 
-// TODO
-public class PersonaVulnerableRepository {
+import ar.edu.utn.frba.dds.models.personaVulnerable.PersonaVulnerable;
+import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 
-    // ALTA
+public class PersonaVulnerableRepository implements WithSimplePersistenceUnit {
+
+    public void agregar(PersonaVulnerable personaVulnerable) {
+        entityManager().persist(personaVulnerable);
+    }
 
 }
