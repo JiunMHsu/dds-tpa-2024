@@ -13,7 +13,7 @@ public class MensajeRepository implements WithSimplePersistenceUnit {
 
 //  public Mensaje obtenerUltimo() {
 //    return entityManager()
-//            .createQuery("from Mensaje m order by m.fechaEnvio desc", Mensaje.class)
+//            .createQuery("from Mensaje m order por m.fechaEnvio desc", Mensaje.class)
 //            .setMaxResults(1)
 //            .getSingleResult();
 //  }

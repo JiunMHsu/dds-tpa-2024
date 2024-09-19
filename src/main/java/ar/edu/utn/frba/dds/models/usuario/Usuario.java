@@ -23,13 +23,13 @@ public class Usuario {
     @GeneratedValue(generator = "uuid")
     private UUID id;
 
-    @Column(name = "nombre")
+    @Column(name = "nombre", nullable = false)
     private String nombre;
 
-    @Column(name = "contrasenia")
+    @Column(name = "contrasenia", nullable = false)
     private String contrasenia;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
     public static Usuario with(String nombreUsuario, String contrasenia, String email) {

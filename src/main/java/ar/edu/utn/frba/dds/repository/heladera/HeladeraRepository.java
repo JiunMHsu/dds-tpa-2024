@@ -8,33 +8,26 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class HeladeraRepository implements WithSimplePersistenceUnit {
-
-
-    public void agregar(Heladera heladera) {
+    
+    public void guardar(Heladera heladera) {
         withTransaction(() -> entityManager().persist(heladera));
     }
 
-    public Optional<Heladera> buscarPorId(UUID id) {
+    public Optional<Heladera> obtenerPorId(UUID id) {
         return Optional.ofNullable(entityManager().find(Heladera.class, id));
     }
 
-    public Heladera buscarPorNombre(String nombre) {
-        return (Heladera) entityManager()
+    public Optional<Heladera> obtenerPorNombre(String nombre) {
+        return Optional.ofNullable((Heladera) entityManager()
                 .createQuery("from " + Heladera.class.getName() + " where nombre = :name")
                 .setParameter("name", nombre)
-                .getSingleResult();
+                .getSingleResult());
     }
 
     @SuppressWarnings("unchecked")
-    public List<Heladera> obtenerTodos() {
-        return entityManager()
-                .createQuery("from " + Heladera.class.getName())
-                .getResultList();
-    }
-
     public List<Heladera> obtenerPorBarrio(Barrio barrio) {
         return entityManager()
-                .createQuery("from Heladera h where h.direccion.barrio =: barrio", Heladera.class)
+                .createQuery("from " + Heladera.class.getName() + " where direccion.barrio = :barrio")
                 .setParameter("barrio", barrio)
                 .getResultList();
     }

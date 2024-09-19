@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "visita_tenico")
+@Table(name = "visita_tecnico")
 public class VisitaTecnico {
 
     @Id
@@ -49,12 +49,12 @@ public class VisitaTecnico {
     @Column(name = "fue_resuelta", nullable = false)
     private Boolean fallaResuelta;
 
-    public static VisitaTecnico by(Tecnico tecnico,
-                                   Heladera heladera,
-                                   LocalDateTime fechaHora,
-                                   String descripcion,
-                                   Imagen foto,
-                                   Boolean fallaResuelta) {
+    public static VisitaTecnico por(Tecnico tecnico,
+                                    Heladera heladera,
+                                    LocalDateTime fechaHora,
+                                    String descripcion,
+                                    Imagen foto,
+                                    Boolean fallaResuelta) {
         return VisitaTecnico
                 .builder()
                 .tecnico(tecnico)
@@ -66,8 +66,8 @@ public class VisitaTecnico {
                 .build();
     }
 
-    public static VisitaTecnico by(Tecnico tecnico,
-                                   Heladera heladera) {
+    public static VisitaTecnico por(Tecnico tecnico,
+                                    Heladera heladera) {
         return VisitaTecnico
                 .builder()
                 .tecnico(tecnico)

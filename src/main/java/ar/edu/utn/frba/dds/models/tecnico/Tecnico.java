@@ -25,7 +25,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "tenico")
+@Table(name = "tecnico")
 public class Tecnico {
 
     @Id
@@ -41,7 +41,7 @@ public class Tecnico {
     @Embedded
     private Documento documento;
 
-    @Column(name = "cuit", nullable = false)
+    @Column(name = "cuit", unique = true, nullable = false)
     private String cuit;
 
     @Embedded
@@ -54,13 +54,13 @@ public class Tecnico {
     @Embedded
     private Area areaDeCobertura;
 
-    public static Tecnico with(String nombre,
-                               String apellido,
-                               Documento documento,
-                               String cuit,
-                               Contacto contacto,
-                               MedioDeNotificacion medioDeNotificacion,
-                               Area areaDeCobertura) {
+    public static Tecnico con(String nombre,
+                              String apellido,
+                              Documento documento,
+                              String cuit,
+                              Contacto contacto,
+                              MedioDeNotificacion medioDeNotificacion,
+                              Area areaDeCobertura) {
         return Tecnico
                 .builder()
                 .nombre(nombre)
@@ -73,10 +73,10 @@ public class Tecnico {
                 .build();
     }
 
-    public static Tecnico with(String nombre,
-                               Contacto contacto,
-                               MedioDeNotificacion medioDeNotificacion,
-                               Area areaDeCobertura) {
+    public static Tecnico con(String nombre,
+                              Contacto contacto,
+                              MedioDeNotificacion medioDeNotificacion,
+                              Area areaDeCobertura) {
         return Tecnico
                 .builder()
                 .nombre(nombre)
@@ -86,9 +86,9 @@ public class Tecnico {
                 .build();
     }
 
-    public static Tecnico with(String nombre,
-                               Contacto contacto,
-                               Area areaDeCobertura) {
+    public static Tecnico con(String nombre,
+                              Contacto contacto,
+                              Area areaDeCobertura) {
         return Tecnico
                 .builder()
                 .nombre(nombre)

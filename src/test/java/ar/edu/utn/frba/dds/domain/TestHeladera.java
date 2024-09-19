@@ -48,21 +48,21 @@ public class TestHeladera {
     }
 
     @Test
-    @DisplayName("Se puede agregar una vianda a la heladera")
+    @DisplayName("Se puede guardar una vianda a la heladera")
     public void agregarVianda() {
         Assertions.assertEquals(1, unaHeladera.getViandas());
 
         try {
             unaHeladera.agregarViandas(1);
             Assertions.assertEquals(2, unaHeladera.getViandas(),
-                    "Al agregar una vianda a la Heladera que ya tenía una, ahora tiene dos.");
+                    "Al guardar una vianda a la Heladera que ya tenía una, ahora tiene dos.");
         } catch (ExcepcionCantidadDeViandas e) {
-            Assertions.fail("No se pudo agregar la vianda.");
+            Assertions.fail("No se pudo guardar la vianda.");
         }
     }
 
     @Test
-    @DisplayName("No se puede agregar más viandas si la heladera está llena")
+    @DisplayName("No se puede guardar más viandas si la heladera está llena")
     public void agregarViandaAHeladeraLlena() {
         Assertions.assertEquals(2, unaHeladera.getCapacidad());
         Assertions.assertEquals(1, unaHeladera.getViandas());
