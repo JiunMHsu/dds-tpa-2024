@@ -1,13 +1,15 @@
 package ar.edu.utn.frba.dds.models.data;
 
+import lombok.Getter;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
-import lombok.Getter;
 
 @Getter
 @Embeddable
 public class Area {
+
     @Embedded
     private final Ubicacion ubicacion;
 

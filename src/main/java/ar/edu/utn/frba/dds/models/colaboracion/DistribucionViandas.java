@@ -2,19 +2,14 @@ package ar.edu.utn.frba.dds.models.colaboracion;
 
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
-import java.time.LocalDateTime;
-import java.util.UUID;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import ar.edu.utn.frba.dds.persistencia.EntidadPersistente;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Builder
@@ -22,11 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "distribucion_viandas")
-public class DistribucionViandas {
-
-    @Id
-    @GeneratedValue(generator = "uuid")
-    private UUID id;
+public class DistribucionViandas extends EntidadPersistente {
 
     @ManyToOne
     @JoinColumn(name = "colaborador_id", nullable = false)

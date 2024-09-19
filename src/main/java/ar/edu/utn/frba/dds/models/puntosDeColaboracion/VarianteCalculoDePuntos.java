@@ -17,6 +17,8 @@ public class VarianteCalculoDePuntos {
      * el requerimiento de ser dinámico y poder cambiar
      * de mes en mes.
      */
+
+    // TODO - Crear una tabla donde se almacenen esos valores
     public VarianteCalculoDePuntos() {
         this.donacionDinero = 0.5;
         this.distribucionViandas = 1.0;

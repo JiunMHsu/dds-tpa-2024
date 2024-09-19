@@ -3,20 +3,14 @@ package ar.edu.utn.frba.dds.models.colaboracion;
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.personaVulnerable.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.tarjeta.TarjetaPersonaVulnerable;
-import java.time.LocalDateTime;
-import java.util.UUID;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import ar.edu.utn.frba.dds.persistencia.EntidadPersistente;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Builder
@@ -24,11 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "reparto_tarjetas")
-public class RepartoDeTarjetas {
-
-    @Id
-    @GeneratedValue(generator = "uuid")
-    private UUID id;
+public class RepartoDeTarjetas extends EntidadPersistente {
 
     @ManyToOne
     @JoinColumn(name = "colaborador_id", nullable = false)

@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.repository.heladera;
 import ar.edu.utn.frba.dds.models.data.Barrio;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -13,9 +14,16 @@ public class HeladeraRepository implements WithSimplePersistenceUnit {
         withTransaction(() -> entityManager().persist(heladera));
     }
 
-    // TODO - Update
+    public void actualizar(Heladera heladera) {
+        withTransaction(() -> {
+            entityManager().merge(heladera);
+        });
+    }
 
-    // TODO - Remove
+    public void eliminar(Heladera heladera) {
+        heladera.setAlta(false);
+        entityManager().merge(heladera);
+    }
 
     public Optional<Heladera> obtenerPorId(UUID id) {
         return Optional.ofNullable(entityManager().find(Heladera.class, id));

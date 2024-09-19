@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.utils;
 
 import ar.edu.utn.frba.dds.models.usuario.Usuario;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GeneradorDeCredenciales {

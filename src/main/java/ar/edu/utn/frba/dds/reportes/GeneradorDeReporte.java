@@ -1,11 +1,9 @@
 package ar.edu.utn.frba.dds.reportes;
 
 import ar.edu.utn.frba.dds.AppConfig;
-import com.aspose.pdf.Color;
-import com.aspose.pdf.Document;
-import com.aspose.pdf.HtmlFragment;
-import com.aspose.pdf.Page;
-import com.aspose.pdf.TextFragment;
+import com.aspose.pdf.*;
+import lombok.Builder;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,7 +13,6 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import lombok.Builder;
 
 @Builder
 public class GeneradorDeReporte {

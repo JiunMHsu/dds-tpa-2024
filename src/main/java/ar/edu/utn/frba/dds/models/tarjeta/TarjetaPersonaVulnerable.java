@@ -2,19 +2,12 @@ package ar.edu.utn.frba.dds.models.tarjeta;
 
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.personaVulnerable.PersonaVulnerable;
+import ar.edu.utn.frba.dds.persistencia.EntidadPersistente;
 import ar.edu.utn.frba.dds.utils.GeneradorDeCodigosTarjeta;
+import lombok.*;
+
+import javax.persistence.*;
 import java.time.LocalDate;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @Builder
@@ -22,9 +15,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "tarjeta_persona_vulnerable")
-public class TarjetaPersonaVulnerable {
+public class TarjetaPersonaVulnerable extends EntidadPersistente {
 
-    @Id
+    @Column(name = "codigo", nullable = false)
     private String codigo;
 
     @OneToOne

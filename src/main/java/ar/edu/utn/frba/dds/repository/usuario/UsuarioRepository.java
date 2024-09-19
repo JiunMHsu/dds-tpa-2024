@@ -9,9 +9,21 @@ public class UsuarioRepository implements WithSimplePersistenceUnit {
         entityManager().persist(usuario);
     }
 
-    // TODO - Update
+    public void actualizar(Usuario usuario) {
+        withTransaction(() -> {
+            entityManager().merge(usuario);
+        });
+    }
 
-    // TODO - Remove
+    public void eliminar(Usuario usuario) {
+        usuario.setAlta(false);
+        entityManager().merge(usuario);
+    }
 
-    // TODO - Obtener por email
+    public Usuario obtenerPorEmail(String email) {
+        return entityManager()
+                .createQuery("from Usuario u where u.email =: email", Usuario.class)
+                .setParameter("email", email)
+                .getSingleResult();
+    }
 }

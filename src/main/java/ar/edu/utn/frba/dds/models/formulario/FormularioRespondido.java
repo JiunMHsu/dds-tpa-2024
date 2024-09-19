@@ -1,14 +1,9 @@
 package ar.edu.utn.frba.dds.models.formulario;
 
-import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import lombok.Getter;
+
+import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Entity
