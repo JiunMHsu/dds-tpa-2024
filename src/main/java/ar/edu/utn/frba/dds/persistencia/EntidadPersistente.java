@@ -7,7 +7,6 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
-// TODO - Hacer heredar las entidades necesarias
 @Getter
 @MappedSuperclass
 public abstract class EntidadPersistente {

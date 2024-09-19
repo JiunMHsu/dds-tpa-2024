@@ -28,20 +28,16 @@ public class HeladeraRepository implements WithSimplePersistenceUnit {
     public Optional<Heladera> obtenerPorId(UUID id) {
         return Optional.ofNullable(entityManager().find(Heladera.class, id));
     }
-
-    // TODO - Correegir HQL
     public Optional<Heladera> obtenerPorNombre(String nombre) {
         return Optional.ofNullable((Heladera) entityManager()
-                .createQuery("from " + Heladera.class.getName() + " where nombre = :name")
+                .createQuery("from Heladera h where h.nombre = :name")
                 .setParameter("name", nombre)
                 .getSingleResult());
     }
-
-    // TODO - Correegir HQL
     @SuppressWarnings("unchecked")
     public List<Heladera> obtenerPorBarrio(Barrio barrio) {
         return entityManager()
-                .createQuery("from " + Heladera.class.getName() + " where direccion.barrio = :barrio")
+                .createQuery("from Heladera h where h.direccion.barrio = :barrio")
                 .setParameter("barrio", barrio)
                 .getResultList();
     }
