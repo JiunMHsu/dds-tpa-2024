@@ -31,23 +31,6 @@ public class FallaTecnica extends Incidente {
     @Embedded
     private Imagen foto;
 
-//    public FallaTecnica(Heladera heladera,
-//                        LocalDateTime fechaHora,
-//                        TipoIncidente tipoIncidente,
-//                        Colaborador colaborador,
-//                        String descripcion,
-//                        Imagen foto) {
-//
-//        super(heladera, fechaHora, tipoIncidente);
-//        this.colaborador = colaborador;
-//        this.descripcion = descripcion;
-//        this.foto = foto;
-//    }
-//
-//    public FallaTecnica() {
-//        super();
-//    }
-
     public static FallaTecnica de(Colaborador colaborador,
                                   String descripcion,
                                   Imagen foto) {

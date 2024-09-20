@@ -2,7 +2,7 @@ package ar.edu.utn.frba.dds.reportes;
 
 import ar.edu.utn.frba.dds.models.colaboracion.DonacionVianda;
 import ar.edu.utn.frba.dds.repository.colaboracion.DonacionViandaRepository;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +15,7 @@ public class RegistroDonacion {
     }
 
     public Map<String, Integer> donacionesPorColaborador() {
-        LocalDate haceUnaSemana = LocalDate.now().minusWeeks(1);
+        LocalDateTime haceUnaSemana = LocalDateTime.now().minusWeeks(1);
         List<DonacionVianda> donaciones = donacionViandaRepository.obtenerAPartirDe(haceUnaSemana);
 
         Map<String, Integer> viandasPorColaborador = new HashMap<>();

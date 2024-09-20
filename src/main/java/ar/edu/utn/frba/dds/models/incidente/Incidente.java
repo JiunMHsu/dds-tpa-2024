@@ -30,13 +30,13 @@ public abstract class Incidente extends EntidadPersistente {
 
     @ManyToOne
     @JoinColumn(name = "heladera_id", nullable = false)
-    private Heladera heladera;
+    protected Heladera heladera;
 
     @Column(name = "fecha_hora")
-    private LocalDateTime fechaHora;
+    protected LocalDateTime fechaHora;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_incidente")
-    private TipoIncidente tipoIncidente;
+    protected TipoIncidente tipoIncidente;
 
 }
