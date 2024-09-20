@@ -2,10 +2,9 @@ package ar.edu.utn.frba.dds.models.incidente;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @DiscriminatorValue("alerta")
