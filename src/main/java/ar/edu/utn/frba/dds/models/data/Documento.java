@@ -1,11 +1,10 @@
 package ar.edu.utn.frba.dds.models.data;
 
-import lombok.Getter;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import lombok.Getter;
 
 @Getter
 @Embeddable

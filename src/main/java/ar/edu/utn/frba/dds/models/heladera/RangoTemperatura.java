@@ -1,9 +1,8 @@
 package ar.edu.utn.frba.dds.models.heladera;
 
-import lombok.Getter;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import lombok.Getter;
 
 @Getter
 @Embeddable

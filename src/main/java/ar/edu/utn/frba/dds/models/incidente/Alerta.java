@@ -1,12 +1,11 @@
 package ar.edu.utn.frba.dds.models.incidente;
 
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
-import lombok.Builder;
-import lombok.Getter;
-
+import java.time.LocalDateTime;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import java.time.LocalDateTime;
+import lombok.Builder;
+import lombok.Getter;
 
 @Getter
 @Builder

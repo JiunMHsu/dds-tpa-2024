@@ -2,14 +2,13 @@ package ar.edu.utn.frba.dds.models.vianda;
 
 import ar.edu.utn.frba.dds.models.data.Comida;
 import ar.edu.utn.frba.dds.persistencia.EntidadPersistente;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
+import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.time.LocalDate;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 // @AllArgsConstructor

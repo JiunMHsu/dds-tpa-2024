@@ -2,7 +2,6 @@ package ar.edu.utn.frba.dds.repository.colaboracion;
 
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -20,16 +19,16 @@ public abstract class ColaboracionRepository<T> implements WithSimplePersistence
 
     public List<T> obtenerPorColaborador(Colaborador unColaborador) {
         return entityManager()
-                .createQuery("from " + type.getName() + " c where c.colaborador =: id_colaborador", type)
+                .createQuery("from " + type.getName() + " c where c.colaborador = :id_colaborador", type)
                 .setParameter("id_colaborador", unColaborador.getId())
                 .getResultList();
     }
 
-    public List<T> obtenerPorColaboradorAPartirDe(Colaborador unColaborador, LocalDateTime fecha) {
+    public List<T> obtenerPorColaboradorAPartirDe(Colaborador unColaborador, LocalDateTime fechaHora) {
         return entityManager()
                 .createQuery("from " + type.getName() + " d where d.colaborador = :id_colaborador and d.fechaHora >= :fecha", type)
                 .setParameter("id_colaborador", unColaborador.getId())
-                .setParameter("fecha", fecha)
+                .setParameter("fecha", fechaHora)
                 .getResultList();
     }
 }

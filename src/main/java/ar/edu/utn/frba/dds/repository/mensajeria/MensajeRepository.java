@@ -2,9 +2,7 @@ package ar.edu.utn.frba.dds.repository.mensajeria;
 
 import ar.edu.utn.frba.dds.mensajeria.Mensaje;
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.models.puntosDeColaboracion.CanjeDePuntos;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-
 import java.util.List;
 
 public class MensajeRepository implements WithSimplePersistenceUnit {
@@ -19,12 +17,4 @@ public class MensajeRepository implements WithSimplePersistenceUnit {
                 .setParameter("colaborador", unColaborador)
                 .getResultList();
     }
-
-    //  public Mensaje obtenerUltimo() {
-    //    return entityManager()
-    //            .createQuery("from Mensaje m order por m.fechaEnvio desc", Mensaje.class)
-    //            .setMaxResults(1)
-    //            .getSingleResult();
-    //  }
-
 }

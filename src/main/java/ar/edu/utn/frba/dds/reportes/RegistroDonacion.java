@@ -2,14 +2,13 @@ package ar.edu.utn.frba.dds.reportes;
 
 import ar.edu.utn.frba.dds.models.colaboracion.DonacionVianda;
 import ar.edu.utn.frba.dds.repository.colaboracion.DonacionViandaRepository;
-
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class RegistroDonacion {
-    private DonacionViandaRepository donacionViandaRepository;
+    private final DonacionViandaRepository donacionViandaRepository;
 
     public RegistroDonacion() {
         this.donacionViandaRepository = new DonacionViandaRepository();

@@ -1,8 +1,11 @@
 package ar.edu.utn.frba.dds.models.formulario;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.Getter;
-
-import javax.persistence.*;
 
 @Getter
 @Entity

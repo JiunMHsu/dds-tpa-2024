@@ -2,7 +2,14 @@ package ar.edu.utn.frba.dds;
 
 import ar.edu.utn.frba.dds.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.models.data.*;
+import ar.edu.utn.frba.dds.models.data.Area;
+import ar.edu.utn.frba.dds.models.data.Barrio;
+import ar.edu.utn.frba.dds.models.data.Calle;
+import ar.edu.utn.frba.dds.models.data.Contacto;
+import ar.edu.utn.frba.dds.models.data.Direccion;
+import ar.edu.utn.frba.dds.models.data.Documento;
+import ar.edu.utn.frba.dds.models.data.TipoDocumento;
+import ar.edu.utn.frba.dds.models.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.heladera.RangoTemperatura;
@@ -13,7 +20,6 @@ import ar.edu.utn.frba.dds.repository.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.repository.tecnico.TecnicoRepository;
 import ar.edu.utn.frba.dds.repository.usuario.UsuarioRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;

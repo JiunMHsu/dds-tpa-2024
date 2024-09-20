@@ -6,7 +6,7 @@ import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 public class PersonaVulnerableRepository implements WithSimplePersistenceUnit {
 
     public void agregar(PersonaVulnerable personaVulnerable) {
-        entityManager().persist(personaVulnerable);
+        withTransaction(() -> entityManager().persist(personaVulnerable));
     }
 
 }

@@ -1,16 +1,23 @@
 package ar.edu.utn.frba.dds.models.puntosDeColaboracion;
 
-import ar.edu.utn.frba.dds.models.colaboracion.*;
+import ar.edu.utn.frba.dds.models.colaboracion.DistribucionViandas;
+import ar.edu.utn.frba.dds.models.colaboracion.DonacionDinero;
+import ar.edu.utn.frba.dds.models.colaboracion.DonacionVianda;
+import ar.edu.utn.frba.dds.models.colaboracion.HacerseCargoHeladera;
+import ar.edu.utn.frba.dds.models.colaboracion.RepartoDeTarjetas;
 import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.heladera.Heladera;
 import ar.edu.utn.frba.dds.repository.canjeDePuntos.CanjeDePuntosRepository;
-import ar.edu.utn.frba.dds.repository.colaboracion.*;
-import lombok.Builder;
-
+import ar.edu.utn.frba.dds.repository.colaboracion.DistribucionViandasRepository;
+import ar.edu.utn.frba.dds.repository.colaboracion.DonacionDineroRepository;
+import ar.edu.utn.frba.dds.repository.colaboracion.DonacionViandaRepository;
+import ar.edu.utn.frba.dds.repository.colaboracion.HacerseCargoHeladeraRepository;
+import ar.edu.utn.frba.dds.repository.colaboracion.RepartoDeTarjetasRepository;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.chrono.ChronoLocalDateTime;
 import java.util.List;
+import lombok.Builder;
 
 @Builder
 public class PuntosPorColaboracion {

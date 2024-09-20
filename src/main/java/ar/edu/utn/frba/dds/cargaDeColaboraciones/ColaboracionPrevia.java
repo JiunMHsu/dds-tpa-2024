@@ -1,10 +1,9 @@
 package ar.edu.utn.frba.dds.cargaDeColaboraciones;
 
 import ar.edu.utn.frba.dds.models.data.Documento;
+import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
-
-import java.time.LocalDate;
 
 @Getter
 @Builder
