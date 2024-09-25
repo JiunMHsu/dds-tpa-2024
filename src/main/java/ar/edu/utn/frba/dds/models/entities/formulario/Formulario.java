@@ -7,9 +7,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "formulario")
 public class Formulario {
@@ -22,14 +26,6 @@ public class Formulario {
     @JoinColumn(name = "formulario_id")
     private List<Pregunta> preguntas;
 
-    public Formulario(List<Pregunta> preguntas) {
-        this.preguntas = preguntas;
-    }
-
-    public Formulario() {
-        preguntas = null;
-    }
-
     public void agregarCampo(Pregunta pregunta) {
         preguntas.add(pregunta);
     }
@@ -37,4 +33,5 @@ public class Formulario {
     public void quitarCampo(Pregunta pregunta) {
         preguntas.remove(pregunta);
     }
+    
 }

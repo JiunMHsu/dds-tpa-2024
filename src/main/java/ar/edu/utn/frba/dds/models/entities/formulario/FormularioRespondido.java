@@ -8,9 +8,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "formulario_respondido")
 public class FormularioRespondido {
@@ -27,13 +31,4 @@ public class FormularioRespondido {
     @JoinColumn(name = "formulario_id")
     private Formulario formulario;
 
-    public FormularioRespondido(Formulario formulario, List<Respuesta> respuestas) {
-        this.formulario = formulario;
-        this.respuestas = respuestas;
-    }
-
-    public FormularioRespondido() {
-        this.respuestas = null;
-        this.formulario = null;
-    }
 }

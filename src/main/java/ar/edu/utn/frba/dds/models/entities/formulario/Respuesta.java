@@ -7,9 +7,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "respuesta")
 public class Respuesta {
@@ -25,11 +29,4 @@ public class Respuesta {
     @Column(name = "descripcion", columnDefinition = "TEXT")
     private String descripcion;
 
-    public Respuesta(Pregunta pregunta, String respuesta) {
-        this.pregunta = pregunta;
-        this.descripcion = respuesta;
-    }
-
-    public Respuesta() {
-    }
 }

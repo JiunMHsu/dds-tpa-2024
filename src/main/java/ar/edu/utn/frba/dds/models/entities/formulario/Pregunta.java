@@ -5,9 +5,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "pregunta")
 public class Pregunta {
@@ -19,10 +23,4 @@ public class Pregunta {
     @Column(name = "contenido", columnDefinition = "TEXT", nullable = false)
     private String contenido;
 
-    public Pregunta(String pregunta) {
-        this.contenido = pregunta;
-    }
-
-    public Pregunta() {
-    }
 }
