@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.reportes;
 
-import ar.edu.utn.frba.dds.models.colaboracion.DonacionVianda;
-import ar.edu.utn.frba.dds.repository.colaboracion.DonacionViandaRepository;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaRepository;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;

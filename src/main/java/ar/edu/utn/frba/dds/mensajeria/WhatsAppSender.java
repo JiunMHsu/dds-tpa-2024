@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.mensajeria;
 
 import ar.edu.utn.frba.dds.AppConfig;
-import ar.edu.utn.frba.dds.models.data.Contacto;
+import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.camel.CamelContext;

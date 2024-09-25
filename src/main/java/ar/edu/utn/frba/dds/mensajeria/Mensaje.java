@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.mensajeria;
 
-import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.Column;

@@ -1,9 +1,9 @@
 package ar.edu.utn.frba.dds.reportes;
 
-import ar.edu.utn.frba.dds.models.incidente.Alerta;
-import ar.edu.utn.frba.dds.models.incidente.FallaTecnica;
-import ar.edu.utn.frba.dds.repository.incidente.AlertaRepository;
-import ar.edu.utn.frba.dds.repository.incidente.FallaTecnicaRepository;
+import ar.edu.utn.frba.dds.models.entities.incidente.Alerta;
+import ar.edu.utn.frba.dds.models.entities.incidente.FallaTecnica;
+import ar.edu.utn.frba.dds.models.repositories.incidente.AlertaRepository;
+import ar.edu.utn.frba.dds.models.repositories.incidente.FallaTecnicaRepository;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;

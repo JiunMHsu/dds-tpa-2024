@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.mensajeria;
 
 import ar.edu.utn.frba.dds.AppConfig;
-import ar.edu.utn.frba.dds.models.data.Contacto;
+import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.builder.RouteBuilder;

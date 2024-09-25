@@ -1,9 +1,9 @@
 package ar.edu.utn.frba.dds.domain;
 
-import ar.edu.utn.frba.dds.models.heladera.EstadoHeladera;
-import ar.edu.utn.frba.dds.models.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.personaVulnerable.PersonaVulnerable;
-import ar.edu.utn.frba.dds.models.tarjeta.TarjetaPersonaVulnerable;
+import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
+import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
+import ar.edu.utn.frba.dds.models.entities.personaVulnerable.PersonaVulnerable;
+import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaPersonaVulnerable;
 import ar.edu.utn.frba.dds.utils.GeneradorDeCodigosTarjeta;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.broker;
 
 import ar.edu.utn.frba.dds.broker.suscriptorSensor.SuscriptorSensorTemperatura;
-import ar.edu.utn.frba.dds.models.sensor.Sensor;
+import ar.edu.utn.frba.dds.models.entities.sensor.Sensor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
