@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.models.entities.data;
 
-import ar.edu.utn.frba.dds.mensajeria.MedioDeNotificacion;
+import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import lombok.AllArgsConstructor;
@@ -27,7 +27,7 @@ public class Contacto {
     @Column(name = "telegram")
     private String telegram; // Chat ID
 
-    public static Contacto with(String email, String telefono, String whatsApp, String telegram) {
+    public static Contacto con(String email, String telefono, String whatsApp, String telegram) {
         return Contacto
                 .builder()
                 .email(email)
@@ -58,7 +58,7 @@ public class Contacto {
                 .build();
     }
 
-    public static Contacto empty() {
+    public static Contacto vacio() {
         return Contacto
                 .builder().build();
     }

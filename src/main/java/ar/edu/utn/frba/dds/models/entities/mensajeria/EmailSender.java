@@ -1,7 +1,7 @@
-package ar.edu.utn.frba.dds.mensajeria;
+package ar.edu.utn.frba.dds.models.entities.mensajeria;
 
-import ar.edu.utn.frba.dds.AppConfig;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
+import ar.edu.utn.frba.dds.utils.AppProperties;
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
@@ -29,10 +29,10 @@ public class EmailSender implements Sender {
     }
 
     public EmailSender() {
-        this.host = AppConfig.getProperty("EMAIL_HOST");
-        this.port = AppConfig.getProperty("EMAIL_PORT");
-        this.usuario = AppConfig.getProperty("EMAIL_USER");
-        this.contrasenia = AppConfig.getProperty("EMAIL_PASSWORD");
+        this.host = AppProperties.getInstance().propertyFromName("EMAIL_HOST");
+        this.port = AppProperties.getInstance().propertyFromName("EMAIL_PORT");
+        this.usuario = AppProperties.getInstance().propertyFromName("EMAIL_USER");
+        this.contrasenia = AppProperties.getInstance().propertyFromName("EMAIL_PASSWORD");
     }
 
     @Override

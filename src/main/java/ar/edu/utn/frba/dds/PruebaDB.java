@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds;
 
-import ar.edu.utn.frba.dds.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Area;
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
@@ -13,6 +12,7 @@ import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
+import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
@@ -80,7 +80,7 @@ public class PruebaDB implements WithSimplePersistenceUnit {
     }
 
     private void guardarColaborador() {
-        Usuario unUsuario = Usuario.with("JiunMHsu", "iMC4(*&A^F0OK?%87", "hsujm219@gmail.com");
+        Usuario unUsuario = Usuario.con("JiunMHsu", "iMC4(*&A^F0OK?%87", "hsujm219@gmail.com");
         Direccion direccion = new Direccion(
                 new Barrio("Almagro"),
                 new Calle("Medrano"),

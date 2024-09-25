@@ -1,12 +1,12 @@
 package ar.edu.utn.frba.dds.models.entities.colaborador;
 
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.data.TipoRazonSocial;
 import ar.edu.utn.frba.dds.models.entities.formulario.FormularioRespondido;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
-import ar.edu.utn.frba.dds.persistencia.EntidadPersistente;
 import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.CollectionTable;

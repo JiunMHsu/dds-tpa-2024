@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.colaboracion;
 
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.persistencia.EntidadPersistente;
 import java.time.LocalDateTime;
 import java.time.Period;
 import javax.persistence.Column;

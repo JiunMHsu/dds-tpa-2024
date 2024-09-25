@@ -1,10 +1,10 @@
 package ar.edu.utn.frba.dds.models.entities.tecnico;
 
-import ar.edu.utn.frba.dds.mensajeria.MedioDeNotificacion;
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import ar.edu.utn.frba.dds.models.entities.data.Area;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.data.Documento;
-import ar.edu.utn.frba.dds.persistencia.EntidadPersistente;
+import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;

@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.incidente;
 
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
-import ar.edu.utn.frba.dds.persistencia.EntidadPersistente;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;

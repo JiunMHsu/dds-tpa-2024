@@ -1,8 +1,5 @@
 package ar.edu.utn.frba.dds.cargaDeColaboraciones;
 
-import ar.edu.utn.frba.dds.mensajeria.EmailSender;
-import ar.edu.utn.frba.dds.mensajeria.MedioDeNotificacion;
-import ar.edu.utn.frba.dds.mensajeria.Mensaje;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDinero;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
@@ -10,6 +7,9 @@ import ar.edu.utn.frba.dds.models.entities.colaboracion.RepartoDeTarjetas;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Documento;
 import ar.edu.utn.frba.dds.models.entities.data.TipoDocumento;
+import ar.edu.utn.frba.dds.models.entities.mensajeria.EmailSender;
+import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
+import ar.edu.utn.frba.dds.models.entities.mensajeria.Mensaje;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroRepository;

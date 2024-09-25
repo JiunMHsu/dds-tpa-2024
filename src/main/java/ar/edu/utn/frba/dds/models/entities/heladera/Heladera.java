@@ -1,10 +1,10 @@
 package ar.edu.utn.frba.dds.models.entities.heladera;
 
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.TecnicoRepository;
-import ar.edu.utn.frba.dds.persistencia.EntidadPersistente;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.Column;

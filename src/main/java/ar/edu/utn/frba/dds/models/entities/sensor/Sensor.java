@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.sensor;
 
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
-import ar.edu.utn.frba.dds.persistencia.EntidadPersistente;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;

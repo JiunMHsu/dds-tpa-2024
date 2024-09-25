@@ -1,8 +1,8 @@
 package ar.edu.utn.frba.dds.models.entities.sugerencia;
 
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
-import ar.edu.utn.frba.dds.persistencia.EntidadPersistente;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;

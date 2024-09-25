@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.models.entities.usuario;
 
-import ar.edu.utn.frba.dds.persistencia.EntidadPersistente;
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -26,7 +26,7 @@ public class Usuario extends EntidadPersistente {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    public static Usuario with(String nombreUsuario, String contrasenia, String email) {
+    public static Usuario con(String nombreUsuario, String contrasenia, String email) {
         return Usuario
                 .builder()
                 .nombre(nombreUsuario)
@@ -35,14 +35,14 @@ public class Usuario extends EntidadPersistente {
                 .build();
     }
 
-    public static Usuario withEmail(String email) {
+    public static Usuario conEmail(String email) {
         return Usuario
                 .builder()
                 .email(email)
                 .build();
     }
 
-    public static Usuario empty() {
+    public static Usuario vacio() {
         return Usuario
                 .builder()
                 .build();

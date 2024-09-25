@@ -6,7 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class GeneradorDeCredenciales {
 
     public static Usuario generarUsuario(String nombre, String mail) {
-        return Usuario.with(nombre, GeneradorDeCredenciales.generarContrasenia(), mail);
+        return Usuario.con(nombre, GeneradorDeCredenciales.generarContrasenia(), mail);
     }
 
     private static String generarContrasenia() {

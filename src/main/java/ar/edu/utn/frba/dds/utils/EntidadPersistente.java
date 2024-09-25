@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.persistencia;
+package ar.edu.utn.frba.dds.utils;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -13,7 +13,6 @@ import lombok.Setter;
 @MappedSuperclass
 public abstract class EntidadPersistente {
 
-    // strategy = GenerationType.TABLE,
     @Id
     @GeneratedValue(generator = "uuid")
     private UUID id;

@@ -9,8 +9,8 @@ public class TestCalculadorDePuntos {
 //
 //  @BeforeEach
 //  public void setup() {
-//    persona = Colaborador.colaborador(Usuario.empty());
-//    otraPersona = Colaborador.colaborador(Usuario.empty());
+//    persona = Colaborador.colaborador(Usuario.vacio());
+//    otraPersona = Colaborador.colaborador(Usuario.vacio());
 //    canjeDePuntosRepository = new CanjeDePuntosRepository();
 //
 //    // Donacion Dinero. Los puntos por donar dinero es la cantidad de dinero donado multiplicado por 0.5

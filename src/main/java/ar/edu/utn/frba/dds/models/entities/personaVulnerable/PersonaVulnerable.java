@@ -1,8 +1,8 @@
 package ar.edu.utn.frba.dds.models.entities.personaVulnerable;
 
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.data.Documento;
-import ar.edu.utn.frba.dds.persistencia.EntidadPersistente;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Embedded;

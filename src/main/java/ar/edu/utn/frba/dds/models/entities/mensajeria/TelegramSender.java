@@ -1,7 +1,7 @@
-package ar.edu.utn.frba.dds.mensajeria;
+package ar.edu.utn.frba.dds.models.entities.mensajeria;
 
-import ar.edu.utn.frba.dds.AppConfig;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
+import ar.edu.utn.frba.dds.utils.AppProperties;
 import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.builder.RouteBuilder;
@@ -14,8 +14,8 @@ public class TelegramSender implements Sender {
     private ProducerTemplate producerTemplate;
 
     public TelegramSender() {
-        this.AUTHORIZATION_TOKEN = AppConfig.getProperty("TELEGRAM_AUTHORIZATION_TOKEN");
-        this.CHAT_ID = AppConfig.getProperty("TELEGRAM_CHAT_ID");
+        this.AUTHORIZATION_TOKEN = AppProperties.getInstance().propertyFromName("TELEGRAM_AUTHORIZATION_TOKEN");
+        this.CHAT_ID = AppProperties.getInstance().propertyFromName("TELEGRAM_CHAT_ID");
         configurarCamelContext();
     }
 

@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.tarjeta;
 
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.persistencia.EntidadPersistente;
 import ar.edu.utn.frba.dds.utils.GeneradorDeCodigosTarjeta;
 import java.time.LocalDate;
 import javax.persistence.Column;

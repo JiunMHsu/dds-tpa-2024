@@ -1,7 +1,7 @@
-package ar.edu.utn.frba.dds.mensajeria;
+package ar.edu.utn.frba.dds.models.entities.mensajeria;
 
-import ar.edu.utn.frba.dds.AppConfig;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
+import ar.edu.utn.frba.dds.utils.AppProperties;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.camel.CamelContext;
@@ -27,8 +27,8 @@ public class WhatsAppSender implements Sender {
     }
 
     public WhatsAppSender() {
-        this.phoneNumberId = AppConfig.getProperty("WHATSAPP_PHONE_NUMBER_ID");
-        this.authorizationToken = AppConfig.getProperty("WHATSAPP_AUTHORIZATION_TOKEN");
+        this.phoneNumberId = AppProperties.getInstance().propertyFromName("WHATSAPP_PHONE_NUMBER_ID");
+        this.authorizationToken = AppProperties.getInstance().propertyFromName("WHATSAPP_AUTHORIZATION_TOKEN");
         this.camelContext = new DefaultCamelContext();
         setupRoutes();
     }

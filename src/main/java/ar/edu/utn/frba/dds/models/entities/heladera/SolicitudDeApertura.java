@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.heladera;
 
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaColaborador;
-import ar.edu.utn.frba.dds.persistencia.EntidadPersistente;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;

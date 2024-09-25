@@ -1,12 +1,12 @@
 package ar.edu.utn.frba.dds.repositories;
 
-import ar.edu.utn.frba.dds.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.models.entities.data.Area;
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.data.Documento;
 import ar.edu.utn.frba.dds.models.entities.data.TipoDocumento;
 import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
+import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.TecnicoRepository;
 import io.github.flbulgarelli.jpa.extras.test.SimplePersistenceTest;

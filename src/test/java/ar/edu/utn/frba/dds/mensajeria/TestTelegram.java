@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.mensajeria;
 
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
+import ar.edu.utn.frba.dds.models.entities.mensajeria.TelegramSender;
 import org.junit.jupiter.api.Test;
 
 public class TestTelegram {

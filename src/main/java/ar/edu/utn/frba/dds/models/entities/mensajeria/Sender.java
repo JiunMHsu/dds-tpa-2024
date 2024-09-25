@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.mensajeria;
+package ar.edu.utn.frba.dds.models.entities.mensajeria;
 
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 
