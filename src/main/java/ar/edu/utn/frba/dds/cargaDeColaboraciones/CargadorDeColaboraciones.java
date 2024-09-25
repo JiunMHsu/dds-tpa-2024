@@ -69,10 +69,7 @@ public class CargadorDeColaboraciones implements WithSimplePersistenceUnit {
 
         try {
             for (CSVRecord csvRecord : csvParser) {
-                Documento documento = new Documento(
-                        csvRecord.get("Documento"),
-                        TipoDocumento.valueOf(csvRecord.get("Tipo Doc"))
-                );
+                Documento documento = new Documento(TipoDocumento.valueOf(csvRecord.get("Tipo Doc")), csvRecord.get("Documento"));
 
                 ColaboracionPrevia colaboracionPrevia = ColaboracionPrevia.of(
                         documento,

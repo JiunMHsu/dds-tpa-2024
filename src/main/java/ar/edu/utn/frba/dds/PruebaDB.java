@@ -120,7 +120,7 @@ public class PruebaDB implements WithSimplePersistenceUnit {
         Tecnico unTecnico = Tecnico.con(
                 "Matias Leonel",
                 "Juncos Mieres",
-                new Documento("12345678", TipoDocumento.DNI),
+                new Documento(TipoDocumento.DNI, "12345678"),
                 "24-12345678-0",
                 Contacto.conTelegram("7652931546"),
                 MedioDeNotificacion.TELEGRAM,
@@ -130,7 +130,7 @@ public class PruebaDB implements WithSimplePersistenceUnit {
         Tecnico otroTecnico = Tecnico.con(
                 "Joaquín",
                 "Gándola",
-                new Documento("82738291", TipoDocumento.DNI),
+                new Documento(TipoDocumento.DNI, "82738291"),
                 "22-82738291-1",
                 Contacto.conWhatsApp("8881928172"),
                 MedioDeNotificacion.WHATSAPP,
