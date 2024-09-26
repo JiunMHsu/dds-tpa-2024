@@ -48,11 +48,9 @@ public class TestTecnicoRepository implements SimplePersistenceTest {
                 new Area(new Ubicacion(-34.60711989660622, -58.414045825102896), 400.0, almagro)
         );
 
-        // guardar los tecnicos
-        withTransaction(() -> {
-            tecnicoRepository.guardar(unTecnico);
-            tecnicoRepository.guardar(otroTecnico);
-        });
+
+        tecnicoRepository.guardar(unTecnico);
+        tecnicoRepository.guardar(otroTecnico);
 
     }
 

@@ -51,7 +51,7 @@ public class Heladera extends EntidadPersistente {
     private EstadoHeladera estado;
 
     @Column(name = "cant_viandas", columnDefinition = "SMALLINT", nullable = false)
-    private Integer viandas;
+    private int viandas;
 
     public static Heladera con(String nombre,
                                Direccion direccion,
@@ -135,7 +135,7 @@ public class Heladera extends EntidadPersistente {
     }
 
     public Boolean puedeAgregarViandas(Integer cantidad) {
-        return (viandas + cantidad) < capacidad;
+        return (viandas + cantidad) <= capacidad;
     }
 
     public Boolean puedeQuitarViandas(Integer cantidad) {

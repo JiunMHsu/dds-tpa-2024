@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.utils;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -22,12 +22,12 @@ public abstract class EntidadPersistente {
     private Boolean alta;
 
     @Setter
-    @Column(name = "fecha_alta", columnDefinition = "DATE", nullable = false)
-    private LocalDate fechaAlta;
+    @Column(name = "fecha_alta", columnDefinition = "DATETIME", nullable = false)
+    private LocalDateTime fechaAlta;
 
     public EntidadPersistente() {
         this.alta = true;
-        this.fechaAlta = LocalDate.now();
+        this.fechaAlta = LocalDateTime.now();
     }
 }
 

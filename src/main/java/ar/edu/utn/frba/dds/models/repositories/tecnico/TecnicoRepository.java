@@ -10,7 +10,6 @@ public class TecnicoRepository implements WithSimplePersistenceUnit {
 
     public void guardar(Tecnico tecnico) {
         withTransaction(() -> entityManager().persist(tecnico));
-
     }
 
     public void actualizar(Tecnico tecnico) {
@@ -31,7 +30,6 @@ public class TecnicoRepository implements WithSimplePersistenceUnit {
                 .setParameter("alta", true)
                 .getSingleResult());
     }
-
 
     public List<Tecnico> obtenerPorBarrio(Barrio barrio) {
         return entityManager()

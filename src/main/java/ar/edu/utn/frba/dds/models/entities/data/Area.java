@@ -22,8 +22,8 @@ public class Area {
     @Column(name = "barrio")
     private Barrio barrio;
 
-    public double distanciaA(Ubicacion ubicacion2) {
-        double distanciaEntreUbicaciones = ubicacion.distanciaA(ubicacion2);
+    public double distanciaA(Ubicacion unaUbicacion) {
+        double distanciaEntreUbicaciones = this.ubicacion.distanciaA(unaUbicacion);
         return distanciaEntreUbicaciones - radio;
     }
 }

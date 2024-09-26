@@ -57,6 +57,7 @@ public class TestHeladera {
             Assertions.assertEquals(2, unaHeladera.getViandas(),
                     "Al guardar una vianda a la Heladera que ya tenía una, ahora tiene dos.");
         } catch (ExcepcionCantidadDeViandas e) {
+            System.out.println(e.getMessage());
             Assertions.fail("No se pudo guardar la vianda.");
         }
     }

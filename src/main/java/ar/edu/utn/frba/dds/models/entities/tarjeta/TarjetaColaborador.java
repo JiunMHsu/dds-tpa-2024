@@ -1,9 +1,8 @@
 package ar.edu.utn.frba.dds.models.entities.tarjeta;
 
-import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import ar.edu.utn.frba.dds.utils.GeneradorDeCodigosTarjeta;
-import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -30,24 +29,17 @@ public class TarjetaColaborador extends EntidadPersistente {
     @JoinColumn(name = "colaborador_id", nullable = false)
     private Colaborador duenio;
 
-    // TODO - Atributos repetidos por EntidadPersistente
-
-    @Column(name = "fecha_alta", columnDefinition = "DATE", nullable = false)
-    private LocalDate fechaAlta;
-
     @Setter
     @Column(name = "esta_activa")
     private Boolean esActiva;
 
     public static TarjetaColaborador de(String codigo,
                                         Colaborador duenio,
-                                        LocalDate fechaAlta,
                                         Boolean esActiva) {
         return TarjetaColaborador
                 .builder()
                 .codigo(codigo)
                 .duenio(duenio)
-                .fechaAlta(fechaAlta)
                 .esActiva(esActiva)
                 .build();
     }
@@ -57,7 +49,6 @@ public class TarjetaColaborador extends EntidadPersistente {
                 .builder()
                 .codigo(GeneradorDeCodigosTarjeta.generar())
                 .duenio(duenio)
-                .fechaAlta(LocalDate.now())
                 .esActiva(true)
                 .build();
     }

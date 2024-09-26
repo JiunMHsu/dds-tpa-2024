@@ -108,7 +108,7 @@ public class PruebaDB implements WithSimplePersistenceUnit {
 
         unColaborador.ifPresent(colaborador -> System.out.println(
                 "Colaborador: " + colaborador.getNombre() + "\n"
-                        + "Id: " + colaborador.getId().toString()
+                        + "Id: " + colaborador.getId().toString() + "\n"
                         + "Usuario: " + colaborador.getUsuario().getNombre() + "\n"
                         + "Clave: " + colaborador.getUsuario().getContrasenia() + "\n"
         ));
@@ -137,10 +137,8 @@ public class PruebaDB implements WithSimplePersistenceUnit {
                 new Area(new Ubicacion(-34.60711989660622, -58.414045825102896), 400.0, almagro)
         );
 
-        withTransaction(() -> {
-            tecnicoRepository.guardar(unTecnico);
-            tecnicoRepository.guardar(otroTecnico);
-        });
+        tecnicoRepository.guardar(unTecnico);
+        tecnicoRepository.guardar(otroTecnico);
     }
 
     private void recuperarTecnico() {
@@ -148,7 +146,9 @@ public class PruebaDB implements WithSimplePersistenceUnit {
 
         if (!tecnicosDeAlmagro.isEmpty()) {
             for (Tecnico tecnico : tecnicosDeAlmagro) {
-                System.out.println("Tecnico: " + tecnico.getNombre());
+                System.out.println("Tecnico: " + tecnico.getNombre() + "\n"
+                        + "Id: " + tecnico.getId().toString() + "\n"
+                        + "Fecha Alta: " + tecnico.getFechaAlta() + "\n");
             }
         }
     }
