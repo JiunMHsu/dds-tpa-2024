@@ -8,6 +8,9 @@
     <persistence-unit name="simple-persistence-unit" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
+        <!-- entity classes -->
+        <class>ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico</class>
+
         <properties>
             <property name="hibernate.archive.autodetection" value="class"/>
 
