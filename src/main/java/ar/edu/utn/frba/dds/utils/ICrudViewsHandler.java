@@ -21,7 +21,7 @@ public interface ICrudViewsHandler {
     void show(Context context);
 
     /**
-     * Pretende devolver una vista con un formnlario para dar de alta un nuevo recurso.
+     * Pretende devolver una vista con un formulario para dar de alta un nuevo recurso.
      * La ruta asociada debería ser GET /recurso/nuevo
      *
      * @param context Objeto Context de io.javalin.http
@@ -37,7 +37,7 @@ public interface ICrudViewsHandler {
     void save(Context context);
 
     /**
-     * Pretende devolver una vista con un formnlario que permita editar al recurso que llega por path param.
+     * Pretende devolver una vista con un formulario que permita editar al recurso que llega por path param.
      * La ruta asociada debería ser GET /recurso/{id}/edit
      *
      * @param context Objeto Context de io.javalin.http

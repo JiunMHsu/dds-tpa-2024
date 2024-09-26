@@ -2,18 +2,16 @@ package ar.edu.utn.frba.dds.models.entities.data;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Embeddable
 public class Calle {
     @Column(name = "calle_nombre")
     private String nombre;
 
-    public Calle(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public Calle() {
-    }
 }

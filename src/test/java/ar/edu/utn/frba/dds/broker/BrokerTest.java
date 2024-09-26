@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class TestBroker {
+public class BrokerTest {
 
     private final String topic = "dds/g22/test";
     private ClienteMqtt cliente;
