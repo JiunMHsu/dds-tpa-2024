@@ -9,8 +9,8 @@ import java.util.concurrent.TimeUnit;
 
 public class SuscriptorSensorTemperatura extends SuscriptorSensor {
 
+    private final long milisegundosEntreMensajes;
     private Instant tiempoUltimoMensaje;
-    private long milisegundosEntreMensajes;
 
     private SuscriptorSensorTemperatura(Sensor suscriptor,
                                         long intervaloDeMensajes,
