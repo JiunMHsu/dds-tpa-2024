@@ -1,0 +1,72 @@
+package ar.edu.utn.frba.dds.models.entities.mensajeria;
+
+import ar.edu.utn.frba.dds.models.entities.data.Contacto;
+import ar.edu.utn.frba.dds.utils.AppProperties;
+import jakarta.mail.Authenticator;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.PasswordAuthentication;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
+import java.util.Properties;
+import lombok.Getter;
+
+@Getter
+public class EmailSender implements Sender {
+
+    private final String host;
+    private final String port;
+    private final String usuario;
+    private final String contrasenia;
+
+    public EmailSender(String host, String port, String nombreUsuario, String contrasenia) {
+        this.host = host;
+        this.port = port;
+        this.usuario = nombreUsuario;
+        this.contrasenia = contrasenia;
+    }
+
+    public EmailSender() {
+        this.host = AppProperties.getInstance().propertyFromName("EMAIL_HOST");
+        this.port = AppProperties.getInstance().propertyFromName("EMAIL_PORT");
+        this.usuario = AppProperties.getInstance().propertyFromName("EMAIL_USER");
+        this.contrasenia = AppProperties.getInstance().propertyFromName("EMAIL_PASSWORD");
+    }
+
+    @Override
+    public void enviarMensaje(Contacto contacto, String asunto, String cuerpo) {
+        String receptor = contacto.getContacto(MedioDeNotificacion.EMAIL);
+
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", this.host);
+        props.put("mail.smtp.port", this.port);
+        props.put("mail.debug", "true");
+
+        Session session = Session.getInstance(props, new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(usuario, contrasenia);
+            }
+        });
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("your-email@example.com"));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receptor));
+            message.setSubject(asunto);
+            message.setText(cuerpo);
+
+            Transport.send(message);
+
+            System.out.println("Correo enviado");
+
+        } catch (MessagingException error) {
+            error.printStackTrace();
+            System.err.println("Error al enviar el mail: " + error.getMessage());
+        }
+    }
+
+}

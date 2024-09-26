@@ -1,12 +1,12 @@
 package ar.edu.utn.frba.dds.domain;
 
-import ar.edu.utn.frba.dds.models.data.Barrio;
-import ar.edu.utn.frba.dds.models.data.Calle;
-import ar.edu.utn.frba.dds.models.data.Direccion;
-import ar.edu.utn.frba.dds.models.data.Ubicacion;
-import ar.edu.utn.frba.dds.models.heladera.EstadoHeladera;
-import ar.edu.utn.frba.dds.models.heladera.Heladera;
-import ar.edu.utn.frba.dds.repository.heladera.HeladeraRepository;
+import ar.edu.utn.frba.dds.models.entities.data.Barrio;
+import ar.edu.utn.frba.dds.models.entities.data.Calle;
+import ar.edu.utn.frba.dds.models.entities.data.Direccion;
+import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
+import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
+import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
+import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;

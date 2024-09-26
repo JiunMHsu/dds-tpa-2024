@@ -1,22 +1,22 @@
 package ar.edu.utn.frba.dds.cargaDeColaboraciones;
 
-import ar.edu.utn.frba.dds.mensajeria.EmailSender;
-import ar.edu.utn.frba.dds.mensajeria.MedioDeNotificacion;
-import ar.edu.utn.frba.dds.mensajeria.Mensaje;
-import ar.edu.utn.frba.dds.models.colaboracion.DistribucionViandas;
-import ar.edu.utn.frba.dds.models.colaboracion.DonacionDinero;
-import ar.edu.utn.frba.dds.models.colaboracion.DonacionVianda;
-import ar.edu.utn.frba.dds.models.colaboracion.RepartoDeTarjetas;
-import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.models.data.Documento;
-import ar.edu.utn.frba.dds.models.data.TipoDocumento;
-import ar.edu.utn.frba.dds.models.usuario.Usuario;
-import ar.edu.utn.frba.dds.repository.colaboracion.DistribucionViandasRepository;
-import ar.edu.utn.frba.dds.repository.colaboracion.DonacionDineroRepository;
-import ar.edu.utn.frba.dds.repository.colaboracion.DonacionViandaRepository;
-import ar.edu.utn.frba.dds.repository.colaboracion.RepartoDeTarjetasRepository;
-import ar.edu.utn.frba.dds.repository.colaborador.ColaboradorRepository;
-import ar.edu.utn.frba.dds.repository.mensajeria.MensajeRepository;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDinero;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.RepartoDeTarjetas;
+import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.models.entities.data.Documento;
+import ar.edu.utn.frba.dds.models.entities.data.TipoDocumento;
+import ar.edu.utn.frba.dds.models.entities.mensajeria.EmailSender;
+import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
+import ar.edu.utn.frba.dds.models.entities.mensajeria.Mensaje;
+import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetasRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
+import ar.edu.utn.frba.dds.models.repositories.mensajeria.MensajeRepository;
 import ar.edu.utn.frba.dds.utils.GeneradorDeCredenciales;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.io.IOException;
@@ -69,10 +69,7 @@ public class CargadorDeColaboraciones implements WithSimplePersistenceUnit {
 
         try {
             for (CSVRecord csvRecord : csvParser) {
-                Documento documento = new Documento(
-                        csvRecord.get("Documento"),
-                        TipoDocumento.valueOf(csvRecord.get("Tipo Doc"))
-                );
+                Documento documento = new Documento(TipoDocumento.valueOf(csvRecord.get("Tipo Doc")), csvRecord.get("Documento"));
 
                 ColaboracionPrevia colaboracionPrevia = ColaboracionPrevia.of(
                         documento,

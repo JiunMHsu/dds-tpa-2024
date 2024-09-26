@@ -1,11 +1,11 @@
 package ar.edu.utn.frba.dds.domain;
 
-import ar.edu.utn.frba.dds.models.data.Calle;
-import ar.edu.utn.frba.dds.models.data.Direccion;
-import ar.edu.utn.frba.dds.models.heladera.EstadoHeladera;
-import ar.edu.utn.frba.dds.models.heladera.ExcepcionCantidadDeViandas;
-import ar.edu.utn.frba.dds.models.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.heladera.RangoTemperatura;
+import ar.edu.utn.frba.dds.models.entities.data.Calle;
+import ar.edu.utn.frba.dds.models.entities.data.Direccion;
+import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
+import ar.edu.utn.frba.dds.models.entities.heladera.ExcepcionCantidadDeViandas;
+import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
+import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -57,6 +57,7 @@ public class TestHeladera {
             Assertions.assertEquals(2, unaHeladera.getViandas(),
                     "Al guardar una vianda a la Heladera que ya tenía una, ahora tiene dos.");
         } catch (ExcepcionCantidadDeViandas e) {
+            System.out.println(e.getMessage());
             Assertions.fail("No se pudo guardar la vianda.");
         }
     }

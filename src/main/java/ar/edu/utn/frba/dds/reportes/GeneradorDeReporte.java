@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.reportes;
 
-import ar.edu.utn.frba.dds.AppConfig;
+import ar.edu.utn.frba.dds.utils.AppProperties;
 import com.aspose.pdf.Color;
 import com.aspose.pdf.Document;
 import com.aspose.pdf.HtmlFragment;
@@ -50,7 +50,7 @@ public class GeneradorDeReporte {
                 .registroIncidente(registroIncidente)
                 .registroDonacion(registroDonacion)
                 .registroMovimiento(registroMovimiento)
-                .directorioReportes(AppConfig.getProperty("REPORT_DIR"))
+                .directorioReportes(AppProperties.getInstance().propertyFromName("REPORT_DIR"))
                 .planificador(Executors.newScheduledThreadPool(1))
                 .build();
     }

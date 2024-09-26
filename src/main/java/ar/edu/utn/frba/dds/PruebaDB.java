@@ -1,24 +1,24 @@
 package ar.edu.utn.frba.dds;
 
-import ar.edu.utn.frba.dds.mensajeria.MedioDeNotificacion;
-import ar.edu.utn.frba.dds.models.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.models.data.Area;
-import ar.edu.utn.frba.dds.models.data.Barrio;
-import ar.edu.utn.frba.dds.models.data.Calle;
-import ar.edu.utn.frba.dds.models.data.Contacto;
-import ar.edu.utn.frba.dds.models.data.Direccion;
-import ar.edu.utn.frba.dds.models.data.Documento;
-import ar.edu.utn.frba.dds.models.data.TipoDocumento;
-import ar.edu.utn.frba.dds.models.data.Ubicacion;
-import ar.edu.utn.frba.dds.models.heladera.EstadoHeladera;
-import ar.edu.utn.frba.dds.models.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.heladera.RangoTemperatura;
-import ar.edu.utn.frba.dds.models.tecnico.Tecnico;
-import ar.edu.utn.frba.dds.models.usuario.Usuario;
-import ar.edu.utn.frba.dds.repository.colaborador.ColaboradorRepository;
-import ar.edu.utn.frba.dds.repository.heladera.HeladeraRepository;
-import ar.edu.utn.frba.dds.repository.tecnico.TecnicoRepository;
-import ar.edu.utn.frba.dds.repository.usuario.UsuarioRepository;
+import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.models.entities.data.Area;
+import ar.edu.utn.frba.dds.models.entities.data.Barrio;
+import ar.edu.utn.frba.dds.models.entities.data.Calle;
+import ar.edu.utn.frba.dds.models.entities.data.Contacto;
+import ar.edu.utn.frba.dds.models.entities.data.Direccion;
+import ar.edu.utn.frba.dds.models.entities.data.Documento;
+import ar.edu.utn.frba.dds.models.entities.data.TipoDocumento;
+import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
+import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
+import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
+import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
+import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
+import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
+import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
+import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
+import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
+import ar.edu.utn.frba.dds.models.repositories.tecnico.TecnicoRepository;
+import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDate;
 import java.util.List;
@@ -80,7 +80,7 @@ public class PruebaDB implements WithSimplePersistenceUnit {
     }
 
     private void guardarColaborador() {
-        Usuario unUsuario = Usuario.with("JiunMHsu", "iMC4(*&A^F0OK?%87", "hsujm219@gmail.com");
+        Usuario unUsuario = Usuario.con("JiunMHsu", "iMC4(*&A^F0OK?%87", "hsujm219@gmail.com");
         Direccion direccion = new Direccion(
                 new Barrio("Almagro"),
                 new Calle("Medrano"),
@@ -108,7 +108,7 @@ public class PruebaDB implements WithSimplePersistenceUnit {
 
         unColaborador.ifPresent(colaborador -> System.out.println(
                 "Colaborador: " + colaborador.getNombre() + "\n"
-                        + "Id: " + colaborador.getId().toString()
+                        + "Id: " + colaborador.getId().toString() + "\n"
                         + "Usuario: " + colaborador.getUsuario().getNombre() + "\n"
                         + "Clave: " + colaborador.getUsuario().getContrasenia() + "\n"
         ));
@@ -120,7 +120,7 @@ public class PruebaDB implements WithSimplePersistenceUnit {
         Tecnico unTecnico = Tecnico.con(
                 "Matias Leonel",
                 "Juncos Mieres",
-                new Documento("12345678", TipoDocumento.DNI),
+                new Documento(TipoDocumento.DNI, "12345678"),
                 "24-12345678-0",
                 Contacto.conTelegram("7652931546"),
                 MedioDeNotificacion.TELEGRAM,
@@ -130,17 +130,15 @@ public class PruebaDB implements WithSimplePersistenceUnit {
         Tecnico otroTecnico = Tecnico.con(
                 "Joaquín",
                 "Gándola",
-                new Documento("82738291", TipoDocumento.DNI),
+                new Documento(TipoDocumento.DNI, "82738291"),
                 "22-82738291-1",
                 Contacto.conWhatsApp("8881928172"),
                 MedioDeNotificacion.WHATSAPP,
                 new Area(new Ubicacion(-34.60711989660622, -58.414045825102896), 400.0, almagro)
         );
 
-        withTransaction(() -> {
-            tecnicoRepository.guardar(unTecnico);
-            tecnicoRepository.guardar(otroTecnico);
-        });
+        tecnicoRepository.guardar(unTecnico);
+        tecnicoRepository.guardar(otroTecnico);
     }
 
     private void recuperarTecnico() {
@@ -148,7 +146,9 @@ public class PruebaDB implements WithSimplePersistenceUnit {
 
         if (!tecnicosDeAlmagro.isEmpty()) {
             for (Tecnico tecnico : tecnicosDeAlmagro) {
-                System.out.println("Tecnico: " + tecnico.getNombre());
+                System.out.println("Tecnico: " + tecnico.getNombre() + "\n"
+                        + "Id: " + tecnico.getId().toString() + "\n"
+                        + "Fecha Alta: " + tecnico.getFechaAlta() + "\n");
             }
         }
     }

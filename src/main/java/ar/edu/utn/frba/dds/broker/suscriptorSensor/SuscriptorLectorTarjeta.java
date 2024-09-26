@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.broker.suscriptorSensor;
 
-import ar.edu.utn.frba.dds.models.sensor.Sensor;
+import ar.edu.utn.frba.dds.models.entities.sensor.Sensor;
 
 public class SuscriptorLectorTarjeta extends SuscriptorSensor {
 
