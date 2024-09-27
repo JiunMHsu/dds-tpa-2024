@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class ServiceLocator {
 
-    private static Map<String, Object> instances = new HashMap<>();
+    private static final Map<String, Object> instances = new HashMap<>();
 
     @SuppressWarnings("unchecked")
     public static <T> T instanceOf(Class<T> componentClass) {

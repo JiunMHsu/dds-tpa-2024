@@ -1,28 +1,19 @@
 package ar.edu.utn.frba.dds.controllers.heladera;
 
-import ar.edu.utn.frba.dds.models.repositories.heladera.AperturaHeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
-import ar.edu.utn.frba.dds.models.repositories.heladera.RetiroDeViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.SolicitudDeAperturaRepository;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 
-public class HeladeraController implements ICrudViewsHandler {
+public class SolicitudDeAperturaController implements ICrudViewsHandler {
 
     private HeladeraRepository heladeraRepository;
-    private RetiroDeViandaRepository retiroDeViandaRepository;
     private SolicitudDeAperturaRepository solicitudDeAperturaRepository;
-    private AperturaHeladeraRepository aperturaHeladeraRepository;
 
-    // TODO - Dependencia a clase concreta o generar interfaces??
-    public HeladeraController(HeladeraRepository heladeraRepository,
-                              RetiroDeViandaRepository retiroDeViandaRepository,
-                              SolicitudDeAperturaRepository solicitudDeAperturaRepository,
-                              AperturaHeladeraRepository aperturaHeladeraRepository) {
+    public SolicitudDeAperturaController(HeladeraRepository heladeraRepository,
+                                         SolicitudDeAperturaRepository solicitudDeAperturaRepository) {
         this.heladeraRepository = heladeraRepository;
-        this.retiroDeViandaRepository = retiroDeViandaRepository;
         this.solicitudDeAperturaRepository = solicitudDeAperturaRepository;
-        this.aperturaHeladeraRepository = aperturaHeladeraRepository;
     }
 
     @Override
@@ -60,6 +51,4 @@ public class HeladeraController implements ICrudViewsHandler {
 
     }
 
-    // métodos para manejar mensaje de los sensores
-    
 }

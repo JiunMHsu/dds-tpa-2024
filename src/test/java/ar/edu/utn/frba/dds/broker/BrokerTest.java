@@ -13,7 +13,7 @@ public class BrokerTest {
         final String topic = "dds/g22/test/1";
         final ClienteMqtt cliente = new ClienteMqtt();
 
-        class SuscriptorTest implements SuscriptorMqtt {
+        class SuscriptorTest implements ISuscriptorMqtt {
             @Override
             public String topic() {
                 return topic;
@@ -25,7 +25,7 @@ public class BrokerTest {
             }
         }
 
-        SuscriptorMqtt unSuscriptor = new SuscriptorTest();
+        ISuscriptorMqtt unSuscriptor = new SuscriptorTest();
         cliente.suscribirPara(unSuscriptor);
         ClienteMqtt clientePublicador = new ClienteMqtt();
 

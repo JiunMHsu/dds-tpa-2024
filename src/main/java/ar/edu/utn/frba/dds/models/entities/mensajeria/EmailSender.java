@@ -14,7 +14,7 @@ import java.util.Properties;
 import lombok.Getter;
 
 @Getter
-public class EmailSender implements Sender {
+public class EmailSender implements ISender {
 
     private final String host;
     private final String port;
