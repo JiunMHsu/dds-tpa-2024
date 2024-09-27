@@ -32,7 +32,7 @@ public class Server {
 
         Router.init(app);
 
-        if (Boolean.parseBoolean(AppProperties.getInstance().propertyFromName("DEV_MODE"))) {
+        if (AppProperties.getInstance().boolPropertyFromName("DEV_MODE")) {
             Initializer.init();
         }
     }
