@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.domain;
 
-public class TestTecnicoMasCercano {
+public class TecnicoMasCercanoTest {
 
 //  Tecnico tecnico1 = Tecnico.con("1", Contacto.vacio(), new Area(new Ubicacion(-34.615803, -58.433298), 9.0));
 //  Tecnico tecnico2 = Tecnico.con("2", Contacto.vacio(), new Area(new Ubicacion(-34.615803, -58.433298), 6.0));

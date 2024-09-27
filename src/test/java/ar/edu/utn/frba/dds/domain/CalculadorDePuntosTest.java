@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.domain;
 
-public class TestCalculadorDePuntos {
+public class CalculadorDePuntosTest {
 
 //  private Colaborador persona;
 //  private Colaborador otraPersona;

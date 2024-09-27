@@ -4,9 +4,9 @@ import java.time.LocalDateTime;
 
 public class Notificador {
 
-    private Sender sender;
+    private ISender sender;
 
-    public Notificador(Sender sender) {
+    public Notificador(ISender sender) {
         this.sender = sender;
     }
 

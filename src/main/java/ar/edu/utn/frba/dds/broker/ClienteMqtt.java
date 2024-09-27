@@ -21,21 +21,34 @@ public class ClienteMqtt {
         client.connectWith().send();
     }
 
-    public void suscribirPara(SuscriptorMqtt suscriptor) {
+    public void suscribirPara(ISuscriptorMqtt suscriptor) {
         client.toAsync().subscribeWith()
                 .topicFilter(suscriptor.topic())
                 .qos(MqttQos.AT_MOST_ONCE)
-                .callback(mqtt5Publish -> suscriptor.recibirMensaje(
-                        StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString()
-                ))
-                .send();
+                .callback(mqtt5Publish -> {
+                    String mensaje = "";
+                    if (mqtt5Publish.getPayload().isPresent()) {
+                        mensaje = StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString();
+                    }
+                    suscriptor.recibirMensaje(mensaje);
+                })
+                .send()
+                .whenComplete((subAck, throwable) -> {
+                    if (throwable != null) {
+                        throwable.printStackTrace();
+                        System.out.printf("La suscripción a %s falló. \n", suscriptor.topic());
+                    } else {
+                        System.out.printf("La suscripción a %s completada. \n", suscriptor.topic());
+                    }
+                });
     }
 
     public void publicarMensaje(String topic, String payload) {
         client.publishWith()
                 .topic(topic)
+                .retain(true)
                 .payload(payload.getBytes(StandardCharsets.UTF_8))
-                .qos(MqttQos.AT_MOST_ONCE)
+                .qos(MqttQos.AT_LEAST_ONCE)
                 .send();
     }
 }

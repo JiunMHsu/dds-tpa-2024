@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class HeladeraRepository implements WithSimplePersistenceUnit {
+public class HeladeraRepository implements IHeladeraRepository, WithSimplePersistenceUnit {
 
     public void guardar(Heladera heladera) {
         withTransaction(() -> entityManager().persist(heladera));

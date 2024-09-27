@@ -160,10 +160,7 @@ public class Heladera extends EntidadPersistente {
 
     public Tecnico tecnicoMasCercano(TecnicoRepository tecnicoRepository) {
         return tecnicoRepository.obtenerPorBarrio(direccion.getBarrio()).get(0);
-//            .stream()
-//            .min(Comparator.comparingDouble(tecnico -> tecnico.getAreaDeCobertura()
-//            .distanciaA(direccion.getUbicacion())))
-//            .orElseThrow(() -> new RuntimeException("No se encontró ningún técnico."));
+
     }
 
     public List<Heladera> heladerasActivasMasCercanas(HeladeraRepository heladeraRepository) {

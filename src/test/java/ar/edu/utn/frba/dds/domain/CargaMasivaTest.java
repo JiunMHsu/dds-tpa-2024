@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.domain;
 
-public class TestCargaMasiva {
+public class CargaMasivaTest {
 
 //    CargadorDeColaboraciones cargadorDeColaboraciones;
 //    ColaboradorRepository colaboradorRepository;

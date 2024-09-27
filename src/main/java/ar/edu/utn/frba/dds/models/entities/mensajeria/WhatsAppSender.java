@@ -13,7 +13,7 @@ import org.apache.camel.impl.DefaultCamelContext;
 
 @Getter
 @Setter
-public class WhatsAppSender implements Sender {
+public class WhatsAppSender implements ISender {
 
     private final String phoneNumberId;
     private final String authorizationToken;

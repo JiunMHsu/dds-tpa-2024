@@ -7,7 +7,7 @@ import org.apache.camel.ProducerTemplate;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.impl.DefaultCamelContext;
 
-public class TelegramSender implements Sender {
+public class TelegramSender implements ISender {
     private final String AUTHORIZATION_TOKEN;
     private final String CHAT_ID;
     private CamelContext camelContext;

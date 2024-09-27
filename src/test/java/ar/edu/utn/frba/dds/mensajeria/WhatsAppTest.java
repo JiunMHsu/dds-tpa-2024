@@ -4,7 +4,7 @@ import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.WhatsAppSender;
 import org.junit.jupiter.api.Test;
 
-public class TestWhatsApp {
+public class WhatsAppTest {
     @Test
     public void enviarWhatsApp() {
         WhatsAppSender whatsAppSender = new WhatsAppSender();
