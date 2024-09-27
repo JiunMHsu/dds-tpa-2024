@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class TestValidadorDeContrasenias {
+public class ValidadorDeContraseniasTest {
 
     ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
 

@@ -12,7 +12,7 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class TestHeladerasMasCercanas {
+public class HeladerasMasCercanasTest {
 
     HeladeraRepository heladeraRepository = new HeladeraRepository();
 

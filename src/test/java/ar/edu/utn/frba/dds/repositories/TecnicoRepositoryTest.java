@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class TestTecnicoRepository implements SimplePersistenceTest {
+public class TecnicoRepositoryTest implements SimplePersistenceTest {
 
     private TecnicoRepository tecnicoRepository;
     private Barrio almagro;

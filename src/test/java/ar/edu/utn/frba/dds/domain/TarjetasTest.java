@@ -12,7 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class TestTarjetas {
+public class TarjetasTest {
 
     private TarjetaPersonaVulnerable tarjeta1;
     private TarjetaPersonaVulnerable tarjeta2;
