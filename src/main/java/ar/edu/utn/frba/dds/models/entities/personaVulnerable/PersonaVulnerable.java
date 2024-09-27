@@ -1,8 +1,8 @@
 package ar.edu.utn.frba.dds.models.entities.personaVulnerable;
 
-import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.data.Documento;
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -36,8 +36,7 @@ public class PersonaVulnerable extends EntidadPersistente {
     private LocalDate fechaRegistro;
 
     @Embedded
-    private Direccion domicilio; // Lo hicimos por Embedded :D
-
+    private Direccion domicilio;
 
     @Column(name = "menores_a_cargo")
     private Integer menoresACargo;
