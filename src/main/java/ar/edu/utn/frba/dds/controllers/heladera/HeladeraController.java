@@ -14,7 +14,6 @@ public class HeladeraController implements ICrudViewsHandler {
     private SolicitudDeAperturaRepository solicitudDeAperturaRepository;
     private AperturaHeladeraRepository aperturaHeladeraRepository;
 
-    // TODO - Dependencia a clase concreta o generar interfaces??
     public HeladeraController(HeladeraRepository heladeraRepository,
                               RetiroDeViandaRepository retiroDeViandaRepository,
                               SolicitudDeAperturaRepository solicitudDeAperturaRepository,
@@ -61,5 +60,5 @@ public class HeladeraController implements ICrudViewsHandler {
     }
 
     // métodos para manejar mensaje de los sensores
-    
+
 }
