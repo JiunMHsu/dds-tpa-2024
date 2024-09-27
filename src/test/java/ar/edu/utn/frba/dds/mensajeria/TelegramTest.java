@@ -4,7 +4,7 @@ import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.TelegramSender;
 import org.junit.jupiter.api.Test;
 
-public class TestTelegram {
+public class TelegramTest {
 
     @Test
     public void enviarTelegram() {

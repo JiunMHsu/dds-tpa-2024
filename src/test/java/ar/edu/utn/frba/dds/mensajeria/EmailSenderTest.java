@@ -4,7 +4,7 @@ import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.EmailSender;
 import org.junit.jupiter.api.Test;
 
-public class TestEmailSender {
+public class EmailSenderTest {
 
     @Test
     public void testEmailSender() {
