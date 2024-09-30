@@ -44,4 +44,10 @@ public class HeladeraRepository implements IHeladeraRepository, WithSimplePersis
                 .getResultList();
     }
 
+    public List<Heladera> obtenerTodos() {
+        return entityManager()
+                .createQuery("from Heladera", Heladera.class)
+                .getResultList();
+    }
+
 }
