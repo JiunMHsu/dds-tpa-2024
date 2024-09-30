@@ -8,9 +8,11 @@ import ar.edu.utn.frba.dds.models.repositories.heladera.SolicitudDeAperturaRepos
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 
+import java.util.UUID;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class HeladeraController implements ICrudViewsHandler {
 
@@ -42,6 +44,18 @@ public class HeladeraController implements ICrudViewsHandler {
 
     @Override
     public void show(Context context) {
+        //por id
+        Optional<Heladera> posibleHeladeraBuscada = this.heladeraRepository.obtenerPorId(UUID.fromString(context.pathParam("id")));
+
+        if(posibleHeladeraBuscada.isEmpty()) {
+            context.status(404);//not found
+            return;
+        }
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("heladera", posibleHeladeraBuscada.get());
+
+        context.render("heladera/detalle_heladera.hbs", model);
 
     }
 
