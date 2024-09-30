@@ -8,6 +8,7 @@ public class Router {
         app.get("/", ctx -> ctx.redirect("/home"));
         app.get("/home", ctx -> ctx.render("home/home.hbs"));
         app.get("/heladeras", ctx -> ctx.render("heladeras/heladeras.hbs"));
+        app.get("/colaboraciones", ctx -> ctx.render("colaboraciones/colaboraciones.hbs"));
         app.get("/test", ctx -> ctx.result("DDS TPA"));
     }
 

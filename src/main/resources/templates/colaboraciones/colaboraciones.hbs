@@ -1,0 +1,100 @@
+{{#partial "title"}}
+    Colaboraciones
+{{/partial}}
+{{#partial "links"}}
+    <link rel="stylesheet" href="css/colaboraciones.css"/>
+{{/partial}}
+{{#partial "scripts"}}
+{{/partial}}
+{{#partial "main-content"}}
+    <h2 class="title">Colaboraciones Realizadas</h2>
+
+    <div class="filter-container">
+        <div class="filter">FILTROS</div>
+        <!-- barra de búsqueda y filtros -->
+        <!-- filtro: activo, suscripto, encargado -->
+    </div>
+
+    <div class="paging-nav">
+        <a href="" class="paging-button">
+            <span class="material-symbols-rounded"> keyboard_arrow_left </span>
+        </a>
+        <a href="" class="paging-button">
+            <span class="material-symbols-rounded"> keyboard_arrow_right </span>
+        </a>
+    </div>
+
+    <div class="scrollable">
+        <ul class="historial-colaboraciones">
+            <!-- !! MODELO DE ITEM -->
+            <li class="colaboracion-realizada">
+                <a href="" class="card-colaboracion">
+                    <h3 class="card-title">Donación de Dinero</h3>
+                    <p>
+                  <span class="material-symbols-rounded card-detail-icon">
+                    today
+                  </span>
+                        Fecha: 12/10/2021
+                    </p>
+                </a>
+            </li>
+            <!-- !! MODELO DE ITEM -->
+
+            <!-- iteración de colaboraciones (paginada de a 20) -->
+        </ul>
+    </div>
+{{/partial}}
+{{#partial "side-panel"}}
+    <!-- renderizado condicional de colaboraciones que el usuario puede realizar -->
+    <div class="lista-colaboraciones">
+        <div class="item-colaboracion">
+            <h3 class="colaboracion-title">Donar Dinero</h3>
+            <div class="colaboracion-button-container">
+                <a href="" class="colaboracion-button">colaborar</a>
+            </div>
+        </div>
+
+        <div class="item-colaboracion">
+            <h3 class="colaboracion-title">Donar Vianda</h3>
+            <div class="colaboracion-button-container">
+                <a href="" class="colaboracion-button">colaborar</a>
+            </div>
+        </div>
+
+        <div class="item-colaboracion">
+            <h3 class="colaboracion-title">Registrar Persona Vulnerable</h3>
+            <div class="colaboracion-button-container">
+                <a href="" class="colaboracion-button">colaborar</a>
+            </div>
+        </div>
+
+        <div class="item-colaboracion">
+            <h3 class="colaboracion-title">Entregar Viandas</h3>
+            <div class="colaboracion-button-container">
+                <a href="" class="colaboracion-button">colaborar</a>
+            </div>
+        </div>
+
+        <div class="item-colaboracion">
+            <h3 class="colaboracion-title">Distribuir Viandas</h3>
+            <div class="colaboracion-button-container">
+                <a href="" class="colaboracion-button">colaborar</a>
+            </div>
+        </div>
+
+        <div class="item-colaboracion">
+            <h3 class="colaboracion-title">Ofrecer Producto / Servicio</h3>
+            <div class="colaboracion-button-container">
+                <a href="" class="colaboracion-button">colaborar</a>
+            </div>
+        </div>
+
+        <div class="item-colaboracion">
+            <h3 class="colaboracion-title">Hacer Cargo de Heladeras</h3>
+            <div class="colaboracion-button-container">
+                <a href="" class="colaboracion-button">colaborar</a>
+            </div>
+        </div>
+    </div>
+{{/partial}}
+{{> templates/base}}
