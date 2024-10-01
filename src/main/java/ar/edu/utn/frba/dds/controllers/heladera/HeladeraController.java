@@ -8,11 +8,7 @@ import ar.edu.utn.frba.dds.models.repositories.heladera.SolicitudDeAperturaRepos
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 
-import java.util.UUID;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class HeladeraController implements ICrudViewsHandler {
 
@@ -61,11 +57,28 @@ public class HeladeraController implements ICrudViewsHandler {
 
     @Override
     public void create(Context context) {
-
+        if (false) { // TODO usuario no tiene permiso de admin
+            context.status(403).result("No tienes permiso para dar de alta la heladera.");
+            return;
+        }
+        context.render("heladera/formulario_heladera.hbs");// en este caso no necesito datos de la bs para el formulario
     }
 
     @Override
     public void save(Context context) {
+        Heladera nuevaHeladera = new Heladera();
+
+        nuevaHeladera.setNombre(context.formParam("nombre"));
+        //nuevaHeladera.setDireccion(context.formParam("direccion"));
+        //nuevaHeladera.setViandas(Integer.valueOf(Objects.requireNonNull(context.formParam("viandas"))));
+        nuevaHeladera.setNombre(context.formParam("nombre"));
+
+        nuevaHeladera.setCapacidad(Integer.valueOf(Objects.requireNonNull(context.formParam("capacidad"))));
+
+        this.repositorioDeProductos.guardar(nuevoProducto);
+        //O BIEN LANZO UNA PANTALLA DE EXITO
+        //O BIEN REDIRECCIONO AL USER A LA PANTALLA DE LISTADO DE PRODUCTOS
+        context.redirect("/productos");
 
     }
 
