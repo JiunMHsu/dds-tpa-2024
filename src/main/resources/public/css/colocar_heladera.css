@@ -1,0 +1,108 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.main-section {
+    border: 1px solid var(--background-3);
+    overflow-y: hidden;
+}
+
+.form {
+    grid-template-columns: 15rem 15rem;
+}
+
+.field-nombre {
+    grid-column: 1 / -1;
+}
+
+.field-capacidad {
+    grid-column: 1 / -1;
+}
+
+.side-panel {
+    width: 40vw;
+    justify-content: flex-end;
+    border: none;
+    padding: 0 .2rem 0;
+}
+
+.solicitud-recomendacioes {
+    height: 55vh;
+    overflow-x: scroll;
+}
+
+.solicitud-title {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.form-recomendacion {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: .7rem;
+    margin: 1rem 0 1rem;
+}
+
+.form-recomendacion label {
+    width: 10rem;
+}
+
+.form-recomendacion .form-button-container {
+    margin-top: .2rem;
+}
+
+.resultados-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-content: center;
+    align-items: center;
+    row-gap: .5rem;
+    width: 100%;
+    margin: .2rem 0 .7rem;
+}
+
+.card-resultado {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: .7rem;
+    border-radius: .7rem;
+    border: 1px solid var(--background-3);
+    background-color: var(--background-2);
+
+    transition-property: all;
+    transition-duration: 300ms;
+}
+
+.card-resultado:hover {
+    cursor: default;
+    color: var(--main-light-0);
+    text-shadow: 0 0 .5rem var(--foreground-2);
+    background-color: var(--background-1);
+}
+
+.card-resultado p {
+    display: flex;
+    align-items: center;
+    margin: .2rem;
+    font-size: .8rem;
+}
+
+.card-detail-icon {
+    font-size: .8rem;
+    margin-right: .5rem;
+}
+
+.map-container {
+    display: flex;
+    height: 40vh;
+    width: 100%;
+    border-radius: .7rem;
+    overflow: hidden;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+}

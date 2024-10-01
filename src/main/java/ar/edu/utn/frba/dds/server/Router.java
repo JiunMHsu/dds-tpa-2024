@@ -6,9 +6,15 @@ public class Router {
 
     public static void init(Javalin app) {
         app.get("/", ctx -> ctx.redirect("/home"));
+
         app.get("/home", ctx -> ctx.render("home/home.hbs"));
+
+        app.get("/heladeras/nueva", ctx -> ctx.render("heladeras/colocar_heladera.hbs"));
+
         app.get("/heladeras", ctx -> ctx.render("heladeras/heladeras.hbs"));
+
         app.get("/colaboraciones", ctx -> ctx.render("colaboraciones/colaboraciones.hbs"));
+
         app.get("/test", ctx -> ctx.result("DDS TPA"));
     }
 
