@@ -8,6 +8,7 @@ import ar.edu.utn.frba.dds.models.repositories.heladera.SolicitudDeAperturaRepos
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class HeladeraController implements ICrudViewsHandler {
@@ -70,12 +71,14 @@ public class HeladeraController implements ICrudViewsHandler {
 
         nuevaHeladera.setNombre(context.formParam("nombre"));
         //nuevaHeladera.setDireccion(context.formParam("direccion"));
-        //nuevaHeladera.setViandas(Integer.valueOf(Objects.requireNonNull(context.formParam("viandas"))));
-        nuevaHeladera.setNombre(context.formParam("nombre"));
+        //nuevaHeladera.setViandas(Integer.valueOf(Objects.requireNonNull(context.formParam("viandas")))); deberia ser cero?
+        //nuevaHeladera.setRangoTemperatura(context.formParam("nombre"));
+        nuevaHeladera.setInicioFuncionamiento(LocalDateTime.now());
+        // deberia usar el builder
 
         nuevaHeladera.setCapacidad(Integer.valueOf(Objects.requireNonNull(context.formParam("capacidad"))));
 
-        this.repositorioDeProductos.guardar(nuevoProducto);
+        this.heladeraRepository.guardar(nuevaHeladera);
         //O BIEN LANZO UNA PANTALLA DE EXITO
         //O BIEN REDIRECCIONO AL USER A LA PANTALLA DE LISTADO DE PRODUCTOS
         context.redirect("/productos");
