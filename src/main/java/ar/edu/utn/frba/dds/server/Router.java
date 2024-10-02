@@ -9,7 +9,7 @@ public class Router {
 
         app.get("/home", ctx -> ctx.render("home/home.hbs"));
 
-        app.get("/heladeras/nueva", ctx -> ctx.render("heladeras/colocar_heladera.hbs"));
+        app.get("/heladeras/nueva", ctx -> ctx.render("heladeras/heladera_crear.hbs"));
 
         app.get("/heladeras", ctx -> ctx.render("heladeras/heladeras.hbs"));
 

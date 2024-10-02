@@ -3,6 +3,10 @@
     overflow-y: hidden;
 }
 
+.list-container {
+    width: 75%;
+}
+
 .side-panel {
     border: none;
 }
