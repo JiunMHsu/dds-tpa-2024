@@ -1,0 +1,61 @@
+{{#partial "title"}}
+    Ofrecer Producto o Servicio
+{{/partial}}
+{{#partial "links"}}
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/colaboraciones/oferta_prod_serv_crear.css"/>
+{{/partial}}
+{{#partial "scripts"}}
+{{/partial}}
+{{#partial "main-content"}}
+    <div class="form-container">
+        <h2 class="form-title">Ofrecer Producto o Servicio</h2>
+
+        <form action="/colaboraciones/oferta-producto-servicio" method="post" class="form">
+            <label class="field-nombre">
+                Nombre de Producto / Servicio
+                <input
+                        type="text"
+                        name="nombre"
+                        placeholder="Aire Acondicionado"
+                        required
+                />
+            </label>
+
+            <label class="field-rubro">
+                Rubro
+                <select name="rubro" required>
+                    <option value="" disabled selected>Seleccionar</option>
+                    <!-- iterar según define el sistema -->
+                    <option value="gastronomia">Gastronomía</option>
+                    <option value="electronica">Electrónica</option>
+                    <option value="hogar">Hogar</option>
+                </select>
+            </label>
+
+            <label class="field-puntos">
+                Puntos Necesarios
+                <input
+                        type="number"
+                        min="1"
+                        step="1"
+                        name="puntos"
+                        placeholder="570"
+                        required
+                />
+            </label>
+
+            <label class="field-imagen">
+                Imagen
+                <input type="file" name="imagen" accept=".png, .jpg, .jpeg" required/>
+            </label>
+
+            <div class="form-button-container">
+                <button type="submit">Aceptar</button>
+            </div>
+        </form>
+    </div>
+{{/partial}}
+{{#partial "side-panel"}}
+{{/partial}}
+{{> templates/base}}

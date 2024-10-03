@@ -1,0 +1,40 @@
+{{#partial "title"}}
+    Tomar Cargo de Heladera
+{{/partial}}
+{{#partial "links"}}
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/colaboraciones/encargarse_de_heladera_crear.css"/>
+    <link
+            href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css"
+            rel="stylesheet"
+    />
+{{/partial}}
+{{#partial "scripts"}}
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+    <script src="/js/map.js"></script>
+{{/partial}}
+{{#partial "main-content"}}
+    <div class="form-container">
+        <h2 class="form-title">Encargarse de una Heladera</h2>
+
+        <form action="/colaboraciones/encargarse-de-heladeras" method="post" class="form">
+            <label class="field-heladera">
+                Heladera
+                <input
+                        type="text"
+                        name="heladera"
+                        placeholder="Heladera Medrano UTN"
+                        required
+                />
+            </label>
+
+            <div class="form-button-container">
+                <button type="submit">Aceptar</button>
+            </div>
+        </form>
+    </div>
+{{/partial}}
+{{#partial "side-panel"}}
+    <div id="map"></div>
+{{/partial}}
+{{> templates/base}}

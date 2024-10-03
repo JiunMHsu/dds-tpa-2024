@@ -1,0 +1,114 @@
+{{#partial "title"}}
+    Registrar Persona Vulnerable
+{{/partial}}
+{{#partial "links"}}
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/colaboraciones/registro_pv_crear.css"/>
+{{/partial}}
+{{#partial "scripts"}}
+{{/partial}}
+{{#partial "main-content"}}
+    <div class="form-container">
+        <h2 class="form-title">Registrar Persona Vulnerable</h2>
+
+        <form action="/colaboraciones/registro-persona-vulnerable" method="post" class="form">
+            <label class="field-nombre">
+                Nombre
+                <input
+                        type="text"
+                        name="nombre"
+                        placeholder="Sonia Lopez"
+                        required
+                />
+            </label>
+
+            <label class="field-nro-documento">
+                Número de Documento
+                <input
+                        type="text"
+                        pattern="[0-9]{8}"
+                        name="nro_documento"
+                        placeholder="46029384"
+                        required
+                />
+            </label>
+
+            <label class="field-tipo-documento">
+                Tipo de Documento
+                <select name="tipo_documento" required>
+                    <option value="" disabled selected>Seleccionar</option>
+                    <!-- iterar según define el sistema -->
+                    <option value="DNI">DNI</option>
+                    <option value="LE">Libreta de Enrolamiento</option>
+                    <option value="LC">Libreta Cívica</option>
+                </select>
+            </label>
+
+            <label class="field-fecha-nacimiento">
+                Fecha de Nacimiento
+                <input type="date" name="fecha_nacimiento" required/>
+            </label>
+
+            <label class="field-calle">
+                Calle
+                <input
+                        type="text"
+                        name="calle"
+                        placeholder="Av. Rivadavia"
+                        required
+                />
+            </label>
+
+            <label class="field-altura">
+                Altura
+                <input
+                        type="text"
+                        pattern="[0-9]{4}"
+                        name="calle"
+                        placeholder="1234"
+                        required
+                />
+            </label>
+
+            <label class="field-barrio">
+                Barrio
+                <input
+                        type="text"
+                        name="barrio"
+                        placeholder="Caballito"
+                        required
+                />
+            </label>
+
+            <label class="field-menores-a-cargo">
+                Menores a cargo
+                <input
+                        type="number"
+                        min="0"
+                        step="1"
+                        name="menores_a_cargo"
+                        placeholder="0"
+                        required
+                />
+            </label>
+
+            <label class="field-tarjeta">
+                Tarjeta a asociar
+                <input
+                        type="text"
+                        pattern="[a-zA-Z0-9]{11}"
+                        name="tarjeta"
+                        placeholder="0a8AHS92nD1"
+                        required
+                />
+            </label>
+
+            <div class="form-button-container">
+                <button type="submit">Aceptar</button>
+            </div>
+        </form>
+    </div>
+{{/partial}}
+{{#partial "side-panel"}}
+{{/partial}}
+{{> templates/base}}
