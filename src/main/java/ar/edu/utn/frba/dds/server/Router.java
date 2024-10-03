@@ -11,6 +11,8 @@ public class Router {
 
         app.get("/heladeras/nueva", ctx -> ctx.render("heladeras/heladera_crear.hbs"));
 
+        app.get("/heladeras/unId", ctx -> ctx.render("heladeras/heladera_detalle.hbs"));
+
         app.get("/heladeras", ctx -> ctx.render("heladeras/heladeras.hbs"));
 
         app.get("/colaboraciones", ctx -> ctx.render("colaboraciones/colaboraciones.hbs"));
