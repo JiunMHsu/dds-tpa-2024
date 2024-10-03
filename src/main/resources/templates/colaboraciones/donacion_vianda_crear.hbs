@@ -1,0 +1,62 @@
+{{#partial "title"}}
+    Donar Vianda
+{{/partial}}
+{{#partial "links"}}
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/colaboraciones/donacion_vianda_crear.css"/>
+{{/partial}}
+{{#partial "scripts"}}
+{{/partial}}
+{{#partial "main-content"}}
+    <div class="form-container">
+        <h2 class="form-title">Donar Vianda</h2>
+
+        <form action="/colaboraciones/donacion-vianda" method="post" class="form">
+            <label class="field-comida">
+                Nombre de Comida
+                <input
+                        type="text"
+                        name="comida"
+                        placeholder="arroz con pollo"
+                        required
+                />
+            </label>
+
+            <label class="field-calorias">
+                Calorías
+                <input
+                        type="number"
+                        min="1"
+                        step="1"
+                        name="calorias"
+                        placeholder="2000"
+                        required
+                />
+            </label>
+
+            <label class="field-peso">
+                Peso (gramos)
+                <input
+                        type="number"
+                        min="1"
+                        step="1"
+                        name="peso"
+                        placeholder="860"
+                        required
+                />
+            </label>
+
+            <label class="field-caducidad">
+                Fecha de Caducidad
+                <input type="date" name="caducidad" required/>
+            </label>
+
+            <div class="form-button-container">
+                <button type="submit">Aceptar</button>
+            </div>
+        </form>
+    </div>
+{{/partial}}
+{{#partial "side-panel"}}
+{{/partial}}
+{{> templates/base}}

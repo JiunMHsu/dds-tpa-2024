@@ -1,0 +1,92 @@
+{{#partial "title"}}
+    Heladeras
+{{/partial}}
+{{#partial "links"}}
+    <link rel="stylesheet" href="/css/list.css"/>
+    <link rel="stylesheet" href="/css/heladeras/heladeras.css"/>
+    <link
+            href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css"
+            rel="stylesheet"
+    />
+{{/partial}}
+{{#partial "scripts"}}
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+    <script src="/js/map.js"></script>
+{{/partial}}
+{{#partial "main-content"}}
+    <div class="feature-container">
+        <div class="colocar-heladera feature">
+            <h3 class="feature-text">Colocar Heladera</h3>
+            <div class="feature-button-container">
+                <a href="/heladeras/nuevo" class="feature-button">ver</a>
+            </div>
+        </div>
+
+        <div class="encargarse-de-heladera feature">
+            <h3 class="feature-text">Encargarse de Heladera</h3>
+            <div class="feature-button-container">
+                <a href="/colaboraciones/tomar-cargo-heladeras/nuevo" class="feature-button">ver</a>
+            </div>
+        </div>
+
+        <div class="suscribir-a-heladera feature">
+            <h3 class="feature-text">Suscribir a Heladera</h3>
+            <div class="feature-button-container">
+                <a href="" class="feature-button">ver</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="list-container">
+        <h2 class="list-title">Heladeras</h2>
+
+        <div class="filter-container">
+            <div class="filter">FILTROS</div>
+            <!-- barra de búsqueda y filtros -->
+            <!-- filtro: activo, suscripto, encargado -->
+        </div>
+
+        <div class="paging-nav">
+            <a href="" class="paging-button">
+                <span class="material-symbols-rounded"> keyboard_arrow_left </span>
+            </a>
+            <a href="" class="paging-button">
+                <span class="material-symbols-rounded"> keyboard_arrow_right </span>
+            </a>
+        </div>
+
+        <div class="scrollable">
+            <ul class="list">
+                <!-- !! MODELO DE ITEM -->
+                <li class="list-item">
+                    <a href="" class="item-card">
+                        <h3 class="card-title">Heladera Medrano UTN</h3>
+                        <p>
+                            <span class="material-symbols-rounded card-detail-icon">radio_button_checked</span>
+                            Estado: Activo
+                        </p>
+                        <p>
+                            <span class="material-symbols-rounded card-detail-icon">location_on</span>
+                            Dirección: Av. Medrano 951
+                        </p>
+                        <p>
+                            <span class="material-symbols-rounded card-detail-icon">my_location</span>
+                            Ubicación: -34.59857981526152, -58.420110294464294
+                        </p>
+                        <p>
+                            <span class="material-symbols-rounded card-detail-icon">package_2</span>
+                            Viandas: 83
+                        </p>
+                    </a>
+                </li>
+                <!-- !! MODELO DE ITEM -->
+
+                <!-- iteración de heladeras (paginada de a 20) -->
+            </ul>
+        </div>
+    </div>
+{{/partial}}
+{{#partial "side-panel"}}
+    <div id="map"></div>
+{{/partial}}
+{{> templates/base}}

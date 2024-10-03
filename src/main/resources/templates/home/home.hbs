@@ -1,0 +1,21 @@
+{{#partial "title"}}
+    Home
+{{/partial}}
+{{#partial "links"}}
+    <link rel="stylesheet" href="/css/home.css"/>
+    <link
+            href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css"
+            rel="stylesheet"
+    />
+{{/partial}}
+{{#partial "scripts"}}
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+    <script src="/js/map.js"></script>
+{{/partial}}
+{{#partial "main-content"}}
+    <div id="map"></div>
+{{/partial}}
+{{#partial "side-panel"}}
+    <div class="side-block"></div>
+{{/partial}}
+{{> templates/base}}

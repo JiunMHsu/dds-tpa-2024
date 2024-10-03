@@ -1,0 +1,41 @@
+.main-section {
+    border: 1px solid var(--background-3);
+}
+
+.form-container {
+    padding: 0 1rem;
+}
+
+.form {
+    grid-template-columns: 2fr 1fr;
+    column-gap: .5rem;
+}
+
+.form-title {
+    font-size: 2rem;
+    color: var(--foreground-1);
+}
+
+.field-nombre {
+    grid-column: 1 / -1;
+}
+
+.field-fecha-nacimiento {
+    grid-column: 1 / -1;
+}
+
+.field-barrio {
+    grid-column: 1 / -1;
+}
+
+.field-menores-a-cargo {
+    grid-column: 1 / -1;
+}
+
+.field-tarjeta {
+    grid-column: 1 / -1;
+}
+
+.side-panel {
+    display: none;
+}

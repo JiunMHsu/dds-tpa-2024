@@ -1,0 +1,49 @@
+{{#partial "title"}}
+    Donar Dinero
+{{/partial}}
+{{#partial "links"}}
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/colaboraciones/donacion_dinero_crear.css"/>
+{{/partial}}
+{{#partial "scripts"}}
+{{/partial}}
+{{#partial "main-content"}}
+    <div class="form-container">
+        <h2 class="form-title">Donar Dinero</h2>
+
+        <form action="/colaboraciones/donacion-dinero" method="post" class="form">
+            <label class="field-monto">
+                Monto
+                <input type="number" min="1" step="1" name="monto" required/>
+            </label>
+
+            <label class="field-periocidad">
+                Periocidad
+                <input
+                        type="number"
+                        min="1"
+                        step="1"
+                        name="periocidad"
+                        placeholder="46"
+                />
+            </label>
+
+            <label class="field-unidad-tiempo">
+                Unidad de Tiempo
+                <select name="unidad_tiempo">
+                    <option value="dias">Días</option>
+                    <option value="semanas">Semanas</option>
+                    <option value="meses">Meses</option>
+                    <option value="años">Años</option>
+                </select>
+            </label>
+
+            <div class="form-button-container">
+                <button type="submit">Aceptar</button>
+            </div>
+        </form>
+    </div>
+{{/partial}}
+{{#partial "side-panel"}}
+{{/partial}}
+{{> templates/base}}

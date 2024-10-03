@@ -1,0 +1,11 @@
+#map {
+    height: 100%;
+    width: 100%;
+}
+
+.side-block {
+    display: flex;
+    height: 40em;
+    width: 30em;
+    background-color: var(--background-2);
+}
