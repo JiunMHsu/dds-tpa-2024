@@ -1,0 +1,28 @@
+.main-section {
+    border: 1px solid var(--background-3);
+}
+
+.form-container {
+    width: 60%;
+    padding: 0 1rem;
+}
+
+.form-title {
+    font-size: 2rem;
+    color: var(--foreground-1);
+}
+
+.side-panel {
+    width: 35vw;
+}
+
+.field-motivo textarea {
+    height: 5rem;
+    resize: vertical;
+    min-height: 4rem;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+}

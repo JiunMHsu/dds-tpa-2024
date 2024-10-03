@@ -1,0 +1,65 @@
+{{#partial "title"}}
+    Distribuir Viandas
+{{/partial}}
+{{#partial "links"}}
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/colaboraciones/distribucion_viandas_crear.css"/>
+    <link
+            href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css"
+            rel="stylesheet"
+    />
+{{/partial}}
+{{#partial "scripts"}}
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+    <script src="/js/map.js"></script>
+{{/partial}}
+{{#partial "main-content"}}
+    <div class="form-container">
+        <h2 class="form-title">Distribuir Viandas</h2>
+
+        <form action="/heladeras" method="post" class="form">
+            <label class="field-origen">
+                Heladera Origen
+                <input
+                        type="text"
+                        name="origen"
+                        placeholder="Heladera Medrano UTN"
+                        required
+                />
+            </label>
+            <label class="field-destino">
+                Heladera Destino
+                <input
+                        type="text"
+                        name="destino"
+                        placeholder="Heladera Campus UTN"
+                        required
+                />
+            </label>
+            <label class="field-cantidad">
+                Cantidad de Viandas
+                <input
+                        type="number"
+                        min="1"
+                        step="1"
+                        name="cantidad"
+                        placeholder="46"
+                        required
+                />
+            </label>
+
+            <label class="field-motivo">
+                Motivo
+                <textarea type="text" name="motivo" required></textarea>
+            </label>
+
+            <div class="form-button-container">
+                <button type="submit">Aceptar</button>
+            </div>
+        </form>
+    </div>
+{{/partial}}
+{{#partial "side-panel"}}
+    <div id="map"></div>
+{{/partial}}
+{{> templates/base}}
