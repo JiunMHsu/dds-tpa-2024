@@ -17,7 +17,7 @@ import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaReposi
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetasRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.mensajeria.MensajeRepository;
-import ar.edu.utn.frba.dds.utils.GeneradorDeCredenciales;
+import ar.edu.utn.frba.dds.models.stateless.GeneradorDeCredenciales;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.io.IOException;
 import java.nio.file.Files;

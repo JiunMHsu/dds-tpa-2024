@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.utils;
+package ar.edu.utn.frba.dds.models.stateless;
 
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import java.util.concurrent.ThreadLocalRandom;

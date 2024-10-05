@@ -4,7 +4,7 @@ import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.personaVulnerable.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaPersonaVulnerable;
-import ar.edu.utn.frba.dds.utils.GeneradorDeCodigosTarjeta;
+import ar.edu.utn.frba.dds.models.stateless.ValidadorDeCodigosTarjeta;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -45,7 +45,7 @@ public class TarjetasTest {
         tarjetasExistentes.add(tarjeta2);
         tarjetasExistentes.add(tarjeta3);
 
-        String nuevoCodigo = GeneradorDeCodigosTarjeta.generar();
+        String nuevoCodigo = ValidadorDeCodigosTarjeta.generar();
 
         Assertions.assertFalse(tarjetasExistentes.stream().anyMatch(tarjeta -> tarjeta.getCodigo().equals(nuevoCodigo)),
                 "El código generado ya existe en la lista de tarjetas existentes.");

@@ -2,9 +2,8 @@
     border: 1px solid var(--background-3);
 }
 
-.form-container {
-    width: 60%;
-    padding: 0 1rem;
+.form {
+    grid-template-columns: 35rem;
 }
 
 .side-panel {

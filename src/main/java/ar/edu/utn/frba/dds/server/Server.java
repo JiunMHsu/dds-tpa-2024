@@ -1,5 +1,7 @@
 package ar.edu.utn.frba.dds.server;
 
+import ar.edu.utn.frba.dds.middlewares.AuthMiddleware;
+import ar.edu.utn.frba.dds.server.handlers.AppHandlers;
 import ar.edu.utn.frba.dds.utils.AppProperties;
 import ar.edu.utn.frba.dds.utils.Initializer;
 import ar.edu.utn.frba.dds.utils.JavalinRenderer;
@@ -30,10 +32,12 @@ public class Server {
         int port = AppProperties.getInstance().intPropertyFromName("SERVER_PORT");
         app = Javalin.create(config()).start(port);
 
+        AuthMiddleware.apply(app);
+        AppHandlers.apply(app);
         Router.init(app);
 
         if (AppProperties.getInstance().boolPropertyFromName("DEV_MODE")) {
-            Initializer.init();
+            Initializer.init(null);
         }
     }
 

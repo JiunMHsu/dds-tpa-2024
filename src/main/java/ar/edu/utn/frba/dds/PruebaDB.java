@@ -44,9 +44,9 @@ public class PruebaDB implements WithSimplePersistenceUnit {
         instance.guardarTecnico();
         instance.recuperarTecnico();
 
-        instance.colaboradorRepository = new ColaboradorRepository();
-        instance.guardarColaborador();
-        instance.recuperarColaborador();
+        // instance.colaboradorRepository = new ColaboradorRepository();
+        // instance.guardarColaborador();
+        // instance.recuperarColaborador();
 
     }
 

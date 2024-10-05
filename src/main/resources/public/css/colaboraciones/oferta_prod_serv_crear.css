@@ -2,10 +2,6 @@
     border: 1px solid var(--background-3);
 }
 
-.form-container {
-    padding: 0 1rem;
-}
-
 .form {
     grid-template-columns: 15rem 25rem;
 }

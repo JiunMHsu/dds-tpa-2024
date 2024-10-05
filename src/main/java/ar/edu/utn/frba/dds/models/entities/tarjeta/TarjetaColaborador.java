@@ -1,8 +1,8 @@
 package ar.edu.utn.frba.dds.models.entities.tarjeta;
 
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.models.stateless.ValidadorDeCodigosTarjeta;
 import ar.edu.utn.frba.dds.utils.EntidadPersistente;
-import ar.edu.utn.frba.dds.utils.GeneradorDeCodigosTarjeta;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -47,7 +47,7 @@ public class TarjetaColaborador extends EntidadPersistente {
     public static TarjetaColaborador de(Colaborador duenio) {
         return TarjetaColaborador
                 .builder()
-                .codigo(GeneradorDeCodigosTarjeta.generar())
+                .codigo(ValidadorDeCodigosTarjeta.generar())
                 .duenio(duenio)
                 .esActiva(true)
                 .build();

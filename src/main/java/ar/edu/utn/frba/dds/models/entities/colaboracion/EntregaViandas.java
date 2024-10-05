@@ -17,6 +17,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+
+// TODO - Ver que onda con esta forma de colaboración
 @Getter
 @Builder
 @AllArgsConstructor
