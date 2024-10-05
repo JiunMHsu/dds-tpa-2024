@@ -1,12 +1,13 @@
 package ar.edu.utn.frba.dds.models.stateless;
 
+import ar.edu.utn.frba.dds.models.entities.rol.Rol;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GeneradorDeCredenciales {
 
     public static Usuario generarUsuario(String nombre, String mail) {
-        return Usuario.con(nombre, GeneradorDeCredenciales.generarContrasenia(), mail);
+        return Usuario.con(nombre, GeneradorDeCredenciales.generarContrasenia(), mail, Rol.con("COLABORADOR"));
     }
 
     private static String generarContrasenia() {

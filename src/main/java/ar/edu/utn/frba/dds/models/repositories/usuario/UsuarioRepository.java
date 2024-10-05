@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.models.repositories.usuario;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.Optional;
+import javax.persistence.NoResultException;
 
 public class UsuarioRepository implements WithSimplePersistenceUnit {
 
@@ -24,10 +25,14 @@ public class UsuarioRepository implements WithSimplePersistenceUnit {
     }
 
     public Optional<Usuario> obtenerPorEmail(String email) {
-        return Optional.ofNullable(entityManager()
-                .createQuery("from Usuario u where u.email = :email and u.alta = :alta", Usuario.class)
-                .setParameter("email", email)
-                .setParameter("alta", true)
-                .getSingleResult());
+        try {
+            return Optional.of(entityManager()
+                    .createQuery("from Usuario u where u.email = :email and u.alta = :alta", Usuario.class)
+                    .setParameter("email", email)
+                    .setParameter("alta", true)
+                    .getSingleResult());
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 }

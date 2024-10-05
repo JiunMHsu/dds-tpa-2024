@@ -1,14 +1,19 @@
 package ar.edu.utn.frba.dds.server;
 
+import ar.edu.utn.frba.dds.controllers.session.SessionController;
+import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import io.javalin.Javalin;
 
 public class Router {
 
+    // TEMP
+    private static final UsuarioRepository usuarioRepository = new UsuarioRepository();
+
     public static void init(Javalin app) {
         app.get("/", ctx -> ctx.redirect("/home"));
 
-        app.get("/login", ctx -> ctx.render("login/login.hbs"));
-        app.post("/login", ctx -> ctx.render("login/login_retry.hbs"));
+        app.get("/login", new SessionController(usuarioRepository)::index);
+        app.post("/login", new SessionController(usuarioRepository)::create);
 
         app.get("/home", ctx -> ctx.render("home/home.hbs"));
 

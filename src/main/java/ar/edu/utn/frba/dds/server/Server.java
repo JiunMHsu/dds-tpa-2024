@@ -37,7 +37,7 @@ public class Server {
         Router.init(app);
 
         if (AppProperties.getInstance().boolPropertyFromName("DEV_MODE")) {
-            Initializer.init(null);
+            Initializer.init();
         }
     }
 

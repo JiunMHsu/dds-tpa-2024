@@ -35,6 +35,10 @@ public class Rol extends EntidadPersistente {
                 .build();
     }
 
+    public static Rol con(String nombre) {
+        return Rol.con(nombre, null);
+    }
+
     public void agregarPermiso(Permiso permiso) {
         this.permisos.add(permiso);
     }
