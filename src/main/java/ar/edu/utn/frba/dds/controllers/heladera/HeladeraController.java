@@ -7,9 +7,13 @@ import ar.edu.utn.frba.dds.models.repositories.heladera.RetiroDeViandaRepository
 import ar.edu.utn.frba.dds.models.repositories.heladera.SolicitudDeAperturaRepository;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
-
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 public class HeladeraController implements ICrudViewsHandler {
 
@@ -44,7 +48,7 @@ public class HeladeraController implements ICrudViewsHandler {
         //por id
         Optional<Heladera> posibleHeladeraBuscada = this.heladeraRepository.obtenerPorId(UUID.fromString(context.pathParam("id")));
 
-        if(posibleHeladeraBuscada.isEmpty()) {
+        if (posibleHeladeraBuscada.isEmpty()) {
             context.status(404);//not found
             return;
         }
@@ -62,7 +66,7 @@ public class HeladeraController implements ICrudViewsHandler {
             context.status(403).result("No tienes permiso para dar de alta la heladera.");
             return;
         }
-        context.render("heladera/formulario_heladera.hbs");// en este caso no necesito datos de la bs para el formulario
+        context.render("heladera/formulario_heladera.hbs");
     }
 
     @Override

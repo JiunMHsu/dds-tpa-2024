@@ -34,6 +34,9 @@ public class Router {
         app.get("/colaboraciones", ctx -> ctx.render("colaboraciones/colaboraciones.hbs"));
 
         app.get("/test", ctx -> ctx.result("DDS TPA"));
+        app.get("/image/{id}", ctx -> ctx.result("IMAGEN"));
+
+
     }
 
 }

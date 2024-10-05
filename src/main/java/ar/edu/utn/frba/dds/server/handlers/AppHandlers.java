@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 public class AppHandlers {
 
-    private IHandler[] handlers = new IHandler[]{
+    private final IHandler[] handlers = new IHandler[]{
             new UnauthorizedHandler(),
             new UnauthenticatedHandler()
     };
