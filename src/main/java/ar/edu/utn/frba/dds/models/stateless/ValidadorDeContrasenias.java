@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.utils;
+package ar.edu.utn.frba.dds.models.stateless;
 
 import java.io.IOException;
 import java.nio.file.Files;

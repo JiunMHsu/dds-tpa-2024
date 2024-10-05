@@ -2,8 +2,8 @@ package ar.edu.utn.frba.dds.models.entities.tarjeta;
 
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.personaVulnerable.PersonaVulnerable;
+import ar.edu.utn.frba.dds.models.stateless.ValidadorDeCodigosTarjeta;
 import ar.edu.utn.frba.dds.utils.EntidadPersistente;
-import ar.edu.utn.frba.dds.utils.GeneradorDeCodigosTarjeta;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,7 +42,7 @@ public class TarjetaPersonaVulnerable extends EntidadPersistente {
     public static TarjetaPersonaVulnerable de(PersonaVulnerable duenio) {
         return TarjetaPersonaVulnerable
                 .builder()
-                .codigo(GeneradorDeCodigosTarjeta.generar())
+                .codigo(ValidadorDeCodigosTarjeta.generar())
                 .duenio(duenio)
                 .usosEnElDia(0)
                 .ultimoUso(LocalDate.now())
@@ -52,7 +52,7 @@ public class TarjetaPersonaVulnerable extends EntidadPersistente {
     public static TarjetaPersonaVulnerable de() {
         return TarjetaPersonaVulnerable
                 .builder()
-                .codigo(GeneradorDeCodigosTarjeta.generar())
+                .codigo(ValidadorDeCodigosTarjeta.generar())
                 .build();
     }
 

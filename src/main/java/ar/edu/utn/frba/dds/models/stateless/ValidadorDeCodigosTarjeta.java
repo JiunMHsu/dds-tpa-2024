@@ -1,15 +1,16 @@
-package ar.edu.utn.frba.dds.utils;
+package ar.edu.utn.frba.dds.models.stateless;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class GeneradorDeCodigosTarjeta {
+// TODO - No hace falta que genere, en todo caso valida
+public class ValidadorDeCodigosTarjeta {
 
     public static String generar() {
         String banco = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         StringBuilder codigoBuilder = new StringBuilder();
 
         for (int i = 0; i < 10; i++) {
-            int indiceAleatorio = GeneradorDeCodigosTarjeta.numeroAleatorioEnRango(0, banco.length() - 1);
+            int indiceAleatorio = ValidadorDeCodigosTarjeta.numeroAleatorioEnRango(0, banco.length() - 1);
             char caracterAleatorio = banco.charAt(indiceAleatorio);
             codigoBuilder.append(caracterAleatorio);
         }

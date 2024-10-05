@@ -35,12 +35,13 @@ public class Usuario extends EntidadPersistente {
     @JoinColumn(name = "rol_id", nullable = false)
     private Rol rol;
 
-    public static Usuario con(String nombreUsuario, String contrasenia, String email) {
+    public static Usuario con(String nombreUsuario, String contrasenia, String email, Rol rol) {
         return Usuario
                 .builder()
                 .nombre(nombreUsuario)
                 .contrasenia(contrasenia)
                 .email(email)
+                .rol(rol)
                 .build();
     }
 
