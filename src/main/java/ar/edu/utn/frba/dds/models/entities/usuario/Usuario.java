@@ -46,15 +46,7 @@ public class Usuario extends EntidadPersistente {
     }
 
     public static Usuario conEmail(String email) {
-        return Usuario
-                .builder()
-                .email(email)
-                .build();
+        return Usuario.con("", "", email, null);
     }
 
-    public static Usuario vacio() {
-        return Usuario
-                .builder()
-                .build();
-    }
 }

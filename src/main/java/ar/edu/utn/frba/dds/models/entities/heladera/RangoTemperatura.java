@@ -2,9 +2,13 @@ package ar.edu.utn.frba.dds.models.entities.heladera;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Embeddable
 public class RangoTemperatura {
 
@@ -13,16 +17,6 @@ public class RangoTemperatura {
 
     @Column(name = "temperatura_minima", nullable = false)
     private Double minima;
-
-    public RangoTemperatura(Double maxima, Double minima) {
-        this.maxima = maxima;
-        this.minima = minima;
-    }
-
-    public RangoTemperatura() {
-        this.maxima = null;
-        this.minima = null;
-    }
 
     public Boolean incluye(Double temperatura) {
         return (maxima != null)

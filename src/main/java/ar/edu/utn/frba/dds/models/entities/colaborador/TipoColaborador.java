@@ -12,9 +12,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "tipo_colaborador")
 public class TipoColaborador {
@@ -32,13 +36,4 @@ public class TipoColaborador {
     @Column(name = "colaboracion")
     private List<Colaboracion> colaboraciones;
 
-    public TipoColaborador(TipoPersona tipo, List<Colaboracion> colaboraciones) {
-        this.tipo = tipo;
-        this.colaboraciones = colaboraciones;
-    }
-
-    public TipoColaborador() {
-        this.tipo = null;
-        this.colaboraciones = null;
-    }
 }

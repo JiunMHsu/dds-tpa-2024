@@ -1,9 +1,9 @@
 package ar.edu.utn.frba.dds.models.entities.colaboracion;
 
-import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.personaVulnerable.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaPersonaVulnerable;
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,11 +32,11 @@ public class RepartoDeTarjetas extends EntidadPersistente {
     private LocalDateTime fechaHora;
 
     @OneToOne
-    @JoinColumn(name = "tarjeta_vulnerable_id", nullable = false)
+    @JoinColumn(name = "tarjeta_vulnerable_id") // nullable por compatibilidad
     private TarjetaPersonaVulnerable tarjeta;
 
     @OneToOne
-    @JoinColumn(name = "persona_vulnerable_id", nullable = false)
+    @JoinColumn(name = "persona_vulnerable_id") // nullable por compatibilidad
     private PersonaVulnerable personaVulnerable;
 
     public static RepartoDeTarjetas por(Colaborador colaborador,
@@ -54,11 +54,7 @@ public class RepartoDeTarjetas extends EntidadPersistente {
 
     public static RepartoDeTarjetas por(Colaborador colaborador,
                                         LocalDateTime fechaHoraReparto) {
-        return RepartoDeTarjetas
-                .builder()
-                .colaborador(colaborador)
-                .fechaHora(fechaHoraReparto)
-                .build();
+        return RepartoDeTarjetas.por(colaborador, fechaHoraReparto, null, null);
     }
 
 }

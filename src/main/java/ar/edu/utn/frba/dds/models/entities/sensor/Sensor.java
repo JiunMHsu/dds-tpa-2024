@@ -48,11 +48,7 @@ public class Sensor extends EntidadPersistente {
      * @return Sensor con topic vacío ("").
      */
     public static Sensor de(Heladera heladera) {
-        return Sensor
-                .builder()
-                .heladera(heladera)
-                .topic("")
-                .build();
+        return Sensor.de(heladera, "");
     }
 
     /**
@@ -62,10 +58,6 @@ public class Sensor extends EntidadPersistente {
      * @return Sensor con una heladera de capacidad 10.
      */
     public static Sensor de(String topic) {
-        return Sensor
-                .builder()
-                .heladera(Heladera.con(10))
-                .topic(topic)
-                .build();
+        return Sensor.de(Heladera.con(10), topic);
     }
 }

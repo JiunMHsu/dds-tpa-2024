@@ -1,12 +1,8 @@
 package ar.edu.utn.frba.dds.models.entities.heladera;
 
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
-import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
-import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
-import ar.edu.utn.frba.dds.models.repositories.tecnico.TecnicoRepository;
 import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import java.time.LocalDateTime;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -79,36 +75,22 @@ public class Heladera extends EntidadPersistente {
                                Integer capacidad,
                                RangoTemperatura rangoTemperatura,
                                EstadoHeladera estado) {
-        return Heladera
-                .builder()
-                .nombre(nombre)
-                .direccion(direccion)
-                .capacidad(capacidad)
-                .rangoTemperatura(rangoTemperatura)
-                .estado(estado)
-                .build();
+        return Heladera.con(
+                nombre,
+                direccion,
+                LocalDateTime.now(),
+                capacidad,
+                rangoTemperatura,
+                null,
+                estado,
+                0);
     }
 
     public static Heladera con(String nombre,
                                Direccion direccion,
                                Integer capacidad,
                                RangoTemperatura rangoTemperatura) {
-        return Heladera
-                .builder()
-                .nombre(nombre)
-                .direccion(direccion)
-                .capacidad(capacidad)
-                .rangoTemperatura(rangoTemperatura)
-                .build();
-    }
-
-    public static Heladera con(String nombre, Direccion direccion, Integer capacidad) {
-        return Heladera
-                .builder()
-                .nombre(nombre)
-                .direccion(direccion)
-                .capacidad(capacidad)
-                .build();
+        return Heladera.con(nombre, direccion, capacidad, rangoTemperatura, EstadoHeladera.ACTIVA);
     }
 
     public static Heladera con(Integer capacidad) {
@@ -156,17 +138,6 @@ public class Heladera extends EntidadPersistente {
 
     public Boolean admiteTemperatura(Double unaTemperatura) {
         return rangoTemperatura.incluye(unaTemperatura);
-    }
-
-    public Tecnico tecnicoMasCercano(TecnicoRepository tecnicoRepository) {
-        return tecnicoRepository.obtenerPorBarrio(direccion.getBarrio()).get(0);
-
-    }
-
-    public List<Heladera> heladerasActivasMasCercanas(HeladeraRepository heladeraRepository) {
-        return heladeraRepository.obtenerPorBarrio(direccion.getBarrio()).stream()
-                .filter(Heladera::estaActiva)
-                .toList();
     }
 
 }

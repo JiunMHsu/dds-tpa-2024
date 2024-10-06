@@ -1,8 +1,8 @@
 package ar.edu.utn.frba.dds.models.entities.colaboracion;
 
-import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.vianda.Vianda;
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,7 +32,7 @@ public class DonacionVianda extends EntidadPersistente {
     private LocalDateTime fechaHora;
 
     @OneToOne
-    @JoinColumn(name = "vianda_id", nullable = false)
+    @JoinColumn(name = "vianda_id") // nullable por compatibilidad
     private Vianda vianda;
 
     @Setter
@@ -54,11 +54,7 @@ public class DonacionVianda extends EntidadPersistente {
 
     public static DonacionVianda por(Colaborador colaborador,
                                      LocalDateTime fechaDonacion) {
-        return DonacionVianda
-                .builder()
-                .colaborador(colaborador)
-                .fechaHora(fechaDonacion)
-                .build();
+        return DonacionVianda.por(colaborador, fechaDonacion, null, true);
     }
 
 }

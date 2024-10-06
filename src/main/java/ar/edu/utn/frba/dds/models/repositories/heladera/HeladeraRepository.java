@@ -6,9 +6,13 @@ import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import javax.persistence.NoResultException;
 
-public class HeladeraRepository implements IHeladeraRepository, WithSimplePersistenceUnit {
+public class HeladeraRepository implements WithSimplePersistenceUnit {
 
+    /**
+     * Guarda sin transacción.
+     */
     public void guardar(Heladera heladera) {
         withTransaction(() -> entityManager().persist(heladera));
     }
@@ -31,10 +35,14 @@ public class HeladeraRepository implements IHeladeraRepository, WithSimplePersis
     }
 
     public Optional<Heladera> obtenerPorNombre(String nombre) {
-        return Optional.ofNullable(entityManager()
-                .createQuery("from Heladera h where h.nombre = :name", Heladera.class)
-                .setParameter("name", nombre)
-                .getSingleResult());
+        try {
+            return Optional.of(entityManager()
+                    .createQuery("from Heladera h where h.nombre = :name", Heladera.class)
+                    .setParameter("name", nombre)
+                    .getSingleResult());
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
     public List<Heladera> obtenerPorBarrio(Barrio barrio) {
@@ -44,6 +52,7 @@ public class HeladeraRepository implements IHeladeraRepository, WithSimplePersis
                 .getResultList();
     }
 
+    // TODO - ver paginación
     public List<Heladera> obtenerTodos() {
         return entityManager()
                 .createQuery("from Heladera", Heladera.class)
