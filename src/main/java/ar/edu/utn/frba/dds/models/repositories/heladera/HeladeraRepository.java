@@ -35,7 +35,8 @@ public class HeladeraRepository implements IHeladeraReporitory, WithSimplePersis
 
     @Override
     public Optional<Heladera> buscarPorId(String id) {
-        return Optional.ofNullable(entityManager().find(Heladera.class, id));
+        UUID uuid = UUID.fromString(id);
+        return Optional.ofNullable(entityManager().find(Heladera.class, uuid));
     }
 
     @Override

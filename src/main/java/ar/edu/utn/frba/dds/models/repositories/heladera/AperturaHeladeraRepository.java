@@ -4,6 +4,7 @@ import ar.edu.utn.frba.dds.models.entities.heladera.AperturaHeladera;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import javax.persistence.NoResultException;
 
 public class AperturaHeladeraRepository implements IOperacionPorTarjetaRepository<AperturaHeladera>, WithSimplePersistenceUnit {
@@ -13,28 +14,30 @@ public class AperturaHeladeraRepository implements IOperacionPorTarjetaRepositor
         withTransaction(() -> entityManager().persist(apertura));
     }
 
-    // TODO
     @Override
-    public void actualizar(AperturaHeladera entidad) {
-
+    public void actualizar(AperturaHeladera apertura) {
+        withTransaction(() -> entityManager().merge(apertura));
     }
 
-    // TODO
     @Override
-    public void eliminar(AperturaHeladera entidad) {
-
+    public void eliminar(AperturaHeladera apertura) {
+        withTransaction(() -> {
+            apertura.setAlta(false);
+            entityManager().merge(apertura);
+        });
     }
 
-    // TODO
     @Override
     public Optional<AperturaHeladera> buscarPorId(String id) {
-        return Optional.empty();
+        UUID uuid = UUID.fromString(id);
+        return Optional.ofNullable(entityManager().find(AperturaHeladera.class, uuid));
     }
 
-    // TODO
     @Override
     public List<AperturaHeladera> buscarTodos() {
-        return List.of();
+        return entityManager()
+                .createQuery("from AperturaHeladera", AperturaHeladera.class)
+                .getResultList();
     }
 
     @Override
