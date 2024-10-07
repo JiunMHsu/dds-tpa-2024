@@ -1,8 +1,8 @@
 package ar.edu.utn.frba.dds.models.entities.colaboracion;
 
-import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,15 +42,6 @@ public class HacerseCargoHeladera extends EntidadPersistente {
                 .builder()
                 .colaborador(colaborador)
                 .fechaHora(fechaHora)
-                .heladeraACargo(heladeraACargo)
-                .build();
-    }
-
-    public static HacerseCargoHeladera por(Colaborador colaborador,
-                                           Heladera heladeraACargo) {
-        return HacerseCargoHeladera
-                .builder()
-                .colaborador(colaborador)
                 .heladeraACargo(heladeraACargo)
                 .build();
     }

@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.colaboracion;
 
-import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import java.time.LocalDateTime;
 import java.time.Period;
 import javax.persistence.Column;
@@ -57,12 +57,7 @@ public class DonacionDinero extends EntidadPersistente {
     public static DonacionDinero por(Colaborador colaborador,
                                      LocalDateTime fechaDonacion,
                                      Integer monto) {
-        return DonacionDinero
-                .builder()
-                .colaborador(colaborador)
-                .fechaHora(fechaDonacion)
-                .monto(monto)
-                .build();
+        return DonacionDinero.por(colaborador, fechaDonacion, monto, null);
     }
 
 }

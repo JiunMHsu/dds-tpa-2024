@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.broker.suscriptorSensor;
 
+import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.models.entities.sensor.Sensor;
 
 public class SuscriptorSensorMovimiento extends SuscriptorSensor {
@@ -8,9 +9,9 @@ public class SuscriptorSensorMovimiento extends SuscriptorSensor {
         super(suscriptor);
     }
 
-    // TODO (delegar a controller? o este mismo cumple el rol de controller?)
     @Override
     public void recibirMensaje(String mensaje) {
+        ServiceLocator.getBrokerMessageHandler().recibirMovimiento();
     }
 
 }

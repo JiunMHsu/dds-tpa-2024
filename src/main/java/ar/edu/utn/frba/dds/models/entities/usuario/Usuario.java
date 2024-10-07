@@ -1,11 +1,11 @@
 package ar.edu.utn.frba.dds.models.entities.usuario;
 
-import ar.edu.utn.frba.dds.models.entities.rol.Rol;
+import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,11 +31,11 @@ public class Usuario extends EntidadPersistente {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @ManyToOne
-    @JoinColumn(name = "rol_id", nullable = false)
-    private Rol rol;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_rol")
+    private TipoRol rol;
 
-    public static Usuario con(String nombreUsuario, String contrasenia, String email, Rol rol) {
+    public static Usuario con(String nombreUsuario, String contrasenia, String email, TipoRol rol) {
         return Usuario
                 .builder()
                 .nombre(nombreUsuario)
@@ -46,15 +46,7 @@ public class Usuario extends EntidadPersistente {
     }
 
     public static Usuario conEmail(String email) {
-        return Usuario
-                .builder()
-                .email(email)
-                .build();
+        return Usuario.con("", "", email, null);
     }
 
-    public static Usuario vacio() {
-        return Usuario
-                .builder()
-                .build();
-    }
 }

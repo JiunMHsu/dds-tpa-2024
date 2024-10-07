@@ -1,13 +1,14 @@
 package ar.edu.utn.frba.dds.models.entities.colaborador;
 
-import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.data.TipoRazonSocial;
 import ar.edu.utn.frba.dds.models.entities.formulario.FormularioRespondido;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -77,7 +78,13 @@ public class Colaborador extends EntidadPersistente {
     @Column(name = "fecha_nacimiento", columnDefinition = "DATE")
     private LocalDate fechaNacimiento;
 
-    public static Colaborador juridica(Usuario usuario, String razonSocial, TipoRazonSocial tipoRazonSocial, String rubro, Contacto contacto, Direccion direccion, List<Colaboracion> formaDeColaborar) {
+    public static Colaborador juridica(Usuario usuario,
+                                       String razonSocial,
+                                       TipoRazonSocial tipoRazonSocial,
+                                       String rubro,
+                                       Contacto contacto,
+                                       Direccion direccion,
+                                       List<Colaboracion> formaDeColaborar) {
         return Colaborador
                 .builder()
                 .usuario(usuario)
@@ -90,18 +97,29 @@ public class Colaborador extends EntidadPersistente {
                 .build();
     }
 
-    public static Colaborador juridica(Usuario usuario, String razonSocial, TipoRazonSocial tipoRazonSocial, Contacto contacto, Direccion direccion) {
-        return Colaborador
-                .builder()
-                .usuario(usuario)
-                .razonSocial(razonSocial)
-                .tipoRazonSocial(tipoRazonSocial)
-                .contacto(contacto)
-                .direccion(direccion)
-                .build();
+    public static Colaborador juridica(Usuario usuario,
+                                       String razonSocial,
+                                       TipoRazonSocial tipoRazonSocial,
+                                       Contacto contacto,
+                                       Direccion direccion) {
+        return Colaborador.juridica(
+                usuario,
+                razonSocial,
+                tipoRazonSocial,
+                "",
+                contacto,
+                direccion,
+                new ArrayList<>()
+        );
     }
 
-    public static Colaborador humana(Usuario usuario, String nombre, String apellido, LocalDate fechaNacimiento, Contacto contacto, Direccion direccion, List<Colaboracion> formaDeColaborar) {
+    public static Colaborador humana(Usuario usuario,
+                                     String nombre,
+                                     String apellido,
+                                     LocalDate fechaNacimiento,
+                                     Contacto contacto,
+                                     Direccion direccion,
+                                     List<Colaboracion> formaDeColaborar) {
         return Colaborador
                 .builder()
                 .usuario(usuario)
@@ -114,14 +132,19 @@ public class Colaborador extends EntidadPersistente {
                 .build();
     }
 
-    public static Colaborador humana(Usuario usuario, String nombre, String apellido, LocalDate fechaNacimiento) {
-        return Colaborador
-                .builder()
-                .usuario(usuario)
-                .nombre(nombre)
-                .apellido(apellido)
-                .fechaNacimiento(fechaNacimiento)
-                .build();
+    public static Colaborador humana(Usuario usuario,
+                                     String nombre,
+                                     String apellido,
+                                     LocalDate fechaNacimiento) {
+        return Colaborador.humana(
+                usuario,
+                nombre,
+                apellido,
+                fechaNacimiento,
+                null,
+                null,
+                new ArrayList<>()
+        );
     }
 
     public static Colaborador colaborador(Usuario usuario) {

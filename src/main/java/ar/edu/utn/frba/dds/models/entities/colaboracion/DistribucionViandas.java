@@ -1,8 +1,8 @@
 package ar.edu.utn.frba.dds.models.entities.colaboracion;
 
-import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,11 +30,11 @@ public class DistribucionViandas extends EntidadPersistente {
     private LocalDateTime fechaHora;
 
     @ManyToOne
-    @JoinColumn(name = "heladera_origen_id", nullable = false)
+    @JoinColumn(name = "heladera_origen_id") // nullable por compatibilidad
     private Heladera origen;
 
     @ManyToOne
-    @JoinColumn(name = "heladera_destino_id", nullable = false)
+    @JoinColumn(name = "heladera_destino_id") // nullable por compatibilidad
     private Heladera destino;
 
     @Column(name = "cant_viandas", columnDefinition = "SMALLINT", nullable = false)
@@ -63,12 +63,13 @@ public class DistribucionViandas extends EntidadPersistente {
     public static DistribucionViandas por(Colaborador colaboradorHumano,
                                           LocalDateTime fechaDistribucion,
                                           Integer viandas) {
-        return DistribucionViandas
-                .builder()
-                .colaborador(colaboradorHumano)
-                .fechaHora(fechaDistribucion)
-                .viandas(viandas)
-                .build();
+        return DistribucionViandas.por(
+                colaboradorHumano,
+                fechaDistribucion,
+                null,
+                null,
+                viandas,
+                "");
     }
 
 }
