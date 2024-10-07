@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 import javax.persistence.NoResultException;
 
-public class HeladeraRepository implements IHeladeraReporitory, WithSimplePersistenceUnit {
+public class HeladeraRepository implements IHeladeraRepository, WithSimplePersistenceUnit {
 
     @Override
     public void guardar(Heladera heladera) {

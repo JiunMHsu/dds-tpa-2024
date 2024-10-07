@@ -6,7 +6,7 @@ import ar.edu.utn.frba.dds.utils.ICrudRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface IHeladeraReporitory extends ICrudRepository<Heladera> {
+public interface IHeladeraRepository extends ICrudRepository<Heladera> {
 
     Optional<Heladera> buscarPorNombre(String nombre);
 

@@ -10,7 +10,7 @@ import javax.persistence.NoResultException;
 
 public class SolicitudDeAperturaRepository implements
         ICrudRepository<SolicitudDeApertura>,
-        IOperacionPorTarjetaRepository<SolicitudDeApertura>,
+        ISolicitudDeAperturaRepository,
         WithSimplePersistenceUnit {
 
     @Override

@@ -6,11 +6,9 @@ import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import javax.persistence.NoResultException;
 
 public class RetiroDeViandaRepository implements
         ICrudRepository<RetiroDeVianda>,
-        IOperacionPorTarjetaRepository<RetiroDeVianda>,
         WithSimplePersistenceUnit {
 
     @Override
@@ -46,30 +44,5 @@ public class RetiroDeViandaRepository implements
         return entityManager()
                 .createQuery("from RetiroDeVianda", RetiroDeVianda.class)
                 .getResultList();
-    }
-
-    @Override
-    public List<RetiroDeVianda> buscarPorTarjeta(String tarjeta) {
-        return entityManager()
-                .createQuery("from RetiroDeVianda r " +
-                                "where r.tarjetaPersonaVulnerable.codigo = :cod_tarjeta",
-                        RetiroDeVianda.class)
-                .setParameter("cod_tarjeta", tarjeta)
-                .getResultList();
-    }
-
-    @Override
-    public Optional<RetiroDeVianda> buscarUltimoPorTarjeta(String tarjeta) {
-        try {
-            return Optional.of(entityManager()
-                    .createQuery("from RetiroDeVianda rv " +
-                                    "where rv.tarjetaPersonaVulnerable.codigo = :cod_tarjeta " +
-                                    "order by rv.fechaHora desc",
-                            RetiroDeVianda.class)
-                    .setParameter("cod_tarjeta", tarjeta)
-                    .getSingleResult());
-        } catch (NoResultException e) {
-            return Optional.empty();
-        }
     }
 }

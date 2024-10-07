@@ -1,10 +1,12 @@
 package ar.edu.utn.frba.dds.controllers.heladera;
 
+import ar.edu.utn.frba.dds.models.entities.heladera.AperturaHeladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.repositories.heladera.AperturaHeladeraRepository;
-import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
-import ar.edu.utn.frba.dds.models.repositories.heladera.RetiroDeViandaRepository;
-import ar.edu.utn.frba.dds.models.repositories.heladera.SolicitudDeAperturaRepository;
+import ar.edu.utn.frba.dds.models.entities.heladera.RetiroDeVianda;
+import ar.edu.utn.frba.dds.models.repositories.heladera.IHeladeraRepository;
+import ar.edu.utn.frba.dds.models.repositories.heladera.ISolicitudDeAperturaRepository;
+import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
+import ar.edu.utn.frba.dds.utils.ICrudRepository;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import java.time.LocalDateTime;
@@ -13,19 +15,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
-public class HeladeraController implements ICrudViewsHandler {
+public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHandler {
 
-    private HeladeraRepository heladeraRepository;
-    private RetiroDeViandaRepository retiroDeViandaRepository;
-    private SolicitudDeAperturaRepository solicitudDeAperturaRepository;
-    private AperturaHeladeraRepository aperturaHeladeraRepository;
+    IHeladeraRepository heladeraRepository;
+    ISolicitudDeAperturaRepository solicitudDeAperturaRepository;
+    ICrudRepository<RetiroDeVianda> retiroDeViandaRepository;
+    ICrudRepository<AperturaHeladera> aperturaHeladeraRepository;
 
-    public HeladeraController(HeladeraRepository heladeraRepository,
-                              RetiroDeViandaRepository retiroDeViandaRepository,
-                              SolicitudDeAperturaRepository solicitudDeAperturaRepository,
-                              AperturaHeladeraRepository aperturaHeladeraRepository) {
+    public HeladeraController(IHeladeraRepository heladeraRepository,
+                              ISolicitudDeAperturaRepository solicitudDeAperturaRepository,
+                              ICrudRepository<RetiroDeVianda> retiroDeViandaRepository,
+                              ICrudRepository<AperturaHeladera> aperturaHeladeraRepository) {
+
         this.heladeraRepository = heladeraRepository;
         this.retiroDeViandaRepository = retiroDeViandaRepository;
         this.solicitudDeAperturaRepository = solicitudDeAperturaRepository;
@@ -34,7 +36,7 @@ public class HeladeraController implements ICrudViewsHandler {
 
     @Override
     public void index(Context context) {
-        List<Heladera> heladeras = this.heladeraRepository.obtenerTodos();
+        List<Heladera> heladeras = this.heladeraRepository.buscarTodos();
 
         Map<String, Object> model = new HashMap<>();
         model.put("heladeras", heladeras);
@@ -46,7 +48,7 @@ public class HeladeraController implements ICrudViewsHandler {
     @Override
     public void show(Context context) {
         //por id
-        Optional<Heladera> posibleHeladeraBuscada = this.heladeraRepository.obtenerPorId(UUID.fromString(context.pathParam("id")));
+        Optional<Heladera> posibleHeladeraBuscada = this.heladeraRepository.buscarPorId(context.pathParam("id"));
 
         if (posibleHeladeraBuscada.isEmpty()) {
             context.status(404);//not found
@@ -105,5 +107,20 @@ public class HeladeraController implements ICrudViewsHandler {
     }
 
     // métodos para manejar mensaje de los sensores
+
+    @Override
+    public void recibirTemperatura(double temperatura) {
+
+    }
+
+    @Override
+    public void recibirMovimiento() {
+
+    }
+
+    @Override
+    public void recibirCodigoTarjeta(String codigoTarjeta) {
+
+    }
 
 }
