@@ -1,11 +1,12 @@
 package ar.edu.utn.frba.dds.models.repositories.heladera;
 
 import ar.edu.utn.frba.dds.models.entities.heladera.SolicitudDeApertura;
-import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaColaborador;
 import ar.edu.utn.frba.dds.utils.ICrudRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import javax.persistence.NoResultException;
 
 public class SolicitudDeAperturaRepository implements
         ICrudRepository<SolicitudDeApertura>,
@@ -17,54 +18,59 @@ public class SolicitudDeAperturaRepository implements
         withTransaction(() -> entityManager().persist(solicitud));
     }
 
-    // TODO
     @Override
-    public void actualizar(SolicitudDeApertura entidad) {
+    public void actualizar(SolicitudDeApertura solicitud) {
+        withTransaction(() -> entityManager().merge(solicitud));
 
     }
 
-    // TODO
     @Override
-    public void eliminar(SolicitudDeApertura entidad) {
-
+    public void eliminar(SolicitudDeApertura solicitud) {
+        withTransaction(() -> {
+            solicitud.setAlta(false);
+            entityManager().merge(solicitud);
+        });
     }
 
-    // TODO
     @Override
     public Optional<SolicitudDeApertura> buscarPorId(String id) {
-        return Optional.empty();
+        try {
+            UUID uuid = UUID.fromString(id);
+            return Optional.ofNullable(entityManager().find(SolicitudDeApertura.class, uuid));
+        } catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
     }
 
-    // TODO
     @Override
     public List<SolicitudDeApertura> buscarTodos() {
-        return List.of();
-    }
-
-    public List<SolicitudDeApertura> obtenerPorTarjeta(TarjetaColaborador tarjeta) {
         return entityManager()
-                .createQuery("from SolicitudDeApertura s where s.tarjeta = :tarjeta", SolicitudDeApertura.class)
-                .setParameter("tarjeta", tarjeta)
+                .createQuery("from SolicitudDeApertura", SolicitudDeApertura.class)
                 .getResultList();
     }
 
-    public Optional<SolicitudDeApertura> obtenerUltimoPorTarjeta(TarjetaColaborador tarjeta) {
-        return Optional.ofNullable(entityManager()
-                .createQuery("from SolicitudDeApertura s where s.tarjeta  = :tarjeta order by s.fechaHora desc", SolicitudDeApertura.class)
-                .setParameter("tarjeta", tarjeta)
-                .getSingleResult()
-        );
-    }
-
-    // TODO
     @Override
     public List<SolicitudDeApertura> buscarPorTarjeta(String tarjeta) {
-        return List.of();
+        return entityManager()
+                .createQuery("from SolicitudDeApertura s " +
+                                "where s.tarjeta.codigo = :cod_tarjeta",
+                        SolicitudDeApertura.class)
+                .setParameter("cod_tarjeta", tarjeta)
+                .getResultList();
     }
 
-    // TODO
     @Override
     public Optional<SolicitudDeApertura> buscarUltimoPorTarjeta(String tarjeta) {
-        return Optional.empty();
+        try {
+            return Optional.of(entityManager()
+                    .createQuery("from SolicitudDeApertura sa " +
+                                    "where sa.tarjeta.codigo = :cod_tarjeta " +
+                                    "order by sa.fechaHora desc",
+                            SolicitudDeApertura.class)
+                    .setParameter("cod_tarjeta", tarjeta)
+                    .getSingleResult());
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 }
