@@ -1,13 +1,17 @@
 package ar.edu.utn.frba.dds.models.repositories.heladera;
 
 import ar.edu.utn.frba.dds.models.entities.heladera.AperturaHeladera;
+import ar.edu.utn.frba.dds.utils.ICrudRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import javax.persistence.NoResultException;
 
-public class AperturaHeladeraRepository implements IOperacionPorTarjetaRepository<AperturaHeladera>, WithSimplePersistenceUnit {
+public class AperturaHeladeraRepository implements
+        ICrudRepository<AperturaHeladera>,
+        IOperacionPorTarjetaRepository<AperturaHeladera>,
+        WithSimplePersistenceUnit {
 
     @Override
     public void guardar(AperturaHeladera apertura) {
@@ -29,8 +33,12 @@ public class AperturaHeladeraRepository implements IOperacionPorTarjetaRepositor
 
     @Override
     public Optional<AperturaHeladera> buscarPorId(String id) {
-        UUID uuid = UUID.fromString(id);
-        return Optional.ofNullable(entityManager().find(AperturaHeladera.class, uuid));
+        try {
+            UUID uuid = UUID.fromString(id);
+            return Optional.ofNullable(entityManager().find(AperturaHeladera.class, uuid));
+        } catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -52,14 +60,12 @@ public class AperturaHeladeraRepository implements IOperacionPorTarjetaRepositor
     public Optional<AperturaHeladera> buscarUltimoPorTarjeta(String tarjeta) {
         try {
             return Optional.of(entityManager()
-                    .createQuery(
-                            "from AperturaHeladera ah " +
+                    .createQuery("from AperturaHeladera ah " +
                                     "where ah.tarjetaColaborador.codigo  = :cod_tarjeta " +
                                     "order by ah.fechaHora desc",
                             AperturaHeladera.class)
                     .setParameter("cod_tarjeta", tarjeta)
-                    .getSingleResult()
-            );
+                    .getSingleResult());
         } catch (NoResultException e) {
             return Optional.empty();
         }

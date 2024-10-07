@@ -1,66 +1,75 @@
 package ar.edu.utn.frba.dds.models.repositories.heladera;
 
 import ar.edu.utn.frba.dds.models.entities.heladera.RetiroDeVianda;
-import ar.edu.utn.frba.dds.models.entities.personaVulnerable.PersonaVulnerable;
-import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaPersonaVulnerable;
+import ar.edu.utn.frba.dds.utils.ICrudRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import javax.persistence.NoResultException;
 
-public class RetiroDeViandaRepository implements IOperacionPorTarjetaRepository<RetiroDeVianda>, WithSimplePersistenceUnit {
+public class RetiroDeViandaRepository implements
+        ICrudRepository<RetiroDeVianda>,
+        IOperacionPorTarjetaRepository<RetiroDeVianda>,
+        WithSimplePersistenceUnit {
 
     @Override
     public void guardar(RetiroDeVianda retiroDeVianda) {
         withTransaction(() -> entityManager().persist(retiroDeVianda));
     }
 
-    // TODO
     @Override
-    public void actualizar(RetiroDeVianda entidad) {
-
+    public void actualizar(RetiroDeVianda retiroDeVianda) {
+        withTransaction(() -> entityManager().merge(retiroDeVianda));
     }
 
-    // TODO
     @Override
-    public void eliminar(RetiroDeVianda entidad) {
-
+    public void eliminar(RetiroDeVianda retiroDeVianda) {
+        withTransaction(() -> {
+            retiroDeVianda.setAlta(false);
+            entityManager().merge(retiroDeVianda);
+        });
     }
 
-    // TODO
     @Override
     public Optional<RetiroDeVianda> buscarPorId(String id) {
-        return Optional.empty();
+        try {
+            UUID uuid = UUID.fromString(id);
+            return Optional.ofNullable(entityManager().find(RetiroDeVianda.class, uuid));
+        } catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
     }
 
-    // TODO
     @Override
     public List<RetiroDeVianda> buscarTodos() {
-        return List.of();
-    }
-
-    public List<RetiroDeVianda> obtenerPorTarjeta(TarjetaPersonaVulnerable tarjeta) {
         return entityManager()
-                .createQuery("from RetiroDeVianda r where r.tarjetaPersonaVulnerable = :tarjeta", RetiroDeVianda.class)
-                .setParameter("tarjeta", tarjeta)
+                .createQuery("from RetiroDeVianda", RetiroDeVianda.class)
                 .getResultList();
     }
 
-    public List<RetiroDeVianda> obtenerPorPersonaVulnerable(PersonaVulnerable persona) {
-        return entityManager()
-                .createQuery("from RetiroDeVianda r where r.tarjetaPersonaVulnerable.duenio = :persona", RetiroDeVianda.class)
-                .setParameter("persona", persona)
-                .getResultList();
-    }
-
-    // TODO
     @Override
     public List<RetiroDeVianda> buscarPorTarjeta(String tarjeta) {
-        return List.of();
+        return entityManager()
+                .createQuery("from RetiroDeVianda r " +
+                                "where r.tarjetaPersonaVulnerable.codigo = :cod_tarjeta",
+                        RetiroDeVianda.class)
+                .setParameter("cod_tarjeta", tarjeta)
+                .getResultList();
     }
 
-    // TODO
     @Override
     public Optional<RetiroDeVianda> buscarUltimoPorTarjeta(String tarjeta) {
-        return Optional.empty();
+        try {
+            return Optional.of(entityManager()
+                    .createQuery("from RetiroDeVianda rv " +
+                                    "where rv.tarjetaPersonaVulnerable.codigo = :cod_tarjeta " +
+                                    "order by rv.fechaHora desc",
+                            RetiroDeVianda.class)
+                    .setParameter("cod_tarjeta", tarjeta)
+                    .getSingleResult());
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 }

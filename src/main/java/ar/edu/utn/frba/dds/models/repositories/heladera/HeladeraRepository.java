@@ -10,9 +10,6 @@ import javax.persistence.NoResultException;
 
 public class HeladeraRepository implements IHeladeraReporitory, WithSimplePersistenceUnit {
 
-    /**
-     * Guarda sin transacción.
-     */
     @Override
     public void guardar(Heladera heladera) {
         withTransaction(() -> entityManager().persist(heladera));
@@ -20,9 +17,7 @@ public class HeladeraRepository implements IHeladeraReporitory, WithSimplePersis
 
     @Override
     public void actualizar(Heladera heladera) {
-        withTransaction(() -> {
-            entityManager().merge(heladera);
-        });
+        withTransaction(() -> entityManager().merge(heladera));
     }
 
     @Override
@@ -35,8 +30,12 @@ public class HeladeraRepository implements IHeladeraReporitory, WithSimplePersis
 
     @Override
     public Optional<Heladera> buscarPorId(String id) {
-        UUID uuid = UUID.fromString(id);
-        return Optional.ofNullable(entityManager().find(Heladera.class, uuid));
+        try {
+            UUID uuid = UUID.fromString(id);
+            return Optional.ofNullable(entityManager().find(Heladera.class, uuid));
+        } catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
