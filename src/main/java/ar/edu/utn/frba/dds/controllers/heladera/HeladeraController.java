@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.controllers.heladera;
 
+import ar.edu.utn.frba.dds.dtos.heladera.HeladeraDTO;
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
 import ar.edu.utn.frba.dds.models.entities.data.Calle;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
@@ -19,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHandler {
 
@@ -38,12 +40,20 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
         this.aperturaHeladeraRepository = aperturaHeladeraRepository;
     }
 
+    public HeladeraController(IHeladeraRepository heladeraRepository) { // Momentaneo para que no me putee
+        this.heladeraRepository = heladeraRepository;
+    }
+
     @Override
     public void index(Context context) {
         List<Heladera> heladeras = this.heladeraRepository.buscarTodos();
 
+        List<HeladeraDTO> heladerasDTO = heladeras.stream()
+                .map(HeladeraDTO::preview)
+                .collect(Collectors.toList());
+
         Map<String, Object> model = new HashMap<>();
-        model.put("heladeras", heladeras);
+        model.put("heladeras", heladerasDTO);
         model.put("titulo", "Listado de heladeras");
 
         context.render("heladera/heladeras.hbs", model);
