@@ -34,12 +34,12 @@ public class ServiceLocator {
             handler = (ICrudViewsHandler) instances.get(handlerName);
         }
 
-        if (handlerName.equals("HeladeraController")) {
+        if (handlerName.equals(HeladeraController.class.getName())) {
             handler = new HeladeraController(
-                    ServiceLocator.getHeladeraRepository(),
-                    ServiceLocator.getSolicitudDeAperturaRepository(),
-                    ServiceLocator.getCrudRepository("RetiroDeViandaRepository"),
-                    ServiceLocator.getCrudRepository("AperturaHeladeraRepository")
+                    getHeladeraRepository(),
+                    getSolicitudDeAperturaRepository(),
+                    getCrudRepository("RetiroDeViandaRepository"),
+                    getCrudRepository("AperturaHeladeraRepository")
             );
         }
 
@@ -55,17 +55,17 @@ public class ServiceLocator {
 
     @SuppressWarnings("unchecked")
     public static IBrokerMessageHandler getBrokerMessageHandler() {
-        String handlerName = "HeladeraController";
+        String handlerName = HeladeraController.class.getName();
 
         if (instances.containsKey(handlerName)) {
             return (IBrokerMessageHandler) instances.get(handlerName);
         }
 
         IBrokerMessageHandler handler = new HeladeraController(
-                ServiceLocator.getHeladeraRepository(),
-                ServiceLocator.getSolicitudDeAperturaRepository(),
-                ServiceLocator.getCrudRepository("RetiroDeViandaRepository"),
-                ServiceLocator.getCrudRepository("AperturaHeladeraRepository")
+                getHeladeraRepository(),
+                getSolicitudDeAperturaRepository(),
+                getCrudRepository("RetiroDeViandaRepository"),
+                getCrudRepository("AperturaHeladeraRepository")
         );
         instances.put(handlerName, handler);
         return handler;
@@ -78,15 +78,15 @@ public class ServiceLocator {
             repository = (ICrudRepository) instances.get(repositoryName);
         }
 
-        if (repositoryName.equals("AperturaHeladeraRepository")) {
+        if (repositoryName.equals(AperturaHeladeraRepository.class.getName())) {
             repository = new AperturaHeladeraRepository();
         }
 
-        if (repositoryName.equals("RetiroDeViandaRepository")) {
+        if (repositoryName.equals(RetiroDeViandaRepository.class.getName())) {
             repository = new RetiroDeViandaRepository();
         }
 
-        if (repositoryName.equals("SolicitudDeAperturaRepository")) {
+        if (repositoryName.equals(SolicitudDeAperturaRepository.class.getName())) {
             repository = new SolicitudDeAperturaRepository();
         }
 
@@ -100,7 +100,7 @@ public class ServiceLocator {
     }
 
     public static IHeladeraRepository getHeladeraRepository() {
-        String repositoryName = "HeladeraRepository";
+        String repositoryName = HeladeraRepository.class.getName();
 
         if (instances.containsKey(repositoryName)) {
             return (IHeladeraRepository) instances.get(repositoryName);
@@ -112,7 +112,7 @@ public class ServiceLocator {
     }
 
     public static ISolicitudDeAperturaRepository getSolicitudDeAperturaRepository() {
-        String repositoryName = "SolicitudDeAperturaRepository";
+        String repositoryName = SolicitudDeAperturaRepository.class.getName();
 
         if (instances.containsKey(repositoryName)) {
             return (ISolicitudDeAperturaRepository) instances.get(repositoryName);
