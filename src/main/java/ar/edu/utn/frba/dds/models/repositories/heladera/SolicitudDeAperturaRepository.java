@@ -6,10 +6,35 @@ import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
 import java.util.Optional;
 
-public class SolicitudDeAperturaRepository implements WithSimplePersistenceUnit {
+public class SolicitudDeAperturaRepository implements IOperacionPorTarjetaRepository<SolicitudDeApertura>, WithSimplePersistenceUnit {
 
+    @Override
     public void guardar(SolicitudDeApertura solicitud) {
         withTransaction(() -> entityManager().persist(solicitud));
+    }
+
+    // TODO
+    @Override
+    public void actualizar(SolicitudDeApertura entidad) {
+
+    }
+
+    // TODO
+    @Override
+    public void eliminar(SolicitudDeApertura entidad) {
+
+    }
+
+    // TODO
+    @Override
+    public Optional<SolicitudDeApertura> buscarPorId(String id) {
+        return Optional.empty();
+    }
+
+    // TODO
+    @Override
+    public List<SolicitudDeApertura> buscarTodos() {
+        return List.of();
     }
 
     public List<SolicitudDeApertura> obtenerPorTarjeta(TarjetaColaborador tarjeta) {
@@ -25,5 +50,17 @@ public class SolicitudDeAperturaRepository implements WithSimplePersistenceUnit 
                 .setParameter("tarjeta", tarjeta)
                 .getSingleResult()
         );
+    }
+
+    // TODO
+    @Override
+    public List<SolicitudDeApertura> buscarPorTarjeta(String tarjeta) {
+        return List.of();
+    }
+
+    // TODO
+    @Override
+    public Optional<SolicitudDeApertura> buscarUltimoPorTarjeta(String tarjeta) {
+        return Optional.empty();
     }
 }

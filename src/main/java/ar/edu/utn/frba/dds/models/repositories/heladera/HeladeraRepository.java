@@ -8,21 +8,24 @@ import java.util.Optional;
 import java.util.UUID;
 import javax.persistence.NoResultException;
 
-public class HeladeraRepository implements WithSimplePersistenceUnit {
+public class HeladeraRepository implements IHeladeraReporitory, WithSimplePersistenceUnit {
 
     /**
      * Guarda sin transacción.
      */
+    @Override
     public void guardar(Heladera heladera) {
         withTransaction(() -> entityManager().persist(heladera));
     }
 
+    @Override
     public void actualizar(Heladera heladera) {
         withTransaction(() -> {
             entityManager().merge(heladera);
         });
     }
 
+    @Override
     public void eliminar(Heladera heladera) {
         withTransaction(() -> {
             heladera.setAlta(false);
@@ -30,11 +33,25 @@ public class HeladeraRepository implements WithSimplePersistenceUnit {
         });
     }
 
+    @Override
+    public Optional<Heladera> buscarPorId(String id) {
+        return Optional.ofNullable(entityManager().find(Heladera.class, id));
+    }
+
+    @Override
+    public List<Heladera> buscarTodos() {
+        return entityManager()
+                .createQuery("from Heladera", Heladera.class)
+                .getResultList();
+    }
+
+    // Refactorizar por buscarPorId(String id)
     public Optional<Heladera> obtenerPorId(UUID id) {
         return Optional.ofNullable(entityManager().find(Heladera.class, id));
     }
 
-    public Optional<Heladera> obtenerPorNombre(String nombre) {
+    @Override
+    public Optional<Heladera> buscarPorNombre(String nombre) {
         try {
             return Optional.of(entityManager()
                     .createQuery("from Heladera h where h.nombre = :name", Heladera.class)
@@ -45,17 +62,11 @@ public class HeladeraRepository implements WithSimplePersistenceUnit {
         }
     }
 
-    public List<Heladera> obtenerPorBarrio(Barrio barrio) {
+    @Override
+    public List<Heladera> buscarPorBarrio(Barrio barrio) {
         return entityManager()
                 .createQuery("from Heladera h where h.direccion.barrio = :barrio", Heladera.class)
                 .setParameter("barrio", barrio)
-                .getResultList();
-    }
-
-    // TODO - ver paginación
-    public List<Heladera> obtenerTodos() {
-        return entityManager()
-                .createQuery("from Heladera", Heladera.class)
                 .getResultList();
     }
 

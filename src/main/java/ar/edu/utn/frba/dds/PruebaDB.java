@@ -73,7 +73,7 @@ public class PruebaDB implements WithSimplePersistenceUnit {
     }
 
     private void recuperarHeladera() {
-        Optional<Heladera> heladeraRecuperada = heladeraRepository.obtenerPorNombre("UTN Medrano");
+        Optional<Heladera> heladeraRecuperada = heladeraRepository.buscarPorNombre("UTN Medrano");
 
         heladeraRecuperada.ifPresent(heladera ->
                 System.out.println("Heladera: " + heladera.getNombre() + "\n" + "Id: " + heladera.getId().toString())
