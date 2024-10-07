@@ -66,12 +66,4 @@ public class VisitaTecnico {
                 .build();
     }
 
-    public static VisitaTecnico por(Tecnico tecnico,
-                                    Heladera heladera) {
-        return VisitaTecnico
-                .builder()
-                .tecnico(tecnico)
-                .heladera(heladera)
-                .build();
-    }
 }

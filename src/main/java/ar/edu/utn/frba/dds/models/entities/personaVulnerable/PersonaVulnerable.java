@@ -57,37 +57,10 @@ public class PersonaVulnerable extends EntidadPersistente {
                 .menoresACargo(menoresACargo)
                 .build();
     }
-
-    public static PersonaVulnerable con(String nombre, Documento documento, Integer menoresACargo) {
-        return PersonaVulnerable
-                .builder()
-                .nombre(nombre)
-                .documento(documento)
-                .menoresACargo(menoresACargo)
-                .build();
-    }
-
-    public static PersonaVulnerable con(String nombre, Documento documento) {
-        return PersonaVulnerable
-                .builder()
-                .nombre(nombre)
-                .documento(documento)
-                .build();
-    }
-
+    
     public static PersonaVulnerable con(String nombre, Integer menoresACargo) {
-        return PersonaVulnerable
-                .builder()
-                .nombre(nombre)
-                .menoresACargo(menoresACargo)
-                .build();
+        return PersonaVulnerable.con(nombre, null, null, null, null, menoresACargo);
     }
 
-    public static PersonaVulnerable con(String nombre) {
-        return PersonaVulnerable
-                .builder()
-                .nombre(nombre)
-                .build();
-    }
 }
 

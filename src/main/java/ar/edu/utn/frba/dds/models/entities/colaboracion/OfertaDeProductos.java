@@ -1,8 +1,8 @@
 package ar.edu.utn.frba.dds.models.entities.colaboracion;
 
-import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Imagen;
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -59,17 +59,6 @@ public class OfertaDeProductos extends EntidadPersistente {
                 .puntosNecesarios(puntosNecesarios)
                 .rubro(rubro)
                 .imagen(imagen)
-                .build();
-    }
-
-    public static OfertaDeProductos por(Colaborador colaborador,
-                                        String nombre,
-                                        Double puntosNecesarios) {
-        return OfertaDeProductos
-                .builder()
-                .colaborador(colaborador)
-                .nombre(nombre)
-                .puntosNecesarios(puntosNecesarios)
                 .build();
     }
 

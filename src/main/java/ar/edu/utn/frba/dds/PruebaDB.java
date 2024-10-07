@@ -13,13 +13,12 @@ import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
-import ar.edu.utn.frba.dds.models.entities.rol.Rol;
+import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.TecnicoRepository;
-import ar.edu.utn.frba.dds.models.repositories.usuario.RolRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDate;
@@ -32,7 +31,6 @@ public class PruebaDB implements WithSimplePersistenceUnit {
     private TecnicoRepository tecnicoRepository;
     private ColaboradorRepository colaboradorRepository;
     private UsuarioRepository usuarioRepository;
-    private RolRepository rolRepository;
 
     public static void main(String[] args) {
         PruebaDB instance = new PruebaDB();
@@ -47,7 +45,6 @@ public class PruebaDB implements WithSimplePersistenceUnit {
         instance.guardarTecnico();
         instance.recuperarTecnico();
 
-        instance.rolRepository = new RolRepository();
         instance.colaboradorRepository = new ColaboradorRepository();
         instance.guardarColaborador();
         instance.recuperarColaborador();
@@ -76,7 +73,7 @@ public class PruebaDB implements WithSimplePersistenceUnit {
     }
 
     private void recuperarHeladera() {
-        Optional<Heladera> heladeraRecuperada = heladeraRepository.obtenerPorNombre("UTN Medrano");
+        Optional<Heladera> heladeraRecuperada = heladeraRepository.buscarPorNombre("UTN Medrano");
 
         heladeraRecuperada.ifPresent(heladera ->
                 System.out.println("Heladera: " + heladera.getNombre() + "\n" + "Id: " + heladera.getId().toString())
@@ -84,8 +81,7 @@ public class PruebaDB implements WithSimplePersistenceUnit {
     }
 
     private void guardarColaborador() {
-        Rol unRol = Rol.con("COLABORADOR");
-        Usuario unUsuario = Usuario.con("JiunMHsu", "iMC4(*&A^F0OK?%87", "utn.dds.g22@gmail.com", unRol);
+        Usuario unUsuario = Usuario.con("JiunMHsu", "iMC4(*&A^F0OK?%87", "utn.dds.g22@gmail.com", TipoRol.ADMIN);
         Direccion direccion = new Direccion(
                 new Barrio("Almagro"),
                 new Calle("Medrano"),
@@ -103,7 +99,6 @@ public class PruebaDB implements WithSimplePersistenceUnit {
         unColaborador.setDireccion(direccion);
 
         withTransaction(() -> {
-            rolRepository.guardar(unRol);
             usuarioRepository.guardar(unUsuario);
             colaboradorRepository.guardar(unColaborador);
         });
