@@ -2,8 +2,8 @@ package ar.edu.utn.frba.dds.models.entities.tarjeta;
 
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.personaVulnerable.PersonaVulnerable;
-import ar.edu.utn.frba.dds.models.stateless.ValidadorDeCodigosTarjeta;
 import ar.edu.utn.frba.dds.utils.EntidadPersistente;
+import ar.edu.utn.frba.dds.utils.RandomString;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,21 +39,29 @@ public class TarjetaPersonaVulnerable extends EntidadPersistente {
     @Column(name = "fecha_ultimo_uso", columnDefinition = "DATE")
     private LocalDate ultimoUso;
 
-    public static TarjetaPersonaVulnerable de(PersonaVulnerable duenio) {
+    public static TarjetaPersonaVulnerable de(String codigo,
+                                              PersonaVulnerable duenio,
+                                              int usosEnElDia,
+                                              LocalDate ultimoUso) {
         return TarjetaPersonaVulnerable
                 .builder()
-                .codigo(ValidadorDeCodigosTarjeta.generar())
+                .codigo(codigo)
                 .duenio(duenio)
-                .usosEnElDia(0)
-                .ultimoUso(LocalDate.now())
+                .usosEnElDia(usosEnElDia)
+                .ultimoUso(ultimoUso)
                 .build();
     }
 
+    public static TarjetaPersonaVulnerable de(PersonaVulnerable duenio) {
+        return TarjetaPersonaVulnerable.de(
+                new RandomString(11).nextString(),
+                duenio,
+                0,
+                LocalDate.now());
+    }
+
     public static TarjetaPersonaVulnerable de() {
-        return TarjetaPersonaVulnerable
-                .builder()
-                .codigo(ValidadorDeCodigosTarjeta.generar())
-                .build();
+        return TarjetaPersonaVulnerable.de(null);
     }
 
     private Boolean puedeUsar() {
