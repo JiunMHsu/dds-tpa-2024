@@ -28,6 +28,9 @@ public class SessionController {
     }
 
     public void create(Context context) {
+        // TODO - no se obtiene query param
+        // El forward en este caso atrapa la ruta del post (la que el formulario envía)
+        // El formulario siempre envía sin query params, entonces siempre va a ser NULL
         String forward = this.getForwardRoute(context);
 
         String email = context.formParam("email");
@@ -47,14 +50,14 @@ public class SessionController {
             return;
         }
 
-        context.req().changeSessionId();
         context.sessionAttribute("userId", usuario.get().getId());
-        context.sessionAttribute("userRol", usuario.get().getRol().getNombre());
+        context.sessionAttribute("userRol", usuario.get().getRol().toString());
+        context.req().changeSessionId();
 
         String newSessionId = context.req().getSession().getId();
         context.cookie("sessionId", newSessionId, 3600);
 
-        context.redirect(forward, HttpStatus.OK);
+        context.redirect(forward);
     }
 
     public void delete(Context context) {
@@ -63,6 +66,7 @@ public class SessionController {
 
     private String getForwardRoute(Context context) {
         String forward = context.queryParam("forward");
-        return forward == null ? "/home" : forward;
+        System.out.println(forward);
+        return forward == null ? "/" : forward;
     }
 }

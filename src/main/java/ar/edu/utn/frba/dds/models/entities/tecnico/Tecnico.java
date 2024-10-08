@@ -1,10 +1,10 @@
 package ar.edu.utn.frba.dds.models.entities.tecnico;
 
-import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import ar.edu.utn.frba.dds.models.entities.data.Area;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.data.Documento;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -63,30 +63,6 @@ public class Tecnico extends EntidadPersistente {
                 .cuit(cuit)
                 .contacto(contacto)
                 .medioDeNotificacion(medioDeNotificacion)
-                .areaDeCobertura(areaDeCobertura)
-                .build();
-    }
-
-    public static Tecnico con(String nombre,
-                              Contacto contacto,
-                              MedioDeNotificacion medioDeNotificacion,
-                              Area areaDeCobertura) {
-        return Tecnico
-                .builder()
-                .nombre(nombre)
-                .contacto(contacto)
-                .medioDeNotificacion(medioDeNotificacion)
-                .areaDeCobertura(areaDeCobertura)
-                .build();
-    }
-
-    public static Tecnico con(String nombre,
-                              Contacto contacto,
-                              Area areaDeCobertura) {
-        return Tecnico
-                .builder()
-                .nombre(nombre)
-                .contacto(contacto)
                 .areaDeCobertura(areaDeCobertura)
                 .build();
     }

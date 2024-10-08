@@ -6,19 +6,21 @@ import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import javax.persistence.NoResultException;
 
 public class HeladeraRepository implements IHeladeraRepository, WithSimplePersistenceUnit {
 
+    @Override
     public void guardar(Heladera heladera) {
         withTransaction(() -> entityManager().persist(heladera));
     }
 
+    @Override
     public void actualizar(Heladera heladera) {
-        withTransaction(() -> {
-            entityManager().merge(heladera);
-        });
+        withTransaction(() -> entityManager().merge(heladera));
     }
 
+    @Override
     public void eliminar(Heladera heladera) {
         withTransaction(() -> {
             heladera.setAlta(false);
@@ -26,27 +28,45 @@ public class HeladeraRepository implements IHeladeraRepository, WithSimplePersis
         });
     }
 
+    @Override
+    public Optional<Heladera> buscarPorId(String id) {
+        try {
+            UUID uuid = UUID.fromString(id);
+            return Optional.ofNullable(entityManager().find(Heladera.class, uuid));
+        } catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public List<Heladera> buscarTodos() {
+        return entityManager()
+                .createQuery("from Heladera", Heladera.class)
+                .getResultList();
+    }
+
+    // Refactorizar por buscarPorId(String id)
     public Optional<Heladera> obtenerPorId(UUID id) {
         return Optional.ofNullable(entityManager().find(Heladera.class, id));
     }
 
-    public Optional<Heladera> obtenerPorNombre(String nombre) {
-        return Optional.ofNullable(entityManager()
-                .createQuery("from Heladera h where h.nombre = :name", Heladera.class)
-                .setParameter("name", nombre)
-                .getSingleResult());
+    @Override
+    public Optional<Heladera> buscarPorNombre(String nombre) {
+        try {
+            return Optional.of(entityManager()
+                    .createQuery("from Heladera h where h.nombre = :name", Heladera.class)
+                    .setParameter("name", nombre)
+                    .getSingleResult());
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
-    public List<Heladera> obtenerPorBarrio(Barrio barrio) {
+    @Override
+    public List<Heladera> buscarPorBarrio(Barrio barrio) {
         return entityManager()
                 .createQuery("from Heladera h where h.direccion.barrio = :barrio", Heladera.class)
                 .setParameter("barrio", barrio)
-                .getResultList();
-    }
-
-    public List<Heladera> obtenerTodos() {
-        return entityManager()
-                .createQuery("from Heladera", Heladera.class)
                 .getResultList();
     }
 

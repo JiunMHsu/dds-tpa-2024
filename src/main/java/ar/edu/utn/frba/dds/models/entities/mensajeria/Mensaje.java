@@ -66,11 +66,6 @@ public class Mensaje {
     public static Mensaje con(String asunto,
                               String cuerpo,
                               Colaborador receptor) {
-        return Mensaje
-                .builder()
-                .asunto(asunto)
-                .cuerpo(cuerpo)
-                .receptor(receptor)
-                .build();
+        return Mensaje.con(asunto, cuerpo, receptor, null, null);
     }
 }

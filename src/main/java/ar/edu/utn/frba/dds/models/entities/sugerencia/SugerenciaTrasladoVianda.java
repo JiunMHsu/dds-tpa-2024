@@ -1,8 +1,8 @@
 package ar.edu.utn.frba.dds.models.entities.sugerencia;
 
-import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,7 +41,7 @@ public class SugerenciaTrasladoVianda extends EntidadPersistente {
     @Column(name = "estado", nullable = false)
     private EstadoSugerencia estado;
 
-    // TODO - Debería conocer al incidente, para la trazabilidiad
+    // TODO - Debería conocer al incidente, para la trazabilidad
     // private Incidente incidente_causa;
 
     public static SugerenciaTrasladoVianda de(Heladera heladeraOrigen,

@@ -50,11 +50,12 @@ public class SolicitudDeApertura extends EntidadPersistente {
 
     public static SolicitudDeApertura por(TarjetaColaborador tarjeta,
                                           Heladera heladera) {
-        return SolicitudDeApertura
-                .builder()
-                .tarjeta(tarjeta)
-                .heladera(heladera)
-                .fechaHora(LocalDateTime.now())
-                .build();
+        return SolicitudDeApertura.por(
+                tarjeta,
+                heladera,
+                LocalDateTime.now(),
+                ""
+        );
     }
+
 }

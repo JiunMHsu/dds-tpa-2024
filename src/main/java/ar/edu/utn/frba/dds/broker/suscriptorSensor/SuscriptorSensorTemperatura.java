@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.broker.suscriptorSensor;
 
+import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.models.entities.sensor.Sensor;
 import java.time.Duration;
 import java.time.Instant;
@@ -31,10 +32,9 @@ public class SuscriptorSensorTemperatura extends SuscriptorSensor {
         return new SuscriptorSensorTemperatura(suscriptor, intervaloEntreMensajes, frecuenciaDeVerificacion);
     }
 
-    // TODO (delegar a controller? o este mismo cumple el rol de controller?)
     @Override
     public void recibirMensaje(String mensaje) {
-        // ...
+        ServiceLocator.getBrokerMessageHandler().recibirTemperatura(Double.parseDouble(mensaje));
         tiempoUltimoMensaje = Instant.now();
     }
 
