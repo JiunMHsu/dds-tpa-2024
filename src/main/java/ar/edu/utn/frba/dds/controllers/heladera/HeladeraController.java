@@ -72,7 +72,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
         Map<String, Object> model = new HashMap<>();
         model.put("heladera", posibleHeladeraBuscada.get());
 
-        context.render("heladera/heladera_detalle.hbs", model);
+        context.render("heladeras/heldadera_detalle.hbs", model);
 
     }
 
@@ -82,7 +82,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
             context.status(403).result("No tienes permiso para dar de alta la heladera.");
             return;
         }
-        context.render("heladera/heladera_crear.hbs");
+        context.render("heladeras/heladera_crear.hbs");
     }
 
     @Override
@@ -99,7 +99,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
         this.heladeraRepository.guardar(nuevaHeladera);
         //O BIEN LANZO UNA PANTALLA DE EXITO
         //O BIEN REDIRECCIONO AL USER A LA PANTALLA DE LISTADO DE PRODUCTOS
-        context.redirect("/heladeras/heladeras"); //redirecciono a heladeras, pero no se si me gusta
+        context.redirect("/heladeras/heladeras.hbs"); //redirecciono a heladeras, pero no se si me gusta
 
     }
 
