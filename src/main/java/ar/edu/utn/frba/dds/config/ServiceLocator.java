@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.config;
 
 import ar.edu.utn.frba.dds.controllers.heladera.HeladeraController;
+
 import ar.edu.utn.frba.dds.models.repositories.heladera.AperturaHeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.IHeladeraRepository;
@@ -10,6 +11,7 @@ import ar.edu.utn.frba.dds.models.repositories.heladera.SolicitudDeAperturaRepos
 import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
 import ar.edu.utn.frba.dds.utils.ICrudRepository;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,11 +21,20 @@ public class ServiceLocator {
 
     @SuppressWarnings("unchecked")
     public static <T> T instanceOf(Class<T> componentClass) {
-        String className = componentClass.getName();
+        String componentName = componentClass.getName();
 
-        // TODO
+        if (!instances.containsKey(componentName)) {
+            if(componentName.equals(HeladeraController.class.getName())) {
+                HeladeraController instance = new HeladeraController(instanceOf(HeladeraRepository.class));
+                instances.put(componentName, instance);
+            }
+            else if (componentName.equals(HeladeraRepository.class.getName())) {
+                HeladeraRepository instance = new HeladeraRepository();
+                instances.put(componentName, instance);
+            }
+        }
 
-        return (T) instances.get(className);
+        return (T) instances.get(componentName);
     }
 
     @SuppressWarnings("unchecked")
