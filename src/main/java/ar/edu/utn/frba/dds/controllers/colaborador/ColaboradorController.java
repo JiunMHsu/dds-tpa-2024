@@ -1,14 +1,16 @@
 package ar.edu.utn.frba.dds.controllers.colaborador;
 
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.entities.rol.Rol;
+import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
-
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 public class ColaboradorController implements ICrudViewsHandler {
 
@@ -60,18 +62,17 @@ public class ColaboradorController implements ICrudViewsHandler {
     @Override
     public void save(Context context) {
         //TODO ver rol
-        Usuario usuario = Usuario.con(context.pathParam("nombre"), context.pathParam("contrasenia"),context.pathParam("email"), new Rol());
-        Colaborador nuevoColaborador = Colaborador.colaborador();
+        Usuario usuario = Usuario.con(context.pathParam("nombre"), context.pathParam("contrasenia"), context.pathParam("email"), TipoRol.ADMIN);
+        Colaborador nuevoColaborador = Colaborador.colaborador(usuario);
         //ver datos adicionales
-        if(context.pathParam("tipo_colaborador").equals("humano")){
-            nuevoColaborador.
+        if (context.pathParam("tipo_colaborador").equals("humano")) {
+//            nuevoColaborador.
         }
 
         this.colaboradorRepository.guardar(nuevoColaborador);
         //O BIEN LANZO UNA PANTALLA DE EXITO
         //O BIEN REDIRECCIONO AL USER A LA PANTALLA DE LISTADO DE PRODUCTOS
         context.redirect("colaboradores/sign_up_exitoso.hbs");
-
 
 
     }
