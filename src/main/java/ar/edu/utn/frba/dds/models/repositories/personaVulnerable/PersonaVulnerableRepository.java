@@ -1,12 +1,61 @@
 package ar.edu.utn.frba.dds.models.repositories.personaVulnerable;
 
+import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.personaVulnerable.PersonaVulnerable;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 
-public class PersonaVulnerableRepository implements WithSimplePersistenceUnit {
+import javax.persistence.NoResultException;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
-    public void agregar(PersonaVulnerable personaVulnerable) {
+public class PersonaVulnerableRepository implements IPersonaVulnerableRepository, WithSimplePersistenceUnit {
+
+    @Override
+    public void guardar(PersonaVulnerable personaVulnerable) {
         withTransaction(() -> entityManager().persist(personaVulnerable));
     }
 
+    @Override
+    public void actualizar(PersonaVulnerable personaVulnerable) {
+        withTransaction(() -> entityManager().merge(personaVulnerable));
+    }
+
+    @Override
+    public void eliminar(PersonaVulnerable personaVulnerable) {
+        withTransaction(() -> {
+            personaVulnerable.setAlta(false);
+            entityManager().merge(personaVulnerable);
+        });
+    }
+
+    @Override
+    public Optional<PersonaVulnerable> buscarPorId(String id) {
+        try {
+            UUID uuid = UUID.fromString(id);
+            return Optional.ofNullable(entityManager().find(PersonaVulnerable.class, uuid));
+        } catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public List<PersonaVulnerable> buscarTodos() {
+        return entityManager()
+                .createQuery("from PersonaVulnerable ", PersonaVulnerable.class)
+                .getResultList();
+    }
+
+    @Override
+    public Optional<PersonaVulnerable> buscarPorDocumento(String documento) {
+        try {
+            return Optional.of(entityManager()
+                    .createQuery("from PersonaVulnerable pv where pv.documento = :documento", PersonaVulnerable.class)
+                    .setParameter("documento", documento)
+                    .getSingleResult());
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
+    }
 }
+
