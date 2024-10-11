@@ -71,7 +71,7 @@ public class ColaboradorController implements ICrudViewsHandler {
                 Integer.valueOf(context.formParam("altura")),
                 new Ubicacion(Double.valueOf(context.formParam("latitud")), Double.valueOf(context.formParam("longitud")))
         );
-        Contacto contacto = Contacto.con(context.pathParam("email"),context.pathParam("telefono"),context.pathParam("whatsapp"),context.pathParam("telegram"))
+        Contacto contacto = Contacto.con(context.pathParam("email"),context.pathParam("telefono"),context.pathParam("whatsapp"),context.pathParam("telegram"));
         Colaborador nuevoColaborador = Colaborador.colaborador(usuario,contacto, direccion , new ArrayList<Colaboracion>());
         //TODO las formas de colaborar como las obtengo de la plantilla?
         //ver datos adicionales
