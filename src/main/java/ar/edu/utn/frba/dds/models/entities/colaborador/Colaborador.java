@@ -153,5 +153,18 @@ public class Colaborador extends EntidadPersistente {
                 .usuario(usuario)
                 .build();
     }
+    public static Colaborador colaborador(Usuario usuario, Contacto contacto, Direccion direccion, List<Colaboracion> formaDeColaborar) {
+        return Colaborador
+                .builder()
+                .usuario(usuario)
+                .contacto(contacto)
+                .direccion(direccion)
+                .formaDeColaborar(formaDeColaborar)
+                .build();
+    }
+
+    public void agregarFormaColaborar(Colaboracion colaboracion){
+        formaDeColaborar.add(colaboracion);
+    }
 
 }
