@@ -24,8 +24,13 @@ public class ColaboradorRepository implements WithSimplePersistenceUnit {
             entityManager().merge(colaborador);
         });
     }
-    public Optional<Colaborador> obtenerPorId(UUID id) {
-        return Optional.ofNullable(entityManager().find(Colaborador.class, id));
+    public Optional<Colaborador> buscarPorId(String id) {
+        try {
+            UUID uuid = UUID.fromString(id);
+            return Optional.ofNullable(entityManager().find(Colaborador.class, uuid));
+        } catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
     }
     public Optional<Colaborador> buscarPorEmail(String email) {
         return Optional.ofNullable(
@@ -36,7 +41,7 @@ public class ColaboradorRepository implements WithSimplePersistenceUnit {
         );
     }
 
-    public List<Colaborador> obtenerTodos() {
+    public List<Colaborador> buscarTodos() {
         return entityManager()
                 .createQuery("from Colaborador ", Colaborador.class)
                 .getResultList();

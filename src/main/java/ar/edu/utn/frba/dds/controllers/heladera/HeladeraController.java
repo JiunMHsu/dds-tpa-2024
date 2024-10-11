@@ -90,7 +90,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
 
         Direccion direccion = Direccion.with(
                 new Barrio(context.formParam("barrio")),
-                new Calle(context.formParam("nombre")),
+                new Calle(context.formParam("calle")),
                 Integer.valueOf(context.formParam("altura")),
                 new Ubicacion(Double.valueOf(context.formParam("latitud")), Double.valueOf(context.formParam("longitud")))
         );
@@ -107,7 +107,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
     public void edit(Context context) {
         // devuelve formulario para editar heladera
         Optional<Heladera> posibleHeladeraBuscada = this.heladeraRepository.buscarPorId(context.pathParam("id"));
-        // TODO este edit es al seleccionar en la vista, entonces nunca deberia ser empty, also este cheque no va aca
+        // TODO chequear empty
 
         // if(posibleHeladeraBuscada.isEmpty()) {
         //     context.status(HttpStatus.NOT_FOUND);
@@ -115,7 +115,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
         // }
 
         Map<String, Object> model = new HashMap<>();
-        model.put("heladerea", posibleHeladeraBuscada.get());
+        model.put("heladera", posibleHeladeraBuscada.get());
         model.put("edicion", true);
 
         context.render("heladeras/heladera_editar.hbs", model);
