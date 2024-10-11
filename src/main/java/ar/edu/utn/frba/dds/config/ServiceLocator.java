@@ -8,6 +8,8 @@ import ar.edu.utn.frba.dds.models.repositories.heladera.IHeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.ISolicitudDeAperturaRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.RetiroDeViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.SolicitudDeAperturaRepository;
+//import ar.edu.utn.frba.dds.models.repositories.personaVulnerable.IPersonaVulnerableRepository;
+//import ar.edu.utn.frba.dds.models.repositories.personaVulnerable.PersonaVulnerableRepository;
 import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
 import ar.edu.utn.frba.dds.utils.ICrudRepository;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
@@ -133,4 +135,17 @@ public class ServiceLocator {
         instances.put(repositoryName, repository);
         return repository;
     }
+
+//    public static IPersonaVulnerableRepository getPersonaVulnerableRepository() {
+//        String repositoryName = PersonaVulnerableRepository.class.getName();
+//
+//        if (instances.containsKey(repositoryName)) {
+//            return (IPersonaVulnerableRepository) instances.get(repositoryName);
+//        }
+//
+//        IPersonaVulnerableRepository repository = new PersonaVulnerableRepository();
+//        instances.put(repositoryName, repository);
+//        return repository;
+//    }
+
 }
