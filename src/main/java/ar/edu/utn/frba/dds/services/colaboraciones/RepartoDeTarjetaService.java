@@ -10,6 +10,7 @@ import ar.edu.utn.frba.dds.models.repositories.personaVulnerable.PersonaVulnerab
 import ar.edu.utn.frba.dds.models.repositories.tarjeta.TarjetaPersonaVulnerableRepository;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public class RepartoDeTarjetaService {
 
@@ -18,7 +19,7 @@ public class RepartoDeTarjetaService {
     private TarjetaPersonaVulnerableRepository tarjetaPersonaVulnerableRepository;
     private ColaboradorRepository colaboradorRepository;
 
-    public RepartoDeTarjetasService(RepartoDeTarjetasRepository repartoDeTarjetasRepository,
+    public RepartoDeTarjetaService(RepartoDeTarjetasRepository repartoDeTarjetasRepository,
                                     PersonaVulnerableRepository personaVulnerableRepository,
                                     TarjetaPersonaVulnerableRepository tarjetaPersonaVulnerableRepository,
                                     ColaboradorRepository colaboradorRepository) {
@@ -31,7 +32,20 @@ public class RepartoDeTarjetaService {
 
     public void registrarReparto(Colaborador colaborador, PersonaVulnerable personaVulnerable, TarjetaPersonaVulnerable tarjeta) {
 
-        // TODO - Validacion de los datos (ver si existen en db)
+        Optional<Colaborador> colaboradorExistente = colaboradorRepository.buscarPorId(colaborador.getId().toString());
+        if (colaboradorExistente.isEmpty()) {
+            throw new IllegalArgumentException("El colaborador no existe en la base de datos");
+        }
+
+        Optional<PersonaVulnerable> personaExistente = personaVulnerableRepository.buscarPorId(personaVulnerable.getId().toString());
+        if (personaExistente.isEmpty()) {
+            throw new IllegalArgumentException("La persona vulnerable no existe en la base de datos");
+        }
+
+        Optional<TarjetaPersonaVulnerable> tarjetaExistente = tarjetaPersonaVulnerableRepository.obtenerPorCodigo(tarjeta.getCodigo());
+        if (tarjetaExistente.isEmpty()) {
+            throw new IllegalArgumentException("La tarjeta no existe en la base de datos");
+        }
 
         RepartoDeTarjetas reparto = RepartoDeTarjetas.por(
                 colaborador,
