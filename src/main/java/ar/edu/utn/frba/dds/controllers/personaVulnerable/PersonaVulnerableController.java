@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.controllers.personaVulnerable;
 
-import ar.edu.utn.frba.dds.dtos.heladera.HeladeraDTO;
 import ar.edu.utn.frba.dds.dtos.personaVulnerable.PersonaVulnerableDTO;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
@@ -48,7 +47,7 @@ public class PersonaVulnerableController implements ICrudViewsHandler {
     @Override
     public void index(Context context) {
 
-        List<PersonaVulnerable> personasVulnerables = this.personaVulnerableService.obtenerTodosPV();
+        List<PersonaVulnerable> personasVulnerables = this.personaVulnerableService.buscarTodosPV();
 
         List<PersonaVulnerableDTO> personasVulnerablesDTO = personasVulnerables.stream()
                 .map(PersonaVulnerableDTO::completa) // TODO - ver que el builder sea acorde a la vista
@@ -64,7 +63,7 @@ public class PersonaVulnerableController implements ICrudViewsHandler {
     @Override
     public void show(Context context) {
 
-        Optional<PersonaVulnerable> personaVulnerableBuscada = this.personaVulnerableService.obtenerPV(context.pathParam("id"));
+        Optional<PersonaVulnerable> personaVulnerableBuscada = this.personaVulnerableService.buscarPVPorId(context.pathParam("id"));
 
         if (personaVulnerableBuscada.isEmpty()) {
             context.status(404).result("Persona en situacion vulnerable no encontrada");

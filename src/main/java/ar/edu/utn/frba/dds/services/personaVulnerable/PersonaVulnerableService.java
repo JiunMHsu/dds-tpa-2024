@@ -20,11 +20,11 @@ public class PersonaVulnerableService {
         this.personaVulnerableRepository = personaVulnerableRepository;
     }
 
-    public List<PersonaVulnerable> obtenerTodosPV() {
+    public List<PersonaVulnerable> buscarTodosPV() {
         return this.personaVulnerableRepository.buscarTodos();
     }
 
-    public Optional<PersonaVulnerable> obtenerPV(String id) {
+    public Optional<PersonaVulnerable> buscarPVPorId (String id) {
 
         if (id == null || id.isEmpty()) {
             throw new IllegalArgumentException("El ID de la persona en situacion vulnerable no puede ser null o vacío");
