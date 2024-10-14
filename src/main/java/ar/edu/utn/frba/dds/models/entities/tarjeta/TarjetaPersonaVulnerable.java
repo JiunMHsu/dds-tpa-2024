@@ -52,17 +52,28 @@ public class TarjetaPersonaVulnerable extends EntidadPersistente {
                 .build();
     }
 
-    public static TarjetaPersonaVulnerable de(PersonaVulnerable duenio) {
+    public static TarjetaPersonaVulnerable de(String codigo,
+                                              PersonaVulnerable duenio) {
         return TarjetaPersonaVulnerable.de(
-                new RandomString(11).nextString(),
+                codigo,
                 duenio,
                 0,
                 LocalDate.now());
     }
 
-    public static TarjetaPersonaVulnerable de() {
-        return TarjetaPersonaVulnerable.de(null);
-    }
+    // Dejo comentado xq entiendo que quedamos que el codigo de la tarjeta no lo generamos nosotros
+
+    //    public static TarjetaPersonaVulnerable de(PersonaVulnerable duenio) {
+    //        return TarjetaPersonaVulnerable.de(
+    //                new RandomString(11).nextString(),
+    //                duenio,
+    //                0,
+    //                LocalDate.now());
+    //    }
+
+    //    public static TarjetaPersonaVulnerable de() {
+    //        return TarjetaPersonaVulnerable.de(null);
+    //    }
 
     private Boolean puedeUsar() {
         if (LocalDate.now().isAfter(ultimoUso)) {
