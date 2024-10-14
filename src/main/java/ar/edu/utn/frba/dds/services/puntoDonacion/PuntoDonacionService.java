@@ -18,6 +18,9 @@ public class PuntoDonacionService {
     // armar la clase respuesta List<PuntoDonacion>
     public void obneterPuntoDonacion(Double latitude, Double longitud, Integer limite, Double distanciaMaxEnKM) {
 
+        URL url;
+        HttpURLConnection conn;
+
         String coordinatesQueryParam;
         String limiteQueryParam = "";
         String distanciaQueryParam = "";
@@ -46,9 +49,6 @@ public class PuntoDonacionService {
                 + coordinatesQueryParam
                 + limiteQueryParam
                 + distanciaQueryParam;
-
-        HttpURLConnection conn;
-        URL url;
 
         try {
             url = new URL(urlToFetch);
