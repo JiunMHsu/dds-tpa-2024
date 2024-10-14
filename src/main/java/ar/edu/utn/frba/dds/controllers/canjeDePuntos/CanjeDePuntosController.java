@@ -1,10 +1,12 @@
 package ar.edu.utn.frba.dds.controllers.canjeDePuntos;
 
 import ar.edu.utn.frba.dds.controllers.colaborador.ColaboradorController;
+import ar.edu.utn.frba.dds.controllers.productosServicios.ProductosServiciosController;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.puntosDeColaboracion.CanjeDePuntos;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.CanjeDePuntosRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRepository;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 
@@ -14,7 +16,12 @@ import java.util.Optional;
 public class CanjeDePuntosController implements ICrudViewsHandler {
 
     private CanjeDePuntosRepository canjeDePuntosRepository;
+    //TODO no se si esta bueno incluir los controller pero por ahora los necesito
     private ColaboradorController colaboradorController;
+
+    private ProductosServiciosController productosServiciosController;
+
+
 
     public CanjeDePuntosController(CanjeDePuntosRepository canjeDePuntosRepository) {
         this.canjeDePuntosRepository = canjeDePuntosRepository;
@@ -42,9 +49,13 @@ public class CanjeDePuntosController implements ICrudViewsHandler {
         Double puntosCanjeados = Double.valueOf(context.formParam("puntos_canjeados"));
         Double puntosRestantes = Double.valueOf(context.formParam("puntos_restantes"));
 
-        //Colaborador colaboradorOferta = colaboradorController;
-        //OfertaDeProductos oferta = OfertaDeProductos.por();
-        //CanjeDePuntos canjeDePuntosNuevo = CanjeDePuntos.por(colaboradorCanje, LocalDateTime.now(), puntosCanjeados,puntosRestantes);
+        OfertaDeProductos oferta = productosServiciosController.ofertaPorId(context.formParam("oferta_id"));
+        CanjeDePuntos canjeDePuntosNuevo = CanjeDePuntos.por(colaboradorCanje, LocalDateTime.now(), puntosCanjeados,puntosRestantes, oferta);
+
+        this.canjeDePuntosRepository.guardar(canjeDePuntosNuevo);
+
+        context.redirect("canjeDePuntos/canje_exitoso.hbs");
+
     }
     @Override
     public void edit(Context context){
