@@ -79,13 +79,7 @@ public class PersonaVulnerableController implements ICrudViewsHandler {
     @Override
     public void create(Context context) {
 
-        Optional<String> colaboradorIdSession = sessionService.obtenerColaboradorID(context);
-        if (colaboradorIdSession.isEmpty()) {
-            context.status(401).result("No autorizado");
-            return;
-        }
-
-        String colaboradorId = colaboradorIdSession.get();
+        String colaboradorId = context.sessionAttribute("idUsuario");
         Optional<Colaborador> colaboradorSession = colaboradorService.obtenerColaborador(colaboradorId);
         if (colaboradorSession.isEmpty()) {
             context.status(404).result("Colaborador no encontrado");
@@ -116,13 +110,7 @@ public class PersonaVulnerableController implements ICrudViewsHandler {
 
         // Me paso x los huevos la repeticion de codigo aparentemente
 
-        Optional<String> colaboradorIdSession = sessionService.obtenerColaboradorID(context);
-        if (colaboradorIdSession.isEmpty()) {
-            context.status(401).result("No autorizado");
-            return;
-        }
-
-        String colaboradorId = colaboradorIdSession.get();
+        String colaboradorId = context.sessionAttribute("idUsuario");
         Optional<Colaborador> colaboradorSession = colaboradorService.obtenerColaborador(colaboradorId);
         if (colaboradorSession.isEmpty()) {
             context.status(404).result("Colaborador no encontrado");
