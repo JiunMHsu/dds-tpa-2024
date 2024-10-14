@@ -95,16 +95,8 @@ public class ColaboradorController implements ICrudViewsHandler {
     }
 
     @Override
-    public void edit(Context context) { // modificar solo forma de colaborar
-        Optional<Colaborador> posibleColaboradorBuscado = this.colaboradorRepository.buscarPorId(context.pathParam("id"));
-        //TODO chequear empty, rol con permiso => solo el propio usuario puede modificar su forma de colaborar
-
-        Map<String, Object> model = new HashMap<>();
-        model.put("colaborador", posibleColaboradorBuscado.get());
-        model.put("edicion", true);
-
-        context.render("colaboradores/colaborador_editar.hbs", model);
-
+    public void edit(Context context) {
+        // por handlebars
     }
 
     @Override
