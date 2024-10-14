@@ -129,5 +129,11 @@ public class ColaboradorController implements ICrudViewsHandler {
         // mostrar algo de exitoso
 
     }
+    //TODO agregue porque necesito para canje de puntos, pero revisar
+    public Colaborador colaboradorPorId(String id){
+        Optional<Colaborador> colaboradorBuscado = colaboradorRepository.buscarPorId(id);
+        //TODO if empty
+        return colaboradorBuscado.get();
+    }
 
 }
