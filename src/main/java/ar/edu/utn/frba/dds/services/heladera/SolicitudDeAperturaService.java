@@ -11,7 +11,7 @@ public class SolicitudDeAperturaService {
         this.solicitudDeAperturaRepository = solicitudDeAperturaRepository;
     }
 
-    public List<SolicitudDeApertura> buscarTodasLasSolicitudes () {
-
-    }
+//    public List<SolicitudDeApertura> buscarTodasLasSolicitudes () {
+//
+//    }
 }
