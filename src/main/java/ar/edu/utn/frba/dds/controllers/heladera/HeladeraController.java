@@ -11,6 +11,7 @@ import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
 import ar.edu.utn.frba.dds.models.entities.heladera.RetiroDeVianda;
 import ar.edu.utn.frba.dds.models.repositories.heladera.IHeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.ISolicitudDeAperturaRepository;
+import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
 import ar.edu.utn.frba.dds.utils.ICrudRepository;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
@@ -24,29 +25,29 @@ import java.util.stream.Collectors;
 
 public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHandler {
 
-    IHeladeraRepository heladeraRepository;
+    HeladeraService heladeraService;
     ISolicitudDeAperturaRepository solicitudDeAperturaRepository;
     ICrudRepository<RetiroDeVianda> retiroDeViandaRepository;
     ICrudRepository<AperturaHeladera> aperturaHeladeraRepository;
 
-    public HeladeraController(IHeladeraRepository heladeraRepository,
+    public HeladeraController(HeladeraService heladeraService,
                               ISolicitudDeAperturaRepository solicitudDeAperturaRepository,
                               ICrudRepository<RetiroDeVianda> retiroDeViandaRepository,
                               ICrudRepository<AperturaHeladera> aperturaHeladeraRepository) {
 
-        this.heladeraRepository = heladeraRepository;
+        this.heladeraService = heladeraService;
         this.retiroDeViandaRepository = retiroDeViandaRepository;
         this.solicitudDeAperturaRepository = solicitudDeAperturaRepository;
         this.aperturaHeladeraRepository = aperturaHeladeraRepository;
     }
 
-    public HeladeraController(IHeladeraRepository heladeraRepository) { // Momentaneo para que no me putee
-        this.heladeraRepository = heladeraRepository;
+    public HeladeraController(HeladeraService heladeraService) { // Momentaneo para que no me putee
+        this.heladeraService = heladeraService;
     }
 
     @Override
     public void index(Context context) {
-        List<Heladera> heladeras = this.heladeraRepository.buscarTodos();
+        List<Heladera> heladeras = this.heladeraService.buscarTodasHeladeras();
 
         List<HeladeraDTO> heladerasDTO = heladeras.stream()
                 .map(HeladeraDTO::preview)
@@ -62,7 +63,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
     @Override
     public void show(Context context) {
         //por id
-        Optional<Heladera> posibleHeladeraBuscada = this.heladeraRepository.buscarPorId(context.pathParam("id"));
+        Optional<Heladera> posibleHeladeraBuscada = this.heladeraService.buscarHeladeraPorID(context.pathParam("id"));
 
         if (posibleHeladeraBuscada.isEmpty()) {
             context.status(404);//not found
@@ -96,7 +97,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
         );
         RangoTemperatura rangoTemperatura = new RangoTemperatura(Double.valueOf(context.formParam("maxima")), Double.valueOf(context.formParam("minima")));
         Heladera nuevaHeladera = Heladera.nueva(context.formParam("nombre"), direccion, Integer.valueOf(context.formParam("capacidad")), rangoTemperatura, Integer.valueOf(context.formParam("viandas")));
-        this.heladeraRepository.guardar(nuevaHeladera);
+        this.heladeraService.guardarHeladera(nuevaHeladera);
         //O BIEN LANZO UNA PANTALLA DE EXITO
         //O BIEN REDIRECCIONO AL USER A LA PANTALLA DE LISTADO DE PRODUCTOS
         context.redirect("/heladeras/heladeras.hbs"); //redirecciono a heladeras, pero no se si me gusta
@@ -106,7 +107,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
     @Override
     public void edit(Context context) {
         // devuelve formulario para editar heladera
-        Optional<Heladera> posibleHeladeraBuscada = this.heladeraRepository.buscarPorId(context.pathParam("id"));
+        Optional<Heladera> posibleHeladeraBuscada = this.heladeraService.buscarHeladeraPorID(context.pathParam("id"));
         // TODO chequear empty
 
         // if(posibleHeladeraBuscada.isEmpty()) {
@@ -124,7 +125,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
     @Override
     public void update(Context context) {
         // voy a considerar que solo se puede modificar rango de temperatura
-        Optional<Heladera> posibleHeladeraActualizar = this.heladeraRepository.buscarPorId(context.pathParam("id"));
+        Optional<Heladera> posibleHeladeraActualizar = this.heladeraService.buscarHeladeraPorID(context.pathParam("id"));
         // TODO - chequeo si no existe
 
         // interpreto que los campos son obligatorios (no pueden ser null)
@@ -135,7 +136,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
 
         heladeraActualizada.setRangoTemperatura(new RangoTemperatura(nuevoMaximo, nuevoMinimo));
 
-        this.heladeraRepository.actualizar(heladeraActualizada);
+        this.heladeraService.actualizarHeladera(heladeraActualizada);
 
         context.status(HttpStatus.OK);
         // mostrar algo de exitoso
@@ -143,10 +144,10 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
 
     @Override
     public void delete(Context context) {
-        Optional<Heladera> posibleHeladeraAEliminar = this.heladeraRepository.buscarPorId(context.pathParam("id"));
+        Optional<Heladera> posibleHeladeraAEliminar = this.heladeraService.buscarHeladeraPorID(context.pathParam("id"));
         // TODO - chequeo si no existe
 
-        this.heladeraRepository.eliminar(posibleHeladeraAEliminar.get());
+        this.heladeraService.eliminarHeladera(posibleHeladeraAEliminar.get());
         context.status(HttpStatus.OK);
         // mostrar algo de exitoso
     }
