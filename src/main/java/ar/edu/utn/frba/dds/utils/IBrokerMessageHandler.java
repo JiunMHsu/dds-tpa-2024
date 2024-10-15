@@ -8,6 +8,6 @@ public interface IBrokerMessageHandler {
      * En teoría llega un mensaje, pero se usa para nada
      */
     void recibirMovimiento();
-    
+
     void recibirCodigoTarjeta(String codigoTarjeta);
 }
