@@ -5,6 +5,5 @@ import ar.edu.utn.frba.dds.utils.ICrudRepository;
 import java.util.Optional;
 
 public interface IColaboradorRepository extends ICrudRepository<Colaborador> {
-
     Optional<Colaborador> buscarPorEmail(String email);
 }

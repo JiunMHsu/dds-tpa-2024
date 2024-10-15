@@ -8,6 +8,9 @@ import ar.edu.utn.frba.dds.models.repositories.heladera.IHeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.ISolicitudDeAperturaRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.RetiroDeViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.SolicitudDeAperturaRepository;
+//import ar.edu.utn.frba.dds.models.repositories.personaVulnerable.IPersonaVulnerableRepository;
+//import ar.edu.utn.frba.dds.models.repositories.personaVulnerable.PersonaVulnerableRepository;
+import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
 import ar.edu.utn.frba.dds.utils.ICrudRepository;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
@@ -24,16 +27,21 @@ public class ServiceLocator {
         String componentName = componentClass.getName();
 
         if (!instances.containsKey(componentName)) {
-            if(componentName.equals(HeladeraController.class.getName())) {
-                HeladeraController instance = new HeladeraController(instanceOf(HeladeraRepository.class));
+            if (componentName.equals(HeladeraController.class.getName())) {
+                HeladeraService heladeraService = instanceOf(HeladeraService.class);
+                HeladeraController instance = new HeladeraController(heladeraService);
                 instances.put(componentName, instance);
             }
-            else if (componentName.equals(HeladeraRepository.class.getName())) {
+            else if (componentName.equals(HeladeraService.class.getName())) { // Creo instancia de HeladeraService
+                IHeladeraRepository heladeraRepository = instanceOf(IHeladeraRepository.class);
+                HeladeraService instance = new HeladeraService(heladeraRepository);
+                instances.put(componentName, instance);
+            }
+            else if (componentName.equals(IHeladeraRepository.class.getName())) {
                 HeladeraRepository instance = new HeladeraRepository();
                 instances.put(componentName, instance);
             }
         }
-
         return (T) instances.get(componentName);
     }
 
@@ -47,7 +55,7 @@ public class ServiceLocator {
 
         if (handlerName.equals(HeladeraController.class.getName())) {
             handler = new HeladeraController(
-                    getHeladeraRepository(),
+                    getHeladeraService(),
                     getSolicitudDeAperturaRepository(),
                     getCrudRepository("RetiroDeViandaRepository"),
                     getCrudRepository("AperturaHeladeraRepository")
@@ -73,7 +81,7 @@ public class ServiceLocator {
         }
 
         IBrokerMessageHandler handler = new HeladeraController(
-                getHeladeraRepository(),
+                getHeladeraService(),
                 getSolicitudDeAperturaRepository(),
                 getCrudRepository("RetiroDeViandaRepository"),
                 getCrudRepository("AperturaHeladeraRepository")
@@ -133,4 +141,29 @@ public class ServiceLocator {
         instances.put(repositoryName, repository);
         return repository;
     }
+
+    public static HeladeraService getHeladeraService() {
+        String serviceName = HeladeraService.class.getName();
+
+        if (instances.containsKey(serviceName)) {
+            return (HeladeraService) instances.get(serviceName);
+        }
+
+        HeladeraService service = new HeladeraService(getHeladeraRepository());
+        instances.put(serviceName, service);
+        return service;
+    }
+
+//    public static IPersonaVulnerableRepository getPersonaVulnerableRepository() {
+//        String repositoryName = PersonaVulnerableRepository.class.getName();
+//
+//        if (instances.containsKey(repositoryName)) {
+//            return (IPersonaVulnerableRepository) instances.get(repositoryName);
+//        }
+//
+//        IPersonaVulnerableRepository repository = new PersonaVulnerableRepository();
+//        instances.put(repositoryName, repository);
+//        return repository;
+//    }
+
 }
