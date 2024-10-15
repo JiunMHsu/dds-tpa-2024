@@ -29,7 +29,7 @@ public class ColaboradorController implements ICrudViewsHandler {
 
         Map<String, Object> model = new HashMap<>();
         model.put("colaboradores.hbs", colaboradores);
-        model.put("titulo", "Listado de colaboradores.hbs");
+        model.put("titulo", "Listado de colaboradores");
 
         context.render("colaboradores/colaboradores.hbs", model);
 
