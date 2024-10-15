@@ -5,6 +5,8 @@ import ar.edu.utn.frba.dds.models.entities.incidente.TipoIncidente;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public class IncidenteRepository implements WithSimplePersistenceUnit {
     public void guardar(Incidente incidente) {
@@ -29,5 +31,14 @@ public class IncidenteRepository implements WithSimplePersistenceUnit {
                 .createQuery("from Incidente i where i.tipo = :tipo_incidente", Incidente.class)
                 .setParameter("tipo_incidente", tipo)
                 .getResultList();
+    }
+
+    public Optional<Incidente> buscarPorId(String id) {
+        try {
+            UUID uuid = UUID.fromString(id);
+            return Optional.ofNullable(entityManager().find(Incidente.class, uuid));
+        } catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
     }
 }

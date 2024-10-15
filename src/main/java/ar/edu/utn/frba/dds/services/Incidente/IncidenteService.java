@@ -5,10 +5,10 @@ import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
 import static ar.edu.utn.frba.dds.models.entities.incidente.TipoIncidente.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class IncidenteService {
 
@@ -19,25 +19,6 @@ public class IncidenteService {
     }
 
     public List<Incidente> buscarIncidentes() { return this.incidenteRepository.obtenerTodos(); }
-
-    public List<Incidente> buscarAlertas() {
-
-        List<Incidente> alertas = new ArrayList<>();
-
-        alertas.addAll(this.buscarFraudes());
-        alertas.addAll(this.buscarFallasTemperatura());
-        alertas.addAll(this.buscarFallasConexion());
-
-        return alertas;
-    }
-
-    public List<Incidente> buscarFraudes() { return this.incidenteRepository.obtenerPorTipo(FRAUDE); }
-
-    public List<Incidente> buscarFallasTemperatura() { return this.incidenteRepository.obtenerPorTipo(FALLA_TEMPERATURA); }
-
-    public List<Incidente> buscarFallasConexion() { return this.incidenteRepository.obtenerPorTipo(FALLA_CONEXION); }
-
-    public List<Incidente> buscarFallasTecnicas() { return this.incidenteRepository.obtenerPorTipo(FALLA_TECNICA); }
 
     public Map<String, Integer> incidentesPorHeladera() {
 
@@ -63,4 +44,6 @@ public class IncidenteService {
         incidenteRepository.guardar(incidente);
     }
 
+    // Lo dejo basico x ahora
+    public Optional<Incidente> buscarIncidentePorId(String id) { return this.incidenteRepository.buscarPorId(id); }
 }
