@@ -55,7 +55,7 @@ public class CanjeDePuntosController implements ICrudViewsHandler {
 
         this.canjeDePuntosRepository.guardar(canjeDePuntosNuevo);
 
-        context.redirect("canjeDePuntos/canje_exitoso.hbs");
+        context.redirect("canje_de_puntos/canje_exitoso.hbs");
 
     }
     @Override
