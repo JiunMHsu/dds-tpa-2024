@@ -12,19 +12,4 @@ public class DonacionDineroRepository extends ColaboracionRepository<DonacionDin
         super(DonacionDinero.class);
     }
 
-    public void eliminar(DonacionDinero donacionDinero) {
-        withTransaction(() -> {
-            donacionDinero.setAlta(false);
-            entityManager().merge(donacionDinero);
-        });
-    }
-
-    public Optional<DonacionDinero> buscarPorId(String id) {
-        try {
-            UUID uuid = UUID.fromString(id);
-            return Optional.ofNullable(entityManager().find(DonacionDinero.class, uuid));
-        } catch (IllegalArgumentException e) {
-            return Optional.empty();
-        }
-    }
 }

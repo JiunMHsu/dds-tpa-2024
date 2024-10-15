@@ -26,4 +26,6 @@ public class Vianda extends EntidadPersistente {
 
     @Column(name = "peso", nullable = false)
     private Integer peso;
+
+
 }
