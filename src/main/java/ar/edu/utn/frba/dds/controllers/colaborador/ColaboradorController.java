@@ -40,7 +40,7 @@ public class ColaboradorController implements ICrudViewsHandler {
 
         //TODO verificar rol de admin
         //por id
-        Optional<Colaborador> posibleColaboradorBuscado = this.colaboradorRepository.buscarPorId(context.pathParam("id"));
+        Optional<Colaborador> posibleColaboradorBuscado = this.colaboradorRepository.buscarPorId(context.formParam("id"));
         //TODO verificar empty
         if (posibleColaboradorBuscado.isEmpty()) {
             context.status(404);//not found
@@ -64,23 +64,23 @@ public class ColaboradorController implements ICrudViewsHandler {
     @Override
     public void save(Context context) {
         //TODO ver rol
-        Usuario usuario = Usuario.con(context.pathParam("nombre"), context.pathParam("contrasenia"), context.pathParam("email"), TipoRol.ADMIN);
+        Usuario usuario = Usuario.con(context.formParam("nombre"), context.formParam("contrasenia"), context.formParam("email"), TipoRol.ADMIN);
         Direccion direccion = Direccion.with(
                 new Barrio(context.formParam("barrio")),
                 new Calle(context.formParam("calle")),
                 Integer.valueOf(context.formParam("altura")),
                 new Ubicacion(Double.valueOf(context.formParam("latitud")), Double.valueOf(context.formParam("longitud")))
         );
-        Contacto contacto = Contacto.con(context.pathParam("email"),context.pathParam("telefono"),context.pathParam("whatsapp"),context.pathParam("telegram"));
+        Contacto contacto = Contacto.con(context.formParam("email"),context.formParam("telefono"),context.formParam("whatsapp"),context.formParam("telegram"));
         Colaborador nuevoColaborador = Colaborador.colaborador(usuario,contacto, direccion , new ArrayList<Colaboracion>());
         //TODO las formas de colaborar como las obtengo de la plantilla?
         //ver datos adicionales
 
-        if (context.pathParam("tipo_colaborador").equals("JURIDICO")) {
-            nuevoColaborador.setRazonSocial(context.pathParam("razon_social"));
-            nuevoColaborador.setTipoRazonSocial(TipoRazonSocial.valueOf(context.pathParam("tipo_razon_social")));
-            nuevoColaborador.setRubro(context.pathParam("rubro"));
-        } else if (context.pathParam("tipo_colaborador").equals("HUMANA")) {
+        if (context.formParam("tipo_colaborador").equals("JURIDICO")) {
+            nuevoColaborador.setRazonSocial(context.formParam("razon_social"));
+            nuevoColaborador.setTipoRazonSocial(TipoRazonSocial.valueOf(context.formParam("tipo_razon_social")));
+            nuevoColaborador.setRubro(context.formParam("rubro"));
+        } else if (context.formParam("tipo_colaborador").equals("HUMANA")) {
             nuevoColaborador.setNombre(context.formParam("nombre"));
             nuevoColaborador.setApellido(context.formParam("apellido"));
             //nuevoColaborador.setFechaNacimiento(); TODO fecha la obtengo por separado cada parte o como
@@ -102,7 +102,7 @@ public class ColaboradorController implements ICrudViewsHandler {
     @Override
     public void update(Context context) {
         //esto teniendo en cuenta solo una forma de colaboracion por formulario
-        Optional<Colaborador> posibleColaboradorActualizar = this.colaboradorRepository.buscarPorId(context.pathParam("id"));
+        Optional<Colaborador> posibleColaboradorActualizar = this.colaboradorRepository.buscarPorId(context.formParam("id"));
         // TODO - chequeo si no existe
 
         Colaborador colaboradorActualizado = posibleColaboradorActualizar.get();
@@ -113,19 +113,13 @@ public class ColaboradorController implements ICrudViewsHandler {
 
     @Override
     public void delete(Context context) {
-        Optional<Colaborador> posibleColaboradorAEliminar = this.colaboradorRepository.buscarPorId(context.pathParam("id"));
+        Optional<Colaborador> posibleColaboradorAEliminar = this.colaboradorRepository.buscarPorId(context.formParam("id"));
         // TODO - chequeo si no existe
 
         this.colaboradorRepository.eliminar(posibleColaboradorAEliminar.get());
         context.status(HttpStatus.OK);
         // mostrar algo de exitoso
 
-    }
-    //TODO agregue porque necesito para canje de puntos, pero revisar
-    public Colaborador colaboradorPorId(String id){
-        Optional<Colaborador> colaboradorBuscado = colaboradorRepository.buscarPorId(id);
-        //TODO if empty
-        return colaboradorBuscado.get();
     }
 
 }

@@ -7,6 +7,7 @@ import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.puntosDeColaboracion.CanjeDePuntos;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.CanjeDePuntosRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 
@@ -16,10 +17,8 @@ import java.util.Optional;
 public class CanjeDePuntosController implements ICrudViewsHandler {
 
     private CanjeDePuntosRepository canjeDePuntosRepository;
-    //TODO no se si esta bueno incluir los controller pero por ahora los necesito
-    private ColaboradorController colaboradorController;
-
-    private ProductosServiciosController productosServiciosController;
+    private ColaboradorRepository colaboradorRepository;
+    private OfertaDeProductosRepository ofertaDeProductosRepository;
 
 
 
@@ -38,18 +37,20 @@ public class CanjeDePuntosController implements ICrudViewsHandler {
 
     @Override
     public void create(Context context){
-        context.render("canjeDePuntos/canje_crear.hbs");
+        context.render("canjeDePuntos/productos_canjear.hbs");
     }
     @Override
     public void save(Context context){
-        //del formulario, me llegan todos los datos del canje?
-        //se manda el id del colaborador? es el usuario del perfil
-        Colaborador colaboradorCanje = colaboradorController.colaboradorPorId(context.formParam("colaborador_id"));
+
+        //TODO directamente hago get del optional porque es lit el usuario que inicio sesion...y el producto tambien, si esta en la vista ya existe bruh
+        Colaborador colaboradorCanje = colaboradorRepository.buscarPorId(context.sessionAttribute("userId")).get();
 
         Double puntosCanjeados = Double.valueOf(context.formParam("puntos_canjeados"));
+
+        //TODO creo que no llega como parametro sino que calcula con el futuro service
         Double puntosRestantes = Double.valueOf(context.formParam("puntos_restantes"));
 
-        OfertaDeProductos oferta = productosServiciosController.ofertaPorId(context.formParam("oferta_id"));
+        OfertaDeProductos oferta = ofertaDeProductosRepository.buscarPorId(context.formParam("oferta_id")).get();
         CanjeDePuntos canjeDePuntosNuevo = CanjeDePuntos.por(colaboradorCanje, LocalDateTime.now(), puntosCanjeados,puntosRestantes, oferta);
 
         this.canjeDePuntosRepository.guardar(canjeDePuntosNuevo);
