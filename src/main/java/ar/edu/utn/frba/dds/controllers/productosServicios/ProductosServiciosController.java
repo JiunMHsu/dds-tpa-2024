@@ -44,15 +44,4 @@ public class ProductosServiciosController implements ICrudViewsHandler {
 
     }
 
-    public OfertaDeProductos ofertaPorId(String id){
-        Optional<OfertaDeProductos> ofertaBuscada = ofertaDeProductosRepository.buscarPorId(id);
-        //TODO manejar empty
-
-        return ofertaBuscada.get();
-    }
-
-
-
-
-
 }
