@@ -1,5 +1,6 @@
-package ar.edu.utn.frba.dds.controllers.productosServicios;
+package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
+import ar.edu.utn.frba.dds.dtos.colaboraciones.OfertaDeProductosDTO;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.RubroOferta;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
@@ -15,20 +16,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-public class ProductosServiciosController implements ICrudViewsHandler {
+public class OfertaProductosServiciosController implements ICrudViewsHandler {
 
     private OfertaDeProductosRepository ofertaDeProductosRepository;
     private ColaboradorRepository colaboradorRepository;
 
-    public ProductosServiciosController(OfertaDeProductosRepository ofertaDeProductosRepository) {
+    public OfertaProductosServiciosController(OfertaDeProductosRepository ofertaDeProductosRepository) {
         this.ofertaDeProductosRepository = ofertaDeProductosRepository;
     }
 
     @Override
     public void index(Context context){
-        //TODO DTO?
         List<OfertaDeProductos> productos = this.ofertaDeProductosRepository.buscarTodos();
+
+        List<OfertaDeProductosDTO> ofertaDeProductosDTOS = productos.stream()
+                .map(OfertaDeProductosDTO::preview)
+                .collect(Collectors.toList());
 
         Map<String, Object> model = new HashMap<>();
         model.put("productos_canjear.hbs", productos);
@@ -63,8 +68,7 @@ public class ProductosServiciosController implements ICrudViewsHandler {
         OfertaDeProductos oferta = OfertaDeProductos.por(colaborador, LocalDateTime.now(), nombre, puntosNecesarios, rubro,imagen);
 
         this.ofertaDeProductosRepository.guardar(oferta);
-        //TODO redirecciono a home? mensaje exitoso?
-        //context.redirect("");
+        context.redirect("result_form.hbs");
 
     }
     @Override

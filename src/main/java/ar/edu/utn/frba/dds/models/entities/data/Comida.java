@@ -16,5 +16,5 @@ public class Comida {
     private String nombre;
 
     @Column(name = "comida_calorias", nullable = false)
-    private int calorias;
+    private Integer calorias;
 }
