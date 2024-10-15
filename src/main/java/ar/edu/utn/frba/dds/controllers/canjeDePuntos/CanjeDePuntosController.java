@@ -1,7 +1,5 @@
 package ar.edu.utn.frba.dds.controllers.canjeDePuntos;
 
-import ar.edu.utn.frba.dds.controllers.colaborador.ColaboradorController;
-import ar.edu.utn.frba.dds.controllers.productosServicios.ProductosServiciosController;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.puntosDeColaboracion.CanjeDePuntos;
@@ -12,7 +10,6 @@ import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 public class CanjeDePuntosController implements ICrudViewsHandler {
 
