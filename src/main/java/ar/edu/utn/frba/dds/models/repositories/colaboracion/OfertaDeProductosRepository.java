@@ -21,11 +21,6 @@ public class OfertaDeProductosRepository extends ColaboracionRepository<OfertaDe
             return Optional.empty();
         }
     }
-    public List<OfertaDeProductos> buscarTodos() {
-        return entityManager()
-                .createQuery("from OfertaDeProductos", OfertaDeProductos.class)
-                .getResultList();
-    }
     public void eliminar(OfertaDeProductos oferta) {
         withTransaction(() -> {
             oferta.setAlta(false);
