@@ -26,6 +26,10 @@ public class HeladeraService {
         return this.heladeraRepository.buscarPorId(id);
     }
 
+    public Optional<Heladera> buscarHeladeraPorNombre(String nombre) {
+        return this.heladeraRepository.buscarPorNombre(nombre);
+    }
+
     public void guardarHeladera(Heladera heladera) {
 
         // Quizas se deba validar mas que nada que la Direccion no c repita
