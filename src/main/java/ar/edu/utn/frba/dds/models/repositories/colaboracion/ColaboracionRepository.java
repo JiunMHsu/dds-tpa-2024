@@ -4,6 +4,7 @@ import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 public abstract class ColaboracionRepository<T> implements WithSimplePersistenceUnit {
 
@@ -21,6 +22,13 @@ public abstract class ColaboracionRepository<T> implements WithSimplePersistence
         return entityManager()
                 .createQuery("from " + type.getName() + " c where c.colaborador = :id_colaborador", type)
                 .setParameter("id_colaborador", unColaborador.getId())
+                .getResultList();
+    }
+
+    public List<T> obtenerPorColaboradorId(UUID id) {
+        return entityManager()
+                .createQuery("from " + type.getName() + " c where c.colaborador.usuario.id = :id_usuario", type)
+                .setParameter("id_usuario", id)
                 .getResultList();
     }
 
