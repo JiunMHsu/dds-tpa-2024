@@ -1,9 +1,13 @@
 package ar.edu.utn.frba.dds.services.puntoDonacion;
 
 import ar.edu.utn.frba.dds.exceptions.BadAPIRequestException;
+import ar.edu.utn.frba.dds.models.entities.puntoDonacion.PuntoDonacion;
+import ar.edu.utn.frba.dds.utils.JSONReader;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
+import org.json.simple.JSONObject;
 
 public class PuntoDonacionService {
 
@@ -15,11 +19,7 @@ public class PuntoDonacionService {
         this.apiAuthToken = authToken;
     }
 
-    // armar la clase respuesta List<PuntoDonacion>
-    public void obneterPuntoDonacion(Double latitude, Double longitud, Integer limite, Double distanciaMaxEnKM) {
-
-        URL url;
-        HttpURLConnection conn;
+    public List<PuntoDonacion> obneterPuntoDonacion(Double latitude, Double longitud, Integer limite, Double distanciaMaxEnKM) {
 
         String coordinatesQueryParam;
         String limiteQueryParam = "";
@@ -51,16 +51,54 @@ public class PuntoDonacionService {
                 + distanciaQueryParam;
 
         try {
-            url = new URL(urlToFetch);
-            conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("authorization", apiAuthToken);
-            conn.connect();
+            JSONReader jsonResponse = getResponse(urlToFetch);
+            List<JSONObject> lugares = jsonResponse.readArray("lugares");
+
+            return lugares
+                    .stream()
+                    .map(objectLugar -> PuntoDonacion
+                            .builder()
+                            .id((Long) objectLugar.get("id"))
+                            .nombre((String) objectLugar.get("nombre"))
+                            .latitud((Double) objectLugar.get("lat"))
+                            .longitud((Double) objectLugar.get("lon"))
+                            .distanciaEnKm(Double.parseDouble(objectLugar.get("distanciaEnKM").toString()))
+                            .build())
+                    .toList();
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        // TODO
+    }
 
+    private JSONReader getResponse(String urlToFetch) throws IOException {
+        HttpURLConnection conn = null;
+
+        try {
+            URL url = new URL(urlToFetch);
+            conn = (HttpURLConnection) url.openConnection();
+
+            System.out.println(apiAuthToken);
+
+            conn.setRequestProperty("authorization", apiAuthToken);
+            conn.setRequestMethod("GET");
+
+            return new JSONReader(conn.getInputStream());
+
+        } catch (IOException e) {
+
+            if (conn == null) throw e;
+
+            int responseCode = conn.getResponseCode();
+
+            if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED)
+                throw new BadAPIRequestException("No credentials provided");
+
+            if (responseCode == HttpURLConnection.HTTP_FORBIDDEN)
+                throw new BadAPIRequestException("Invalid API Key");
+        }
+
+        return null;
     }
 }
