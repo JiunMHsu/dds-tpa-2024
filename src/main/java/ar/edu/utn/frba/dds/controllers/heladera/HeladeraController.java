@@ -63,7 +63,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
     @Override
     public void show(Context context) {
         //por id
-        Optional<Heladera> posibleHeladeraBuscada = this.heladeraService.buscarHeladeraPorID(context.pathParam("id"));
+        Optional<Heladera> posibleHeladeraBuscada = this.heladeraService.buscarHeladeraPorID(context.formParam("id"));
 
         if (posibleHeladeraBuscada.isEmpty()) {
             context.status(404);//not found
@@ -107,7 +107,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
     @Override
     public void edit(Context context) {
         // devuelve formulario para editar heladera
-        Optional<Heladera> posibleHeladeraBuscada = this.heladeraService.buscarHeladeraPorID(context.pathParam("id"));
+        Optional<Heladera> posibleHeladeraBuscada = this.heladeraService.buscarHeladeraPorID(context.formParam("id"));
         // TODO chequear empty
 
         // if(posibleHeladeraBuscada.isEmpty()) {
@@ -125,7 +125,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
     @Override
     public void update(Context context) {
         // voy a considerar que solo se puede modificar rango de temperatura
-        Optional<Heladera> posibleHeladeraActualizar = this.heladeraService.buscarHeladeraPorID(context.pathParam("id"));
+        Optional<Heladera> posibleHeladeraActualizar = this.heladeraService.buscarHeladeraPorID(context.formParam("id"));
         // TODO - chequeo si no existe
 
         // interpreto que los campos son obligatorios (no pueden ser null)
@@ -144,7 +144,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
 
     @Override
     public void delete(Context context) {
-        Optional<Heladera> posibleHeladeraAEliminar = this.heladeraService.buscarHeladeraPorID(context.pathParam("id"));
+        Optional<Heladera> posibleHeladeraAEliminar = this.heladeraService.buscarHeladeraPorID(context.formParam("id"));
         // TODO - chequeo si no existe
 
         this.heladeraService.eliminarHeladera(posibleHeladeraAEliminar.get());

@@ -33,5 +33,5 @@ public class Formulario {
     public void quitarCampo(Pregunta pregunta) {
         preguntas.remove(pregunta);
     }
-    
+
 }

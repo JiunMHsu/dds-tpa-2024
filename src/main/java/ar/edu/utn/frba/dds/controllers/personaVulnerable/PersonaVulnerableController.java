@@ -10,7 +10,6 @@ import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaPersonaVulnerable;
 import ar.edu.utn.frba.dds.services.colaboraciones.RepartoDeTarjetaService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.personaVulnerable.PersonaVulnerableService;
-import ar.edu.utn.frba.dds.services.session.SessionService;
 import ar.edu.utn.frba.dds.services.tarjeta.TarjetaPersonaVulnerableService;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
@@ -29,19 +28,16 @@ public class PersonaVulnerableController implements ICrudViewsHandler {
     private RepartoDeTarjetaService repartoDeTarjetaService;
     private TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService;
     private ColaboradorService colaboradorService;
-    private SessionService sessionService;
 
 
     public PersonaVulnerableController (PersonaVulnerableService personaVulnerableService,
                                         RepartoDeTarjetaService repartoDeTarjetaService,
                                         TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService,
-                                        ColaboradorService colaboradorService,
-                                        SessionService sessionService) {
+                                        ColaboradorService colaboradorService) {
         this.personaVulnerableService = personaVulnerableService;
         this.repartoDeTarjetaService = repartoDeTarjetaService;
         this.tarjetaPersonaVulnerableService = tarjetaPersonaVulnerableService;
         this.colaboradorService = colaboradorService;
-        this.sessionService = sessionService;
     }
 
     @Override
@@ -50,14 +46,14 @@ public class PersonaVulnerableController implements ICrudViewsHandler {
         List<PersonaVulnerable> personasVulnerables = this.personaVulnerableService.buscarTodosPV();
 
         List<PersonaVulnerableDTO> personasVulnerablesDTO = personasVulnerables.stream()
-                .map(PersonaVulnerableDTO::completa) // TODO - ver que el builder sea acorde a la vista
+                .map(PersonaVulnerableDTO::completa)
                 .collect(Collectors.toList());
 
         Map<String, Object> model = new HashMap<>();
-//        model.put("personasVulnerables", personasVulnerablesDTO); TODO - Idem arriba
-//        model.put("titulo", "Listado de Personas en Situacion Vulnerable");
-//
-//        context.render("/colaboraciones/", model);
+        model.put("personasVulnerables", personasVulnerablesDTO);
+        model.put("titulo", "Listado de Personas en Situacion Vulnerable");
+
+        // context.render("/colaboraciones/", model);
     }
 
     @Override
@@ -70,16 +66,17 @@ public class PersonaVulnerableController implements ICrudViewsHandler {
             return;
         }
 
-//        Map<String, Object> model = new HashMap<>();
-//        model.put("Personas Vulnerable", personaVulnerableBuscada.get());
-//
-//        context.render("/colaboraciones/", model);
+        Map<String, Object> model = new HashMap<>();
+        model.put("Personas Vulnerable", personaVulnerableBuscada.get());
+
+        // context.render("/colaboraciones/", model);
     }
 
     @Override
     public void create(Context context) {
 
         String colaboradorId = context.sessionAttribute("idUsuario");
+
         Optional<Colaborador> colaboradorSession = colaboradorService.obtenerColaborador(colaboradorId);
         if (colaboradorSession.isEmpty()) {
             context.status(404).result("Colaborador no encontrado");
@@ -88,10 +85,10 @@ public class PersonaVulnerableController implements ICrudViewsHandler {
 
         Colaborador colaborador = colaboradorSession.get();
 
-        if (!colaborador.getUsuario().getRol().equals(TipoRol.COLABORADOR)) {
-            context.status(403).result("No tiene el rol adecuado");
-            return;
-        }
+        //        if (!colaborador.getUsuario().getRol().equals(TipoRol.COLABORADOR)) {
+        //            context.status(403).result("No tiene el rol adecuado");
+        //            return;
+        //        }
 
         boolean tieneColaboracionReparto = colaborador.getFormaDeColaborar()
                 .stream()
@@ -102,6 +99,8 @@ public class PersonaVulnerableController implements ICrudViewsHandler {
             return;
         }
 
+        // TODO - x ahora dejo la validacion aca aunque entiendo que deberia realizarse en el middleware
+
         context.redirect("/colaboraciones/registro_pv_crear.hbs");
     }
 
@@ -111,18 +110,19 @@ public class PersonaVulnerableController implements ICrudViewsHandler {
         // Me paso x los huevos la repeticion de codigo aparentemente
 
         String colaboradorId = context.sessionAttribute("idUsuario");
+
         Optional<Colaborador> colaboradorSession = colaboradorService.obtenerColaborador(colaboradorId);
         if (colaboradorSession.isEmpty()) {
             context.status(404).result("Colaborador no encontrado");
             return;
         }
 
-        Colaborador colaborador = colaboradorSession.get();
+         Colaborador colaborador = colaboradorSession.get();
 
-        if (!colaborador.getUsuario().getRol().equals(TipoRol.COLABORADOR)) {
-            context.status(403).result("No tiene el rol adecuado");
-            return;
-        }
+        //        if (!colaborador.getUsuario().getRol().equals(TipoRol.COLABORADOR)) {
+        //            context.status(403).result("No tiene el rol adecuado");
+        //            return;
+        //        } // TODO - idem que en create()
 
         Documento documento = Documento.with(
                 TipoDocumento.valueOf(context.formParam("tipo_documento")),
@@ -150,7 +150,7 @@ public class PersonaVulnerableController implements ICrudViewsHandler {
         this.personaVulnerableService.guardarPV(nuevaPV);
         this.repartoDeTarjetaService.registrarReparto(colaborador, nuevaPV, tarjeta);
 
-        // context.redirect("/colaboraciones/"); TODO - ver a donde redireccionar
+        // context.redirect("/colaboraciones/");
     }
 
     @Override

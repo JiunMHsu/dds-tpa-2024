@@ -1,9 +1,9 @@
 package ar.edu.utn.frba.dds.models.entities.suscripcion;
 
-import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;

@@ -57,7 +57,7 @@ public class PersonaVulnerable extends EntidadPersistente {
                 .menoresACargo(menoresACargo)
                 .build();
     }
-    
+
     public static PersonaVulnerable con(String nombre, Integer menoresACargo) {
         return PersonaVulnerable.con(nombre, null, null, null, null, menoresACargo);
     }

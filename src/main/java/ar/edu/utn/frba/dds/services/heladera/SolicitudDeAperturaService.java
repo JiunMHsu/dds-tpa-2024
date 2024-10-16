@@ -12,7 +12,7 @@ public class SolicitudDeAperturaService {
         this.solicitudDeAperturaRepository = solicitudDeAperturaRepository;
     }
 
-    public List<SolicitudDeApertura> buscarTodasLasSolicitudes() {
-        return null;
-    }
+//    public List<SolicitudDeApertura> buscarTodasLasSolicitudes () {
+//
+//    }
 }
