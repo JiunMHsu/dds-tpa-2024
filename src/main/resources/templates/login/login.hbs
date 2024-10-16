@@ -5,19 +5,19 @@
     <link rel="stylesheet" href="/css/form.css">
     <link rel="stylesheet" href="/css/login/login.css"/>
 {{/partial}}
-{{#partial "scripts"}}
-{{/partial}}
+
 {{#partial "main-content"}}
+    <img src="img/Map.png" class="main-section">
     <div class="form-container">
         <div class="form-title">
-            <a href="/" class="active form-header-option">LOG IN</a>
-            <a href="" class="form-header-option">SIGN UP</a>
+            <a href="/login" class="active form-header-option">LOG IN</a>
+            <a href="/sign" class="form-header-option">SIGN UP</a>
         </div>
 
         {{#block "login-error"}}
         {{/block}}
 
-        <form action="/login" method="post" class="form">
+        <form action="/home" method="POST" class="form">
             <label class="field-email">
                 Email
                 <input type="email" name="email" required/>

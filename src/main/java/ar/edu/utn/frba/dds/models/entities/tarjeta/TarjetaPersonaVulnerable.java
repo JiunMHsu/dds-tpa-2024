@@ -61,7 +61,17 @@ public class TarjetaPersonaVulnerable extends EntidadPersistente {
                 LocalDate.now());
     }
 
-    // Dejo comentado xq entiendo que quedamos que el codigo de la tarjeta no lo generamos nosotros
+  public static TarjetaPersonaVulnerable de(PersonaVulnerable persona) {
+    return TarjetaPersonaVulnerable
+        .builder()
+        .codigo(null)
+        .duenio(persona)
+        .usosEnElDia(null)
+        .ultimoUso(null)
+        .build();
+  }
+
+  // Dejo comentado xq entiendo que quedamos que el codigo de la tarjeta no lo generamos nosotros
 
     //    public static TarjetaPersonaVulnerable de(PersonaVulnerable duenio) {
     //        return TarjetaPersonaVulnerable.de(

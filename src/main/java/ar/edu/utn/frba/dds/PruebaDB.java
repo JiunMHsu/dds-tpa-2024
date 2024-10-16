@@ -12,16 +12,20 @@ import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
+import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
+import ar.edu.utn.frba.dds.models.entities.incidente.TipoIncidente;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
+import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.TecnicoRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +35,8 @@ public class PruebaDB implements WithSimplePersistenceUnit {
     private TecnicoRepository tecnicoRepository;
     private ColaboradorRepository colaboradorRepository;
     private UsuarioRepository usuarioRepository;
+
+    private IncidenteRepository incidenteRepository;
 
     public static void main(String[] args) {
         PruebaDB instance = new PruebaDB();
@@ -48,6 +54,10 @@ public class PruebaDB implements WithSimplePersistenceUnit {
         instance.colaboradorRepository = new ColaboradorRepository();
         instance.guardarColaborador();
         instance.recuperarColaborador();
+
+        instance.incidenteRepository = new IncidenteRepository();
+        instance.guardarIncidentes();
+        instance.mostrarIncidentes();
 
     }
 
@@ -157,5 +167,31 @@ public class PruebaDB implements WithSimplePersistenceUnit {
     public void impactarEnBase() {
         withTransaction(() -> {
         });
+    }
+
+    private void guardarIncidentes() {
+
+        Incidente fallaTemperatura = new Incidente();
+        fallaTemperatura.setHeladera(Heladera.con("Heladera 1"));
+        fallaTemperatura.setFechaHora(LocalDateTime.now());
+        fallaTemperatura.setTipo(TipoIncidente.FALLA_TEMPERATURA);
+        fallaTemperatura.setDescripcion("La temperatura ha excedido los límites permitidos.");
+
+
+        Incidente fraude = new Incidente();
+        fraude.setHeladera(Heladera.con("Heladera 2"));
+        fraude.setFechaHora(LocalDateTime.now());
+        fraude.setTipo(TipoIncidente.FRAUDE);
+        fraude.setDescripcion("Se ha detectado movimiento en la heladera cuando estaba cerrada.");
+
+
+        incidenteRepository.guardar(fallaTemperatura);
+        incidenteRepository.guardar(fraude);
+    }
+
+    private void mostrarIncidentes() {
+        // Obtener todos los incidentes y mostrarlos
+        List<Incidente> incidentes = incidenteRepository.obtenerTodos();
+        incidentes.forEach(System.out::println);
     }
 }

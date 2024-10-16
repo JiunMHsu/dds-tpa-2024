@@ -2,8 +2,10 @@ package ar.edu.utn.frba.dds.models.repositories.colaborador;
 
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
+import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -45,5 +47,17 @@ public class ColaboradorRepository implements WithSimplePersistenceUnit {
         return entityManager()
                 .createQuery("from Colaborador ", Colaborador.class)
                 .getResultList();
+    }
+
+    public Optional<Colaborador> buscarPorUsuario(Usuario usuario) {
+        try {
+            return Optional.of(entityManager()
+                .createQuery("from Colaborador c where c.usuario = :usuario and c.alta = :alta", Colaborador.class)
+                .setParameter("usuario", usuario)
+                .setParameter("alta", true)
+                .getSingleResult());
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 }

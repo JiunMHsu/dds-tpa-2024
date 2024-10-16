@@ -2,6 +2,23 @@
     border: 1px solid var(--background-3);
     margin: 0 1.5vh;
     overflow-y: hidden;
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.form-container {
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px rgb(34, 34, 34);
+    position: absolute;
+    z-index: 2;
+    background-color: rgb(34, 34, 34);
 }
 
 .form-title {
@@ -37,6 +54,7 @@
 .form {
     grid-template-columns: 25rem;
     margin-top: 1rem;
+    background-color: dark light;
 }
 
 .error-card {

@@ -11,6 +11,7 @@ import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -63,35 +64,62 @@ public class ColaboradorController implements ICrudViewsHandler {
 
     @Override
     public void save(Context context) {
-        //TODO ver rol
-        Usuario usuario = Usuario.con(context.formParam("nombre"), context.formParam("contrasenia"), context.formParam("email"), TipoRol.ADMIN);
+        //TODO ver rol adminitrador
+        Usuario usuario = Usuario.con(context.formParam("nombre"), context.formParam("contrasenia"), context.formParam("email"), TipoRol.COLABORADOR);
         Direccion direccion = Direccion.with(
                 new Barrio(context.formParam("barrio")),
                 new Calle(context.formParam("calle")),
                 Integer.valueOf(context.formParam("altura")),
                 new Ubicacion(Double.valueOf(context.formParam("latitud")), Double.valueOf(context.formParam("longitud")))
         );
-        Contacto contacto = Contacto.con(context.formParam("email"),context.formParam("telefono"),context.formParam("whatsapp"),context.formParam("telegram"));
-        Colaborador nuevoColaborador = Colaborador.colaborador(usuario,contacto, direccion , new ArrayList<Colaboracion>());
-        //TODO las formas de colaborar como las obtengo de la plantilla?
-        //ver datos adicionales
+        Contacto contacto = Contacto.con(
+            context.formParam("email"),
+            context.formParam("telefono"),
+            context.formParam("whatsapp"),
+            context.formParam("telegram")
+        );
 
-        if (context.formParam("tipo_colaborador").equals("JURIDICO")) {
+        String colaboracionesParam = context.formParam("colaboraciones");
+
+        List<Colaboracion> colaboraciones = new ArrayList<>();
+        if (colaboracionesParam != null && !colaboracionesParam.isEmpty()) {
+            List<String> colaboracionesStr = Arrays.asList(colaboracionesParam.split(","));
+
+            // Convertimos cada string en un valor del enum Colaboracion
+            for (String colaboracionStr : colaboracionesStr) {
+                try {
+                    Colaboracion colaboracion = Colaboracion.valueOf(colaboracionStr.trim().toUpperCase());
+                    colaboraciones.add(colaboracion);
+                } catch (IllegalArgumentException e) {
+                    //nunca va a pasar esto
+                    System.out.println("Colaboración inválida: " + colaboracionStr);
+                }
+            }
+        }
+
+        Colaborador nuevoColaborador = Colaborador.colaborador(usuario, contacto, direccion, colaboraciones);
+
+        String tipoColaborador = context.formParam("tipo_colaborador");
+        if ("JURIDICO".equals(tipoColaborador)) {
             nuevoColaborador.setRazonSocial(context.formParam("razon_social"));
-            nuevoColaborador.setTipoRazonSocial(TipoRazonSocial.valueOf(context.formParam("tipo_razon_social")));
+            nuevoColaborador.setTipoRazonSocial(TipoRazonSocial.valueOf(context.formParam("tipo_razon_social").toUpperCase()));
             nuevoColaborador.setRubro(context.formParam("rubro"));
-        } else if (context.formParam("tipo_colaborador").equals("HUMANA")) {
+        } else if ("HUMANA".equals(tipoColaborador)) {
             nuevoColaborador.setNombre(context.formParam("nombre"));
             nuevoColaborador.setApellido(context.formParam("apellido"));
-            //nuevoColaborador.setFechaNacimiento(); TODO fecha la obtengo por separado cada parte o como
+
+            // Obtener fecha de nacimiento (suponiendo que el formulario tenga campos separados para día, mes, año)
+            int diaNacimiento = Integer.parseInt(context.formParam("dia_nacimiento"));
+            int mesNacimiento = Integer.parseInt(context.formParam("mes_nacimiento"));
+            int anioNacimiento = Integer.parseInt(context.formParam("anio_nacimiento"));
+
+            // Crear el objeto LocalDate para la fecha de nacimiento
+            LocalDate fechaNacimiento = LocalDate.of(anioNacimiento, mesNacimiento, diaNacimiento);
+            nuevoColaborador.setFechaNacimiento(fechaNacimiento);
         }
 
         this.colaboradorRepository.guardar(nuevoColaborador);
-        //O BIEN LANZO UNA PANTALLA DE EXITO
-        //O BIEN REDIRECCIONO AL USER A LA PANTALLA DE LISTADO DE PRODUCTOS
-        context.redirect("colaboradores/sign_up_exitoso.hbs");
-
-
+        context.redirect("/colaboradores/sign_up_exitoso.hbs");
     }
 
     @Override
