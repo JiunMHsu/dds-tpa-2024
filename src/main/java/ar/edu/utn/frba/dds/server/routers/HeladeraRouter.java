@@ -6,9 +6,10 @@ import static io.javalin.apibuilder.ApiBuilder.post;
 
 import io.javalin.config.JavalinConfig;
 
-public class HeladeraRouter {
+public class HeladeraRouter implements IRouter {
 
-    public static void apply(JavalinConfig config) {
+    @Override
+    public void apply(JavalinConfig config) {
         config.router.apiBuilder(() ->
                 path("/heladeras", () -> {
                     get(ctx -> ctx.render("heladeras/heladeras.hbs"));

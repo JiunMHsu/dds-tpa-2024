@@ -6,19 +6,20 @@ import static io.javalin.apibuilder.ApiBuilder.post;
 
 import io.javalin.config.JavalinConfig;
 
-public class ColaboracionRouter {
+public class ColaboracionRouter implements IRouter {
 
-    public static void apply(JavalinConfig config) {
+    @Override
+    public void apply(JavalinConfig config) {
         config.router.apiBuilder(() ->
                 path("/colaboraciones", () -> {
                     get(ctx -> ctx.render("colaboraciones/colaboraciones.hbs"));
 
-                    routeDonacionDinero();
-                    routeDonacionVianda();
-                    routeRegistroPersonaVulnerable();
-                    routeDistribucionViandas();
-                    routeOfertaProductoServicio();
-                    routeEncargarseDeHeladeras();
+                    this.routeDonacionDinero();
+                    this.routeDonacionVianda();
+                    this.routeRegistroPersonaVulnerable();
+                    this.routeDistribucionViandas();
+                    this.routeOfertaProductoServicio();
+                    this.routeEncargarseDeHeladeras();
 
                     path("/entrega-viandas", () -> {
                         // TODO - ver que hacer con este
@@ -26,7 +27,7 @@ public class ColaboracionRouter {
                 }));
     }
 
-    private static void routeDonacionDinero() {
+    private void routeDonacionDinero() {
         path("/donacion-dinero", () -> {
             post(ctx -> ctx.result("FORMULARIO ENVIADO"));
 
@@ -35,7 +36,7 @@ public class ColaboracionRouter {
         });
     }
 
-    private static void routeDonacionVianda() {
+    private void routeDonacionVianda() {
         path("/donacion-vianda", () -> {
             post(ctx -> ctx.result("FORMULARIO ENVIADO"));
 
@@ -44,7 +45,7 @@ public class ColaboracionRouter {
         });
     }
 
-    private static void routeRegistroPersonaVulnerable() {
+    private void routeRegistroPersonaVulnerable() {
         path("/registro-persona-vulnerable", () -> {
             post(ctx -> ctx.result("FORMULARIO ENVIADO"));
 
@@ -53,7 +54,7 @@ public class ColaboracionRouter {
         });
     }
 
-    private static void routeDistribucionViandas() {
+    private void routeDistribucionViandas() {
         path("/distribucion-viandas", () -> {
             post(ctx -> ctx.result("FORMULARIO ENVIADO"));
 
@@ -62,7 +63,7 @@ public class ColaboracionRouter {
         });
     }
 
-    private static void routeOfertaProductoServicio() {
+    private void routeOfertaProductoServicio() {
         path("/oferta-producto-servicio", () -> {
             post(ctx -> ctx.result("FORMULARIO ENVIADO"));
 
@@ -71,7 +72,7 @@ public class ColaboracionRouter {
         });
     }
 
-    private static void routeEncargarseDeHeladeras() {
+    private void routeEncargarseDeHeladeras() {
         path("/encargarse-de-heladeras", () -> {
             post(ctx -> ctx.result("FORMULARIO ENVIADO"));
 
@@ -79,4 +80,5 @@ public class ColaboracionRouter {
             get("/{id}", ctx -> ctx.result("DETALLE ENCARGO"));
         });
     }
+
 }
