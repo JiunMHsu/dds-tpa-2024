@@ -19,10 +19,9 @@ public class SessionController {
 
     public void index(Context context) {
         String forward = this.getForwardRoute(context);
-        String sessionId = context.cookie("sessionId");
 
-        if (sessionId != null) {
-            context.redirect(forward, HttpStatus.FOUND);
+        if (context.sessionAttribute("userId") != null) {
+            context.status(HttpStatus.FOUND).redirect(forward);
             return;
         }
 
@@ -41,6 +40,7 @@ public class SessionController {
 
         Optional<Usuario> usuario = usuarioRepository.obtenerPorEmail(email);
 
+        // TODO - modificar la estrategia de manejar falla login
         if (usuario.isEmpty()) {
             model.put("isRetry", true);
             context.status(400).render("login/login.hbs", model);
@@ -55,12 +55,9 @@ public class SessionController {
             return;
         }
 
-        context.sessionAttribute("userId", usuario.get().getId());
+        context.sessionAttribute("userId", usuario.get().getId().toString());
         context.sessionAttribute("userRol", usuario.get().getRol().toString());
         context.req().changeSessionId();
-
-        String newSessionId = context.req().getSession().getId();
-        context.cookie("sessionId", newSessionId, 3600);
 
         context.redirect(forward);
     }
