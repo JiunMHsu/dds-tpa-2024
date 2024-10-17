@@ -34,7 +34,7 @@ public class Server {
 
         AuthMiddleware.apply(app);
         AppHandlers.apply(app);
-        Router.init(app);
+        // Router.init(app);
 
         if (AppProperties.getInstance().boolPropertyFromName("DEV_MODE")) {
             Initializer.init();
@@ -63,6 +63,10 @@ public class Server {
                     return "No se encuentra la página indicada...";
                 }
             }));
+
+            // TODO - configurar las rutas
+            Router.initRoutes(config);
+
         };
     }
 }

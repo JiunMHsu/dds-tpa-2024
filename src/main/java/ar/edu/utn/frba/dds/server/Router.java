@@ -1,8 +1,13 @@
 package ar.edu.utn.frba.dds.server;
 
+import static io.javalin.apibuilder.ApiBuilder.get;
+import static io.javalin.apibuilder.ApiBuilder.path;
+import static io.javalin.apibuilder.ApiBuilder.post;
+
 import ar.edu.utn.frba.dds.controllers.session.SessionController;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import io.javalin.Javalin;
+import io.javalin.config.JavalinConfig;
 
 public class Router {
 
@@ -36,6 +41,26 @@ public class Router {
         app.get("/test", ctx -> ctx.result("DDS TPA"));
         app.get("/image/{id}", ctx -> ctx.result("IMAGEN"));
 
+    }
+
+    public static void initRoutes(JavalinConfig config) {
+        config.router.apiBuilder(() -> {
+            path("/", () -> get(ctx -> ctx.redirect("/home")));
+            
+            path("/login", () -> {
+                get(new SessionController(usuarioRepository)::index);
+                post(new SessionController(usuarioRepository)::create);
+            });
+
+            path("/home", () -> get(ctx -> ctx.render("home/home.hbs")));
+
+            path("/heladeras", () -> {
+                get(ctx -> ctx.render("heladeras/heladeras.hbs"));
+                post(ctx -> ctx.result("OPERACION EXITOSA"));
+                path("/new", () -> get(ctx -> ctx.render("heladeras/heladera_crear.hbs")));
+                path("/{id}", () -> get(ctx -> ctx.render("heladeras/heladera_detalle.hbs")));
+            });
+        });
 
     }
 
