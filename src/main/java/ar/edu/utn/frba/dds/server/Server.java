@@ -48,25 +48,26 @@ public class Server {
                 staticFiles.directory = "/public";
             });
 
-            config.fileRenderer(new JavalinRenderer().register("hbs", (path, model, context) -> {
-                Handlebars handlebars = new Handlebars();
-                Template template;
-
-                try {
-                    template = handlebars.compile(
-                            "templates/" + path.replace(".hbs", "")
-                    );
-                    return template.apply(model);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    context.status(HttpStatus.NOT_FOUND);
-                    return "No se encuentra la página indicada...";
-                }
-            }));
-
-            // TODO - configurar las rutas
-            Router.initRoutes(config);
-
+            setFileRenderer(config);
+            Router.apply(config);
         };
+    }
+
+    private static void setFileRenderer(JavalinConfig config) {
+        config.fileRenderer(new JavalinRenderer().register("hbs", (path, model, context) -> {
+            Handlebars handlebars = new Handlebars();
+            Template template;
+
+            try {
+                template = handlebars.compile(
+                        "templates/" + path.replace(".hbs", "")
+                );
+                return template.apply(model);
+            } catch (IOException e) {
+                e.printStackTrace();
+                context.status(HttpStatus.NOT_FOUND);
+                return "No se encuentra la página indicada...";
+            }
+        }));
     }
 }
