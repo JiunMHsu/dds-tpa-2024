@@ -29,7 +29,7 @@ public class PersonaVulnerable extends EntidadPersistente {
     @Embedded
     private Documento documento;
 
-    @Column(name = "fecha_nacimiento", columnDefinition = "DATET")
+    @Column(name = "fecha_nacimiento", columnDefinition = "DATE")
     private LocalDate fechaNacimiento;
 
     @Column(name = "fecha_registro")
