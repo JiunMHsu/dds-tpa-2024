@@ -6,6 +6,7 @@ import static io.javalin.apibuilder.ApiBuilder.post;
 
 import io.javalin.config.JavalinConfig;
 
+// TODO - definir las rutas y permisos para heladeras
 public class HeladeraRouter implements IRouter {
 
     @Override
