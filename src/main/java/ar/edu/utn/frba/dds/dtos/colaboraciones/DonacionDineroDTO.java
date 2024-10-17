@@ -11,6 +11,8 @@ import lombok.Setter;
 @Builder
 public class DonacionDineroDTO {
 
+    private String id;
+
     private String nombre; // lo agrego xlas, tiene pinta que puede ser util
 
     private String colaborador;
@@ -28,6 +30,7 @@ public class DonacionDineroDTO {
 
         return DonacionDineroDTO
                 .builder()
+                .id(donacionDinero.getId().toString())
                 .nombre(nombre)
                 .colaborador(donacionDinero.getColaborador().getUsuario().getNombre())
                 .fechaHora(donacionDinero.getFechaHora().toString())
@@ -36,16 +39,17 @@ public class DonacionDineroDTO {
                 .build();
     }
 
-    public static DonacionDineroDTO preview(DonacionDinero donacionDinero) {
+    public static DonacionDineroDTO preview(DonacionDinero donacionDinero) { // TODO - ver si se ajusta a la vista
 
         String nombre = "Donar Dinero"; // Lo dejo asi medio tosco quizas en un futuro c pueda hacer dinamico
                                         // En caso de que c cambien los nombres de los metodos de contribuir
 
         return DonacionDineroDTO
                 .builder()
+                .id(donacionDinero.getId().toString())
                 .nombre(nombre)
                 .monto(donacionDinero.getMonto().toString())
-                .frecuencia(donacionDinero.getFrecuencia().toString()) // TODO - Ver que onda el toString con el Period)
+                .frecuencia(donacionDinero.getFrecuencia().toString())
                 .build();
     }
 }

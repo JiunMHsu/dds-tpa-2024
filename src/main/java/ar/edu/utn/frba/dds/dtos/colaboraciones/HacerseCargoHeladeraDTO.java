@@ -11,6 +11,8 @@ import lombok.Setter;
 @Builder
 public class HacerseCargoHeladeraDTO {
 
+    private String id;
+
     private String nombre; // lo agrego xlas, tiene pinta que puede ser util
 
     private String colaborador;
@@ -25,6 +27,7 @@ public class HacerseCargoHeladeraDTO {
 
         return HacerseCargoHeladeraDTO
                 .builder()
+                .id(hacerseCargoHeladera.getId().toString())
                 .nombre(nombre)
                 .colaborador(hacerseCargoHeladera.getColaborador().getUsuario().getNombre())
                 .fechaHora(hacerseCargoHeladera.getFechaHora().toString())
@@ -32,12 +35,13 @@ public class HacerseCargoHeladeraDTO {
                 .build();
     }
 
-    public static HacerseCargoHeladeraDTO preview(HacerseCargoHeladera hacerseCargoHeladera) {
+    public static HacerseCargoHeladeraDTO preview(HacerseCargoHeladera hacerseCargoHeladera) { // TODO - ver si se ajusta a la vista
 
         String nombre = "Encargarse de una Heladera";
 
         return HacerseCargoHeladeraDTO
                 .builder()
+                .id(hacerseCargoHeladera.getId().toString())
                 .nombre(nombre)
                 .heladeraACargo(hacerseCargoHeladera.getHeladeraACargo().getNombre())
                 .build();

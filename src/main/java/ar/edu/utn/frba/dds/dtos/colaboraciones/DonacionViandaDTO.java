@@ -11,6 +11,8 @@ import lombok.Setter;
 @Builder
 public class DonacionViandaDTO {
 
+    private String id;
+
     private String nombre; // lo agrego xlas, tiene pinta que puede ser util
 
     private String colaborador;
@@ -35,6 +37,7 @@ public class DonacionViandaDTO {
 
         return DonacionViandaDTO
                 .builder()
+                .id(donacionVianda.getId().toString())
                 .nombre(nombre)
                 .colaborador(donacionVianda.getColaborador().getUsuario().getNombre())
                 .fechaHora(donacionVianda.getFechaHora().toString())
@@ -46,13 +49,14 @@ public class DonacionViandaDTO {
                 .build();
     }
 
-    public static DonacionViandaDTO preview(DonacionVianda donacionVianda) {
+    public static DonacionViandaDTO preview(DonacionVianda donacionVianda) { // TODO - ver si se ajusta a la vista
 
         String nombre = "Donar Vianda "; // Lo dejo asi medio tosco quizas en un futuro c pueda hacer dinamico
                                          // En caso de que c cambien los nombres de los metodos de contribuir
 
         return DonacionViandaDTO
                 .builder()
+                .id(donacionVianda.getId().toString())
                 .nombreComida(donacionVianda.getVianda().getComida().getNombre())
                 .pesoVianda(donacionVianda.getVianda().getPeso().toString())
                 .caloriasComida(String.valueOf(donacionVianda.getVianda().getComida().getCalorias()))

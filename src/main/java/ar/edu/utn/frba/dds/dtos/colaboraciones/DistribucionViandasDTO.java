@@ -10,6 +10,8 @@ import lombok.Setter;
 @Builder
 public class DistribucionViandasDTO {
 
+    private String id;
+
     private String nombre; // lo agrego xlas, tiene pinta que puede ser util
 
     private String colaborador;
@@ -31,6 +33,7 @@ public class DistribucionViandasDTO {
 
         return DistribucionViandasDTO
                 .builder()
+                .id(distribucionViandas.getId().toString())
                 .nombre(nombre)
                 .colaborador(distribucionViandas.getColaborador().getUsuario().getNombre())
                 .fechaHora(distribucionViandas.getFechaHora().toString())
@@ -48,6 +51,7 @@ public class DistribucionViandasDTO {
 
         return DistribucionViandasDTO
                 .builder()
+                .id(distribucionViandas.getId().toString())
                 .nombre(nombre)
                 .heladeraOrigen(distribucionViandas.getOrigen().getNombre())
                 .heladeraDestino(distribucionViandas.getDestino().getNombre())
