@@ -1,20 +1,8 @@
 package ar.edu.utn.frba.dds.config;
 
 import ar.edu.utn.frba.dds.controllers.heladera.HeladeraController;
-
-import ar.edu.utn.frba.dds.models.repositories.heladera.AperturaHeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
-import ar.edu.utn.frba.dds.models.repositories.heladera.IHeladeraRepository;
-import ar.edu.utn.frba.dds.models.repositories.heladera.ISolicitudDeAperturaRepository;
-import ar.edu.utn.frba.dds.models.repositories.heladera.RetiroDeViandaRepository;
-import ar.edu.utn.frba.dds.models.repositories.heladera.SolicitudDeAperturaRepository;
-//import ar.edu.utn.frba.dds.models.repositories.personaVulnerable.IPersonaVulnerableRepository;
-//import ar.edu.utn.frba.dds.models.repositories.personaVulnerable.PersonaVulnerableRepository;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
-import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
-import ar.edu.utn.frba.dds.utils.ICrudRepository;
-import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,144 +14,27 @@ public class ServiceLocator {
     public static <T> T instanceOf(Class<T> componentClass) {
         String componentName = componentClass.getName();
 
-        if (!instances.containsKey(componentName)) {
-            if (componentName.equals(HeladeraController.class.getName())) {
-                HeladeraService heladeraService = instanceOf(HeladeraService.class);
-                HeladeraController instance = new HeladeraController(heladeraService);
-                instances.put(componentName, instance);
-            }
-            else if (componentName.equals(HeladeraService.class.getName())) { // Creo instancia de HeladeraService
-                IHeladeraRepository heladeraRepository = instanceOf(IHeladeraRepository.class);
-                HeladeraService instance = new HeladeraService(heladeraRepository);
-                instances.put(componentName, instance);
-            }
-            else if (componentName.equals(IHeladeraRepository.class.getName())) {
-                HeladeraRepository instance = new HeladeraRepository();
-                instances.put(componentName, instance);
-            }
+        if (instances.containsKey(componentName))
+            return (T) instances.get(componentName);
+
+        if (componentName.equals(HeladeraController.class.getName())) {
+            HeladeraService heladeraService = instanceOf(HeladeraService.class);
+            HeladeraController instance = new HeladeraController(heladeraService);
+            instances.put(componentName, instance);
         }
+
+        if (componentName.equals(HeladeraService.class.getName())) {
+            HeladeraRepository heladeraRepository = instanceOf(HeladeraRepository.class);
+            HeladeraService instance = new HeladeraService(heladeraRepository);
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(HeladeraRepository.class.getName())) {
+            HeladeraRepository instance = new HeladeraRepository();
+            instances.put(componentName, instance);
+        }
+
         return (T) instances.get(componentName);
     }
-
-    @SuppressWarnings("unchecked")
-    public static ICrudViewsHandler getCrudViewsHandler(String handlerName) {
-        ICrudViewsHandler handler = null;
-
-        if (instances.containsKey(handlerName)) {
-            handler = (ICrudViewsHandler) instances.get(handlerName);
-        }
-
-        if (handlerName.equals(HeladeraController.class.getName())) {
-            handler = new HeladeraController(
-                    getHeladeraService(),
-                    getSolicitudDeAperturaRepository(),
-                    getCrudRepository("RetiroDeViandaRepository"),
-                    getCrudRepository("AperturaHeladeraRepository")
-            );
-        }
-
-        // ...
-
-        if (handler == null) {
-            throw new IllegalArgumentException("No handler found with name " + handlerName);
-        }
-
-        instances.put(handlerName, handler);
-        return handler;
-    }
-
-    @SuppressWarnings("unchecked")
-    public static IBrokerMessageHandler getBrokerMessageHandler() {
-        String handlerName = HeladeraController.class.getName();
-
-        if (instances.containsKey(handlerName)) {
-            return (IBrokerMessageHandler) instances.get(handlerName);
-        }
-
-        IBrokerMessageHandler handler = new HeladeraController(
-                getHeladeraService(),
-                getSolicitudDeAperturaRepository(),
-                getCrudRepository("RetiroDeViandaRepository"),
-                getCrudRepository("AperturaHeladeraRepository")
-        );
-        instances.put(handlerName, handler);
-        return handler;
-    }
-
-    public static ICrudRepository getCrudRepository(String repositoryName) {
-        ICrudRepository repository = null;
-
-        if (instances.containsKey(repositoryName)) {
-            repository = (ICrudRepository) instances.get(repositoryName);
-        }
-
-        if (repositoryName.equals(AperturaHeladeraRepository.class.getName())) {
-            repository = new AperturaHeladeraRepository();
-        }
-
-        if (repositoryName.equals(RetiroDeViandaRepository.class.getName())) {
-            repository = new RetiroDeViandaRepository();
-        }
-
-        if (repositoryName.equals(SolicitudDeAperturaRepository.class.getName())) {
-            repository = new SolicitudDeAperturaRepository();
-        }
-
-        // ...
-
-        if (repository == null)
-            throw new IllegalArgumentException("No repository found with name " + repositoryName);
-
-        instances.put(repositoryName, repository);
-        return repository;
-    }
-
-    public static IHeladeraRepository getHeladeraRepository() {
-        String repositoryName = HeladeraRepository.class.getName();
-
-        if (instances.containsKey(repositoryName)) {
-            return (IHeladeraRepository) instances.get(repositoryName);
-        }
-
-        IHeladeraRepository repository = new HeladeraRepository();
-        instances.put(repositoryName, repository);
-        return repository;
-    }
-
-    public static ISolicitudDeAperturaRepository getSolicitudDeAperturaRepository() {
-        String repositoryName = SolicitudDeAperturaRepository.class.getName();
-
-        if (instances.containsKey(repositoryName)) {
-            return (ISolicitudDeAperturaRepository) instances.get(repositoryName);
-        }
-
-        ISolicitudDeAperturaRepository repository = new SolicitudDeAperturaRepository();
-        instances.put(repositoryName, repository);
-        return repository;
-    }
-
-    public static HeladeraService getHeladeraService() {
-        String serviceName = HeladeraService.class.getName();
-
-        if (instances.containsKey(serviceName)) {
-            return (HeladeraService) instances.get(serviceName);
-        }
-
-        HeladeraService service = new HeladeraService(getHeladeraRepository());
-        instances.put(serviceName, service);
-        return service;
-    }
-
-//    public static IPersonaVulnerableRepository getPersonaVulnerableRepository() {
-//        String repositoryName = PersonaVulnerableRepository.class.getName();
-//
-//        if (instances.containsKey(repositoryName)) {
-//            return (IPersonaVulnerableRepository) instances.get(repositoryName);
-//        }
-//
-//        IPersonaVulnerableRepository repository = new PersonaVulnerableRepository();
-//        instances.put(repositoryName, repository);
-//        return repository;
-//    }
 
 }
