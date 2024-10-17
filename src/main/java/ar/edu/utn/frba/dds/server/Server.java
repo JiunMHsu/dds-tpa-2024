@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.server;
 
 import ar.edu.utn.frba.dds.middlewares.AuthMiddleware;
 import ar.edu.utn.frba.dds.server.handlers.AppHandlers;
+import ar.edu.utn.frba.dds.server.routers.Routers;
 import ar.edu.utn.frba.dds.utils.AppProperties;
 import ar.edu.utn.frba.dds.utils.Initializer;
 import ar.edu.utn.frba.dds.utils.JavalinRenderer;
@@ -49,7 +50,7 @@ public class Server {
             });
 
             setFileRenderer(config);
-            Router.apply(config);
+            Routers.apply(config);
         };
     }
 
