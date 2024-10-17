@@ -97,9 +97,8 @@ public class ColaboracionController {
                     model.put(tipo.name().toLowerCase(), dtos);
                 }
             }
-
-            model.put("titulo", "Listado de colaboraciones");
         }
+        model.put("titulo", "Listado de colaboraciones");
         context.render("colaboraciones/colaboraciones.hbs", model);
     }
 }
