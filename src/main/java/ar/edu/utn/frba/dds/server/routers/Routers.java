@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.server;
+package ar.edu.utn.frba.dds.server.routers;
 
 import static io.javalin.apibuilder.ApiBuilder.get;
 import static io.javalin.apibuilder.ApiBuilder.path;
@@ -6,19 +6,10 @@ import static io.javalin.apibuilder.ApiBuilder.post;
 
 import ar.edu.utn.frba.dds.controllers.session.SessionController;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
-import ar.edu.utn.frba.dds.server.routers.CanjeDePuntosRouter;
-import ar.edu.utn.frba.dds.server.routers.ColaboracionRouter;
-import ar.edu.utn.frba.dds.server.routers.ColaboradorRouter;
-import ar.edu.utn.frba.dds.server.routers.HeladeraRouter;
-import ar.edu.utn.frba.dds.server.routers.IRouter;
-import ar.edu.utn.frba.dds.server.routers.IncidenteRouter;
-import ar.edu.utn.frba.dds.server.routers.PuntoIdealRouter;
-import ar.edu.utn.frba.dds.server.routers.ReporteRouter;
-import ar.edu.utn.frba.dds.server.routers.SuscripcionRouter;
 import io.javalin.config.JavalinConfig;
 import java.util.Arrays;
 
-public class Router {
+public class Routers {
 
     private static final IRouter[] routers = new IRouter[]{
             new ColaboracionRouter(),
