@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class HeladeraDTO {
+    private String id;
 
     private String nombre;
 
@@ -32,7 +33,7 @@ public class HeladeraDTO {
 
     private String temperaturaMinima;
 
-    public static HeladeraDTO completa(Heladera heladera){
+    public static HeladeraDTO completa(Heladera heladera) {
 
         String direccionString = heladera.getDireccion().getCalle().getNombre() + " " + heladera.getDireccion().getAltura().toString();
 
@@ -40,6 +41,7 @@ public class HeladeraDTO {
 
         return HeladeraDTO
                 .builder()
+                .id(heladera.getId().toString())
                 .nombre(heladera.getNombre())
                 .estado(heladera.getEstado().toString())
                 .calleYAltura(direccionString)
@@ -54,7 +56,7 @@ public class HeladeraDTO {
                 .build();
     }
 
-    public static HeladeraDTO preview(Heladera heladera){
+    public static HeladeraDTO preview(Heladera heladera) {
 
         String direccionString = heladera.getDireccion().getCalle().getNombre() + " " + heladera.getDireccion().getAltura().toString();
 
@@ -62,6 +64,7 @@ public class HeladeraDTO {
 
         return HeladeraDTO
                 .builder()
+                .id(heladera.getId().toString())
                 .nombre(heladera.getNombre())
                 .estado(heladera.getEstado().toString())
                 .calleYAltura(direccionString)

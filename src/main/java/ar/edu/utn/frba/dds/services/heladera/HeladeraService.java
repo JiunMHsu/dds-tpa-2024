@@ -13,11 +13,11 @@ public class HeladeraService {
         this.heladeraRepository = heladeraRepository;
     }
 
-    public List<Heladera> buscarTodasHeladeras() {
+    public List<Heladera> buscarTodas() {
         return this.heladeraRepository.buscarTodos();
     }
 
-    public Optional<Heladera> buscarHeladeraPorID(String id) {
+    public Optional<Heladera> buscarPorId(String id) {
 
         if (id == null || id.isEmpty()) {
             throw new IllegalArgumentException("El ID de la heladera no puede ser null o vacío");

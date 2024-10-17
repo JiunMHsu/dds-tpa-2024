@@ -1,9 +1,9 @@
 package ar.edu.utn.frba.dds.services.Incidente;
 
+import static ar.edu.utn.frba.dds.models.entities.incidente.TipoIncidente.FALLA_TECNICA;
+
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
-import static ar.edu.utn.frba.dds.models.entities.incidente.TipoIncidente.*;
-
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -14,11 +14,13 @@ public class IncidenteService {
 
     private final IncidenteRepository incidenteRepository;
 
-    public IncidenteService (IncidenteRepository incidenteRepository) {
+    public IncidenteService(IncidenteRepository incidenteRepository) {
         this.incidenteRepository = incidenteRepository;
     }
 
-    public List<Incidente> buscarIncidentes() { return this.incidenteRepository.obtenerTodos(); }
+    public List<Incidente> buscarIncidentes() {
+        return this.incidenteRepository.obtenerTodos();
+    }
 
     public Map<String, Integer> incidentesPorHeladera() {
 
@@ -35,7 +37,7 @@ public class IncidenteService {
         return incidentesPorHeladera;
     }
 
-    public void guardarIncidente (Incidente incidente) {
+    public void guardarIncidente(Incidente incidente) {
 
         if (incidente.getTipo() == FALLA_TECNICA && incidente.getColaborador() == null) {
             throw new IllegalArgumentException("Las Fallas Tecnicas deben tener asociado un Colaborador");
@@ -45,5 +47,7 @@ public class IncidenteService {
     }
 
     // Lo dejo basico x ahora
-    public Optional<Incidente> buscarIncidentePorId(String id) { return this.incidenteRepository.buscarPorId(id); }
+    public Optional<Incidente> buscarIncidentePorId(String id) {
+        return Optional.empty(); // this.incidenteRepository.buscarPorId(id);
+    }
 }

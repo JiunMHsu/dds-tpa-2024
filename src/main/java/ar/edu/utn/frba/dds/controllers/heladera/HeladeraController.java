@@ -27,7 +27,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
 
     @Override
     public void index(Context context) {
-        List<Heladera> heladeras = this.heladeraService.buscarTodasHeladeras();
+        List<Heladera> heladeras = this.heladeraService.buscarTodas();
 
         List<HeladeraDTO> heladerasDTO = heladeras.stream()
                 .map(HeladeraDTO::preview)
@@ -35,15 +35,15 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
 
         Map<String, Object> model = new HashMap<>();
         model.put("heladeras", heladerasDTO);
-        model.put("titulo", "Listado de heladeras");
+        model.put("userRol", "Listado de heladeras");
 
-        context.render("heladera/heladeras.hbs", model);
+        context.render("heladeras/heladeras.hbs", model);
     }
 
     @Override
     public void show(Context context) {
         //por id
-        Optional<Heladera> posibleHeladeraBuscada = this.heladeraService.buscarHeladeraPorID(context.formParam("id"));
+        Optional<Heladera> posibleHeladeraBuscada = this.heladeraService.buscarPorId(context.formParam("id"));
 
         if (posibleHeladeraBuscada.isEmpty()) {
             context.status(404);//not found
@@ -76,7 +76,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
                 new Ubicacion(Double.valueOf(context.formParam("latitud")), Double.valueOf(context.formParam("longitud")))
         );
         RangoTemperatura rangoTemperatura = new RangoTemperatura(Double.valueOf(context.formParam("maxima")), Double.valueOf(context.formParam("minima")));
-        Heladera nuevaHeladera = Heladera.nueva(context.formParam("nombre"), direccion, Integer.valueOf(context.formParam("capacidad")), rangoTemperatura, Integer.valueOf(context.formParam("viandas")));
+        Heladera nuevaHeladera = Heladera.con(context.formParam("nombre"), direccion, Integer.valueOf(context.formParam("capacidad")), rangoTemperatura, Integer.valueOf(context.formParam("viandas")));
         this.heladeraService.guardarHeladera(nuevaHeladera);
         //O BIEN LANZO UNA PANTALLA DE EXITO
         //O BIEN REDIRECCIONO AL USER A LA PANTALLA DE LISTADO DE PRODUCTOS
@@ -87,7 +87,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
     @Override
     public void edit(Context context) {
         // devuelve formulario para editar heladera
-        Optional<Heladera> posibleHeladeraBuscada = this.heladeraService.buscarHeladeraPorID(context.formParam("id"));
+        Optional<Heladera> posibleHeladeraBuscada = this.heladeraService.buscarPorId(context.formParam("id"));
         // TODO chequear empty
 
         // if(posibleHeladeraBuscada.isEmpty()) {
@@ -105,7 +105,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
     @Override
     public void update(Context context) {
         // voy a considerar que solo se puede modificar rango de temperatura
-        Optional<Heladera> posibleHeladeraActualizar = this.heladeraService.buscarHeladeraPorID(context.formParam("id"));
+        Optional<Heladera> posibleHeladeraActualizar = this.heladeraService.buscarPorId(context.formParam("id"));
         // TODO - chequeo si no existe
 
         // interpreto que los campos son obligatorios (no pueden ser null)
@@ -124,7 +124,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
 
     @Override
     public void delete(Context context) {
-        Optional<Heladera> posibleHeladeraAEliminar = this.heladeraService.buscarHeladeraPorID(context.formParam("id"));
+        Optional<Heladera> posibleHeladeraAEliminar = this.heladeraService.buscarPorId(context.formParam("id"));
         // TODO - chequeo si no existe
 
         this.heladeraService.eliminarHeladera(posibleHeladeraAEliminar.get());
