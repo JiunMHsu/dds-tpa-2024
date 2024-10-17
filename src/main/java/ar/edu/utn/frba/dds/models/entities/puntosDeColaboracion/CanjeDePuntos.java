@@ -38,7 +38,7 @@ public class CanjeDePuntos {
     @Column(name = "puntos_canjeados", nullable = false)
     private Double puntosCanjeados;
 
-    @Column(name = "puntos_restamtes", nullable = false)
+    @Column(name = "puntos_restates", nullable = false)
     private Double puntosRestantes;
 
     @ManyToOne
