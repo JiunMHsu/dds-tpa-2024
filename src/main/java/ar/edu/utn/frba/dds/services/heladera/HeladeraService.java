@@ -1,21 +1,21 @@
 package ar.edu.utn.frba.dds.services.heladera;
 
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.repositories.heladera.IHeladeraRepository;
-
-import javax.persistence.EntityNotFoundException;
+import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import java.util.List;
 import java.util.Optional;
 
 public class HeladeraService {
 
-    private final IHeladeraRepository heladeraRepository;
+    private final HeladeraRepository heladeraRepository;
 
-    public HeladeraService (IHeladeraRepository heladeraRepository) {
+    public HeladeraService(HeladeraRepository heladeraRepository) {
         this.heladeraRepository = heladeraRepository;
     }
 
-    public List<Heladera> buscarTodasHeladeras() { return this.heladeraRepository.buscarTodos(); }
+    public List<Heladera> buscarTodasHeladeras() {
+        return this.heladeraRepository.buscarTodos();
+    }
 
     public Optional<Heladera> buscarHeladeraPorID(String id) {
 
@@ -44,7 +44,11 @@ public class HeladeraService {
     // Lo dejo asi medio basico, pero seguramente se deba validar que los nuevos atributos:
     // 1. no sean null o sean coherentes (asumo)
     // 2. no sean exactamente los mismos
-    public void actualizarHeladera(Heladera heladeraActualizada) { this.heladeraRepository.actualizar(heladeraActualizada); }
+    public void actualizarHeladera(Heladera heladeraActualizada) {
+        this.heladeraRepository.actualizar(heladeraActualizada);
+    }
 
-    public void eliminarHeladera(Heladera heladera) { this.heladeraRepository.eliminar(heladera); }
+    public void eliminarHeladera(Heladera heladera) {
+        this.heladeraRepository.eliminar(heladera);
+    }
 }
