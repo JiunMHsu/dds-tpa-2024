@@ -36,7 +36,7 @@ public class OfertaProductosServiciosController implements ICrudViewsHandler {
                 .collect(Collectors.toList());
 
         Map<String, Object> model = new HashMap<>();
-        model.put("productos_canjear.hbs", productos);
+        model.put("productos_canjear", ofertaDeProductosDTOS);
         model.put("titulo", "Listado de productos/servicios");
 
         context.render("canje_de_puntos/productos_canjear.hbs", model);

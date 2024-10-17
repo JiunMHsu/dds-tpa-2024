@@ -9,7 +9,6 @@ import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class DistribucionViandasController implements ICrudViewsHandler {
