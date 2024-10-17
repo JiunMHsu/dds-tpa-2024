@@ -14,8 +14,9 @@
             <a href="" class="form-header-option">SIGN UP</a>
         </div>
 
-        {{#block "login-error"}}
-        {{/block}}
+        {{#if isRetry}}
+            <div class="error-card">email o contraseña incorrecta.</div>
+        {{/if}}
 
         <form action="/login" method="post" class="form">
             <label class="field-email">

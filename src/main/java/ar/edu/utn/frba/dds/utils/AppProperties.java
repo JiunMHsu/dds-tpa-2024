@@ -45,7 +45,7 @@ public class AppProperties {
     public Integer intPropertyFromName(String name) {
         return Integer.parseInt(propertyFromName(name));
     }
- 
+
     public Boolean boolPropertyFromName(String name) {
         return Boolean.parseBoolean(propertyFromName(name));
     }
