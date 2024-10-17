@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.broker.suscriptorSensor;
 
 import ar.edu.utn.frba.dds.config.ServiceLocator;
+import ar.edu.utn.frba.dds.controllers.heladera.HeladeraController;
 import ar.edu.utn.frba.dds.models.entities.sensor.Sensor;
 import java.time.Duration;
 import java.time.Instant;
@@ -34,7 +35,7 @@ public class SuscriptorSensorTemperatura extends SuscriptorSensor {
 
     @Override
     public void recibirMensaje(String mensaje) {
-        ServiceLocator.getBrokerMessageHandler().recibirTemperatura(Double.parseDouble(mensaje));
+        ServiceLocator.instanceOf(HeladeraController.class).recibirTemperatura(Double.parseDouble(mensaje));
         tiempoUltimoMensaje = Instant.now();
     }
 
