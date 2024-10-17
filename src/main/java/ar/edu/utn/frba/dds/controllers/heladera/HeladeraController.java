@@ -5,15 +5,10 @@ import ar.edu.utn.frba.dds.models.entities.data.Barrio;
 import ar.edu.utn.frba.dds.models.entities.data.Calle;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
-import ar.edu.utn.frba.dds.models.entities.heladera.AperturaHeladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
-import ar.edu.utn.frba.dds.models.entities.heladera.RetiroDeVianda;
-import ar.edu.utn.frba.dds.models.repositories.heladera.IHeladeraRepository;
-import ar.edu.utn.frba.dds.models.repositories.heladera.ISolicitudDeAperturaRepository;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
-import ar.edu.utn.frba.dds.utils.ICrudRepository;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
@@ -21,27 +16,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHandler {
 
     HeladeraService heladeraService;
-    ISolicitudDeAperturaRepository solicitudDeAperturaRepository;
-    ICrudRepository<RetiroDeVianda> retiroDeViandaRepository;
-    ICrudRepository<AperturaHeladera> aperturaHeladeraRepository;
 
-    public HeladeraController(HeladeraService heladeraService,
-                              ISolicitudDeAperturaRepository solicitudDeAperturaRepository,
-                              ICrudRepository<RetiroDeVianda> retiroDeViandaRepository,
-                              ICrudRepository<AperturaHeladera> aperturaHeladeraRepository) {
-
-        this.heladeraService = heladeraService;
-        this.retiroDeViandaRepository = retiroDeViandaRepository;
-        this.solicitudDeAperturaRepository = solicitudDeAperturaRepository;
-        this.aperturaHeladeraRepository = aperturaHeladeraRepository;
-    }
-
-    public HeladeraController(HeladeraService heladeraService) { // Momentaneo para que no me putee
+    public HeladeraController(HeladeraService heladeraService) {
         this.heladeraService = heladeraService;
     }
 
@@ -51,7 +31,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
 
         List<HeladeraDTO> heladerasDTO = heladeras.stream()
                 .map(HeladeraDTO::preview)
-                .collect(Collectors.toList());
+                .toList();
 
         Map<String, Object> model = new HashMap<>();
         model.put("heladeras", heladerasDTO);

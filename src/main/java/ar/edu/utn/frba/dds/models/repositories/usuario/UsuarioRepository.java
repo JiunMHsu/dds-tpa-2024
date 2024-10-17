@@ -35,4 +35,16 @@ public class UsuarioRepository implements WithSimplePersistenceUnit {
             return Optional.empty();
         }
     }
+
+    public Optional<Usuario> buscarPorId(String id) {
+        try {
+            return Optional.of(entityManager()
+                .createQuery("from Usuario u where u.id = :id and u.alta = :alta", Usuario.class)
+                .setParameter("id", id)
+                .setParameter("alta", true)
+                .getSingleResult());
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
+    }
 }

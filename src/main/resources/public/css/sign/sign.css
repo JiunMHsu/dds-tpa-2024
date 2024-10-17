@@ -1,0 +1,151 @@
+.contenedores {
+    display: flex;
+    align-items: flex-start;
+    gap: 5rem;
+}
+.main-section {
+    border: 1px solid var(--background-3);
+    margin: 0 1.5vh;
+    overflow-y: hidden;
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.form-container {
+    padding: 4rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px rgb(34, 34, 34);
+    position: absolute;
+    z-index: 2;
+    background-color: rgb(34, 34, 34);
+}
+
+.form-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+    margin: 0 0 1rem;
+}
+.form-button-container{
+    margin: 0.5rem 0 0rem;
+    flex-direction: column;
+    justify-content: center;
+    width: 15rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--foreground-2);
+    margin-bottom: 0.5rem;
+}
+.form button{
+    width: 15rem;
+}
+.form button:active {
+    background-color: var(--background-3);
+    transform: scale(0.95);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.ajuste{
+    margin-top: -0.1rem;
+}
+.form-header-option {
+    color: var(--foreground-1);
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-decoration: none;
+
+    transition-property: all;
+    transition-duration: 300ms;
+}
+
+.form-header-option:hover {
+    text-decoration: underline;
+    text-shadow: 0 0 1rem var(--background-3);
+}
+
+.active {
+    color: var(--main-light-0);
+    text-shadow: 0 0 1rem var(--background-3);
+}
+
+.form {
+    grid-template-columns: 25rem;
+    margin-top: 1rem;
+    background-color: dark light;
+    width: 50rem;
+}
+.opciones {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 10rem;
+    height: 12rem;
+    color: var(--foreground-3);
+    text-decoration: none;
+    margin-top: 2rem;
+    background-color: rgb(75, 75, 75);
+    border: 1px solid black;
+    border-radius: 2rem;
+}
+.opciones:hover {
+    cursor: default;
+    box-shadow: 0 0 1rem var(--background-3);
+}
+
+.opciones:hover > .colaboracion-title {
+    color: var(--main-light-0);
+    text-shadow: 0 0 1rem var(--main-light-0);
+}
+
+
+.opciones * {
+    margin: 0;
+    color: var(--foreground-0);
+}
+.nav-icon {
+    transform: scale(2.2);
+    margin-bottom: 2rem;
+    color: #000000;
+}
+
+.nav-txt {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    max-width: 7em;
+    font-size: 1.2em;
+    text-overflow: ellipsis;
+    text-align: center;
+    color: #000000;
+}
+
+
+.izquierda, .centro, .derecha {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.centro {
+    align-items: center;
+}
+
+.derecha {
+    align-items: flex-end;
+}
+
+.derecha label,
+.derecha select {
+    width: 100%;
+}

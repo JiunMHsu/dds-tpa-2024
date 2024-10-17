@@ -12,8 +12,9 @@
 }
 
 .lista-colaboraciones {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    /*grid-template-columns: 1fr 1fr;*/
+    flex-direction:column;
     gap: 1rem;
     padding: 1rem;
     overflow-y: scroll;
@@ -21,10 +22,11 @@
 
 .item-colaboracion {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    height: 6rem;
-    width: 13rem;
+    flex-direction: row;
+    align-items:center;
+    justify-content: space-between;
+    height: 3rem;
+    width: 26rem;
     padding: 1rem;
     border-radius: .7rem;
     border: 1px solid var(--background-3);

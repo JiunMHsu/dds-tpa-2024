@@ -16,6 +16,15 @@
     <div id="map"></div>
 {{/partial}}
 {{#partial "side-panel"}}
-    <div class="side-block"></div>
+        <div class="lista-colaboraciones">
+            {{#each colaboraciones}}
+                <div class="item-colaboracion">
+                    <h3 class="colaboracion-title">{{this}}</h3>
+                    <div class="colaboracion-button-container">
+                        <a href="/colaboraciones/{{this}}/new" class="colaboracion-button">colaborar</a>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
 {{/partial}}
 {{> templates/base}}
