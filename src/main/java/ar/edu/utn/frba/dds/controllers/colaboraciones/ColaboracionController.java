@@ -30,9 +30,9 @@ public class ColaboracionController {
                     Colaboracion.OFERTA_DE_PRODUCTOS, () -> ofertaDeProductosRepository.buscarTodos().stream()
                             .map(OfertaDeProductosDTO::preview)
                             .collect(Collectors.toList()),
-//                    Colaboracion.REPARTO_DE_TARJETAS, () -> repartoDeTarjetasRepository.buscarTodos().stream()
-//                            .map(RepartoDeTarjetasDTO::preview)
-//                            .collect(Collectors.toList()),
+                    Colaboracion.REPARTO_DE_TARJETAS, () -> repartoDeTarjetasRepository.buscarTodos().stream()
+                            .map(RepartoDeTarjetasDTO::preview)
+                            .collect(Collectors.toList()),
                     Colaboracion.DONACION_DINERO, () -> donacionDineroRepository.buscarTodos().stream()
                             .map(DonacionDineroDTO::preview)
                             .collect(Collectors.toList()),
@@ -72,9 +72,9 @@ public class ColaboracionController {
                     Colaboracion.OFERTA_DE_PRODUCTOS, id -> ofertaDeProductosRepository.obtenerPorColaboradorId(id).stream()
                             .map(OfertaDeProductosDTO::preview)
                             .collect(Collectors.toList()),
-//                    Colaboracion.REPARTO_DE_TARJETAS, id -> repartoDeTarjetasRepository.obtenerPorColaboradorId(id).stream()
-//                            .map(RepartoDeTarjetasDTO::preview)
-//                            .collect(Collectors.toList()),
+                    Colaboracion.REPARTO_DE_TARJETAS, id -> repartoDeTarjetasRepository.obtenerPorColaboradorId(id).stream()
+                            .map(RepartoDeTarjetasDTO::preview)
+                            .collect(Collectors.toList()),
                     Colaboracion.DONACION_DINERO, id -> donacionDineroRepository.obtenerPorColaboradorId(id).stream()
                             .map(DonacionDineroDTO::preview)
                             .collect(Collectors.toList()),

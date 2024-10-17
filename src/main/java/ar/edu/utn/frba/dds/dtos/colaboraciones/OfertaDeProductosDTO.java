@@ -10,6 +10,8 @@ import lombok.Setter;
 @Builder
 public class OfertaDeProductosDTO {
 
+    private String id;
+
     private String nombre;
 
     private String colaborador;
@@ -28,6 +30,7 @@ public class OfertaDeProductosDTO {
 
         return OfertaDeProductosDTO
                 .builder()
+                .id(ofertaDeProductos.getId().toString())
                 .nombre(nombre)
                 .colaborador(ofertaDeProductos.getColaborador().getUsuario().getNombre())
                 .fechaHora(ofertaDeProductos.getFechaHora().toString())
@@ -37,7 +40,7 @@ public class OfertaDeProductosDTO {
                 .build();
     }
 
-    public static OfertaDeProductosDTO preview(OfertaDeProductos ofertaDeProductos) {
+    public static OfertaDeProductosDTO preview(OfertaDeProductos ofertaDeProductos) { // TODO - ver si se ajusta a la vista
 
         String nombre = "Ofrecer Producto o Servicio";
 
