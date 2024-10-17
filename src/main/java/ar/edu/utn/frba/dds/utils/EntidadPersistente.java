@@ -29,5 +29,7 @@ public abstract class EntidadPersistente {
         this.alta = true;
         this.fechaAlta = LocalDateTime.now();
     }
+
+    public Boolean estaActiva() { return alta == true; }
 }
 
