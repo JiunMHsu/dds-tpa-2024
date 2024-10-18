@@ -31,7 +31,7 @@ public class ColaboradorRepository implements IColaboradorRepository, WithSimple
         try {
             UUID uuid = UUID.fromString(id);
             return Optional.ofNullable(entityManager().find(Colaborador.class, uuid))
-                    .filter(Colaborador::estaActiva);
+                    .filter(Colaborador::getAlta);
         } catch (IllegalArgumentException e) {
             return Optional.empty();
         }

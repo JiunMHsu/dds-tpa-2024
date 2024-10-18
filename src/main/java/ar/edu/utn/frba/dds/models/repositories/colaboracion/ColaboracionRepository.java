@@ -21,7 +21,7 @@ public abstract class ColaboracionRepository<T> implements WithSimplePersistence
 
     public List<T> obtenerPorColaborador(Colaborador unColaborador) {
         return entityManager()
-                .createQuery("from " + type.getName() + " c where c.colaborador = :id_colaborador", type)
+                .createQuery("from " + type.getName() + " c where c.colaborador = :id_colaborador and c.alta = :alta", type)
                 .setParameter("id_colaborador", unColaborador.getId())
                 .getResultList();
     }
@@ -29,8 +29,9 @@ public abstract class ColaboracionRepository<T> implements WithSimplePersistence
     public List<T> obtenerPorColaboradorId(String id_string) {
         UUID id =  UUID.fromString(id_string);
         return entityManager()
-                .createQuery("from " + type.getName() + " c where c.colaborador.usuario.id = :id_usuario", type)
+                .createQuery("from " + type.getName() + " c where c.colaborador.usuario.id = :id_usuario and c.alta = :alta", type)
                 .setParameter("id_usuario", id_string)
+                .setParameter("alta", true)
                 .getResultList();
     }
 

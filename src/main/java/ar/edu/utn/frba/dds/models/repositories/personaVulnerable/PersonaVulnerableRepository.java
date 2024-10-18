@@ -33,7 +33,8 @@ public class PersonaVulnerableRepository implements IPersonaVulnerableRepository
     public Optional<PersonaVulnerable> buscarPorId(String id) {
         try {
             UUID uuid = UUID.fromString(id);
-            return Optional.ofNullable(entityManager().find(PersonaVulnerable.class, uuid));
+            return Optional.ofNullable(entityManager().find(PersonaVulnerable.class, uuid))
+                    .filter(PersonaVulnerable::getAlta);
         } catch (IllegalArgumentException e) {
             return Optional.empty();
         }

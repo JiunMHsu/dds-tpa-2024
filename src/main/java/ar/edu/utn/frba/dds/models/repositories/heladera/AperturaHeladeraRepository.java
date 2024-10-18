@@ -33,7 +33,8 @@ public class AperturaHeladeraRepository implements
     public Optional<AperturaHeladera> buscarPorId(String id) {
         try {
             UUID uuid = UUID.fromString(id);
-            return Optional.ofNullable(entityManager().find(AperturaHeladera.class, uuid));
+            return Optional.ofNullable(entityManager().find(AperturaHeladera.class, uuid))
+                    .filter(AperturaHeladera::getAlta);
         } catch (IllegalArgumentException e) {
             return Optional.empty();
         }
