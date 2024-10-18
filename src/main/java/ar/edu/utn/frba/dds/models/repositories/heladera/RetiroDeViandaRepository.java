@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.models.repositories.heladera;
 
 import ar.edu.utn.frba.dds.models.entities.heladera.RetiroDeVianda;
 import ar.edu.utn.frba.dds.utils.ICrudRepository;
+import com.aspose.pdf.operators.Re;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +34,8 @@ public class RetiroDeViandaRepository implements
     public Optional<RetiroDeVianda> buscarPorId(String id) {
         try {
             UUID uuid = UUID.fromString(id);
-            return Optional.ofNullable(entityManager().find(RetiroDeVianda.class, uuid));
+            return Optional.ofNullable(entityManager().find(RetiroDeVianda.class, uuid))
+                    .filter(RetiroDeVianda::getAlta);
         } catch (IllegalArgumentException e) {
             return Optional.empty();
         }

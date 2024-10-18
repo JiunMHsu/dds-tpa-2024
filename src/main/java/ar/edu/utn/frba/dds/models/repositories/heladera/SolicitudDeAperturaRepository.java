@@ -36,7 +36,8 @@ public class SolicitudDeAperturaRepository implements
     public Optional<SolicitudDeApertura> buscarPorId(String id) {
         try {
             UUID uuid = UUID.fromString(id);
-            return Optional.ofNullable(entityManager().find(SolicitudDeApertura.class, uuid));
+            return Optional.ofNullable(entityManager().find(SolicitudDeApertura.class, uuid))
+                    .filter(SolicitudDeApertura::getAlta);
         } catch (IllegalArgumentException e) {
             return Optional.empty();
         }

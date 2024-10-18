@@ -16,7 +16,8 @@ public class OfertaDeProductosRepository extends ColaboracionRepository<OfertaDe
     public Optional<OfertaDeProductos> buscarPorId(String id) {
         try {
             UUID uuid = UUID.fromString(id);
-            return Optional.ofNullable(entityManager().find(OfertaDeProductos.class, uuid));
+            return Optional.ofNullable(entityManager().find(OfertaDeProductos.class, uuid))
+                    .filter(OfertaDeProductos::getAlta);
         } catch (IllegalArgumentException e) {
             return Optional.empty();
         }
