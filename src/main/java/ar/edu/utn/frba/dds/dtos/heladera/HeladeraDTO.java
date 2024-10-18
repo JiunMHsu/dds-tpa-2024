@@ -44,6 +44,10 @@ public class HeladeraDTO {
                 ? heladera.getInicioFuncionamiento().format(formatter)
                 : "--/--/--";
 
+        String ultimaTempString = heladera.getUltimaTemperatura() != null
+                ? heladera.getUltimaTemperatura().toString()
+                : "--";
+
         return HeladeraDTO
                 .builder()
                 .id(heladera.getId().toString())
@@ -55,7 +59,7 @@ public class HeladeraDTO {
                 .ubicacion(latitudLongitudString)
                 .cantViandas(heladera.getViandas().toString())
                 .fechaInicio(inicioFuncionamiento)
-                .ultimaTemp(String.valueOf(heladera.getUltimaTemperatura()))
+                .ultimaTemp(ultimaTempString)
                 .temperaturaMaxima(heladera.getRangoTemperatura().getMaxima().toString())
                 .temperaturaMinima(heladera.getRangoTemperatura().getMinima().toString())
                 .build();
