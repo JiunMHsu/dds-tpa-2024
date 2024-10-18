@@ -18,11 +18,9 @@ public class HeladeraService {
     }
 
     public Optional<Heladera> buscarPorId(String id) {
-
-        if (id == null || id.isEmpty()) {
+        if (id == null || id.isEmpty())
             throw new IllegalArgumentException("El ID de la heladera no puede ser null o vacío");
-        }
-
+        
         return this.heladeraRepository.buscarPorId(id);
     }
 

@@ -19,7 +19,7 @@ public class HeladeraRouter implements IRouter {
                     post(ctx -> ctx.result("OPERACION EXITOSA"));
 
                     get("/new", ServiceLocator.instanceOf(HeladeraController.class)::create);
-                    get("/{id}/edit", ServiceLocator.instanceOf(HeladeraController.class)::edit);
+                    get("/{id}/edit/", ServiceLocator.instanceOf(HeladeraController.class)::edit);
                     get("/{id}", ServiceLocator.instanceOf(HeladeraController.class)::show);
                 })
         );

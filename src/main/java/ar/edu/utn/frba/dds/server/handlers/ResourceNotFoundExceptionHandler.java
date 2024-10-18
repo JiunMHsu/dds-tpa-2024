@@ -7,6 +7,7 @@ public class ResourceNotFoundExceptionHandler implements IHandler {
     @Override
     public void setHandler(Javalin app) {
         app.exception(ResourceNotFoundException.class, (e, ctx) -> {
+            System.out.println(e.getMessage());
             ctx.status(404);
             ctx.render("notfound.hbs");
         });

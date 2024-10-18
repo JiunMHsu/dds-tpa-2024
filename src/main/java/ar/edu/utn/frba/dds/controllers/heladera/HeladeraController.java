@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.controllers.heladera;
 
 import ar.edu.utn.frba.dds.dtos.heladera.HeladeraDTO;
+import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
 import ar.edu.utn.frba.dds.models.entities.data.Calle;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
@@ -35,7 +36,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
 
         Map<String, Object> model = new HashMap<>();
         model.put("heladeras", heladerasDTO);
-        model.put("userRol", "Listado de heladeras");
+        // model.put("userRol", "Listado de heladeras");
 
         context.render("heladeras/heladeras.hbs", model);
     }
@@ -43,15 +44,18 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
     @Override
     public void show(Context context) {
         String heladeraId = context.pathParam("id");
-        Optional<Heladera> posibleHeladeraBuscada = this.heladeraService.buscarPorId(heladeraId);
+        System.out.println(heladeraId);
+        Optional<Heladera> heladera = this.heladeraService.buscarPorId(heladeraId);
 
-        if (posibleHeladeraBuscada.isEmpty()) {
-            context.status(404);//not found
-            return;
-        }
+        if (heladera.isEmpty())
+            throw new ResourceNotFoundException("No se encontró heladera con id " + heladeraId);
+
+        System.out.println(heladera.get().getId().toString());
 
         Map<String, Object> model = new HashMap<>();
-        model.put("heladera", posibleHeladeraBuscada.get());
+
+        HeladeraDTO heladeraDTO = HeladeraDTO.completa(heladera.get());
+        model.put("heladera", heladeraDTO);
 
         context.render("heladeras/heladera_detalle.hbs", model);
     }

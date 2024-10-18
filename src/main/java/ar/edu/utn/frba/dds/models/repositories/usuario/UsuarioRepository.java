@@ -2,7 +2,6 @@ package ar.edu.utn.frba.dds.models.repositories.usuario;
 
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -42,7 +41,7 @@ public class UsuarioRepository implements IUsuarioRepository, WithSimplePersiste
         try {
             UUID uuid = UUID.fromString(id);
             return Optional.ofNullable(entityManager().find(Usuario.class, uuid))
-                    .filter(Usuario::estaActiva);
+                    .filter(Usuario::getAlta);
         } catch (IllegalArgumentException e) {
             return Optional.empty();
         }
