@@ -32,7 +32,9 @@ public class HeladeraRepository implements IHeladeraRepository, WithSimplePersis
     public Optional<Heladera> buscarPorId(String id) {
         try {
             UUID uuid = UUID.fromString(id);
-            return Optional.of(entityManager().find(Heladera.class, uuid));
+            System.out.println(uuid);
+            return Optional.ofNullable(entityManager().find(Heladera.class, uuid))
+                    .filter(Heladera::getAlta);
         } catch (IllegalArgumentException e) {
             return Optional.empty();
         }
