@@ -42,8 +42,8 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
 
     @Override
     public void show(Context context) {
-        //por id
-        Optional<Heladera> posibleHeladeraBuscada = this.heladeraService.buscarPorId(context.formParam("id"));
+        String heladeraId = context.pathParam("id");
+        Optional<Heladera> posibleHeladeraBuscada = this.heladeraService.buscarPorId(heladeraId);
 
         if (posibleHeladeraBuscada.isEmpty()) {
             context.status(404);//not found
@@ -53,8 +53,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
         Map<String, Object> model = new HashMap<>();
         model.put("heladera", posibleHeladeraBuscada.get());
 
-        context.render("heladeras/heldadera_detalle.hbs", model);
-
+        context.render("heladeras/heladera_detalle.hbs", model);
     }
 
     @Override
@@ -86,8 +85,11 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
 
     @Override
     public void edit(Context context) {
+        // TODO - edit
+        context.render("heladeras/heladera_editar.hbs");
+
         // devuelve formulario para editar heladera
-        Optional<Heladera> posibleHeladeraBuscada = this.heladeraService.buscarPorId(context.formParam("id"));
+        // Optional<Heladera> posibleHeladeraBuscada = this.heladeraService.buscarPorId(context.formParam("id"));
         // TODO chequear empty
 
         // if(posibleHeladeraBuscada.isEmpty()) {
@@ -95,11 +97,11 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
         //     return;
         // }
 
-        Map<String, Object> model = new HashMap<>();
-        model.put("heladera", posibleHeladeraBuscada.get());
-        model.put("edicion", true);
+        // Map<String, Object> model = new HashMap<>();
+        // model.put("heladera", posibleHeladeraBuscada.get());
+        // model.put("edicion", true);
 
-        context.render("heladeras/heladera_editar.hbs", model);
+        // context.render("heladeras/heladera_detalle.hbs", model);
     }
 
     @Override
