@@ -7,7 +7,8 @@ public class AppHandlers {
 
     private final IHandler[] handlers = new IHandler[]{
             new UnauthorizedHandler(),
-            new UnauthenticatedHandler()
+            new UnauthenticatedHandler(),
+            new ResourceNotFoundExceptionHandler()
     };
 
     public static void apply(Javalin app) {

@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.server;
 
+import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.middlewares.AuthMiddleware;
 import ar.edu.utn.frba.dds.server.handlers.AppHandlers;
 import ar.edu.utn.frba.dds.server.routers.Routers;
@@ -31,7 +32,11 @@ public class Server {
         }
 
         int port = AppProperties.getInstance().intPropertyFromName("SERVER_PORT");
-        app = Javalin.create(config()).start(port);
+        app = Javalin.create(config())
+                .error(HttpStatus.NOT_FOUND, context -> {
+                    throw new ResourceNotFoundException("Resource not found");
+                })
+                .start(port);
 
         AuthMiddleware.apply(app);
         AppHandlers.apply(app);
