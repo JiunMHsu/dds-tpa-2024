@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.controllers.heladera;
 
+import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.UbicacionDTO;
 import ar.edu.utn.frba.dds.dtos.heladera.HeladeraDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
@@ -16,6 +17,7 @@ import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.validation.ValidationException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,19 +89,42 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
 
     @Override
     public void save(Context context) {
+        Map<String, Object> model = new HashMap<>();
+        List<RedirectDTO> redirectDTOS = new ArrayList<>();
+        boolean operationSuccess = false;
 
-        Direccion direccion = Direccion.with(
-                new Barrio(context.formParam("barrio")),
-                new Calle(context.formParam("calle")),
-                Integer.valueOf(context.formParam("altura")),
-                new Ubicacion(Double.valueOf(context.formParam("latitud")), Double.valueOf(context.formParam("longitud")))
-        );
-        RangoTemperatura rangoTemperatura = new RangoTemperatura(Double.valueOf(context.formParam("maxima")), Double.valueOf(context.formParam("minima")));
-        Heladera nuevaHeladera = Heladera.con(context.formParam("nombre"), direccion, Integer.valueOf(context.formParam("capacidad")), rangoTemperatura, Integer.valueOf(context.formParam("viandas")));
-        this.heladeraService.guardarHeladera(nuevaHeladera);
-        //O BIEN LANZO UNA PANTALLA DE EXITO
-        //O BIEN REDIRECCIONO AL USER A LA PANTALLA DE LISTADO DE PRODUCTOS
-        context.redirect("/heladeras/heladeras.hbs"); //redirecciono a heladeras, pero no se si me gusta
+        try {
+            String nombre = context.formParamAsClass("nombre", String.class).get();
+            Integer capacidad = context.formParamAsClass("capacidad", Integer.class)
+                    .check(c -> c > 0, "la capacidad debe ser positiva").get();
+
+            Double latitud = context.formParamAsClass("latitud", Double.class).get();
+            Double longitud = context.formParamAsClass("longitud", Double.class).get();
+
+            Direccion direccion = Direccion.with(
+                    new Barrio(context.formParamAsClass("barrio", String.class).get()),
+                    new Calle(context.formParamAsClass("calle", String.class).get()),
+                    context.formParamAsClass("altura", Integer.class).get(),
+                    new Ubicacion(latitud, longitud)
+            );
+
+            Double tempMaxima = context.formParamAsClass("temp_maxima", Double.class).get();
+            Double tempMinima = context.formParamAsClass("temp_minima", Double.class).get();
+            RangoTemperatura rangoTemperatura = new RangoTemperatura(tempMaxima, tempMinima);
+
+            Heladera heladeraNueva = Heladera.con(nombre, direccion, capacidad, rangoTemperatura);
+            this.heladeraService.guardarHeladera(heladeraNueva);
+
+            operationSuccess = true;
+            redirectDTOS.add(new RedirectDTO("/heladeras", "Ver Heladeras"));
+
+        } catch (ValidationException e) {
+            redirectDTOS.add(new RedirectDTO("/heladeras/new", "Reintentar"));
+        } finally {
+            model.put("success", operationSuccess);
+            model.put("redirects", redirectDTOS);
+            context.render("post_result.hbs", model);
+        }
 
     }
 

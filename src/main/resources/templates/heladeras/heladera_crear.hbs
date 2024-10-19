@@ -59,6 +59,15 @@
                         required
                 />
             </label>
+            <label class="field-barrio">
+                Barrio
+                <input
+                        type="text"
+                        name="barrio"
+                        placeholder="Almagro"
+                        required
+                />
+            </label>
 
             <!-- !! no se qué tan bueno esta delegar al usuario a ingresar las coordenadas -->
             <label class="field-latitud">
@@ -66,7 +75,8 @@
                 <input
                         type="number"
                         name="latitud"
-                        placeholder="34.1241244"
+                        step="0.00001"
+                        placeholder="34.12412"
                         required
                 />
             </label>
@@ -75,32 +85,33 @@
                 <input
                         type="number"
                         name="longitud"
-                        placeholder="-91.1865124"
+                        step="0.00001"
+                        placeholder="-91.18651"
                         required
                 />
             </label>
 
-            <label class="field-estado">
-                Estado
-                <select name="estado" onchange="updateInput()" required>
-                    <option value="" disabled selected>Seleccionar</option>
-                    <option value="1">Activo</option>
-                    <option value="0">Inactivo</option>
-                </select>
-            </label>
+            <!--            <label class="field-estado">-->
+            <!--                Estado-->
+            <!--                <select name="estado" onchange="updateInput()">-->
+            <!--                    <option value="" disabled selected>Seleccionar</option>-->
+            <!--                    <option value="ACTIVA">Activo</option>-->
+            <!--                    <option value="INACTIVA">Inactivo</option>-->
+            <!--                </select>-->
+            <!--            </label>-->
 
-            <label class="field-fecha-inicio">
-                Inicio de funcionamiento
-                <input type="date" name="estado"/>
-            </label>
+            <!--            <label class="field-fecha-inicio">-->
+            <!--                Inicio de funcionamiento-->
+            <!--                <input type="date" name="fecha_inicio_funcionamiento"/>-->
+            <!--            </label>-->
 
             <label class="field-temperatura-minima">
                 Temperatura Mínima
-                <input type="number" name="temp_minima" placeholder="-5.0"/>
+                <input type="number" name="temp_minima" step="0.1" placeholder="-5.0" required/>
             </label>
             <label class="field-temperatura-maxima">
                 Temperatura Máxima
-                <input type="number" name="tem_maxima" placeholder="3.0"/>
+                <input type="number" name="temp_maxima" step="0.1" placeholder="3.0" required/>
             </label>
 
             <div class="form-button-container">

@@ -22,9 +22,9 @@ public class HeladeraRouter implements IRouter {
 
                     path("/{id}", () -> {
                         get(ServiceLocator.instanceOf(HeladeraController.class)::show);
-                        post(ServiceLocator.instanceOf(HeladeraController.class)::update);
+                        post(ServiceLocator.instanceOf(HeladeraController.class)::update, TipoRol.ADMIN, TipoRol.COLABORADOR);
 
-                        get("/edit", ServiceLocator.instanceOf(HeladeraController.class)::edit);
+                        get("/edit", ServiceLocator.instanceOf(HeladeraController.class)::edit, TipoRol.ADMIN, TipoRol.COLABORADOR);
                     });
                 })
         );

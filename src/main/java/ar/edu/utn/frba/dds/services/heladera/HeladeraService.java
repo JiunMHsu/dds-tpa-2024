@@ -2,10 +2,11 @@ package ar.edu.utn.frba.dds.services.heladera;
 
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
+import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
 import java.util.Optional;
 
-public class HeladeraService {
+public class HeladeraService implements WithSimplePersistenceUnit {
 
     private final HeladeraRepository heladeraRepository;
 
@@ -29,14 +30,8 @@ public class HeladeraService {
     }
 
     public void guardarHeladera(Heladera heladera) {
-
-        // Quizas se deba validar mas que nada que la Direccion no c repita
-        Optional<Heladera> existente = this.heladeraRepository.buscarPorId(heladera.getId().toString());
-        if (existente.isPresent()) {
-            throw new IllegalArgumentException("La heladera ya está registrada en el sistema");
-        }
-
-        this.heladeraRepository.guardar(heladera);
+        // TODO - validaciones??
+        withTransaction(() -> this.heladeraRepository.guardar(heladera));
     }
 
     // Lo dejo asi medio basico, pero seguramente se deba validar que los nuevos atributos:

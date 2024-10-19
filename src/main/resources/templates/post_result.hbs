@@ -1,0 +1,40 @@
+{{#partial "title"}}
+    Resultado
+{{/partial}}
+{{#partial "links"}}
+    <link rel="stylesheet" href="/css/post_result.css">
+{{/partial}}
+
+{{#partial "main-content"}}
+    <div class="container">
+        <div class="image-container">
+            {{#if success}}
+                <img src="img/party-popper.svg" alt=""/>
+            {{else}}
+                <img src="img/skull.png" alt=""/>
+            {{/if}}
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="text-container">
+            {{#if success}}
+                <h2 class="title">Operación Exitosa</h2>
+            {{else}}
+                <h2 class="title">Operación Fallida</h2>
+            {{/if}}
+
+            {{#if description}}
+                <p class="description">{{description}}</p>
+            {{/if}}
+
+            <div class="redirect-buttons-container">
+                <a class="redirect-button" href="/">Ir a Inicio</a>
+                {{#each redirects}}
+                    <a class="redirect-button" href="{{this.url}}">{{this.label}}</a>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+{{/partial}}
+{{> templates/base_plain}}
