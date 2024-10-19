@@ -6,9 +6,9 @@ import static io.javalin.apibuilder.ApiBuilder.post;
 
 import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.controllers.heladera.HeladeraController;
+import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import io.javalin.config.JavalinConfig;
 
-// TODO - definir las rutas y permisos para heladeras
 public class HeladeraRouter implements IRouter {
 
     @Override
@@ -16,13 +16,13 @@ public class HeladeraRouter implements IRouter {
         config.router.apiBuilder(() ->
                 path("/heladeras", () -> {
                     get(ServiceLocator.instanceOf(HeladeraController.class)::index);
-                    post(ctx -> ctx.result("OPERACION EXITOSA")); // SAVE
+                    post(ServiceLocator.instanceOf(HeladeraController.class)::save, TipoRol.ADMIN);
 
-                    get("/new", ServiceLocator.instanceOf(HeladeraController.class)::create);
+                    get("/new", ServiceLocator.instanceOf(HeladeraController.class)::create, TipoRol.ADMIN);
 
                     path("/{id}", () -> {
                         get(ServiceLocator.instanceOf(HeladeraController.class)::show);
-                        post(ctx -> ctx.result("OPERACION EXITOSA")); // UPDATE
+                        post(ServiceLocator.instanceOf(HeladeraController.class)::update);
 
                         get("/edit", ServiceLocator.instanceOf(HeladeraController.class)::edit);
                     });

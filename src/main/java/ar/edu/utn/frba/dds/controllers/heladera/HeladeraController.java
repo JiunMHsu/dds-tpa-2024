@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.controllers.heladera;
 
+import ar.edu.utn.frba.dds.dtos.UbicacionDTO;
 import ar.edu.utn.frba.dds.dtos.heladera.HeladeraDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
@@ -9,10 +10,12 @@ import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
+import ar.edu.utn.frba.dds.services.puntoIdeal.PuntoIdealService;
 import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
+import io.javalin.validation.ValidationException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,9 +24,12 @@ import java.util.Optional;
 public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHandler {
 
     HeladeraService heladeraService;
+    PuntoIdealService puntoIdealService;
 
-    public HeladeraController(HeladeraService heladeraService) {
+    public HeladeraController(HeladeraService heladeraService,
+                              PuntoIdealService puntoIdealService) {
         this.heladeraService = heladeraService;
+        this.puntoIdealService = puntoIdealService;
     }
 
     @Override
@@ -44,13 +50,10 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
     @Override
     public void show(Context context) {
         String heladeraId = context.pathParam("id");
-        System.out.println(heladeraId);
         Optional<Heladera> heladera = this.heladeraService.buscarPorId(heladeraId);
 
         if (heladera.isEmpty())
             throw new ResourceNotFoundException("No se encontró heladera con id " + heladeraId);
-
-        System.out.println(heladera.get().getId().toString());
 
         Map<String, Object> model = new HashMap<>();
 
@@ -62,11 +65,24 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
 
     @Override
     public void create(Context context) {
-        if (false) { // TODO usuario no tiene permiso de admin
-            context.status(403).result("No tienes permiso para dar de alta la heladera.");
-            return;
+        try {
+            Double latitud = context.queryParamAsClass("lat", Double.class).get();
+            Double longitud = context.queryParamAsClass("lon", Double.class).get();
+            Integer radio = context.queryParamAsClass("radio", Integer.class)
+                    .check(rad -> rad >= 0.0, "el radio debe ser positivo").get();
+
+            List<UbicacionDTO> ubicaciones = puntoIdealService
+                    .obtenerPuntosIdeales(latitud, longitud, radio)
+                    .stream().map(UbicacionDTO::fromUbicacion).toList();
+
+            Map<String, Object> model = new HashMap<>();
+            model.put("puntosRecomendados", ubicaciones);
+
+            context.render("heladeras/heladera_crear.hbs", model);
+        } catch (ValidationException e) {
+            context.render("heladeras/heladera_crear.hbs");
         }
-        context.render("heladeras/heladera_crear.hbs");
+
     }
 
     @Override
