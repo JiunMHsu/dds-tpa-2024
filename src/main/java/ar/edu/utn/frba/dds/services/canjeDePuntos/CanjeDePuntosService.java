@@ -1,63 +1,61 @@
-package ar.edu.utn.frba.dds.models.entities.puntosDeColaboracion;
+package ar.edu.utn.frba.dds.services.canjeDePuntos;
 
-import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDinero;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.HacerseCargoHeladera;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.RepartoDeTarjetas;
+import ar.edu.utn.frba.dds.config.ServiceLocator;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.*;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
+import ar.edu.utn.frba.dds.models.entities.puntosPorColaborador.CanjeDePuntos;
+import ar.edu.utn.frba.dds.models.entities.puntosPorColaborador.VarianteCalculoDePuntos;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.CanjeDePuntosRepository;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroRepository;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaRepository;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladeraRepository;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetasRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.*;
+import lombok.Builder;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.chrono.ChronoLocalDateTime;
 import java.util.List;
-import lombok.Builder;
+import java.util.Optional;
 
+@Setter
 @Builder
-public class PuntosPorColaboracion {
-
+public class CanjeDePuntosService {
     private Colaborador colaborador;
     private LocalDateTime fechaUltimoCanje;
-    private Double puntosSobrantes;
     private VarianteCalculoDePuntos variante;
     private CanjeDePuntosRepository canjeDePuntosRepository;
-
-    public PuntosPorColaboracion of(Colaborador colaborador) {
-        PuntosPorColaboracionBuilder puntosPorColaboracion = PuntosPorColaboracion
+    private final DonacionDineroRepository donacionDineroRepository;
+    private final DistribucionViandasRepository distribucionViandasRepository;
+    private final DonacionViandaRepository donacionViandaRepository;
+    private final RepartoDeTarjetasRepository repartoDeTarjetasRepository;
+    private final HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository;
+    public CanjeDePuntosService of(DonacionDineroRepository donacionDineroRepository, DistribucionViandasRepository distribucionViandasRepository, DonacionViandaRepository donacionViandaRepository, RepartoDeTarjetasRepository repartoDeTarjetasRepository, HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository, CanjeDePuntosRepository canjeDePuntosRepository ) {
+        return CanjeDePuntosService
                 .builder()
-                .colaborador(colaborador)
-                .fechaUltimoCanje(null)
-                .puntosSobrantes(0.0)
-                .variante(new VarianteCalculoDePuntos())
-                .canjeDePuntosRepository(new CanjeDePuntosRepository());
-
-
-        CanjeDePuntos ultimoCanjeo = canjeDePuntosRepository.obtenerUltimoPorColaborador(colaborador);
-        if (ultimoCanjeo != null) {
-            puntosPorColaboracion.puntosSobrantes(ultimoCanjeo.getPuntosRestantes());
-            puntosPorColaboracion.fechaUltimoCanje(ultimoCanjeo.getFechaCanjeo());
-        }
-        return puntosPorColaboracion.build();
+                .donacionDineroRepository (donacionDineroRepository)
+                .distribucionViandasRepository (distribucionViandasRepository)
+                .donacionViandaRepository (donacionViandaRepository)
+                .repartoDeTarjetasRepository (repartoDeTarjetasRepository)
+                .hacerseCargoHeladeraRepository (hacerseCargoHeladeraRepository)
+                .variante(ServiceLocator.instanceOf(VarianteCalculoDePuntos.class))//TODO asi o que le entre parametro la instancia
+                .canjeDePuntosRepository(canjeDePuntosRepository)
+                .build();
     }
 
-    public Double calcularPuntos() {
+    public Double calcularPuntos(Colaborador colaborador, LocalDateTime fechaUltimoCanje, Double puntosSobrantes) {
+        this.setColaborador(colaborador);
+        this.setFechaUltimoCanje(fechaUltimoCanje);
         System.out.println(puntosSobrantes);
         System.out.println(fechaUltimoCanje);
-        return this.calcularPorPesosDonados(new DonacionDineroRepository())
-                + this.calcularPorViandasDistribuidas(new DistribucionViandasRepository())
-                + this.calcularPorViandasDonadas(new DonacionViandaRepository())
-                + this.calcularPorTarjetasRepartidas(new RepartoDeTarjetasRepository())
-                + this.calcularPorHeladerasActivas(new HacerseCargoHeladeraRepository())
+        return this.calcularPorPesosDonados()
+                + this.calcularPorViandasDistribuidas()
+                + this.calcularPorViandasDonadas()
+                + this.calcularPorTarjetasRepartidas()
+                + this.calcularPorHeladerasActivas()
                 + puntosSobrantes;
     }
 
-    private Double calcularPorPesosDonados(DonacionDineroRepository donacionDineroRepository) {
+    private Double calcularPorPesosDonados() {
         List<DonacionDinero> listaDonacionesDinero = donacionDineroRepository
                 .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
@@ -71,7 +69,7 @@ public class PuntosPorColaboracion {
         return puntaje;
     }
 
-    private Double calcularPorViandasDistribuidas(DistribucionViandasRepository distribucionViandasRepository) {
+    private Double calcularPorViandasDistribuidas() {
         List<DistribucionViandas> listaViandasDistribuidas = distribucionViandasRepository
                 .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
@@ -85,7 +83,7 @@ public class PuntosPorColaboracion {
         return puntaje;
     }
 
-    private Double calcularPorViandasDonadas(DonacionViandaRepository donacionViandaRepository) {
+    private Double calcularPorViandasDonadas() {
         List<DonacionVianda> listaViandasDonadas = donacionViandaRepository
                 .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
@@ -97,7 +95,7 @@ public class PuntosPorColaboracion {
         return puntaje;
     }
 
-    private Double calcularPorTarjetasRepartidas(RepartoDeTarjetasRepository repartoDeTarjetasRepository) {
+    private Double calcularPorTarjetasRepartidas() {
         List<RepartoDeTarjetas> listaTarjetasRepartidas = repartoDeTarjetasRepository
                 .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
@@ -109,7 +107,7 @@ public class PuntosPorColaboracion {
         return puntaje;
     }
 
-    private Double calcularPorHeladerasActivas(HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository) {
+    private Double calcularPorHeladerasActivas() {
         List<Heladera> listaHeladerasACargo = hacerseCargoHeladeraRepository
                 .obtenerPorColaborador(colaborador)
                 .stream()
@@ -163,4 +161,6 @@ public class PuntosPorColaboracion {
         System.out.println(puntaje);
         return puntaje;
     }
+
+    public Optional<CanjeDePuntos> obtenerUltimoPorColaborador(Colaborador unColaborador){return canjeDePuntosRepository.obtenerUltimoPorColaborador(unColaborador);}
 }
