@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.services.reporte;
 
 import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
+import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.models.entities.reporte.Reporte;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaRepository;
@@ -10,19 +11,19 @@ import ar.edu.utn.frba.dds.models.repositories.reporte.ReporteRepository;
 import ar.edu.utn.frba.dds.reportes.RegistroMovimiento;
 import ar.edu.utn.frba.dds.utils.AppProperties;
 import com.aspose.pdf.*;
+import com.aspose.pdf.operators.Re;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import lombok.Builder;
 
 import java.io.File;
+import java.lang.annotation.Repeatable;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 @Builder
 public class ReporteService implements WithSimplePersistenceUnit {
 
@@ -198,6 +199,16 @@ public class ReporteService implements WithSimplePersistenceUnit {
 
         HtmlFragment htmlFragment = new HtmlFragment(htmlContent.toString());
         page.getParagraphs().add(htmlFragment);
+    }
+    public List<Reporte> buscarTodas() {
+        return this.reporteRepository.buscarTodos();
+    }
+
+    public Optional<Reporte> buscarPorId(String id) {
+        if (id == null || id.isEmpty())
+            throw new IllegalArgumentException("El ID de la heladera no puede ser null o vacío");
+
+        return this.reporteRepository.buscarPorId(id);
     }
 
 }

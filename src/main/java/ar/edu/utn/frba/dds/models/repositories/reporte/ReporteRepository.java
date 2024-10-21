@@ -23,7 +23,7 @@ public class ReporteRepository implements WithSimplePersistenceUnit {
             return Optional.empty();
         }
     }
-    public List<Reporte> obtenerTodos() {
+    public List<Reporte> buscarTodos() {
         return entityManager()
                 .createQuery("from Reporte", Reporte.class)
                 .getResultList();
