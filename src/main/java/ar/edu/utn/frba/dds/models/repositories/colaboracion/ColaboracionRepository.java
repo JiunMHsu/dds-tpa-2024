@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.models.repositories.colaboracion;
 
-import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDateTime;
@@ -27,7 +26,7 @@ public abstract class ColaboracionRepository<T> implements WithSimplePersistence
     }
 
     public List<T> obtenerPorColaboradorId(String id_string) {
-        UUID id =  UUID.fromString(id_string);
+        UUID id = UUID.fromString(id_string);
         return entityManager()
                 .createQuery("from " + type.getName() + " c where c.colaborador.usuario.id = :id_usuario and c.alta = :alta", type)
                 .setParameter("id_usuario", id_string)

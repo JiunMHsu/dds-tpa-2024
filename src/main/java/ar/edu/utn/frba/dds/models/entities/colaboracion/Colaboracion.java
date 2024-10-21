@@ -7,5 +7,17 @@ public enum Colaboracion {
     ENTREGA_VIANDA,
     HACERSE_CARGO_HELADERA,
     OFERTA_DE_PRODUCTOS,
-    REPARTO_DE_TARJETAS,
+    REPARTO_DE_TARJETAS;
+
+    public String getDescription() {
+        return switch (this) {
+            case DONACION_VIANDAS -> "Donacion de Viandas";
+            case DONACION_DINERO -> "Donacion de Dinero";
+            case DISTRIBUCION_VIANDAS -> "Distribucion de Viandas";
+            case ENTREGA_VIANDA -> "Entrega de Viandas";
+            case HACERSE_CARGO_HELADERA -> "Encargarse de Heladeras";
+            case OFERTA_DE_PRODUCTOS -> "Oferta de Productos";
+            case REPARTO_DE_TARJETAS -> "Reparto de Tarjetas";
+        };
+    }
 }

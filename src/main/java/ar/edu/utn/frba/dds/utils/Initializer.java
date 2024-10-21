@@ -17,7 +17,6 @@ import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Initializer implements WithSimplePersistenceUnit {
 
@@ -26,6 +25,7 @@ public class Initializer implements WithSimplePersistenceUnit {
 
         instance.cleanupDatabase();
         instance.withSuperUser();
+        instance.withColaborador();
         instance.withHeladeras();
         instance.withColaborador();
     }
@@ -40,37 +40,8 @@ public class Initializer implements WithSimplePersistenceUnit {
 
         UsuarioRepository usuarioRepository = new UsuarioRepository();
 
-        withTransaction(() -> usuarioRepository.guardar(superUser));
-    }
-    public void withColaborador() {
-        Usuario usuario = Usuario.con("JiunMHsu", "iMC4(*&A^F0OK?%87", "jhsu@gmail.com", TipoRol.COLABORADOR);
-
-        Direccion direccion = new Direccion(
-            new Barrio("Almagro"),
-            new Calle("Medrano"),
-            951,
-            new Ubicacion(-34.59857981526152, -58.420110294464294)
-        );
-
-        List<Colaboracion> colaboraciones = new ArrayList<>();
-        colaboraciones.add(Colaboracion.DISTRIBUCION_VIANDAS);
-        colaboraciones.add(Colaboracion.DONACION_DINERO);
-
-        Colaborador colaborador = Colaborador.humana(
-            usuario,
-            "Jiun Ming",
-            "Hsu",
-            LocalDate.of(2003, 2, 19),
-            Contacto.vacio(),
-            direccion,
-            colaboraciones);
-
-        UsuarioRepository usuarioRepository = new UsuarioRepository();
-        ColaboradorRepository colaboradorRepository = new ColaboradorRepository();
-
         withTransaction(() -> {
-            usuarioRepository.guardar(usuario);
-            colaboradorRepository.guardar(colaborador);
+            usuarioRepository.guardar(superUser);
         });
     }
 
@@ -149,6 +120,38 @@ public class Initializer implements WithSimplePersistenceUnit {
         heladeraRepository.guardar(Heladera.con("Heladera SEIS", d6, 60, new RangoTemperatura(4.0, -4.0), 44));
         heladeraRepository.guardar(Heladera.con("Heladera TRES", d3, 85, new RangoTemperatura(3.0, -4.0), 66));
         commitTransaction();
+    }
+
+    public void withColaborador() {
+        Usuario usuario = Usuario.con("JiunMHsu", "iMC4(*&A^F0OK?%87", "jhsu@gmail.com", TipoRol.COLABORADOR);
+
+        Direccion direccion = new Direccion(
+                new Barrio("Almagro"),
+                new Calle("Medrano"),
+                951,
+                new Ubicacion(-34.59857981526152, -58.420110294464294)
+        );
+
+        ArrayList<Colaboracion> colaboraciones = new ArrayList<>();
+        colaboraciones.add(Colaboracion.DISTRIBUCION_VIANDAS);
+        colaboraciones.add(Colaboracion.DONACION_DINERO);
+
+        Colaborador colaborador = Colaborador.humana(
+                usuario,
+                "Jiun Ming",
+                "Hsu",
+                LocalDate.of(2003, 2, 19),
+                Contacto.vacio(),
+                direccion,
+                colaboraciones);
+
+        UsuarioRepository usuarioRepository = new UsuarioRepository();
+        ColaboradorRepository colaboradorRepository = new ColaboradorRepository();
+
+        withTransaction(() -> {
+            usuarioRepository.guardar(usuario);
+            colaboradorRepository.guardar(colaborador);
+        });
     }
 
     private void cleanupDatabase() {

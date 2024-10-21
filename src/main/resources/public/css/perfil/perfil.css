@@ -12,21 +12,23 @@
     margin-bottom: 0.3rem;
 }
 
-.main-section h1{
+.main-section h1 {
     text-align: center;
     width: 100%;
     font-size: 1.8rem;
 }
+
 .main-section h2 {
     text-align: center;
     width: 100%;
     font-size: 1.5rem;
 }
 
-.cuadrado{
+.cuadrado {
     margin-left: 1.5rem;
 }
-.dobleCuadrado{
+
+.dobleCuadrado {
     margin-left: 3rem;
 }
 

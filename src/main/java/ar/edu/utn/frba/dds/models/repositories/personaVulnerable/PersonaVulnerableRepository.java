@@ -1,13 +1,11 @@
 package ar.edu.utn.frba.dds.models.repositories.personaVulnerable;
 
-import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.personaVulnerable.PersonaVulnerable;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-
-import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import javax.persistence.NoResultException;
 
 public class PersonaVulnerableRepository implements IPersonaVulnerableRepository, WithSimplePersistenceUnit {
 
@@ -51,7 +49,7 @@ public class PersonaVulnerableRepository implements IPersonaVulnerableRepository
     public Optional<PersonaVulnerable> buscarPorDocumento(String documento) {
         try {
             return Optional.of(entityManager()
-                    .createQuery("from PersonaVulnerable pv where pv.documento = :documento", PersonaVulnerable.class)
+                    .createQuery("from PersonaVulnerable pv where pv.documento.numero = :documento", PersonaVulnerable.class)
                     .setParameter("documento", documento)
                     .getSingleResult());
         } catch (NoResultException e) {

@@ -5,13 +5,12 @@ import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import io.javalin.http.Context;
-
 import java.util.Optional;
 
 public abstract class ColaboradorPorSession {
 
-    private UsuarioService usuarioService;
-    private ColaboradorService colaboradorService;
+    private final UsuarioService usuarioService;
+    private final ColaboradorService colaboradorService;
 
     public ColaboradorPorSession(UsuarioService usuarioService, ColaboradorService colaboradorService) {
         this.usuarioService = usuarioService;

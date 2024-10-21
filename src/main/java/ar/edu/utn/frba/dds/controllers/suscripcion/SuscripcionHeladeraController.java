@@ -14,10 +14,10 @@ public class SuscripcionHeladeraController implements ICrudViewsHandler {
     private final FaltaViandaService faltaViandaService;
     private final HeladeraLlenaService heladeraLlenaService;
 
-    public SuscripcionHeladeraController (HeladeraService heladeraService,
-                                          FallaHeladeraService fallaHeladeraService,
-                                          FaltaViandaService faltaViandaService,
-                                          HeladeraLlenaService heladeraLlenaService) {
+    public SuscripcionHeladeraController(HeladeraService heladeraService,
+                                         FallaHeladeraService fallaHeladeraService,
+                                         FaltaViandaService faltaViandaService,
+                                         HeladeraLlenaService heladeraLlenaService) {
 
         this.heladeraService = heladeraService;
         this.fallaHeladeraService = fallaHeladeraService;
@@ -26,31 +26,37 @@ public class SuscripcionHeladeraController implements ICrudViewsHandler {
     }
 
     @Override
-    public void index(Context context){
+    public void index(Context context) {
 
     }
+
     @Override
-    public void show(Context context){
+    public void show(Context context) {
 
     }
+
     @Override
-    public void create(Context context){
+    public void create(Context context) {
 
     }
+
     @Override
-    public void save(Context context){
+    public void save(Context context) {
 
     }
+
     @Override
-    public void edit(Context context){
+    public void edit(Context context) {
 
     }
+
     @Override
-    public void update(Context context){
+    public void update(Context context) {
 
     }
+
     @Override
-    public void delete(Context context){
+    public void delete(Context context) {
 
     }
 

@@ -1,11 +1,9 @@
-package ar.edu.utn.frba.dds.controllers.home;
+package ar.edu.utn.frba.dds.controllers.alertas;
 
-import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
-import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.models.entities.colaborador.TipoColaborador;
+import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
-import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
+import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
@@ -14,22 +12,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class HomeController implements ICrudViewsHandler {
+public class AlertaController implements ICrudViewsHandler {
 
-    private ColaboradorRepository colaboradorRepository;
+    private IncidenteRepository incidenteRepository;
+
     private UsuarioRepository usuarioRepository;
 
-    public HomeController(ColaboradorRepository colaboradorRepository) {
-        this.colaboradorRepository = colaboradorRepository;
-    }
-
-    public HomeController(UsuarioRepository usuarioRepository) {
+    public AlertaController(IncidenteRepository incidenteRepository, UsuarioRepository usuarioRepository) {
+        this.incidenteRepository = incidenteRepository;
         this.usuarioRepository = usuarioRepository;
     }
 
     @Override
     public void index(Context context) {
-
         String idUsuario = context.sessionAttribute("idUsuario");
 
         if (idUsuario == null) {
@@ -50,27 +45,18 @@ public class HomeController implements ICrudViewsHandler {
             return;
         }
 
-        Optional<Colaborador> colaboradorOpt = this.colaboradorRepository.buscarPorUsuario(usuario);
-
-        if (!colaboradorOpt.isPresent()) {
-            context.redirect("/login");
-            return;
-        }
-
-        Colaborador colaborador = colaboradorOpt.get();
-        TipoColaborador tipoColaborador = colaborador.getTipoColaborador();
-        List<Colaboracion> colaboraciones = tipoColaborador.colaboracionesPermitidas();
+        List<Incidente> incidentes = incidenteRepository.obtenerSinFallasTecnicas();
 
         Map<String, Object> model = new HashMap<>();
-        model.put("colaboraciones", colaboraciones);
-        model.put("titulo", "Listado de colaboraciones");
+        model.put("incidentes", incidentes);
+        model.put("titulo", "Listado de alertas");
 
-        context.render("home.hbs", model);
+        context.render("alertas.hbs", model);
     }
 
     @Override
     public void show(Context context) {
-
+        // si es necesario
     }
 
     @Override
@@ -97,4 +83,5 @@ public class HomeController implements ICrudViewsHandler {
     public void delete(Context context) {
 
     }
+
 }

@@ -1,7 +1,5 @@
 package ar.edu.utn.frba.dds.controllers.heladera;
 
-import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
-import ar.edu.utn.frba.dds.models.repositories.heladera.SolicitudDeAperturaRepository;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.heladera.SolicitudDeAperturaService;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
@@ -20,7 +18,6 @@ public class SolicitudDeAperturaController implements ICrudViewsHandler {
 
     @Override
     public void index(Context context) {
-
 
 
     }

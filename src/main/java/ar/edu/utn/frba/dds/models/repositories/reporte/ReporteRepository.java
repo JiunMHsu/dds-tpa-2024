@@ -1,10 +1,7 @@
 package ar.edu.utn.frba.dds.models.repositories.reporte;
 
-import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.reporte.Reporte;
-import com.aspose.pdf.operators.Re;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +11,7 @@ public class ReporteRepository implements WithSimplePersistenceUnit {
     public void guardar(Reporte reporte) {
         withTransaction(() -> entityManager().persist(reporte));
     }
+
     public Optional<Reporte> buscarPorId(String id) {
         try {
             UUID uuid = UUID.fromString(id);
@@ -23,6 +21,7 @@ public class ReporteRepository implements WithSimplePersistenceUnit {
             return Optional.empty();
         }
     }
+
     public List<Reporte> buscarTodos() {
         return entityManager()
                 .createQuery("from Reporte", Reporte.class)

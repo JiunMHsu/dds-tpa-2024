@@ -4,8 +4,6 @@ import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Imagen;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.utils.EntidadPersistente;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -15,9 +13,11 @@ import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.criteria.CriteriaBuilder;
-
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -50,11 +50,11 @@ public class Incidente extends EntidadPersistente {
     private Imagen foto;
 
     public Incidente con(Heladera heladera,
-                          LocalDateTime fechaHora,
-                          TipoIncidente tipo,
-                          Colaborador colaborador,
-                          String descripcion,
-                          Imagen foto) {
+                         LocalDateTime fechaHora,
+                         TipoIncidente tipo,
+                         Colaborador colaborador,
+                         String descripcion,
+                         Imagen foto) {
 
         return Incidente
                 .builder()
