@@ -7,50 +7,41 @@ import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.services.Incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
+import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
+import ar.edu.utn.frba.dds.utils.ColaboradorPorSession;
 import io.javalin.http.Context;
 import static ar.edu.utn.frba.dds.models.entities.incidente.TipoIncidente.*;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-public class FallaTecnicaController {
+public class FallaTecnicaController extends ColaboradorPorSession {
 
     private final IncidenteService incidenteService;
-    private final ColaboradorService colaboradorService;
-
     private final HeladeraService heladeraService;
 
     public FallaTecnicaController (IncidenteService incidenteService,
                                    ColaboradorService colaboradorService,
+                                   UsuarioService usuarioService,
                                    HeladeraService heladeraService) {
 
+        super(usuarioService, colaboradorService);
         this.incidenteService = incidenteService;
-        this.colaboradorService = colaboradorService;
         this.heladeraService = heladeraService;
     }
 
     public void create(Context context) {
 
-        String colaboradorId = context.sessionAttribute("idUsuario");
-
-        Optional<Colaborador> colaborador = colaboradorService.obtenerColaboradorPorID(colaboradorId);
-        if (colaborador.isEmpty()) {
-            context.status(404).result("Colaborador no encontrado");
-            return;
-        }
+        Colaborador colaborador = obtenerColaboradorPorSession(context);
 
         // context.render(); TODO - redireccionar a la vista
     }
 
     public void save(Context context) {
 
-        String colaboradorId = context.sessionAttribute("idUsuario");
 
-        Optional<Colaborador> colaborador = colaboradorService.obtenerColaboradorPorID(colaboradorId);
-        if (colaborador.isEmpty()) {
-            context.status(404).result("Colaborador no encontrado");
-            return;
-        }
+        Colaborador colaborador = obtenerColaboradorPorSession(context);
+
 
         Optional<Heladera> heladera = heladeraService.buscarHeladeraPorNombre(context.formParam("nombre"));
         if (heladera.isEmpty()) {
@@ -62,7 +53,7 @@ public class FallaTecnicaController {
                 heladera.get(),
                 LocalDateTime.now(),
                 FALLA_TECNICA,
-                colaborador.get(),
+                colaborador,
                 String.valueOf(context.formParam("description")),
                 new Imagen(String.valueOf(context.formParam("path"))));
 

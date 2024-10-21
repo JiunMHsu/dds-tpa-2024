@@ -69,7 +69,9 @@ public class OfertaProductosServiciosController extends ColaboradorPorSession im
     @Override
     public void save(Context context) {
 
+
         Colaborador colaborador = obtenerColaboradorPorSession(context);
+
         String nombre = context.formParam("nombre");
         Double puntosNecesarios = Double.valueOf(context.formParam("puntos_necesarios"));
         RubroOferta rubro = RubroOferta.valueOf(context.formParam("rubro"));
