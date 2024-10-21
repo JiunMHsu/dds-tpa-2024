@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.services.colaborador;
 
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.IColaboradorRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
@@ -19,7 +20,6 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
     }
 
     public Optional<Colaborador> buscarPorId(String id) {
-
         if (id == null || id.isEmpty()) {
             throw new IllegalArgumentException("El ID del colaborador no puede ser null o vacío");
         }
@@ -38,6 +38,13 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
 
     public void eliminar(Colaborador colaborador) {
         colaboradorRepository.eliminar(colaborador);
+    }
+
+    public Optional<Colaborador> obtenerColaboradorPorUsuario(Usuario usuario) {
+        if (usuario == null) {
+            throw new IllegalArgumentException("El colaboradores debe tener un Usuario");
+        }
+        return colaboradorRepository.buscarPorUsuario(usuario);
     }
 
 

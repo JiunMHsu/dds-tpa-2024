@@ -3,23 +3,29 @@ package ar.edu.utn.frba.dds.controllers.colaboraciones;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
+import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
+import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
+import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
+import ar.edu.utn.frba.dds.utils.ColaboradorPorSession;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
-public class DistribucionViandasController implements ICrudViewsHandler {
+public class DistribucionViandasController extends ColaboradorPorSession implements ICrudViewsHandler {
 
     private DistribucionViandasRepository distribucionViandasRepository;
-    private ColaboradorRepository colaboradorRepository;
-
     private HeladeraRepository heladeraRepository;
 
+    public DistribucionViandasController(DistribucionViandasRepository distribucionViandasRepository,
+                                         UsuarioService usuarioService,
+                                         ColaboradorService colaboradorService) {
 
-    public DistribucionViandasController(DistribucionViandasRepository distribucionViandasRepository) {
+        super(usuarioService, colaboradorService);
         this.distribucionViandasRepository = distribucionViandasRepository;
     }
 
@@ -37,7 +43,9 @@ public class DistribucionViandasController implements ICrudViewsHandler {
     }
     @Override
     public void save(Context context){
-        Colaborador colaborador = colaboradorRepository.buscarPorId(context.sessionAttribute("userId")).get();
+
+        Colaborador colaborador = obtenerColaboradorPorSession(context);
+
         //TODO chequear empty heladeras
         Heladera heladeraOrigen = heladeraRepository.buscarPorId(context.formParam("heladera_origen")).get();
         Heladera heladeraDestino = heladeraRepository.buscarPorId(context.formParam("heladera_destino")).get();

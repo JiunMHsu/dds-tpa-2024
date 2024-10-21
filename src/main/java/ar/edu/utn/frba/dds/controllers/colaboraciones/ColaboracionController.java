@@ -2,8 +2,12 @@ package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
 import ar.edu.utn.frba.dds.dtos.colaboraciones.*;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.*;
+import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.*;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
+import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
+import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
+import ar.edu.utn.frba.dds.utils.ColaboradorPorSession;
 import io.javalin.http.Context;
 
 import java.util.HashMap;
@@ -14,7 +18,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class ColaboracionController {
+public class ColaboracionController extends ColaboradorPorSession {
     private DistribucionViandasRepository distribucionViandasRepository;
     private DonacionDineroRepository donacionDineroRepository;
     private DonacionViandaRepository donacionViandaRepository;
@@ -22,7 +26,10 @@ public class ColaboracionController {
     private HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository;
     private RepartoDeTarjetasRepository repartoDeTarjetasRepository;
 
-    private ColaboradorRepository colaboradorRepository;
+    public ColaboracionController(UsuarioService usuarioService, ColaboradorService colaboradorService) {
+        super(usuarioService, colaboradorService);
+    }
+
     public void index(Context context){
         Map<String, Object> model = new HashMap<>();
         if(context.sessionAttribute("userRol") == "ADMIN"){
@@ -65,8 +72,10 @@ public class ColaboracionController {
 
         }
         else if(context.sessionAttribute("userRol") == "COLABORADOR"){
-            String id_usuario = context.sessionAttribute("userId");
-            List<Colaboracion> formasColaborar = colaboradorRepository.buscarPorId(id_usuario).get().getFormaDeColaborar();
+
+            Colaborador colaborador = obtenerColaboradorPorSession(context);
+
+            List<Colaboracion> formasColaborar = colaborador.getFormaDeColaborar();
 
             Map<Colaboracion, Function<String, List<?>>> colaboracionHandlers = Map.of(
                     Colaboracion.OFERTA_DE_PRODUCTOS, id -> ofertaDeProductosRepository.obtenerPorColaboradorId(id).stream()
@@ -91,7 +100,7 @@ public class ColaboracionController {
 
             for (Colaboracion tipo : formasColaborar) {
 
-                List<?> dtos = colaboracionHandlers.get(tipo).apply(id_usuario);
+                List<?> dtos = colaboracionHandlers.get(tipo).apply(context.sessionAttribute("userId")); // TODO - ver si no c rompio nada
 
                 if (!dtos.isEmpty()) {
                     model.put(tipo.name().toLowerCase(), dtos);

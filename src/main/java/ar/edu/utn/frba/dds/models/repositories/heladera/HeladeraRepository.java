@@ -12,7 +12,7 @@ public class HeladeraRepository implements IHeladeraRepository, WithSimplePersis
 
     @Override
     public void guardar(Heladera heladera) {
-        withTransaction(() -> entityManager().persist(heladera));
+        entityManager().persist(heladera);
     }
 
     @Override
@@ -42,21 +42,18 @@ public class HeladeraRepository implements IHeladeraRepository, WithSimplePersis
     @Override
     public List<Heladera> buscarTodos() {
         return entityManager()
-                .createQuery("from Heladera", Heladera.class)
+                .createQuery("from Heladera h where h.alta = :alta", Heladera.class)
+                .setParameter("alta", true)
                 .getResultList();
-    }
-
-    // Refactorizar por buscarPorId(String id)
-    public Optional<Heladera> obtenerPorId(UUID id) {
-        return Optional.ofNullable(entityManager().find(Heladera.class, id));
     }
 
     @Override
     public Optional<Heladera> buscarPorNombre(String nombre) {
         try {
             return Optional.of(entityManager()
-                    .createQuery("from Heladera h where h.nombre = :name", Heladera.class)
+                    .createQuery("from Heladera h where h.alta = :alta and h.nombre = :name", Heladera.class)
                     .setParameter("name", nombre)
+                    .setParameter("alta", true)
                     .getSingleResult());
         } catch (NoResultException e) {
             return Optional.empty();
@@ -66,8 +63,9 @@ public class HeladeraRepository implements IHeladeraRepository, WithSimplePersis
     @Override
     public List<Heladera> buscarPorBarrio(Barrio barrio) {
         return entityManager()
-                .createQuery("from Heladera h where h.direccion.barrio = :barrio", Heladera.class)
+                .createQuery("from Heladera h where h.alta = :alta and h.direccion.barrio = :barrio", Heladera.class)
                 .setParameter("barrio", barrio)
+                .setParameter("alta", true)
                 .getResultList();
     }
 

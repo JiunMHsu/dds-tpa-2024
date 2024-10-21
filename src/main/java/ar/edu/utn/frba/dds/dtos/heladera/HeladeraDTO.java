@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.dtos.heladera;
 
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
+import java.time.format.DateTimeFormatter;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class HeladeraDTO {
+    private String id;
 
     private String nombre;
 
@@ -32,14 +34,23 @@ public class HeladeraDTO {
 
     private String temperaturaMinima;
 
-    public static HeladeraDTO completa(Heladera heladera){
+    public static HeladeraDTO completa(Heladera heladera) {
 
         String direccionString = heladera.getDireccion().getCalle().getNombre() + " " + heladera.getDireccion().getAltura().toString();
-
         String latitudLongitudString = heladera.getDireccion().getUbicacion().getLatitud() + ", " + heladera.getDireccion().getUbicacion().getLongitud();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String inicioFuncionamiento = heladera.getInicioFuncionamiento() != null
+                ? heladera.getInicioFuncionamiento().format(formatter)
+                : "--/--/--";
+
+        String ultimaTempString = heladera.getUltimaTemperatura() != null
+                ? heladera.getUltimaTemperatura().toString()
+                : "--";
 
         return HeladeraDTO
                 .builder()
+                .id(heladera.getId().toString())
                 .nombre(heladera.getNombre())
                 .estado(heladera.getEstado().toString())
                 .calleYAltura(direccionString)
@@ -47,14 +58,14 @@ public class HeladeraDTO {
                 .capacidad(heladera.getCapacidad().toString())
                 .ubicacion(latitudLongitudString)
                 .cantViandas(heladera.getViandas().toString())
-                .fechaInicio(heladera.getInicioFuncionamiento().toString())
-                .ultimaTemp(heladera.getUltimaTemperatura().toString())
+                .fechaInicio(inicioFuncionamiento)
+                .ultimaTemp(ultimaTempString)
                 .temperaturaMaxima(heladera.getRangoTemperatura().getMaxima().toString())
                 .temperaturaMinima(heladera.getRangoTemperatura().getMinima().toString())
                 .build();
     }
 
-    public static HeladeraDTO preview(Heladera heladera){
+    public static HeladeraDTO preview(Heladera heladera) {
 
         String direccionString = heladera.getDireccion().getCalle().getNombre() + " " + heladera.getDireccion().getAltura().toString();
 
@@ -62,6 +73,7 @@ public class HeladeraDTO {
 
         return HeladeraDTO
                 .builder()
+                .id(heladera.getId().toString())
                 .nombre(heladera.getNombre())
                 .estado(heladera.getEstado().toString())
                 .calleYAltura(direccionString)

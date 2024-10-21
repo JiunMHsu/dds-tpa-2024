@@ -11,10 +11,13 @@ import ar.edu.utn.frba.dds.models.entities.data.TipoDocumento;
 import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.personaVulnerable.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaPersonaVulnerable;
+import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.services.colaboraciones.RepartoDeTarjetaService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.personaVulnerable.PersonaVulnerableService;
 import ar.edu.utn.frba.dds.services.tarjeta.TarjetaPersonaVulnerableService;
+import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
+import ar.edu.utn.frba.dds.utils.ColaboradorPorSession;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
@@ -25,22 +28,29 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class PersonaVulnerableController implements ICrudViewsHandler {
+public class PersonaVulnerableController extends ColaboradorPorSession implements ICrudViewsHandler {
 
     private PersonaVulnerableService personaVulnerableService;
     private RepartoDeTarjetaService repartoDeTarjetaService;
     private TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService;
-    private ColaboradorService colaboradorService;
-
 
     public PersonaVulnerableController(PersonaVulnerableService personaVulnerableService,
                                        RepartoDeTarjetaService repartoDeTarjetaService,
                                        TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService,
+                                       ColaboradorService colaboradorService,
+                                       UsuarioService usuarioService) {
+
+<<<<<<< HEAD
+    public PersonaVulnerableController(PersonaVulnerableService personaVulnerableService,
+                                       RepartoDeTarjetaService repartoDeTarjetaService,
+                                       TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService,
                                        ColaboradorService colaboradorService) {
+=======
+        super(usuarioService, colaboradorService);
+>>>>>>> main
         this.personaVulnerableService = personaVulnerableService;
         this.repartoDeTarjetaService = repartoDeTarjetaService;
         this.tarjetaPersonaVulnerableService = tarjetaPersonaVulnerableService;
-        this.colaboradorService = colaboradorService;
     }
 
     @Override
@@ -78,6 +88,7 @@ public class PersonaVulnerableController implements ICrudViewsHandler {
     @Override
     public void create(Context context) {
 
+<<<<<<< HEAD
         String colaboradorId = context.sessionAttribute("idUsuario");
 
         Optional<Colaborador> colaboradorSession = colaboradorService.buscarPorId(colaboradorId);
@@ -87,6 +98,9 @@ public class PersonaVulnerableController implements ICrudViewsHandler {
         }
 
         Colaborador colaborador = colaboradorSession.get();
+=======
+        Colaborador colaborador = obtenerColaboradorPorSession(context);
+>>>>>>> main
 
         //        if (!colaborador.getUsuario().getRol().equals(TipoRol.COLABORADOR)) {
         //            context.status(403).result("No tiene el rol adecuado");
@@ -110,6 +124,7 @@ public class PersonaVulnerableController implements ICrudViewsHandler {
     @Override
     public void save(Context context) {
 
+<<<<<<< HEAD
         // Me paso x los huevos la repeticion de codigo aparentemente
 
         String colaboradorId = context.sessionAttribute("idUsuario");
@@ -121,6 +136,9 @@ public class PersonaVulnerableController implements ICrudViewsHandler {
         }
 
         Colaborador colaborador = colaboradorSession.get();
+=======
+        Colaborador colaborador = obtenerColaboradorPorSession(context);
+>>>>>>> main
 
         //        if (!colaborador.getUsuario().getRol().equals(TipoRol.COLABORADOR)) {
         //            context.status(403).result("No tiene el rol adecuado");
