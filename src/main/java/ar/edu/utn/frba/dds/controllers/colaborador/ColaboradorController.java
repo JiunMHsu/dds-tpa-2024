@@ -1,32 +1,43 @@
 package ar.edu.utn.frba.dds.controllers.colaborador;
 
+import ar.edu.utn.frba.dds.dtos.colaboraciones.ColaboracionDTO;
+import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
+import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.models.entities.data.*;
-import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
+import ar.edu.utn.frba.dds.models.entities.data.Barrio;
+import ar.edu.utn.frba.dds.models.entities.data.Calle;
+import ar.edu.utn.frba.dds.models.entities.data.Contacto;
+import ar.edu.utn.frba.dds.models.entities.data.Direccion;
+import ar.edu.utn.frba.dds.models.entities.data.TipoRazonSocial;
+import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
-import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
+import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 public class ColaboradorController implements ICrudViewsHandler {
 
-    private ColaboradorRepository colaboradorRepository;
+    private final ColaboradorService colaboradorService;
 
-    public ColaboradorController(ColaboradorRepository colaboradorRepository) {
-        this.colaboradorRepository = colaboradorRepository;
+    public ColaboradorController(ColaboradorService service) {
+        this.colaboradorService = service;
     }
 
     @Override
     public void index(Context context) {
         //TODO verificar rol de admin
-        List<Colaborador> colaboradores = this.colaboradorRepository.buscarTodos();
+        List<Colaborador> colaboradores = this.colaboradorService.buscarTodos();
 
         Map<String, Object> model = new HashMap<>();
         model.put("colaboradores.hbs", colaboradores);
@@ -41,7 +52,7 @@ public class ColaboradorController implements ICrudViewsHandler {
 
         //TODO verificar rol de admin
         //por id
-        Optional<Colaborador> posibleColaboradorBuscado = this.colaboradorRepository.buscarPorId(context.formParam("id"));
+        Optional<Colaborador> posibleColaboradorBuscado = this.colaboradorService.buscarPorId(context.formParam("id"));
         //TODO verificar empty
         if (posibleColaboradorBuscado.isEmpty()) {
             context.status(404);//not found
@@ -73,10 +84,10 @@ public class ColaboradorController implements ICrudViewsHandler {
                 new Ubicacion(Double.valueOf(context.formParam("latitud")), Double.valueOf(context.formParam("longitud")))
         );
         Contacto contacto = Contacto.con(
-            context.formParam("email"),
-            context.formParam("telefono"),
-            context.formParam("whatsapp"),
-            context.formParam("telegram")
+                context.formParam("email"),
+                context.formParam("telefono"),
+                context.formParam("whatsapp"),
+                context.formParam("telegram")
         );
 
         String colaboracionesParam = context.formParam("colaboraciones");
@@ -118,7 +129,7 @@ public class ColaboradorController implements ICrudViewsHandler {
             nuevoColaborador.setFechaNacimiento(fechaNacimiento);
         }
 
-        this.colaboradorRepository.guardar(nuevoColaborador);
+        this.colaboradorService.guardar(nuevoColaborador);
         context.redirect("/colaboradores/sign_up_exitoso.hbs");
     }
 
@@ -130,24 +141,55 @@ public class ColaboradorController implements ICrudViewsHandler {
     @Override
     public void update(Context context) {
         //esto teniendo en cuenta solo una forma de colaboracion por formulario
-        Optional<Colaborador> posibleColaboradorActualizar = this.colaboradorRepository.buscarPorId(context.formParam("id"));
+        Optional<Colaborador> posibleColaboradorActualizar = this.colaboradorService.buscarPorId(context.formParam("id"));
         // TODO - chequeo si no existe
 
         Colaborador colaboradorActualizado = posibleColaboradorActualizar.get();
         colaboradorActualizado.agregarFormaColaborar(Colaboracion.valueOf(context.formParam("nueva_forma_colaborar")));
-        this.colaboradorRepository.actualizar(colaboradorActualizado);
+        this.colaboradorService.actualizar(colaboradorActualizado);
         context.status(HttpStatus.OK);
     }
 
     @Override
     public void delete(Context context) {
-        Optional<Colaborador> posibleColaboradorAEliminar = this.colaboradorRepository.buscarPorId(context.formParam("id"));
+        Optional<Colaborador> posibleColaboradorAEliminar = this.colaboradorService.buscarPorId(context.formParam("id"));
         // TODO - chequeo si no existe
 
-        this.colaboradorRepository.eliminar(posibleColaboradorAEliminar.get());
+        this.colaboradorService.eliminar(posibleColaboradorAEliminar.get());
         context.status(HttpStatus.OK);
         // mostrar algo de exitoso
 
+    }
+
+    public void editFormasDeColaborar(Context context) {
+
+        TipoRol userRol = TipoRol.valueOf(context.sessionAttribute("userRol"));
+        String userId = context.sessionAttribute("userId");
+
+        String pathId = context.formParam("id");
+
+        if (userRol != TipoRol.ADMIN || !Objects.equals(userId, pathId))
+            throw new UnauthorizedException();
+
+        Optional<Colaborador> colaboradorBuscado = colaboradorService.buscarPorId(pathId);
+        if (colaboradorBuscado.isEmpty()) throw new ResourceNotFoundException();
+
+        Colaborador colaborador = colaboradorBuscado.get();
+        List<Colaboracion> formasRegistradas = colaborador.getFormaDeColaborar();
+        List<Colaboracion> formasPermitidas = colaborador.getTipoColaborador().getColaboraciones();
+
+        List<ColaboracionDTO> colaboracionDTOS = formasPermitidas.stream()
+                .map(c -> ColaboracionDTO.fromColaboracion(c, formasRegistradas.contains(c)))
+                .toList();
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("id", pathId);
+        model.put("colaboraciones", colaboracionDTOS);
+
+        context.render("colaboraciones/formas_de_colaboracion_editar.hbs", model);
+    }
+
+    public void updateFormasDeColaborar(Context context) {
     }
 
 }

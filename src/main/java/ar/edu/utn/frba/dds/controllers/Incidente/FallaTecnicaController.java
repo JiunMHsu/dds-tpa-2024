@@ -1,5 +1,7 @@
 package ar.edu.utn.frba.dds.controllers.Incidente;
 
+import static ar.edu.utn.frba.dds.models.entities.incidente.TipoIncidente.FALLA_TECNICA;
+
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Imagen;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
@@ -8,8 +10,6 @@ import ar.edu.utn.frba.dds.services.Incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import io.javalin.http.Context;
-import static ar.edu.utn.frba.dds.models.entities.incidente.TipoIncidente.*;
-
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -20,9 +20,9 @@ public class FallaTecnicaController {
 
     private final HeladeraService heladeraService;
 
-    public FallaTecnicaController (IncidenteService incidenteService,
-                                   ColaboradorService colaboradorService,
-                                   HeladeraService heladeraService) {
+    public FallaTecnicaController(IncidenteService incidenteService,
+                                  ColaboradorService colaboradorService,
+                                  HeladeraService heladeraService) {
 
         this.incidenteService = incidenteService;
         this.colaboradorService = colaboradorService;
@@ -33,7 +33,7 @@ public class FallaTecnicaController {
 
         String colaboradorId = context.sessionAttribute("idUsuario");
 
-        Optional<Colaborador> colaborador = colaboradorService.obtenerColaborador(colaboradorId);
+        Optional<Colaborador> colaborador = colaboradorService.buscarPorId(colaboradorId);
         if (colaborador.isEmpty()) {
             context.status(404).result("Colaborador no encontrado");
             return;
@@ -46,7 +46,7 @@ public class FallaTecnicaController {
 
         String colaboradorId = context.sessionAttribute("idUsuario");
 
-        Optional<Colaborador> colaborador = colaboradorService.obtenerColaborador(colaboradorId);
+        Optional<Colaborador> colaborador = colaboradorService.buscarPorId(colaboradorId);
         if (colaborador.isEmpty()) {
             context.status(404).result("Colaborador no encontrado");
             return;

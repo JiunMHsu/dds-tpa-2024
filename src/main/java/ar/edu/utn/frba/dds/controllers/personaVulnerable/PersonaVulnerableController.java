@@ -3,9 +3,13 @@ package ar.edu.utn.frba.dds.controllers.personaVulnerable;
 import ar.edu.utn.frba.dds.dtos.personaVulnerable.PersonaVulnerableDTO;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.models.entities.data.*;
+import ar.edu.utn.frba.dds.models.entities.data.Barrio;
+import ar.edu.utn.frba.dds.models.entities.data.Calle;
+import ar.edu.utn.frba.dds.models.entities.data.Direccion;
+import ar.edu.utn.frba.dds.models.entities.data.Documento;
+import ar.edu.utn.frba.dds.models.entities.data.TipoDocumento;
+import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.personaVulnerable.PersonaVulnerable;
-import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaPersonaVulnerable;
 import ar.edu.utn.frba.dds.services.colaboraciones.RepartoDeTarjetaService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
@@ -14,7 +18,6 @@ import ar.edu.utn.frba.dds.services.tarjeta.TarjetaPersonaVulnerableService;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
-
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -30,10 +33,10 @@ public class PersonaVulnerableController implements ICrudViewsHandler {
     private ColaboradorService colaboradorService;
 
 
-    public PersonaVulnerableController (PersonaVulnerableService personaVulnerableService,
-                                        RepartoDeTarjetaService repartoDeTarjetaService,
-                                        TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService,
-                                        ColaboradorService colaboradorService) {
+    public PersonaVulnerableController(PersonaVulnerableService personaVulnerableService,
+                                       RepartoDeTarjetaService repartoDeTarjetaService,
+                                       TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService,
+                                       ColaboradorService colaboradorService) {
         this.personaVulnerableService = personaVulnerableService;
         this.repartoDeTarjetaService = repartoDeTarjetaService;
         this.tarjetaPersonaVulnerableService = tarjetaPersonaVulnerableService;
@@ -77,7 +80,7 @@ public class PersonaVulnerableController implements ICrudViewsHandler {
 
         String colaboradorId = context.sessionAttribute("idUsuario");
 
-        Optional<Colaborador> colaboradorSession = colaboradorService.obtenerColaborador(colaboradorId);
+        Optional<Colaborador> colaboradorSession = colaboradorService.buscarPorId(colaboradorId);
         if (colaboradorSession.isEmpty()) {
             context.status(404).result("Colaborador no encontrado");
             return;
@@ -111,13 +114,13 @@ public class PersonaVulnerableController implements ICrudViewsHandler {
 
         String colaboradorId = context.sessionAttribute("idUsuario");
 
-        Optional<Colaborador> colaboradorSession = colaboradorService.obtenerColaborador(colaboradorId);
+        Optional<Colaborador> colaboradorSession = colaboradorService.buscarPorId(colaboradorId);
         if (colaboradorSession.isEmpty()) {
             context.status(404).result("Colaborador no encontrado");
             return;
         }
 
-         Colaborador colaborador = colaboradorSession.get();
+        Colaborador colaborador = colaboradorSession.get();
 
         //        if (!colaborador.getUsuario().getRol().equals(TipoRol.COLABORADOR)) {
         //            context.status(403).result("No tiene el rol adecuado");
@@ -143,7 +146,7 @@ public class PersonaVulnerableController implements ICrudViewsHandler {
                 LocalDate.now(),
                 direccion,
                 Integer.valueOf(context.formParam("menores_a_cargo"))
-                );
+        );
 
         TarjetaPersonaVulnerable tarjeta = this.tarjetaPersonaVulnerableService.registrarTarjetaPV(context.formParam("tarjeta"), nuevaPV); // delege la instanciacion
 
