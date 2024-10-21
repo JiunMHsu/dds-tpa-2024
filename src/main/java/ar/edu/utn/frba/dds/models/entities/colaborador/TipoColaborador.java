@@ -15,7 +15,7 @@ public enum TipoColaborador {
                     Colaboracion.DISTRIBUCION_VIANDAS,
                     Colaboracion.ENTREGA_VIANDA,
                     Colaboracion.REPARTO_DE_TARJETAS);
-            
+
             case JURIDICO -> List.of(
                     Colaboracion.DONACION_DINERO,
                     Colaboracion.OFERTA_DE_PRODUCTOS,

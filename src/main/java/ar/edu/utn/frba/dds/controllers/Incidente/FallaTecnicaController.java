@@ -20,10 +20,10 @@ public class FallaTecnicaController extends ColaboradorPorSession {
     private final IncidenteService incidenteService;
     private final HeladeraService heladeraService;
 
-    public FallaTecnicaController (IncidenteService incidenteService,
-                                   ColaboradorService colaboradorService,
-                                   UsuarioService usuarioService,
-                                   HeladeraService heladeraService) {
+    public FallaTecnicaController(IncidenteService incidenteService,
+                                  ColaboradorService colaboradorService,
+                                  UsuarioService usuarioService,
+                                  HeladeraService heladeraService) {
         super(usuarioService, colaboradorService);
         this.incidenteService = incidenteService;
         this.heladeraService = heladeraService;

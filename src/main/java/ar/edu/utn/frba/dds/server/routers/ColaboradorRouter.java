@@ -14,27 +14,27 @@ public class ColaboradorRouter implements IRouter {
     @Override
     public void apply(JavalinConfig config) {
         config.router.apiBuilder(() -> {
-                path("/perfil", () -> {
-                    get(ServiceLocator.instanceOf(ColaboradorController.class)::getProfile, TipoRol.COLABORADOR);
-                });
-                path("/colaboradores", () -> {
-                    get(ctx -> ctx.result("GET Colaboradores"));
-                    post(ctx -> ctx.result("POST Colaboradores"));
+            path("/perfil", () -> {
+                get(ServiceLocator.instanceOf(ColaboradorController.class)::getProfile, TipoRol.COLABORADOR);
+            });
+            path("/colaboradores", () -> {
+                get(ctx -> ctx.result("GET Colaboradores"));
+                post(ctx -> ctx.result("POST Colaboradores"));
 
-                    // get("/new", ctx -> ctx.result("FORM REGISTRO")); (es el sign up)
-                    path("/{id}", () -> {
-                        get(ctx -> ctx.result("GET Colaborador " + ctx.pathParam("id")));
-                        post(ctx -> ctx.result("POST Colaborador " + ctx.pathParam("id")));
+                // get("/new", ctx -> ctx.result("FORM REGISTRO")); (es el sign up)
+                path("/{id}", () -> {
+                    get(ctx -> ctx.result("GET Colaborador " + ctx.pathParam("id")));
+                    post(ctx -> ctx.result("POST Colaborador " + ctx.pathParam("id")));
 
-                        get("/edit", ctx -> ctx.result("GET Form edit"));
+                    get("/edit", ctx -> ctx.result("GET Form edit"));
 
-                        path("/formas-de-colaboracion", () -> {
-                            get(ServiceLocator.instanceOf(ColaboradorController.class)::editFormasDeColaborar, TipoRol.COLABORADOR, TipoRol.ADMIN);
-                            post(ServiceLocator.instanceOf(ColaboradorController.class)::updateFormasDeColaborar, TipoRol.COLABORADOR, TipoRol.ADMIN);
-                        });
-
+                    path("/formas-de-colaboracion", () -> {
+                        get(ServiceLocator.instanceOf(ColaboradorController.class)::editFormasDeColaborar, TipoRol.COLABORADOR, TipoRol.ADMIN);
+                        post(ServiceLocator.instanceOf(ColaboradorController.class)::updateFormasDeColaborar, TipoRol.COLABORADOR, TipoRol.ADMIN);
                     });
+
                 });
+            });
         });
     }
 }

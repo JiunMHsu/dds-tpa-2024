@@ -1,7 +1,6 @@
 package ar.edu.utn.frba.dds.services.colaborador;
 
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
-
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.IColaboradorRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;

@@ -15,10 +15,8 @@ import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.personaVulnerable.PersonaVulnerableService;
 import ar.edu.utn.frba.dds.services.puntoIdeal.PuntoIdealService;
-
 import ar.edu.utn.frba.dds.services.tarjeta.TarjetaPersonaVulnerableService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,7 +51,8 @@ public class ServiceLocator {
 
         if (componentName.equals(ColaboradorController.class.getName())) {
             ColaboradorService colaboradorService = instanceOf(ColaboradorService.class);
-            ColaboradorController instance = new ColaboradorController(colaboradorService);
+            UsuarioService usuarioService = instanceOf(UsuarioService.class);
+            ColaboradorController instance = new ColaboradorController(usuarioService, colaboradorService);
             instances.put(componentName, instance);
         }
 
@@ -77,39 +76,13 @@ public class ServiceLocator {
             PuntoIdealService instance = new PuntoIdealService();
             instances.put(componentName, instance);
         }
-      
-        if (componentName.equals(ColaboradorController.class.getName())) {
-            ColaboradorController instance = new ColaboradorController(
-                instanceOf(UsuarioService.class),
-                instanceOf(ColaboradorService.class));
-            instances.put(componentName, instance);
-        }
-      
-        if (componentName.equals(ColaboradorService.class.getName())) {
-            ColaboradorService instance = new ColaboradorService(
-                instanceOf(ColaboradorRepository.class)
-            );
-            instances.put(componentName, instance);
-        }
-      
-        if (componentName.equals(ColaboradorRepository.class.getName())) {
-            ColaboradorRepository instance = new ColaboradorRepository();
-            instances.put(componentName, instance);
-        }
 
-        if (componentName.equals(UsuarioService.class.getName())) {
-            UsuarioService instance = new UsuarioService(
-                instanceOf(UsuarioRepository.class)
-            );
-            instances.put(componentName, instance);
-        }
-      
         if (componentName.equals(UsuarioRepository.class.getName())) {
             UsuarioRepository instance = new UsuarioRepository();
             instances.put(componentName, instance);
         }
 
-        if(componentName.equals(PersonaVulnerableController.class.getName())) {
+        if (componentName.equals(PersonaVulnerableController.class.getName())) {
             PersonaVulnerableController instance = new PersonaVulnerableController(
                     instanceOf(PersonaVulnerableService.class),
                     instanceOf(RepartoDeTarjetaService.class),
@@ -128,18 +101,6 @@ public class ServiceLocator {
 
         if (componentName.equals(UsuarioRepository.class.getName())) {
             UsuarioRepository instance = new UsuarioRepository();
-            instances.put(componentName, instance);
-        }
-
-        if (componentName.equals(ColaboradorService.class.getName())) {
-            ColaboradorService instance = new ColaboradorService(
-                    instanceOf(ColaboradorRepository.class)
-            );
-            instances.put(componentName, instance);
-        }
-
-        if (componentName.equals(ColaboradorRepository.class.getName())) {
-            ColaboradorRepository instance = new ColaboradorRepository();
             instances.put(componentName, instance);
         }
 
@@ -172,11 +133,6 @@ public class ServiceLocator {
 
         if (componentName.equals(TarjetaPersonaVulnerableRepository.class.getName())) {
             TarjetaPersonaVulnerableRepository instance = new TarjetaPersonaVulnerableRepository();
-            instances.put(componentName, instance);
-        }
-
-        if (componentName.equals(ColaboradorRepository.class.getName())) {
-            ColaboradorRepository instance = new ColaboradorRepository();
             instances.put(componentName, instance);
         }
 

@@ -10,7 +10,6 @@ import ar.edu.utn.frba.dds.models.entities.data.Calle;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.data.Documento;
 import ar.edu.utn.frba.dds.models.entities.data.TipoDocumento;
-import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.personaVulnerable.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaPersonaVulnerable;
 import ar.edu.utn.frba.dds.services.colaboraciones.RepartoDeTarjetaService;
@@ -24,7 +23,11 @@ import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.validation.ValidationException;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class PersonaVulnerableController extends ColaboradorPorSession implements ICrudViewsHandler {
@@ -100,7 +103,7 @@ public class PersonaVulnerableController extends ColaboradorPorSession implement
         boolean operationSuccess = false;
 
         Colaborador colaborador = obtenerColaboradorPorSession(context);
-      
+
         try {
 
             Documento documento = Documento.with(
@@ -121,7 +124,7 @@ public class PersonaVulnerableController extends ColaboradorPorSession implement
                     LocalDate.now(),
                     direccion,
                     Integer.valueOf(context.formParamAsClass("menores_a_cargo", Integer.class).get())
-                    );
+            );
 
             this.personaVulnerableService.guardarPV(nuevaPV);
 

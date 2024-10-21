@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.dtos.colaboraciones;
 
-import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDinero;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,7 +32,7 @@ public class DonacionViandaDTO {
     public static DonacionViandaDTO completa(DonacionVianda donacionVianda) { // Completa segun los atributos de la clase
 
         String nombre = "Donar Vianda"; // Lo dejo asi medio tosco quizas en un futuro c pueda hacer dinamico
-                                         // En caso de que c cambien los nombres de los metodos de contribuir
+        // En caso de que c cambien los nombres de los metodos de contribuir
 
         return DonacionViandaDTO
                 .builder()
@@ -52,7 +51,7 @@ public class DonacionViandaDTO {
     public static DonacionViandaDTO preview(DonacionVianda donacionVianda) { // TODO - ver si se ajusta a la vista
 
         String nombre = "Donar Vianda "; // Lo dejo asi medio tosco quizas en un futuro c pueda hacer dinamico
-                                         // En caso de que c cambien los nombres de los metodos de contribuir
+        // En caso de que c cambien los nombres de los metodos de contribuir
 
         return DonacionViandaDTO
                 .builder()

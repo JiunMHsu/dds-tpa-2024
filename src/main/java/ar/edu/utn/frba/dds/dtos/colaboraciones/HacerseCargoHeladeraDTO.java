@@ -1,7 +1,6 @@
 package ar.edu.utn.frba.dds.dtos.colaboraciones;
 
 import ar.edu.utn.frba.dds.models.entities.colaboracion.HacerseCargoHeladera;
-import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

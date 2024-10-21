@@ -15,6 +15,7 @@ import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
+import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
@@ -56,7 +57,7 @@ public class ColaboradorController implements ICrudViewsHandler {
         //TODO verificar rol de admin
         String colaboradorId = context.pathParam("id");
         Optional<Colaborador> posibleColaboradorBuscado = this.colaboradorService.obtenerColaboradorPorID(colaboradorId);
-      
+
         //TODO verificar empty
         if (posibleColaboradorBuscado.isEmpty()) {
             context.status(404);//not found
@@ -70,7 +71,7 @@ public class ColaboradorController implements ICrudViewsHandler {
 
     }
 
-    public void getProfile(Context context){
+    public void getProfile(Context context) {
 
         String usuarioId = context.sessionAttribute("userId");
         Optional<Usuario> usuario = this.usuarioService.obtenerUsuarioPorID(usuarioId);
@@ -167,7 +168,7 @@ public class ColaboradorController implements ICrudViewsHandler {
     @Override
     public void update(Context context) {
         //esto teniendo en cuenta solo una forma de colaboracion por formulario
-        Optional<Colaborador> posibleColaboradorActualizar = this.colaboradorService.buscarPorId(context.formParam("id"));
+        Optional<Colaborador> posibleColaboradorActualizar = this.colaboradorService.obtenerColaboradorPorID(context.formParam("id"));
         // TODO - chequeo si no existe
 
         Colaborador colaboradorActualizado = posibleColaboradorActualizar.get();
@@ -211,7 +212,7 @@ public class ColaboradorController implements ICrudViewsHandler {
         if (userRol == TipoRol.COLABORADOR && !Objects.equals(userId, pathId))
             throw new UnauthorizedException();
 
-        Optional<Colaborador> colaboradorBuscado = colaboradorService.buscarPorId(pathId);
+        Optional<Colaborador> colaboradorBuscado = colaboradorService.obtenerColaboradorPorID(pathId);
         if (colaboradorBuscado.isEmpty()) throw new ResourceNotFoundException();
 
         Colaborador colaborador = colaboradorBuscado.get();
@@ -238,7 +239,7 @@ public class ColaboradorController implements ICrudViewsHandler {
         if (userRol == TipoRol.COLABORADOR && !Objects.equals(userId, pathId))
             throw new UnauthorizedException();
 
-        Optional<Colaborador> colaboradorBuscado = colaboradorService.buscarPorId(pathId);
+        Optional<Colaborador> colaboradorBuscado = colaboradorService.obtenerColaboradorPorID(pathId);
         if (colaboradorBuscado.isEmpty()) throw new ResourceNotFoundException();
 
         Colaborador colaborador = colaboradorBuscado.get();

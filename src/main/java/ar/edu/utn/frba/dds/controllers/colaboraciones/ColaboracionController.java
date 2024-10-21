@@ -1,19 +1,26 @@
 package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
-import ar.edu.utn.frba.dds.dtos.colaboraciones.*;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.*;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.DistribucionViandasDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.DonacionDineroDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.DonacionViandaDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.HacerseCargoHeladeraDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.OfertaDeProductosDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.RepartoDeTarjetasDTO;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.*;
-import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladeraRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetasRepository;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.ColaboradorPorSession;
 import io.javalin.http.Context;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -30,9 +37,9 @@ public class ColaboracionController extends ColaboradorPorSession {
         super(usuarioService, colaboradorService);
     }
 
-    public void index(Context context){
+    public void index(Context context) {
         Map<String, Object> model = new HashMap<>();
-        if(context.sessionAttribute("userRol") == "ADMIN"){
+        if (context.sessionAttribute("userRol") == "ADMIN") {
             Map<Colaboracion, Supplier<List<?>>> colaboracionHandlers = Map.of(
                     Colaboracion.OFERTA_DE_PRODUCTOS, () -> ofertaDeProductosRepository.buscarTodos().stream()
                             .map(OfertaDeProductosDTO::preview)
@@ -70,8 +77,7 @@ public class ColaboracionController extends ColaboradorPorSession {
                 }
             }
 
-        }
-        else if(context.sessionAttribute("userRol") == "COLABORADOR"){
+        } else if (context.sessionAttribute("userRol") == "COLABORADOR") {
 
             Colaborador colaborador = obtenerColaboradorPorSession(context);
 
