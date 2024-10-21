@@ -30,7 +30,7 @@ public class RandomString {
     }
 
     /**
-     * Create an alphanumeric strings from a secure generator.
+     * Create an alphanumeric strings fromUbicacion a secure generator.
      */
     public RandomString(int length) {
         this(length, new SecureRandom());

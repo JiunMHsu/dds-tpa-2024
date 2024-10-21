@@ -15,6 +15,7 @@ public abstract class EntidadPersistente {
 
     @Id
     @GeneratedValue(generator = "uuid")
+    @Column(name = "id", columnDefinition = "BINARY(16)")
     private UUID id;
 
     @Setter

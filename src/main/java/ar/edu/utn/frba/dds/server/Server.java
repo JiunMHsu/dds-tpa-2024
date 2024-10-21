@@ -34,7 +34,7 @@ public class Server {
         int port = AppProperties.getInstance().intPropertyFromName("SERVER_PORT");
         app = Javalin.create(config())
                 .error(HttpStatus.NOT_FOUND, context -> {
-                    throw new ResourceNotFoundException("Resource not found");
+                    throw new ResourceNotFoundException("Resource not found for endpoint " + context.path());
                 })
                 .start(port);
 

@@ -46,42 +46,31 @@
             <!-- filtro: activo, suscripto, encargado -->
         </div>
 
-        <div class="paging-nav">
-            <a href="" class="paging-button">
-                <span class="material-symbols-rounded"> keyboard_arrow_left </span>
-            </a>
-            <a href="" class="paging-button">
-                <span class="material-symbols-rounded"> keyboard_arrow_right </span>
-            </a>
-        </div>
-
         <div class="scrollable">
             <ul class="list">
-                <!-- !! MODELO DE ITEM -->
-                <li class="list-item">
-                    <a href="" class="item-card">
-                        <h3 class="card-title">Heladera Medrano UTN</h3>
-                        <p>
-                            <span class="material-symbols-rounded card-detail-icon">radio_button_checked</span>
-                            Estado: Activo
-                        </p>
-                        <p>
-                            <span class="material-symbols-rounded card-detail-icon">location_on</span>
-                            Dirección: Av. Medrano 951
-                        </p>
-                        <p>
-                            <span class="material-symbols-rounded card-detail-icon">my_location</span>
-                            Ubicación: -34.59857981526152, -58.420110294464294
-                        </p>
-                        <p>
-                            <span class="material-symbols-rounded card-detail-icon">package_2</span>
-                            Viandas: 83
-                        </p>
-                    </a>
-                </li>
-                <!-- !! MODELO DE ITEM -->
-
-                <!-- iteración de heladeras (paginada de a 20) -->
+                {{#each heladeras}}
+                    <li class="list-item">
+                        <a href="/heladeras/{{this.id}}" class="item-card">
+                            <h3 class="card-title">{{this.nombre}}</h3>
+                            <p>
+                                <span class="material-symbols-rounded card-detail-icon">radio_button_checked</span>
+                                Estado: {{this.estado}}
+                            </p>
+                            <p>
+                                <span class="material-symbols-rounded card-detail-icon">location_on</span>
+                                Dirección: {{this.calleYAltura}}
+                            </p>
+                            <p>
+                                <span class="material-symbols-rounded card-detail-icon">my_location</span>
+                                Ubicación: {{this.ubicacion}}
+                            </p>
+                            <p>
+                                <span class="material-symbols-rounded card-detail-icon">package_2</span>
+                                Viandas: {{this.cantViandas}}
+                            </p>
+                        </a>
+                    </li>
+                {{/each}}
             </ul>
         </div>
     </div>

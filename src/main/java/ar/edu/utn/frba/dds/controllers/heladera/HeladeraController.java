@@ -1,6 +1,9 @@
 package ar.edu.utn.frba.dds.controllers.heladera;
 
+import ar.edu.utn.frba.dds.dtos.RedirectDTO;
+import ar.edu.utn.frba.dds.dtos.UbicacionDTO;
 import ar.edu.utn.frba.dds.dtos.heladera.HeladeraDTO;
+import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
 import ar.edu.utn.frba.dds.models.entities.data.Calle;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
@@ -8,10 +11,13 @@ import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
+import ar.edu.utn.frba.dds.services.puntoIdeal.PuntoIdealService;
 import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
+import io.javalin.validation.ValidationException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,14 +26,17 @@ import java.util.Optional;
 public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHandler {
 
     HeladeraService heladeraService;
+    PuntoIdealService puntoIdealService;
 
-    public HeladeraController(HeladeraService heladeraService) {
+    public HeladeraController(HeladeraService heladeraService,
+                              PuntoIdealService puntoIdealService) {
         this.heladeraService = heladeraService;
+        this.puntoIdealService = puntoIdealService;
     }
 
     @Override
     public void index(Context context) {
-        List<Heladera> heladeras = this.heladeraService.buscarTodasHeladeras();
+        List<Heladera> heladeras = this.heladeraService.buscarTodas();
 
         List<HeladeraDTO> heladerasDTO = heladeras.stream()
                 .map(HeladeraDTO::preview)
@@ -35,59 +44,97 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
 
         Map<String, Object> model = new HashMap<>();
         model.put("heladeras", heladerasDTO);
-        model.put("titulo", "Listado de heladeras");
+        // model.put("userRol", "Listado de heladeras");
 
-        context.render("heladera/heladeras.hbs", model);
+        context.render("heladeras/heladeras.hbs", model);
     }
 
     @Override
     public void show(Context context) {
-        //por id
-        Optional<Heladera> posibleHeladeraBuscada = this.heladeraService.buscarHeladeraPorID(context.formParam("id"));
+        String heladeraId = context.pathParam("id");
+        Optional<Heladera> heladera = this.heladeraService.buscarPorId(heladeraId);
 
-        if (posibleHeladeraBuscada.isEmpty()) {
-            context.status(404);//not found
-            return;
-        }
+        if (heladera.isEmpty())
+            throw new ResourceNotFoundException("No se encontró heladera con id " + heladeraId);
 
         Map<String, Object> model = new HashMap<>();
-        model.put("heladera", posibleHeladeraBuscada.get());
 
-        context.render("heladeras/heldadera_detalle.hbs", model);
+        HeladeraDTO heladeraDTO = HeladeraDTO.completa(heladera.get());
+        model.put("heladera", heladeraDTO);
 
+        context.render("heladeras/heladera_detalle.hbs", model);
     }
 
     @Override
     public void create(Context context) {
-        if (false) { // TODO usuario no tiene permiso de admin
-            context.status(403).result("No tienes permiso para dar de alta la heladera.");
-            return;
+        try {
+            Double latitud = context.queryParamAsClass("lat", Double.class).get();
+            Double longitud = context.queryParamAsClass("lon", Double.class).get();
+            Integer radio = context.queryParamAsClass("radio", Integer.class)
+                    .check(rad -> rad >= 0.0, "el radio debe ser positivo").get();
+
+            List<UbicacionDTO> ubicaciones = puntoIdealService
+                    .obtenerPuntosIdeales(latitud, longitud, radio)
+                    .stream().map(UbicacionDTO::fromUbicacion).toList();
+
+            Map<String, Object> model = new HashMap<>();
+            model.put("puntosRecomendados", ubicaciones);
+
+            context.render("heladeras/heladera_crear.hbs", model);
+        } catch (ValidationException e) {
+            context.render("heladeras/heladera_crear.hbs");
         }
-        context.render("heladeras/heladera_crear.hbs");
+
     }
 
     @Override
     public void save(Context context) {
+        Map<String, Object> model = new HashMap<>();
+        List<RedirectDTO> redirectDTOS = new ArrayList<>();
+        boolean operationSuccess = false;
 
-        Direccion direccion = Direccion.with(
-                new Barrio(context.formParam("barrio")),
-                new Calle(context.formParam("calle")),
-                Integer.valueOf(context.formParam("altura")),
-                new Ubicacion(Double.valueOf(context.formParam("latitud")), Double.valueOf(context.formParam("longitud")))
-        );
-        RangoTemperatura rangoTemperatura = new RangoTemperatura(Double.valueOf(context.formParam("maxima")), Double.valueOf(context.formParam("minima")));
-        Heladera nuevaHeladera = Heladera.nueva(context.formParam("nombre"), direccion, Integer.valueOf(context.formParam("capacidad")), rangoTemperatura, Integer.valueOf(context.formParam("viandas")));
-        this.heladeraService.guardarHeladera(nuevaHeladera);
-        //O BIEN LANZO UNA PANTALLA DE EXITO
-        //O BIEN REDIRECCIONO AL USER A LA PANTALLA DE LISTADO DE PRODUCTOS
-        context.redirect("/heladeras/heladeras.hbs"); //redirecciono a heladeras, pero no se si me gusta
+        try {
+            String nombre = context.formParamAsClass("nombre", String.class).get();
+            Integer capacidad = context.formParamAsClass("capacidad", Integer.class)
+                    .check(c -> c > 0, "la capacidad debe ser positiva").get();
+
+            Double latitud = context.formParamAsClass("latitud", Double.class).get();
+            Double longitud = context.formParamAsClass("longitud", Double.class).get();
+
+            Direccion direccion = Direccion.with(
+                    new Barrio(context.formParamAsClass("barrio", String.class).get()),
+                    new Calle(context.formParamAsClass("calle", String.class).get()),
+                    context.formParamAsClass("altura", Integer.class).get(),
+                    new Ubicacion(latitud, longitud)
+            );
+
+            Double tempMaxima = context.formParamAsClass("temp_maxima", Double.class).get();
+            Double tempMinima = context.formParamAsClass("temp_minima", Double.class).get();
+            RangoTemperatura rangoTemperatura = new RangoTemperatura(tempMaxima, tempMinima);
+
+            Heladera heladeraNueva = Heladera.con(nombre, direccion, capacidad, rangoTemperatura);
+            this.heladeraService.guardarHeladera(heladeraNueva);
+
+            operationSuccess = true;
+            redirectDTOS.add(new RedirectDTO("/heladeras", "Ver Heladeras"));
+
+        } catch (ValidationException e) {
+            redirectDTOS.add(new RedirectDTO("/heladeras/new", "Reintentar"));
+        } finally {
+            model.put("success", operationSuccess);
+            model.put("redirects", redirectDTOS);
+            context.render("post_result.hbs", model);
+        }
 
     }
 
     @Override
     public void edit(Context context) {
+        // TODO - edit
+        context.render("heladeras/heladera_editar.hbs");
+
         // devuelve formulario para editar heladera
-        Optional<Heladera> posibleHeladeraBuscada = this.heladeraService.buscarHeladeraPorID(context.formParam("id"));
+        // Optional<Heladera> posibleHeladeraBuscada = this.heladeraService.buscarPorId(context.formParam("id"));
         // TODO chequear empty
 
         // if(posibleHeladeraBuscada.isEmpty()) {
@@ -95,17 +142,17 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
         //     return;
         // }
 
-        Map<String, Object> model = new HashMap<>();
-        model.put("heladera", posibleHeladeraBuscada.get());
-        model.put("edicion", true);
+        // Map<String, Object> model = new HashMap<>();
+        // model.put("heladera", posibleHeladeraBuscada.get());
+        // model.put("edicion", true);
 
-        context.render("heladeras/heladera_editar.hbs", model);
+        // context.render("heladeras/heladera_detalle.hbs", model);
     }
 
     @Override
     public void update(Context context) {
         // voy a considerar que solo se puede modificar rango de temperatura
-        Optional<Heladera> posibleHeladeraActualizar = this.heladeraService.buscarHeladeraPorID(context.formParam("id"));
+        Optional<Heladera> posibleHeladeraActualizar = this.heladeraService.buscarPorId(context.formParam("id"));
         // TODO - chequeo si no existe
 
         // interpreto que los campos son obligatorios (no pueden ser null)
@@ -124,7 +171,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
 
     @Override
     public void delete(Context context) {
-        Optional<Heladera> posibleHeladeraAEliminar = this.heladeraService.buscarHeladeraPorID(context.formParam("id"));
+        Optional<Heladera> posibleHeladeraAEliminar = this.heladeraService.buscarPorId(context.formParam("id"));
         // TODO - chequeo si no existe
 
         this.heladeraService.eliminarHeladera(posibleHeladeraAEliminar.get());

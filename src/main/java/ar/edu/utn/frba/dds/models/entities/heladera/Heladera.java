@@ -70,11 +70,11 @@ public class Heladera extends EntidadPersistente {
                 .build();
     }
 
-    public static Heladera nueva(String nombre,
-                                 Direccion direccion,
-                                 Integer capacidad,
-                                 RangoTemperatura rangoTemperatura,
-                                 Integer viandas) {
+    public static Heladera con(String nombre,
+                               Direccion direccion,
+                               Integer capacidad,
+                               RangoTemperatura rangoTemperatura,
+                               Integer viandas) {
         return Heladera.con(nombre, direccion, LocalDateTime.now(), capacidad, rangoTemperatura, null, EstadoHeladera.ACTIVA, viandas);
     }
 

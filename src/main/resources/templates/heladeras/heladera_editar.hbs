@@ -1,0 +1,93 @@
+{{#partial "title"}}
+    Configurar {{heladera.nombre}}
+{{/partial}}
+{{#partial "links"}}
+    <link rel="stylesheet" href="/css/heladeras/heladera_detalle.css"/>
+    <link
+            href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css"
+            rel="stylesheet"
+    />
+{{/partial}}
+{{#partial "scripts"}}
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+    <script src="/js/map.js"></script>
+{{/partial}}
+{{#partial "main-content"}}
+    <div class="container">
+        <div class="header">
+            <h2 class="title">{{heladera.nombre}}</h2>
+            <a href="/heladeras/{{heladera.id}}/edit" class="edit-button">Configurar</a>
+        </div>
+
+        <div class="ultimo-estado card">
+            <p>
+                <span class="material-symbols-rounded card-detail-icon">radio_button_checked</span>
+                estado: {{heladera.estado}}
+            </p>
+            <p>
+                <span class="material-symbols-rounded card-detail-icon">ac_unit</span>
+                última temperatura: {{heladera.ultimaTemp}}°C
+            </p>
+            <p>
+                <span class="material-symbols-rounded card-detail-icon">inventory_2</span>
+                stock de viandas: {{heladera.cantViandas}}
+            </p>
+        </div>
+
+        <div class="capacidad card-container">
+            <h3>Capacidad</h3>
+            <div class="card">
+                <p>
+                    <span class="material-symbols-rounded card-detail-icon">background_dot_small</span>
+                    capacidad máxima: {{heladera.capacidad}}
+                </p>
+            </div>
+        </div>
+
+        <div class="rango-temp card-container">
+            <h3>Temperaturas</h3>
+            <div class="card">
+                <p>
+                    <span class="material-symbols-rounded card-detail-icon">thermometer_add</span>
+                    máxima: {{heladera.temperaturaMaxima}}°C
+                </p>
+                <p>
+                    <span class="material-symbols-rounded card-detail-icon">thermometer_minus</span>
+                    mínima: {{heladera.temperaturaMinima}}°C
+                </p>
+            </div>
+        </div>
+
+        <div class="direccion card-container">
+            <h3>Dirección</h3>
+            <div class="card">
+                <p>
+                    <span class="material-symbols-rounded card-detail-icon">location_on</span>
+                    calle y altura: {{heladera.calleYAltura}}
+                </p>
+                <p>
+                    <span class="material-symbols-rounded card-detail-icon">map</span>
+                    barrio: {{heladera.barrio}}
+                </p>
+                <p>
+                    <span class="material-symbols-rounded card-detail-icon">my_location</span>
+                    ubicación: {{heladera.ubicacion}}
+                </p>
+            </div>
+        </div>
+
+        <div class="inicio-funcionamiento card-container">
+            <h3>Inicio de Funcionamiento</h3>
+            <div class="card">
+                <p>
+                    <span class="material-symbols-rounded card-detail-icon">today</span>
+                    fecha: {{heladera.fechaInicio}}
+                </p>
+            </div>
+        </div>
+    </div>
+{{/partial}}
+{{#partial "side-panel"}}
+    <div id="map"></div>
+{{/partial}}
+{{> templates/base}}
