@@ -1,15 +1,19 @@
 package ar.edu.utn.frba.dds.config;
 
+import ar.edu.utn.frba.dds.controllers.Incidente.AlertaController;
 import ar.edu.utn.frba.dds.controllers.colaborador.ColaboradorController;
 import ar.edu.utn.frba.dds.controllers.heladera.HeladeraController;
 import ar.edu.utn.frba.dds.controllers.heladera.PuntoIdealController;
 import ar.edu.utn.frba.dds.controllers.personaVulnerable.PersonaVulnerableController;
+import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetasRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
+import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
 import ar.edu.utn.frba.dds.models.repositories.personaVulnerable.PersonaVulnerableRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjeta.TarjetaPersonaVulnerableRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
+import ar.edu.utn.frba.dds.services.Incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.colaboraciones.RepartoDeTarjetaService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
@@ -47,6 +51,22 @@ public class ServiceLocator {
         if (componentName.equals(HeladeraRepository.class.getName())) {
             HeladeraRepository instance = new HeladeraRepository();
             instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(AlertaController.class.getName())) {
+            AlertaController instance = new AlertaController(
+                instanceOf(IncidenteService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(IncidenteService.class.getName())) {
+            IncidenteService instance = new IncidenteService(
+                instanceOf(IncidenteRepository.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(IncidenteRepository.class.getName())) {
+          IncidenteRepository instance = new IncidenteRepository();
         }
 
         if (componentName.equals(ColaboradorController.class.getName())) {
