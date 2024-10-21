@@ -5,9 +5,7 @@ import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
-import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
@@ -35,20 +33,22 @@ public class DistribucionViandasController extends ColaboradorPorSession impleme
     }
 
     @Override
-    public void index(Context context){
+    public void index(Context context) {
 
     }
+
     @Override
-    public void show(Context context){
+    public void show(Context context) {
 
     }
+
     @Override
-    public void create(Context context){
+    public void create(Context context) {
         context.render("colaboraciones/distribucion_viandas_crear.hbs");
     }
 
     @Override
-    public void save(Context context){
+    public void save(Context context) {
 
         Map<String, Object> model = new HashMap<>();
         List<RedirectDTO> redirectDTOS = new ArrayList<>();
@@ -97,15 +97,17 @@ public class DistribucionViandasController extends ColaboradorPorSession impleme
     }
 
     @Override
-    public void edit(Context context){
+    public void edit(Context context) {
 
     }
+
     @Override
-    public void update(Context context){
+    public void update(Context context) {
 
     }
+
     @Override
-    public void delete(Context context){
+    public void delete(Context context) {
 
     }
 }

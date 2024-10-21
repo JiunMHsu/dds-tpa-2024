@@ -5,7 +5,11 @@ import ar.edu.utn.frba.dds.dtos.personaVulnerable.PersonaVulnerableDTO;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.models.entities.data.*;
+import ar.edu.utn.frba.dds.models.entities.data.Barrio;
+import ar.edu.utn.frba.dds.models.entities.data.Calle;
+import ar.edu.utn.frba.dds.models.entities.data.Direccion;
+import ar.edu.utn.frba.dds.models.entities.data.Documento;
+import ar.edu.utn.frba.dds.models.entities.data.TipoDocumento;
 import ar.edu.utn.frba.dds.models.entities.personaVulnerable.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaPersonaVulnerable;
 import ar.edu.utn.frba.dds.services.colaboraciones.RepartoDeTarjetaService;
@@ -18,16 +22,19 @@ import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.validation.ValidationException;
-
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class PersonaVulnerableController extends ColaboradorPorSession implements ICrudViewsHandler {
 
-    private PersonaVulnerableService personaVulnerableService;
-    private RepartoDeTarjetaService repartoDeTarjetaService;
-    private TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService;
+    private final PersonaVulnerableService personaVulnerableService;
+    private final RepartoDeTarjetaService repartoDeTarjetaService;
+    private final TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService;
 
     public PersonaVulnerableController(PersonaVulnerableService personaVulnerableService,
                                        RepartoDeTarjetaService repartoDeTarjetaService,
@@ -75,7 +82,6 @@ public class PersonaVulnerableController extends ColaboradorPorSession implement
 
     @Override
     public void create(Context context) {
-
         Colaborador colaborador = obtenerColaboradorPorSession(context);
 
         boolean tieneColaboracionReparto = colaborador.getFormaDeColaborar()
@@ -118,7 +124,7 @@ public class PersonaVulnerableController extends ColaboradorPorSession implement
                     LocalDate.now(),
                     direccion,
                     Integer.valueOf(context.formParamAsClass("menores_a_cargo", Integer.class).get())
-                    );
+            );
 
             this.personaVulnerableService.guardarPV(nuevaPV);
 

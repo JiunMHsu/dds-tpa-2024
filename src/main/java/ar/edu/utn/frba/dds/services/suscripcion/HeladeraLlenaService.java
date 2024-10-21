@@ -7,7 +7,6 @@ import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionHeladeraLlena;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.suscripcion.HeladeraLlenaRepository;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -17,9 +16,9 @@ public class HeladeraLlenaService {
     private final ColaboradorRepository colaboradorRepository;
     private final HeladeraRepository heladeraRepository;
 
-    public HeladeraLlenaService (HeladeraLlenaRepository heladeraLlenaRepositoy,
-                                 ColaboradorRepository colaboradorRepository,
-                                 HeladeraRepository heladeraRepository) {
+    public HeladeraLlenaService(HeladeraLlenaRepository heladeraLlenaRepositoy,
+                                ColaboradorRepository colaboradorRepository,
+                                HeladeraRepository heladeraRepository) {
 
         this.heladeraLlenaRepositoy = heladeraLlenaRepositoy;
         this.colaboradorRepository = colaboradorRepository;

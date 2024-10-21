@@ -18,7 +18,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -36,8 +35,8 @@ import lombok.Setter;
 @Table(name = "colaborador")
 public class Colaborador extends EntidadPersistente {
 
-    @ManyToOne
-    @JoinColumn(name = "tipo_colaborador_id")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_colaborador")
     private TipoColaborador tipoColaborador;
 
     @OneToOne
@@ -84,9 +83,10 @@ public class Colaborador extends EntidadPersistente {
                                        String rubro,
                                        Contacto contacto,
                                        Direccion direccion,
-                                       List<Colaboracion> formaDeColaborar) {
+                                       ArrayList<Colaboracion> formaDeColaborar) {
         return Colaborador
                 .builder()
+                .tipoColaborador(TipoColaborador.JURIDICO)
                 .usuario(usuario)
                 .razonSocial(razonSocial)
                 .tipoRazonSocial(tipoRazonSocial)
@@ -119,9 +119,10 @@ public class Colaborador extends EntidadPersistente {
                                      LocalDate fechaNacimiento,
                                      Contacto contacto,
                                      Direccion direccion,
-                                     List<Colaboracion> formaDeColaborar) {
+                                     ArrayList<Colaboracion> formaDeColaborar) {
         return Colaborador
                 .builder()
+                .tipoColaborador(TipoColaborador.HUMANO)
                 .usuario(usuario)
                 .nombre(nombre)
                 .apellido(apellido)
@@ -153,7 +154,11 @@ public class Colaborador extends EntidadPersistente {
                 .usuario(usuario)
                 .build();
     }
-    public static Colaborador colaborador(Usuario usuario, Contacto contacto, Direccion direccion, List<Colaboracion> formaDeColaborar) {
+
+    public static Colaborador colaborador(Usuario usuario,
+                                          Contacto contacto,
+                                          Direccion direccion,
+                                          ArrayList<Colaboracion> formaDeColaborar) {
         return Colaborador
                 .builder()
                 .usuario(usuario)
@@ -161,10 +166,6 @@ public class Colaborador extends EntidadPersistente {
                 .direccion(direccion)
                 .formaDeColaborar(formaDeColaborar)
                 .build();
-    }
-
-    public void agregarFormaColaborar(Colaboracion colaboracion){
-        formaDeColaborar.add(colaboracion);
     }
 
 }

@@ -86,7 +86,7 @@ public class Heladera extends EntidadPersistente {
         return Heladera.con(nombre, direccion, LocalDateTime.now(), capacidad, rangoTemperatura, null, estado, 0);
     }
 
-    public static Heladera con(String nombre){
+    public static Heladera con(String nombre) {
         return Heladera.con(nombre, null, LocalDateTime.now(), null, null, null, null, 0);
     }
 

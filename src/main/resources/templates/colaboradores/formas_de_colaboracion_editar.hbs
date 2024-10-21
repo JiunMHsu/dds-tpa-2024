@@ -1,0 +1,38 @@
+{{#partial "title"}}
+    Configurar Formas de Contribución
+{{/partial}}
+{{#partial "links"}}
+    <link rel="stylesheet" href="/css/form.css"/>
+    <link rel="stylesheet" href="/css/colaboradores/formas_de_colaboracion_editar.css"/>
+{{/partial}}
+{{#partial "scripts"}}
+{{/partial}}
+{{#partial "main-content"}}
+    <div class="form-container">
+        <h2 class="form-title">Configurar Formas de Contribución</h2>
+
+        <form action="/colaboradores/{{id}}/formas-de-colaboracion" method="post" class="form">
+            {{#each colaboraciones}}
+                <input
+                        type="checkbox"
+                        id="{{this.valor}}"
+                        name="colaboracion"
+                        value="{{this.valor}}"
+                    {{#if this.estaActivo}}
+                        checked
+                    {{/if}}
+                />
+                <label class="label-colaboracion" for="{{this.valor}}">
+                    {{this.etiqueta}}
+                </label>
+            {{/each}}
+
+            <div class="form-button-container">
+                <button type="submit">Guardar</button>
+            </div>
+        </form>
+    </div>
+{{/partial}}
+{{#partial "side-panel"}}
+{{/partial}}
+{{> templates/base}}
