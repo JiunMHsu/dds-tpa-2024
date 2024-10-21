@@ -31,7 +31,7 @@ public class AlertaController {
         model.put("alertas", incidentesDTOS);
         model.put("titulo", "Alertas");
 
-        // context.render();
+        context.render("alertas/alertas.hbs", model);
     }
 
     public void show(Context context) {

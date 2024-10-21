@@ -118,7 +118,7 @@ public class ReporteService implements WithSimplePersistenceUnit {
             Reporte nuevoReporte = ServiceLocator.instanceOf(Reporte.class);
             nuevoReporte.setFecha(LocalDate.now());
             nuevoReporte.setTitulo(pdfDocument.getFileName());
-            nuevoReporte.setPath_pdf(path);
+            nuevoReporte.setPath(path);
 
             reporteRepository.guardar(nuevoReporte);
 
@@ -144,7 +144,7 @@ public class ReporteService implements WithSimplePersistenceUnit {
             Reporte nuevoReporte = ServiceLocator.instanceOf(Reporte.class);
             nuevoReporte.setFecha(LocalDate.now());
             nuevoReporte.setTitulo(pdfDocument.getFileName());
-            nuevoReporte.setPath_pdf(path);
+            nuevoReporte.setPath(path);
 
             reporteRepository.guardar(nuevoReporte);
 

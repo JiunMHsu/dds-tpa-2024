@@ -18,7 +18,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import lombok.Builder;
 
-@Builder
+
 public class GeneradorDeReporte {
 
     private final ReporteService reporteService;
