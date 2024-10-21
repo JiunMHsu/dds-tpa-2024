@@ -2,20 +2,29 @@ package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDinero;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
+import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
+import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
+import ar.edu.utn.frba.dds.utils.ColaboradorPorSession;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 
 import java.time.LocalDateTime;
 import java.time.Period;
-public class DonacionDineroController implements ICrudViewsHandler {
+import java.util.Optional;
+
+public class DonacionDineroController extends ColaboradorPorSession implements ICrudViewsHandler {
 
     private DonacionDineroRepository donacionDineroRepository;
 
-    private ColaboradorRepository colaboradorRepository;
 
-    public DonacionDineroController(DonacionDineroRepository donacionDineroRepository) {
+    public DonacionDineroController(DonacionDineroRepository donacionDineroRepository,
+                                    UsuarioService usuarioService,
+                                    ColaboradorService colaboradorService) {
+
+        super(usuarioService, colaboradorService);
         this.donacionDineroRepository = donacionDineroRepository;
     }
 
@@ -33,7 +42,9 @@ public class DonacionDineroController implements ICrudViewsHandler {
     }
     @Override
     public void save(Context context){
-        Colaborador colaborador = colaboradorRepository.buscarPorId(context.sessionAttribute("userId")).get();
+
+        Colaborador colaborador = obtenerColaboradorPorSession(context);
+
         Integer monto = Integer.valueOf(context.formParam("monto"));
         Period frecuencia= Period.of(Integer.valueOf(context.formParam("anio")),Integer.valueOf(context.formParam("meses")),Integer.valueOf(context.formParam("dias")) );
         //TODO ver frecuencia period

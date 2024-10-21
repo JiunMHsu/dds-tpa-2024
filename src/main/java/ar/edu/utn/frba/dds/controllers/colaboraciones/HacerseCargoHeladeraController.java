@@ -6,20 +6,25 @@ import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
+import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
+import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
+import ar.edu.utn.frba.dds.utils.ColaboradorPorSession;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 
 import java.time.LocalDateTime;
 
-public class HacerseCargoHeladeraController implements ICrudViewsHandler {
+public class HacerseCargoHeladeraController extends ColaboradorPorSession implements ICrudViewsHandler {
 
     private HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository;
-    private ColaboradorRepository colaboradorRepository;
-
     private HeladeraRepository heladeraRepository;
 
 
-    public HacerseCargoHeladeraController(HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository) {
+    public HacerseCargoHeladeraController(HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository,
+                                          UsuarioService usuarioService,
+                                          ColaboradorService colaboradorService) {
+
+        super(usuarioService, colaboradorService);
         this.hacerseCargoHeladeraRepository = hacerseCargoHeladeraRepository;
     }
 
@@ -37,7 +42,9 @@ public class HacerseCargoHeladeraController implements ICrudViewsHandler {
     }
     @Override
     public void save(Context context){
-        Colaborador colaborador = colaboradorRepository.buscarPorId(context.sessionAttribute("userId")).get();
+
+        Colaborador colaborador = obtenerColaboradorPorSession(context);
+
         //TODO chequear empty heladeras
         Heladera heladeraACargo = heladeraRepository.buscarPorId(context.formParam("heladera_origen")).get();
         HacerseCargoHeladera hacerseCargoHeladera = HacerseCargoHeladera.por(colaborador, LocalDateTime.now(),heladeraACargo);

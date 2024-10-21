@@ -7,6 +7,9 @@ import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Imagen;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
+import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
+import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
+import ar.edu.utn.frba.dds.utils.ColaboradorPorSession;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
@@ -17,12 +20,15 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class OfertaProductosServiciosController implements ICrudViewsHandler {
+public class OfertaProductosServiciosController extends ColaboradorPorSession implements ICrudViewsHandler {
 
     private OfertaDeProductosRepository ofertaDeProductosRepository;
-    private ColaboradorRepository colaboradorRepository;
 
-    public OfertaProductosServiciosController(OfertaDeProductosRepository ofertaDeProductosRepository) {
+    public OfertaProductosServiciosController(OfertaDeProductosRepository ofertaDeProductosRepository,
+                                              UsuarioService usuarioService,
+                                              ColaboradorService colaboradorService) {
+
+        super(usuarioService, colaboradorService);
         this.ofertaDeProductosRepository = ofertaDeProductosRepository;
     }
 

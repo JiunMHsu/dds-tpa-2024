@@ -7,6 +7,9 @@ import ar.edu.utn.frba.dds.models.entities.data.Comida;
 import ar.edu.utn.frba.dds.models.entities.vianda.Vianda;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
+import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
+import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
+import ar.edu.utn.frba.dds.utils.ColaboradorPorSession;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 
@@ -14,13 +17,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 
-public class DonacionViandaController implements ICrudViewsHandler {
+public class DonacionViandaController extends ColaboradorPorSession implements ICrudViewsHandler {
 
     private DonacionViandaRepository donacionViandaRepository;
-    private ColaboradorRepository colaboradorRepository;
 
-
-    public DonacionViandaController(DonacionViandaRepository donacionViandaRepository) {
+    public DonacionViandaController(DonacionViandaRepository donacionViandaRepository,
+                                    UsuarioService usuarioService,
+                                    ColaboradorService colaboradorService) {
+        super(usuarioService, colaboradorService);
         this.donacionViandaRepository = donacionViandaRepository;
     }
 
@@ -38,7 +42,9 @@ public class DonacionViandaController implements ICrudViewsHandler {
     }
     @Override
     public void save(Context context){
-        Colaborador colaborador = colaboradorRepository.buscarPorId(context.sessionAttribute("userId")).get();
+
+        Colaborador colaborador = obtenerColaboradorPorSession(context);
+
         Comida comida = new Comida(context.formParam("nombre_comida"),Integer.valueOf(context.formParam("calorias")) );
         //TODO ver como hacer lo de las fechas
         LocalDate fechaCaducidad = LocalDate.now();
