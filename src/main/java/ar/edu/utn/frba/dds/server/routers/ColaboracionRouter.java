@@ -4,6 +4,8 @@ import static io.javalin.apibuilder.ApiBuilder.get;
 import static io.javalin.apibuilder.ApiBuilder.path;
 import static io.javalin.apibuilder.ApiBuilder.post;
 
+import ar.edu.utn.frba.dds.config.ServiceLocator;
+import ar.edu.utn.frba.dds.controllers.personaVulnerable.PersonaVulnerableController;
 import io.javalin.config.JavalinConfig;
 
 public class ColaboracionRouter implements IRouter {
@@ -47,9 +49,9 @@ public class ColaboracionRouter implements IRouter {
 
     private void routeRegistroPersonaVulnerable() {
         path("/registro-persona-vulnerable", () -> {
-            post(ctx -> ctx.result("FORMULARIO ENVIADO"));
+            post(ServiceLocator.instanceOf(PersonaVulnerableController.class)::save);
 
-            get("/new", ctx -> ctx.render("colaboraciones/registro_pv_crear.hbs"));
+            get("/new", ServiceLocator.instanceOf(PersonaVulnerableController.class)::create);
             get("/{id}", ctx -> ctx.result("DETALLE REGISTRO"));
         });
     }

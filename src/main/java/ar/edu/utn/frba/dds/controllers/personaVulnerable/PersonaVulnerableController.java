@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.controllers.personaVulnerable;
 
 import ar.edu.utn.frba.dds.dtos.personaVulnerable.PersonaVulnerableDTO;
+import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.*;
@@ -17,6 +18,7 @@ import ar.edu.utn.frba.dds.utils.ColaboradorPorSession;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
+import io.javalin.http.UnauthorizedResponse;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -80,34 +82,21 @@ public class PersonaVulnerableController extends ColaboradorPorSession implement
 
         Colaborador colaborador = obtenerColaboradorPorSession(context);
 
-        //        if (!colaborador.getUsuario().getRol().equals(TipoRol.COLABORADOR)) {
-        //            context.status(403).result("No tiene el rol adecuado");
-        //            return;
-        //        }
-
         boolean tieneColaboracionReparto = colaborador.getFormaDeColaborar()
                 .stream()
                 .anyMatch(colaboracion -> colaboracion.equals(Colaboracion.REPARTO_DE_TARJETAS));
 
         if (!tieneColaboracionReparto) {
-            context.status(403).result("No tienes permiso para dar de alta una Persona Vulnerable");
-            return;
+            throw new UnauthorizedException("No tienes permiso");
         }
 
-        // TODO - x ahora dejo la validacion aca aunque entiendo que deberia realizarse en el middleware
-
-        context.redirect("/colaboraciones/registro_pv_crear.hbs");
+        context.render("colaboraciones/registro_pv_crear.hbs");
     }
 
     @Override
     public void save(Context context) {
 
         Colaborador colaborador = obtenerColaboradorPorSession(context);
-
-        //        if (!colaborador.getUsuario().getRol().equals(TipoRol.COLABORADOR)) {
-        //            context.status(403).result("No tiene el rol adecuado");
-        //            return;
-        //        } // TODO - idem que en create()
 
         Documento documento = Documento.with(
                 TipoDocumento.valueOf(context.formParam("tipo_documento")),
