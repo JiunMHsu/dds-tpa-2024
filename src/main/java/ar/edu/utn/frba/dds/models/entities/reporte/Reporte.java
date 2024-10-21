@@ -1,12 +1,14 @@
 package ar.edu.utn.frba.dds.models.entities.reporte;
 
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
 @Table(name = "reporte")
-public class Reporte {
+public class Reporte extends EntidadPersistente {
     @Id
     @GeneratedValue(generator = "uuid")
     @Column(name = "id", columnDefinition = "BINARY(16)")
