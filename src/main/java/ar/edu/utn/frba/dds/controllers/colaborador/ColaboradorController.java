@@ -1,12 +1,15 @@
 package ar.edu.utn.frba.dds.controllers.colaborador;
 
+
+import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.models.entities.colaborador.TipoPersona;
 import ar.edu.utn.frba.dds.models.entities.data.*;
-import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
-import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
+import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
+import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
@@ -16,17 +19,19 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class ColaboradorController implements ICrudViewsHandler {
+    UsuarioService usuarioService;
 
-    private ColaboradorRepository colaboradorRepository;
+    ColaboradorService colaboradorService;
+    public ColaboradorController(UsuarioService usuarioService, ColaboradorService colaboradorService) {
+        this.colaboradorService = colaboradorService;
+        this.usuarioService = usuarioService;
 
-    public ColaboradorController(ColaboradorRepository colaboradorRepository) {
-        this.colaboradorRepository = colaboradorRepository;
     }
 
     @Override
     public void index(Context context) {
         //TODO verificar rol de admin
-        List<Colaborador> colaboradores = this.colaboradorRepository.buscarTodos();
+        List<Colaborador> colaboradores = this.colaboradorService.buscarTodosColaboradores();
 
         Map<String, Object> model = new HashMap<>();
         model.put("colaboradores.hbs", colaboradores);
@@ -40,17 +45,41 @@ public class ColaboradorController implements ICrudViewsHandler {
     public void show(Context context) {
 
         //TODO verificar rol de admin
-        //por id
-        Optional<Colaborador> posibleColaboradorBuscado = this.colaboradorRepository.buscarPorId(context.formParam("id"));
+
+        String colaboradorId = context.pathParam("id");
+        Optional<Colaborador> posibleColaboradorBuscado = this.colaboradorService.obtenerColaboradorPorID(colaboradorId);
+
         //TODO verificar empty
         if (posibleColaboradorBuscado.isEmpty()) {
             context.status(404);//not found
             return;
         }
+
         Map<String, Object> model = new HashMap<>();
         model.put("colaborador", posibleColaboradorBuscado.get());
 
         context.render("colaboradores/colaborador_detalle.hbs", model);
+
+    }
+
+    public void getProfile(Context context){
+
+        String usuarioId = context.sessionAttribute("userId");
+        Optional<Usuario> usuario = this.usuarioService.obtenerUsuarioPorID(usuarioId);
+        Optional<Colaborador> posibleColaboradorBuscado = this.colaboradorService.obtenerColaboradorPorUsuario(usuario.get());
+
+        //TODO verificar empty
+        if (posibleColaboradorBuscado.isEmpty()) {
+            throw new ResourceNotFoundException("No encontrado");
+        }
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("colaborador", posibleColaboradorBuscado.get());
+        model.put("isJuridico", false);
+        /*
+        model.put("isJuridico", posibleColaboradorBuscado.get().getTipoColaborador().getTipo() == TipoPersona.JURIDICO);
+        */
+        context.render("perfil/perfil.hbs", model);
 
     }
 
@@ -118,7 +147,7 @@ public class ColaboradorController implements ICrudViewsHandler {
             nuevoColaborador.setFechaNacimiento(fechaNacimiento);
         }
 
-        this.colaboradorRepository.guardar(nuevoColaborador);
+        this.colaboradorService.guardarColaborador(nuevoColaborador);
         context.redirect("/colaboradores/sign_up_exitoso.hbs");
     }
 
@@ -130,23 +159,37 @@ public class ColaboradorController implements ICrudViewsHandler {
     @Override
     public void update(Context context) {
         //esto teniendo en cuenta solo una forma de colaboracion por formulario
-        Optional<Colaborador> posibleColaboradorActualizar = this.colaboradorRepository.buscarPorId(context.formParam("id"));
+        String colaboradorId = context.pathParam("id");
+        Optional<Colaborador> posibleColaboradorActualizar = this.colaboradorService.obtenerColaboradorPorID(colaboradorId);
         // TODO - chequeo si no existe
 
         Colaborador colaboradorActualizado = posibleColaboradorActualizar.get();
         colaboradorActualizado.agregarFormaColaborar(Colaboracion.valueOf(context.formParam("nueva_forma_colaborar")));
-        this.colaboradorRepository.actualizar(colaboradorActualizado);
+        this.colaboradorService.actualizarColaborador(colaboradorActualizado);
         context.status(HttpStatus.OK);
     }
 
     @Override
     public void delete(Context context) {
-        Optional<Colaborador> posibleColaboradorAEliminar = this.colaboradorRepository.buscarPorId(context.formParam("id"));
-        // TODO - chequeo si no existe
+        String colaboradorId = context.pathParam("id");
+        Optional<Colaborador> posibleColaboradorAEliminar = this.colaboradorService.obtenerColaboradorPorID(colaboradorId);
 
-        this.colaboradorRepository.eliminar(posibleColaboradorAEliminar.get());
+
+        /*// TODO - chequeo si no existe
+
+        this.colaboradorService.eliminarColaborador(posibleColaboradorAEliminar.get());
         context.status(HttpStatus.OK);
-        // mostrar algo de exitoso
+        // mostrar algo de exitoso*/
+
+        /*ALGO ASI?*/
+        if (posibleColaboradorAEliminar.isPresent()) {
+            this.colaboradorService.eliminarColaborador(posibleColaboradorAEliminar.get());
+            context.status(HttpStatus.OK);
+            context.result("Colaborador eliminado exitosamente.");
+        } else {
+            context.status(HttpStatus.NOT_FOUND);
+            context.result("Colaborador no encontrado.");
+        }
 
     }
 
