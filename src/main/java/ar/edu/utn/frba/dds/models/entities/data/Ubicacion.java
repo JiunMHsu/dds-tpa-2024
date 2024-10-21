@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class Ubicacion {
 
-    @Column(name = "latitud", nullable = false)
+    @Column(name = "latitud", nullable = true)
     private double latitud;
 
-    @Column(name = "longitud", nullable = false)
+    @Column(name = "longitud", nullable = true)
     private double longitud;
 
     public double distanciaA(Ubicacion u2) {
