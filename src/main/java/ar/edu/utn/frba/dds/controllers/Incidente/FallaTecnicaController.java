@@ -39,7 +39,9 @@ public class FallaTecnicaController extends ColaboradorPorSession {
 
     public void save(Context context) {
 
+
         Colaborador colaborador = obtenerColaboradorPorSession(context);
+
 
         Optional<Heladera> heladera = heladeraService.buscarHeladeraPorNombre(context.formParam("nombre"));
         if (heladera.isEmpty()) {

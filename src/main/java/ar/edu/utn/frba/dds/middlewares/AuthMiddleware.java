@@ -16,6 +16,7 @@ public class AuthMiddleware {
     // "/recurso" y "/recurso/*" podría ser una sola
     private static final String[] privateRoutes = new String[]{
             "/home",
+            "/perfil",
             "/heladeras",
             "/heladeras/*",
             "/colaboraciones",
