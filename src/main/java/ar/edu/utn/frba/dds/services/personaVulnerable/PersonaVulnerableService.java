@@ -2,13 +2,10 @@ package ar.edu.utn.frba.dds.services.personaVulnerable;
 
 import ar.edu.utn.frba.dds.models.entities.personaVulnerable.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.repositories.personaVulnerable.IPersonaVulnerableRepository;
-import ar.edu.utn.frba.dds.models.repositories.personaVulnerable.PersonaVulnerableRepository;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -16,7 +13,7 @@ public class PersonaVulnerableService {
 
     private final IPersonaVulnerableRepository personaVulnerableRepository;
 
-    public PersonaVulnerableService (IPersonaVulnerableRepository personaVulnerableRepository) {
+    public PersonaVulnerableService(IPersonaVulnerableRepository personaVulnerableRepository) {
         this.personaVulnerableRepository = personaVulnerableRepository;
     }
 
@@ -24,7 +21,7 @@ public class PersonaVulnerableService {
         return this.personaVulnerableRepository.buscarTodos();
     }
 
-    public Optional<PersonaVulnerable> buscarPVPorId (String id) {
+    public Optional<PersonaVulnerable> buscarPVPorId(String id) {
 
         if (id == null || id.isEmpty()) {
             throw new IllegalArgumentException("El ID de la persona en situacion vulnerable no puede ser null o vacío");
@@ -33,7 +30,7 @@ public class PersonaVulnerableService {
         return this.personaVulnerableRepository.buscarPorId(id);
     }
 
-    public void guardarPV (PersonaVulnerable personaVulnerable) {
+    public void guardarPV(PersonaVulnerable personaVulnerable) {
 
         System.out.println("Antes del if documento service pv");
 
@@ -57,7 +54,7 @@ public class PersonaVulnerableService {
         this.personaVulnerableRepository.guardar(personaVulnerable);
     }
 
-    public void eliminarPV (String id) {
+    public void eliminarPV(String id) {
 
         if (id == null || id.isEmpty()) {
             throw new IllegalArgumentException("El ID de la persona en situación vulnerable no puede ser null o vacío");

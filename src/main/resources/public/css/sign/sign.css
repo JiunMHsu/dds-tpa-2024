@@ -3,6 +3,7 @@
     align-items: flex-start;
     gap: 5rem;
 }
+
 .main-section {
     border: 1px solid var(--background-3);
     margin: 0 1.5vh;
@@ -35,7 +36,8 @@
     width: 100%;
     margin: 0 0 1rem;
 }
-.form-button-container{
+
+.form-button-container {
     margin: 0.5rem 0 0rem;
     flex-direction: column;
     justify-content: center;
@@ -45,18 +47,21 @@
     color: var(--foreground-2);
     margin-bottom: 0.5rem;
 }
-.form button{
+
+.form button {
     width: 15rem;
 }
+
 .form button:active {
     background-color: var(--background-3);
     transform: scale(0.95);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.ajuste{
+.ajuste {
     margin-top: -0.1rem;
 }
+
 .form-header-option {
     color: var(--foreground-1);
     font-size: 1.5rem;
@@ -83,6 +88,7 @@
     background-color: dark light;
     width: 50rem;
 }
+
 .opciones {
     display: flex;
     flex-direction: column;
@@ -97,6 +103,7 @@
     border: 1px solid black;
     border-radius: 2rem;
 }
+
 .opciones:hover {
     cursor: default;
     box-shadow: 0 0 1rem var(--background-3);
@@ -112,6 +119,7 @@
     margin: 0;
     color: var(--foreground-0);
 }
+
 .nav-icon {
     transform: scale(2.2);
     margin-bottom: 2rem;

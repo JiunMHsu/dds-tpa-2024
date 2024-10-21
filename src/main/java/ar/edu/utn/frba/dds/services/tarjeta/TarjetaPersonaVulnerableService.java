@@ -8,12 +8,12 @@ public class TarjetaPersonaVulnerableService {
 
     private final TarjetaPersonaVulnerableRepository tarjetaPersonaVulnerableRepository;
 
-    public TarjetaPersonaVulnerableService (TarjetaPersonaVulnerableRepository tarjetaPersonaVulnerableRepository) {
+    public TarjetaPersonaVulnerableService(TarjetaPersonaVulnerableRepository tarjetaPersonaVulnerableRepository) {
         this.tarjetaPersonaVulnerableRepository = tarjetaPersonaVulnerableRepository;
     }
 
     // Ver si esta bn el nombre del metodo...
-    public TarjetaPersonaVulnerable registrarTarjetaPV (String codigo, PersonaVulnerable personaAsociada) {
+    public TarjetaPersonaVulnerable registrarTarjetaPV(String codigo, PersonaVulnerable personaAsociada) {
 
         System.out.println("Antes del if service tarjeta");
 

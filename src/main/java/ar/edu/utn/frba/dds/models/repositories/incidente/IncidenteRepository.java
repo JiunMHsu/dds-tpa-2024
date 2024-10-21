@@ -33,9 +33,9 @@ public class IncidenteRepository implements WithSimplePersistenceUnit {
 
     public List<Incidente> obtenerSinFallasTecnicas() {
         List<Incidente> incidentes = entityManager()
-            .createQuery("SELECT i FROM Incidente i WHERE i.tipo != :tipo_tecnica", Incidente.class)
-            .setParameter("tipo_tecnica", TipoIncidente.FALLA_TECNICA)
-            .getResultList();
+                .createQuery("SELECT i FROM Incidente i WHERE i.tipo != :tipo_tecnica", Incidente.class)
+                .setParameter("tipo_tecnica", TipoIncidente.FALLA_TECNICA)
+                .getResultList();
 
         incidentes.forEach(incidente -> System.out.println("Incidente: " + incidente.getTipo()));
         return incidentes;

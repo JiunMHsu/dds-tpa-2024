@@ -4,7 +4,6 @@ import ar.edu.utn.frba.dds.dtos.Incidente.IncidenteDTO;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.services.Incidente.IncidenteService;
 import io.javalin.http.Context;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +14,7 @@ public class AlertaController {
 
     private final IncidenteService incidenteService;
 
-    public AlertaController(IncidenteService incidenteService){
+    public AlertaController(IncidenteService incidenteService) {
         this.incidenteService = incidenteService;
     }
 
@@ -31,7 +30,7 @@ public class AlertaController {
         model.put("alertas", incidentesDTOS);
         model.put("titulo", "Alertas");
 
-        // context.render();
+        context.render("alertas/alertas.hbs", model);
     }
 
     public void show(Context context) {
@@ -47,7 +46,6 @@ public class AlertaController {
 
         // context.render();
     }
-
 
 
 }

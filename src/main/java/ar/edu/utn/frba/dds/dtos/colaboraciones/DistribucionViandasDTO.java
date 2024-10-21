@@ -29,7 +29,7 @@ public class DistribucionViandasDTO {
     public static DistribucionViandasDTO completa(DistribucionViandas distribucionViandas) {
 
         String nombre = "Distribuir Viandas"; // Lo dejo asi medio tosco quizas en un futuro c pueda hacer dinamico
-                                              // En caso de que c cambien los nombres de los metodos de contribuir
+        // En caso de que c cambien los nombres de los metodos de contribuir
 
         return DistribucionViandasDTO
                 .builder()
@@ -47,7 +47,7 @@ public class DistribucionViandasDTO {
     public static DistribucionViandasDTO preview(DistribucionViandas distribucionViandas) {
 
         String nombre = "Distribuir Viandas"; // Lo dejo asi medio tosco quizas en un futuro c pueda hacer dinamico
-                                              // En caso de que c cambien los nombres de los metodos de contribuir
+        // En caso de que c cambien los nombres de los metodos de contribuir
 
         return DistribucionViandasDTO
                 .builder()
