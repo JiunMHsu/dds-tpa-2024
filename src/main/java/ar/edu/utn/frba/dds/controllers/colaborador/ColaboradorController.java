@@ -166,7 +166,11 @@ public class ColaboradorController implements ICrudViewsHandler {
         TipoRol userRol = TipoRol.valueOf(context.sessionAttribute("userRol"));
         String userId = context.sessionAttribute("userId");
 
-        String pathId = context.formParam("id");
+        String pathId = context.pathParam("id");
+
+        System.out.println(userRol);
+        System.out.println(userId);
+        System.out.println(pathId);
 
         if (userRol != TipoRol.ADMIN || !Objects.equals(userId, pathId))
             throw new UnauthorizedException();
@@ -176,7 +180,7 @@ public class ColaboradorController implements ICrudViewsHandler {
 
         Colaborador colaborador = colaboradorBuscado.get();
         List<Colaboracion> formasRegistradas = colaborador.getFormaDeColaborar();
-        List<Colaboracion> formasPermitidas = colaborador.getTipoColaborador().getColaboraciones();
+        List<Colaboracion> formasPermitidas = colaborador.getTipoColaborador().colaboracionesPermitidas();
 
         List<ColaboracionDTO> colaboracionDTOS = formasPermitidas.stream()
                 .map(c -> ColaboracionDTO.fromColaboracion(c, formasRegistradas.contains(c)))
@@ -186,7 +190,7 @@ public class ColaboradorController implements ICrudViewsHandler {
         model.put("id", pathId);
         model.put("colaboraciones", colaboracionDTOS);
 
-        context.render("colaboraciones/formas_de_colaboracion_editar.hbs", model);
+        context.render("colaboradores/formas_de_colaboracion_editar.hbs", model);
     }
 
     public void updateFormasDeColaborar(Context context) {

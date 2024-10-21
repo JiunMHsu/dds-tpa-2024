@@ -9,6 +9,7 @@ import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
+import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDate;
@@ -22,10 +23,7 @@ public class Initializer implements WithSimplePersistenceUnit {
 
         instance.cleanupDatabase();
         instance.withSuperUser();
-    }
-
-    public void setUpColaboracionesPorTipoColaborador() {
-        
+        instance.withColaborador();
     }
 
     public void withSuperUser() {
@@ -65,6 +63,14 @@ public class Initializer implements WithSimplePersistenceUnit {
                 Contacto.vacio(),
                 direccion,
                 colaboraciones);
+
+        UsuarioRepository usuarioRepository = new UsuarioRepository();
+        ColaboradorRepository colaboradorRepository = new ColaboradorRepository();
+
+        withTransaction(() -> {
+            usuarioRepository.guardar(usuario);
+            colaboradorRepository.guardar(colaborador);
+        });
     }
 
     private void cleanupDatabase() {

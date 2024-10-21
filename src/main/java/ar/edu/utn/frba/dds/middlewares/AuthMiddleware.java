@@ -20,6 +20,8 @@ public class AuthMiddleware {
             "/heladeras/*",
             "/colaboraciones",
             "/colaboraciones/*",
+            "/colaboradores",
+            "/colaboradores/*",
     };
 
     public static void apply(Javalin app) {

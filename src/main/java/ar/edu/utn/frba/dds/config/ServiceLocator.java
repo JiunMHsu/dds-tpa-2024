@@ -50,8 +50,8 @@ public class ServiceLocator {
         }
 
         if (componentName.equals(ColaboradorRepository.class.getName())) {
-            ColaboradorRepository colaboradorRepository = new ColaboradorRepository();
-            instances.put(componentName, colaboradorRepository);
+            ColaboradorRepository instance = new ColaboradorRepository();
+            instances.put(componentName, instance);
         }
 
         return (T) instances.get(componentName);
