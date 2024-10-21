@@ -1,10 +1,16 @@
 package ar.edu.utn.frba.dds.config;
 
+import ar.edu.utn.frba.dds.controllers.colaborador.ColaboradorController;
 import ar.edu.utn.frba.dds.controllers.heladera.HeladeraController;
 import ar.edu.utn.frba.dds.controllers.heladera.PuntoIdealController;
+import ar.edu.utn.frba.dds.controllers.usuario.UsuarioController;
+import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
+import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
+import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.puntoIdeal.PuntoIdealService;
+import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,6 +52,34 @@ public class ServiceLocator {
             PuntoIdealService instance = new PuntoIdealService();
             instances.put(componentName, instance);
         }
+        if (componentName.equals(ColaboradorController.class.getName())) {
+            ColaboradorController instance = new ColaboradorController(
+                instanceOf(UsuarioService.class),
+                instanceOf(ColaboradorService.class));
+            instances.put(componentName, instance);
+        }
+        if (componentName.equals(ColaboradorService.class.getName())) {
+            ColaboradorService instance = new ColaboradorService(
+                instanceOf(ColaboradorRepository.class)
+            );
+            instances.put(componentName, instance);
+        }
+        if (componentName.equals(ColaboradorRepository.class.getName())) {
+            ColaboradorRepository instance = new ColaboradorRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(UsuarioService.class.getName())) {
+            UsuarioService instance = new UsuarioService(
+                instanceOf(UsuarioRepository.class)
+            );
+            instances.put(componentName, instance);
+        }
+        if (componentName.equals(UsuarioRepository.class.getName())) {
+            UsuarioRepository instance = new UsuarioRepository();
+            instances.put(componentName, instance);
+        }
+
 
         return (T) instances.get(componentName);
     }

@@ -1,0 +1,42 @@
+.main-section {
+    align-items: flex-start;
+}
+
+.negrita {
+    font-weight: bold;
+}
+
+.main-section p {
+    margin-left: 5rem;
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+}
+
+.main-section h1{
+    text-align: center;
+    width: 100%;
+    font-size: 1.8rem;
+}
+.main-section h2 {
+    text-align: center;
+    width: 100%;
+    font-size: 1.5rem;
+}
+
+.cuadrado{
+    margin-left: 1.5rem;
+}
+.dobleCuadrado{
+    margin-left: 3rem;
+}
+
+.contenedores {
+    display: flex;
+    gap: 5rem;
+    justify-content: center;
+}
+
+.opciones {
+    display: flex;
+    flex-direction: column;
+}

@@ -33,7 +33,7 @@ public class FallaTecnicaController {
 
         String colaboradorId = context.sessionAttribute("idUsuario");
 
-        Optional<Colaborador> colaborador = colaboradorService.obtenerColaborador(colaboradorId);
+        Optional<Colaborador> colaborador = colaboradorService.obtenerColaboradorPorID(colaboradorId);
         if (colaborador.isEmpty()) {
             context.status(404).result("Colaborador no encontrado");
             return;
@@ -46,7 +46,7 @@ public class FallaTecnicaController {
 
         String colaboradorId = context.sessionAttribute("idUsuario");
 
-        Optional<Colaborador> colaborador = colaboradorService.obtenerColaborador(colaboradorId);
+        Optional<Colaborador> colaborador = colaboradorService.obtenerColaboradorPorID(colaboradorId);
         if (colaborador.isEmpty()) {
             context.status(404).result("Colaborador no encontrado");
             return;
