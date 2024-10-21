@@ -51,6 +51,23 @@ public class ServiceLocator {
             instances.put(componentName, instance);
         }
 
+        if (componentName.equals(ColaboradorController.class.getName())) {
+            ColaboradorService colaboradorService = instanceOf(ColaboradorService.class);
+            ColaboradorController instance = new ColaboradorController(colaboradorService);
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(ColaboradorService.class.getName())) {
+            ColaboradorRepository colaboradorRepository = instanceOf(ColaboradorRepository.class);
+            ColaboradorService instance = new ColaboradorService(colaboradorRepository);
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(ColaboradorRepository.class.getName())) {
+            ColaboradorRepository instance = new ColaboradorRepository();
+            instances.put(componentName, instance);
+        }
+
         if (componentName.equals(PuntoIdealController.class.getName())) {
             PuntoIdealController instance = new PuntoIdealController();
             instances.put(componentName, instance);
@@ -60,18 +77,21 @@ public class ServiceLocator {
             PuntoIdealService instance = new PuntoIdealService();
             instances.put(componentName, instance);
         }
+      
         if (componentName.equals(ColaboradorController.class.getName())) {
             ColaboradorController instance = new ColaboradorController(
                 instanceOf(UsuarioService.class),
                 instanceOf(ColaboradorService.class));
             instances.put(componentName, instance);
         }
+      
         if (componentName.equals(ColaboradorService.class.getName())) {
             ColaboradorService instance = new ColaboradorService(
                 instanceOf(ColaboradorRepository.class)
             );
             instances.put(componentName, instance);
         }
+      
         if (componentName.equals(ColaboradorRepository.class.getName())) {
             ColaboradorRepository instance = new ColaboradorRepository();
             instances.put(componentName, instance);
@@ -83,11 +103,11 @@ public class ServiceLocator {
             );
             instances.put(componentName, instance);
         }
+      
         if (componentName.equals(UsuarioRepository.class.getName())) {
             UsuarioRepository instance = new UsuarioRepository();
             instances.put(componentName, instance);
         }
-
 
         if(componentName.equals(PersonaVulnerableController.class.getName())) {
             PersonaVulnerableController instance = new PersonaVulnerableController(

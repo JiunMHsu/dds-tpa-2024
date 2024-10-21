@@ -10,14 +10,17 @@ import javax.persistence.NoResultException;
 
 public class ColaboradorRepository implements IColaboradorRepository, WithSimplePersistenceUnit {
 
+    @Override
     public void guardar(Colaborador colaborador) {
         entityManager().persist(colaborador);
     }
 
+    @Override
     public void actualizar(Colaborador colaborador) {
         entityManager().merge(colaborador);
     }
 
+    @Override
     public void eliminar(Colaborador colaborador) {
         withTransaction(() -> {
             colaborador.setAlta(false);
@@ -29,8 +32,7 @@ public class ColaboradorRepository implements IColaboradorRepository, WithSimple
     public Optional<Colaborador> buscarPorId(String id) {
         try {
             UUID uuid = UUID.fromString(id);
-            return Optional.ofNullable(entityManager().find(Colaborador.class, uuid))
-                    .filter(Colaborador::getAlta);
+            return Optional.ofNullable(entityManager().find(Colaborador.class, uuid));
         } catch (IllegalArgumentException e) {
             return Optional.empty();
         }
