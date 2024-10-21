@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.models.repositories.canjeDePuntos;
 
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.models.entities.puntosDeColaboracion.CanjeDePuntos;
+import ar.edu.utn.frba.dds.models.entities.puntosPorColaborador.CanjeDePuntos;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 
 import javax.persistence.NoResultException;

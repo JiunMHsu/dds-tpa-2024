@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.models.entities.puntosDeColaboracion;
+package ar.edu.utn.frba.dds.models.entities.puntosPorColaborador;
 
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;

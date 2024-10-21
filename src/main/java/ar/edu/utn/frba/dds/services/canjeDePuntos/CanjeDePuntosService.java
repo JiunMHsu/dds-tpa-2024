@@ -4,14 +4,13 @@ import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.*;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.entities.puntosDeColaboracion.CanjeDePuntos;
-import ar.edu.utn.frba.dds.models.entities.puntosDeColaboracion.VarianteCalculoDePuntos;
+import ar.edu.utn.frba.dds.models.entities.puntosPorColaborador.CanjeDePuntos;
+import ar.edu.utn.frba.dds.models.entities.puntosPorColaborador.VarianteCalculoDePuntos;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.CanjeDePuntosRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.*;
 import lombok.Builder;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.chrono.ChronoLocalDateTime;
