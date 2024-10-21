@@ -83,7 +83,7 @@ public class Colaborador extends EntidadPersistente {
                                        String rubro,
                                        Contacto contacto,
                                        Direccion direccion,
-                                       List<Colaboracion> formaDeColaborar) {
+                                       ArrayList<Colaboracion> formaDeColaborar) {
         return Colaborador
                 .builder()
                 .tipoColaborador(TipoColaborador.JURIDICO)
@@ -119,7 +119,7 @@ public class Colaborador extends EntidadPersistente {
                                      LocalDate fechaNacimiento,
                                      Contacto contacto,
                                      Direccion direccion,
-                                     List<Colaboracion> formaDeColaborar) {
+                                     ArrayList<Colaboracion> formaDeColaborar) {
         return Colaborador
                 .builder()
                 .tipoColaborador(TipoColaborador.HUMANO)
@@ -155,7 +155,10 @@ public class Colaborador extends EntidadPersistente {
                 .build();
     }
 
-    public static Colaborador colaborador(Usuario usuario, Contacto contacto, Direccion direccion, List<Colaboracion> formaDeColaborar) {
+    public static Colaborador colaborador(Usuario usuario,
+                                          Contacto contacto,
+                                          Direccion direccion,
+                                          ArrayList<Colaboracion> formaDeColaborar) {
         return Colaborador
                 .builder()
                 .usuario(usuario)
@@ -163,10 +166,6 @@ public class Colaborador extends EntidadPersistente {
                 .direccion(direccion)
                 .formaDeColaborar(formaDeColaborar)
                 .build();
-    }
-
-    public void agregarFormaColaborar(Colaboracion colaboracion) {
-        formaDeColaborar.add(colaboracion);
     }
 
 }

@@ -17,7 +17,6 @@ import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Initializer implements WithSimplePersistenceUnit {
 
@@ -130,7 +129,7 @@ public class Initializer implements WithSimplePersistenceUnit {
                 new Ubicacion(-34.59857981526152, -58.420110294464294)
         );
 
-        List<Colaboracion> colaboraciones = new ArrayList<>();
+        ArrayList<Colaboracion> colaboraciones = new ArrayList<>();
         colaboraciones.add(Colaboracion.DISTRIBUCION_VIANDAS);
         colaboraciones.add(Colaboracion.DONACION_DINERO);
 

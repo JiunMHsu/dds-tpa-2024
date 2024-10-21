@@ -57,6 +57,4 @@ public class AuthMiddleware {
                 ? context.sessionAttribute("userId")
                 : null;
     }
-
-    ;
 }

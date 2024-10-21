@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.controllers.colaborador;
 
+import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.ColaboracionDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
@@ -17,14 +18,15 @@ import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
+import io.javalin.validation.ValidationException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ColaboradorController implements ICrudViewsHandler {
 
@@ -92,9 +94,9 @@ public class ColaboradorController implements ICrudViewsHandler {
 
         String colaboracionesParam = context.formParam("colaboraciones");
 
-        List<Colaboracion> colaboraciones = new ArrayList<>();
+        ArrayList<Colaboracion> colaboraciones = new ArrayList<>();
         if (colaboracionesParam != null && !colaboracionesParam.isEmpty()) {
-            List<String> colaboracionesStr = Arrays.asList(colaboracionesParam.split(","));
+            String[] colaboracionesStr = colaboracionesParam.split(",");
 
             // Convertimos cada string en un valor del enum Colaboracion
             for (String colaboracionStr : colaboracionesStr) {
@@ -145,7 +147,7 @@ public class ColaboradorController implements ICrudViewsHandler {
         // TODO - chequeo si no existe
 
         Colaborador colaboradorActualizado = posibleColaboradorActualizar.get();
-        colaboradorActualizado.agregarFormaColaborar(Colaboracion.valueOf(context.formParam("nueva_forma_colaborar")));
+        // colaboradorActualizado.agregarFormaColaborar(Colaboracion.valueOf(context.formParam("nueva_forma_colaborar")));
         this.colaboradorService.actualizar(colaboradorActualizado);
         context.status(HttpStatus.OK);
     }
@@ -163,16 +165,13 @@ public class ColaboradorController implements ICrudViewsHandler {
 
     public void editFormasDeColaborar(Context context) {
 
+        // TODO - refactorizar
         TipoRol userRol = TipoRol.valueOf(context.sessionAttribute("userRol"));
         String userId = context.sessionAttribute("userId");
 
         String pathId = context.pathParam("id");
 
-        System.out.println(userRol);
-        System.out.println(userId);
-        System.out.println(pathId);
-
-        if (userRol != TipoRol.ADMIN || !Objects.equals(userId, pathId))
+        if (userRol == TipoRol.COLABORADOR && !Objects.equals(userId, pathId))
             throw new UnauthorizedException();
 
         Optional<Colaborador> colaboradorBuscado = colaboradorService.buscarPorId(pathId);
@@ -194,6 +193,42 @@ public class ColaboradorController implements ICrudViewsHandler {
     }
 
     public void updateFormasDeColaborar(Context context) {
+        TipoRol userRol = TipoRol.valueOf(context.sessionAttribute("userRol"));
+        String userId = context.sessionAttribute("userId");
+
+        String pathId = context.pathParam("id");
+
+        if (userRol == TipoRol.COLABORADOR && !Objects.equals(userId, pathId))
+            throw new UnauthorizedException();
+
+        Optional<Colaborador> colaboradorBuscado = colaboradorService.buscarPorId(pathId);
+        if (colaboradorBuscado.isEmpty()) throw new ResourceNotFoundException();
+
+        Colaborador colaborador = colaboradorBuscado.get();
+
+        Map<String, Object> model = new HashMap<>();
+        List<RedirectDTO> redirectDTOS = new ArrayList<>();
+        boolean operationSuccess = false;
+
+        try {
+            List<String> colaboracionesForm = context.formParams("colaboracion");
+            ArrayList<Colaboracion> colaboraciones = colaboracionesForm.stream()
+                    .map(Colaboracion::valueOf).collect(Collectors.toCollection(ArrayList::new));
+
+            System.out.println(colaboraciones);
+
+            colaborador.setFormaDeColaborar(colaboraciones);
+            colaboradorService.actualizar(colaborador);
+
+            operationSuccess = true;
+
+        } catch (ValidationException e) {
+            redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
+        } finally {
+            model.put("success", operationSuccess);
+            model.put("redirects", redirectDTOS);
+            context.render("post_result.hbs", model);
+        }
     }
 
 }
