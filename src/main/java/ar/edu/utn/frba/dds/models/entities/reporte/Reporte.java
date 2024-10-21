@@ -18,10 +18,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "reporte")
 public class Reporte extends EntidadPersistente {
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @Column(name = "id", columnDefinition = "BINARY(16)")
-    private UUID id;
     @Column(name = "titulo")
     private String titulo;
     @Column(name = "fecha")
