@@ -11,7 +11,6 @@ import ar.edu.utn.frba.dds.models.entities.data.TipoDocumento;
 import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.personaVulnerable.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaPersonaVulnerable;
-import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.services.colaboraciones.RepartoDeTarjetaService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.personaVulnerable.PersonaVulnerableService;
@@ -30,9 +29,9 @@ import java.util.stream.Collectors;
 
 public class PersonaVulnerableController extends ColaboradorPorSession implements ICrudViewsHandler {
 
-    private PersonaVulnerableService personaVulnerableService;
-    private RepartoDeTarjetaService repartoDeTarjetaService;
-    private TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService;
+    private final PersonaVulnerableService personaVulnerableService;
+    private final RepartoDeTarjetaService repartoDeTarjetaService;
+    private final TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService;
 
     public PersonaVulnerableController(PersonaVulnerableService personaVulnerableService,
                                        RepartoDeTarjetaService repartoDeTarjetaService,
@@ -40,14 +39,7 @@ public class PersonaVulnerableController extends ColaboradorPorSession implement
                                        ColaboradorService colaboradorService,
                                        UsuarioService usuarioService) {
 
-<<<<<<< HEAD
-    public PersonaVulnerableController(PersonaVulnerableService personaVulnerableService,
-                                       RepartoDeTarjetaService repartoDeTarjetaService,
-                                       TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService,
-                                       ColaboradorService colaboradorService) {
-=======
         super(usuarioService, colaboradorService);
->>>>>>> main
         this.personaVulnerableService = personaVulnerableService;
         this.repartoDeTarjetaService = repartoDeTarjetaService;
         this.tarjetaPersonaVulnerableService = tarjetaPersonaVulnerableService;
@@ -87,20 +79,7 @@ public class PersonaVulnerableController extends ColaboradorPorSession implement
 
     @Override
     public void create(Context context) {
-
-<<<<<<< HEAD
-        String colaboradorId = context.sessionAttribute("idUsuario");
-
-        Optional<Colaborador> colaboradorSession = colaboradorService.buscarPorId(colaboradorId);
-        if (colaboradorSession.isEmpty()) {
-            context.status(404).result("Colaborador no encontrado");
-            return;
-        }
-
-        Colaborador colaborador = colaboradorSession.get();
-=======
         Colaborador colaborador = obtenerColaboradorPorSession(context);
->>>>>>> main
 
         //        if (!colaborador.getUsuario().getRol().equals(TipoRol.COLABORADOR)) {
         //            context.status(403).result("No tiene el rol adecuado");
@@ -124,21 +103,7 @@ public class PersonaVulnerableController extends ColaboradorPorSession implement
     @Override
     public void save(Context context) {
 
-<<<<<<< HEAD
-        // Me paso x los huevos la repeticion de codigo aparentemente
-
-        String colaboradorId = context.sessionAttribute("idUsuario");
-
-        Optional<Colaborador> colaboradorSession = colaboradorService.buscarPorId(colaboradorId);
-        if (colaboradorSession.isEmpty()) {
-            context.status(404).result("Colaborador no encontrado");
-            return;
-        }
-
-        Colaborador colaborador = colaboradorSession.get();
-=======
         Colaborador colaborador = obtenerColaboradorPorSession(context);
->>>>>>> main
 
         //        if (!colaborador.getUsuario().getRol().equals(TipoRol.COLABORADOR)) {
         //            context.status(403).result("No tiene el rol adecuado");

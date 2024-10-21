@@ -6,7 +6,6 @@ import ar.edu.utn.frba.dds.models.entities.colaboracion.RubroOferta;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Imagen;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRepository;
-import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.ColaboradorPorSession;
@@ -67,7 +66,7 @@ public class OfertaProductosServiciosController extends ColaboradorPorSession im
 
     @Override
     public void save(Context context) {
-        Colaborador colaborador = colaboradorRepository.buscarPorId(context.sessionAttribute("userId")).get();
+        Colaborador colaborador = this.obtenerColaboradorPorSession(context.sessionAttribute("userId"));
         String nombre = context.formParam("nombre");
         Double puntosNecesarios = Double.valueOf(context.formParam("puntos_necesarios"));
         RubroOferta rubro = RubroOferta.valueOf(context.formParam("rubro"));

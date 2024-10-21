@@ -2,11 +2,8 @@ package ar.edu.utn.frba.dds.config;
 
 import ar.edu.utn.frba.dds.controllers.colaborador.ColaboradorController;
 import ar.edu.utn.frba.dds.controllers.heladera.HeladeraController;
-<<<<<<< HEAD
-import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
-=======
 import ar.edu.utn.frba.dds.controllers.heladera.PuntoIdealController;
->>>>>>> main
+import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
@@ -43,7 +40,6 @@ public class ServiceLocator {
             instances.put(componentName, instance);
         }
 
-<<<<<<< HEAD
         if (componentName.equals(ColaboradorController.class.getName())) {
             ColaboradorService colaboradorService = instanceOf(ColaboradorService.class);
             ColaboradorController instance = new ColaboradorController(colaboradorService);
@@ -58,7 +54,9 @@ public class ServiceLocator {
 
         if (componentName.equals(ColaboradorRepository.class.getName())) {
             ColaboradorRepository instance = new ColaboradorRepository();
-=======
+            instances.put(componentName, instance);
+        }
+
         if (componentName.equals(PuntoIdealController.class.getName())) {
             PuntoIdealController instance = new PuntoIdealController();
             instances.put(componentName, instance);
@@ -66,7 +64,6 @@ public class ServiceLocator {
 
         if (componentName.equals(PuntoIdealService.class.getName())) {
             PuntoIdealService instance = new PuntoIdealService();
->>>>>>> main
             instances.put(componentName, instance);
         }
 
