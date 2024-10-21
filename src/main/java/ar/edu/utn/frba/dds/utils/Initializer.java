@@ -19,6 +19,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Initializer implements WithSimplePersistenceUnit {
 
     public static void init() {
@@ -40,7 +44,9 @@ public class Initializer implements WithSimplePersistenceUnit {
 
         UsuarioRepository usuarioRepository = new UsuarioRepository();
 
-        withTransaction(() -> usuarioRepository.guardar(superUser));
+        withTransaction(() -> {
+            usuarioRepository.guardar(superUser);
+        });
     }
     public void withColaborador() {
         Usuario usuario = Usuario.con("JiunMHsu", "iMC4(*&A^F0OK?%87", "jhsu@gmail.com", TipoRol.COLABORADOR);

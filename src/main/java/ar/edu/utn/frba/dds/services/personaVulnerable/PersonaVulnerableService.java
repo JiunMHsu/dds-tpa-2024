@@ -35,14 +35,24 @@ public class PersonaVulnerableService {
 
     public void guardarPV (PersonaVulnerable personaVulnerable) {
 
+        System.out.println("Antes del if documento service pv");
+
         if (personaVulnerable.getDocumento() == null || personaVulnerable.getDomicilio() == null) {
             throw new IllegalArgumentException("Datos incompletos de la persona vulnerable");
         }
 
+        System.out.println("Desp del if documento service pv");
+
+        System.out.println("Antes del if service pv");
+
         Optional<PersonaVulnerable> existente = personaVulnerableRepository.buscarPorDocumento(personaVulnerable.getDocumento().getNumero());
+
         if (existente.isPresent()) {
             throw new IllegalArgumentException("El documento ya está registrado en el sistema");
         }
+
+        System.out.println("Desp del if service pv");
+
 
         this.personaVulnerableRepository.guardar(personaVulnerable);
     }
