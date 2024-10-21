@@ -1,11 +1,12 @@
 package ar.edu.utn.frba.dds.services.reporte;
 
+import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
+import ar.edu.utn.frba.dds.models.entities.reporte.Reporte;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
 import ar.edu.utn.frba.dds.models.repositories.reporte.ReporteRepository;
-import ar.edu.utn.frba.dds.reportes.GeneradorDeReporte;;
 import ar.edu.utn.frba.dds.reportes.RegistroMovimiento;
 import ar.edu.utn.frba.dds.utils.AppProperties;
 import com.aspose.pdf.*;
@@ -16,27 +17,21 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 @Builder
 public class ReporteService implements WithSimplePersistenceUnit {
 
     private final ReporteRepository reporteRepository;
     private final DonacionViandaRepository donacionViandaRepository;
     private final IncidenteRepository incidenteRepository;
-    private final ScheduledExecutorService planificador;
     private final String directorioReportes;
 
-
     private final RegistroMovimiento registroMovimiento;
-
-
     public static ReporteService de (ReporteRepository reporteRepository,
                                     DonacionViandaRepository donacionViandaRepository,
                                     RegistroMovimiento registroMovimiento,
@@ -48,7 +43,6 @@ public class ReporteService implements WithSimplePersistenceUnit {
                 .donacionViandaRepository(donacionViandaRepository)
                 .registroMovimiento(registroMovimiento)
                 .directorioReportes(directorio)
-                .planificador(Executors.newScheduledThreadPool(1))
                 .build();
     }
     public static ReporteService de (ReporteRepository reporteRepository,
@@ -61,7 +55,6 @@ public class ReporteService implements WithSimplePersistenceUnit {
                 .donacionViandaRepository(donacionViandaRepository)
                 .registroMovimiento(registroMovimiento)
                 .directorioReportes(AppProperties.getInstance().propertyFromName("REPORT_DIR"))
-                .planificador(Executors.newScheduledThreadPool(1))
                 .build();
     }
 
@@ -95,10 +88,6 @@ public class ReporteService implements WithSimplePersistenceUnit {
         return viandasPorColaborador;
     }
 
-    public void planificar(int frecuencia, TimeUnit unidadDeFrecuencia) {
-        planificador.scheduleAtFixedRate(this::generarReporteSemanal, 0, frecuencia, unidadDeFrecuencia);
-    }
-
     public void generarReporteSemanal() {
         Map<String, Integer> incidentesPorHeladera = this.incidentesPorHeladera();
         Map<String, Integer> donacionPorColaborador = this.donacionesPorColaborador();
@@ -108,6 +97,7 @@ public class ReporteService implements WithSimplePersistenceUnit {
         crearPDF("Fallas de Heladera", "FallasDeHeladeras", incidentesPorHeladera);
         crearPDF("Viandas Donadas por Colaborador", "ViandasDonadas", donacionPorColaborador);
         crearPDFCombinado("Cantidad de Viandas Retiradas/Colocadas", "MovimientoDeViandas", viandasQuitadas, viandasAgregadas);
+
 
         registroMovimiento.vaciarRegistro();
 
@@ -121,8 +111,15 @@ public class ReporteService implements WithSimplePersistenceUnit {
             agregarTitulo(page, titulo);
             System.out.println("Creando PDF...");
             agregarDatos(page, datos);
+            //todo path puede ser null
+            String path = guardarDocumento(pdfDocument, tipo);
 
-            guardarDocumento(pdfDocument, tipo);
+            Reporte nuevoReporte = ServiceLocator.instanceOf(Reporte.class);
+            nuevoReporte.setFecha(LocalDate.now());
+            nuevoReporte.setTitulo(pdfDocument.getFileName());
+            nuevoReporte.setPath_pdf(path);
+
+            reporteRepository.guardar(nuevoReporte);
 
         } catch (RuntimeException e) {
             System.out.println("Error al crear el documento.");
@@ -140,25 +137,40 @@ public class ReporteService implements WithSimplePersistenceUnit {
             agregarTitulo(page, "Cantidad de Viandas Agregadas por Heladera");
             agregarDatos(page, datos2);
 
-            guardarDocumento(pdfDocument, tipo);
+            //todo path puede ser null
+            String path = guardarDocumento(pdfDocument, tipo);
+
+            Reporte nuevoReporte = ServiceLocator.instanceOf(Reporte.class);
+            nuevoReporte.setFecha(LocalDate.now());
+            nuevoReporte.setTitulo(pdfDocument.getFileName());
+            nuevoReporte.setPath_pdf(path);
+
+            reporteRepository.guardar(nuevoReporte);
 
         } catch (RuntimeException e) {
             System.out.println("Error al crear el documento.");
         }
     }
 
-    private void guardarDocumento(Document documento, String nombre) {
+    private String guardarDocumento(Document documento, String nombre) {
         Path rutaReportes = Paths.get(directorioReportes);
         System.out.println("Guardando Documento..." + rutaReportes.toAbsolutePath());
         File carpeta = rutaReportes.toFile();
+
         if (carpeta.exists() || carpeta.mkdirs()) {
             String fechaActual = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
             Path rutaArchivo = Paths.get(directorioReportes, fechaActual + "-" + nombre + ".pdf");
-            System.out.println(rutaArchivo.toAbsolutePath());
+            System.out.println("Ruta del archivo: " + rutaArchivo.toAbsolutePath());
+
             documento.save(rutaArchivo.toAbsolutePath().toString());
+
+            return rutaReportes.relativize(rutaArchivo).toString();
         }
+
+        return null;
     }
+
 
     private void agregarTitulo(Page page, String titulo) {
         TextFragment textFragment = new TextFragment(titulo);
