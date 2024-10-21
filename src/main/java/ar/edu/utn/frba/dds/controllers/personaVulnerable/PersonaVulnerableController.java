@@ -1,6 +1,8 @@
 package ar.edu.utn.frba.dds.controllers.personaVulnerable;
 
+import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.personaVulnerable.PersonaVulnerableDTO;
+import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
@@ -20,11 +22,9 @@ import ar.edu.utn.frba.dds.utils.ColaboradorPorSession;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
+import io.javalin.validation.ValidationException;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PersonaVulnerableController extends ColaboradorPorSession implements ICrudViewsHandler {
@@ -81,62 +81,64 @@ public class PersonaVulnerableController extends ColaboradorPorSession implement
     public void create(Context context) {
         Colaborador colaborador = obtenerColaboradorPorSession(context);
 
-        //        if (!colaborador.getUsuario().getRol().equals(TipoRol.COLABORADOR)) {
-        //            context.status(403).result("No tiene el rol adecuado");
-        //            return;
-        //        }
-
         boolean tieneColaboracionReparto = colaborador.getFormaDeColaborar()
                 .stream()
                 .anyMatch(colaboracion -> colaboracion.equals(Colaboracion.REPARTO_DE_TARJETAS));
 
         if (!tieneColaboracionReparto) {
-            context.status(403).result("No tienes permiso para dar de alta una Persona Vulnerable");
-            return;
+            throw new UnauthorizedException("No tienes permiso");
         }
 
-        // TODO - x ahora dejo la validacion aca aunque entiendo que deberia realizarse en el middleware
-
-        context.redirect("/colaboraciones/registro_pv_crear.hbs");
+        context.render("colaboraciones/registro_pv_crear.hbs");
     }
 
     @Override
     public void save(Context context) {
 
+        Map<String, Object> model = new HashMap<>();
+        List<RedirectDTO> redirectDTOS = new ArrayList<>();
+        boolean operationSuccess = false;
+
         Colaborador colaborador = obtenerColaboradorPorSession(context);
+      
+        try {
 
-        //        if (!colaborador.getUsuario().getRol().equals(TipoRol.COLABORADOR)) {
-        //            context.status(403).result("No tiene el rol adecuado");
-        //            return;
-        //        } // TODO - idem que en create()
+            Documento documento = Documento.with(
+                    TipoDocumento.valueOf(context.formParamAsClass("tipo_documento", String.class).get()),
+                    context.formParamAsClass("nro_documento", String.class).get()
+            );
 
-        Documento documento = Documento.with(
-                TipoDocumento.valueOf(context.formParam("tipo_documento")),
-                context.formParam("documento")
-        );
+            Direccion direccion = Direccion.formularioPV(
+                    new Barrio(context.formParamAsClass("barrio", String.class).get()),
+                    new Calle(context.formParamAsClass("calle", String.class).get()),
+                    Integer.valueOf(context.formParamAsClass("altura", Integer.class).get())
+            );
 
-        Direccion direccion = Direccion.with(
-                new Barrio(context.formParam("barrio")),
-                new Calle(context.formParam("calle")),
-                Integer.valueOf(context.formParam("altura")),
-                new Ubicacion(Double.valueOf(context.formParam("latitud")), Double.valueOf(context.formParam("longitud")))
-        );
+            PersonaVulnerable nuevaPV = new PersonaVulnerable(
+                    context.formParamAsClass("nombre", String.class).get(),
+                    documento,
+                    LocalDate.parse(context.formParamAsClass("fecha_nacimiento", String.class).get()),
+                    LocalDate.now(),
+                    direccion,
+                    Integer.valueOf(context.formParamAsClass("menores_a_cargo", Integer.class).get())
+                    );
 
-        PersonaVulnerable nuevaPV = new PersonaVulnerable(
-                context.formParam("nombre"),
-                documento,
-                LocalDate.parse(context.formParam("fecha_nacimiento")),
-                LocalDate.now(),
-                direccion,
-                Integer.valueOf(context.formParam("menores_a_cargo"))
-        );
+            this.personaVulnerableService.guardarPV(nuevaPV);
 
-        TarjetaPersonaVulnerable tarjeta = this.tarjetaPersonaVulnerableService.registrarTarjetaPV(context.formParam("tarjeta"), nuevaPV); // delege la instanciacion
+            TarjetaPersonaVulnerable tarjeta = this.tarjetaPersonaVulnerableService.registrarTarjetaPV(context.formParamAsClass("tarjeta", String.class).get(), nuevaPV);
 
-        this.personaVulnerableService.guardarPV(nuevaPV);
-        this.repartoDeTarjetaService.registrarReparto(colaborador, nuevaPV, tarjeta);
+            this.repartoDeTarjetaService.registrarReparto(colaborador, nuevaPV, tarjeta);
 
-        // context.redirect("/colaboraciones/");
+            operationSuccess = true;
+            redirectDTOS.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));
+
+        } catch (ValidationException e) {
+            redirectDTOS.add(new RedirectDTO("/colaboraciones/new", "Reintentar"));
+        } finally {
+            model.put("success", operationSuccess);
+            model.put("redirects", redirectDTOS);
+            context.render("post_result.hbs", model);
+        }
     }
 
     @Override

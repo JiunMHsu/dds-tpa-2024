@@ -51,7 +51,7 @@ public class PersonaVulnerableRepository implements IPersonaVulnerableRepository
     public Optional<PersonaVulnerable> buscarPorDocumento(String documento) {
         try {
             return Optional.of(entityManager()
-                    .createQuery("from PersonaVulnerable pv where pv.documento = :documento", PersonaVulnerable.class)
+                    .createQuery("from PersonaVulnerable pv where pv.documento.numero = :documento", PersonaVulnerable.class)
                     .setParameter("documento", documento)
                     .getSingleResult());
         } catch (NoResultException e) {

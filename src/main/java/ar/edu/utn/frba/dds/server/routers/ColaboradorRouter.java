@@ -13,7 +13,10 @@ public class ColaboradorRouter implements IRouter {
 
     @Override
     public void apply(JavalinConfig config) {
-        config.router.apiBuilder(() ->
+        config.router.apiBuilder(() -> {
+                path("/perfil", () -> {
+                    get(ServiceLocator.instanceOf(ColaboradorController.class)::getProfile, TipoRol.COLABORADOR);
+                });
                 path("/colaboradores", () -> {
                     get(ctx -> ctx.result("GET Colaboradores"));
                     post(ctx -> ctx.result("POST Colaboradores"));
@@ -31,7 +34,7 @@ public class ColaboradorRouter implements IRouter {
                         });
 
                     });
-                })
-        );
+                });
+        });
     }
 }

@@ -17,6 +17,11 @@ import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Initializer implements WithSimplePersistenceUnit {
 
@@ -27,6 +32,7 @@ public class Initializer implements WithSimplePersistenceUnit {
         instance.withSuperUser();
         instance.withColaborador();
         instance.withHeladeras();
+        instance.withColaborador();
     }
 
     public void withSuperUser() {
@@ -39,9 +45,11 @@ public class Initializer implements WithSimplePersistenceUnit {
 
         UsuarioRepository usuarioRepository = new UsuarioRepository();
 
-        withTransaction(() -> usuarioRepository.guardar(superUser));
+        withTransaction(() -> {
+            usuarioRepository.guardar(superUser);
+        });
     }
-
+  
     public void withHeladeras() {
 
         Ubicacion u1 = new Ubicacion(-34.6037, -58.3816);
