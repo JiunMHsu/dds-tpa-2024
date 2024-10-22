@@ -3,7 +3,7 @@
 {{/partial}}
 {{#partial "links"}}
     <link rel="stylesheet" href="/css/form.css">
-    <link rel="stylesheet" href="/css/incidentes/reportar_fallas.css"/>
+    <link rel="stylesheet" href="/css/incidentes/falla_tecnica_crear.css"/>
     <link
             href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css"
             rel="stylesheet"
@@ -15,9 +15,9 @@
 {{/partial}}
 {{#partial "main-content"}}
     <div class="form-container">
-        <h2 class="form-title">Registrar Falla Tecnica</h2>
+        <h2 class="form-title">Reportar Falla Tecnica</h2>
 
-        <form action="/reportar_falla" method="post" class="form">
+        <form action="/fallas-tecnicas" method="post" class="form">
             <label class="field-nombre">
                 Nombre
                 <input
@@ -53,6 +53,6 @@
     </div>
 {{/partial}}
 {{#partial "side-panel"}}
-     <div id="map"></div>
- {{/partial}}
+    <div id="map"></div>
+{{/partial}}
 {{> templates/base}}
