@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.server.routers;
 
-import io.javalin.config.JavalinConfig;
+import io.javalin.config.RouterConfig;
 
 public interface IRouter {
-    void apply(JavalinConfig config);
+    void apply(RouterConfig config);
 }

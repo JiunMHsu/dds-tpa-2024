@@ -8,13 +8,13 @@ import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DistribucionViandasController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.HacerseCargoHeladeraController;
 import ar.edu.utn.frba.dds.controllers.personaVulnerable.PersonaVulnerableController;
-import io.javalin.config.JavalinConfig;
+import io.javalin.config.RouterConfig;
 
 public class ColaboracionRouter implements IRouter {
 
     @Override
-    public void apply(JavalinConfig config) {
-        config.router.apiBuilder(() ->
+    public void apply(RouterConfig config) {
+        config.apiBuilder(() ->
                 path("/colaboraciones", () -> {
                     get(ctx -> ctx.render("colaboraciones/colaboraciones.hbs"));
 

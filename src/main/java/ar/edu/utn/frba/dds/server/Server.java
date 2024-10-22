@@ -11,6 +11,7 @@ import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
 import io.javalin.Javalin;
 import io.javalin.config.JavalinConfig;
+import io.javalin.config.RouterConfig;
 import io.javalin.http.HttpStatus;
 import java.io.IOException;
 import java.util.function.Consumer;
@@ -38,9 +39,7 @@ public class Server {
                 })
                 .start(port);
 
-        AuthMiddleware.apply(app);
         AppHandlers.apply(app);
-        // Router.init(app);
 
         if (AppProperties.getInstance().boolPropertyFromName("DEV_MODE")) {
             Initializer.init();
@@ -55,7 +54,10 @@ public class Server {
             });
 
             setFileRenderer(config);
-            Routers.apply(config);
+            RouterConfig routerConfig = config.router;
+            
+            AuthMiddleware.apply(routerConfig);
+            Routers.apply(routerConfig);
         };
     }
 

@@ -6,7 +6,7 @@ import static io.javalin.apibuilder.ApiBuilder.post;
 
 import ar.edu.utn.frba.dds.controllers.session.SessionController;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
-import io.javalin.config.JavalinConfig;
+import io.javalin.config.RouterConfig;
 import java.util.Arrays;
 
 public class Routers {
@@ -25,8 +25,8 @@ public class Routers {
     // TEMP
     private static final UsuarioRepository usuarioRepository = new UsuarioRepository();
 
-    public static void apply(JavalinConfig config) {
-        config.router.apiBuilder(() -> {
+    public static void apply(RouterConfig config) {
+        config.apiBuilder(() -> {
             get("/", ctx -> ctx.redirect("/home"));
             get("/home", ctx -> ctx.render("home/home.hbs"));
             get("/test", ctx -> ctx.result("DDS TPA"));
