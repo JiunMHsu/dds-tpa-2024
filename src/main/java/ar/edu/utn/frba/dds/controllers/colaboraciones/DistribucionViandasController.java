@@ -2,6 +2,8 @@ package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
+import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
@@ -44,6 +46,17 @@ public class DistribucionViandasController extends ColaboradorPorSession impleme
 
     @Override
     public void create(Context context) {
+
+        Colaborador colaborador = obtenerColaboradorPorSession(context);
+
+        boolean tieneColaboracionDistribucionViandas = colaborador.getFormaDeColaborar()
+                .stream()
+                .anyMatch(colaboracion -> colaboracion.equals(Colaboracion.DISTRIBUCION_VIANDAS));
+
+        if (!tieneColaboracionDistribucionViandas) {
+            throw new UnauthorizedException("No tienes permiso");
+        }
+
         context.render("colaboraciones/distribucion_viandas_crear.hbs");
     }
 
@@ -58,19 +71,19 @@ public class DistribucionViandasController extends ColaboradorPorSession impleme
 
         try {
 
-            Optional<Heladera> heladeraOrigen = heladeraService.buscarHeladeraPorNombre(context.formParamAsClass("heladera_origen", String.class).get());
+            Optional<Heladera> heladeraOrigen = heladeraService.buscarHeladeraPorNombre(context.formParamAsClass("origen", String.class).get());
 
             if (heladeraOrigen.isEmpty()) {
                 throw new ResourceNotFoundException("Heladera no Encontrada");
             }
 
-            Optional<Heladera> heladeraDestino = heladeraService.buscarHeladeraPorNombre(context.formParamAsClass("heladera_destino", String.class).get());
+            Optional<Heladera> heladeraDestino = heladeraService.buscarHeladeraPorNombre(context.formParamAsClass("destino", String.class).get());
 
             if (heladeraDestino.isEmpty()) {
                 throw new ResourceNotFoundException("Heladera no Encontrada");
             }
 
-            Integer viandas = Integer.valueOf(context.formParamAsClass("viandas", Integer.class).get());
+            Integer viandas = Integer.valueOf(context.formParamAsClass("cantidad", Integer.class).get());
             String motivo = context.formParamAsClass("motivo", String.class).get();
 
             DistribucionViandas distribucionViandas = DistribucionViandas.por(

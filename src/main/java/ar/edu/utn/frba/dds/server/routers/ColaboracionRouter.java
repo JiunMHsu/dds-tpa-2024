@@ -5,6 +5,7 @@ import static io.javalin.apibuilder.ApiBuilder.path;
 import static io.javalin.apibuilder.ApiBuilder.post;
 
 import ar.edu.utn.frba.dds.config.ServiceLocator;
+import ar.edu.utn.frba.dds.controllers.colaboraciones.DistribucionViandasController;
 import ar.edu.utn.frba.dds.controllers.personaVulnerable.PersonaVulnerableController;
 import io.javalin.config.JavalinConfig;
 
@@ -58,9 +59,9 @@ public class ColaboracionRouter implements IRouter {
 
     private void routeDistribucionViandas() {
         path("/distribucion-viandas", () -> {
-            post(ctx -> ctx.result("FORMULARIO ENVIADO"));
+            post(ServiceLocator.instanceOf(DistribucionViandasController.class)::save);
 
-            get("/new", ctx -> ctx.render("colaboraciones/distribucion_viandas_crear.hbs"));
+            get("/new", ServiceLocator.instanceOf(DistribucionViandasController.class)::create);
             get("/{id}", ctx -> ctx.result("DETALLE DISTRIBUCION"));
         });
     }

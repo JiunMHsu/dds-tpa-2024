@@ -1,11 +1,13 @@
 package ar.edu.utn.frba.dds.config;
 
 import ar.edu.utn.frba.dds.controllers.Incidente.AlertaController;
+import ar.edu.utn.frba.dds.controllers.colaboraciones.DistribucionViandasController;
 import ar.edu.utn.frba.dds.controllers.colaborador.ColaboradorController;
 import ar.edu.utn.frba.dds.controllers.heladera.HeladeraController;
 import ar.edu.utn.frba.dds.controllers.heladera.PuntoIdealController;
 import ar.edu.utn.frba.dds.controllers.personaVulnerable.PersonaVulnerableController;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetasRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
@@ -160,6 +162,21 @@ public class ServiceLocator {
             TarjetaPersonaVulnerableService instance = new TarjetaPersonaVulnerableService(
                     instanceOf(TarjetaPersonaVulnerableRepository.class)
             );
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(DistribucionViandasController.class.getName())) {
+            DistribucionViandasController instance = new DistribucionViandasController(
+                    instanceOf(DistribucionViandasRepository.class),
+                    instanceOf(UsuarioService.class),
+                    instanceOf(ColaboradorService.class),
+                    instanceOf(HeladeraService.class)
+            );
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(DistribucionViandasRepository.class.getName())) {
+            DistribucionViandasRepository instance = new DistribucionViandasRepository();
             instances.put(componentName, instance);
         }
 
