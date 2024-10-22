@@ -6,6 +6,7 @@ import static io.javalin.apibuilder.ApiBuilder.post;
 
 import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DistribucionViandasController;
+import ar.edu.utn.frba.dds.controllers.colaboraciones.HacerseCargoHeladeraController;
 import ar.edu.utn.frba.dds.controllers.personaVulnerable.PersonaVulnerableController;
 import io.javalin.config.JavalinConfig;
 
@@ -77,9 +78,9 @@ public class ColaboracionRouter implements IRouter {
 
     private void routeEncargarseDeHeladeras() {
         path("/encargarse-de-heladeras", () -> {
-            post(ctx -> ctx.result("FORMULARIO ENVIADO"));
+            post(ServiceLocator.instanceOf(HacerseCargoHeladeraController.class)::save);
 
-            get("/new", ctx -> ctx.render("colaboraciones/encargarse_de_heladera_crear.hbs"));
+            get("/new", ServiceLocator.instanceOf(HacerseCargoHeladeraController.class)::create);
             get("/{id}", ctx -> ctx.result("DETALLE ENCARGO"));
         });
     }
