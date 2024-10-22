@@ -88,7 +88,7 @@ public class HacerseCargoHeladeraController extends ColaboradorPorSession implem
             redirectDTOS.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));
 
         } catch (ValidationException e) {
-            redirectDTOS.add(new RedirectDTO("/colaboraciones/new", "Reintentar"));
+            redirectDTOS.add(new RedirectDTO("/colaboraciones", "Reintentar"));
         } finally {
             model.put("success", operationSuccess);
             model.put("redirects", redirectDTOS);
