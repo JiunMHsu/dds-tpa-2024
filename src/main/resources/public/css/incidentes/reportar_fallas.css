@@ -1,0 +1,69 @@
+.main-section {
+    border: 1px solid var(--background-3);
+    overflow-y: hidden;
+}
+
+.form {
+    grid-template-columns: 15rem 15rem;
+}
+
+.field-nombre {
+    grid-column: 1 / -1;
+    margin-bottom: 1rem;
+}
+
+.field-descripcion {
+    grid-column: 1 / -1;
+    margin-bottom: 1rem;
+}
+
+.field-imagen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--foreground-2);
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.field-imagen input[type="file"] {
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.field-imagen #file-name {
+    margin-top: .25rem;
+    padding: .5rem;
+    border-radius: .3rem;
+    background-color: var(--background-2);
+    border: 1px solid var(--background-3);
+    font-size: .9rem;
+    color: var(--main-light-0);
+    cursor: pointer;
+    transition-property: all;
+    transition-duration: 300ms;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* Ajusta el ancho al 100% del contenedor */
+}
+
+.field-imagen input[type="file"]:focus + #file-name {
+    outline: none;
+    box-shadow: 0 0 .5rem var(--background-3);
+}
+
+.side-panel {
+    width: 35vw;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+}

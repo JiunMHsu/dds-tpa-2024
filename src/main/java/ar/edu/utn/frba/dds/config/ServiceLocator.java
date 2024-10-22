@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.config;
 
 import ar.edu.utn.frba.dds.controllers.Incidente.AlertaController;
+import ar.edu.utn.frba.dds.controllers.Incidente.FallaTecnicaController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DistribucionViandasController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionDineroController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.HacerseCargoHeladeraController;
@@ -70,6 +71,15 @@ public class ServiceLocator {
         if (componentName.equals(AlertaController.class.getName())) {
             AlertaController instance = new AlertaController(
                     instanceOf(IncidenteService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(FallaTecnicaController.class.getName())) {
+            FallaTecnicaController instance = new FallaTecnicaController(
+                    instanceOf(IncidenteService.class),
+                    instanceOf(HeladeraService.class),
+                    instanceOf(ColaboradorService.class),
+                    instanceOf(UsuarioService.class));
             instances.put(componentName, instance);
         }
 
