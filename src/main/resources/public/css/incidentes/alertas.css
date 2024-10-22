@@ -21,6 +21,7 @@
     align-items: center;
     width: 100%;
 }
+
 .item-card {
     display: flex;
     flex-direction: column;
@@ -53,9 +54,10 @@
 }
 
 .item-card:hover {
-    color:  var(--foreground-0);
+    color: var(--foreground-0);
     background-color: var(--background-2);
 }
-.contenedor{
+
+.contenedor {
     display: flex;
 }

@@ -8,4 +8,9 @@ public class DistribucionViandasRepository extends ColaboracionRepository<Distri
     public DistribucionViandasRepository() {
         super(DistribucionViandas.class);
     }
+
+    @Override
+    public void guardar(DistribucionViandas distribucionViandas) {
+        withTransaction(() -> entityManager().persist(distribucionViandas));
+    }
 }

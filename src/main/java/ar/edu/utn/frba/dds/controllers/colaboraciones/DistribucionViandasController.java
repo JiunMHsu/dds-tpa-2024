@@ -1,28 +1,41 @@
 package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
+import ar.edu.utn.frba.dds.dtos.RedirectDTO;
+import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
+import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.models.entities.heladera.ExcepcionCantidadDeViandas;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
-import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
+import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.ColaboradorPorSession;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
+import io.javalin.validation.ValidationException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class DistribucionViandasController extends ColaboradorPorSession implements ICrudViewsHandler {
 
     private DistribucionViandasRepository distribucionViandasRepository;
-    private HeladeraRepository heladeraRepository;
+    private HeladeraService heladeraService;
 
     public DistribucionViandasController(DistribucionViandasRepository distribucionViandasRepository,
                                          UsuarioService usuarioService,
-                                         ColaboradorService colaboradorService) {
+                                         ColaboradorService colaboradorService,
+                                         HeladeraService heladeraService) {
 
         super(usuarioService, colaboradorService);
         this.distribucionViandasRepository = distribucionViandasRepository;
+        this.heladeraService = heladeraService;
     }
 
     @Override
@@ -37,25 +50,82 @@ public class DistribucionViandasController extends ColaboradorPorSession impleme
 
     @Override
     public void create(Context context) {
+
+        Colaborador colaborador = obtenerColaboradorPorSession(context);
+
+        boolean tieneColaboracionDistribucionViandas = colaborador.getFormaDeColaborar()
+                .stream()
+                .anyMatch(colaboracion -> colaboracion.equals(Colaboracion.DISTRIBUCION_VIANDAS));
+
+        if (!tieneColaboracionDistribucionViandas) {
+            throw new UnauthorizedException("No tienes permiso");
+        }
+
         context.render("colaboraciones/distribucion_viandas_crear.hbs");
     }
 
     @Override
     public void save(Context context) {
 
+        Map<String, Object> model = new HashMap<>();
+        List<RedirectDTO> redirectDTOS = new ArrayList<>();
+        boolean operationSuccess = false;
+
         Colaborador colaborador = obtenerColaboradorPorSession(context);
 
-        //TODO chequear empty heladeras
-        Heladera heladeraOrigen = heladeraRepository.buscarPorId(context.formParam("heladera_origen")).get();
-        Heladera heladeraDestino = heladeraRepository.buscarPorId(context.formParam("heladera_destino")).get();
-        Integer viandas = Integer.valueOf(context.formParam("viandas"));
-        String motivo = context.formParam("motivo");
-        DistribucionViandas distribucionViandas = DistribucionViandas.por(colaborador, LocalDateTime.now(), heladeraOrigen, heladeraDestino, viandas, motivo);
+        try {
 
-        this.distribucionViandasRepository.guardar(distribucionViandas);
+            Optional<Heladera> optionalHeladeraOrigen = heladeraService.buscarHeladeraPorNombre(context.formParamAsClass("origen", String.class).get());
 
-        context.redirect("result_form");
+            if (optionalHeladeraOrigen.isEmpty()) {
+                throw new ResourceNotFoundException("Heladera no Encontrada");
+            }
 
+            Optional<Heladera> optionalHeladeraDestino = heladeraService.buscarHeladeraPorNombre(context.formParamAsClass("destino", String.class).get());
+
+            if (optionalHeladeraDestino.isEmpty()) {
+                throw new ResourceNotFoundException("Heladera no Encontrada");
+            }
+
+            Integer viandas = Integer.valueOf(context.formParamAsClass("cantidad", Integer.class).get());
+            String motivo = context.formParamAsClass("motivo", String.class).get();
+
+            Heladera heladeraOrigen = optionalHeladeraOrigen.get();
+            Heladera heladeraDestino = optionalHeladeraDestino.get();
+
+            try {
+                heladeraOrigen.quitarViandas(viandas);
+                heladeraDestino.agregarViandas(viandas);
+            } catch (ExcepcionCantidadDeViandas e) {
+                redirectDTOS.add(new RedirectDTO("/colaboraciones", "Reintentar"));
+                context.render("post_result.hbs", model);
+                return;
+            }
+
+            this.heladeraService.actualizarHeladera(heladeraOrigen);
+            this.heladeraService.actualizarHeladera(heladeraDestino);
+
+            DistribucionViandas distribucionViandas = DistribucionViandas.por(
+                    colaborador,
+                    LocalDateTime.now(),
+                    heladeraOrigen,
+                    heladeraDestino,
+                    viandas,
+                    motivo
+            );
+
+            this.distribucionViandasRepository.guardar(distribucionViandas);
+
+            operationSuccess = true;
+            redirectDTOS.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));
+
+        } catch (ValidationException e) {
+            redirectDTOS.add(new RedirectDTO("/colaboraciones", "Reintentar"));
+        } finally {
+            model.put("success", operationSuccess);
+            model.put("redirects", redirectDTOS);
+            context.render("post_result.hbs", model);
+        }
     }
 
     @Override

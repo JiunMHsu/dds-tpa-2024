@@ -5,16 +5,20 @@ import static io.javalin.apibuilder.ApiBuilder.path;
 import static io.javalin.apibuilder.ApiBuilder.post;
 
 import ar.edu.utn.frba.dds.config.ServiceLocator;
+import ar.edu.utn.frba.dds.controllers.colaboraciones.DistribucionViandasController;
+import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionDineroController;
+import ar.edu.utn.frba.dds.controllers.colaboraciones.HacerseCargoHeladeraController;
 import ar.edu.utn.frba.dds.controllers.personaVulnerable.PersonaVulnerableController;
-import io.javalin.config.JavalinConfig;
+import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
+import io.javalin.config.RouterConfig;
 
 public class ColaboracionRouter implements IRouter {
 
     @Override
-    public void apply(JavalinConfig config) {
-        config.router.apiBuilder(() ->
+    public void apply(RouterConfig config) {
+        config.apiBuilder(() ->
                 path("/colaboraciones", () -> {
-                    get(ctx -> ctx.render("colaboraciones/colaboraciones.hbs"));
+                    get(ctx -> ctx.render("colaboraciones/colaboraciones.hbs"), TipoRol.COLABORADOR, TipoRol.ADMIN);
 
                     this.routeDonacionDinero();
                     this.routeDonacionVianda();
@@ -31,10 +35,12 @@ public class ColaboracionRouter implements IRouter {
 
     private void routeDonacionDinero() {
         path("/donacion-dinero", () -> {
-            post(ctx -> ctx.result("FORMULARIO ENVIADO"));
+            // TODO - get (tipo filtro de las colaboraciones general)
 
-            get("/new", ctx -> ctx.render("colaboraciones/donacion_dinero_crear.hbs"));
-            get("/{id}", ctx -> ctx.result("DETALLE DONACION"));
+            post(ServiceLocator.instanceOf(DonacionDineroController.class)::save, TipoRol.COLABORADOR);
+
+            get("/new", ServiceLocator.instanceOf(DonacionDineroController.class)::create, TipoRol.COLABORADOR);
+            get("/{id}", ServiceLocator.instanceOf(DonacionDineroController.class)::show, TipoRol.COLABORADOR, TipoRol.ADMIN);
         });
     }
 
@@ -49,18 +55,18 @@ public class ColaboracionRouter implements IRouter {
 
     private void routeRegistroPersonaVulnerable() {
         path("/registro-persona-vulnerable", () -> {
-            post(ServiceLocator.instanceOf(PersonaVulnerableController.class)::save);
+            post(ServiceLocator.instanceOf(PersonaVulnerableController.class)::save, TipoRol.COLABORADOR);
 
-            get("/new", ServiceLocator.instanceOf(PersonaVulnerableController.class)::create);
-            get("/{id}", ctx -> ctx.result("DETALLE REGISTRO"));
+            get("/new", ServiceLocator.instanceOf(PersonaVulnerableController.class)::create, TipoRol.COLABORADOR);
+            get("/{id}", ctx -> ctx.result("DETALLE REGISTRO"), TipoRol.COLABORADOR, TipoRol.ADMIN);
         });
     }
 
     private void routeDistribucionViandas() {
         path("/distribucion-viandas", () -> {
-            post(ctx -> ctx.result("FORMULARIO ENVIADO"));
+            post(ServiceLocator.instanceOf(DistribucionViandasController.class)::save);
 
-            get("/new", ctx -> ctx.render("colaboraciones/distribucion_viandas_crear.hbs"));
+            get("/new", ServiceLocator.instanceOf(DistribucionViandasController.class)::create);
             get("/{id}", ctx -> ctx.result("DETALLE DISTRIBUCION"));
         });
     }
@@ -76,9 +82,9 @@ public class ColaboracionRouter implements IRouter {
 
     private void routeEncargarseDeHeladeras() {
         path("/encargarse-de-heladeras", () -> {
-            post(ctx -> ctx.result("FORMULARIO ENVIADO"));
+            post(ServiceLocator.instanceOf(HacerseCargoHeladeraController.class)::save);
 
-            get("/new", ctx -> ctx.render("colaboraciones/encargarse_de_heladera_crear.hbs"));
+            get("/new", ServiceLocator.instanceOf(HacerseCargoHeladeraController.class)::create);
             get("/{id}", ctx -> ctx.result("DETALLE ENCARGO"));
         });
     }

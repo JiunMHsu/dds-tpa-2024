@@ -7,4 +7,10 @@ public class HacerseCargoHeladeraRepository extends ColaboracionRepository<Hacer
     public HacerseCargoHeladeraRepository() {
         super(HacerseCargoHeladera.class);
     }
+
+    @Override
+    public void guardar(HacerseCargoHeladera hacerseCargoHeladera) {
+        withTransaction(() -> entityManager().persist(hacerseCargoHeladera));
+    }
 }
+
