@@ -1,0 +1,58 @@
+{{#partial "title"}}
+    Reportar Falla
+{{/partial}}
+{{#partial "links"}}
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/incidentes/reportar_fallas.css"/>
+    <link
+            href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css"
+            rel="stylesheet"
+    />
+{{/partial}}
+{{#partial "scripts"}}
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+    <script src="/js/map.js"></script>
+{{/partial}}
+{{#partial "main-content"}}
+    <div class="form-container">
+        <h2 class="form-title">Registrar Falla Tecnica</h2>
+
+        <form action="/reportar_falla" method="post" class="form">
+            <label class="field-nombre">
+                Nombre
+                <input
+                        type="text"
+                        name="nombre"
+                        placeholder="Heladera Medrano UTN"
+                        required
+                />
+            </label>
+            <label class="field-descripcion">
+                Descripcion
+                <input
+                        type="text"
+                        name="descripcion"
+                        placeholder="Describe el problema técnico de la heladera (e.j., no enfría, hace ruido)"
+                        required
+                />
+            </label>
+            <label class="field-imagen">
+                Imagen
+                <input
+                        type="file"
+                        name="imagen"
+                        id="file-input"
+                />
+                <span id="file-name">Seleccionar archivo</span>
+            </label>
+
+            <div class="form-button-container">
+                <button type="submit">Reportar</button>
+            </div>
+        </form>
+    </div>
+{{/partial}}
+{{#partial "side-panel"}}
+     <div id="map"></div>
+ {{/partial}}
+{{> templates/base}}

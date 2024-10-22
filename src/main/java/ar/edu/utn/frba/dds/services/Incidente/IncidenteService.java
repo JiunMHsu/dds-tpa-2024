@@ -4,11 +4,18 @@ import static ar.edu.utn.frba.dds.models.entities.incidente.TipoIncidente.FALLA_
 
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
+import io.javalin.http.UploadedFile;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class IncidenteService {
 
@@ -21,6 +28,14 @@ public class IncidenteService {
     public List<Incidente> buscarIncidentes() {
         return this.incidenteRepository.obtenerTodos();
     }
+
+    public List<Incidente> buscarIncidentesPorAlertas() {
+        List<Incidente> todosLosIncidentes = buscarIncidentes();
+        return todosLosIncidentes.stream()
+            .filter(incidente -> !incidente.getTipo().equals(FALLA_TECNICA))
+            .collect(Collectors.toList());
+    }
+
 
     public Map<String, Integer> incidentesPorHeladera() {
 
@@ -49,5 +64,15 @@ public class IncidenteService {
     // Lo dejo basico x ahora
     public Optional<Incidente> buscarIncidentePorId(String id) {
         return Optional.empty(); // this.incidenteRepository.buscarPorId(id);
+    }
+
+    public String guardarArchivo(UploadedFile uploadedFile) throws IOException {
+       
+        String uploadDir = "ruta/a/tu/directorio/de/subidas";
+        Path path = Paths.get(uploadDir, uploadedFile.filename());
+        
+        Files.copy(uploadedFile.content(), path, StandardCopyOption.REPLACE_EXISTING);
+        
+        return path.toString();
     }
 }
