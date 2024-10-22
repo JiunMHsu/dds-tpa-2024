@@ -7,13 +7,13 @@ import static io.javalin.apibuilder.ApiBuilder.post;
 import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.controllers.colaborador.ColaboradorController;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
-import io.javalin.config.JavalinConfig;
+import io.javalin.config.RouterConfig;
 
 public class ColaboradorRouter implements IRouter {
 
     @Override
-    public void apply(JavalinConfig config) {
-        config.router.apiBuilder(() -> {
+    public void apply(RouterConfig config) {
+        config.apiBuilder(() -> {
             path("/perfil", () -> {
                 get(ServiceLocator.instanceOf(ColaboradorController.class)::getProfile, TipoRol.COLABORADOR);
             });

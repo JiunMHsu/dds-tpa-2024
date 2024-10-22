@@ -7,13 +7,13 @@ import static io.javalin.apibuilder.ApiBuilder.post;
 import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.controllers.heladera.HeladeraController;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
-import io.javalin.config.JavalinConfig;
+import io.javalin.config.RouterConfig;
 
 public class HeladeraRouter implements IRouter {
 
     @Override
-    public void apply(JavalinConfig config) {
-        config.router.apiBuilder(() ->
+    public void apply(RouterConfig config) {
+        config.apiBuilder(() ->
                 path("/heladeras", () -> {
                     get(ServiceLocator.instanceOf(HeladeraController.class)::index);
                     post(ServiceLocator.instanceOf(HeladeraController.class)::save, TipoRol.ADMIN);

@@ -10,13 +10,13 @@ import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionDineroController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.HacerseCargoHeladeraController;
 import ar.edu.utn.frba.dds.controllers.personaVulnerable.PersonaVulnerableController;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
-import io.javalin.config.JavalinConfig;
+import io.javalin.config.RouterConfig;
 
 public class ColaboracionRouter implements IRouter {
 
     @Override
-    public void apply(JavalinConfig config) {
-        config.router.apiBuilder(() ->
+    public void apply(RouterConfig config) {
+        config.apiBuilder(() ->
                 path("/colaboraciones", () -> {
                     get(ctx -> ctx.render("colaboraciones/colaboraciones.hbs"));
 
