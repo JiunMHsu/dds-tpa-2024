@@ -7,6 +7,7 @@ public class UnauthenticatedHandler implements IHandler {
     @Override
     public void setHandler(Javalin app) {
         app.exception(UnauthenticatedException.class, (e, ctx) -> {
+            System.out.println("usuario no autenticado");
             ctx.status(401);
             ctx.redirect("/login");
         });

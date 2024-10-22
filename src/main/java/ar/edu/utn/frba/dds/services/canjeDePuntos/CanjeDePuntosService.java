@@ -1,42 +1,50 @@
 package ar.edu.utn.frba.dds.services.canjeDePuntos;
 
 import ar.edu.utn.frba.dds.config.ServiceLocator;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.*;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDinero;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.HacerseCargoHeladera;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.RepartoDeTarjetas;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.puntosPorColaborador.CanjeDePuntos;
 import ar.edu.utn.frba.dds.models.entities.puntosPorColaborador.VarianteCalculoDePuntos;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.CanjeDePuntosRepository;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.*;
-import lombok.Builder;
-import lombok.Setter;
-
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladeraRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetasRepository;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.chrono.ChronoLocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import lombok.Builder;
+import lombok.Setter;
 
 @Setter
 @Builder
 public class CanjeDePuntosService {
-    private Colaborador colaborador;
-    private LocalDateTime fechaUltimoCanje;
-    private VarianteCalculoDePuntos variante;
-    private CanjeDePuntosRepository canjeDePuntosRepository;
     private final DonacionDineroRepository donacionDineroRepository;
     private final DistribucionViandasRepository distribucionViandasRepository;
     private final DonacionViandaRepository donacionViandaRepository;
     private final RepartoDeTarjetasRepository repartoDeTarjetasRepository;
     private final HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository;
-    public CanjeDePuntosService of(DonacionDineroRepository donacionDineroRepository, DistribucionViandasRepository distribucionViandasRepository, DonacionViandaRepository donacionViandaRepository, RepartoDeTarjetasRepository repartoDeTarjetasRepository, HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository, CanjeDePuntosRepository canjeDePuntosRepository ) {
+    private Colaborador colaborador;
+    private LocalDateTime fechaUltimoCanje;
+    private VarianteCalculoDePuntos variante;
+    private CanjeDePuntosRepository canjeDePuntosRepository;
+
+    public CanjeDePuntosService of(DonacionDineroRepository donacionDineroRepository, DistribucionViandasRepository distribucionViandasRepository, DonacionViandaRepository donacionViandaRepository, RepartoDeTarjetasRepository repartoDeTarjetasRepository, HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository, CanjeDePuntosRepository canjeDePuntosRepository) {
         return CanjeDePuntosService
                 .builder()
-                .donacionDineroRepository (donacionDineroRepository)
-                .distribucionViandasRepository (distribucionViandasRepository)
-                .donacionViandaRepository (donacionViandaRepository)
-                .repartoDeTarjetasRepository (repartoDeTarjetasRepository)
-                .hacerseCargoHeladeraRepository (hacerseCargoHeladeraRepository)
+                .donacionDineroRepository(donacionDineroRepository)
+                .distribucionViandasRepository(distribucionViandasRepository)
+                .donacionViandaRepository(donacionViandaRepository)
+                .repartoDeTarjetasRepository(repartoDeTarjetasRepository)
+                .hacerseCargoHeladeraRepository(hacerseCargoHeladeraRepository)
                 .variante(ServiceLocator.instanceOf(VarianteCalculoDePuntos.class))//TODO asi o que le entre parametro la instancia
                 .canjeDePuntosRepository(canjeDePuntosRepository)
                 .build();
@@ -160,7 +168,7 @@ public class CanjeDePuntosService {
         return puntaje;
     }
 
-    public Optional<CanjeDePuntos> obtenerUltimoPorColaborador(Colaborador unColaborador){return canjeDePuntosRepository.obtenerUltimoPorColaborador(unColaborador);}
-
-    public void guardar(CanjeDePuntos canjeDePuntos){canjeDePuntosRepository.guardar(canjeDePuntos);}
+    public Optional<CanjeDePuntos> obtenerUltimoPorColaborador(Colaborador unColaborador) {
+        return canjeDePuntosRepository.obtenerUltimoPorColaborador(unColaborador);
+    }
 }

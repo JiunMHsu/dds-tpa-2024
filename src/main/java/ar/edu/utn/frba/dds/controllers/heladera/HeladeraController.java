@@ -125,7 +125,6 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
             model.put("redirects", redirectDTOS);
             context.render("post_result.hbs", model);
         }
-
     }
 
     @Override

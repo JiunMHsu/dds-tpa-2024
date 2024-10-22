@@ -1,11 +1,9 @@
 package ar.edu.utn.frba.dds.models.entities.puntosPorColaborador;
 
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
-
+import ar.edu.utn.frba.dds.services.canjeDePuntos.CanjeDePuntosService;
 import java.time.LocalDateTime;
 import java.util.Optional;
-
-import ar.edu.utn.frba.dds.services.canjeDePuntos.CanjeDePuntosService;
 import lombok.Builder;
 
 @Builder

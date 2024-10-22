@@ -17,4 +17,8 @@ public class UsuarioService {
         }
         return usuarioRepository.buscarPorId(id);
     }
+
+    public Optional<Usuario> obtenerUsuarioPorEmail(String email) {
+        return usuarioRepository.obtenerPorEmail(email);
+    }
 }

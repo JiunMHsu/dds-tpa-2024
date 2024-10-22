@@ -1,14 +1,5 @@
 package ar.edu.utn.frba.dds.reportes;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.HashMap;
-import java.util.Map;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 public class GeneradorDeReporteTest {
 
     //TODO hacerlo de nuevo
