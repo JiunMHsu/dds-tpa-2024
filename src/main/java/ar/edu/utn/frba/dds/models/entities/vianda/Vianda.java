@@ -7,11 +7,15 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.criteria.CriteriaBuilder;
+
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -27,5 +31,16 @@ public class Vianda extends EntidadPersistente {
     @Column(name = "peso", nullable = false)
     private Integer peso;
 
+    public static Vianda with(Comida comida,
+                       LocalDate fechaCaducidad,
+                       Integer peso){
+
+        return Vianda
+                .builder()
+                .comida(comida)
+                .fechaCaducidad(fechaCaducidad)
+                .peso(peso)
+                .build();
+    }
 
 }
