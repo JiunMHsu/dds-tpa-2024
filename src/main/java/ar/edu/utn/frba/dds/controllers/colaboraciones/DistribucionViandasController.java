@@ -6,6 +6,7 @@ import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.models.entities.heladera.ExcepcionCantidadDeViandas;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
@@ -71,26 +72,41 @@ public class DistribucionViandasController extends ColaboradorPorSession impleme
 
         try {
 
-            Optional<Heladera> heladeraOrigen = heladeraService.buscarHeladeraPorNombre(context.formParamAsClass("origen", String.class).get());
+            Optional<Heladera> optionalHeladeraOrigen = heladeraService.buscarHeladeraPorNombre(context.formParamAsClass("origen", String.class).get());
 
-            if (heladeraOrigen.isEmpty()) {
+            if (optionalHeladeraOrigen.isEmpty()) {
                 throw new ResourceNotFoundException("Heladera no Encontrada");
             }
 
-            Optional<Heladera> heladeraDestino = heladeraService.buscarHeladeraPorNombre(context.formParamAsClass("destino", String.class).get());
+            Optional<Heladera> optionalHeladeraDestino = heladeraService.buscarHeladeraPorNombre(context.formParamAsClass("destino", String.class).get());
 
-            if (heladeraDestino.isEmpty()) {
+            if (optionalHeladeraDestino.isEmpty()) {
                 throw new ResourceNotFoundException("Heladera no Encontrada");
             }
 
             Integer viandas = Integer.valueOf(context.formParamAsClass("cantidad", Integer.class).get());
             String motivo = context.formParamAsClass("motivo", String.class).get();
 
+            Heladera heladeraOrigen = optionalHeladeraOrigen.get();
+            Heladera heladeraDestino = optionalHeladeraDestino.get();
+
+            try {
+                heladeraOrigen.quitarViandas(viandas);
+                heladeraDestino.agregarViandas(viandas);
+            } catch (ExcepcionCantidadDeViandas e) {
+                redirectDTOS.add(new RedirectDTO("/colaboraciones", "Reintentar"));
+                context.render("post_result.hbs", model);
+                return;
+            }
+
+            this.heladeraService.actualizarHeladera(heladeraOrigen);
+            this.heladeraService.actualizarHeladera(heladeraDestino);
+
             DistribucionViandas distribucionViandas = DistribucionViandas.por(
                     colaborador,
                     LocalDateTime.now(),
-                    heladeraOrigen.get(),
-                    heladeraDestino.get(),
+                    heladeraOrigen,
+                    heladeraDestino,
                     viandas,
                     motivo
             );
@@ -101,7 +117,7 @@ public class DistribucionViandasController extends ColaboradorPorSession impleme
             redirectDTOS.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));
 
         } catch (ValidationException e) {
-            redirectDTOS.add(new RedirectDTO("/colaboraciones/new", "Reintentar"));
+            redirectDTOS.add(new RedirectDTO("/colaboraciones", "Reintentar"));
         } finally {
             model.put("success", operationSuccess);
             model.put("redirects", redirectDTOS);
