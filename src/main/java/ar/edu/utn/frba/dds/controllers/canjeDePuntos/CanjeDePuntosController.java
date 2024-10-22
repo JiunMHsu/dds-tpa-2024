@@ -1,25 +1,26 @@
 package ar.edu.utn.frba.dds.controllers.canjeDePuntos;
 
+import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.puntosPorColaborador.CanjeDePuntos;
+import ar.edu.utn.frba.dds.models.entities.puntosPorColaborador.PuntosPorColaborador;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.CanjeDePuntosRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
+import ar.edu.utn.frba.dds.services.canjeDePuntos.CanjeDePuntosService;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import java.time.LocalDateTime;
 
 public class CanjeDePuntosController implements ICrudViewsHandler {
 
-    private CanjeDePuntosRepository canjeDePuntosRepository;
     private ColaboradorRepository colaboradorRepository;
+
+    private CanjeDePuntosService canjeDePuntosService;
     private OfertaDeProductosRepository ofertaDeProductosRepository;
 
 
-    public CanjeDePuntosController(CanjeDePuntosRepository canjeDePuntosRepository) {
-        this.canjeDePuntosRepository = canjeDePuntosRepository;
-    }
 
     @Override
     public void index(Context context) {
@@ -50,7 +51,7 @@ public class CanjeDePuntosController implements ICrudViewsHandler {
         OfertaDeProductos oferta = ofertaDeProductosRepository.buscarPorId(context.formParam("oferta_id")).get();
         CanjeDePuntos canjeDePuntosNuevo = CanjeDePuntos.por(colaboradorCanje, LocalDateTime.now(), puntosCanjeados, puntosRestantes, oferta);
 
-        this.canjeDePuntosRepository.guardar(canjeDePuntosNuevo);
+        this.canjeDePuntosService.guardar(canjeDePuntosNuevo);
 
         context.redirect("canje_de_puntos/canje_exitoso.hbs");
 
@@ -68,6 +69,14 @@ public class CanjeDePuntosController implements ICrudViewsHandler {
 
     @Override
     public void delete(Context context) {
+
+    }
+
+    public void obtenerPuntos(Context context){
+        Colaborador colaborador = colaboradorRepository.buscarPorId(context.sessionAttribute("userId")).get();
+        PuntosPorColaborador puntosPorColaborador = PuntosPorColaborador.of(colaborador, canjeDePuntosService);
+        Double puntos = puntosPorColaborador.calcularPuntos();
+        //TODO mandar los puntos a la vista
 
     }
 

@@ -45,8 +45,6 @@ public class CanjeDePuntosService {
     public Double calcularPuntos(Colaborador colaborador, LocalDateTime fechaUltimoCanje, Double puntosSobrantes) {
         this.setColaborador(colaborador);
         this.setFechaUltimoCanje(fechaUltimoCanje);
-        System.out.println(puntosSobrantes);
-        System.out.println(fechaUltimoCanje);
         return this.calcularPorPesosDonados()
                 + this.calcularPorViandasDistribuidas()
                 + this.calcularPorViandasDonadas()
@@ -163,4 +161,6 @@ public class CanjeDePuntosService {
     }
 
     public Optional<CanjeDePuntos> obtenerUltimoPorColaborador(Colaborador unColaborador){return canjeDePuntosRepository.obtenerUltimoPorColaborador(unColaborador);}
+
+    public void guardar(CanjeDePuntos canjeDePuntos){canjeDePuntosRepository.guardar(canjeDePuntos);}
 }

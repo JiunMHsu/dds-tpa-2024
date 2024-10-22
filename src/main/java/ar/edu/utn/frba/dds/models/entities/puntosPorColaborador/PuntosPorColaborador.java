@@ -16,7 +16,7 @@ public class PuntosPorColaborador {
     private Double puntosSobrantes;
     private CanjeDePuntosService canjeDePuntosService;
 
-    public PuntosPorColaborador of(Colaborador colaborador, CanjeDePuntosService canjeDePuntosService) {
+    public static PuntosPorColaborador of(Colaborador colaborador, CanjeDePuntosService canjeDePuntosService) {
         PuntosPorColaboradorBuilder puntosPorColaboracion = PuntosPorColaborador
                 .builder()
                 .colaborador(colaborador)
