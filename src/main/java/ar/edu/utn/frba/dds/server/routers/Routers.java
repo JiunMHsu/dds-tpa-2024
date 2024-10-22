@@ -4,8 +4,9 @@ import static io.javalin.apibuilder.ApiBuilder.get;
 import static io.javalin.apibuilder.ApiBuilder.path;
 import static io.javalin.apibuilder.ApiBuilder.post;
 
+import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.controllers.session.SessionController;
-import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
+import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import io.javalin.config.RouterConfig;
 import java.util.Arrays;
 
@@ -22,18 +23,15 @@ public class Routers {
             new ReporteRouter()
     };
 
-    // TEMP
-    private static final UsuarioRepository usuarioRepository = new UsuarioRepository();
-
     public static void apply(RouterConfig config) {
         config.apiBuilder(() -> {
-            get("/", ctx -> ctx.redirect("/home"));
-            get("/home", ctx -> ctx.render("home/home.hbs"));
+            get("/", ctx -> ctx.redirect("/home"), TipoRol.COLABORADOR, TipoRol.ADMIN);
+            get("/home", ctx -> ctx.render("home/home.hbs"), TipoRol.COLABORADOR, TipoRol.ADMIN);
             get("/test", ctx -> ctx.result("DDS TPA"));
 
             path("/login", () -> {
-                get(new SessionController(usuarioRepository)::index);
-                post(new SessionController(usuarioRepository)::create);
+                get(ServiceLocator.instanceOf(SessionController.class)::index, TipoRol.GUEST);
+                post(ServiceLocator.instanceOf(SessionController.class)::create, TipoRol.GUEST);
             });
 
             get("/image/{id}", ctx -> ctx.result("IMAGEN"));

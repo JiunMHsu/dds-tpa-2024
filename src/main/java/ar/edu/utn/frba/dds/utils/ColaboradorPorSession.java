@@ -30,6 +30,6 @@ public abstract class ColaboradorPorSession {
             context.status(404).result("Colaborador no encontrado");
         }
 
-        return colaboradorSession.get();
+        return colaboradorSession.orElseThrow();
     }
 }

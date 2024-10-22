@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.controllers.session;
 
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
-import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
+import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import java.util.HashMap;
@@ -11,10 +11,10 @@ import java.util.Optional;
 
 public class SessionController {
 
-    private final UsuarioRepository usuarioRepository;
+    private final UsuarioService usuarioService;
 
-    public SessionController(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
+    public SessionController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
     }
 
     public void index(Context context) {
@@ -38,7 +38,7 @@ public class SessionController {
         String email = context.formParam("email");
         String claveIngresada = context.formParam("clave");
 
-        Optional<Usuario> usuario = usuarioRepository.obtenerPorEmail(email);
+        Optional<Usuario> usuario = usuarioService.obtenerUsuarioPorEmail(email);
 
         // TODO - modificar la estrategia de manejar falla login
         if (usuario.isEmpty()) {

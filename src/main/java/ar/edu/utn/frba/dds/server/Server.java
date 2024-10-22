@@ -55,7 +55,7 @@ public class Server {
 
             setFileRenderer(config);
             RouterConfig routerConfig = config.router;
-            
+
             AuthMiddleware.apply(routerConfig);
             Routers.apply(routerConfig);
         };

@@ -15,13 +15,13 @@ public class HeladeraRouter implements IRouter {
     public void apply(RouterConfig config) {
         config.apiBuilder(() ->
                 path("/heladeras", () -> {
-                    get(ServiceLocator.instanceOf(HeladeraController.class)::index);
+                    get(ServiceLocator.instanceOf(HeladeraController.class)::index, TipoRol.COLABORADOR, TipoRol.ADMIN);
                     post(ServiceLocator.instanceOf(HeladeraController.class)::save, TipoRol.ADMIN);
 
                     get("/new", ServiceLocator.instanceOf(HeladeraController.class)::create, TipoRol.ADMIN);
 
                     path("/{id}", () -> {
-                        get(ServiceLocator.instanceOf(HeladeraController.class)::show);
+                        get(ServiceLocator.instanceOf(HeladeraController.class)::show, TipoRol.COLABORADOR, TipoRol.ADMIN);
                         post(ServiceLocator.instanceOf(HeladeraController.class)::update, TipoRol.ADMIN, TipoRol.COLABORADOR);
 
                         get("/edit", ServiceLocator.instanceOf(HeladeraController.class)::edit, TipoRol.ADMIN, TipoRol.COLABORADOR);
