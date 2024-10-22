@@ -6,8 +6,10 @@ import static io.javalin.apibuilder.ApiBuilder.post;
 
 import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DistribucionViandasController;
+import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionDineroController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.HacerseCargoHeladeraController;
 import ar.edu.utn.frba.dds.controllers.personaVulnerable.PersonaVulnerableController;
+import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import io.javalin.config.JavalinConfig;
 
 public class ColaboracionRouter implements IRouter {
@@ -33,10 +35,12 @@ public class ColaboracionRouter implements IRouter {
 
     private void routeDonacionDinero() {
         path("/donacion-dinero", () -> {
-            post(ctx -> ctx.result("FORMULARIO ENVIADO"));
+            // TODO - get (tipo filtro de las colaboraciones general)
 
-            get("/new", ctx -> ctx.render("colaboraciones/donacion_dinero_crear.hbs"));
-            get("/{id}", ctx -> ctx.result("DETALLE DONACION"));
+            post(ServiceLocator.instanceOf(DonacionDineroController.class)::save, TipoRol.COLABORADOR);
+
+            get("/new", ServiceLocator.instanceOf(DonacionDineroController.class)::create, TipoRol.COLABORADOR);
+            get("/{id}", ServiceLocator.instanceOf(DonacionDineroController.class)::show, TipoRol.COLABORADOR, TipoRol.ADMIN);
         });
     }
 
