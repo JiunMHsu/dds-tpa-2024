@@ -1,7 +1,6 @@
 package ar.edu.utn.frba.dds.controllers.Incidente;
 
 import static ar.edu.utn.frba.dds.models.entities.incidente.TipoIncidente.FALLA_TECNICA;
-import static org.apache.camel.tooling.model.Kind.model;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
@@ -41,7 +40,7 @@ public class FallaTecnicaController extends ColaboradorPorSession {
         Map<String, Object> model = new HashMap<>();
         model.put("colaborador", colaborador);
 
-        context.render("reportar_falla/reportar_falla.hbs", model);
+        context.render("falla_tecnica/falla_tecnica_crear.hbs", model);
     }
 
     public void save(Context context) {
@@ -68,12 +67,12 @@ public class FallaTecnicaController extends ColaboradorPorSession {
             String pathImagen = this.incidenteService.guardarArchivo(uploadedFile);
 
             Incidente nuevaFallaTecnica = new Incidente(
-                heladera.get(),
-                LocalDateTime.now(),
-                FALLA_TECNICA,
-                colaborador,
-                descripcion,
-                new Imagen(pathImagen)
+                    heladera.get(),
+                    LocalDateTime.now(),
+                    FALLA_TECNICA,
+                    colaborador,
+                    descripcion,
+                    new Imagen(pathImagen)
             );
 
             this.incidenteService.guardarIncidente(nuevaFallaTecnica);

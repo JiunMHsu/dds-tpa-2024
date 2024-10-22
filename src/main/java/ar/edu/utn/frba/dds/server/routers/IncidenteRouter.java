@@ -16,17 +16,17 @@ public class IncidenteRouter implements IRouter {
     public void apply(RouterConfig config) {
         config.apiBuilder(() -> {
             path("/alertas", () -> {
-                get(ServiceLocator.instanceOf(AlertaController.class)::index);
+                get(ServiceLocator.instanceOf(AlertaController.class)::index, TipoRol.COLABORADOR, TipoRol.ADMIN, TipoRol.TECNICO);
 
                 path("/{id}", () -> {
-                    get(ServiceLocator.instanceOf(AlertaController.class)::show);
+                    get(ServiceLocator.instanceOf(AlertaController.class)::show, TipoRol.COLABORADOR, TipoRol.ADMIN, TipoRol.TECNICO);
                 });
             });
 
-            path("/reportar-falla", () -> {
+            path("/fallas-tecnicas", () -> {
                 post(ServiceLocator.instanceOf(FallaTecnicaController.class)::save, TipoRol.COLABORADOR);
 
-                get(ServiceLocator.instanceOf(FallaTecnicaController.class)::create, TipoRol.COLABORADOR);
+                get("/new", ServiceLocator.instanceOf(FallaTecnicaController.class)::create, TipoRol.COLABORADOR);
 
             });
 
