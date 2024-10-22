@@ -171,4 +171,8 @@ public class CanjeDePuntosService {
     public Optional<CanjeDePuntos> obtenerUltimoPorColaborador(Colaborador unColaborador) {
         return canjeDePuntosRepository.obtenerUltimoPorColaborador(unColaborador);
     }
+
+    public void guardar(CanjeDePuntos canjeDePuntos) {
+        canjeDePuntosRepository.guardar(canjeDePuntos);
+    }
 }
