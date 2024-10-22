@@ -18,7 +18,7 @@ public class ColaboracionRouter implements IRouter {
     public void apply(RouterConfig config) {
         config.apiBuilder(() ->
                 path("/colaboraciones", () -> {
-                    get(ctx -> ctx.render("colaboraciones/colaboraciones.hbs"));
+                    get(ctx -> ctx.render("colaboraciones/colaboraciones.hbs"), TipoRol.COLABORADOR, TipoRol.ADMIN);
 
                     this.routeDonacionDinero();
                     this.routeDonacionVianda();
@@ -55,10 +55,10 @@ public class ColaboracionRouter implements IRouter {
 
     private void routeRegistroPersonaVulnerable() {
         path("/registro-persona-vulnerable", () -> {
-            post(ServiceLocator.instanceOf(PersonaVulnerableController.class)::save);
+            post(ServiceLocator.instanceOf(PersonaVulnerableController.class)::save, TipoRol.COLABORADOR);
 
-            get("/new", ServiceLocator.instanceOf(PersonaVulnerableController.class)::create);
-            get("/{id}", ctx -> ctx.result("DETALLE REGISTRO"));
+            get("/new", ServiceLocator.instanceOf(PersonaVulnerableController.class)::create, TipoRol.COLABORADOR);
+            get("/{id}", ctx -> ctx.result("DETALLE REGISTRO"), TipoRol.COLABORADOR, TipoRol.ADMIN);
         });
     }
 

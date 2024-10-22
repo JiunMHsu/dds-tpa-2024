@@ -8,6 +8,7 @@ import ar.edu.utn.frba.dds.controllers.colaborador.ColaboradorController;
 import ar.edu.utn.frba.dds.controllers.heladera.HeladeraController;
 import ar.edu.utn.frba.dds.controllers.heladera.PuntoIdealController;
 import ar.edu.utn.frba.dds.controllers.personaVulnerable.PersonaVulnerableController;
+import ar.edu.utn.frba.dds.controllers.session.SessionController;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladeraRepository;
@@ -40,6 +41,13 @@ public class ServiceLocator {
 
         if (instances.containsKey(componentName))
             return (T) instances.get(componentName);
+
+        if (componentName.equals(SessionController.class.getName())) {
+            SessionController instance = new SessionController(
+                    instanceOf(UsuarioService.class)
+            );
+            instances.put(componentName, instance);
+        }
 
         if (componentName.equals(HeladeraController.class.getName())) {
             HeladeraController instance = new HeladeraController(
