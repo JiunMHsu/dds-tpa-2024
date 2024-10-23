@@ -1,8 +1,8 @@
-package ar.edu.utn.frba.dds.controllers.Incidente;
+package ar.edu.utn.frba.dds.controllers.incidente;
 
-import ar.edu.utn.frba.dds.dtos.Incidente.IncidenteDTO;
+import ar.edu.utn.frba.dds.dtos.incidente.IncidenteDTO;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
-import ar.edu.utn.frba.dds.services.Incidente.IncidenteService;
+import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import io.javalin.http.Context;
 import java.util.HashMap;
 import java.util.List;

@@ -5,8 +5,8 @@ import static io.javalin.apibuilder.ApiBuilder.path;
 import static io.javalin.apibuilder.ApiBuilder.post;
 
 import ar.edu.utn.frba.dds.config.ServiceLocator;
-import ar.edu.utn.frba.dds.controllers.Incidente.AlertaController;
-import ar.edu.utn.frba.dds.controllers.Incidente.FallaTecnicaController;
+import ar.edu.utn.frba.dds.controllers.incidente.AlertaController;
+import ar.edu.utn.frba.dds.controllers.incidente.FallaTecnicaController;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import io.javalin.config.RouterConfig;
 

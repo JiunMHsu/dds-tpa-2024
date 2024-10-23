@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.services.Incidente;
+package ar.edu.utn.frba.dds.services.incidente;
 
 import static ar.edu.utn.frba.dds.models.entities.incidente.TipoIncidente.FALLA_TECNICA;
 
@@ -32,10 +32,9 @@ public class IncidenteService {
     public List<Incidente> buscarIncidentesPorAlertas() {
         List<Incidente> todosLosIncidentes = buscarIncidentes();
         return todosLosIncidentes.stream()
-            .filter(incidente -> !incidente.getTipo().equals(FALLA_TECNICA))
-            .collect(Collectors.toList());
+                .filter(incidente -> !incidente.getTipo().equals(FALLA_TECNICA))
+                .collect(Collectors.toList());
     }
-
 
 
     public Map<String, Integer> incidentesPorHeladera() {

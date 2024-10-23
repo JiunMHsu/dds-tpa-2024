@@ -2,8 +2,6 @@ package ar.edu.utn.frba.dds.models.entities.data;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.criteria.CriteriaBuilder;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,7 +21,7 @@ public class Comida {
     private Integer calorias;
 
     public static Comida with(String nombre,
-                              Integer calorias){
+                              Integer calorias) {
         return Comida
                 .builder()
                 .nombre(nombre)
