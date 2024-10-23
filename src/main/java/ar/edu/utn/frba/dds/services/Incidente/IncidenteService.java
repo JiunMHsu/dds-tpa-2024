@@ -29,6 +29,13 @@ public class IncidenteService {
         return this.incidenteRepository.obtenerTodos();
     }
 
+    public List<Incidente> buscarIncidentesPorAlertas() {
+        List<Incidente> todosLosIncidentes = buscarIncidentes();
+        return todosLosIncidentes.stream()
+            .filter(incidente -> !incidente.getTipo().equals(FALLA_TECNICA))
+            .collect(Collectors.toList());
+    }
+
 
 
     public Map<String, Integer> incidentesPorHeladera() {
@@ -78,4 +85,5 @@ public class IncidenteService {
 
         return path.toString();
     }
+
 }

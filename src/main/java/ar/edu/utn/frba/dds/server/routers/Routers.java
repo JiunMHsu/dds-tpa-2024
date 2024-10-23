@@ -6,8 +6,14 @@ import static io.javalin.apibuilder.ApiBuilder.post;
 
 import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.controllers.session.SessionController;
+import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
+import ar.edu.utn.frba.dds.utils.AppProperties;
 import io.javalin.config.RouterConfig;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.Arrays;
 
 public class Routers {
@@ -34,7 +40,21 @@ public class Routers {
                 post(ServiceLocator.instanceOf(SessionController.class)::create, TipoRol.GUEST);
             });
 
-            get("/image/{id}", ctx -> ctx.result("IMAGEN"));
+            get("/image/{id}", ctx -> {
+                String relativePath = AppProperties.getInstance().propertyFromName("IMAGE_DIR");
+                if (relativePath == null)
+                    throw new RuntimeException("No image directory found");
+
+                String absolutePath = Path.of(relativePath).toAbsolutePath().toString();
+                System.out.println(absolutePath);
+
+                try {
+                    InputStream input = new FileInputStream(absolutePath + "/" + ctx.pathParam("id"));
+                    ctx.result(input);
+                } catch (FileNotFoundException e) {
+                    throw new ResourceNotFoundException();
+                }
+            });
         });
 
         Arrays.stream(routers).forEach(router -> router.apply(config));

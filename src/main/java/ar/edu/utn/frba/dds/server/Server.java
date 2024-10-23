@@ -11,10 +11,8 @@ import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
 import io.javalin.Javalin;
 import io.javalin.config.JavalinConfig;
-import io.javalin.config.RouterConfig;
 import io.javalin.http.HttpStatus;
 import java.io.IOException;
-import java.util.function.Consumer;
 
 public class Server {
 
@@ -33,7 +31,12 @@ public class Server {
         }
 
         int port = AppProperties.getInstance().intPropertyFromName("SERVER_PORT");
-        app = Javalin.create(config())
+        app = Javalin.create(config -> {
+                    setStaticFiles(config);
+                    setFileRenderer(config);
+                    AuthMiddleware.apply(config.router);
+                    Routers.apply(config.router);
+                })
                 .error(HttpStatus.NOT_FOUND, context -> {
                     throw new ResourceNotFoundException("Resource not found for endpoint " + context.path());
                 })
@@ -46,19 +49,11 @@ public class Server {
         }
     }
 
-    private static Consumer<JavalinConfig> config() {
-        return config -> {
-            config.staticFiles.add(staticFiles -> {
-                staticFiles.hostedPath = "/";
-                staticFiles.directory = "/public";
-            });
-
-            setFileRenderer(config);
-            RouterConfig routerConfig = config.router;
-
-            AuthMiddleware.apply(routerConfig);
-            Routers.apply(routerConfig);
-        };
+    private static void setStaticFiles(JavalinConfig config) {
+        config.staticFiles.add(staticFiles -> {
+            staticFiles.hostedPath = "/";
+            staticFiles.directory = "/public";
+        });
     }
 
     private static void setFileRenderer(JavalinConfig config) {
