@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class IncidenteService {
 
@@ -25,22 +24,22 @@ public class IncidenteService {
         this.incidenteRepository = incidenteRepository;
     }
 
-    public List<Incidente> buscarIncidentes() {
-        return this.incidenteRepository.obtenerTodos();
+    public List<Incidente> buscarTodasAlertas() {
+        return this.incidenteRepository.buscarAlertas();
     }
 
-    public List<Incidente> buscarIncidentesPorAlertas() {
-        List<Incidente> todosLosIncidentes = buscarIncidentes();
-        return todosLosIncidentes.stream()
-                .filter(incidente -> !incidente.getTipo().equals(FALLA_TECNICA))
-                .collect(Collectors.toList());
+    public List<Incidente> buscarTodasFallasTecnicas() {
+        return this.incidenteRepository.buscarPorTipo(FALLA_TECNICA);
     }
 
+    public Optional<Incidente> buscarIncidentePorId(String id) {
+        return this.incidenteRepository.buscarPorId(id);
+    }
 
     public Map<String, Integer> incidentesPorHeladera() {
 
         LocalDateTime haceUnaSemana = LocalDateTime.now().minusWeeks(1);
-        List<Incidente> incidentes = incidenteRepository.obtenerAPartirDe(haceUnaSemana);
+        List<Incidente> incidentes = incidenteRepository.buscarAPartirDe(haceUnaSemana);
 
         Map<String, Integer> incidentesPorHeladera = new HashMap<>();
 
@@ -61,20 +60,6 @@ public class IncidenteService {
         this.incidenteRepository.guardar(incidente);
     }
 
-    public List<Incidente> obtenerIncidentesAlertas() {
-        return this.incidenteRepository.obtenerIncidentesAlertas();
-    }
-
-    public Optional<Incidente> buscarIncidentePorId(String id) {
-
-        if (id == null || id.isEmpty()) {
-            throw new IllegalArgumentException("El ID del colaborador no puede ser null o vacío");
-        }
-
-        return this.incidenteRepository.buscarPorId(id);
-    }
-
-
     public String guardarArchivo(UploadedFile uploadedFile) throws IOException {
 
         String uploadDir = "ruta/a/tu/directorio/de/subidas";
@@ -84,5 +69,4 @@ public class IncidenteService {
 
         return path.toString();
     }
-
 }

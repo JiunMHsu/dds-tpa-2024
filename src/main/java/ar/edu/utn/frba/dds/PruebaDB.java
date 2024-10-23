@@ -191,7 +191,7 @@ public class PruebaDB implements WithSimplePersistenceUnit {
 
     private void mostrarIncidentes() {
         // Obtener todos los incidentes y mostrarlos
-        List<Incidente> incidentes = incidenteRepository.obtenerTodos();
+        List<Incidente> incidentes = incidenteRepository.buscarTodos();
         incidentes.forEach(System.out::println);
     }
 }

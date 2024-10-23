@@ -3,12 +3,10 @@ package ar.edu.utn.frba.dds.dtos.incidente;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 @Builder
-public class IncidenteDTO {
+public class FallaTecnicaDTO {
 
     private String id;
 
@@ -24,35 +22,27 @@ public class IncidenteDTO {
 
     private String foto;
 
-    public static IncidenteDTO completa(Incidente incidente) {
-
-        return IncidenteDTO
-                .builder()
+    // En la vista completa podría mapearse más info del colaborador y la heladera
+    // puede servir para redirecciones
+    public static FallaTecnicaDTO completa(Incidente incidente) {
+        return FallaTecnicaDTO.builder()
+                .id(incidente.getId().toString())
                 .heladera(incidente.getHeladera().getNombre())
                 .fechaHora(incidente.getFechaHora().toString())
                 .tipo(incidente.getTipo().toString())
-                .colaborador(incidente.getColaborador().getUsuario().getNombre())
+                .colaborador(incidente.getColaborador().getNombre())
                 .descripcion(incidente.getDescripcion())
                 .foto(incidente.getFoto().getRuta())
                 .build();
     }
 
-    public static IncidenteDTO reporte(Incidente incidente) {
-
-        return IncidenteDTO
-                .builder()
-                .heladera(incidente.getHeladera().getNombre())
-                .descripcion(incidente.getDescripcion())
-                .build();
-    }
-
-    public static IncidenteDTO alerta(Incidente incidente) {
-
-        return IncidenteDTO
-                .builder()
+    public static FallaTecnicaDTO preview(Incidente incidente) {
+        return FallaTecnicaDTO.builder()
+                .id(incidente.getId().toString())
                 .heladera(incidente.getHeladera().getNombre())
                 .fechaHora(incidente.getFechaHora().toString())
-                .descripcion(incidente.getDescripcion())
+                .tipo(incidente.getTipo().toString())
+                .foto(incidente.getFoto().getRuta())
                 .build();
     }
 }

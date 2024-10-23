@@ -35,6 +35,14 @@ public class FallaTecnicaController extends ColaboradorPorSession {
         this.heladeraService = heladeraService;
     }
 
+    public void index(Context context) {
+
+    }
+
+    public void show(Context context) {
+
+    }
+
     public void create(Context context) {
         Colaborador colaborador = obtenerColaboradorPorSession(context);
         Map<String, Object> model = new HashMap<>();

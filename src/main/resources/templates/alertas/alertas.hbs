@@ -9,37 +9,31 @@
 {{/partial}}
 {{#partial "main-content"}}
     <div class="list-container">
-        <h2 class="list-title">Visulizar Alertas</h2>
+        <h2 class="list-title">Alertas</h2>
+
         <div class="scrollable">
             <ul class="list">
                 {{#each alertas}}
                     <li class="list-item">
-                        <a href="#" class="item-card">
+                        <a href="/alertas/{{this.id}}" class="item-card">
                             <h3 class="card-title">{{this.tipo}}</h3>
                             <div class="card-details">
-                                <p>Heladera: {{this.heladera.nombre}}</p>
+                                <p>
+                                    <span class="material-symbols-rounded card-detail-icon">kitchen</span>
+                                    Heladera: {{this.heladera}}
+                                </p>
                                 <p>
                                     <span class="material-symbols-rounded card-detail-icon">today</span>
-                                    Fecha: {{this.fechaHora}}
+                                    Fecha: {{this.fecha}}
                                 </p>
-
+                                <p>
+                                    <span class="material-symbols-rounded card-detail-icon">schedule</span>
+                                    Hora: {{this.hora}}
+                                </p>
                             </div>
                         </a>
                     </li>
                 {{/each}}
-                <li class="list-item">
-                    <a href="#" class="item-card">
-                        <h3 class="card-title">Fraude</h3>
-                            <div class="card-details">
-                                 <p>Heladera: Melip</p>
-                                 <p>
-                                     <span class="material-symbols-rounded card-detail-icon">today</span>
-                                     Fecha: 12-12-12
-                                 </p>
-
-                            </div>
-                    </a>
-                </li>
             </ul>
         </div>
     </div>
