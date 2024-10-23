@@ -41,10 +41,10 @@ public class OfertaProductosServiciosController extends ColaboradorPorSession im
                 .collect(Collectors.toList());
 
         Map<String, Object> model = new HashMap<>();
-        model.put("productos_canjear", ofertaDeProductosDTOS);
+        model.put("colaboraciones", ofertaDeProductosDTOS);
         model.put("titulo", "Listado de productos/servicios");
 
-        context.render("canje_de_puntos/productos_canjear.hbs", model);
+        context.render("colaboraciones/colaboraciones.hbs", model);
     }
 
     @Override
