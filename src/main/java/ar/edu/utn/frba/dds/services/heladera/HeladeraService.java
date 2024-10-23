@@ -25,7 +25,7 @@ public class HeladeraService implements WithSimplePersistenceUnit {
         return this.heladeraRepository.buscarPorId(id);
     }
 
-    public Optional<Heladera> buscarHeladeraPorNombre(String nombre) {
+    public Optional<Heladera> buscarPorNombre(String nombre) {
         return this.heladeraRepository.buscarPorNombre(nombre);
     }
 

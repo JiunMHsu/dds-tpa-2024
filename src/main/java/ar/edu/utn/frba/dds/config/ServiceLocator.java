@@ -26,6 +26,7 @@ import ar.edu.utn.frba.dds.models.repositories.vianda.ViandaRepository;
 import ar.edu.utn.frba.dds.services.colaboraciones.DonacionDineroService;
 import ar.edu.utn.frba.dds.services.colaboraciones.RepartoDeTarjetaService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
+import ar.edu.utn.frba.dds.services.files.FileService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.personaVulnerable.PersonaVulnerableService;
@@ -50,6 +51,11 @@ public class ServiceLocator {
             SessionController instance = new SessionController(
                     instanceOf(UsuarioService.class)
             );
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(FileService.class.getName())) {
+            FileService instance = new FileService();
             instances.put(componentName, instance);
         }
 
@@ -81,6 +87,7 @@ public class ServiceLocator {
             FallaTecnicaController instance = new FallaTecnicaController(
                     instanceOf(IncidenteService.class),
                     instanceOf(HeladeraService.class),
+                    instanceOf(FileService.class),
                     instanceOf(ColaboradorService.class),
                     instanceOf(UsuarioService.class));
             instances.put(componentName, instance);
