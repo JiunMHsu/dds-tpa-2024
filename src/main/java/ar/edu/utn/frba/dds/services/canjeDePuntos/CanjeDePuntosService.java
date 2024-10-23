@@ -34,6 +34,7 @@ public class CanjeDePuntosService {
     private final HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository;
     private Colaborador colaborador;
     private LocalDateTime fechaUltimoCanje;
+    private Double puntosSobrantes;
     private VarianteCalculoDePuntos variante;
     private CanjeDePuntosRepository canjeDePuntosRepository;
 
@@ -50,11 +51,29 @@ public class CanjeDePuntosService {
                 .build();
     }
 
-    public Double calcularPuntos(Colaborador colaborador, LocalDateTime fechaUltimoCanje, Double puntosSobrantes) {
-        this.setColaborador(colaborador);
-        this.setFechaUltimoCanje(fechaUltimoCanje);
-        System.out.println(puntosSobrantes);
-        System.out.println(fechaUltimoCanje);
+    private void actualizarUltimaFechaCanje(Colaborador colaborador){
+        Optional<CanjeDePuntos> ultimoCanjeo = this.obtenerUltimoPorColaborador(colaborador);
+        if (ultimoCanjeo.isPresent()) {
+            fechaUltimoCanje = ultimoCanjeo.get().getFechaCanjeo();
+        }else{
+            fechaUltimoCanje = null;
+        }
+    }
+    private void actualizarPuntosSobrantes(Colaborador colaborador){
+        Optional<CanjeDePuntos> ultimoCanjeo = this.obtenerUltimoPorColaborador(colaborador);
+        if (ultimoCanjeo.isPresent()) {
+            puntosSobrantes = ultimoCanjeo.get().getPuntosRestantes();
+        }else{
+            puntosSobrantes = 0.0;
+        }
+    }
+
+    public Double calcularPuntos(Colaborador colaborador) {
+        this.actualizarPuntosSobrantes(colaborador);
+        this.actualizarUltimaFechaCanje(colaborador);
+        if (fechaUltimoCanje==null){
+            return puntosSobrantes;
+        }
         return this.calcularPorPesosDonados()
                 + this.calcularPorViandasDistribuidas()
                 + this.calcularPorViandasDonadas()
@@ -172,5 +191,9 @@ public class CanjeDePuntosService {
 
     public Optional<CanjeDePuntos> obtenerUltimoPorColaborador(Colaborador unColaborador) {
         return canjeDePuntosRepository.obtenerUltimoPorColaborador(unColaborador);
+    }
+
+    public void guardar(CanjeDePuntos canjeDePuntos) {
+        canjeDePuntosRepository.guardar(canjeDePuntos);
     }
 }

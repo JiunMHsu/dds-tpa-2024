@@ -1,25 +1,28 @@
 package ar.edu.utn.frba.dds.controllers.canjeDePuntos;
 
+import ar.edu.utn.frba.dds.dtos.colaboraciones.OfertaDeProductosDTO;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.puntosPorColaborador.CanjeDePuntos;
-import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.CanjeDePuntosRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
+import ar.edu.utn.frba.dds.services.canjeDePuntos.CanjeDePuntosService;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CanjeDePuntosController implements ICrudViewsHandler {
 
-    private CanjeDePuntosRepository canjeDePuntosRepository;
     private ColaboradorRepository colaboradorRepository;
+
+    private CanjeDePuntosService canjeDePuntosService;
     private OfertaDeProductosRepository ofertaDeProductosRepository;
 
 
-    public CanjeDePuntosController(CanjeDePuntosRepository canjeDePuntosRepository) {
-        this.canjeDePuntosRepository = canjeDePuntosRepository;
-    }
 
     @Override
     public void index(Context context) {
@@ -33,6 +36,20 @@ public class CanjeDePuntosController implements ICrudViewsHandler {
 
     @Override
     public void create(Context context) {
+        List<OfertaDeProductos> productos = this.ofertaDeProductosRepository.buscarTodos();
+
+        List<OfertaDeProductosDTO> ofertaDeProductosDTOS = productos.stream()
+                .map(OfertaDeProductosDTO::preview)
+                .collect(Collectors.toList());
+        //TODO cuando obtenengo el colaborador de la sesion tambien hace falta chequear si puede ser empty? 😩
+        Colaborador colaborador = colaboradorRepository.buscarPorId(context.sessionAttribute("userId")).get();
+        Double puntaje = canjeDePuntosService.calcularPuntos(colaborador);
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("productos_canjear", ofertaDeProductosDTOS);
+        model.put("titulo", "Listado de productos/servicios");
+        model.put("puntaje" , puntaje);
+
         context.render("canjeDePuntos/productos_canjear.hbs");
     }
 
@@ -50,7 +67,7 @@ public class CanjeDePuntosController implements ICrudViewsHandler {
         OfertaDeProductos oferta = ofertaDeProductosRepository.buscarPorId(context.formParam("oferta_id")).get();
         CanjeDePuntos canjeDePuntosNuevo = CanjeDePuntos.por(colaboradorCanje, LocalDateTime.now(), puntosCanjeados, puntosRestantes, oferta);
 
-        this.canjeDePuntosRepository.guardar(canjeDePuntosNuevo);
+        this.canjeDePuntosService.guardar(canjeDePuntosNuevo);
 
         context.redirect("canje_de_puntos/canje_exitoso.hbs");
 
