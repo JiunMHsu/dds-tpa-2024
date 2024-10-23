@@ -7,7 +7,6 @@ import io.javalin.http.Context;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class AlertaController {
 
@@ -31,18 +30,7 @@ public class AlertaController {
     }
 
     public void show(Context context) {
-
-        String colaboradorId = context.pathParam("id");
-        Optional<Incidente> incidenteBuscado = this.incidenteService.buscarIncidentePorId(colaboradorId);
-
-        if (incidenteBuscado.isEmpty()) {
-            context.status(404).result("Incidente no encontrado");
-        }
-
-        Map<String, Object> model = new HashMap<>();
-        model.put("alerta", incidenteBuscado.get());
-
-        // context.render();
+        context.result("ALERTA ID: " + context.pathParam("id"));
     }
 
 
