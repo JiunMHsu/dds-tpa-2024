@@ -11,14 +11,12 @@ public class IncidenteRouter implements IRouter {
 
     @Override
     public void apply(RouterConfig config) {
-        config.apiBuilder(() ->
-                path("/alertas", () -> {
-                    get(ServiceLocator.instanceOf(AlertaController.class)::index);
+      config.apiBuilder(() -> {
+        path("/alertas", () -> {
 
-                    path("/{id}", () -> {
-                        get(ServiceLocator.instanceOf(AlertaController.class)::show);
-                    });
-                })
-        );
+          get(ServiceLocator.instanceOf(AlertaController.class)::index);
+        });
+      });
     }
+
 }
