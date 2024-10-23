@@ -52,11 +52,11 @@ public class Initializer implements WithSimplePersistenceUnit {
     }
 
     public void withColaboradores() {
-        Usuario u1 = Usuario.con("JiunMHsu", "iMC4(*&A^F0OK?%87", "jhsu@frba.utn.edu.ar", TipoRol.COLABORADOR);
-        Usuario u2 = Usuario.con("abrilnimo", "iMC4(*&A^F0OK?%87", "adomingueznimo@frba.utn.edu.ar", TipoRol.COLABORADOR);
-        Usuario u3 = Usuario.con("leoojuncos", "iMC4(*&A^F0OK?%87", "mjuncosmieres@frba.utn.edu.ar", TipoRol.COLABORADOR);
-        Usuario u4 = Usuario.con("Melselep", "iMC4(*&A^F0OK?%87", "melperez@frba.utn.edu.ar", TipoRol.COLABORADOR);
-        Usuario u5 = Usuario.con("joaquingandola", "iMC4(*&A^F0OK?%87", "jgandola@frba.utn.edu.ar", TipoRol.COLABORADOR);
+        Usuario u1 = Usuario.con("JiunMHsu", "1111", "jhsu@frba.utn.edu.ar", TipoRol.COLABORADOR);
+        Usuario u2 = Usuario.con("abrilnimo", "1111", "adomingueznimo@frba.utn.edu.ar", TipoRol.COLABORADOR);
+        Usuario u3 = Usuario.con("leoojuncos", "1111", "mjuncosmieres@frba.utn.edu.ar", TipoRol.COLABORADOR);
+        Usuario u4 = Usuario.con("Melselep", "1111", "melperez@frba.utn.edu.ar", TipoRol.COLABORADOR);
+        Usuario u5 = Usuario.con("joaquingandola", "1111", "jgandola@frba.utn.edu.ar", TipoRol.COLABORADOR);
 
         Direccion direccion = new Direccion(
                 new Barrio("Almagro"),

@@ -14,6 +14,13 @@
     <script src="/js/map.js"></script>
 {{/partial}}
 {{#partial "main-content"}}
+    <div class="redirect-container">
+        <h3 class="redirect-title">Fallas Tecnicas</h3>
+        <div class="redirect-button-container">
+            <a href="/fallas-tecnicas" class="redirect-button">Ver Todas</a>
+        </div>
+    </div>
+    <div class="divider"></div>
     <div class="form-container">
         <h2 class="form-title">Reportar Falla Tecnica</h2>
 
@@ -28,22 +35,12 @@
                 />
             </label>
             <label class="field-descripcion">
-                Descripcion
-                <input
-                        type="text"
-                        name="descripcion"
-                        placeholder="Describe el problema técnico de la heladera (e.j., no enfría, hace ruido)"
-                        required
-                />
+                Descripción
+                <textarea type="text" name="descripcion" required></textarea>
             </label>
             <label class="field-imagen">
                 Imagen
-                <input
-                        type="file"
-                        name="imagen"
-                        id="file-input"
-                />
-                <span id="file-name">Seleccionar archivo</span>
+                <input type="file" name="imagen" accept=".png, .jpg, .jpeg" required/>
             </label>
 
             <div class="form-button-container">
