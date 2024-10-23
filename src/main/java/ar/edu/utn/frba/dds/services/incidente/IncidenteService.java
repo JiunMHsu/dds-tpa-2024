@@ -4,12 +4,6 @@ import static ar.edu.utn.frba.dds.models.entities.incidente.TipoIncidente.FALLA_
 
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
-import io.javalin.http.UploadedFile;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -52,7 +46,7 @@ public class IncidenteService {
     }
 
     public void guardarIncidente(Incidente incidente) {
-
+        // TODO
         if (incidente.getTipo() == FALLA_TECNICA && incidente.getColaborador() == null) {
             throw new IllegalArgumentException("Las Fallas Tecnicas deben tener asociado un Colaborador");
         }
@@ -60,13 +54,4 @@ public class IncidenteService {
         this.incidenteRepository.guardar(incidente);
     }
 
-    public String guardarArchivo(UploadedFile uploadedFile) throws IOException {
-
-        String uploadDir = "ruta/a/tu/directorio/de/subidas";
-        Path path = Paths.get(uploadDir, uploadedFile.filename());
-
-        Files.copy(uploadedFile.content(), path, StandardCopyOption.REPLACE_EXISTING);
-
-        return path.toString();
-    }
 }

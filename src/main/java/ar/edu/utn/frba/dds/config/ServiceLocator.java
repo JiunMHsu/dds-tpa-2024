@@ -33,6 +33,7 @@ import ar.edu.utn.frba.dds.services.personaVulnerable.PersonaVulnerableService;
 import ar.edu.utn.frba.dds.services.puntoIdeal.PuntoIdealService;
 import ar.edu.utn.frba.dds.services.tarjeta.TarjetaPersonaVulnerableService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
+import ar.edu.utn.frba.dds.utils.RandomString;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,6 +48,11 @@ public class ServiceLocator {
         if (instances.containsKey(componentName))
             return (T) instances.get(componentName);
 
+        if (componentName.equals(RandomString.class.getName())) {
+            RandomString instance = new RandomString();
+            instances.put(componentName, instance);
+        }
+
         if (componentName.equals(SessionController.class.getName())) {
             SessionController instance = new SessionController(
                     instanceOf(UsuarioService.class)
@@ -55,7 +61,7 @@ public class ServiceLocator {
         }
 
         if (componentName.equals(FileService.class.getName())) {
-            FileService instance = new FileService();
+            FileService instance = new FileService(instanceOf(RandomString.class));
             instances.put(componentName, instance);
         }
 

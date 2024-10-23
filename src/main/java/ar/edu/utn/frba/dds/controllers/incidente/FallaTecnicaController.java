@@ -1,7 +1,5 @@
 package ar.edu.utn.frba.dds.controllers.incidente;
 
-import static ar.edu.utn.frba.dds.models.entities.incidente.TipoIncidente.FALLA_TECNICA;
-
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
@@ -70,12 +68,11 @@ public class FallaTecnicaController extends ColaboradorPorSession {
 
             UploadedFile uploadedFile = context.uploadedFile("imagen");
             if (uploadedFile == null) throw new InvalidFormParamException();
-            String pathImagen = fileService.guardarImagen(uploadedFile.content(), uploadedFile.filename());
+            String pathImagen = fileService.guardarImagen(uploadedFile.content(), uploadedFile.extension());
 
-            Incidente nuevaFallaTecnica = new Incidente(
+            Incidente nuevaFallaTecnica = Incidente.fallaTecnica(
                     heladera,
                     LocalDateTime.now(),
-                    FALLA_TECNICA,
                     colaborador,
                     descripcion,
                     new Imagen(pathImagen)
@@ -91,7 +88,7 @@ public class FallaTecnicaController extends ColaboradorPorSession {
         } finally {
             model.put("success", operationSuccess);
             model.put("redirects", redirectDTOS);
-            
+
             context.render("post_result.hbs", model);
         }
     }

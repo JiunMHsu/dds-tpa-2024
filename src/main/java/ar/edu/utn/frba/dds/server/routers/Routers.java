@@ -10,6 +10,7 @@ import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.utils.AppProperties;
 import io.javalin.config.RouterConfig;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -49,7 +50,7 @@ public class Routers {
                 System.out.println(absolutePath);
 
                 try {
-                    InputStream input = new FileInputStream(absolutePath + "/" + ctx.pathParam("id"));
+                    InputStream input = new FileInputStream(absolutePath + File.separator + ctx.pathParam("id"));
                     ctx.result(input);
                 } catch (FileNotFoundException e) {
                     throw new ResourceNotFoundException();
