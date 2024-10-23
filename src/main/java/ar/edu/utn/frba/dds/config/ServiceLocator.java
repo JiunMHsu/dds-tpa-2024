@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.config;
 
-import ar.edu.utn.frba.dds.controllers.Incidente.AlertaController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DistribucionViandasController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionDineroController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionViandaController;
@@ -8,9 +7,15 @@ import ar.edu.utn.frba.dds.controllers.colaboraciones.HacerseCargoHeladeraContro
 import ar.edu.utn.frba.dds.controllers.colaborador.ColaboradorController;
 import ar.edu.utn.frba.dds.controllers.heladera.HeladeraController;
 import ar.edu.utn.frba.dds.controllers.heladera.PuntoIdealController;
+import ar.edu.utn.frba.dds.controllers.incidente.AlertaController;
+import ar.edu.utn.frba.dds.controllers.incidente.FallaTecnicaController;
 import ar.edu.utn.frba.dds.controllers.personaVulnerable.PersonaVulnerableController;
 import ar.edu.utn.frba.dds.controllers.session.SessionController;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.*;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladeraRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetasRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
@@ -18,11 +23,11 @@ import ar.edu.utn.frba.dds.models.repositories.personaVulnerable.PersonaVulnerab
 import ar.edu.utn.frba.dds.models.repositories.tarjeta.TarjetaPersonaVulnerableRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import ar.edu.utn.frba.dds.models.repositories.vianda.ViandaRepository;
-import ar.edu.utn.frba.dds.services.Incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.colaboraciones.DonacionDineroService;
 import ar.edu.utn.frba.dds.services.colaboraciones.RepartoDeTarjetaService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
+import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.personaVulnerable.PersonaVulnerableService;
 import ar.edu.utn.frba.dds.services.puntoIdeal.PuntoIdealService;
 import ar.edu.utn.frba.dds.services.tarjeta.TarjetaPersonaVulnerableService;
@@ -69,6 +74,15 @@ public class ServiceLocator {
         if (componentName.equals(AlertaController.class.getName())) {
             AlertaController instance = new AlertaController(
                     instanceOf(IncidenteService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(FallaTecnicaController.class.getName())) {
+            FallaTecnicaController instance = new FallaTecnicaController(
+                    instanceOf(IncidenteService.class),
+                    instanceOf(HeladeraService.class),
+                    instanceOf(ColaboradorService.class),
+                    instanceOf(UsuarioService.class));
             instances.put(componentName, instance);
         }
 

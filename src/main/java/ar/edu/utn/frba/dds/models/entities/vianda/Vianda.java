@@ -7,8 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.criteria.CriteriaBuilder;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,8 +30,8 @@ public class Vianda extends EntidadPersistente {
     private Integer peso;
 
     public static Vianda with(Comida comida,
-                       LocalDate fechaCaducidad,
-                       Integer peso){
+                              LocalDate fechaCaducidad,
+                              Integer peso) {
 
         return Vianda
                 .builder()

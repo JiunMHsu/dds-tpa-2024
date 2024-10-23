@@ -5,6 +5,9 @@ import ar.edu.utn.frba.dds.models.entities.incidente.TipoIncidente;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class IncidenteRepository implements WithSimplePersistenceUnit {
     public void guardar(Incidente incidente) {
@@ -31,13 +34,21 @@ public class IncidenteRepository implements WithSimplePersistenceUnit {
                 .getResultList();
     }
 
-    public List<Incidente> obtenerSinFallasTecnicas() {
-        List<Incidente> incidentes = entityManager()
-                .createQuery("SELECT i FROM Incidente i WHERE i.tipo != :tipo_tecnica", Incidente.class)
-                .setParameter("tipo_tecnica", TipoIncidente.FALLA_TECNICA)
-                .getResultList();
-
-        incidentes.forEach(incidente -> System.out.println("Incidente: " + incidente.getTipo()));
-        return incidentes;
+    public Optional<Incidente> buscarPorId(String id) {
+        try {
+            UUID uuid = UUID.fromString(id);
+            return Optional.ofNullable(entityManager().find(Incidente.class, uuid))
+                    .filter(Incidente::getAlta);
+        } catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
     }
+
+    public List<Incidente> obtenerIncidentesAlertas() {
+        List<Incidente> incidentes = obtenerTodos();
+        return incidentes.stream()
+                .filter(incidente -> incidente.getTipo() != TipoIncidente.FALLA_TECNICA)
+                .collect(Collectors.toList());
+    }
+
 }

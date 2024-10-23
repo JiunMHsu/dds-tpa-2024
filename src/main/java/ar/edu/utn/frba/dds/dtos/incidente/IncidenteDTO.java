@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.dtos.Incidente;
+package ar.edu.utn.frba.dds.dtos.incidente;
 
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import lombok.Builder;
