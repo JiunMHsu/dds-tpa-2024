@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.controllers.colaboraciones;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.DonacionDineroDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.OfertaDeProductosDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
+import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.RubroOferta;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
@@ -102,13 +103,20 @@ public class OfertaProductosServiciosController extends ColaboradorPorSession im
 
     @Override
     public void delete(Context context) {
-        //TODO chequeo que usuario sea el de la oferta
         String ofertaProductoId = context.pathParam("id");
 
         Optional<OfertaDeProductos> posibleOfertaAEliminar = this.ofertaProductosServiciosService.buscarPorId(ofertaProductoId);
 
         if (posibleOfertaAEliminar.isEmpty())
             throw new ResourceNotFoundException("No se encontró ninguna oferta de producto/servicio con id " + ofertaProductoId);
+
+        Colaborador colaboradorOfertante = posibleOfertaAEliminar.get().getColaborador();
+
+        Colaborador colaboradorSession = obtenerColaboradorPorSession(context);
+
+        if(colaboradorOfertante!=colaboradorSession){
+            throw new UnauthorizedException("No tiene permiso para eliminar la oferta");
+        }
 
         this.ofertaProductosServiciosService.eliminar(posibleOfertaAEliminar.get());
         context.status(HttpStatus.OK);
