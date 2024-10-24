@@ -311,7 +311,8 @@ public class ServiceLocator {
             VisitaTecnicoController instance = new VisitaTecnicoController(
                     instanceOf(VisitaTecnicoService.class),
                     instanceOf(TecnicoService.class),
-                    instanceOf(HeladeraService.class)
+                    instanceOf(HeladeraService.class),
+                    instanceOf(UsuarioService.class)
             );
             instances.put(componentName, instance);
         }

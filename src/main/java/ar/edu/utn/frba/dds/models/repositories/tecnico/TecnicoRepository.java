@@ -49,17 +49,17 @@ public class TecnicoRepository implements WithSimplePersistenceUnit {
                 .getResultList();
     }
 
-//    public Optional<Tecnico> buscarPorUsuario(Usuario usuario) {
-//        try {
-//            return Optional.of(
-//                    entityManager()
-//                            .createQuery("from Tecnico t where t.usuario.id = :usuarioId", Tecnico.class)
-//                            .setParameter("usuarioId", usuario.getId())
-//                            .getSingleResult()
-//            );
-//        } catch (NoResultException e) {
-//            return Optional.empty();
-//        }
-//    }
+    public Optional<Tecnico> buscarPorUsuario(Usuario usuario) {
+        try {
+            return Optional.of(
+                    entityManager()
+                            .createQuery("from Tecnico t where t.usuario.id = :usuarioId", Tecnico.class)
+                            .setParameter("usuarioId", usuario.getId())
+                            .getSingleResult()
+            );
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
+    }
 
 }

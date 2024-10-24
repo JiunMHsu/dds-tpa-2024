@@ -31,8 +31,9 @@ public class TecnicoService implements WithSimplePersistenceUnit {
     }
 
     public Optional<Tecnico> obtenerTecnicoPorUsuario(Usuario usuario) {
+
         if (usuario == null) {
-            throw new IllegalArgumentException("El colaboradores debe tener un Usuario");
+            throw new IllegalArgumentException("El tecnico debe tener un Usuario");
         }
         return tecnicoRepository.buscarPorUsuario(usuario);
     }

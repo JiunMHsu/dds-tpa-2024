@@ -3,10 +3,13 @@ package ar.edu.utn.frba.dds.controllers.tecnico;
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.tecnico.TecnicoDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
+import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.*;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
+import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
+import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.validation.ValidationException;
@@ -18,7 +21,11 @@ public class TecnicoController implements ICrudViewsHandler {
 
     private final TecnicoService tecnicoService;
 
-    public TecnicoController (TecnicoService tecnicoService) { this.tecnicoService = tecnicoService; }
+
+    public TecnicoController (TecnicoService tecnicoService) {
+
+        this.tecnicoService = tecnicoService;
+    }
 
     @Override
     public void index(Context context) { // TODO - Ver desp que matchee con las vistas
@@ -53,7 +60,7 @@ public class TecnicoController implements ICrudViewsHandler {
 
     @Override
     public void create(Context context) {
-        // TODO - solo contex.render?
+        context.result("no sos tecnico");
     }
 
     @Override
@@ -64,6 +71,8 @@ public class TecnicoController implements ICrudViewsHandler {
         boolean operationSuccess = false;
 
         try {
+
+            Usuario usuario = Usuario.conEmail(context.formParamAsClass("mail", String.class).get());
 
             String nombre = context.formParamAsClass("nombre", String.class).get();
             String apellido = context.formParamAsClass("apellido", String.class).get();
@@ -77,14 +86,14 @@ public class TecnicoController implements ICrudViewsHandler {
 
             MedioDeNotificacion medioDeNotificacion = MedioDeNotificacion.valueOf(context.formParamAsClass("medio-notificacion", String.class).get());
 
-            Contacto contacto = new Contacto(); // TODO - medio brownie, no c si esta bn
+            Contacto contacto;
 
             if (medioDeNotificacion.equals(MedioDeNotificacion.EMAIL)) {
-                contacto = Contacto.conEmail(context.formParamAsClass("email", String.class).get());
+                contacto = Contacto.conEmail(context.formParamAsClass("contacto", String.class).get());
             } else if (medioDeNotificacion.equals(MedioDeNotificacion.WHATSAPP)) {
-                contacto = Contacto.conEmail(context.formParamAsClass("whatsapp", String.class).get());
+                contacto = Contacto.conWhatsApp(context.formParamAsClass("contacto", String.class).get());
             } else {
-                contacto = Contacto.conEmail(context.formParamAsClass("telegram", String.class).get());
+                contacto = Contacto.conTelegram(context.formParamAsClass("contacto", String.class).get());
             }
 
             Ubicacion ubicacion = new Ubicacion(
@@ -99,6 +108,7 @@ public class TecnicoController implements ICrudViewsHandler {
             );
 
             Tecnico tecnico = Tecnico.con(
+                    usuario,
                     nombre,
                     apellido,
                     documento,
