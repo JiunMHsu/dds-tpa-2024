@@ -36,6 +36,8 @@ import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import ar.edu.utn.frba.dds.services.tecnico.VisitaTecnicoService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.RandomString;
+import org.apache.camel.tooling.model.ComponentModel;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -214,6 +216,13 @@ public class ServiceLocator {
                     instanceOf(UsuarioService.class),
                     instanceOf(ColaboradorService.class),
                     instanceOf(HeladeraService.class)
+            );
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(DistribucionViandasService.class.getName())) {
+            DistribucionViandasService instance = new DistribucionViandasService(
+                    instanceOf(DistribucionViandasRepository.class)
             );
             instances.put(componentName, instance);
         }
