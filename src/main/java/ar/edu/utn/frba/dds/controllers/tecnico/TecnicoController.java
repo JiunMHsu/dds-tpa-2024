@@ -16,7 +16,7 @@ import java.util.*;
 
 public class TecnicoController implements ICrudViewsHandler {
 
-    TecnicoService tecnicoService;
+    private final TecnicoService tecnicoService;
 
     public TecnicoController (TecnicoService tecnicoService) { this.tecnicoService = tecnicoService; }
 

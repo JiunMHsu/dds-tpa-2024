@@ -2,7 +2,10 @@ package ar.edu.utn.frba.dds.models.repositories.tecnico;
 
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
+import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+
+import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,5 +48,18 @@ public class TecnicoRepository implements WithSimplePersistenceUnit {
                 .setParameter("alta", true)
                 .getResultList();
     }
+
+//    public Optional<Tecnico> buscarPorUsuario(Usuario usuario) {
+//        try {
+//            return Optional.of(
+//                    entityManager()
+//                            .createQuery("from Tecnico t where t.usuario.id = :usuarioId", Tecnico.class)
+//                            .setParameter("usuarioId", usuario.getId())
+//                            .getSingleResult()
+//            );
+//        } catch (NoResultException e) {
+//            return Optional.empty();
+//        }
+//    }
 
 }
