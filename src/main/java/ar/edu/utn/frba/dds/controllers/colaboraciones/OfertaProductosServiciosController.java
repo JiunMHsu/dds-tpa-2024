@@ -1,11 +1,14 @@
 package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
+import ar.edu.utn.frba.dds.dtos.colaboraciones.DonacionDineroDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.OfertaDeProductosDTO;
+import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.RubroOferta;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Imagen;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRepository;
+import ar.edu.utn.frba.dds.services.colaboraciones.OfertaProductosServiciosService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.ColaboradorPorSession;
@@ -21,20 +24,20 @@ import java.util.stream.Collectors;
 
 public class OfertaProductosServiciosController extends ColaboradorPorSession implements ICrudViewsHandler {
 
-    private OfertaDeProductosRepository ofertaDeProductosRepository;
+    private OfertaProductosServiciosService ofertaProductosServiciosService;
 
 
-    public OfertaProductosServiciosController(OfertaDeProductosRepository ofertaDeProductosRepository,
+    public OfertaProductosServiciosController(OfertaProductosServiciosService ofertaProductosServiciosService,
                                               UsuarioService usuarioService,
                                               ColaboradorService colaboradorService) {
 
         super(usuarioService, colaboradorService);
-        this.ofertaDeProductosRepository = ofertaDeProductosRepository;
+        this.ofertaProductosServiciosService = ofertaProductosServiciosService;
     }
 
     @Override
     public void index(Context context) {
-        List<OfertaDeProductos> productos = this.ofertaDeProductosRepository.buscarTodos();
+        List<OfertaDeProductos> productos = this.ofertaProductosServiciosService.buscarTodos();
 
         List<OfertaDeProductosDTO> ofertaDeProductosDTOS = productos.stream()
                 .map(OfertaDeProductosDTO::preview)
@@ -49,11 +52,17 @@ public class OfertaProductosServiciosController extends ColaboradorPorSession im
 
     @Override
     public void show(Context context) {
-        Optional<OfertaDeProductos> posibleOfertaBuscada = this.ofertaDeProductosRepository.buscarPorId(context.formParam("id"));
-        //TODO verificar empty
+        String ofertaProductoId = context.pathParam("id");
+        Optional<OfertaDeProductos> ofertaDeProductos = this.ofertaProductosServiciosService.buscarPorId(ofertaProductoId);
+
+        if (ofertaDeProductos.isEmpty())
+            throw new ResourceNotFoundException("No se encontró ninguna oferta de producto/servicio con id " + ofertaProductoId);
+
 
         Map<String, Object> model = new HashMap<>();
-        model.put("producto/servicio", posibleOfertaBuscada.get());
+        OfertaDeProductosDTO ofertaDeProductosDTO = OfertaDeProductosDTO.completa(ofertaDeProductos.get());
+
+        model.put("oferta_producto_servicio", ofertaDeProductosDTO);
 
         context.render("canje_de_puntos/producto_detalle.hbs", model);
 
@@ -76,7 +85,7 @@ public class OfertaProductosServiciosController extends ColaboradorPorSession im
 
         OfertaDeProductos oferta = OfertaDeProductos.por(colaborador, LocalDateTime.now(), nombre, puntosNecesarios, rubro, imagen);
 
-        this.ofertaDeProductosRepository.guardar(oferta);
+        this.ofertaProductosServiciosService.guardar(oferta);
         context.redirect("post_result.hbs");
 
     }
@@ -94,12 +103,16 @@ public class OfertaProductosServiciosController extends ColaboradorPorSession im
     @Override
     public void delete(Context context) {
         //TODO chequeo que usuario sea el de la oferta
-        Optional<OfertaDeProductos> posibleOfertaAEliminar = this.ofertaDeProductosRepository.buscarPorId(context.formParam("id"));
-        // TODO - chequeo si no existe
+        String ofertaProductoId = context.pathParam("id");
 
-        this.ofertaDeProductosRepository.eliminar(posibleOfertaAEliminar.get());
+        Optional<OfertaDeProductos> posibleOfertaAEliminar = this.ofertaProductosServiciosService.buscarPorId(ofertaProductoId);
+
+        if (posibleOfertaAEliminar.isEmpty())
+            throw new ResourceNotFoundException("No se encontró ninguna oferta de producto/servicio con id " + ofertaProductoId);
+
+        this.ofertaProductosServiciosService.eliminar(posibleOfertaAEliminar.get());
         context.status(HttpStatus.OK);
-        // mostrar algo de exitoso
+        // TODO mostrar algo de exitoso?
 
     }
 

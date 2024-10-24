@@ -1,9 +1,6 @@
 package ar.edu.utn.frba.dds.config;
 
-import ar.edu.utn.frba.dds.controllers.colaboraciones.DistribucionViandasController;
-import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionDineroController;
-import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionViandaController;
-import ar.edu.utn.frba.dds.controllers.colaboraciones.HacerseCargoHeladeraController;
+import ar.edu.utn.frba.dds.controllers.colaboraciones.*;
 import ar.edu.utn.frba.dds.controllers.colaborador.ColaboradorController;
 import ar.edu.utn.frba.dds.controllers.heladera.HeladeraController;
 import ar.edu.utn.frba.dds.controllers.heladera.PuntoIdealController;
@@ -23,8 +20,7 @@ import ar.edu.utn.frba.dds.models.repositories.personaVulnerable.PersonaVulnerab
 import ar.edu.utn.frba.dds.models.repositories.tarjeta.TarjetaPersonaVulnerableRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import ar.edu.utn.frba.dds.models.repositories.vianda.ViandaRepository;
-import ar.edu.utn.frba.dds.services.colaboraciones.DonacionDineroService;
-import ar.edu.utn.frba.dds.services.colaboraciones.RepartoDeTarjetaService;
+import ar.edu.utn.frba.dds.services.colaboraciones.*;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
@@ -193,7 +189,7 @@ public class ServiceLocator {
 
         if (componentName.equals(DistribucionViandasController.class.getName())) {
             DistribucionViandasController instance = new DistribucionViandasController(
-                    instanceOf(DistribucionViandasRepository.class),
+                    instanceOf(DistribucionViandasService.class),
                     instanceOf(UsuarioService.class),
                     instanceOf(ColaboradorService.class),
                     instanceOf(HeladeraService.class)
@@ -208,7 +204,7 @@ public class ServiceLocator {
 
         if (componentName.equals(HacerseCargoHeladeraController.class.getName())) {
             HacerseCargoHeladeraController instance = new HacerseCargoHeladeraController(
-                    instanceOf(HacerseCargoHeladeraRepository.class),
+                    instanceOf(HacerseCargoHeladeraService.class),
                     instanceOf(HeladeraService.class),
                     instanceOf(UsuarioService.class),
                     instanceOf(ColaboradorService.class)
@@ -230,6 +226,15 @@ public class ServiceLocator {
             instances.put(componentName, instance);
         }
 
+        if (componentName.equals(OfertaProductosServiciosController.class.getName())) {
+            OfertaProductosServiciosController instance = new OfertaProductosServiciosController(
+                    instanceOf(OfertaProductosServiciosService.class),
+                    instanceOf(UsuarioService.class),
+                    instanceOf(ColaboradorService.class)
+            );
+            instances.put(componentName, instance);
+        }
+
         if (componentName.equals(DonacionDineroService.class.getName())) {
             DonacionDineroService instance = new DonacionDineroService(
                     instanceOf(DonacionDineroRepository.class)
@@ -244,7 +249,7 @@ public class ServiceLocator {
 
         if (componentName.equals(DonacionViandaController.class.getName())) {
             DonacionViandaController instance = new DonacionViandaController(
-                    instanceOf(DonacionViandaRepository.class),
+                    instanceOf(DonacionViandaService.class),
                     instanceOf(ViandaRepository.class),
                     instanceOf(UsuarioService.class),
                     instanceOf(ColaboradorService.class)
