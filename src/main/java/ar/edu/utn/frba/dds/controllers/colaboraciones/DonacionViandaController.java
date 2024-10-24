@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.controllers.colaboraciones;
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.DistribucionViandasDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.DonacionViandaDTO;
+import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
@@ -62,17 +63,22 @@ public class DonacionViandaController extends ColaboradorPorSession implements I
     @Override
     public void create(Context context) {
 
-        Colaborador colaborador = obtenerColaboradorPorSession(context);
+        try {
+            Colaborador colaborador = obtenerColaboradorPorSession(context);
 
-        boolean tieneColaboracionReparto = colaborador.getFormaDeColaborar()
-                .stream()
-                .anyMatch(colaboracion -> colaboracion.equals(Colaboracion.DONACION_VIANDAS));
+            boolean tieneColaboracion = colaborador.getFormaDeColaborar()
+                    .stream()
+                    .anyMatch(colaboracion -> colaboracion.equals(Colaboracion.DONACION_VIANDAS));
 
-        if (!tieneColaboracionReparto) {
-            throw new UnauthorizedException("No tienes permiso");
+            if (!tieneColaboracion) {
+                throw new UnauthorizedException("No tienes permiso");
+            }
+
+            context.render("colaboraciones/donacion_vianda_crear.hbs");
+
+        } catch (ResourceNotFoundException | NonColaboratorException e) {
+            throw new UnauthorizedException();
         }
-
-        context.render("colaboraciones/donacion_vianda_crear.hbs");
     }
 
     @Override
@@ -111,8 +117,10 @@ public class DonacionViandaController extends ColaboradorPorSession implements I
             operationSuccess = true;
             redirectDTOS.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));
 
-        } catch (ValidationException e) {
-            redirectDTOS.add(new RedirectDTO("/colaboraciones", "Reintentar"));
+        } catch (ResourceNotFoundException | NonColaboratorException e) {
+            throw new UnauthorizedException();
+        } catch (ValidationException v) {
+            redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
         } finally {
             model.put("success", operationSuccess);
             model.put("redirects", redirectDTOS);

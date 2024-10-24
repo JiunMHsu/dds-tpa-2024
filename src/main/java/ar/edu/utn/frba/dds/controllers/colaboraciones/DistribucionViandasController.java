@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.controllers.colaboraciones;
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.DistribucionViandasDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.DonacionDineroDTO;
+import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
@@ -66,17 +67,22 @@ public class DistribucionViandasController extends ColaboradorPorSession impleme
     @Override
     public void create(Context context) {
 
-        Colaborador colaborador = obtenerColaboradorPorSession(context);
+        try {
+            Colaborador colaborador = obtenerColaboradorPorSession(context);
 
-        boolean tieneColaboracionDistribucionViandas = colaborador.getFormaDeColaborar()
-                .stream()
-                .anyMatch(colaboracion -> colaboracion.equals(Colaboracion.DISTRIBUCION_VIANDAS));
+            boolean tieneColaboracion = colaborador.getFormaDeColaborar()
+                    .stream()
+                    .anyMatch(colaboracion -> colaboracion.equals(Colaboracion.DISTRIBUCION_VIANDAS));
 
-        if (!tieneColaboracionDistribucionViandas) {
-            throw new UnauthorizedException("No tienes permiso");
+            if (!tieneColaboracion) {
+                throw new UnauthorizedException("No tienes permiso");
+            }
+
+            context.render("colaboraciones/distribucion_viandas_crear.hbs");
+
+        } catch (ResourceNotFoundException | NonColaboratorException e) {
+            throw new UnauthorizedException();
         }
-
-        context.render("colaboraciones/distribucion_viandas_crear.hbs");
     }
 
     @Override
@@ -112,7 +118,7 @@ public class DistribucionViandasController extends ColaboradorPorSession impleme
                 heladeraOrigen.quitarViandas(viandas);
                 heladeraDestino.agregarViandas(viandas);
             } catch (ExcepcionCantidadDeViandas e) {
-                redirectDTOS.add(new RedirectDTO("/colaboraciones", "Reintentar"));
+                redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
                 context.render("post_result.hbs", model);
                 return;
             }
@@ -134,8 +140,10 @@ public class DistribucionViandasController extends ColaboradorPorSession impleme
             operationSuccess = true;
             redirectDTOS.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));
 
-        } catch (ValidationException e) {
-            redirectDTOS.add(new RedirectDTO("/colaboraciones", "Reintentar"));
+        } catch (ResourceNotFoundException | NonColaboratorException e) {
+            throw new UnauthorizedException();
+        } catch (ValidationException v) {
+            redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
         } finally {
             model.put("success", operationSuccess);
             model.put("redirects", redirectDTOS);

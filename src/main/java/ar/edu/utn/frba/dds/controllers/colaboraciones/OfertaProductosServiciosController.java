@@ -4,8 +4,10 @@ import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.DonacionDineroDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.OfertaDeProductosDTO;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
+import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.RubroOferta;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
@@ -78,7 +80,23 @@ public class OfertaProductosServiciosController extends ColaboradorPorSession im
 
     @Override
     public void create(Context context) {
-        context.render("colaboraciones/oferta_prod_serv_crear.hbs");
+
+        try {
+            Colaborador colaborador = obtenerColaboradorPorSession(context);
+
+            boolean tieneColaboracion = colaborador.getFormaDeColaborar()
+                    .stream()
+                    .anyMatch(colaboracion -> colaboracion.equals(Colaboracion.OFERTA_DE_PRODUCTOS));
+
+            if (!tieneColaboracion) {
+                throw new UnauthorizedException("No tienes permiso");
+            }
+
+            context.render("colaboraciones/oferta_prod_serv_crear.hbs");
+
+        } catch (ResourceNotFoundException | NonColaboratorException e) {
+            throw new UnauthorizedException();
+        }
 
     }
 
@@ -114,14 +132,15 @@ public class OfertaProductosServiciosController extends ColaboradorPorSession im
             operationSuccess = true;
             redirectDTOS.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));
 
+        } catch (ResourceNotFoundException | NonColaboratorException e) {
+            throw new UnauthorizedException();
         } catch (ValidationException | InvalidFormParamException | IOException e) {
-            redirectDTOS.add(new RedirectDTO("/colaboraciones/oferta_prod_serv_crear.hbs", "Reintentar"));
+            redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
         } finally {
             model.put("success", operationSuccess);
             model.put("redirects", redirectDTOS);
             context.render("post_result.hbs", model);
         }
-
     }
 
     @Override

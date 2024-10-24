@@ -2,7 +2,9 @@ package ar.edu.utn.frba.dds.controllers.personaVulnerable;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.personaVulnerable.PersonaVulnerableDTO;
+import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
 import ar.edu.utn.frba.dds.exceptions.PersonaVulnerableNotFoundException;
+import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
@@ -83,17 +85,23 @@ public class PersonaVulnerableController extends ColaboradorPorSession implement
 
     @Override
     public void create(Context context) {
-        Colaborador colaborador = obtenerColaboradorPorSession(context);
 
-        boolean tieneColaboracionReparto = colaborador.getFormaDeColaborar()
-                .stream()
-                .anyMatch(colaboracion -> colaboracion.equals(Colaboracion.REPARTO_DE_TARJETAS));
+        try {
+            Colaborador colaborador = obtenerColaboradorPorSession(context);
 
-        if (!tieneColaboracionReparto) {
-            throw new UnauthorizedException("No tienes permiso");
+            boolean tieneColaboracion = colaborador.getFormaDeColaborar()
+                    .stream()
+                    .anyMatch(colaboracion -> colaboracion.equals(Colaboracion.REPARTO_DE_TARJETAS));
+
+            if (!tieneColaboracion) {
+                throw new UnauthorizedException("No tienes permiso");
+            }
+
+            context.render("colaboraciones/registro_pv_crear.hbs");
+
+        } catch (ResourceNotFoundException | NonColaboratorException e) {
+            throw new UnauthorizedException();
         }
-
-        context.render("colaboraciones/registro_pv_crear.hbs");
     }
 
     @Override
@@ -103,9 +111,9 @@ public class PersonaVulnerableController extends ColaboradorPorSession implement
         List<RedirectDTO> redirectDTOS = new ArrayList<>();
         boolean operationSuccess = false;
 
-        Colaborador colaborador = obtenerColaboradorPorSession(context);
-
         try {
+
+            Colaborador colaborador = obtenerColaboradorPorSession(context);
 
             Documento documento = Documento.with(
                     TipoDocumento.valueOf(context.formParamAsClass("tipo_documento", String.class).get()),
@@ -136,8 +144,10 @@ public class PersonaVulnerableController extends ColaboradorPorSession implement
             operationSuccess = true;
             redirectDTOS.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));
 
-        } catch (ValidationException e) {
-            redirectDTOS.add(new RedirectDTO("/colaboraciones", "Reintentar"));
+        } catch (ResourceNotFoundException | NonColaboratorException e) {
+            throw new UnauthorizedException();
+        } catch (ValidationException v) {
+            redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
         } finally {
             model.put("success", operationSuccess);
             model.put("redirects", redirectDTOS);

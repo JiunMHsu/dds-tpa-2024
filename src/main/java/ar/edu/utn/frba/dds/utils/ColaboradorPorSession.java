@@ -20,25 +20,17 @@ public abstract class ColaboradorPorSession {
         this.colaboradorService = colaboradorService;
     }
 
-    public Colaborador obtenerColaboradorPorSession(Context context) { // TODO - ver tipo excepcion
+    public Colaborador obtenerColaboradorPorSession(Context context) throws ResourceNotFoundException, NonColaboratorException {
 
         String userId = context.sessionAttribute("userId");
 
-        try {
-            Usuario usuarioSession = usuarioService.obtenerUsuarioPorID(userId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con ID: " + userId));
 
-            if (usuarioSession.getRol() != TipoRol.COLABORADOR) {
-                throw new NonColaboratorException("El usuario con ID: " + userId + " no tiene el rol de colaborador");
-            }
+        Usuario usuarioSession = usuarioService.obtenerUsuarioPorID(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con ID: " + userId));
 
-            Colaborador colaborador = colaboradorService.obtenerColaboradorPorUsuario(usuarioSession)
-                    .orElseThrow(() -> new ResourceNotFoundException("Colaborador no encontrado con Usuario: " + usuarioSession.getNombre()));
+        Colaborador colaborador = colaboradorService.obtenerColaboradorPorUsuario(usuarioSession)
+                .orElseThrow(() -> new NonColaboratorException("Colaborador no encontrado con Usuario: " + usuarioSession.getNombre()));
 
-            return colaborador;
-
-        } catch (ResourceNotFoundException | NonColaboratorException e) {
-            throw e;
-        }
+        return colaborador;
     }
 }
