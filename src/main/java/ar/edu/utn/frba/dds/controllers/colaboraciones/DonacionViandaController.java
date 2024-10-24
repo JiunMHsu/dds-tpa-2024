@@ -119,14 +119,6 @@ public class DonacionViandaController extends ColaboradorPorSession implements I
             context.render("post_result.hbs", model);
         }
 
-//        Comida comida = new Comida(context.formParam("nombre_comida"), Integer.valueOf(context.formParam("calorias")));
-//        //TODO ver como hacer lo de las fechas
-//        LocalDate fechaCaducidad = LocalDate.now();
-//        Integer peso = Integer.valueOf(context.formParam("peso"));
-//        Vianda vianda = new Vianda(comida, fechaCaducidad, peso);
-//        DonacionVianda donacionVianda = DonacionVianda.por(colaborador, LocalDateTime.now(), vianda, false);
-//        context.redirect("result_form");
-
     }
 
     @Override

@@ -159,7 +159,7 @@ public class ColaboradorController implements ICrudViewsHandler {
     }
 
     @Override
-    public void update(Context context) {
+    public void update(Context context) { // TODO - REFACTOR
         String colaboradorId = context.pathParam("id");
         Optional<Colaborador> posibleColaborador = this.colaboradorService.obtenerColaboradorPorID(colaboradorId);
 
