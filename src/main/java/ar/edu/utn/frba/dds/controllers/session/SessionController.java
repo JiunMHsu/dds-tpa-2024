@@ -4,6 +4,7 @@ import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
+import jakarta.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -29,10 +30,10 @@ public class SessionController {
     }
 
     public void create(Context context) {
-        // TODO - no se obtiene query param
-        // El forward en este caso atrapa la ruta del post (la que el formulario envía)
-        // El formulario siempre envía sin query params, entonces siempre va a ser NULL
-        String forward = this.getForwardRoute(context);
+        String forward = context.queryParam("forward");
+        if (forward == null) {
+            forward = this.getForwardRoute(context);
+        }
         Map<String, Object> model = new HashMap<>();
 
         String email = context.formParam("email");
@@ -40,9 +41,8 @@ public class SessionController {
 
         Optional<Usuario> usuario = usuarioService.obtenerUsuarioPorEmail(email);
 
-        // TODO - modificar la estrategia de manejar falla login
         if (usuario.isEmpty()) {
-            model.put("isRetry", true);
+            model.put("error", "Usuario no encontrado");
             context.status(400).render("login/login.hbs", model);
             return;
         }
@@ -50,7 +50,7 @@ public class SessionController {
         String claveDelUsuario = usuario.get().getContrasenia();
 
         if (!Objects.equals(claveIngresada, claveDelUsuario)) {
-            model.put("isRetry", true);
+            model.put("error", "Contraseña incorrecta");
             context.status(400).render("login/login.hbs", model);
             return;
         }
@@ -63,7 +63,13 @@ public class SessionController {
     }
 
     public void delete(Context context) {
-        // borrar la session
+        HttpSession session = context.req().getSession(false);
+
+        if (session != null) {
+            session.invalidate();
+        }
+
+        context.redirect("/login");
     }
 
     private String getForwardRoute(Context context) {

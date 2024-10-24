@@ -7,6 +7,7 @@ import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
+import ar.edu.utn.frba.dds.services.home.HomeService;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import java.util.HashMap;
@@ -16,15 +17,10 @@ import java.util.Optional;
 
 public class HomeController implements ICrudViewsHandler {
 
-    private ColaboradorRepository colaboradorRepository;
-    private UsuarioRepository usuarioRepository;
+    HomeService homeService;
 
-    public HomeController(ColaboradorRepository colaboradorRepository) {
-        this.colaboradorRepository = colaboradorRepository;
-    }
-
-    public HomeController(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
+    public HomeController(HomeService homeService){
+        this.homeService = homeService;
     }
 
     @Override
@@ -37,7 +33,7 @@ public class HomeController implements ICrudViewsHandler {
             return;
         }
 
-        Optional<Usuario> usuarioOpt = this.usuarioRepository.buscarPorId(idUsuario);
+        Optional<Usuario> usuarioOpt = this.homeService.buscarPorId(idUsuario);
         if (!usuarioOpt.isPresent()) {
             context.redirect("/login");
             return;
@@ -50,7 +46,7 @@ public class HomeController implements ICrudViewsHandler {
             return;
         }
 
-        Optional<Colaborador> colaboradorOpt = this.colaboradorRepository.buscarPorUsuario(usuario);
+        Optional<Colaborador> colaboradorOpt = this.homeService.buscarPorUsuario(usuario);
 
         if (!colaboradorOpt.isPresent()) {
             context.redirect("/login");

@@ -19,7 +19,7 @@ public class ReporteController {
     }
 
     public void index(Context context) {
-        //TODO verificar rol de admin
+
         List<Reporte> reportes = this.reporteService.buscarTodas();
 
         List<ReporteDTO> reporteDTO = reportes.stream()
