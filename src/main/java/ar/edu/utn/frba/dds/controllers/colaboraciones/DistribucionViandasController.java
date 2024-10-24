@@ -1,14 +1,18 @@
 package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.DistribucionViandasDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.DonacionDineroDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDinero;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.ExcepcionCantidadDeViandas;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
+import ar.edu.utn.frba.dds.services.colaboraciones.DistribucionViandasService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
@@ -25,16 +29,16 @@ import java.util.Optional;
 
 public class DistribucionViandasController extends ColaboradorPorSession implements ICrudViewsHandler {
 
-    private DistribucionViandasRepository distribucionViandasRepository;
+    private DistribucionViandasService distribucionViandasService;
     private HeladeraService heladeraService;
 
-    public DistribucionViandasController(DistribucionViandasRepository distribucionViandasRepository,
+    public DistribucionViandasController(DistribucionViandasService distribucionViandasService,
                                          UsuarioService usuarioService,
                                          ColaboradorService colaboradorService,
                                          HeladeraService heladeraService) {
 
         super(usuarioService, colaboradorService);
-        this.distribucionViandasRepository = distribucionViandasRepository;
+        this.distribucionViandasService = distribucionViandasService;
         this.heladeraService = heladeraService;
     }
 
@@ -45,7 +49,18 @@ public class DistribucionViandasController extends ColaboradorPorSession impleme
 
     @Override
     public void show(Context context) {
+        String distribucionViandasId = context.pathParam("id");
+        Optional<DistribucionViandas> distribucionViandas = distribucionViandasService.buscarPorId(distribucionViandasId);
 
+        if (distribucionViandas.isEmpty())
+            throw new ResourceNotFoundException("No se encontró distribucion de viandas con id " + distribucionViandasId);
+
+        Map<String, Object> model = new HashMap<>();
+
+        DistribucionViandasDTO distribucionViandasDTO = DistribucionViandasDTO.completa(distribucionViandas.get());
+        model.put("distribucion_viandas", distribucionViandasDTO);
+
+        context.render("colaboraciones/colaboracion_detalle.hbs", model);
     }
 
     @Override
@@ -114,7 +129,7 @@ public class DistribucionViandasController extends ColaboradorPorSession impleme
                     motivo
             );
 
-            this.distribucionViandasRepository.guardar(distribucionViandas);
+            this.distribucionViandasService.guardar(distribucionViandas);
 
             operationSuccess = true;
             redirectDTOS.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));

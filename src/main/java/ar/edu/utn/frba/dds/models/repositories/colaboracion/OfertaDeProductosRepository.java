@@ -10,16 +10,6 @@ public class OfertaDeProductosRepository extends ColaboracionRepository<OfertaDe
         super(OfertaDeProductos.class);
     }
 
-    public Optional<OfertaDeProductos> buscarPorId(String id) {
-        try {
-            UUID uuid = UUID.fromString(id);
-            return Optional.ofNullable(entityManager().find(OfertaDeProductos.class, uuid))
-                    .filter(OfertaDeProductos::getAlta);
-        } catch (IllegalArgumentException e) {
-            return Optional.empty();
-        }
-    }
-
     public void eliminar(OfertaDeProductos oferta) {
         withTransaction(() -> {
             oferta.setAlta(false);
