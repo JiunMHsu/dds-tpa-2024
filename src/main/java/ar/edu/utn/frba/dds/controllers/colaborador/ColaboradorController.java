@@ -40,7 +40,7 @@ public class ColaboradorController implements ICrudViewsHandler {
 
     @Override
     public void index(Context context) {
-        //TODO verificar rol de admin
+
         List<Colaborador> colaboradores = this.colaboradorService.buscarTodosColaboradores();
 
         Map<String, Object> model = new HashMap<>();
@@ -54,15 +54,11 @@ public class ColaboradorController implements ICrudViewsHandler {
     @Override
     public void show(Context context) {
 
-        //TODO verificar rol de admin
         String colaboradorId = context.pathParam("id");
         Optional<Colaborador> posibleColaboradorBuscado = this.colaboradorService.obtenerColaboradorPorID(colaboradorId);
 
-        //TODO verificar empty
-        if (posibleColaboradorBuscado.isEmpty()) {
-            context.status(404);//not found
-            return;
-        }
+        if (posibleColaboradorBuscado.isEmpty())
+            throw new ResourceNotFoundException("No se encontró colaborador con id " + colaboradorId);
 
         Map<String, Object> model = new HashMap<>();
         model.put("colaborador", posibleColaboradorBuscado.get());
@@ -77,9 +73,8 @@ public class ColaboradorController implements ICrudViewsHandler {
         Optional<Usuario> usuario = this.usuarioService.obtenerUsuarioPorID(usuarioId);
         Optional<Colaborador> posibleColaboradorBuscado = this.colaboradorService.obtenerColaboradorPorUsuario(usuario.get());
 
-        //TODO verificar empty
         if (posibleColaboradorBuscado.isEmpty()) {
-            throw new ResourceNotFoundException("No encontrado");
+            throw new ResourceNotFoundException("No se encontró colaborador con usuario de id " + usuarioId);
         }
 
         Map<String, Object> model = new HashMap<>();
@@ -95,14 +90,12 @@ public class ColaboradorController implements ICrudViewsHandler {
     @Override
     public void create(Context context) {
         //sign up
-        //TODO ver porque en nuestro diseño eran muchas vistas distintas
         context.render("colaboradores/sign_up.hbs");
 
     }
 
     @Override
     public void save(Context context) {
-        //TODO ver rol adminitrador
         Usuario usuario = Usuario.con(context.formParam("nombre"), context.formParam("contrasenia"), context.formParam("email"), TipoRol.COLABORADOR);
         Direccion direccion = Direccion.with(
                 new Barrio(context.formParam("barrio")),
@@ -167,12 +160,15 @@ public class ColaboradorController implements ICrudViewsHandler {
 
     @Override
     public void update(Context context) {
-        //esto teniendo en cuenta solo una forma de colaboracion por formulario
-        Optional<Colaborador> posibleColaboradorActualizar = this.colaboradorService.obtenerColaboradorPorID(context.formParam("id"));
-        // TODO - chequeo si no existe
+        String colaboradorId = context.pathParam("id");
+        Optional<Colaborador> posibleColaborador = this.colaboradorService.obtenerColaboradorPorID(colaboradorId);
 
-        Colaborador colaboradorActualizado = posibleColaboradorActualizar.get();
-        // colaboradorActualizado.agregarFormaColaborar(Colaboracion.valueOf(context.formParam("nueva_forma_colaborar")));
+        if (posibleColaborador.isEmpty())
+            throw new ResourceNotFoundException("No se encontró colaborador con id " + colaboradorId);
+
+        Colaborador colaboradorActualizado = posibleColaborador.get();
+        // TODO ver agregar forma colaborar
+        //  colaboradorActualizado.agregarFormaColaborar(Colaboracion.valueOf(context.formParam("nueva_forma_colaborar")));
         this.colaboradorService.actualizar(colaboradorActualizado);
         context.status(HttpStatus.OK);
     }
@@ -182,22 +178,13 @@ public class ColaboradorController implements ICrudViewsHandler {
         String colaboradorId = context.pathParam("id");
         Optional<Colaborador> posibleColaboradorAEliminar = this.colaboradorService.obtenerColaboradorPorID(colaboradorId);
 
-
-        /*// TODO - chequeo si no existe
+        if(posibleColaboradorAEliminar.isEmpty()){
+            throw new ResourceNotFoundException("No se encontró colaborador con id " + colaboradorId);
+        }
 
         this.colaboradorService.eliminarColaborador(posibleColaboradorAEliminar.get());
         context.status(HttpStatus.OK);
         // mostrar algo de exitoso*/
-
-        /*ALGO ASI?*/
-        if (posibleColaboradorAEliminar.isPresent()) {
-            this.colaboradorService.eliminarColaborador(posibleColaboradorAEliminar.get());
-            context.status(HttpStatus.OK);
-            context.result("Colaborador eliminado exitosamente.");
-        } else {
-            context.status(HttpStatus.NOT_FOUND);
-            context.result("Colaborador no encontrado.");
-        }
 
     }
 
