@@ -13,12 +13,12 @@ public class IncidenteRepository implements ICrudRepository<Incidente>, WithSimp
 
     @Override
     public void guardar(Incidente incidente) {
-        withTransaction(() -> entityManager().persist(incidente));
+        entityManager().persist(incidente);
     }
 
     @Override
     public void actualizar(Incidente incidente) {
-        withTransaction(() -> entityManager().merge(incidente));
+        entityManager().merge(incidente);
     }
 
     @Override

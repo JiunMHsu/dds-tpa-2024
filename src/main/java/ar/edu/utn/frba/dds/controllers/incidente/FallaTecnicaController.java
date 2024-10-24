@@ -78,13 +78,13 @@ public class FallaTecnicaController extends ColaboradorPorSession {
                     new Imagen(pathImagen)
             );
 
-            this.incidenteService.guardarIncidente(nuevaFallaTecnica);
+            this.incidenteService.registrarIncidente(nuevaFallaTecnica);
 
             operationSuccess = true;
-            redirectDTOS.add(new RedirectDTO("/fallas_tecnicas/new", "Reportar otra Falla"));
+            redirectDTOS.add(new RedirectDTO("/fallas-tecnicas/new", "Reportar otra Falla"));
 
         } catch (ValidationException | InvalidFormParamException | IOException e) {
-            redirectDTOS.add(new RedirectDTO("/fallas_tecnicas/new", "Reintentar"));
+            redirectDTOS.add(new RedirectDTO("/fallas-tecnicas/new", "Reintentar"));
         } finally {
             model.put("success", operationSuccess);
             model.put("redirects", redirectDTOS);

@@ -68,7 +68,8 @@ public class ServiceLocator {
         if (componentName.equals(HeladeraController.class.getName())) {
             HeladeraController instance = new HeladeraController(
                     instanceOf(HeladeraService.class),
-                    instanceOf(PuntoIdealService.class));
+                    instanceOf(PuntoIdealService.class),
+                    instanceOf(IncidenteService.class));
             instances.put(componentName, instance);
         }
 
@@ -101,7 +102,8 @@ public class ServiceLocator {
 
         if (componentName.equals(IncidenteService.class.getName())) {
             IncidenteService instance = new IncidenteService(
-                    instanceOf(IncidenteRepository.class));
+                    instanceOf(IncidenteRepository.class),
+                    instanceOf(HeladeraRepository.class));
             instances.put(componentName, instance);
         }
 

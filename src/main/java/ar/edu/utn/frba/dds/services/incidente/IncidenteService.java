@@ -1,21 +1,22 @@
 package ar.edu.utn.frba.dds.services.incidente;
 
-import static ar.edu.utn.frba.dds.models.entities.incidente.TipoIncidente.FALLA_TECNICA;
-
+import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
+import ar.edu.utn.frba.dds.models.entities.incidente.TipoIncidente;
+import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
-import java.time.LocalDateTime;
-import java.util.HashMap;
+import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
-public class IncidenteService {
+public class IncidenteService implements WithSimplePersistenceUnit {
 
     private final IncidenteRepository incidenteRepository;
+    private final HeladeraRepository heladeraRepository;
 
-    public IncidenteService(IncidenteRepository incidenteRepository) {
+    public IncidenteService(IncidenteRepository incidenteRepository, HeladeraRepository heladeraRepository) {
         this.incidenteRepository = incidenteRepository;
+        this.heladeraRepository = heladeraRepository;
     }
 
     public List<Incidente> buscarTodasAlertas() {
@@ -23,35 +24,26 @@ public class IncidenteService {
     }
 
     public List<Incidente> buscarTodasFallasTecnicas() {
-        return this.incidenteRepository.buscarPorTipo(FALLA_TECNICA);
+        return this.incidenteRepository.buscarPorTipo(TipoIncidente.FALLA_TECNICA);
     }
 
     public Optional<Incidente> buscarIncidentePorId(String id) {
         return this.incidenteRepository.buscarPorId(id);
     }
 
-    public Map<String, Integer> incidentesPorHeladera() {
-
-        LocalDateTime haceUnaSemana = LocalDateTime.now().minusWeeks(1);
-        List<Incidente> incidentes = incidenteRepository.buscarAPartirDe(haceUnaSemana);
-
-        Map<String, Integer> incidentesPorHeladera = new HashMap<>();
-
-        for (Incidente incidente : incidentes) {
-            int cantidad = incidentesPorHeladera.getOrDefault(incidente.getHeladera().getNombre(), 0) + 1;
-            incidentesPorHeladera.put(incidente.getHeladera().getNombre(), cantidad);
-        }
-
-        return incidentesPorHeladera;
-    }
-
-    public void guardarIncidente(Incidente incidente) {
-        // TODO
-        if (incidente.getTipo() == FALLA_TECNICA && incidente.getColaborador() == null) {
+    public void registrarIncidente(Incidente incidente) {
+        if (incidente.getTipo().equals(TipoIncidente.FALLA_TECNICA) && incidente.getColaborador() == null) {
             throw new IllegalArgumentException("Las Fallas Tecnicas deben tener asociado un Colaborador");
         }
 
-        this.incidenteRepository.guardar(incidente);
+        incidente.getHeladera().setEstado(EstadoHeladera.INACTIVA);
+
+        withTransaction(() -> {
+            heladeraRepository.actualizar(incidente.getHeladera());
+            incidenteRepository.guardar(incidente);
+        });
+
+        // TODO - avisar a técnicos, enviar respectivos mensajes
     }
 
 }

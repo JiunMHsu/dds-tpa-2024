@@ -11,6 +11,7 @@ import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
+import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.puntoIdeal.PuntoIdealService;
 import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
@@ -25,13 +26,16 @@ import java.util.Optional;
 
 public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHandler {
 
-    HeladeraService heladeraService;
-    PuntoIdealService puntoIdealService;
+    private final HeladeraService heladeraService;
+    private final PuntoIdealService puntoIdealService;
+    private final IncidenteService incidenteService;
 
     public HeladeraController(HeladeraService heladeraService,
-                              PuntoIdealService puntoIdealService) {
+                              PuntoIdealService puntoIdealService,
+                              IncidenteService incidenteService) {
         this.heladeraService = heladeraService;
         this.puntoIdealService = puntoIdealService;
+        this.incidenteService = incidenteService;
     }
 
     @Override
@@ -44,7 +48,6 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
 
         Map<String, Object> model = new HashMap<>();
         model.put("heladeras", heladerasDTO);
-        // model.put("userRol", "Listado de heladeras");
 
         context.render("heladeras/heladeras.hbs", model);
     }
@@ -178,21 +181,19 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
         // mostrar algo de exitoso
     }
 
-    // métodos para manejar mensaje de los sensores
-
     @Override
     public void recibirTemperatura(double temperatura) {
-
+        // TODO
     }
 
     @Override
     public void recibirMovimiento() {
-
+        // TODO
     }
 
     @Override
     public void recibirCodigoTarjeta(String codigoTarjeta) {
-
+        // TODO
     }
 
 }
