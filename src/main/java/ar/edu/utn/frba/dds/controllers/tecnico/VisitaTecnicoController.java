@@ -37,7 +37,7 @@ public class VisitaTecnicoController {
     }
 
     public void create(Context context) {
-        // TODO - solo context.render?
+        context.result("Visita Tecnico");
     }
 
     public void save(Context context) { // TODO - Ver desp que matchee con las vistas
@@ -73,8 +73,6 @@ public class VisitaTecnicoController {
 
             Boolean resuelta = context.formParamAsClass("resuelta", Boolean.class).get();
 
-            // Creo q va ser mejor delegar la instanciacion al service
-
             VisitaTecnico visitaTecnico = VisitaTecnico.por(
                     tecnico,
                     heladera.get(),
@@ -84,7 +82,7 @@ public class VisitaTecnicoController {
                     resuelta
             );
 
-            this.visitaTecnicoService.registrarVisita();
+            this.visitaTecnicoService.registrarVisita(visitaTecnico);
 
         } catch (ValidationException e) {
             redirectDTOS.add(new RedirectDTO("/home", "Reintentar"));

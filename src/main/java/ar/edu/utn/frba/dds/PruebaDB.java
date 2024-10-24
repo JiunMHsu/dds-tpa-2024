@@ -35,7 +35,6 @@ public class PruebaDB implements WithSimplePersistenceUnit {
     private TecnicoRepository tecnicoRepository;
     private ColaboradorRepository colaboradorRepository;
     private UsuarioRepository usuarioRepository;
-
     private IncidenteRepository incidenteRepository;
 
     public static void main(String[] args) {
@@ -128,7 +127,11 @@ public class PruebaDB implements WithSimplePersistenceUnit {
     private void guardarTecnico() {
         Barrio almagro = new Barrio("Almagro");
 
+        Usuario usuarioT1 = Usuario.conEmail("mjuncosmieres@frba.utn.edu.ar");
+        Usuario usuarioT2 = Usuario.conEmail("jgandola@frba.utn.edu.ar");
+
         Tecnico unTecnico = Tecnico.con(
+                usuarioT1,
                 "Matias Leonel",
                 "Juncos Mieres",
                 new Documento(TipoDocumento.DNI, "12345678"),
@@ -139,6 +142,7 @@ public class PruebaDB implements WithSimplePersistenceUnit {
         );
 
         Tecnico otroTecnico = Tecnico.con(
+                usuarioT2,
                 "Joaquín",
                 "Gándola",
                 new Documento(TipoDocumento.DNI, "82738291"),

@@ -23,7 +23,6 @@ public class TecnicoController implements ICrudViewsHandler {
 
 
     public TecnicoController (TecnicoService tecnicoService) {
-
         this.tecnicoService = tecnicoService;
     }
 
@@ -60,7 +59,7 @@ public class TecnicoController implements ICrudViewsHandler {
 
     @Override
     public void create(Context context) {
-        context.result("no sos tecnico");
+        context.result("Tecnico");
     }
 
     @Override
