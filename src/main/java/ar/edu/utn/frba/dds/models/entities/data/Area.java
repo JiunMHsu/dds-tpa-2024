@@ -21,13 +21,13 @@ public class Area {
     private Ubicacion ubicacion;
 
     @Column(name = "radio")
-    private Double radio;
+    private Integer radio;
 
     @Column(name = "barrio")
     private Barrio barrio;
 
     public static Area with (Ubicacion ubicacion,
-                             Double radio,
+                             Integer radio,
                              Barrio barrio) {
         return Area
                 .builder()

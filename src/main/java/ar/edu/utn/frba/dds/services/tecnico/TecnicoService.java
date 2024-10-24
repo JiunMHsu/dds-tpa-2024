@@ -38,4 +38,8 @@ public class TecnicoService implements WithSimplePersistenceUnit {
         return tecnicoRepository.buscarPorUsuario(usuario);
     }
 
+    public void actualizar(Tecnico tecnico) {
+        withTransaction(() -> tecnicoRepository.actualizar(tecnico));
+    }
+
 }

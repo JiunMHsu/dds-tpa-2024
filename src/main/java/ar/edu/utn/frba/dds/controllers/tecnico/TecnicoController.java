@@ -3,7 +3,6 @@ package ar.edu.utn.frba.dds.controllers.tecnico;
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.tecnico.TecnicoDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
-import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.*;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
@@ -12,6 +11,7 @@ import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
+import io.javalin.http.HttpStatus;
 import io.javalin.validation.ValidationException;
 
 import java.util.*;
@@ -20,10 +20,14 @@ import java.util.*;
 public class TecnicoController implements ICrudViewsHandler {
 
     private final TecnicoService tecnicoService;
+    private final UsuarioService usuarioService;
 
 
-    public TecnicoController (TecnicoService tecnicoService) {
+    public TecnicoController (TecnicoService tecnicoService,
+                              UsuarioService usuarioService) {
+
         this.tecnicoService = tecnicoService;
+        this.usuarioService = usuarioService;
     }
 
     @Override
@@ -100,9 +104,12 @@ public class TecnicoController implements ICrudViewsHandler {
                     context.formParamAsClass("longitud", Double.class).get()
             );
 
+            Integer radio = context.queryParamAsClass("radio", Integer.class)
+                    .check(rad -> rad >= 0.0, "el radio debe ser positivo").get();
+
             Area area = Area.with(
                     ubicacion,
-                    Double.valueOf(context.formParamAsClass("radio", Double.class).get()),
+                    radio,
                     new Barrio(context.formParamAsClass("barrio", String.class).get())
             );
 
@@ -137,8 +144,27 @@ public class TecnicoController implements ICrudViewsHandler {
     }
 
     @Override
-    public void update(Context context) {
+    public void update(Context context) { // TODO - REFACTOR
 
+        String userId = context.sessionAttribute("userId");
+
+        Optional<Usuario> usuarioSession = usuarioService.obtenerUsuarioPorID(userId);
+        if (usuarioSession.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontró el usuario con id " + userId);
+        }
+
+        Usuario usuario = usuarioSession.get();
+
+        Optional<Tecnico> tecnicoSession = tecnicoService.obtenerTecnicoPorUsuario(usuarioSession.get());
+        if (tecnicoSession.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontró el tecnico con usuario " + usuario.getNombre());
+        }
+
+        Tecnico tecnicoActualizado = tecnicoSession.get();
+
+
+        this.tecnicoService.actualizar(tecnicoActualizado);
+        context.status(HttpStatus.OK); // TODO - mepa q esto solo no es suficiente
     }
 
     @Override
