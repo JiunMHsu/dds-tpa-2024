@@ -11,6 +11,7 @@ import ar.edu.utn.frba.dds.controllers.incidente.AlertaController;
 import ar.edu.utn.frba.dds.controllers.incidente.FallaTecnicaController;
 import ar.edu.utn.frba.dds.controllers.personaVulnerable.PersonaVulnerableController;
 import ar.edu.utn.frba.dds.controllers.session.SessionController;
+import ar.edu.utn.frba.dds.controllers.tecnico.TecnicoController;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaRepository;
@@ -21,6 +22,7 @@ import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
 import ar.edu.utn.frba.dds.models.repositories.personaVulnerable.PersonaVulnerableRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjeta.TarjetaPersonaVulnerableRepository;
+import ar.edu.utn.frba.dds.models.repositories.tecnico.TecnicoRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import ar.edu.utn.frba.dds.models.repositories.vianda.ViandaRepository;
 import ar.edu.utn.frba.dds.services.colaboraciones.DonacionDineroService;
@@ -31,6 +33,7 @@ import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.personaVulnerable.PersonaVulnerableService;
 import ar.edu.utn.frba.dds.services.puntoIdeal.PuntoIdealService;
 import ar.edu.utn.frba.dds.services.tarjeta.TarjetaPersonaVulnerableService;
+import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import java.util.HashMap;
 import java.util.Map;
@@ -259,6 +262,25 @@ public class ServiceLocator {
 
         if (componentName.equals(ViandaRepository.class.getName())) {
             ViandaRepository instance = new ViandaRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(TecnicoController.class.getName())) {
+            TecnicoController instance = new TecnicoController(
+                    instanceOf(TecnicoService.class)
+            );
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(TecnicoService.class.getName())) {
+            TecnicoService instance = new TecnicoService(
+                    instanceOf(TecnicoRepository.class)
+            );
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(TecnicoRepository.class.getName())) {
+            TecnicoRepository instance = new TecnicoRepository();
             instances.put(componentName, instance);
         }
 

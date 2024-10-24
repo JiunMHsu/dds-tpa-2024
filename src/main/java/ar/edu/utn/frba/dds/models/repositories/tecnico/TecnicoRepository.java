@@ -23,6 +23,13 @@ public class TecnicoRepository implements WithSimplePersistenceUnit {
         });
     }
 
+    public List<Tecnico> buscarTodos() {
+        return entityManager()
+                .createQuery("from Tecnico t where t.alta = :alta", Tecnico.class)
+                .setParameter("alta", true)
+                .getResultList();
+    }
+
     public Optional<Tecnico> obtenerPorCuit(String cuit) {
         return Optional.ofNullable(entityManager()
                 .createQuery("from Tecnico t where t.cuit = :cuit and t.alta = :alta", Tecnico.class)
