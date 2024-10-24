@@ -6,17 +6,23 @@ import ar.edu.utn.frba.dds.models.entities.data.Barrio;
 import ar.edu.utn.frba.dds.models.entities.data.Calle;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
+import ar.edu.utn.frba.dds.models.entities.data.Imagen;
+import ar.edu.utn.frba.dds.models.entities.data.TipoRazonSocial;
 import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
+import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
+import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Initializer implements WithSimplePersistenceUnit {
 
@@ -25,8 +31,9 @@ public class Initializer implements WithSimplePersistenceUnit {
 
         instance.cleanupDatabase();
         instance.withSuperUser();
-        instance.withColaborador();
+        instance.withColaboradores();
         instance.withHeladeras();
+        instance.withIncidentes();
     }
 
     public void withSuperUser() {
@@ -44,8 +51,12 @@ public class Initializer implements WithSimplePersistenceUnit {
         });
     }
 
-    public void withColaborador() {
-        Usuario usuario = Usuario.con("JiunMHsu", "iMC4(*&A^F0OK?%87", "jhsu@gmail.com", TipoRol.COLABORADOR);
+    public void withColaboradores() {
+        Usuario u1 = Usuario.con("JiunMHsu", "1111", "jhsu@frba.utn.edu.ar", TipoRol.COLABORADOR);
+        Usuario u2 = Usuario.con("abrilnimo", "1111", "adomingueznimo@frba.utn.edu.ar", TipoRol.COLABORADOR);
+        Usuario u3 = Usuario.con("leoojuncos", "1111", "mjuncosmieres@frba.utn.edu.ar", TipoRol.COLABORADOR);
+        Usuario u4 = Usuario.con("Melselep", "1111", "melperez@frba.utn.edu.ar", TipoRol.COLABORADOR);
+        Usuario u5 = Usuario.con("joaquingandola", "1111", "jgandola@frba.utn.edu.ar", TipoRol.COLABORADOR);
 
         Direccion direccion = new Direccion(
                 new Barrio("Almagro"),
@@ -54,25 +65,32 @@ public class Initializer implements WithSimplePersistenceUnit {
                 new Ubicacion(-34.59857981526152, -58.420110294464294)
         );
 
-        ArrayList<Colaboracion> colaboraciones = new ArrayList<>();
-        colaboraciones.add(Colaboracion.DISTRIBUCION_VIANDAS);
-        colaboraciones.add(Colaboracion.DONACION_DINERO);
+        List<Colaboracion> colabHumana1 = List.of(Colaboracion.DISTRIBUCION_VIANDAS, Colaboracion.DONACION_DINERO);
+        List<Colaboracion> colabHumana2 = List.of(Colaboracion.DISTRIBUCION_VIANDAS, Colaboracion.REPARTO_DE_TARJETAS, Colaboracion.DONACION_VIANDAS);
+        List<Colaboracion> colabJuridica1 = List.of(Colaboracion.DONACION_DINERO, Colaboracion.HACERSE_CARGO_HELADERA);
+        List<Colaboracion> colabJuridica2 = List.of(Colaboracion.HACERSE_CARGO_HELADERA, Colaboracion.OFERTA_DE_PRODUCTOS, Colaboracion.DONACION_DINERO);
 
-        Colaborador colaborador = Colaborador.humana(
-                usuario,
-                "Jiun Ming",
-                "Hsu",
-                LocalDate.of(2003, 2, 19),
-                Contacto.vacio(),
-                direccion,
-                colaboraciones);
+        Colaborador c1 = Colaborador.humana(u1, "Jiun Ming", "Hsu", LocalDate.now(), Contacto.vacio(), direccion, new ArrayList<>(colabHumana1));
+        Colaborador c2 = Colaborador.humana(u2, "Abril", "Nimo Dominguez", LocalDate.now(), Contacto.vacio(), direccion, new ArrayList<>(colabHumana2));
+        Colaborador c3 = Colaborador.humana(u3, "Matías Leonel", "Juncos Mieres", LocalDate.now(), Contacto.vacio(), direccion, new ArrayList<>(colabHumana1));
+        Colaborador c4 = Colaborador.juridica(u4, "MELSELEP SRL", TipoRazonSocial.EMPRESA, "Música", Contacto.vacio(), direccion, new ArrayList<>(colabJuridica2));
+        Colaborador c5 = Colaborador.juridica(u5, "JOACO SA", TipoRazonSocial.EMPRESA, "Tecnología", Contacto.vacio(), direccion, new ArrayList<>(colabJuridica1));
 
         UsuarioRepository usuarioRepository = new UsuarioRepository();
         ColaboradorRepository colaboradorRepository = new ColaboradorRepository();
 
         withTransaction(() -> {
-            usuarioRepository.guardar(usuario);
-            colaboradorRepository.guardar(colaborador);
+            usuarioRepository.guardar(u1);
+            usuarioRepository.guardar(u2);
+            usuarioRepository.guardar(u3);
+            usuarioRepository.guardar(u4);
+            usuarioRepository.guardar(u5);
+
+            colaboradorRepository.guardar(c1);
+            colaboradorRepository.guardar(c2);
+            colaboradorRepository.guardar(c3);
+            colaboradorRepository.guardar(c4);
+            colaboradorRepository.guardar(c5);
         });
     }
 
@@ -150,6 +168,75 @@ public class Initializer implements WithSimplePersistenceUnit {
         heladeraRepository.guardar(Heladera.con("Heladera DOS", d2, 70, new RangoTemperatura(2.0, -3.0), 42));
         heladeraRepository.guardar(Heladera.con("Heladera SEIS", d6, 60, new RangoTemperatura(4.0, -4.0), 44));
         heladeraRepository.guardar(Heladera.con("Heladera TRES", d3, 85, new RangoTemperatura(3.0, -4.0), 66));
+        commitTransaction();
+    }
+
+    private void withIncidentes() {
+        HeladeraRepository heladeraRepository = new HeladeraRepository();
+        ColaboradorRepository colaboradorRepository = new ColaboradorRepository();
+
+        Incidente i1 = Incidente.fallaTemperatura(
+                heladeraRepository.buscarPorNombre("Heladera DIEZ").orElseThrow(),
+                LocalDateTime.of(2024, 3, 19, 14, 3));
+
+        Incidente i2 = Incidente.fallaConexion(
+                heladeraRepository.buscarPorNombre("Heladera UNO").orElseThrow(),
+                LocalDateTime.of(2024, 1, 15, 10, 30));
+
+        Incidente i3 = Incidente.fallaTemperatura(
+                heladeraRepository.buscarPorNombre("Heladera QUINCE").orElseThrow(),
+                LocalDateTime.of(2024, 2, 29, 9, 45));
+
+        Incidente i4 = Incidente.fraude(
+                heladeraRepository.buscarPorNombre("Heladera OCHO").orElseThrow(),
+                LocalDateTime.of(2024, 4, 5, 16, 15));
+
+        Incidente i5 = Incidente.fallaTemperatura(
+                heladeraRepository.buscarPorNombre("Heladera DOS").orElseThrow(),
+                LocalDateTime.of(2024, 5, 20, 8, 0));
+
+        Incidente i6 = Incidente.fallaConexion(
+                heladeraRepository.buscarPorNombre("Heladera TRES").orElseThrow(),
+                LocalDateTime.of(2024, 6, 10, 13, 25));
+
+        Incidente i7 = Incidente.fraude(
+                heladeraRepository.buscarPorNombre("Heladera SEIS").orElseThrow(),
+                LocalDateTime.of(2024, 7, 23, 18, 50));
+
+        Incidente i8 = Incidente.fallaTecnica(
+                heladeraRepository.buscarPorNombre("Heladera CINCO").orElseThrow(),
+                LocalDateTime.of(2024, 8, 12, 14, 5),
+                colaboradorRepository.buscarPorEmail("adomingueznimo@frba.utn.edu.ar").orElseThrow(),
+                "No funca el lector de tarjeta.",
+                new Imagen(""));
+
+        Incidente i9 = Incidente.fallaTecnica(
+                heladeraRepository.buscarPorNombre("Heladera CUATRO").orElseThrow(),
+                LocalDateTime.of(2024, 9, 17, 19, 40),
+                colaboradorRepository.buscarPorEmail("adomingueznimo@frba.utn.edu.ar").orElseThrow(),
+                "La vianda no sale",
+                new Imagen(""));
+
+        Incidente i10 = Incidente.fallaTecnica(
+                heladeraRepository.buscarPorNombre("Heladera DOCE").orElseThrow(),
+                LocalDateTime.of(2024, 12, 1, 7, 55),
+                colaboradorRepository.buscarPorEmail("jgandola@frba.utn.edu.ar").orElseThrow(),
+                "Ni idea lo que paso",
+                new Imagen(""));
+
+        IncidenteRepository incidenteRepository = new IncidenteRepository();
+
+        beginTransaction();
+        incidenteRepository.guardar(i1);
+        incidenteRepository.guardar(i2);
+        incidenteRepository.guardar(i3);
+        incidenteRepository.guardar(i4);
+        incidenteRepository.guardar(i5);
+        incidenteRepository.guardar(i6);
+        incidenteRepository.guardar(i7);
+        incidenteRepository.guardar(i8);
+        incidenteRepository.guardar(i9);
+        incidenteRepository.guardar(i10);
         commitTransaction();
     }
 

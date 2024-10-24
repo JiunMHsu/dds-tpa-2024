@@ -133,7 +133,7 @@
         <!-- javalin -->
         <dependency>
             <groupId>io.javalin</groupId>
-            <artifactId>javalin</artifactId>
+            <artifactId>javalin-bundle</artifactId>
             <version>6.3.0</version>
         </dependency>
 

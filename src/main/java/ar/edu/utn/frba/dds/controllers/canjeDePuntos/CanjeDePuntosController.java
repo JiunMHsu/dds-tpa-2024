@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.controllers.canjeDePuntos;
 
 import ar.edu.utn.frba.dds.dtos.colaboraciones.OfertaDeProductosDTO;
+import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.puntosPorColaborador.CanjeDePuntos;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class CanjeDePuntosController implements ICrudViewsHandler {
@@ -45,9 +47,14 @@ public class CanjeDePuntosController implements ICrudViewsHandler {
         List<OfertaDeProductosDTO> ofertaDeProductosDTOS = productos.stream()
                 .map(OfertaDeProductosDTO::preview)
                 .collect(Collectors.toList());
-        //TODO cuando obtenengo el colaborador de la sesion tambien hace falta chequear si puede ser empty? 😩
-        Colaborador colaborador = colaboradorService.buscarPorId(context.sessionAttribute("userId")).get();
-        Double puntaje = canjeDePuntosService.calcularPuntos(colaborador);
+
+        String userId = context.sessionAttribute("userId");
+        Optional<Colaborador> colaborador = colaboradorService.buscarPorId(userId);
+
+        if (colaborador.isEmpty())
+            throw new ResourceNotFoundException("No se encontró colaborador con id " + userId);
+
+        Double puntaje = canjeDePuntosService.calcularPuntos(colaborador.get());
 
         Map<String, Object> model = new HashMap<>();
         model.put("productos_canjear", ofertaDeProductosDTOS);
@@ -60,8 +67,11 @@ public class CanjeDePuntosController implements ICrudViewsHandler {
     @Override
     public void save(Context context) {
 
-        //TODO directamente hago get del optional porque es lit el usuario que inicio sesion...y el producto tambien, si esta en la vista ya existe bruh
-        Colaborador colaboradorCanje = colaboradorService.buscarPorId(context.sessionAttribute("userId")).get();
+        String userId = context.sessionAttribute("userId");
+        Optional<Colaborador> colaboradorCanje = colaboradorService.buscarPorId(userId);
+
+        if (colaboradorCanje.isEmpty())
+            throw new ResourceNotFoundException("No se encontró colaborador con id " + userId);
 
         Double puntosCanjeados = Double.valueOf(context.formParam("puntos_canjeados"));
 
@@ -69,7 +79,7 @@ public class CanjeDePuntosController implements ICrudViewsHandler {
         Double puntosRestantes = Double.valueOf(context.formParam("puntos_restantes"));
 
         OfertaDeProductos oferta = ofertaProductosServiciosService.buscarPorId(context.formParam("oferta_id")).get();
-        CanjeDePuntos canjeDePuntosNuevo = CanjeDePuntos.por(colaboradorCanje, LocalDateTime.now(), puntosCanjeados, puntosRestantes, oferta);
+        CanjeDePuntos canjeDePuntosNuevo = CanjeDePuntos.por(colaboradorCanje.get(), LocalDateTime.now(), puntosCanjeados, puntosRestantes, oferta);
 
         this.canjeDePuntosService.guardar(canjeDePuntosNuevo);
 

@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.controllers.personaVulnerable;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.personaVulnerable.PersonaVulnerableDTO;
+import ar.edu.utn.frba.dds.exceptions.PersonaVulnerableNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
@@ -146,21 +147,62 @@ public class PersonaVulnerableController extends ColaboradorPorSession implement
 
     @Override
     public void edit(Context context) {
-        // TODO - patenado
+        Optional<PersonaVulnerable> personaVulnerableBuscada = this.personaVulnerableService.buscarPVPorId(context.pathParam("id"));
+
+        if (personaVulnerableBuscada.isEmpty()) {
+            context.status(404).result("Persona en situación vulnerable no encontrada");
+            return;
+        }
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("personaVulnerable", personaVulnerableBuscada.get());
+        model.put("titulo", "Editar Persona Vulnerable");
+
+        context.render("colaboraciones/editar_pv.hbs", model);
     }
 
     @Override
+
     public void update(Context context) {
-        // TODO - patenado
-        // que cosas se podrian modificar?
+        try {
+            Documento documento = Documento.with(
+                TipoDocumento.valueOf(context.formParamAsClass("tipo_documento", String.class).get()),
+                context.formParamAsClass("nro_documento", String.class).get()
+            );
+
+            Direccion direccion = Direccion.formularioPV(
+                new Barrio(context.formParamAsClass("barrio", String.class).get()),
+                new Calle(context.formParamAsClass("calle", String.class).get()),
+                Integer.valueOf(context.formParamAsClass("altura", Integer.class).get())
+            );
+
+            PersonaVulnerable personaVulnerableActualizada = new PersonaVulnerable(
+                context.formParamAsClass("nombre", String.class).get(),
+                documento,
+                LocalDate.parse(context.formParamAsClass("fecha_nacimiento", String.class).get()),
+                LocalDate.now(),
+                direccion,
+                Integer.valueOf(context.formParamAsClass("menores_a_cargo", Integer.class).get())
+            );
+
+            this.personaVulnerableService.actualizarPV(context.pathParam("id"), personaVulnerableActualizada);
+
+            context.status(HttpStatus.OK).result("Persona vulnerable actualizada exitosamente");
+        } catch (ValidationException e) {
+            context.status(HttpStatus.BAD_REQUEST).result("Error en la validación de los datos");
+        }
     }
+
 
     @Override
     public void delete(Context context) {
-
-        this.personaVulnerableService.eliminarPV(context.pathParam("id"));
-        context.status(HttpStatus.OK);
-
-        // TODO - seguramente haciendo una exception personalizada es mejor
+        String id = context.pathParam("id");
+        try {
+            this.tarjetaPersonaVulnerableService.eliminarTarjetaPorPersonaId(id);
+            this.personaVulnerableService.eliminarPV(context.pathParam("id"));
+            context.status(HttpStatus.OK).result("Persona vulnerable y su tarjeta asociada eliminadas exitosamente");
+        } catch (PersonaVulnerableNotFoundException e) {
+            context.status(HttpStatus.NOT_FOUND).result(e.getMessage());
+        }
     }
 }

@@ -10,6 +10,8 @@ import lombok.Setter;
 @Builder
 public class IncidenteDTO {
 
+    private String id;
+
     private String heladera;
 
     private String fechaHora;

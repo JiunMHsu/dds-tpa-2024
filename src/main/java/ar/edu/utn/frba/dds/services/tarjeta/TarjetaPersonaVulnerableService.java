@@ -1,8 +1,10 @@
 package ar.edu.utn.frba.dds.services.tarjeta;
 
+import ar.edu.utn.frba.dds.exceptions.PersonaVulnerableNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.personaVulnerable.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaPersonaVulnerable;
 import ar.edu.utn.frba.dds.models.repositories.tarjeta.TarjetaPersonaVulnerableRepository;
+import java.util.Optional;
 
 public class TarjetaPersonaVulnerableService {
 
@@ -29,4 +31,15 @@ public class TarjetaPersonaVulnerableService {
 
         return nuevaTarjeta;
     }
+
+    public void eliminarTarjetaPorPersonaId(String personaId) {
+        Optional<TarjetaPersonaVulnerable> tarjeta = this.tarjetaPersonaVulnerableRepository.buscarTarjetaPorPersonaId(personaId);
+
+        if (tarjeta.isPresent()) {
+            this.tarjetaPersonaVulnerableRepository.eliminar(tarjeta.get());
+        } else {
+            throw new PersonaVulnerableNotFoundException("Tarjeta para persona vulnerable con ID " + personaId + " no encontrada");
+        }
+    }
+
 }

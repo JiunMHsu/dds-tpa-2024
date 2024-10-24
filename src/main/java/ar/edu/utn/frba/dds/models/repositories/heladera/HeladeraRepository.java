@@ -17,7 +17,7 @@ public class HeladeraRepository implements IHeladeraRepository, WithSimplePersis
 
     @Override
     public void actualizar(Heladera heladera) {
-        withTransaction(() -> entityManager().merge(heladera));
+        entityManager().merge(heladera);
     }
 
     @Override

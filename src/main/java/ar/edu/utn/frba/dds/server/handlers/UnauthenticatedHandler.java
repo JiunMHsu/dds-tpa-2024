@@ -8,8 +8,14 @@ public class UnauthenticatedHandler implements IHandler {
     public void setHandler(Javalin app) {
         app.exception(UnauthenticatedException.class, (e, ctx) -> {
             System.out.println("usuario no autenticado");
+            String forwardTo = ctx.path().equals("/login")
+                    ? ""
+                    : "?forward=" + ctx.path();
+
+            System.out.println(forwardTo);
+
             ctx.status(401);
-            ctx.redirect("/login");
+            ctx.redirect("/login" + forwardTo);
         });
     }
 }
