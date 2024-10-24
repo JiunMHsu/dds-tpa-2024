@@ -1,19 +1,16 @@
 package ar.edu.utn.frba.dds.dtos.colaboraciones;
 
 import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
-@Builder
+@SuperBuilder
 public class ColaboracionDTO {
 
-    private String etiqueta;
-    private String valor;
-    private String path;
-
-    @Setter
+    protected String etiqueta;
+    protected String valor;
+    protected String path;
     private boolean estaActivo;
 
     public static ColaboracionDTO configOption(Colaboracion colaboracion, boolean estaActivo) {
@@ -34,7 +31,7 @@ public class ColaboracionDTO {
                 .build();
     }
 
-    private static String getAction(Colaboracion colaboracion) {
+    protected static String getAction(Colaboracion colaboracion) {
         return switch (colaboracion) {
             case DONACION_VIANDAS -> "Donar Vianda";
             case DONACION_DINERO -> "Donar Dinero";
@@ -46,7 +43,7 @@ public class ColaboracionDTO {
         };
     }
 
-    private static String getPath(Colaboracion colaboracion) {
+    protected static String getPath(Colaboracion colaboracion) {
         return switch (colaboracion) {
             case DONACION_VIANDAS -> "donacion-dinero";
             case DONACION_DINERO -> "donacion-vianda";

@@ -1,18 +1,18 @@
 package ar.edu.utn.frba.dds.dtos.colaboraciones;
 
+import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
-import lombok.Builder;
+import ar.edu.utn.frba.dds.utils.DateTimeParser;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@Builder
-public class DonacionViandaDTO {
+@SuperBuilder
+public class DonacionViandaDTO extends ColaboracionDTO {
 
     private String id;
-
-    private String nombre; // lo agrego xlas, tiene pinta que puede ser util
 
     private String colaborador;
 
@@ -31,15 +31,13 @@ public class DonacionViandaDTO {
 
     public static DonacionViandaDTO completa(DonacionVianda donacionVianda) { // Completa segun los atributos de la clase
 
-        String nombre = "Donar Vianda"; // Lo dejo asi medio tosco quizas en un futuro c pueda hacer dinamico
-        // En caso de que c cambien los nombres de los metodos de contribuir
-
         return DonacionViandaDTO
                 .builder()
+                .etiqueta(getAction(Colaboracion.DONACION_VIANDAS))
+                .path(getPath(Colaboracion.DONACION_VIANDAS))
                 .id(donacionVianda.getId().toString())
-                .nombre(nombre)
                 .colaborador(donacionVianda.getColaborador().getUsuario().getNombre())
-                .fechaHora(donacionVianda.getFechaHora().toString())
+                .fechaHora(DateTimeParser.parseFechaHora(donacionVianda.getFechaHora()))
                 .esEntregada(donacionVianda.getEsEntregada() ? "Entregada" : "No entregada")
                 .nombreComida(donacionVianda.getVianda().getComida().getNombre())
                 .pesoVianda(donacionVianda.getVianda().getPeso().toString())
@@ -48,18 +46,14 @@ public class DonacionViandaDTO {
                 .build();
     }
 
-    public static DonacionViandaDTO preview(DonacionVianda donacionVianda) { // TODO - ver si se ajusta a la vista
-
-        String nombre = "Donar Vianda "; // Lo dejo asi medio tosco quizas en un futuro c pueda hacer dinamico
-        // En caso de que c cambien los nombres de los metodos de contribuir
+    public static DonacionViandaDTO preview(DonacionVianda donacionVianda) {
 
         return DonacionViandaDTO
                 .builder()
+                .etiqueta(getAction(Colaboracion.DONACION_VIANDAS))
+                .path(getPath(Colaboracion.DONACION_VIANDAS))
                 .id(donacionVianda.getId().toString())
-                .nombreComida(donacionVianda.getVianda().getComida().getNombre())
-                .pesoVianda(donacionVianda.getVianda().getPeso().toString())
-                .caloriasComida(String.valueOf(donacionVianda.getVianda().getComida().getCalorias()))
-                .fechaCaducidadComida(donacionVianda.getVianda().getFechaCaducidad().toString())
+                .fechaHora(DateTimeParser.parseFechaHora(donacionVianda.getFechaHora()))
                 .build();
     }
 }

@@ -2,13 +2,14 @@ package ar.edu.utn.frba.dds.dtos.colaboraciones;
 
 import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
-import lombok.Builder;
+import ar.edu.utn.frba.dds.utils.DateTimeParser;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 public class DistribucionViandasDTO extends ColaboracionDTO {
 
     private String id;
@@ -27,12 +28,13 @@ public class DistribucionViandasDTO extends ColaboracionDTO {
 
     public static DistribucionViandasDTO completa(DistribucionViandas distribucionViandas) {
 
-        redirectable(Colaboracion.DISTRIBUCION_VIANDAS);
         return DistribucionViandasDTO
                 .builder()
+                .etiqueta(getAction(Colaboracion.DISTRIBUCION_VIANDAS))
+                .path(getPath(Colaboracion.DISTRIBUCION_VIANDAS))
                 .id(distribucionViandas.getId().toString())
                 .colaborador(distribucionViandas.getColaborador().getUsuario().getNombre())
-                .fechaHora(distribucionViandas.getFechaHora().toString())
+                .fechaHora(DateTimeParser.parseFechaHora(distribucionViandas.getFechaHora()))
                 .heladeraOrigen(distribucionViandas.getOrigen().getNombre())
                 .heladeraDestino(distribucionViandas.getDestino().getNombre())
                 .cantViandas(distribucionViandas.getViandas().toString())
@@ -42,14 +44,12 @@ public class DistribucionViandasDTO extends ColaboracionDTO {
 
     public static DistribucionViandasDTO preview(DistribucionViandas distribucionViandas) {
 
-        redirectable(Colaboracion.DISTRIBUCION_VIANDAS);
         return DistribucionViandasDTO
                 .builder()
+                .etiqueta(getAction(Colaboracion.DISTRIBUCION_VIANDAS))
+                .path(getPath(Colaboracion.DISTRIBUCION_VIANDAS))
                 .id(distribucionViandas.getId().toString())
-                .heladeraOrigen(distribucionViandas.getOrigen().getNombre())
-                .heladeraDestino(distribucionViandas.getDestino().getNombre())
-                .cantViandas(distribucionViandas.getViandas().toString())
-                .motivo(distribucionViandas.getMotivo())
+                .fechaHora(DateTimeParser.parseFechaHora(distribucionViandas.getFechaHora()))
                 .build();
     }
 }
