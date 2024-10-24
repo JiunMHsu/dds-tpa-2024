@@ -1,9 +1,11 @@
 package ar.edu.utn.frba.dds.services.personaVulnerable;
 
+import ar.edu.utn.frba.dds.exceptions.PersonaVulnerableNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.personaVulnerable.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.repositories.personaVulnerable.IPersonaVulnerableRepository;
 import java.util.List;
 import java.util.Optional;
+import ar.edu.utn.frba.dds.models.repositories.personaVulnerable.PersonaVulnerableRepository;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,9 +13,9 @@ import lombok.Setter;
 @Setter
 public class PersonaVulnerableService {
 
-    private final IPersonaVulnerableRepository personaVulnerableRepository;
+    private final PersonaVulnerableRepository personaVulnerableRepository;
 
-    public PersonaVulnerableService(IPersonaVulnerableRepository personaVulnerableRepository) {
+    public PersonaVulnerableService(PersonaVulnerableRepository personaVulnerableRepository) {
         this.personaVulnerableRepository = personaVulnerableRepository;
     }
 
@@ -69,5 +71,23 @@ public class PersonaVulnerableService {
 
         // Deberia haber aplicar alguna logica sobre las tarjetas vinculadas a la PV?
     }
+
+    public void actualizarPV(String id, PersonaVulnerable personaVulnerableActualizada) {
+        Optional<PersonaVulnerable> personaExistente = this.personaVulnerableRepository.buscarPorId(id);
+
+        if (personaExistente.isEmpty()) {
+            throw new PersonaVulnerableNotFoundException("Persona vulnerable con ID " + id + " no encontrada");
+        }
+
+        PersonaVulnerable persona = personaExistente.get();
+        persona.setNombre(personaVulnerableActualizada.getNombre());
+        persona.setDocumento(personaVulnerableActualizada.getDocumento());
+        persona.setFechaNacimiento(personaVulnerableActualizada.getFechaNacimiento());
+        persona.setDomicilio(personaVulnerableActualizada.getDomicilio());
+        persona.setMenoresACargo(personaVulnerableActualizada.getMenoresACargo());
+
+        this.personaVulnerableRepository.guardar(persona);
+    }
+
 
 }
