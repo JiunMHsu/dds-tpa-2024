@@ -91,7 +91,7 @@ public class HacerseCargoHeladeraController extends ColaboradorPorSession implem
 
         try {
 
-            Optional<Heladera> heladeraACargo = heladeraService.buscarHeladeraPorNombre(context.formParamAsClass("heladera", String.class).get());
+            Optional<Heladera> heladeraACargo = heladeraService.buscarPorNombre(context.formParamAsClass("heladera", String.class).get());
 
             if (heladeraACargo.isEmpty()) {
                 throw new ResourceNotFoundException("Heladera no Encontrada");

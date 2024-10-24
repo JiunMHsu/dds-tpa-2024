@@ -1,6 +1,56 @@
 .main-section {
-    border: 1px solid var(--background-3);
     overflow-y: hidden;
+}
+
+.redirect-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    padding: 1.2rem;
+    /*border-radius: .7rem;*/
+    /*background-color: var(--background-2);*/
+}
+
+.redirect-title {
+    flex-grow: 1;
+    display: flex;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: left;
+    color: var(--foreground-2);
+}
+
+.redirect-button-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.redirect-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: .5rem .7rem;
+    border-radius: .5rem;
+    border: 1px solid var(--background-3);
+    color: var(--foreground-2);
+    text-decoration: none;
+    transition-property: all;
+    transition-duration: 300ms;
+}
+
+.redirect-button:hover {
+    color: var(--background-0);
+    background-color: var(--main-light-0);
+}
+
+.divider {
+    width: 95%;
+    border-bottom: 1px solid var(--background-3);
+    margin: 0;
 }
 
 .form {
@@ -17,46 +67,10 @@
     margin-bottom: 1rem;
 }
 
-.field-imagen {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 100%;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--foreground-2);
-    margin-bottom: 1rem;
-    position: relative;
-}
-
-.field-imagen input[type="file"] {
-    opacity: 0;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-}
-
-.field-imagen #file-name {
-    margin-top: .25rem;
-    padding: .5rem;
-    border-radius: .3rem;
-    background-color: var(--background-2);
-    border: 1px solid var(--background-3);
-    font-size: .9rem;
-    color: var(--main-light-0);
-    cursor: pointer;
-    transition-property: all;
-    transition-duration: 300ms;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%; /* Ajusta el ancho al 100% del contenedor */
-}
-
-.field-imagen input[type="file"]:focus + #file-name {
-    outline: none;
-    box-shadow: 0 0 .5rem var(--background-3);
+.field-descripcion textarea {
+    height: 5rem;
+    resize: vertical;
+    min-height: 4rem;
 }
 
 .side-panel {

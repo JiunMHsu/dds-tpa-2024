@@ -22,12 +22,14 @@ import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import ar.edu.utn.frba.dds.models.repositories.vianda.ViandaRepository;
 import ar.edu.utn.frba.dds.services.colaboraciones.*;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
+import ar.edu.utn.frba.dds.services.files.FileService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.personaVulnerable.PersonaVulnerableService;
 import ar.edu.utn.frba.dds.services.puntoIdeal.PuntoIdealService;
 import ar.edu.utn.frba.dds.services.tarjeta.TarjetaPersonaVulnerableService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
+import ar.edu.utn.frba.dds.utils.RandomString;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +44,11 @@ public class ServiceLocator {
         if (instances.containsKey(componentName))
             return (T) instances.get(componentName);
 
+        if (componentName.equals(RandomString.class.getName())) {
+            RandomString instance = new RandomString();
+            instances.put(componentName, instance);
+        }
+
         if (componentName.equals(SessionController.class.getName())) {
             SessionController instance = new SessionController(
                     instanceOf(UsuarioService.class)
@@ -49,10 +56,16 @@ public class ServiceLocator {
             instances.put(componentName, instance);
         }
 
+        if (componentName.equals(FileService.class.getName())) {
+            FileService instance = new FileService(instanceOf(RandomString.class));
+            instances.put(componentName, instance);
+        }
+
         if (componentName.equals(HeladeraController.class.getName())) {
             HeladeraController instance = new HeladeraController(
                     instanceOf(HeladeraService.class),
-                    instanceOf(PuntoIdealService.class));
+                    instanceOf(PuntoIdealService.class),
+                    instanceOf(IncidenteService.class));
             instances.put(componentName, instance);
         }
 
@@ -77,6 +90,7 @@ public class ServiceLocator {
             FallaTecnicaController instance = new FallaTecnicaController(
                     instanceOf(IncidenteService.class),
                     instanceOf(HeladeraService.class),
+                    instanceOf(FileService.class),
                     instanceOf(ColaboradorService.class),
                     instanceOf(UsuarioService.class));
             instances.put(componentName, instance);
@@ -84,7 +98,8 @@ public class ServiceLocator {
 
         if (componentName.equals(IncidenteService.class.getName())) {
             IncidenteService instance = new IncidenteService(
-                    instanceOf(IncidenteRepository.class));
+                    instanceOf(IncidenteRepository.class),
+                    instanceOf(HeladeraRepository.class));
             instances.put(componentName, instance);
         }
 

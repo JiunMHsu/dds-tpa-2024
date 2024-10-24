@@ -90,13 +90,13 @@ public class DistribucionViandasController extends ColaboradorPorSession impleme
 
         try {
 
-            Optional<Heladera> optionalHeladeraOrigen = heladeraService.buscarHeladeraPorNombre(context.formParamAsClass("origen", String.class).get());
+            Optional<Heladera> optionalHeladeraOrigen = heladeraService.buscarPorNombre(context.formParamAsClass("origen", String.class).get());
 
             if (optionalHeladeraOrigen.isEmpty()) {
                 throw new ResourceNotFoundException("Heladera no Encontrada");
             }
 
-            Optional<Heladera> optionalHeladeraDestino = heladeraService.buscarHeladeraPorNombre(context.formParamAsClass("destino", String.class).get());
+            Optional<Heladera> optionalHeladeraDestino = heladeraService.buscarPorNombre(context.formParamAsClass("destino", String.class).get());
 
             if (optionalHeladeraDestino.isEmpty()) {
                 throw new ResourceNotFoundException("Heladera no Encontrada");

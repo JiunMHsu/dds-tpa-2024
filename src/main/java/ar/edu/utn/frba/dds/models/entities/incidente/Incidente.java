@@ -49,12 +49,12 @@ public class Incidente extends EntidadPersistente {
     @Embedded
     private Imagen foto;
 
-    public Incidente con(Heladera heladera,
-                         LocalDateTime fechaHora,
-                         TipoIncidente tipo,
-                         Colaborador colaborador,
-                         String descripcion,
-                         Imagen foto) {
+    private static Incidente con(Heladera heladera,
+                                 LocalDateTime fechaHora,
+                                 TipoIncidente tipo,
+                                 Colaborador colaborador,
+                                 String descripcion,
+                                 Imagen foto) {
 
         return Incidente
                 .builder()
@@ -65,6 +65,29 @@ public class Incidente extends EntidadPersistente {
                 .descripcion(descripcion)
                 .foto(foto)
                 .build();
+    }
+
+    public static Incidente fallaTecnica(Heladera heladera,
+                                         LocalDateTime fechaHora,
+                                         Colaborador colaborador,
+                                         String descripcion,
+                                         Imagen foto) {
+        return con(heladera, fechaHora, TipoIncidente.FALLA_TECNICA, colaborador, descripcion, foto);
+    }
+
+    public static Incidente fallaTemperatura(Heladera heladera,
+                                             LocalDateTime fechaHora) {
+        return con(heladera, fechaHora, TipoIncidente.FALLA_TEMPERATURA, null, null, null);
+    }
+
+    public static Incidente fallaConexion(Heladera heladera,
+                                          LocalDateTime fechaHora) {
+        return con(heladera, fechaHora, TipoIncidente.FALLA_CONEXION, null, null, null);
+    }
+
+    public static Incidente fraude(Heladera heladera,
+                                   LocalDateTime fechaHora) {
+        return con(heladera, fechaHora, TipoIncidente.FRAUDE, null, null, null);
     }
 
 }
