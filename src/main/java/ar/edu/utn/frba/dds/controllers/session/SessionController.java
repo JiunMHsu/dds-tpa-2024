@@ -57,8 +57,6 @@ public class SessionController {
 
             context.status(400).render("login/login.hbs", model);
         }
-
-
     }
 
     public void delete(Context context) {
