@@ -226,6 +226,7 @@ public class Initializer implements WithSimplePersistenceUnit {
 
         IncidenteRepository incidenteRepository = new IncidenteRepository();
 
+        beginTransaction();
         incidenteRepository.guardar(i1);
         incidenteRepository.guardar(i2);
         incidenteRepository.guardar(i3);
@@ -236,6 +237,7 @@ public class Initializer implements WithSimplePersistenceUnit {
         incidenteRepository.guardar(i8);
         incidenteRepository.guardar(i9);
         incidenteRepository.guardar(i10);
+        commitTransaction();
     }
 
     private void cleanupDatabase() {
