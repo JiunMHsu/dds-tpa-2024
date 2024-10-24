@@ -7,6 +7,8 @@ import ar.edu.utn.frba.dds.models.entities.puntosPorColaborador.CanjeDePuntos;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.services.canjeDePuntos.CanjeDePuntosService;
+import ar.edu.utn.frba.dds.services.colaboraciones.OfertaProductosServiciosService;
+import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import java.time.LocalDateTime;
@@ -17,13 +19,15 @@ import java.util.stream.Collectors;
 
 public class CanjeDePuntosController implements ICrudViewsHandler {
 
-    private ColaboradorRepository colaboradorRepository;
-
+    private ColaboradorService colaboradorService;
     private CanjeDePuntosService canjeDePuntosService;
-    private OfertaDeProductosRepository ofertaDeProductosRepository;
+    private OfertaProductosServiciosService ofertaProductosServiciosService;
 
-
-
+    public CanjeDePuntosController(ColaboradorService colaboradorService, CanjeDePuntosService canjeDePuntosService, OfertaProductosServiciosService ofertaProductosServiciosService) {
+        this.colaboradorService = colaboradorService;
+        this.canjeDePuntosService = canjeDePuntosService;
+        this.ofertaProductosServiciosService = ofertaProductosServiciosService;
+    }
     @Override
     public void index(Context context) {
 
@@ -36,13 +40,13 @@ public class CanjeDePuntosController implements ICrudViewsHandler {
 
     @Override
     public void create(Context context) {
-        List<OfertaDeProductos> productos = this.ofertaDeProductosRepository.buscarTodos();
+        List<OfertaDeProductos> productos = this.ofertaProductosServiciosService.buscarTodos();
 
         List<OfertaDeProductosDTO> ofertaDeProductosDTOS = productos.stream()
                 .map(OfertaDeProductosDTO::preview)
                 .collect(Collectors.toList());
         //TODO cuando obtenengo el colaborador de la sesion tambien hace falta chequear si puede ser empty? 😩
-        Colaborador colaborador = colaboradorRepository.buscarPorId(context.sessionAttribute("userId")).get();
+        Colaborador colaborador = colaboradorService.buscarPorId(context.sessionAttribute("userId")).get();
         Double puntaje = canjeDePuntosService.calcularPuntos(colaborador);
 
         Map<String, Object> model = new HashMap<>();
@@ -57,14 +61,14 @@ public class CanjeDePuntosController implements ICrudViewsHandler {
     public void save(Context context) {
 
         //TODO directamente hago get del optional porque es lit el usuario que inicio sesion...y el producto tambien, si esta en la vista ya existe bruh
-        Colaborador colaboradorCanje = colaboradorRepository.buscarPorId(context.sessionAttribute("userId")).get();
+        Colaborador colaboradorCanje = colaboradorService.buscarPorId(context.sessionAttribute("userId")).get();
 
         Double puntosCanjeados = Double.valueOf(context.formParam("puntos_canjeados"));
 
         //TODO creo que no llega como parametro sino que calcula con el futuro service
         Double puntosRestantes = Double.valueOf(context.formParam("puntos_restantes"));
 
-        OfertaDeProductos oferta = ofertaDeProductosRepository.buscarPorId(context.formParam("oferta_id")).get();
+        OfertaDeProductos oferta = ofertaProductosServiciosService.buscarPorId(context.formParam("oferta_id")).get();
         CanjeDePuntos canjeDePuntosNuevo = CanjeDePuntos.por(colaboradorCanje, LocalDateTime.now(), puntosCanjeados, puntosRestantes, oferta);
 
         this.canjeDePuntosService.guardar(canjeDePuntosNuevo);
