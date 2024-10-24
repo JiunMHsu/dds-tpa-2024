@@ -1,14 +1,14 @@
 package ar.edu.utn.frba.dds.controllers.session;
 
+import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
-import jakarta.servlet.http.HttpSession;
+import io.javalin.validation.ValidationException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 public class SessionController {
 
@@ -26,55 +26,49 @@ public class SessionController {
             return;
         }
 
-        context.render("login/login.hbs");
+        Map<String, Object> model = new HashMap<>();
+        model.put("forward", forward);
+        context.render("login/login.hbs", model);
     }
 
     public void create(Context context) {
-        String forward = context.queryParam("forward");
-        if (forward == null) {
-            forward = this.getForwardRoute(context);
-        }
-        Map<String, Object> model = new HashMap<>();
+        String forward = this.getForwardRoute(context);
 
-        String email = context.formParam("email");
-        String claveIngresada = context.formParam("clave");
+        try {
+            String email = context.formParamAsClass("email", String.class).get();
+            String claveIngresada = context.formParamAsClass("clave", String.class).get();
 
-        Optional<Usuario> usuario = usuarioService.obtenerUsuarioPorEmail(email);
+            Usuario usuario = usuarioService.obtenerUsuarioPorEmail(email)
+                    .orElseThrow(InvalidFormParamException::new);
 
-        if (usuario.isEmpty()) {
-            model.put("error", "Usuario no encontrado");
+            String claveDelUsuario = usuario.getContrasenia();
+            if (!Objects.equals(claveIngresada, claveDelUsuario))
+                throw new InvalidFormParamException();
+
+            context.sessionAttribute("userId", usuario.getId().toString());
+            context.sessionAttribute("userRol", usuario.getRol().toString());
+            context.req().changeSessionId();
+
+            context.redirect(forward);
+        } catch (ValidationException | InvalidFormParamException e) {
+            Map<String, Object> model = new HashMap<>();
+            model.put("isRetry", true);
+            model.put("forward", forward);
+
             context.status(400).render("login/login.hbs", model);
-            return;
         }
 
-        String claveDelUsuario = usuario.get().getContrasenia();
 
-        if (!Objects.equals(claveIngresada, claveDelUsuario)) {
-            model.put("error", "Contraseña incorrecta");
-            context.status(400).render("login/login.hbs", model);
-            return;
-        }
-
-        context.sessionAttribute("userId", usuario.get().getId().toString());
-        context.sessionAttribute("userRol", usuario.get().getRol().toString());
-        context.req().changeSessionId();
-
-        context.redirect(forward);
     }
 
     public void delete(Context context) {
-        HttpSession session = context.req().getSession(false);
-
-        if (session != null) {
-            session.invalidate();
-        }
-
+        context.req().getSession().invalidate();
         context.redirect("/login");
     }
 
     private String getForwardRoute(Context context) {
-        String forward = context.queryParam("forward");
+        String forward = context.queryParamAsClass("forward", String.class).getOrDefault("/");
         System.out.println(forward);
-        return forward == null ? "/" : forward;
+        return forward;
     }
 }
