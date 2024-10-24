@@ -1,7 +1,9 @@
 package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
+import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.DonacionDineroDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.OfertaDeProductosDTO;
+import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
@@ -11,29 +13,34 @@ import ar.edu.utn.frba.dds.models.entities.data.Imagen;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRepository;
 import ar.edu.utn.frba.dds.services.colaboraciones.OfertaProductosServiciosService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
+import ar.edu.utn.frba.dds.services.files.FileService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.ColaboradorPorSession;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
+import io.javalin.http.UploadedFile;
+import io.javalin.validation.ValidationException;
+
+import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class OfertaProductosServiciosController extends ColaboradorPorSession implements ICrudViewsHandler {
 
     private OfertaProductosServiciosService ofertaProductosServiciosService;
+    private final FileService fileService;
 
 
     public OfertaProductosServiciosController(OfertaProductosServiciosService ofertaProductosServiciosService,
+                                              FileService fileService,
                                               UsuarioService usuarioService,
                                               ColaboradorService colaboradorService) {
 
         super(usuarioService, colaboradorService);
         this.ofertaProductosServiciosService = ofertaProductosServiciosService;
+        this.fileService = fileService;
     }
 
     @Override
@@ -77,17 +84,43 @@ public class OfertaProductosServiciosController extends ColaboradorPorSession im
 
     @Override
     public void save(Context context) {
-        Colaborador colaborador = obtenerColaboradorPorSession(context);
 
-        String nombre = context.formParam("nombre");
-        Double puntosNecesarios = Double.valueOf(context.formParam("puntos_necesarios"));
-        RubroOferta rubro = RubroOferta.valueOf(context.formParam("rubro"));
-        Imagen imagen = new Imagen(context.formParam("imagen"));
+        Map<String, Object> model = new HashMap<>();
+        List<RedirectDTO> redirectDTOS = new ArrayList<>();
+        boolean operationSuccess = false;
 
-        OfertaDeProductos oferta = OfertaDeProductos.por(colaborador, LocalDateTime.now(), nombre, puntosNecesarios, rubro, imagen);
+        try {
 
-        this.ofertaProductosServiciosService.guardar(oferta);
-        context.redirect("post_result.hbs");
+            Colaborador colaborador = obtenerColaboradorPorSession(context);
+
+            String nombre = context.formParamAsClass("nombre", String.class).get();
+            Double puntosNecesarios = Double.valueOf(context.formParamAsClass("puntos_necesarios", Double.class).get());
+            RubroOferta rubro = RubroOferta.valueOf(context.formParamAsClass("rubro", String.class).get());
+
+            UploadedFile uploadedFile = context.uploadedFile("imagen");
+            if (uploadedFile == null) throw new InvalidFormParamException();
+            String pathImagen = fileService.guardarImagen(uploadedFile.content(), uploadedFile.extension());
+
+            OfertaDeProductos oferta = OfertaDeProductos.por(
+                    colaborador,
+                    LocalDateTime.now(),
+                    nombre,
+                    puntosNecesarios,
+                    rubro,
+                    new Imagen(pathImagen));
+
+            this.ofertaProductosServiciosService.guardar(oferta);
+
+            operationSuccess = true;
+            redirectDTOS.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));
+
+        } catch (ValidationException | InvalidFormParamException | IOException e) {
+            redirectDTOS.add(new RedirectDTO("/colaboraciones/oferta_prod_serv_crear.hbs", "Reintentar"));
+        } finally {
+            model.put("success", operationSuccess);
+            model.put("redirects", redirectDTOS);
+            context.render("post_result.hbs", model);
+        }
 
     }
 

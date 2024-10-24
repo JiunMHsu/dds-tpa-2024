@@ -87,9 +87,9 @@ public class HacerseCargoHeladeraController extends ColaboradorPorSession implem
         List<RedirectDTO> redirectDTOS = new ArrayList<>();
         boolean operationSuccess = false;
 
-        Colaborador colaborador = obtenerColaboradorPorSession(context);
-
         try {
+
+            Colaborador colaborador = obtenerColaboradorPorSession(context);
 
             Optional<Heladera> heladeraACargo = heladeraService.buscarPorNombre(context.formParamAsClass("heladera", String.class).get());
 

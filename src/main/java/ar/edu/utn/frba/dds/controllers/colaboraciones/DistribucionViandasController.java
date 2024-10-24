@@ -86,9 +86,9 @@ public class DistribucionViandasController extends ColaboradorPorSession impleme
         List<RedirectDTO> redirectDTOS = new ArrayList<>();
         boolean operationSuccess = false;
 
-        Colaborador colaborador = obtenerColaboradorPorSession(context);
-
         try {
+
+            Colaborador colaborador = obtenerColaboradorPorSession(context);
 
             Optional<Heladera> optionalHeladeraOrigen = heladeraService.buscarPorNombre(context.formParamAsClass("origen", String.class).get());
 

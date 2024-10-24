@@ -259,6 +259,7 @@ public class ServiceLocator {
         if (componentName.equals(OfertaProductosServiciosController.class.getName())) {
             OfertaProductosServiciosController instance = new OfertaProductosServiciosController(
                     instanceOf(OfertaProductosServiciosService.class),
+                    instanceOf(FileService.class),
                     instanceOf(UsuarioService.class),
                     instanceOf(ColaboradorService.class)
             );

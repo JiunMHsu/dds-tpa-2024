@@ -82,9 +82,9 @@ public class DonacionViandaController extends ColaboradorPorSession implements I
         List<RedirectDTO> redirectDTOS = new ArrayList<>();
         boolean operationSuccess = false;
 
-        Colaborador colaborador = obtenerColaboradorPorSession(context);
-
         try {
+
+            Colaborador colaborador = obtenerColaboradorPorSession(context);
 
             Comida comida = Comida.with(
                     context.formParamAsClass("comida", String.class).get(),

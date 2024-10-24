@@ -1,7 +1,9 @@
 package ar.edu.utn.frba.dds.utils;
 
+import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
@@ -22,8 +24,21 @@ public abstract class ColaboradorPorSession {
 
         String userId = context.sessionAttribute("userId");
 
-        Usuario usuarioSession = usuarioService.obtenerUsuarioPorID(userId).orElseThrow(ResourceNotFoundException::new);
+        try {
+            Usuario usuarioSession = usuarioService.obtenerUsuarioPorID(userId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con ID: " + userId));
 
-        return colaboradorService.obtenerColaboradorPorUsuario(usuarioSession).orElseThrow(ResourceNotFoundException::new);
+            if (usuarioSession.getRol() != TipoRol.COLABORADOR) {
+                throw new NonColaboratorException("El usuario con ID: " + userId + " no tiene el rol de colaborador");
+            }
+
+            Colaborador colaborador = colaboradorService.obtenerColaboradorPorUsuario(usuarioSession)
+                    .orElseThrow(() -> new ResourceNotFoundException("Colaborador no encontrado con Usuario: " + usuarioSession.getNombre()));
+
+            return colaborador;
+
+        } catch (ResourceNotFoundException | NonColaboratorException e) {
+            throw e;
+        }
     }
 }
