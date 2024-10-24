@@ -9,6 +9,7 @@
 
 .side-panel {
     border: none;
+    overflow: hidden;
 }
 
 .lista-colaboraciones {
@@ -47,7 +48,6 @@
     text-shadow: 0 0 1rem var(--main-light-0);
 }
 
-
 .item-colaboracion * {
     margin: 0;
     color: var(--foreground-0);
@@ -82,4 +82,22 @@
 .colaboracion-button:hover {
     background-color: var(--main-light-0);
     color: var(--background-3);
+}
+
+.form-container {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 26rem;
+    padding: 1rem 3rem;
+    border-radius: .7rem;
+    border: 1px solid var(--background-3);
+
+    color: var(--foreground-0);
+
+}
+
+.form-title {
+    margin: 0 0 2rem;
+    text-align: center;
 }

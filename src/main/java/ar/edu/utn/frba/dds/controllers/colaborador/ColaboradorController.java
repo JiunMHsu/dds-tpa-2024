@@ -178,7 +178,7 @@ public class ColaboradorController implements ICrudViewsHandler {
         String colaboradorId = context.pathParam("id");
         Optional<Colaborador> posibleColaboradorAEliminar = this.colaboradorService.obtenerColaboradorPorID(colaboradorId);
 
-        if(posibleColaboradorAEliminar.isEmpty()){
+        if (posibleColaboradorAEliminar.isEmpty()) {
             throw new ResourceNotFoundException("No se encontró colaborador con id " + colaboradorId);
         }
 
@@ -207,7 +207,7 @@ public class ColaboradorController implements ICrudViewsHandler {
         List<Colaboracion> formasPermitidas = colaborador.getTipoColaborador().colaboracionesPermitidas();
 
         List<ColaboracionDTO> colaboracionDTOS = formasPermitidas.stream()
-                .map(c -> ColaboracionDTO.fromColaboracion(c, formasRegistradas.contains(c)))
+                .map(c -> ColaboracionDTO.configOption(c, formasRegistradas.contains(c)))
                 .toList();
 
         Map<String, Object> model = new HashMap<>();

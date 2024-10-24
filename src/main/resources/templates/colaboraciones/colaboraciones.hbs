@@ -3,6 +3,7 @@
 {{/partial}}
 {{#partial "links"}}
     <link rel="stylesheet" href="/css/list.css"/>
+    <link rel="stylesheet" href="/css/form.css"/>
     <link rel="stylesheet" href="/css/colaboraciones/colaboraciones.css"/>
 {{/partial}}
 {{#partial "scripts"}}
@@ -17,15 +18,6 @@
             <!-- filtro: activo, suscripto, encargado -->
         </div>
 
-        <div class="paging-nav">
-            <a href="" class="paging-button">
-                <span class="material-symbols-rounded"> keyboard_arrow_left </span>
-            </a>
-            <a href="" class="paging-button">
-                <span class="material-symbols-rounded"> keyboard_arrow_right </span>
-            </a>
-        </div>
-
         <div class="scrollable">
             <ul class="list">
                 <!-- !! MODELO DE ITEM -->
@@ -38,119 +30,39 @@
                         </p>
                     </a>
                 </li>
-                <!-- !! MODELO DE ITEM -->
 
-                <!-- iteración de colaboraciones (paginada de a 20) -->
-
-
-                <!-- EJ -->
-                <li class="list-item">
-                    <a href="" class="item-card">
-                        <h3 class="card-title">Donación de Dinero</h3>
-                        <p>
-                            <span class="material-symbols-rounded card-detail-icon">today</span>
-                            Fecha: 12/10/2021
-                        </p>
-                    </a>
-                </li>
-                <li class="list-item">
-                    <a href="" class="item-card">
-                        <h3 class="card-title">Donación de Dinero</h3>
-                        <p>
-                            <span class="material-symbols-rounded card-detail-icon">today</span>
-                            Fecha: 12/10/2021
-                        </p>
-                    </a>
-                </li>
-                <li class="list-item">
-                    <a href="" class="item-card">
-                        <h3 class="card-title">Donación de Dinero</h3>
-                        <p>
-                            <span class="material-symbols-rounded card-detail-icon">today</span>
-                            Fecha: 12/10/2021
-                        </p>
-                    </a>
-                </li>
-                <li class="list-item">
-                    <a href="" class="item-card">
-                        <h3 class="card-title">Donación de Dinero</h3>
-                        <p>
-                            <span class="material-symbols-rounded card-detail-icon">today</span>
-                            Fecha: 12/10/2021
-                        </p>
-                    </a>
-                </li>
-                <li class="list-item">
-                    <a href="" class="item-card">
-                        <h3 class="card-title">Donación de Dinero</h3>
-                        <p>
-                            <span class="material-symbols-rounded card-detail-icon">today</span>
-                            Fecha: 12/10/2021
-                        </p>
-                    </a>
-                </li>
-                <li class="list-item">
-                    <a href="" class="item-card">
-                        <h3 class="card-title">Donación de Dinero</h3>
-                        <p>
-                            <span class="material-symbols-rounded card-detail-icon">today</span>
-                            Fecha: 12/10/2021
-                        </p>
-                    </a>
-                </li>
-                <li class="list-item">
-                    <a href="" class="item-card">
-                        <h3 class="card-title">Donación de Dinero</h3>
-                        <p>
-                            <span class="material-symbols-rounded card-detail-icon">today</span>
-                            Fecha: 12/10/2021
-                        </p>
-                    </a>
-                </li>
-                <li class="list-item">
-                    <a href="" class="item-card">
-                        <h3 class="card-title">Donación de Dinero</h3>
-                        <p>
-                            <span class="material-symbols-rounded card-detail-icon">today</span>
-                            Fecha: 12/10/2021
-                        </p>
-                    </a>
-                </li>
-                <li class="list-item">
-                    <a href="" class="item-card">
-                        <h3 class="card-title">Donación de Dinero</h3>
-                        <p>
-                            <span class="material-symbols-rounded card-detail-icon">today</span>
-                            Fecha: 12/10/2021
-                        </p>
-                    </a>
-                </li>
-                <li class="list-item">
-                    <a href="" class="item-card">
-                        <h3 class="card-title">Donación de Dinero</h3>
-                        <p>
-                            <span class="material-symbols-rounded card-detail-icon">today</span>
-                            Fecha: 12/10/2021
-                        </p>
-                    </a>
-                </li>
-                <li class="list-item">
-                    <a href="" class="item-card">
-                        <h3 class="card-title">Donación de Dinero</h3>
-                        <p>
-                            <span class="material-symbols-rounded card-detail-icon">today</span>
-                            Fecha: 12/10/2021
-                        </p>
-                    </a>
-                </li>
-                <!-- FIN EJ -->
             </ul>
         </div>
     </div>
 {{/partial}}
 {{#partial "side-panel"}}
     <!-- renderizado condicional de colaboraciones que el usuario puede realizar -->
+
+    {{#if isAdmin}}
+        <div class="form-container">
+            <h2 class="form-title">Cargar Colaboraciones</h2>
+            <form action="/=" method="post" class="form" enctype="multipart/form-data">
+                <label class="field-csv">
+                    Archivo
+                    <input type="file" name="csv-file" accept=".csv" required/>
+                </label>
+
+                <div class="form-button-container">
+                    <button type="submit">Aceptar</button>
+                </div>
+            </form>
+        </div>
+    {{/if}}
+
     <div class="lista-colaboraciones">
+        <div class="item-colaboracion">
+            <h3 class="colaboracion-title">Cargar Colaboraciones</h3>
+            <div class="colaboracion-button-container">
+                <a href="/colaboraciones/donacion-dinero/new"
+                   class="colaboracion-button">colaborar</a>
+            </div>
+        </div>
+
         <div class="item-colaboracion">
             <h3 class="colaboracion-title">Donar Dinero</h3>
             <div class="colaboracion-button-container">
