@@ -21,7 +21,7 @@ public class Direccion {
     @Embedded
     private Calle calle;
 
-    @Column(name = "altura", nullable = false)
+    @Column(name = "altura")
     private Integer altura;
 
     @Embedded

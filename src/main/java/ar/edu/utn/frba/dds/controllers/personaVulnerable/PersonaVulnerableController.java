@@ -60,7 +60,7 @@ public class PersonaVulnerableController extends ColaboradorPorSession implement
 
         Map<String, Object> model = new HashMap<>();
         model.put("personasVulnerables", personasVulnerablesDTO);
-        model.put("titulo", "Listado de Personas en Situacion Vulnerable");
+        model.put("titulo", "Listado por Personas en Situacion Vulnerable");
 
         // context.render("/colaboraciones/", model);
     }
@@ -166,30 +166,30 @@ public class PersonaVulnerableController extends ColaboradorPorSession implement
     public void update(Context context) {
         try {
             Documento documento = Documento.with(
-                TipoDocumento.valueOf(context.formParamAsClass("tipo_documento", String.class).get()),
-                context.formParamAsClass("nro_documento", String.class).get()
+                    TipoDocumento.valueOf(context.formParamAsClass("tipo_documento", String.class).get()),
+                    context.formParamAsClass("nro_documento", String.class).get()
             );
 
             Direccion direccion = Direccion.formularioPV(
-                new Barrio(context.formParamAsClass("barrio", String.class).get()),
-                new Calle(context.formParamAsClass("calle", String.class).get()),
-                Integer.valueOf(context.formParamAsClass("altura", Integer.class).get())
+                    new Barrio(context.formParamAsClass("barrio", String.class).get()),
+                    new Calle(context.formParamAsClass("calle", String.class).get()),
+                    Integer.valueOf(context.formParamAsClass("altura", Integer.class).get())
             );
 
             PersonaVulnerable personaVulnerableActualizada = new PersonaVulnerable(
-                context.formParamAsClass("nombre", String.class).get(),
-                documento,
-                LocalDate.parse(context.formParamAsClass("fecha_nacimiento", String.class).get()),
-                LocalDate.now(),
-                direccion,
-                Integer.valueOf(context.formParamAsClass("menores_a_cargo", Integer.class).get())
+                    context.formParamAsClass("nombre", String.class).get(),
+                    documento,
+                    LocalDate.parse(context.formParamAsClass("fecha_nacimiento", String.class).get()),
+                    LocalDate.now(),
+                    direccion,
+                    Integer.valueOf(context.formParamAsClass("menores_a_cargo", Integer.class).get())
             );
 
             this.personaVulnerableService.actualizarPV(context.pathParam("id"), personaVulnerableActualizada);
 
             context.status(HttpStatus.OK).result("Persona vulnerable actualizada exitosamente");
         } catch (ValidationException e) {
-            context.status(HttpStatus.BAD_REQUEST).result("Error en la validación de los datos");
+            context.status(HttpStatus.BAD_REQUEST).result("Error en la validación por los datos");
         }
     }
 

@@ -30,7 +30,7 @@ public class ValidadorDeContraseniasTest {
     }
 
     @Test
-    @DisplayName("Una clave debe tener mas de 8 caracteres")
+    @DisplayName("Una clave debe tener mas por 8 caracteres")
     public void tieneMasDeOchoCaracteres() {
         String claveConMasDeOchoCaracteres = "fuerteElDragon";
         String claveConOchoCaracteres = "fuerteja";

@@ -32,7 +32,7 @@ public class DonacionDineroDTO extends ColaboracionDTO {
                 .colaborador(donacionDinero.getColaborador().getUsuario().getNombre())
                 .fechaHora(DateTimeParser.parseFechaHora(donacionDinero.getFechaHora()))
                 .monto(donacionDinero.getMonto().toString())
-                .frecuencia(donacionDinero.getFrecuencia().toString()) // TODO - Ver que onda el toString con el Period
+                .frecuencia(donacionDinero.getFrecuencia().toString()) // TODO - Ver que onda el toString paraColaborador el Period
                 .build();
     }
 

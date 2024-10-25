@@ -20,7 +20,7 @@ public class HeladeraService implements WithSimplePersistenceUnit {
 
     public Optional<Heladera> buscarPorId(String id) {
         if (id == null || id.isEmpty())
-            throw new IllegalArgumentException("El ID de la heladera no puede ser null o vacío");
+            throw new IllegalArgumentException("El ID por la heladera no puede ser null o vacío");
 
         return this.heladeraRepository.buscarPorId(id);
     }

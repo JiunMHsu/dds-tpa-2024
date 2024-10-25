@@ -6,6 +6,6 @@ public class CanjeDePuntosRouter implements IRouter {
 
     @Override
     public void apply(RouterConfig config) {
-        // TODO - endpoint canje de puntos
+        // TODO - endpoint canje por puntos
     }
 }

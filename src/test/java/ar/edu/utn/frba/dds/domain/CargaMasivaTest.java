@@ -38,7 +38,7 @@ public class CargaMasivaTest {
 //    }
 //
 //    @Test
-//    @DisplayName("Carga de Colaboraciones Previas")
+//    @DisplayName("Carga por Colaboraciones Previas")
 //    public void cargarColaboracionesPrevias() {
 //        // TODO - No involucrar el repo
 //        Assertions.assertEquals(21, colaboradorRepository.obtenerTodos().size());

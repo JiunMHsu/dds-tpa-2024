@@ -29,14 +29,14 @@ public class ColaboracionRouter implements IRouter {
                     this.routeEncargarseDeHeladeras();
 
                     path("/entrega-viandas", () -> {
-                        // TODO - ver que hacer con este
+                        // TODO - ver que hacer paraColaborador este
                     });
                 }));
     }
 
     private void routeDonacionDinero() {
         path("/donacion-dinero", () -> {
-            // TODO - get (tipo filtro de las colaboraciones general)
+            // TODO - get (tipo filtro por las colaboraciones general)
 
             post(ServiceLocator.instanceOf(DonacionDineroController.class)::save, TipoRol.COLABORADOR);
 
@@ -82,7 +82,7 @@ public class ColaboracionRouter implements IRouter {
     }
 
     private void routeEncargarseDeHeladeras() {
-        path("/encargarse-de-heladeras", () -> {
+        path("/encargarse-por-heladeras", () -> {
             post(ServiceLocator.instanceOf(HacerseCargoHeladeraController.class)::save);
 
             get("/new", ServiceLocator.instanceOf(HacerseCargoHeladeraController.class)::create);

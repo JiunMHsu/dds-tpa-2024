@@ -11,9 +11,11 @@ import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import java.util.Properties;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 public class EmailSender implements ISender {
 
     private final String host;
@@ -36,8 +38,10 @@ public class EmailSender implements ISender {
     }
 
     @Override
-    public void enviarMensaje(Contacto contacto, String asunto, String cuerpo) {
+    public void enviarMensaje(Contacto contacto, String asunto, String cuerpo) throws IllegalArgumentException, MessagingException {
         String receptor = contacto.getContacto(MedioDeNotificacion.EMAIL);
+        if (receptor == null)
+            throw new IllegalArgumentException("El contacto no tiene un email asociado");
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -52,21 +56,14 @@ public class EmailSender implements ISender {
             }
         });
 
-        try {
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("your-email@example.com"));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receptor));
-            message.setSubject(asunto);
-            message.setText(cuerpo);
+        Message message = new MimeMessage(session);
+        message.setFrom(new InternetAddress("your-email@example.com"));
+        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receptor));
+        message.setSubject(asunto);
+        message.setText(cuerpo);
+        Transport.send(message);
 
-            Transport.send(message);
-
-            System.out.println("Correo enviado");
-
-        } catch (MessagingException error) {
-            error.printStackTrace();
-            System.err.println("Error al enviar el mail: " + error.getMessage());
-        }
+        System.out.println("Correo enviado");
     }
 
 }

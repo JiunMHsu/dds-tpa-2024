@@ -51,19 +51,20 @@ public class CanjeDePuntosService {
                 .build();
     }
 
-    private void actualizarUltimaFechaCanje(Colaborador colaborador){
+    private void actualizarUltimaFechaCanje(Colaborador colaborador) {
         Optional<CanjeDePuntos> ultimoCanjeo = this.obtenerUltimoPorColaborador(colaborador);
         if (ultimoCanjeo.isPresent()) {
             fechaUltimoCanje = ultimoCanjeo.get().getFechaCanjeo();
-        }else{
+        } else {
             fechaUltimoCanje = null;
         }
     }
-    private void actualizarPuntosSobrantes(Colaborador colaborador){
+
+    private void actualizarPuntosSobrantes(Colaborador colaborador) {
         Optional<CanjeDePuntos> ultimoCanjeo = this.obtenerUltimoPorColaborador(colaborador);
         if (ultimoCanjeo.isPresent()) {
             puntosSobrantes = ultimoCanjeo.get().getPuntosRestantes();
-        }else{
+        } else {
             puntosSobrantes = 0.0;
         }
     }
@@ -71,7 +72,7 @@ public class CanjeDePuntosService {
     public Double calcularPuntos(Colaborador colaborador) {
         this.actualizarPuntosSobrantes(colaborador);
         this.actualizarUltimaFechaCanje(colaborador);
-        if (fechaUltimoCanje==null){
+        if (fechaUltimoCanje == null) {
             return puntosSobrantes;
         }
         return this.calcularPorPesosDonados()
@@ -166,7 +167,7 @@ public class CanjeDePuntosService {
     }
 
     /**
-     * Supone que desde la 'fechaInicio' hasta la fecha de llamada
+     * Supone que desde la 'fechaInicio' hasta la fecha por llamada
      * siempre estuvo activa.
      */
     private Integer calcularMesesActiva(LocalDateTime fechaInicio, LocalDateTime fechaActual) {

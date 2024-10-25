@@ -8,6 +8,7 @@ import ar.edu.utn.frba.dds.models.entities.data.TipoDocumento;
 import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
+import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.TecnicoRepository;
 import io.github.flbulgarelli.jpa.extras.test.SimplePersistenceTest;
 import java.util.List;
@@ -29,23 +30,25 @@ public class TecnicoRepositoryTest implements SimplePersistenceTest {
         sanTelmo = new Barrio("San Telmo");
 
         Tecnico unTecnico = Tecnico.con(
+                Usuario.conEmail("lshdgf@lkdajg.com"), // es para que compile, obviamente falla el test
                 "Matias Leonel",
                 "Juncos Mieres",
                 new Documento(TipoDocumento.DNI, "12345678"),
                 "24-12345678-0",
                 Contacto.conTelegram("7652931546"),
                 MedioDeNotificacion.TELEGRAM,
-                new Area(new Ubicacion(-34.60011743355092, -58.417371449916324), 500.0, almagro)
+                new Area(new Ubicacion(-34.60011743355092, -58.417371449916324), 500, almagro)
         );
 
         Tecnico otroTecnico = Tecnico.con(
+                Usuario.conEmail("alskf@sdefgwe.com"),
                 "Joaquín",
                 "Gándola",
                 new Documento(TipoDocumento.DNI, "82738291"),
                 "22-82738291-1",
                 Contacto.conWhatsApp("8881928172"),
                 MedioDeNotificacion.WHATSAPP,
-                new Area(new Ubicacion(-34.60711989660622, -58.414045825102896), 400.0, almagro)
+                new Area(new Ubicacion(-34.60711989660622, -58.414045825102896), 400, almagro)
         );
 
 

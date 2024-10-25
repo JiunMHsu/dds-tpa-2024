@@ -37,7 +37,7 @@ public class ColaboracionDTO {
             case DONACION_DINERO -> "Donar Dinero";
             case DISTRIBUCION_VIANDAS -> "Distribuir Viandas";
             case ENTREGA_VIANDA -> "Entregar Viandas";
-            case HACERSE_CARGO_HELADERA -> "Encargarse de Heladeras";
+            case HACERSE_CARGO_HELADERA -> "Encargarse por Heladeras";
             case OFERTA_DE_PRODUCTOS -> "Ofrecer Producto / Servicio";
             case REPARTO_DE_TARJETAS -> "Registrar Persona Vulnerable";
         };
@@ -51,7 +51,7 @@ public class ColaboracionDTO {
             case ENTREGA_VIANDA -> "entrega-viandas";
             case HACERSE_CARGO_HELADERA -> "distribucion-viandas";
             case OFERTA_DE_PRODUCTOS -> "oferta-producto-servicio";
-            case REPARTO_DE_TARJETAS -> "encargarse-de-heladeras";
+            case REPARTO_DE_TARJETAS -> "encargarse-por-heladeras";
         };
     }
 }

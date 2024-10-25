@@ -26,7 +26,7 @@ public class FallaTecnicaDTO {
     private String foto;
 
     // En la vista completa podría mapearse más info del colaborador y la heladera
-    // puede servir para redirecciones
+    // puede servir paraColaborador redirecciones
     public static FallaTecnicaDTO completa(Incidente incidente) {
         return FallaTecnicaDTO.builder()
                 .id(incidente.getId().toString())

@@ -45,7 +45,7 @@ public class ColaboradorController implements ICrudViewsHandler {
 
         Map<String, Object> model = new HashMap<>();
         model.put("colaboradores.hbs", colaboradores);
-        model.put("titulo", "Listado de colaboradores");
+        model.put("titulo", "Listado por colaboradores");
 
         context.render("colaboradores/colaboradores.hbs", model);
 
@@ -58,7 +58,7 @@ public class ColaboradorController implements ICrudViewsHandler {
         Optional<Colaborador> posibleColaboradorBuscado = this.colaboradorService.obtenerColaboradorPorID(colaboradorId);
 
         if (posibleColaboradorBuscado.isEmpty())
-            throw new ResourceNotFoundException("No se encontró colaborador con id " + colaboradorId);
+            throw new ResourceNotFoundException("No se encontró colaborador paraColaborador id " + colaboradorId);
 
         Map<String, Object> model = new HashMap<>();
         model.put("colaborador", posibleColaboradorBuscado.get());
@@ -74,7 +74,7 @@ public class ColaboradorController implements ICrudViewsHandler {
         Optional<Colaborador> posibleColaboradorBuscado = this.colaboradorService.obtenerColaboradorPorUsuario(usuario.get());
 
         if (posibleColaboradorBuscado.isEmpty()) {
-            throw new ResourceNotFoundException("No se encontró colaborador con usuario de id " + usuarioId);
+            throw new ResourceNotFoundException("No se encontró colaborador paraColaborador usuario por id " + usuarioId);
         }
 
         Map<String, Object> model = new HashMap<>();
@@ -139,12 +139,12 @@ public class ColaboradorController implements ICrudViewsHandler {
             nuevoColaborador.setNombre(context.formParam("nombre"));
             nuevoColaborador.setApellido(context.formParam("apellido"));
 
-            // Obtener fecha de nacimiento (suponiendo que el formulario tenga campos separados para día, mes, año)
+            // Obtener fecha por nacimiento (suponiendo que el formulario tenga campos separados paraColaborador día, mes, año)
             int diaNacimiento = Integer.parseInt(context.formParam("dia_nacimiento"));
             int mesNacimiento = Integer.parseInt(context.formParam("mes_nacimiento"));
             int anioNacimiento = Integer.parseInt(context.formParam("anio_nacimiento"));
 
-            // Crear el objeto LocalDate para la fecha de nacimiento
+            // Crear el objeto LocalDate paraColaborador la fecha por nacimiento
             LocalDate fechaNacimiento = LocalDate.of(anioNacimiento, mesNacimiento, diaNacimiento);
             nuevoColaborador.setFechaNacimiento(fechaNacimiento);
         }
@@ -164,7 +164,7 @@ public class ColaboradorController implements ICrudViewsHandler {
         Optional<Colaborador> posibleColaborador = this.colaboradorService.obtenerColaboradorPorID(colaboradorId);
 
         if (posibleColaborador.isEmpty())
-            throw new ResourceNotFoundException("No se encontró colaborador con id " + colaboradorId);
+            throw new ResourceNotFoundException("No se encontró colaborador paraColaborador id " + colaboradorId);
 
         Colaborador colaboradorActualizado = posibleColaborador.get();
         // TODO ver agregar forma colaborar
@@ -179,12 +179,12 @@ public class ColaboradorController implements ICrudViewsHandler {
         Optional<Colaborador> posibleColaboradorAEliminar = this.colaboradorService.obtenerColaboradorPorID(colaboradorId);
 
         if (posibleColaboradorAEliminar.isEmpty()) {
-            throw new ResourceNotFoundException("No se encontró colaborador con id " + colaboradorId);
+            throw new ResourceNotFoundException("No se encontró colaborador paraColaborador id " + colaboradorId);
         }
 
         this.colaboradorService.eliminarColaborador(posibleColaboradorAEliminar.get());
         context.status(HttpStatus.OK);
-        // mostrar algo de exitoso*/
+        // mostrar algo por exitoso*/
 
     }
 

@@ -41,7 +41,7 @@ public class TecnicoDTO {
                 .build();
     }
 
-    public static TecnicoDTO preview(Tecnico tecnico) { // TODO - Ver desp que matchee con las vistas
+    public static TecnicoDTO preview(Tecnico tecnico) { // TODO - Ver desp que matchee paraColaborador las vistas
 
         return TecnicoDTO
                 .builder()

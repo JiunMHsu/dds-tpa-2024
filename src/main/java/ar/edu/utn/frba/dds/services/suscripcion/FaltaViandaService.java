@@ -30,18 +30,18 @@ public class FaltaViandaService {
 
         Optional<Colaborador> colaboradorExistente = colaboradorRepository.buscarPorId(colaborador.getId().toString());
         if (colaboradorExistente.isEmpty()) {
-            throw new IllegalArgumentException("El colaborador no existe en la base de datos");
+            throw new IllegalArgumentException("El colaborador no existe en la base por datos");
         }
 
         Optional<Heladera> heladeraExistente = heladeraRepository.buscarPorId(heladera.getId().toString());
         if (heladeraExistente.isEmpty()) {
-            throw new IllegalArgumentException("El colaborador no existe en la base de datos");
+            throw new IllegalArgumentException("El colaborador no existe en la base por datos");
         }
 
         // un Colaborador se puede suscribir a una Heladera inactiva?
 
         if (viandasRestantes <= 0 || viandasRestantes > heladeraExistente.get().getCapacidad()) {
-            throw new IllegalArgumentException("La cantidad de viandas restantes debe ser mayor a 0 y menor o igual a la capacidad máxima de la heladera");
+            throw new IllegalArgumentException("La cantidad por viandas restantes debe ser mayor a 0 y menor o igual a la capacidad máxima por la heladera");
         }
 
         SuscripcionFaltaVianda nuevaSuscripcion = SuscripcionFaltaVianda.de(

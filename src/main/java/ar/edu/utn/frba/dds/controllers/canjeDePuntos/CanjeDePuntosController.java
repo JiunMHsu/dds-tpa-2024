@@ -5,8 +5,6 @@ import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.puntosPorColaborador.CanjeDePuntos;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRepository;
-import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.services.canjeDePuntos.CanjeDePuntosService;
 import ar.edu.utn.frba.dds.services.colaboraciones.OfertaProductosServiciosService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
@@ -30,6 +28,7 @@ public class CanjeDePuntosController implements ICrudViewsHandler {
         this.canjeDePuntosService = canjeDePuntosService;
         this.ofertaProductosServiciosService = ofertaProductosServiciosService;
     }
+
     @Override
     public void index(Context context) {
 
@@ -52,14 +51,14 @@ public class CanjeDePuntosController implements ICrudViewsHandler {
         Optional<Colaborador> colaborador = colaboradorService.buscarPorId(userId);
 
         if (colaborador.isEmpty())
-            throw new ResourceNotFoundException("No se encontró colaborador con id " + userId);
+            throw new ResourceNotFoundException("No se encontró colaborador paraColaborador id " + userId);
 
         Double puntaje = canjeDePuntosService.calcularPuntos(colaborador.get());
 
         Map<String, Object> model = new HashMap<>();
         model.put("productos_canjear", ofertaDeProductosDTOS);
-        model.put("titulo", "Listado de productos/servicios");
-        model.put("puntaje" , puntaje);
+        model.put("titulo", "Listado por productos/servicios");
+        model.put("puntaje", puntaje);
 
         context.render("canjeDePuntos/productos_canjear.hbs");
     }
@@ -71,11 +70,11 @@ public class CanjeDePuntosController implements ICrudViewsHandler {
         Optional<Colaborador> colaboradorCanje = colaboradorService.buscarPorId(userId);
 
         if (colaboradorCanje.isEmpty())
-            throw new ResourceNotFoundException("No se encontró colaborador con id " + userId);
+            throw new ResourceNotFoundException("No se encontró colaborador paraColaborador id " + userId);
 
         Double puntosCanjeados = Double.valueOf(context.formParam("puntos_canjeados"));
 
-        //TODO creo que no llega como parametro sino que calcula con el futuro service
+        //TODO creo que no llega como parametro sino que calcula paraColaborador el futuro service
         Double puntosRestantes = Double.valueOf(context.formParam("puntos_restantes"));
 
         OfertaDeProductos oferta = ofertaProductosServiciosService.buscarPorId(context.formParam("oferta_id")).get();

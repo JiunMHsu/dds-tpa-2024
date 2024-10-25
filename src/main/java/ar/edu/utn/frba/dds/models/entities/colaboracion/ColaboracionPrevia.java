@@ -1,7 +1,7 @@
-package ar.edu.utn.frba.dds.cargaDeColaboraciones;
+package ar.edu.utn.frba.dds.models.entities.colaboracion;
 
 import ar.edu.utn.frba.dds.models.entities.data.Documento;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,24 +13,24 @@ public class ColaboracionPrevia {
     private String nombre;
     private String apellido;
     private String email;
-    private LocalDate fechaDeColaboracion;
+    private LocalDateTime fechaHora;
     private String formaDeColaboracion;
     private Integer cantidad;
 
-    public static ColaboracionPrevia of(Documento documento,
-                                        String nombre,
-                                        String apellido,
-                                        String email,
-                                        LocalDate fechaDeColaboracion,
-                                        String formaDeColaboracion,
-                                        Integer cantidad) {
+    public static ColaboracionPrevia por(Documento documento,
+                                         String nombre,
+                                         String apellido,
+                                         String email,
+                                         LocalDateTime fechaHora,
+                                         String formaDeColaboracion,
+                                         Integer cantidad) {
         return ColaboracionPrevia
                 .builder()
                 .documento(documento)
                 .nombre(nombre)
                 .apellido(apellido)
                 .email(email)
-                .fechaDeColaboracion(fechaDeColaboracion)
+                .fechaHora(fechaHora)
                 .formaDeColaboracion(formaDeColaboracion)
                 .cantidad(cantidad)
                 .build();
