@@ -2,15 +2,15 @@ package ar.edu.utn.frba.dds.models.repositories.reporte;
 
 import ar.edu.utn.frba.dds.models.entities.reporte.Reporte;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-import javax.persistence.NoResultException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public class ReporteRepository implements WithSimplePersistenceUnit {
+
     public void guardar(Reporte reporte) {
-        withTransaction(() -> entityManager().persist(reporte));
+        entityManager().persist(reporte);
     }
 
     public Optional<Reporte> buscarPorId(String id) {
@@ -25,7 +25,8 @@ public class ReporteRepository implements WithSimplePersistenceUnit {
 
     public List<Reporte> buscarTodos() {
         return entityManager()
-                .createQuery("from Reporte", Reporte.class)
+                .createQuery("from Reporte r where r.alta = :alta", Reporte.class)
+                .setParameter("alta", true)
                 .getResultList();
     }
 
@@ -35,6 +36,5 @@ public class ReporteRepository implements WithSimplePersistenceUnit {
                 .setParameter("fecha", fecha)
                 .getResultList();
     }
-
 
 }

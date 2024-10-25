@@ -15,14 +15,13 @@ import java.util.Optional;
 
 public class ReporteController {
 
-    private ReporteService reporteService;
+    private final ReporteService reporteService;
 
     public ReporteController(ReporteService reporteService) {
         this.reporteService = reporteService;
     }
 
     public void index(Context context) {
-
         List<Reporte> reportes = this.reporteService.buscarTodas();
 
         List<ReporteDTO> reporteDTO = reportes.stream()

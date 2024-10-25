@@ -19,16 +19,17 @@ import lombok.Setter;
 @Entity
 @Table(name = "reporte")
 public class Reporte extends EntidadPersistente {
+
     @Column(name = "titulo")
     private String titulo;
+
     @Column(name = "fecha")
     private LocalDate fecha;
+
     @Column(name = "path")
     private String path;
 
-    public Reporte con(String titulo,
-                       LocalDate fecha,
-                       String path) {
+    public static Reporte con(String titulo, LocalDate fecha, String path) {
 
         return Reporte
                 .builder()
@@ -38,13 +39,9 @@ public class Reporte extends EntidadPersistente {
                 .build();
     }
 
-    public Reporte con(String titulo,
-                       LocalDate fecha) {
+    public static Reporte con(String titulo,
+                              LocalDate fecha) {
 
-        return Reporte
-                .builder()
-                .titulo(titulo)
-                .fecha(fecha)
-                .build();
+        return Reporte.con(titulo, fecha, null);
     }
 }
