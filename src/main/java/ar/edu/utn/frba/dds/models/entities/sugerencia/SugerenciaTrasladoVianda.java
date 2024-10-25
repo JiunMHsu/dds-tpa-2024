@@ -41,7 +41,7 @@ public class SugerenciaTrasladoVianda extends EntidadPersistente {
     @Column(name = "estado", nullable = false)
     private EstadoSugerencia estado;
 
-    // TODO - Debería conocer al incidente, para la trazabilidad
+    // TODO - Debería conocer al incidente, paraColaborador la trazabilidad
     // private Incidente incidente_causa;
 
     public static SugerenciaTrasladoVianda de(Heladera heladeraOrigen,

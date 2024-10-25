@@ -1,6 +1,8 @@
 package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.DonacionDineroDTO;
+import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDinero;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
@@ -18,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 public class DonacionDineroController extends ColaboradorPorSession implements ICrudViewsHandler {
 
@@ -37,7 +40,18 @@ public class DonacionDineroController extends ColaboradorPorSession implements I
 
     @Override
     public void show(Context context) {
-        // TODO
+        String donacionDineroId = context.pathParam("id");
+        Optional<DonacionDinero> donacionDinero = donacionDineroService.buscarPorId(donacionDineroId);
+
+        if (donacionDinero.isEmpty())
+            throw new ResourceNotFoundException("No se encontró donacion por dinero paraColaborador id " + donacionDineroId);
+
+        Map<String, Object> model = new HashMap<>();
+
+        DonacionDineroDTO donacionDineroDTO = DonacionDineroDTO.completa(donacionDinero.get());
+        model.put("donacion_dinero", donacionDineroDTO);
+
+        context.render("colaboraciones/colaboracion_detalle.hbs", model);
     }
 
     @Override
@@ -69,7 +83,7 @@ public class DonacionDineroController extends ColaboradorPorSession implements I
                 default -> null;
             };
 
-            // TODO - ver como lanzar y manejar fallas de creación y guardado
+            // TODO - ver como lanzar y manejar fallas por creación y guardado
             DonacionDinero donacionDinero = DonacionDinero.por(colaborador, LocalDateTime.now(), monto, frecuencia);
             donacionDineroService.registrarDonacion(donacionDinero);
 

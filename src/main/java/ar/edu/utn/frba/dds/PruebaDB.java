@@ -35,7 +35,6 @@ public class PruebaDB implements WithSimplePersistenceUnit {
     private TecnicoRepository tecnicoRepository;
     private ColaboradorRepository colaboradorRepository;
     private UsuarioRepository usuarioRepository;
-
     private IncidenteRepository incidenteRepository;
 
     public static void main(String[] args) {
@@ -128,24 +127,29 @@ public class PruebaDB implements WithSimplePersistenceUnit {
     private void guardarTecnico() {
         Barrio almagro = new Barrio("Almagro");
 
+        Usuario usuarioT1 = Usuario.conEmail("mjuncosmieres@frba.utn.edu.ar");
+        Usuario usuarioT2 = Usuario.conEmail("jgandola@frba.utn.edu.ar");
+
         Tecnico unTecnico = Tecnico.con(
+                usuarioT1,
                 "Matias Leonel",
                 "Juncos Mieres",
                 new Documento(TipoDocumento.DNI, "12345678"),
                 "24-12345678-0",
                 Contacto.conTelegram("7652931546"),
                 MedioDeNotificacion.TELEGRAM,
-                new Area(new Ubicacion(-34.60011743355092, -58.417371449916324), 500.0, almagro)
+                new Area(new Ubicacion(-34.60011743355092, -58.417371449916324), 500, almagro)
         );
 
         Tecnico otroTecnico = Tecnico.con(
+                usuarioT2,
                 "Joaquín",
                 "Gándola",
                 new Documento(TipoDocumento.DNI, "82738291"),
                 "22-82738291-1",
                 Contacto.conWhatsApp("8881928172"),
                 MedioDeNotificacion.WHATSAPP,
-                new Area(new Ubicacion(-34.60711989660622, -58.414045825102896), 400.0, almagro)
+                new Area(new Ubicacion(-34.60711989660622, -58.414045825102896), 400, almagro)
         );
 
         tecnicoRepository.guardar(unTecnico);
@@ -191,7 +195,7 @@ public class PruebaDB implements WithSimplePersistenceUnit {
 
     private void mostrarIncidentes() {
         // Obtener todos los incidentes y mostrarlos
-        List<Incidente> incidentes = incidenteRepository.obtenerTodos();
+        List<Incidente> incidentes = incidenteRepository.buscarTodos();
         incidentes.forEach(System.out::println);
     }
 }

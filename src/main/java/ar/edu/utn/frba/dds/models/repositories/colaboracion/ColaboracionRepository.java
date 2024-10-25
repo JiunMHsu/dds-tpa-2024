@@ -1,12 +1,15 @@
 package ar.edu.utn.frba.dds.models.repositories.colaboracion;
 
+import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-public abstract class ColaboracionRepository<T> implements WithSimplePersistenceUnit {
+public abstract class ColaboracionRepository<T extends EntidadPersistente> implements WithSimplePersistenceUnit {
 
     private final Class<T> type;
 
@@ -46,6 +49,16 @@ public abstract class ColaboracionRepository<T> implements WithSimplePersistence
         return entityManager()
                 .createQuery("from" + type.getName(), type)
                 .getResultList();
+    }
+
+    public Optional<T> buscarPorId(String id) {
+        try {
+            UUID uuid = UUID.fromString(id);
+            return Optional.ofNullable(entityManager().find(type, uuid))
+                    .filter(T::getAlta);
+        } catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
     }
 }
 

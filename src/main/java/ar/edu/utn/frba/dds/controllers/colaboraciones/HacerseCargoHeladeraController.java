@@ -1,13 +1,14 @@
 package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.HacerseCargoHeladeraDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.HacerseCargoHeladera;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladeraRepository;
+import ar.edu.utn.frba.dds.services.colaboraciones.HacerseCargoHeladeraService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
@@ -24,18 +25,18 @@ import java.util.Optional;
 
 public class HacerseCargoHeladeraController extends ColaboradorPorSession implements ICrudViewsHandler {
 
-    private HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository;
+    private HacerseCargoHeladeraService hacerseCargoHeladeraService;
     private HeladeraService heladeraService;
 
 
-    public HacerseCargoHeladeraController(HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository,
+    public HacerseCargoHeladeraController(HacerseCargoHeladeraService hacerseCargoHeladeraService,
                                           HeladeraService heladeraService,
                                           UsuarioService usuarioService,
                                           ColaboradorService colaboradorService) {
 
         super(usuarioService, colaboradorService);
         this.heladeraService = heladeraService;
-        this.hacerseCargoHeladeraRepository = hacerseCargoHeladeraRepository;
+        this.hacerseCargoHeladeraService = hacerseCargoHeladeraService;
     }
 
     @Override
@@ -45,7 +46,18 @@ public class HacerseCargoHeladeraController extends ColaboradorPorSession implem
 
     @Override
     public void show(Context context) {
+        String hacerseCargoHeladeraId = context.pathParam("id");
+        Optional<HacerseCargoHeladera> hacerseCargoHeladera = hacerseCargoHeladeraService.buscarPorId(hacerseCargoHeladeraId);
 
+        if (hacerseCargoHeladera.isEmpty())
+            throw new ResourceNotFoundException("No se encontró un cargo por heladera paraColaborador id " + hacerseCargoHeladeraId);
+
+        Map<String, Object> model = new HashMap<>();
+
+        HacerseCargoHeladeraDTO hacerseCargoHeladeraDTO = HacerseCargoHeladeraDTO.completa(hacerseCargoHeladera.get());
+        model.put("hacerse_cargo_heladera", hacerseCargoHeladeraDTO);
+
+        context.render("colaboraciones/colaboracion_detalle.hbs", model);
     }
 
     @Override
@@ -76,7 +88,7 @@ public class HacerseCargoHeladeraController extends ColaboradorPorSession implem
 
         try {
 
-            Optional<Heladera> heladeraACargo = heladeraService.buscarHeladeraPorNombre(context.formParamAsClass("heladera", String.class).get());
+            Optional<Heladera> heladeraACargo = heladeraService.buscarPorNombre(context.formParamAsClass("heladera", String.class).get());
 
             if (heladeraACargo.isEmpty()) {
                 throw new ResourceNotFoundException("Heladera no Encontrada");
@@ -84,7 +96,7 @@ public class HacerseCargoHeladeraController extends ColaboradorPorSession implem
 
             HacerseCargoHeladera hacerseCargoHeladera = HacerseCargoHeladera.por(colaborador, LocalDateTime.now(), heladeraACargo.get());
 
-            this.hacerseCargoHeladeraRepository.guardar(hacerseCargoHeladera);
+            this.hacerseCargoHeladeraService.guardar(hacerseCargoHeladera);
 
             operationSuccess = true;
             redirectDTOS.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));

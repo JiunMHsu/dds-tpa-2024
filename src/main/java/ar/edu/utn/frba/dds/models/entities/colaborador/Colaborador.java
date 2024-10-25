@@ -102,15 +102,7 @@ public class Colaborador extends EntidadPersistente {
                                        TipoRazonSocial tipoRazonSocial,
                                        Contacto contacto,
                                        Direccion direccion) {
-        return Colaborador.juridica(
-                usuario,
-                razonSocial,
-                tipoRazonSocial,
-                "",
-                contacto,
-                direccion,
-                new ArrayList<>()
-        );
+        return Colaborador.juridica(usuario, razonSocial, tipoRazonSocial, "", contacto, direccion, new ArrayList<>());
     }
 
     public static Colaborador humana(Usuario usuario,
@@ -137,22 +129,11 @@ public class Colaborador extends EntidadPersistente {
                                      String nombre,
                                      String apellido,
                                      LocalDate fechaNacimiento) {
-        return Colaborador.humana(
-                usuario,
-                nombre,
-                apellido,
-                fechaNacimiento,
-                null,
-                null,
-                new ArrayList<>()
-        );
+        return Colaborador.humana(usuario, nombre, apellido, fechaNacimiento, null, null, new ArrayList<>());
     }
 
     public static Colaborador colaborador(Usuario usuario) {
-        return Colaborador
-                .builder()
-                .usuario(usuario)
-                .build();
+        return Colaborador.builder().usuario(usuario).build();
     }
 
     public static Colaborador colaborador(Usuario usuario,

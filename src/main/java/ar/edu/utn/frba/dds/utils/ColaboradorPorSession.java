@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.utils;
 
+import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
@@ -17,19 +18,12 @@ public abstract class ColaboradorPorSession {
         this.colaboradorService = colaboradorService;
     }
 
-    public Colaborador obtenerColaboradorPorSession(Context context) {
+    public Colaborador obtenerColaboradorPorSession(Context context) { // TODO - ver tipo excepcion
 
         String userId = context.sessionAttribute("userId");
 
-        Optional<Usuario> usuarioSession = usuarioService.obtenerUsuarioPorID(userId);
-        if (usuarioSession.isEmpty()) {
-            context.status(404).result("Usuario no encontrado");
-        }
-        Optional<Colaborador> colaboradorSession = colaboradorService.obtenerColaboradorPorUsuario(usuarioSession.get());
-        if (colaboradorSession.isEmpty()) {
-            context.status(404).result("Colaborador no encontrado");
-        }
+        Usuario usuarioSession = usuarioService.obtenerUsuarioPorID(userId).orElseThrow(ResourceNotFoundException::new);
 
-        return colaboradorSession.orElseThrow();
+        return colaboradorService.obtenerColaboradorPorUsuario(usuarioSession).orElseThrow(ResourceNotFoundException::new);
     }
 }

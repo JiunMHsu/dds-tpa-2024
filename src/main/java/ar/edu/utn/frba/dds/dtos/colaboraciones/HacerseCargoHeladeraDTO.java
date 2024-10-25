@@ -1,18 +1,18 @@
 package ar.edu.utn.frba.dds.dtos.colaboraciones;
 
+import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.HacerseCargoHeladera;
-import lombok.Builder;
+import ar.edu.utn.frba.dds.utils.DateTimeParser;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@Builder
-public class HacerseCargoHeladeraDTO {
+@SuperBuilder
+public class HacerseCargoHeladeraDTO extends ColaboracionDTO {
 
     private String id;
-
-    private String nombre; // lo agrego xlas, tiene pinta que puede ser util
 
     private String colaborador;
 
@@ -22,27 +22,25 @@ public class HacerseCargoHeladeraDTO {
 
     public static HacerseCargoHeladeraDTO completa(HacerseCargoHeladera hacerseCargoHeladera) {
 
-        String nombre = "Encargarse de una Heladera";
-
         return HacerseCargoHeladeraDTO
                 .builder()
+                .etiqueta(getAction(Colaboracion.HACERSE_CARGO_HELADERA))
+                .path(getPath(Colaboracion.HACERSE_CARGO_HELADERA))
                 .id(hacerseCargoHeladera.getId().toString())
-                .nombre(nombre)
                 .colaborador(hacerseCargoHeladera.getColaborador().getUsuario().getNombre())
-                .fechaHora(hacerseCargoHeladera.getFechaHora().toString())
+                .fechaHora(DateTimeParser.parseFechaHora(hacerseCargoHeladera.getFechaHora()))
                 .heladeraACargo(hacerseCargoHeladera.getHeladeraACargo().getNombre())
                 .build();
     }
 
     public static HacerseCargoHeladeraDTO preview(HacerseCargoHeladera hacerseCargoHeladera) { // TODO - ver si se ajusta a la vista
 
-        String nombre = "Encargarse de una Heladera";
-
         return HacerseCargoHeladeraDTO
                 .builder()
+                .etiqueta(getAction(Colaboracion.HACERSE_CARGO_HELADERA))
+                .path(getPath(Colaboracion.HACERSE_CARGO_HELADERA))
                 .id(hacerseCargoHeladera.getId().toString())
-                .nombre(nombre)
-                .heladeraACargo(hacerseCargoHeladera.getHeladeraACargo().getNombre())
+                .fechaHora(DateTimeParser.parseFechaHora(hacerseCargoHeladera.getFechaHora()))
                 .build();
     }
 }

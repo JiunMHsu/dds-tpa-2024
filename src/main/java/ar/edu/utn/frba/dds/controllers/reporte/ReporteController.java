@@ -22,7 +22,7 @@ public class ReporteController {
     }
 
     public void index(Context context) {
-        //TODO verificar rol de admin
+
         List<Reporte> reportes = this.reporteService.buscarTodas();
 
         List<ReporteDTO> reporteDTO = reportes.stream()
@@ -40,7 +40,7 @@ public class ReporteController {
         Optional<Reporte> reporte = this.reporteService.buscarPorId(reporteId);
 
         if (reporte.isEmpty())
-            throw new ResourceNotFoundException("No se encontró reporte con id " + reporteId);
+            throw new ResourceNotFoundException("No se encontró reporte paraColaborador id " + reporteId);
 
         ReporteDTO reporteDTO = ReporteDTO.completa(reporte.get());
         File pdfFile = new File(reporteDTO.getPathToPdf());

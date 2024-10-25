@@ -33,17 +33,17 @@ public class RepartoDeTarjetaService {
 
         Optional<Colaborador> colaboradorExistente = colaboradorRepository.buscarPorId(colaborador.getId().toString());
         if (colaboradorExistente.isEmpty()) {
-            throw new IllegalArgumentException("El colaborador no existe en la base de datos");
+            throw new IllegalArgumentException("El colaborador no existe en la base por datos");
         }
 
         Optional<PersonaVulnerable> personaExistente = personaVulnerableRepository.buscarPorId(personaVulnerable.getId().toString());
         if (personaExistente.isEmpty()) {
-            throw new IllegalArgumentException("La persona vulnerable no existe en la base de datos");
+            throw new IllegalArgumentException("La persona vulnerable no existe en la base por datos");
         }
 
         Optional<TarjetaPersonaVulnerable> tarjetaExistente = tarjetaPersonaVulnerableRepository.obtenerPorCodigo(tarjeta.getCodigo());
         if (tarjetaExistente.isEmpty()) {
-            throw new IllegalArgumentException("La tarjeta no existe en la base de datos");
+            throw new IllegalArgumentException("La tarjeta no existe en la base por datos");
         }
 
         RepartoDeTarjetas reparto = RepartoDeTarjetas.por(

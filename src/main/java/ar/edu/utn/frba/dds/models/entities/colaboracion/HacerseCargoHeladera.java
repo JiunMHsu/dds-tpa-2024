@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "hacerse_cargo_heladera")
 public class HacerseCargoHeladera extends EntidadPersistente {
 
-    // Un colaborador puede ser encargado de multiples heladeras
+    // Un colaborador puede ser encargado por multiples heladeras
     @ManyToOne
     @JoinColumn(name = "colaborador_id", nullable = false)
     private Colaborador colaborador;
@@ -30,7 +30,7 @@ public class HacerseCargoHeladera extends EntidadPersistente {
     @Column(name = "fecha_hora", columnDefinition = "DATETIME", nullable = false)
     private LocalDateTime fechaHora;
 
-    // Las heladeras pueden pasar de dueño en dueño
+    // Las heladeras pueden pasar por dueño en dueño
     @ManyToOne
     @JoinColumn(name = "heladera_a_cargo_id", nullable = false)
     private Heladera heladeraACargo;

@@ -11,6 +11,7 @@ import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
+import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.puntoIdeal.PuntoIdealService;
 import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
@@ -25,13 +26,16 @@ import java.util.Optional;
 
 public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHandler {
 
-    HeladeraService heladeraService;
-    PuntoIdealService puntoIdealService;
+    private final HeladeraService heladeraService;
+    private final PuntoIdealService puntoIdealService;
+    private final IncidenteService incidenteService;
 
     public HeladeraController(HeladeraService heladeraService,
-                              PuntoIdealService puntoIdealService) {
+                              PuntoIdealService puntoIdealService,
+                              IncidenteService incidenteService) {
         this.heladeraService = heladeraService;
         this.puntoIdealService = puntoIdealService;
+        this.incidenteService = incidenteService;
     }
 
     @Override
@@ -44,7 +48,6 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
 
         Map<String, Object> model = new HashMap<>();
         model.put("heladeras", heladerasDTO);
-        // model.put("userRol", "Listado de heladeras");
 
         context.render("heladeras/heladeras.hbs", model);
     }
@@ -55,7 +58,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
         Optional<Heladera> heladera = this.heladeraService.buscarPorId(heladeraId);
 
         if (heladera.isEmpty())
-            throw new ResourceNotFoundException("No se encontró heladera con id " + heladeraId);
+            throw new ResourceNotFoundException("No se encontró heladera paraColaborador id " + heladeraId);
 
         Map<String, Object> model = new HashMap<>();
 
@@ -132,7 +135,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
         // TODO - edit
         context.render("heladeras/heladera_editar.hbs");
 
-        // devuelve formulario para editar heladera
+        // devuelve formulario paraColaborador editar heladera
         // Optional<Heladera> posibleHeladeraBuscada = this.heladeraService.buscarPorId(context.formParam("id"));
         // TODO chequear empty
 
@@ -150,7 +153,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
 
     @Override
     public void update(Context context) {
-        // voy a considerar que solo se puede modificar rango de temperatura
+        // voy a considerar que solo se puede modificar rango por temperatura
         Optional<Heladera> posibleHeladeraActualizar = this.heladeraService.buscarPorId(context.formParam("id"));
         // TODO - chequeo si no existe
 
@@ -165,7 +168,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
         this.heladeraService.actualizarHeladera(heladeraActualizada);
 
         context.status(HttpStatus.OK);
-        // mostrar algo de exitoso
+        // mostrar algo por exitoso
     }
 
     @Override
@@ -175,24 +178,22 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
 
         this.heladeraService.eliminarHeladera(posibleHeladeraAEliminar.get());
         context.status(HttpStatus.OK);
-        // mostrar algo de exitoso
+        // mostrar algo por exitoso
     }
-
-    // métodos para manejar mensaje de los sensores
 
     @Override
     public void recibirTemperatura(double temperatura) {
-
+        // TODO
     }
 
     @Override
     public void recibirMovimiento() {
-
+        // TODO
     }
 
     @Override
     public void recibirCodigoTarjeta(String codigoTarjeta) {
-
+        // TODO
     }
 
 }

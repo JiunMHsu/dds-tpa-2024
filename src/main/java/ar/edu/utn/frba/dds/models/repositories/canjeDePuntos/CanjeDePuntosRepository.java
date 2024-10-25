@@ -10,7 +10,7 @@ import javax.persistence.NoResultException;
 public class CanjeDePuntosRepository implements WithSimplePersistenceUnit {
 
     public void guardar(CanjeDePuntos canjeDePuntos) {
-        entityManager().persist(canjeDePuntos);
+        withTransaction(() -> entityManager().persist(canjeDePuntos));
     }
 
     public List<CanjeDePuntos> obtenerPorColaborador(Colaborador unColaborador) {

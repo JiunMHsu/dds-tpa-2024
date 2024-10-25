@@ -38,29 +38,19 @@ public class Contacto {
     }
 
     public static Contacto conTelegram(String telegram) {
-        return Contacto
-                .builder()
-                .telegram(telegram)
-                .build();
+        return Contacto.con(null, null, null, telegram);
     }
 
     public static Contacto conWhatsApp(String whatsApp) {
-        return Contacto
-                .builder()
-                .whatsApp(whatsApp)
-                .build();
+        return Contacto.con(null, null, whatsApp, null);
     }
 
     public static Contacto conEmail(String email) {
-        return Contacto
-                .builder()
-                .email(email)
-                .build();
+        return Contacto.con(email, null, null, null);
     }
 
     public static Contacto vacio() {
-        return Contacto
-                .builder().build();
+        return Contacto.con(null, null, null, null);
     }
 
     public String getContacto(MedioDeNotificacion medioDeNotificacion) {

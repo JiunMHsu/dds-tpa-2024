@@ -1,14 +1,12 @@
 package ar.edu.utn.frba.dds.controllers.incidente;
 
-import ar.edu.utn.frba.dds.dtos.incidente.IncidenteDTO;
+import ar.edu.utn.frba.dds.dtos.incidente.AlertaDTO;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import io.javalin.http.Context;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class AlertaController {
 
@@ -19,32 +17,20 @@ public class AlertaController {
     }
 
     public void index(Context context) {
-        List<Incidente> incidentes = this.incidenteService.obtenerIncidentesAlertas();
+        List<Incidente> incidentes = this.incidenteService.buscarTodasAlertas();
 
-        List<IncidenteDTO> incidentesDTOS = incidentes.stream()
-                .map(IncidenteDTO::completa)
-                .collect(Collectors.toList());
+        List<AlertaDTO> alertasDTOS = incidentes.stream()
+                .map(AlertaDTO::preview)
+                .toList();
 
         Map<String, Object> model = new HashMap<>();
-        model.put("alertas", incidentesDTOS);
-        /*model.put("titulo", "Alertas");*/
+        model.put("alertas", alertasDTOS);
 
         context.render("alertas/alertas.hbs", model);
     }
 
     public void show(Context context) {
-
-        String colaboradorId = context.pathParam("id");
-        Optional<Incidente> incidenteBuscado = this.incidenteService.buscarIncidentePorId(colaboradorId);
-
-        if (incidenteBuscado.isEmpty()) {
-            context.status(404).result("Incidente no encontrado");
-        }
-
-        Map<String, Object> model = new HashMap<>();
-        model.put("alerta", incidenteBuscado.get());
-
-        // context.render();
+        context.result("ALERTA ID: " + context.pathParam("id"));
     }
 
 

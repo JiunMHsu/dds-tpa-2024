@@ -7,7 +7,7 @@
 {{/partial}}
 
 {{#partial "main-content"}}
-    <img src="img/Map.png" class="main-section">
+    <img src="img/Map.png" class="main-section" alt="">
     <div class="form-container">
         <div class="form-title">
             <a href="/login" class="active form-header-option">LOG IN</a>
@@ -18,20 +18,20 @@
             <div class="error-card">email o contraseña incorrecta.</div>
         {{/if}}
 
-        <form action="/login" method="POST" class="form">
-            <label class="field-email">
-                Email
-                <input type="email" name="email" required/>
-            </label>
+        <form action="/login?forward={{forward}}" method="POST" class="form">
+        <label class="field-email">
+            Email
+            <input type="email" name="email" required/>
+        </label>
 
-            <label class="field-clave">
-                Contraseña
-                <input type="password" name="clave" required/>
-            </label>
+        <label class="field-clave">
+            Contraseña
+            <input type="password" name="clave" required/>
+        </label>
 
-            <div class="form-button-container">
-                <button type="submit">Iniciar Sesión</button>
-            </div>
+        <div class="form-button-container">
+            <button type="submit">Iniciar Sesión</button>
+        </div>
         </form>
     </div>
 {{/partial}}
