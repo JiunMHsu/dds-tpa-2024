@@ -11,7 +11,7 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
 
     private final IColaboradorRepository colaboradorRepository;
 
-    public Optional<Colaborador> buscarPorId(String id){return colaboradorRepository.buscarPorId(id);}
+    public Optional<Colaborador> buscarPorId(String id){return this.colaboradorRepository.buscarPorId(id);}
 
     public ColaboradorService(IColaboradorRepository colaboradorRepository) {
         this.colaboradorRepository = colaboradorRepository;
@@ -45,22 +45,22 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
 
     public void guardar(Colaborador colaborador) {
         // TODO - validaciones??
-        withTransaction(() -> colaboradorRepository.guardar(colaborador));
+        withTransaction(() -> this.colaboradorRepository.guardar(colaborador));
     }
 
     public void actualizar(Colaborador colaborador) {
-        withTransaction(() -> colaboradorRepository.actualizar(colaborador));
+        withTransaction(() -> this.colaboradorRepository.actualizar(colaborador));
     }
 
     public void eliminar(Colaborador colaborador) {
-        colaboradorRepository.eliminar(colaborador);
+        this.colaboradorRepository.eliminar(colaborador);
     }
 
     public Optional<Colaborador> obtenerColaboradorPorUsuario(Usuario usuario) {
         if (usuario == null) {
             throw new IllegalArgumentException("El colaboradores debe tener un Usuario");
         }
-        return colaboradorRepository.buscarPorUsuario(usuario);
+        return this.colaboradorRepository.buscarPorUsuario(usuario);
     }
 
 

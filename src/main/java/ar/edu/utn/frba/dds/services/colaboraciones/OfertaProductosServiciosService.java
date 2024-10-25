@@ -12,9 +12,9 @@ public class OfertaProductosServiciosService {
     public OfertaProductosServiciosService(OfertaDeProductosRepository ofertaDeProductosRepository) {
         this.ofertaDeProductosRepository = ofertaDeProductosRepository;
     }
-    public void guardar(OfertaDeProductos oferta){ofertaDeProductosRepository.guardar(oferta);}
-    public void eliminar(OfertaDeProductos oferta){ofertaDeProductosRepository.eliminar(oferta);}
-    public Optional<OfertaDeProductos> buscarPorId(String id){return ofertaDeProductosRepository.buscarPorId(id);}
+    public void guardar(OfertaDeProductos oferta){this.ofertaDeProductosRepository.guardar(oferta);}
+    public void eliminar(OfertaDeProductos oferta){this.ofertaDeProductosRepository.eliminar(oferta);}
+    public Optional<OfertaDeProductos> buscarPorId(String id){return this.ofertaDeProductosRepository.buscarPorId(id);}
 
-    public List<OfertaDeProductos> buscarTodos(){return ofertaDeProductosRepository.buscarTodos();}
+    public List<OfertaDeProductos> buscarTodos(){return this.ofertaDeProductosRepository.buscarTodos();}
 }

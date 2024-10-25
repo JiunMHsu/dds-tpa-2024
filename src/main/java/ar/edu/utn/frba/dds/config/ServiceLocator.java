@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.config;
 
+import ar.edu.utn.frba.dds.controllers.canjeDePuntos.CanjeDePuntosController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.ColaboracionController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DistribucionViandasController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionDineroController;
@@ -16,10 +17,12 @@ import ar.edu.utn.frba.dds.controllers.reporte.ReporteController;
 import ar.edu.utn.frba.dds.controllers.session.SessionController;
 import ar.edu.utn.frba.dds.controllers.tecnico.TecnicoController;
 import ar.edu.utn.frba.dds.controllers.tecnico.VisitaTecnicoController;
+import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.CanjeDePuntosRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladeraRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetasRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
@@ -33,6 +36,7 @@ import ar.edu.utn.frba.dds.models.repositories.tecnico.VisitaTecnicoRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import ar.edu.utn.frba.dds.models.repositories.vianda.ViandaRepository;
 import ar.edu.utn.frba.dds.reportes.RegistroMovimiento;
+import ar.edu.utn.frba.dds.services.canjeDePuntos.CanjeDePuntosService;
 import ar.edu.utn.frba.dds.services.colaboraciones.ColaboracionService;
 import ar.edu.utn.frba.dds.services.colaboraciones.DistribucionViandasService;
 import ar.edu.utn.frba.dds.services.colaboraciones.DonacionDineroService;
@@ -202,6 +206,14 @@ public class ServiceLocator {
             instances.put(componentName, instance);
         }
 
+        if (componentName.equals(CanjeDePuntosController.class.getName())) {
+            CanjeDePuntosController instance = new CanjeDePuntosController(
+                instanceOf(ColaboradorService.class),
+                instanceOf(CanjeDePuntosService.class),
+                instanceOf(OfertaProductosServiciosService.class));
+            instances.put(componentName, instance);
+        }
+
         // ========================= SERVICES =========================
 
         if (componentName.equals(FileService.class.getName())) {
@@ -279,6 +291,13 @@ public class ServiceLocator {
             instances.put(componentName, instance);
         }
 
+        if(componentName.equals(OfertaProductosServiciosService.class.getName())){
+            OfertaProductosServiciosService instance = new OfertaProductosServiciosService(
+                instanceOf(OfertaDeProductosRepository.class)
+            );
+            instances.put(componentName, instance);
+        }
+
         if (componentName.equals(TarjetaPersonaVulnerableService.class.getName())) {
             TarjetaPersonaVulnerableService instance = new TarjetaPersonaVulnerableService(
                     instanceOf(TarjetaPersonaVulnerableRepository.class));
@@ -302,6 +321,17 @@ public class ServiceLocator {
                     instanceOf(ReporteRepository.class),
                     instanceOf(DonacionViandaRepository.class),
                     instanceOf(RegistroMovimiento.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(CanjeDePuntosService.class.getName())) {
+            CanjeDePuntosService instance = new CanjeDePuntosService(
+                instanceOf(DonacionDineroRepository.class),
+                instanceOf(DistribucionViandasRepository.class),
+                instanceOf(DonacionViandaRepository.class),
+                instanceOf(RepartoDeTarjetasRepository.class),
+                instanceOf(HacerseCargoHeladeraRepository.class),
+                instanceOf(CanjeDePuntosRepository.class));
             instances.put(componentName, instance);
         }
 
@@ -357,6 +387,11 @@ public class ServiceLocator {
             instances.put(componentName, instance);
         }
 
+        if (componentName.equals(OfertaDeProductosRepository.class.getName())) {
+            OfertaDeProductosRepository instance = new OfertaDeProductosRepository();
+            instances.put(componentName, instance);
+        }
+
         if (componentName.equals(ViandaRepository.class.getName())) {
             ViandaRepository instance = new ViandaRepository();
             instances.put(componentName, instance);
@@ -379,6 +414,11 @@ public class ServiceLocator {
 
         if (componentName.equals(ReporteRepository.class.getName())) {
             ReporteRepository instance = new ReporteRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(CanjeDePuntosRepository.class.getName())) {
+            CanjeDePuntosRepository instance = new CanjeDePuntosRepository();
             instances.put(componentName, instance);
         }
 
