@@ -1,11 +1,27 @@
 package ar.edu.utn.frba.dds.server.routers;
 
+import static io.javalin.apibuilder.ApiBuilder.get;
+import static io.javalin.apibuilder.ApiBuilder.path;
+import static io.javalin.apibuilder.ApiBuilder.post;
+
+import ar.edu.utn.frba.dds.config.ServiceLocator;
+import ar.edu.utn.frba.dds.controllers.canjeDePuntos.CanjeDePuntosController;
+import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import io.javalin.config.RouterConfig;
 
 public class CanjeDePuntosRouter implements IRouter {
 
     @Override
     public void apply(RouterConfig config) {
-        // TODO - endpoint canje de puntos
+        config.apiBuilder(() ->
+            path("/canjes-puntos", () -> {
+                get(ServiceLocator.instanceOf(CanjeDePuntosController.class)::create,TipoRol.COLABORADOR, TipoRol.ADMIN);
+
+                path("/{id}", () -> {
+                  post(ServiceLocator.instanceOf(CanjeDePuntosController.class)::save, TipoRol.ADMIN, TipoRol.COLABORADOR);
+                });
+
+            })
+        );
     }
 }
