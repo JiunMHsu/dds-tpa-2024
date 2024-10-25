@@ -45,8 +45,8 @@ public class CanjeDePuntosController implements ICrudViewsHandler {
     public void create(Context context) {
         List<OfertaDeProductos> productos = this.ofertaProductosServiciosService.buscarTodos();
 
-        List<OfertaDeProductosDTO> ofertaDeProductosDTOS = productos.stream()
-                .map(OfertaDeProductosDTO::preview)
+        List<ProductoDTO> productosDTOS = productos.stream()
+                .map(ProductoDTO::preview)
                 .collect(Collectors.toList());
 
         String userId = context.sessionAttribute("userId");
@@ -61,7 +61,7 @@ public class CanjeDePuntosController implements ICrudViewsHandler {
         model.put("productos-canjear", ofertaDeProductosDTOS);
         model.put("titulo", "Listado de productos/servicios");
         model.put("puntaje" , puntaje);
-
+      
         context.render("canje_de_puntos/productos_canjear.hbs");
     }
 
