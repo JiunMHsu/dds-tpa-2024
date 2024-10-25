@@ -1,8 +1,10 @@
 package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.ColaboracionDTO;
 import ar.edu.utn.frba.dds.exceptions.CargaMasivaException;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
+import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.services.colaboraciones.ColaboracionService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
@@ -30,9 +32,19 @@ public class ColaboracionController extends ColaboradorPorSession {
 
     public void index(Context context) {
         Map<String, Object> model = new HashMap<>();
+        TipoRol rol = TipoRol.valueOf(context.sessionAttribute("userRol"));
+        boolean isAdmin = Objects.equals(rol, TipoRol.ADMIN);
+        boolean isColaborador = Objects.equals(rol, TipoRol.COLABORADOR);
 
-        Boolean isAdmin = Objects.equals(context.sessionAttribute("userRol"), TipoRol.ADMIN.toString());
-        Boolean isColaborador = Objects.equals(context.sessionAttribute("userRol"), TipoRol.COLABORADOR.toString());
+        if (isColaborador) {
+            Colaborador colaborador = obtenerColaboradorPorSession(context);
+
+            List<ColaboracionDTO> colaboraciones = colaborador
+                    .getFormaDeColaborar()
+                    .stream().map(ColaboracionDTO::redirectable)
+                    .toList();
+            model.put("colaboraciones", colaboraciones);
+        }
 
         model.put("isAdmin", isAdmin);
         model.put("isColaborador", isColaborador);
