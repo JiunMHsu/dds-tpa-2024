@@ -108,12 +108,14 @@ public class OfertaProductosServiciosController extends ColaboradorPorSession im
         List<RedirectDTO> redirectDTOS = new ArrayList<>();
         boolean operationSuccess = false;
 
+
         try {
+
 
             Colaborador colaborador = obtenerColaboradorPorSession(context);
 
             String nombre = context.formParamAsClass("nombre", String.class).get();
-            Double puntosNecesarios = Double.valueOf(context.formParamAsClass("puntos_necesarios", Double.class).get());
+            Double puntosNecesarios = Double.valueOf(context.formParamAsClass("puntos", Double.class).get());
             RubroOferta rubro = RubroOferta.valueOf(context.formParamAsClass("rubro", String.class).get());
 
             UploadedFile uploadedFile = context.uploadedFile("imagen");
