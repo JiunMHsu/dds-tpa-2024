@@ -5,11 +5,7 @@ import static io.javalin.apibuilder.ApiBuilder.path;
 import static io.javalin.apibuilder.ApiBuilder.post;
 
 import ar.edu.utn.frba.dds.config.ServiceLocator;
-import ar.edu.utn.frba.dds.controllers.colaboraciones.ColaboracionController;
-import ar.edu.utn.frba.dds.controllers.colaboraciones.DistribucionViandasController;
-import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionDineroController;
-import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionViandaController;
-import ar.edu.utn.frba.dds.controllers.colaboraciones.HacerseCargoHeladeraController;
+import ar.edu.utn.frba.dds.controllers.colaboraciones.*;
 import ar.edu.utn.frba.dds.controllers.personaVulnerable.PersonaVulnerableController;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import io.javalin.config.RouterConfig;
@@ -76,9 +72,9 @@ public class ColaboracionRouter implements IRouter {
 
     private void routeOfertaProductoServicio() {
         path("/oferta-producto-servicio", () -> {
-            post(ctx -> ctx.result("FORMULARIO ENVIADO"));
+            post(ServiceLocator.instanceOf(OfertaProductosServiciosController.class)::save);
 
-            get("/new", ctx -> ctx.render("colaboraciones/oferta_prod_serv_crear.hbs"));
+            get("/new", ServiceLocator.instanceOf(OfertaProductosServiciosController.class)::create);
             get("/{id}", ctx -> ctx.result("DETALLE OFERTA"));
         });
     }
