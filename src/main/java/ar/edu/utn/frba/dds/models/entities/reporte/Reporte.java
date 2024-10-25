@@ -27,13 +27,13 @@ public class Reporte extends EntidadPersistente {
     private LocalDate fecha;
 
     @Column(name = "path", nullable = false)
-    private String path;
+    private String nombreArchivo;
 
-    public static Reporte de(String titulo, LocalDate fecha, String path) {
-        return Reporte.builder().titulo(titulo).fecha(fecha).path(path).build();
+    public static Reporte de(String titulo, LocalDate fecha, String nombreArchivo) {
+        return Reporte.builder().titulo(titulo).fecha(fecha).nombreArchivo(nombreArchivo).build();
     }
 
-    public static Reporte de(String titulo, String path) {
-        return Reporte.de(titulo, LocalDate.now(), path);
+    public static Reporte de(String titulo, String nombreArchivo) {
+        return Reporte.de(titulo, LocalDate.now(), nombreArchivo);
     }
 }

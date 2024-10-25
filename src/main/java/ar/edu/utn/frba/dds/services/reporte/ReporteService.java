@@ -7,8 +7,13 @@ import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaReposi
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
 import ar.edu.utn.frba.dds.models.repositories.reporte.ReporteRepository;
 import ar.edu.utn.frba.dds.reportes.RegistroMovimiento;
+import ar.edu.utn.frba.dds.utils.AppProperties;
 import ar.edu.utn.frba.dds.utils.IPDFGenerator;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -102,5 +107,13 @@ public class ReporteService implements WithSimplePersistenceUnit {
             throw new IllegalArgumentException("El ID por la heladera no puede ser null o vacío");
 
         return this.reporteRepository.buscarPorId(id);
+    }
+
+    public InputStream buscarReporte(Reporte reporte) throws FileNotFoundException {
+        Path path = Path.of(
+                AppProperties.getInstance().propertyFromName("REPORT_DIR"),
+                reporte.getNombreArchivo()).toAbsolutePath();
+
+        return new FileInputStream(path.toString());
     }
 }

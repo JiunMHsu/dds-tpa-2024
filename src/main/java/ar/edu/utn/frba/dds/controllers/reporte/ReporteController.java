@@ -5,13 +5,11 @@ import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.reporte.Reporte;
 import ar.edu.utn.frba.dds.services.reporte.ReporteService;
 import io.javalin.http.Context;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class ReporteController {
 
@@ -29,32 +27,24 @@ public class ReporteController {
                 .toList();
 
         Map<String, Object> model = new HashMap<>();
-        model.put("Reportes", reporteDTO);
+        model.put("reportes", reporteDTO);
 
         context.render("reportes/reportes.hbs", model);
     }
 
     public void show(Context context) {
         String reporteId = context.pathParam("id");
-        Optional<Reporte> reporte = this.reporteService.buscarPorId(reporteId);
+        Reporte reporte = this.reporteService
+                .buscarPorId(reporteId)
+                .orElseThrow(ResourceNotFoundException::new);
 
-        if (reporte.isEmpty())
-            throw new ResourceNotFoundException("No se encontró reporte paraColaborador id " + reporteId);
+        try {
+            InputStream pdf = reporteService.buscarReporte(reporte);
 
-        ReporteDTO reporteDTO = ReporteDTO.completa(reporte.get());
-        File pdfFile = new File(reporteDTO.getPathToPdf());
-
-        if (!pdfFile.exists() || !pdfFile.isFile()) {
-            throw new ResourceNotFoundException("El archivo PDF no se encontró en la ruta " + reporteDTO.getPathToPdf());
-        }
-
-        try (FileInputStream fis = new FileInputStream(pdfFile)) {
             context.contentType("application/pdf");
-            context.result(fis);
-        } catch (IOException e) {
-            throw new RuntimeException("Error al leer el archivo PDF", e);
+            context.result(pdf);
+        } catch (FileNotFoundException e) {
+            throw new ResourceNotFoundException();
         }
     }
-
-
 }
