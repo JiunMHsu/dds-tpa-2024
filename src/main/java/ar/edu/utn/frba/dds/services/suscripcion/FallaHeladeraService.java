@@ -29,12 +29,12 @@ public class FallaHeladeraService {
 
         Optional<Colaborador> colaboradorExistente = colaboradorRepository.buscarPorId(colaborador.getId().toString());
         if (colaboradorExistente.isEmpty()) {
-            throw new IllegalArgumentException("El colaborador no existe en la base de datos");
+            throw new IllegalArgumentException("El colaborador no existe en la base por datos");
         }
 
         Optional<Heladera> heladeraExistente = heladeraRepository.buscarPorId(heladera.getId().toString());
         if (heladeraExistente.isEmpty()) {
-            throw new IllegalArgumentException("El colaborador no existe en la base de datos");
+            throw new IllegalArgumentException("El colaborador no existe en la base por datos");
         }
 
         SuscripcionFallaHeladera nuevaSuscripcion = SuscripcionFallaHeladera.de(

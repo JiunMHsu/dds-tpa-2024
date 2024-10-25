@@ -12,7 +12,7 @@ public class PersonaVulnerableDTO {
 
     private String nombre;
 
-    private String tipoDocumento; // agrego para la instanciacion del Documento
+    private String tipoDocumento; // agrego paraColaborador la instanciacion del Documento
 
     private String nroDocumento;
 

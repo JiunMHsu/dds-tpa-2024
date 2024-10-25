@@ -138,7 +138,7 @@ public class PruebaDB implements WithSimplePersistenceUnit {
                 "24-12345678-0",
                 Contacto.conTelegram("7652931546"),
                 MedioDeNotificacion.TELEGRAM,
-                new Area(new Ubicacion(-34.60011743355092, -58.417371449916324), 500.0, almagro)
+                new Area(new Ubicacion(-34.60011743355092, -58.417371449916324), 500, almagro)
         );
 
         Tecnico otroTecnico = Tecnico.con(
@@ -149,7 +149,7 @@ public class PruebaDB implements WithSimplePersistenceUnit {
                 "22-82738291-1",
                 Contacto.conWhatsApp("8881928172"),
                 MedioDeNotificacion.WHATSAPP,
-                new Area(new Ubicacion(-34.60711989660622, -58.414045825102896), 400.0, almagro)
+                new Area(new Ubicacion(-34.60711989660622, -58.414045825102896), 400, almagro)
         );
 
         tecnicoRepository.guardar(unTecnico);

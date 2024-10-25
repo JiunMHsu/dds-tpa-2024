@@ -101,9 +101,9 @@ public class ReporteService implements WithSimplePersistenceUnit {
         Map<String, Integer> viandasAgregadas = registroMovimiento.getViandasAgregadas();
         Map<String, Integer> viandasQuitadas = registroMovimiento.getViandasQuitadas();
 
-        crearPDF("Fallas de Heladera", "FallasDeHeladeras", incidentesPorHeladera);
+        crearPDF("Fallas por Heladera", "FallasDeHeladeras", incidentesPorHeladera);
         crearPDF("Viandas Donadas por Colaborador", "ViandasDonadas", donacionPorColaborador);
-        crearPDFCombinado("Cantidad de Viandas Retiradas/Colocadas", "MovimientoDeViandas", viandasQuitadas, viandasAgregadas);
+        crearPDFCombinado("Cantidad por Viandas Retiradas/Colocadas", "MovimientoDeViandas", viandasQuitadas, viandasAgregadas);
 
 
         registroMovimiento.vaciarRegistro();
@@ -139,9 +139,9 @@ public class ReporteService implements WithSimplePersistenceUnit {
             System.out.println("Creando PDF...");
 
             agregarTitulo(page, titulo);
-            agregarTitulo(page, "Cantidad de Viandas Retiradas por Heladera");
+            agregarTitulo(page, "Cantidad por Viandas Retiradas por Heladera");
             agregarDatos(page, datos1);
-            agregarTitulo(page, "Cantidad de Viandas Agregadas por Heladera");
+            agregarTitulo(page, "Cantidad por Viandas Agregadas por Heladera");
             agregarDatos(page, datos2);
 
             //todo path puede ser null
@@ -213,7 +213,7 @@ public class ReporteService implements WithSimplePersistenceUnit {
 
     public Optional<Reporte> buscarPorId(String id) {
         if (id == null || id.isEmpty())
-            throw new IllegalArgumentException("El ID de la heladera no puede ser null o vacío");
+            throw new IllegalArgumentException("El ID por la heladera no puede ser null o vacío");
 
         return this.reporteRepository.buscarPorId(id);
     }

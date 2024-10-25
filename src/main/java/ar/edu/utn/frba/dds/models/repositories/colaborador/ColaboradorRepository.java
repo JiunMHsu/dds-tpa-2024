@@ -40,13 +40,10 @@ public class ColaboradorRepository implements IColaboradorRepository, WithSimple
 
     public Optional<Colaborador> buscarPorEmail(String email) {
         try {
-            return Optional.of(
-                    entityManager()
-                            .createQuery("from Colaborador c " +
-                                            "where c.usuario.email = :email",
-                                    Colaborador.class)
-                            .setParameter("email", email)
-                            .getSingleResult());
+            return Optional.of(entityManager()
+                    .createQuery("from Colaborador c where c.usuario.email = :email", Colaborador.class)
+                    .setParameter("email", email)
+                    .getSingleResult());
         } catch (NoResultException e) {
             return Optional.empty();
         }
@@ -54,12 +51,10 @@ public class ColaboradorRepository implements IColaboradorRepository, WithSimple
 
     public Optional<Colaborador> buscarPorUsuario(Usuario usuario) {
         try {
-            return Optional.of(
-                    entityManager()
-                            .createQuery("from Colaborador c where c.usuario.id = :usuarioId", Colaborador.class)
-                            .setParameter("usuarioId", usuario.getId())
-                            .getSingleResult()
-            );
+            return Optional.of(entityManager()
+                    .createQuery("from Colaborador c where c.usuario.id = :usuario_id", Colaborador.class)
+                    .setParameter("usuario_id", usuario.getId())
+                    .getSingleResult());
         } catch (NoResultException e) {
             return Optional.empty();
         }

@@ -5,6 +5,7 @@ import static io.javalin.apibuilder.ApiBuilder.path;
 import static io.javalin.apibuilder.ApiBuilder.post;
 
 import ar.edu.utn.frba.dds.config.ServiceLocator;
+import ar.edu.utn.frba.dds.controllers.colaboraciones.ColaboracionController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DistribucionViandasController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionDineroController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionViandaController;
@@ -19,7 +20,8 @@ public class ColaboracionRouter implements IRouter {
     public void apply(RouterConfig config) {
         config.apiBuilder(() ->
                 path("/colaboraciones", () -> {
-                    get(ctx -> ctx.render("colaboraciones/colaboraciones.hbs"), TipoRol.COLABORADOR, TipoRol.ADMIN);
+                    get(ServiceLocator.instanceOf(ColaboracionController.class)::index, TipoRol.COLABORADOR, TipoRol.ADMIN);
+                    post("/migrate", ServiceLocator.instanceOf(ColaboracionController.class)::cargarColaboraciones, TipoRol.ADMIN);
 
                     this.routeDonacionDinero();
                     this.routeDonacionVianda();
@@ -29,14 +31,14 @@ public class ColaboracionRouter implements IRouter {
                     this.routeEncargarseDeHeladeras();
 
                     path("/entrega-viandas", () -> {
-                        // TODO - ver que hacer con este
+                        // TODO - ver que hacer paraColaborador este
                     });
                 }));
     }
 
     private void routeDonacionDinero() {
         path("/donacion-dinero", () -> {
-            // TODO - get (tipo filtro de las colaboraciones general)
+            // TODO - get (tipo filtro por las colaboraciones general)
 
             post(ServiceLocator.instanceOf(DonacionDineroController.class)::save, TipoRol.COLABORADOR);
 
@@ -82,7 +84,7 @@ public class ColaboracionRouter implements IRouter {
     }
 
     private void routeEncargarseDeHeladeras() {
-        path("/encargarse-de-heladeras", () -> {
+        path("/encargarse-por-heladeras", () -> {
             post(ServiceLocator.instanceOf(HacerseCargoHeladeraController.class)::save);
 
             get("/new", ServiceLocator.instanceOf(HacerseCargoHeladeraController.class)::create);

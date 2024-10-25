@@ -1,9 +1,7 @@
 package ar.edu.utn.frba.dds.dtos.incidente;
 
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import ar.edu.utn.frba.dds.utils.DateTimeParser;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -28,13 +26,13 @@ public class FallaTecnicaDTO {
     private String foto;
 
     // En la vista completa podría mapearse más info del colaborador y la heladera
-    // puede servir para redirecciones
+    // puede servir paraColaborador redirecciones
     public static FallaTecnicaDTO completa(Incidente incidente) {
         return FallaTecnicaDTO.builder()
                 .id(incidente.getId().toString())
                 .heladera(incidente.getHeladera().getNombre())
-                .fecha(parseFecha(incidente.getFechaHora().toLocalDate()))
-                .hora(parseHora(incidente.getFechaHora().toLocalTime()))
+                .fecha(DateTimeParser.parseFecha(incidente.getFechaHora().toLocalDate()))
+                .hora(DateTimeParser.parseHora(incidente.getFechaHora().toLocalTime()))
                 .tipo(incidente.getTipo().toString())
                 .colaborador(incidente.getColaborador().getNombre())
                 .descripcion(incidente.getDescripcion())
@@ -46,20 +44,10 @@ public class FallaTecnicaDTO {
         return FallaTecnicaDTO.builder()
                 .id(incidente.getId().toString())
                 .heladera(incidente.getHeladera().getNombre())
-                .fecha(parseFecha(incidente.getFechaHora().toLocalDate()))
-                .hora(parseHora(incidente.getFechaHora().toLocalTime()))
+                .fecha(DateTimeParser.parseFecha(incidente.getFechaHora().toLocalDate()))
+                .hora(DateTimeParser.parseHora(incidente.getFechaHora().toLocalTime()))
                 .tipo(incidente.getTipo().toString())
                 .foto(incidente.getFoto().getRuta())
                 .build();
-    }
-
-    private static String parseFecha(LocalDate fecha) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return fecha != null ? fecha.format(formatter) : "--/--/--";
-    }
-
-    private static String parseHora(LocalTime hora) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        return hora != null ? hora.format(formatter) : "--:--";
     }
 }
