@@ -7,7 +7,7 @@ import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaReposi
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
 import ar.edu.utn.frba.dds.models.repositories.reporte.ReporteRepository;
 import ar.edu.utn.frba.dds.reportes.RegistroMovimiento;
-import ar.edu.utn.frba.dds.utils.AppProperties;
+import ar.edu.utn.frba.dds.utils.IPDFGenerator;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -22,32 +22,18 @@ public class ReporteService implements WithSimplePersistenceUnit {
     private final ReporteRepository reporteRepository;
     private final DonacionViandaRepository donacionViandaRepository;
     private final IncidenteRepository incidenteRepository;
-    private final String directorioReportes;
     private final RegistroMovimiento registroMovimiento;
 
     public static ReporteService de(ReporteRepository reporteRepository,
                                     DonacionViandaRepository donacionViandaRepository,
-                                    RegistroMovimiento registroMovimiento,
-                                    String directorio) {
+                                    RegistroMovimiento registroMovimiento) {
 
         return ReporteService
                 .builder()
                 .reporteRepository(reporteRepository)
                 .donacionViandaRepository(donacionViandaRepository)
                 .registroMovimiento(registroMovimiento)
-                .directorioReportes(directorio)
                 .build();
-    }
-
-    public static ReporteService de(ReporteRepository reporteRepository,
-                                    DonacionViandaRepository donacionViandaRepository,
-                                    RegistroMovimiento registroMovimiento) {
-
-        return ReporteService.de(
-                reporteRepository,
-                donacionViandaRepository,
-                registroMovimiento,
-                AppProperties.getInstance().propertyFromName("REPORT_DIR"));
     }
 
     private Map<String, Integer> incidentesPorHeladera() {
@@ -82,16 +68,23 @@ public class ReporteService implements WithSimplePersistenceUnit {
         return viandasPorColaborador;
     }
 
-    public void generarReporteSemanal() {
+    public void generarReporteSemanal(IPDFGenerator pdfGenerator) {
+
         Map<String, Integer> incidentesPorHeladera = this.incidentesPorHeladera();
         Map<String, Integer> donacionPorColaborador = this.donacionesPorColaborador();
-        Map<String, Integer> viandasAgregadas = registroMovimiento.getViandasAgregadas();
-        Map<String, Integer> viandasQuitadas = registroMovimiento.getViandasQuitadas();
+        Map<String, Map<String, Integer>> movimientos = new HashMap<>();
+        movimientos.put("Viandas Agregadas", registroMovimiento.getViandasAgregadas());
+        movimientos.put("Viandas Quitadas", registroMovimiento.getViandasQuitadas());
 
-        // crearPDF("Fallas por Heladera", "FallasDeHeladeras", incidentesPorHeladera);
-        // crearPDF("Viandas Donadas por Colaborador", "ViandasDonadas", donacionPorColaborador);
-        // crearPDFCombinado("Cantidad por Viandas Retiradas/Colocadas", "MovimientoDeViandas", viandasQuitadas, viandasAgregadas);
+        String pathReporteFalla = pdfGenerator.generateDocument("Fallas por Heladera", incidentesPorHeladera);
+        String reporteDonaciones = pdfGenerator.generateDocument("Viandas Donadas por Colaborador", donacionPorColaborador);
+        String reporteMovimientos = pdfGenerator.generateDocumentWithSections("Cantidad de Viandas Retiradas/Colocadas", movimientos);
 
+        beginTransaction();
+        reporteRepository.guardar(Reporte.de("Fallas por Heladera", pathReporteFalla));
+        reporteRepository.guardar(Reporte.de("Viandas Donadas por Colaborador", reporteDonaciones));
+        reporteRepository.guardar(Reporte.de("Cantidad de Viandas Retiradas/Colocadas", reporteMovimientos));
+        commitTransaction();
 
         registroMovimiento.vaciarRegistro();
 

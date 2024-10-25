@@ -1,6 +1,8 @@
 package ar.edu.utn.frba.dds.reportes;
 
 import ar.edu.utn.frba.dds.services.reporte.ReporteService;
+import ar.edu.utn.frba.dds.utils.AppProperties;
+import ar.edu.utn.frba.dds.utils.PDFGenerator;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -16,6 +18,12 @@ public class GeneradorDeReporte {
     }
 
     public void planificar(int frecuencia, TimeUnit unidadDeFrecuencia) {
-        planificador.scheduleAtFixedRate(reporteService::generarReporteSemanal, 0, frecuencia, unidadDeFrecuencia);
+        String dir = AppProperties.getInstance().propertyFromName("REPORT_DIR");
+        PDFGenerator generator = new PDFGenerator(dir);
+        planificador.scheduleAtFixedRate(
+                () -> reporteService.generarReporteSemanal(generator),
+                0,
+                frecuencia,
+                unidadDeFrecuencia);
     }
 }

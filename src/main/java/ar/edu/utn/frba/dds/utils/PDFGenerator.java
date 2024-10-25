@@ -21,28 +21,49 @@ public class PDFGenerator implements IPDFGenerator {
     }
 
     @Override
-    public String generateDocument(String title, Map<String, Integer> data) {
-        String path = null;
+    public String generateDocumentWithSections(String title, Map<String, Map<String, Integer>> data) {
+        Document pdfDocument = new Document();
+        System.out.println("Creating PDF...");
 
-        try (Document pdfDocument = new Document()) {
-            Page page = pdfDocument.getPages().add();
+        Page page = pdfDocument.getPages().add();
+        writeTitle(page, title);
 
-            writeTitle(page, title);
-            System.out.println("Creating PDF...");
-            writeData(page, data);
-
-            path = saveDocument(pdfDocument, title);
-        } catch (RuntimeException e) {
-            // TODO - Ver excepciones mas robustas
-            System.out.println("Error creating document.");
+        for (Map.Entry<String, Map<String, Integer>> entry : data.entrySet()) {
+            String sectionTitle = entry.getKey();
+            Map<String, Integer> sectionData = entry.getValue();
+            writeSubTitle(page, sectionTitle);
+            writeData(page, sectionData);
         }
 
+        String path = saveDocument(pdfDocument, title);
+        System.out.println("Document created successfully. Relative path: " + path);
+        return path;
+    }
+
+    @Override
+    public String generateDocument(String title, Map<String, Integer> data) {
+        Document pdfDocument = new Document();
+        System.out.println("Creating PDF...");
+
+        Page page = pdfDocument.getPages().add();
+        writeTitle(page, title);
+        writeData(page, data);
+
+        String path = saveDocument(pdfDocument, title);
+        System.out.println("Document created successfully. Relative path: " + path);
         return path;
     }
 
     private void writeTitle(Page page, String title) {
         TextFragment textFragment = new TextFragment(title);
         textFragment.getTextState().setFontSize(18);
+        textFragment.getTextState().setForegroundColor(Color.getBlack());
+        page.getParagraphs().add(textFragment);
+    }
+
+    private void writeSubTitle(Page page, String title) {
+        TextFragment textFragment = new TextFragment(title);
+        textFragment.getTextState().setFontSize(14);
         textFragment.getTextState().setForegroundColor(Color.getBlack());
         page.getParagraphs().add(textFragment);
     }
@@ -60,56 +81,28 @@ public class PDFGenerator implements IPDFGenerator {
                     .append(entry.getValue())
                     .append("</td></tr>");
         }
-
         htmlContent.append("</table>");
 
         HtmlFragment htmlFragment = new HtmlFragment(htmlContent.toString());
         page.getParagraphs().add(htmlFragment);
     }
 
-    // TODO - Revisar
     private String saveDocument(Document document, String name) {
         Path documentsPath = Paths.get(dir);
-        System.out.println("Saving Document..." + documentsPath.toAbsolutePath());
+        System.out.println("Saving Document in: " + documentsPath.toAbsolutePath());
         File folder = documentsPath.toFile();
 
         if (folder.exists() || folder.mkdirs()) {
             String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+            String nameWithoutSpaces = name.toLowerCase().replaceAll("\\s", "_");
 
-            Path filePath = Paths.get(dir, currentDate + "-" + name + ".pdf");
+            Path filePath = Paths.get(dir, currentDate + "-" + nameWithoutSpaces + ".pdf");
             System.out.println("File path: " + filePath.toAbsolutePath());
 
             document.save(filePath.toAbsolutePath().toString());
-
             return documentsPath.relativize(filePath).toString();
         }
 
         return null;
     }
-
-//    public void crearPDFCombinado(String titulo, String tipo, Map<String, Integer> datos1, Map<String, Integer> datos2) {
-//        try (Document pdfDocument = new Document()) {
-//            Page page = pdfDocument.getPages().add();
-//            System.out.println("Creando PDF...");
-//
-//            agregarTitulo(page, titulo);
-//            agregarTitulo(page, "Cantidad por Viandas Retiradas por Heladera");
-//            agregarDatos(page, datos1);
-//            agregarTitulo(page, "Cantidad por Viandas Agregadas por Heladera");
-//            agregarDatos(page, datos2);
-//
-//            //todo path puede ser null
-//            String path = guardarDocumento(pdfDocument, tipo);
-//
-//            Reporte nuevoReporte = ServiceLocator.instanceOf(Reporte.class);
-//            nuevoReporte.setFecha(LocalDate.now());
-//            nuevoReporte.setTitulo(pdfDocument.getFileName());
-//            nuevoReporte.setPath(path);
-//
-//            reporteRepository.guardar(nuevoReporte);
-//
-//        } catch (RuntimeException e) {
-//            System.out.println("Error al crear el documento.");
-//        }
-//    }
 }
