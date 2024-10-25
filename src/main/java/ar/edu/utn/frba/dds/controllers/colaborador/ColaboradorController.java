@@ -189,20 +189,17 @@ public class ColaboradorController implements ICrudViewsHandler {
     }
 
     public void editFormasDeColaborar(Context context) {
-
-        // TODO - refactorizar
         TipoRol userRol = TipoRol.valueOf(context.sessionAttribute("userRol"));
         String userId = context.sessionAttribute("userId");
 
         String pathId = context.pathParam("id");
+        Colaborador colaborador = colaboradorService
+                .obtenerColaboradorPorID(pathId)
+                .orElseThrow(ResourceNotFoundException::new);
 
-        if (userRol == TipoRol.COLABORADOR && !Objects.equals(userId, pathId))
+        if (userRol == TipoRol.COLABORADOR && !Objects.equals(colaborador.getUsuario().getId().toString(), userId))
             throw new UnauthorizedException();
 
-        Optional<Colaborador> colaboradorBuscado = colaboradorService.obtenerColaboradorPorID(pathId);
-        if (colaboradorBuscado.isEmpty()) throw new ResourceNotFoundException();
-
-        Colaborador colaborador = colaboradorBuscado.get();
         List<Colaboracion> formasRegistradas = colaborador.getFormaDeColaborar();
         List<Colaboracion> formasPermitidas = colaborador.getTipoColaborador().colaboracionesPermitidas();
 
@@ -222,14 +219,12 @@ public class ColaboradorController implements ICrudViewsHandler {
         String userId = context.sessionAttribute("userId");
 
         String pathId = context.pathParam("id");
+        Colaborador colaborador = colaboradorService
+                .obtenerColaboradorPorID(pathId)
+                .orElseThrow(ResourceNotFoundException::new);
 
-        if (userRol == TipoRol.COLABORADOR && !Objects.equals(userId, pathId))
+        if (userRol == TipoRol.COLABORADOR && !Objects.equals(colaborador.getUsuario().getId().toString(), userId))
             throw new UnauthorizedException();
-
-        Optional<Colaborador> colaboradorBuscado = colaboradorService.obtenerColaboradorPorID(pathId);
-        if (colaboradorBuscado.isEmpty()) throw new ResourceNotFoundException();
-
-        Colaborador colaborador = colaboradorBuscado.get();
 
         Map<String, Object> model = new HashMap<>();
         List<RedirectDTO> redirectDTOS = new ArrayList<>();
