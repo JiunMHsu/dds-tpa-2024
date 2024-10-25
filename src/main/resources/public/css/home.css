@@ -4,6 +4,7 @@
 }
 
 .side-panel {
+    display: none;
     border: none;
 }
 
