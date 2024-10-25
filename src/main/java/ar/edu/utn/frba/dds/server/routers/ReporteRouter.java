@@ -12,15 +12,11 @@ public class ReporteRouter implements IRouter {
 
     @Override
     public void apply(RouterConfig config) {
-        config.apiBuilder(() -> {
-            path("/reportes", () -> {
-            get(ServiceLocator.instanceOf(ReporteController.class)::index, TipoRol.COLABORADOR, TipoRol.ADMIN);
-                path("/{id}", () -> {
-                    get(ServiceLocator.instanceOf(ReporteController.class)::show, TipoRol.COLABORADOR, TipoRol.ADMIN);
-                });
-            });
-
-            }
+        config.apiBuilder(() ->
+                path("/reportes", () -> {
+                    get(ServiceLocator.instanceOf(ReporteController.class)::index, TipoRol.ADMIN);
+                    get("/{id}/*", ServiceLocator.instanceOf(ReporteController.class)::show, TipoRol.ADMIN);
+                })
         );
     }
 }

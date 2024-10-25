@@ -4,48 +4,31 @@
 {{#partial "links"}}
     <link rel="stylesheet" href="/css/list.css">
     <link rel="stylesheet" href="/css/reportes/reportes.css"/>
-    <link
-            href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css"
-            rel="stylesheet"
-    />
 {{/partial}}
 {{#partial "scripts"}}
-    <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
-    <script src="/js/map.js"></script>
 {{/partial}}
 {{#partial "main-content"}}
     <div class="list-container">
-            <h2 class="list-title">Visulizar Reportes Semanales</h2>
-            <div class="scrollable">
-                <ul class="list">
-                    {{#each Reportes}}
-                        <li class="list-item">
-                            <a href="/reportes/{{this.id}}" class="item-card" target="_blank">
-                                <h3 class="card-title">{{this.titulo}}</h3>
-                                <div class="card-details">
-                                    <p>
-                                        <span class="material-symbols-rounded card-detail-icon">today</span>
-                                        Fecha: {{this.fechaHora}}
-                                    </p>
-
-                                </div>
-                            </a>
-                        </li>
-                    {{/each}}
+        <h2 class="list-title">Reportes Semanales</h2>
+        <div class="scrollable">
+            <ul class="list">
+                {{#each reportes}}
                     <li class="list-item">
-                        <a href="" class="item-card">
-                            <h3 class="card-title">Titulo</h3>
-                                <div class="card-details">
-                                     <p>
-                                         <span class="material-symbols-rounded card-detail-icon">today</span>
-                                         Fecha: 12-12-12
-                                     </p>
+                        <a href="/reportes/{{this.id}}/{{this.nombreArchivo}}" class="item-card"
+                           target="_blank">
+                            <h3 class="card-title">{{this.titulo}}</h3>
+                            <div class="card-details">
+                                <p>
+                                    <span class="material-symbols-rounded card-detail-icon">today</span>
+                                    Fecha: {{this.fecha}}
+                                </p>
 
-                                </div>
+                            </div>
                         </a>
                     </li>
-                </ul>
-            </div>
+                {{/each}}
+            </ul>
         </div>
+    </div>
 {{/partial}}
 {{> templates/base}}

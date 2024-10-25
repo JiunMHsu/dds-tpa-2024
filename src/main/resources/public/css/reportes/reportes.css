@@ -1,5 +1,15 @@
 .list-title {
     justify-content: center;
-
 }
 
+.scrollable {
+    align-items: center;
+}
+
+.list {
+    width: 70%;
+}
+
+.side-panel {
+    display: none;
+}
