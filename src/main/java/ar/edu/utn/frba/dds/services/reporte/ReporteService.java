@@ -217,5 +217,4 @@ public class ReporteService implements WithSimplePersistenceUnit {
 
         return this.reporteRepository.buscarPorId(id);
     }
-
 }

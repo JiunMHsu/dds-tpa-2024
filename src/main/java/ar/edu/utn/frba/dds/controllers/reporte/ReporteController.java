@@ -5,6 +5,9 @@ import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.reporte.Reporte;
 import ar.edu.utn.frba.dds.services.reporte.ReporteService;
 import io.javalin.http.Context;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,12 +42,20 @@ public class ReporteController {
         if (reporte.isEmpty())
             throw new ResourceNotFoundException("No se encontró reporte paraColaborador id " + reporteId);
 
-        Map<String, Object> model = new HashMap<>();
-
         ReporteDTO reporteDTO = ReporteDTO.completa(reporte.get());
-        model.put("heladera", reporteDTO);
+        File pdfFile = new File(reporteDTO.getPathToPdf());
 
-        context.render("reportes/reportes_detalle.hbs", model);
+        if (!pdfFile.exists() || !pdfFile.isFile()) {
+            throw new ResourceNotFoundException("El archivo PDF no se encontró en la ruta " + reporteDTO.getPathToPdf());
+        }
+
+        try (FileInputStream fis = new FileInputStream(pdfFile)) {
+            context.contentType("application/pdf");
+            context.result(fis);
+        } catch (IOException e) {
+            throw new RuntimeException("Error al leer el archivo PDF", e);
+        }
     }
+
 
 }

@@ -12,6 +12,7 @@ import ar.edu.utn.frba.dds.controllers.heladera.PuntoIdealController;
 import ar.edu.utn.frba.dds.controllers.incidente.AlertaController;
 import ar.edu.utn.frba.dds.controllers.incidente.FallaTecnicaController;
 import ar.edu.utn.frba.dds.controllers.personaVulnerable.PersonaVulnerableController;
+import ar.edu.utn.frba.dds.controllers.reporte.ReporteController;
 import ar.edu.utn.frba.dds.controllers.session.SessionController;
 import ar.edu.utn.frba.dds.controllers.tecnico.TecnicoController;
 import ar.edu.utn.frba.dds.controllers.tecnico.VisitaTecnicoController;
@@ -25,11 +26,13 @@ import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
 import ar.edu.utn.frba.dds.models.repositories.mensajeria.MensajeRepository;
 import ar.edu.utn.frba.dds.models.repositories.personaVulnerable.PersonaVulnerableRepository;
+import ar.edu.utn.frba.dds.models.repositories.reporte.ReporteRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjeta.TarjetaPersonaVulnerableRepository;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.TecnicoRepository;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.VisitaTecnicoRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import ar.edu.utn.frba.dds.models.repositories.vianda.ViandaRepository;
+import ar.edu.utn.frba.dds.reportes.RegistroMovimiento;
 import ar.edu.utn.frba.dds.services.colaboraciones.ColaboracionService;
 import ar.edu.utn.frba.dds.services.colaboraciones.DistribucionViandasService;
 import ar.edu.utn.frba.dds.services.colaboraciones.DonacionDineroService;
@@ -43,6 +46,7 @@ import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.personaVulnerable.PersonaVulnerableService;
 import ar.edu.utn.frba.dds.services.puntoIdeal.PuntoIdealService;
+import ar.edu.utn.frba.dds.services.reporte.ReporteService;
 import ar.edu.utn.frba.dds.services.tarjeta.TarjetaPersonaVulnerableService;
 import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import ar.edu.utn.frba.dds.services.tecnico.VisitaTecnicoService;
@@ -192,6 +196,12 @@ public class ServiceLocator {
             instances.put(componentName, instance);
         }
 
+        if (componentName.equals(ReporteController.class.getName())) {
+            ReporteController instance = new ReporteController(
+                    instanceOf(ReporteService.class));
+            instances.put(componentName, instance);
+        }
+
         // ========================= SERVICES =========================
 
         if (componentName.equals(FileService.class.getName())) {
@@ -287,6 +297,14 @@ public class ServiceLocator {
             instances.put(componentName, instance);
         }
 
+        if (componentName.equals(ReporteService.class.getName())) {
+            ReporteService instance = ReporteService.de(
+                    instanceOf(ReporteRepository.class),
+                    instanceOf(DonacionViandaRepository.class),
+                    instanceOf(RegistroMovimiento.class));
+            instances.put(componentName, instance);
+        }
+
         // ========================= REPOSITORIES =========================
 
         if (componentName.equals(HeladeraRepository.class.getName())) {
@@ -356,6 +374,11 @@ public class ServiceLocator {
 
         if (componentName.equals(VisitaTecnicoRepository.class.getName())) {
             VisitaTecnicoRepository instance = new VisitaTecnicoRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(ReporteRepository.class.getName())) {
+            ReporteRepository instance = new ReporteRepository();
             instances.put(componentName, instance);
         }
 
