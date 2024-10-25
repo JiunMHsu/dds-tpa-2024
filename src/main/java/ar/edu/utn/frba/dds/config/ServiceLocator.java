@@ -161,6 +161,7 @@ public class ServiceLocator {
         if (componentName.equals(OfertaProductosServiciosController.class.getName())) {
             OfertaProductosServiciosController instance = new OfertaProductosServiciosController(
                     instanceOf(OfertaProductosServiciosService.class),
+                    instanceOf(FileService.class),
                     instanceOf(UsuarioService.class),
                     instanceOf(ColaboradorService.class));
             instances.put(componentName, instance);
@@ -330,11 +331,6 @@ public class ServiceLocator {
 
         if (componentName.equals(HacerseCargoHeladeraRepository.class.getName())) {
             HacerseCargoHeladeraRepository instance = new HacerseCargoHeladeraRepository();
-            instances.put(componentName, instance);
-        }
-
-        if (componentName.equals(DonacionDineroRepository.class.getName())) {
-            DonacionDineroRepository instance = new DonacionDineroRepository();
             instances.put(componentName, instance);
         }
 
