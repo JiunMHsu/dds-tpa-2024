@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.controllers.canjeDePuntos;
 
-import ar.edu.utn.frba.dds.dtos.colaboraciones.OfertaDeProductosDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.ProductoDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
@@ -43,8 +43,8 @@ public class CanjeDePuntosController implements ICrudViewsHandler {
     public void create(Context context) {
         List<OfertaDeProductos> productos = this.ofertaProductosServiciosService.buscarTodos();
 
-        List<OfertaDeProductosDTO> ofertaDeProductosDTOS = productos.stream()
-                .map(OfertaDeProductosDTO::preview)
+        List<ProductoDTO> productosDTOS = productos.stream()
+                .map(ProductoDTO::preview)
                 .collect(Collectors.toList());
 
         String userId = context.sessionAttribute("userId");
@@ -56,7 +56,7 @@ public class CanjeDePuntosController implements ICrudViewsHandler {
         Double puntaje = canjeDePuntosService.calcularPuntos(colaborador.get());
 
         Map<String, Object> model = new HashMap<>();
-        model.put("productos_canjear", ofertaDeProductosDTOS);
+        model.put("productos_canjear", productosDTOS);
         model.put("titulo", "Listado por productos/servicios");
         model.put("puntaje", puntaje);
 
