@@ -2,6 +2,8 @@ package ar.edu.utn.frba.dds.controllers.colaborador;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.ColaboracionDTO;
+import ar.edu.utn.frba.dds.dtos.colaborador.ColaboradorDTO;
+import ar.edu.utn.frba.dds.dtos.heladera.HeladeraDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
@@ -42,9 +44,12 @@ public class ColaboradorController implements ICrudViewsHandler {
     public void index(Context context) {
         Map<String, Object> model = new HashMap<>();
 
-        // TODO - mapear a ColaboradorDTO
         List<Colaborador> colaboradores = this.colaboradorService.buscarTodosColaboradores();
-        model.put("colaboradores", colaboradores);
+
+        List<ColaboradorDTO> colaboradoresDTO = colaboradores.stream()
+                .map(ColaboradorDTO::preview)
+                .toList();
+        model.put("colaboradores", colaboradoresDTO);
 
         context.result("PENDIENTE");
 
@@ -60,8 +65,8 @@ public class ColaboradorController implements ICrudViewsHandler {
                 .orElseThrow(ResourceNotFoundException::new);
 
         Map<String, Object> model = new HashMap<>();
-        // TODO - mapear a ColaboradorDTO
-        model.put("colaborador", colaborador);
+        ColaboradorDTO colaboradorDTO = ColaboradorDTO.completa(colaborador);
+        model.put("colaborador", colaboradorDTO);
 
         context.result("PENDIENTE");
 
