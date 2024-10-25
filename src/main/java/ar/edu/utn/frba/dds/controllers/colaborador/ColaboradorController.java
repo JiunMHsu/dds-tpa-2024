@@ -40,33 +40,37 @@ public class ColaboradorController implements ICrudViewsHandler {
 
     @Override
     public void index(Context context) {
-
-        List<Colaborador> colaboradores = this.colaboradorService.buscarTodosColaboradores();
-
         Map<String, Object> model = new HashMap<>();
-        model.put("colaboradores.hbs", colaboradores);
-        model.put("titulo", "Listado por colaboradores");
 
-        context.render("colaboradores/colaboradores.hbs", model);
+        // TODO - mapear a ColaboradorDTO
+        List<Colaborador> colaboradores = this.colaboradorService.buscarTodosColaboradores();
+        model.put("colaboradores", colaboradores);
 
+        context.result("PENDIENTE");
+
+        // TODO - vista listado de colaboradores
+        // context.render("colaboradores/colaboradores.hbs", model);
     }
 
     @Override
     public void show(Context context) {
-
         String colaboradorId = context.pathParam("id");
-        Optional<Colaborador> posibleColaboradorBuscado = this.colaboradorService.obtenerColaboradorPorID(colaboradorId);
-
-        if (posibleColaboradorBuscado.isEmpty())
-            throw new ResourceNotFoundException("No se encontró colaborador paraColaborador id " + colaboradorId);
+        Colaborador colaborador = this.colaboradorService
+                .obtenerColaboradorPorID(colaboradorId)
+                .orElseThrow(ResourceNotFoundException::new);
 
         Map<String, Object> model = new HashMap<>();
-        model.put("colaborador", posibleColaboradorBuscado.get());
+        // TODO - mapear a ColaboradorDTO
+        model.put("colaborador", colaborador);
 
-        context.render("colaboradores/colaborador_detalle.hbs", model);
+        context.result("PENDIENTE");
+
+        // TODO - vista detalle de colaborador
+        // context.render("colaboradores/colaborador_detalle.hbs", model);
 
     }
 
+    // TODO - REVISAR
     public void getProfile(Context context) {
 
         String usuarioId = context.sessionAttribute("userId");
@@ -91,9 +95,9 @@ public class ColaboradorController implements ICrudViewsHandler {
     public void create(Context context) {
         //sign up
         context.render("colaboradores/sign_up.hbs");
-
     }
 
+    // TODO - REVISAR
     @Override
     public void save(Context context) {
         Usuario usuario = Usuario.con(context.formParam("nombre"), context.formParam("contrasenia"), context.formParam("email"), TipoRol.COLABORADOR);
@@ -155,7 +159,6 @@ public class ColaboradorController implements ICrudViewsHandler {
 
     @Override
     public void edit(Context context) {
-        // por handlebars
     }
 
     @Override
@@ -189,16 +192,8 @@ public class ColaboradorController implements ICrudViewsHandler {
     }
 
     public void editFormasDeColaborar(Context context) {
-        TipoRol userRol = TipoRol.valueOf(context.sessionAttribute("userRol"));
-        String userId = context.sessionAttribute("userId");
-
         String pathId = context.pathParam("id");
-        Colaborador colaborador = colaboradorService
-                .obtenerColaboradorPorID(pathId)
-                .orElseThrow(ResourceNotFoundException::new);
-
-        if (userRol == TipoRol.COLABORADOR && !Objects.equals(colaborador.getUsuario().getId().toString(), userId))
-            throw new UnauthorizedException();
+        Colaborador colaborador = restrictByOwner(context, pathId);
 
         List<Colaboracion> formasRegistradas = colaborador.getFormaDeColaborar();
         List<Colaboracion> formasPermitidas = colaborador.getTipoColaborador().colaboracionesPermitidas();
@@ -215,16 +210,7 @@ public class ColaboradorController implements ICrudViewsHandler {
     }
 
     public void updateFormasDeColaborar(Context context) {
-        TipoRol userRol = TipoRol.valueOf(context.sessionAttribute("userRol"));
-        String userId = context.sessionAttribute("userId");
-
-        String pathId = context.pathParam("id");
-        Colaborador colaborador = colaboradorService
-                .obtenerColaboradorPorID(pathId)
-                .orElseThrow(ResourceNotFoundException::new);
-
-        if (userRol == TipoRol.COLABORADOR && !Objects.equals(colaborador.getUsuario().getId().toString(), userId))
-            throw new UnauthorizedException();
+        Colaborador colaborador = restrictByOwner(context, context.pathParam("id"));
 
         Map<String, Object> model = new HashMap<>();
         List<RedirectDTO> redirectDTOS = new ArrayList<>();
@@ -241,6 +227,7 @@ public class ColaboradorController implements ICrudViewsHandler {
             colaboradorService.actualizar(colaborador);
 
             operationSuccess = true;
+            redirectDTOS.add(new RedirectDTO("/colaboraciones", "Colaborar"));
 
         } catch (ValidationException e) {
             redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
@@ -249,6 +236,19 @@ public class ColaboradorController implements ICrudViewsHandler {
             model.put("redirects", redirectDTOS);
             context.render("post_result.hbs", model);
         }
+    }
+
+    private Colaborador restrictByOwner(Context context, String colaboradorId) {
+        String userId = context.sessionAttribute("userId");
+
+        Colaborador colaborador = colaboradorService
+                .obtenerColaboradorPorID(colaboradorId)
+                .orElseThrow(ResourceNotFoundException::new);
+
+        if (!Objects.equals(colaborador.getUsuario().getId().toString(), userId))
+            throw new UnauthorizedException();
+
+        return colaborador;
     }
 
 }

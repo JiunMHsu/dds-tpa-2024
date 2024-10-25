@@ -44,6 +44,7 @@ public class ColaboracionController extends ColaboradorPorSession {
                     .stream().map(ColaboracionDTO::redirectable)
                     .toList();
             model.put("colaboraciones", colaboraciones);
+            model.put("colaboradorId", colaborador.getId().toString());
         }
 
         model.put("isAdmin", isAdmin);
