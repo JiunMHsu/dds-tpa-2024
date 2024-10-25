@@ -9,6 +9,8 @@ import ar.edu.utn.frba.dds.models.entities.puntosPorColaborador.CanjeDePuntos;
 import ar.edu.utn.frba.dds.services.canjeDePuntos.CanjeDePuntosService;
 import ar.edu.utn.frba.dds.services.colaboraciones.OfertaProductosServiciosService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
+import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
+import ar.edu.utn.frba.dds.utils.ColaboradorPorSession;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import java.time.LocalDateTime;
@@ -19,14 +21,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class CanjeDePuntosController implements ICrudViewsHandler {
-
-    private ColaboradorService colaboradorService;
+public class CanjeDePuntosController extends ColaboradorPorSession implements ICrudViewsHandler {
     private CanjeDePuntosService canjeDePuntosService;
     private OfertaProductosServiciosService ofertaProductosServiciosService;
 
-    public CanjeDePuntosController(ColaboradorService colaboradorService, CanjeDePuntosService canjeDePuntosService, OfertaProductosServiciosService ofertaProductosServiciosService) {
-        this.colaboradorService = colaboradorService;
+    public CanjeDePuntosController(ColaboradorService colaboradorService, UsuarioService usuarioService ,CanjeDePuntosService canjeDePuntosService, OfertaProductosServiciosService ofertaProductosServiciosService) {
+        super(usuarioService, colaboradorService);
         this.canjeDePuntosService = canjeDePuntosService;
         this.ofertaProductosServiciosService = ofertaProductosServiciosService;
     }
@@ -49,13 +49,10 @@ public class CanjeDePuntosController implements ICrudViewsHandler {
                 .map(OfertaDeProductosDTO::preview)
                 .collect(Collectors.toList());
 
-        String userId = context.sessionAttribute("userId");
-        Optional<Colaborador> colaborador = this.colaboradorService.buscarPorId(userId);
 
-        if (colaborador.isEmpty())
-            throw new ResourceNotFoundException("No se encontró colaborador paraColaborador id " + userId);
+        Colaborador colaborador = this.obtenerColaboradorPorSession(context);
 
-        Double puntaje = this.canjeDePuntosService.calcularPuntos(colaborador.get());
+        Double puntaje = this.canjeDePuntosService.calcularPuntos(colaborador);
 
         Map<String, Object> model = new HashMap<>();
         model.put("productos-canjear", ofertaDeProductosDTOS);
@@ -72,20 +69,18 @@ public class CanjeDePuntosController implements ICrudViewsHandler {
         boolean operationSuccess = false;
 
         try {
-            String userId = context.sessionAttribute("userId");
-            Optional<Colaborador> colaboradorCanje = this.colaboradorService.buscarPorId(userId);
+            //TODO - refactor extends colaboradorPorSession
 
-            if (colaboradorCanje.isEmpty())
-                throw new ResourceNotFoundException("No se encontró colaborador con id " + userId);
+            Colaborador colaboradorCanje = this.obtenerColaboradorPorSession(context);
+
             Double puntosCanjeados = Double.valueOf(context.formParam("puntos_canjeados"));
-
 
             //TODO creo que no llega como parametro sino que calcula con el futuro service
             Double puntosRestantes = Double.valueOf(context.formParam("puntos_restantes"));
             puntosRestantes = 3.14159;
 
             OfertaDeProductos oferta = this.ofertaProductosServiciosService.buscarPorId(context.formParam("oferta_id")).get();
-            CanjeDePuntos canjeDePuntosNuevo = CanjeDePuntos.por(colaboradorCanje.get(), LocalDateTime.now(), puntosCanjeados, puntosRestantes, oferta);
+            CanjeDePuntos canjeDePuntosNuevo = CanjeDePuntos.por(colaboradorCanje, LocalDateTime.now(), puntosCanjeados, puntosRestantes, oferta);
 
             this.canjeDePuntosService.guardar(canjeDePuntosNuevo);
 
