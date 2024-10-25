@@ -5,6 +5,7 @@ import static io.javalin.apibuilder.ApiBuilder.path;
 import static io.javalin.apibuilder.ApiBuilder.post;
 
 import ar.edu.utn.frba.dds.config.ServiceLocator;
+import ar.edu.utn.frba.dds.controllers.colaboraciones.ColaboracionController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DistribucionViandasController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionDineroController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionViandaController;
@@ -19,7 +20,8 @@ public class ColaboracionRouter implements IRouter {
     public void apply(RouterConfig config) {
         config.apiBuilder(() ->
                 path("/colaboraciones", () -> {
-                    get(ctx -> ctx.render("colaboraciones/colaboraciones.hbs"), TipoRol.COLABORADOR, TipoRol.ADMIN);
+                    get(ServiceLocator.instanceOf(ColaboracionController.class)::index, TipoRol.COLABORADOR, TipoRol.ADMIN);
+                    post("/migrate", ServiceLocator.instanceOf(ColaboracionController.class)::cargarColaboraciones, TipoRol.ADMIN);
 
                     this.routeDonacionDinero();
                     this.routeDonacionVianda();

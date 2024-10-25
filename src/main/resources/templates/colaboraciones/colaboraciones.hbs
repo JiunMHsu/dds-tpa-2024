@@ -36,15 +36,14 @@
     </div>
 {{/partial}}
 {{#partial "side-panel"}}
-    <!-- renderizado condicional por colaboraciones que el usuario puede realizar -->
-
     {{#if isAdmin}}
         <div class="form-container">
             <h2 class="form-title">Cargar Colaboraciones</h2>
-            <form action="/=" method="post" class="form" enctype="multipart/form-data">
+            <form action="/colaboraciones/migrate" method="post" class="form"
+                  enctype="multipart/form-data">
                 <label class="field-csv">
                     Archivo
-                    <input type="file" name="csv-file" accept=".csv" required/>
+                    <input type="file" name="csv" accept=".csv" required/>
                 </label>
 
                 <div class="form-button-container">
@@ -54,68 +53,74 @@
         </div>
     {{/if}}
 
-    <div class="lista-colaboraciones">
-        <div class="item-colaboracion">
-            <h3 class="colaboracion-title">Cargar Colaboraciones</h3>
-            <div class="colaboracion-button-container">
-                <a href="/colaboraciones/donacion-dinero/new"
-                   class="colaboracion-button">colaborar</a>
+    {{#if isColaborador}}
+        {{#each colaboraciones}}
+            <!-- iterar las formas de colaboracion -->
+        {{/each}}
+        <div class="lista-colaboraciones">
+            <div class="item-colaboracion">
+                <h3 class="colaboracion-title">Cargar Colaboraciones</h3>
+                <div class="colaboracion-button-container">
+                    <a href="/colaboraciones/donacion-dinero/new"
+                       class="colaboracion-button">colaborar</a>
+                </div>
             </div>
-        </div>
 
-        <div class="item-colaboracion">
-            <h3 class="colaboracion-title">Donar Dinero</h3>
-            <div class="colaboracion-button-container">
-                <a href="/colaboraciones/donacion-dinero/new"
-                   class="colaboracion-button">colaborar</a>
+            <div class="item-colaboracion">
+                <h3 class="colaboracion-title">Donar Dinero</h3>
+                <div class="colaboracion-button-container">
+                    <a href="/colaboraciones/donacion-dinero/new"
+                       class="colaboracion-button">colaborar</a>
+                </div>
             </div>
-        </div>
 
-        <div class="item-colaboracion">
-            <h3 class="colaboracion-title">Donar Vianda</h3>
-            <div class="colaboracion-button-container">
-                <a href="/colaboraciones/donacion-vianda/new"
-                   class="colaboracion-button">colaborar</a>
+            <div class="item-colaboracion">
+                <h3 class="colaboracion-title">Donar Vianda</h3>
+                <div class="colaboracion-button-container">
+                    <a href="/colaboraciones/donacion-vianda/new"
+                       class="colaboracion-button">colaborar</a>
+                </div>
             </div>
-        </div>
 
-        <div class="item-colaboracion">
-            <h3 class="colaboracion-title">Registrar Persona Vulnerable</h3>
-            <div class="colaboracion-button-container">
-                <a href="/colaboraciones/registro-persona-vulnerable/new"
-                   class="colaboracion-button">colaborar</a>
+            <div class="item-colaboracion">
+                <h3 class="colaboracion-title">Registrar Persona Vulnerable</h3>
+                <div class="colaboracion-button-container">
+                    <a href="/colaboraciones/registro-persona-vulnerable/new"
+                       class="colaboracion-button">colaborar</a>
+                </div>
             </div>
-        </div>
 
-        <div class="item-colaboracion">
-            <h3 class="colaboracion-title">Entregar Viandas</h3>
-            <div class="colaboracion-button-container">
-                <a href="/colaboraciones/entrega-viandas/new"
-                   class="colaboracion-button">colaborar</a>
+            <div class="item-colaboracion">
+                <h3 class="colaboracion-title">Entregar Viandas</h3>
+                <div class="colaboracion-button-container">
+                    <a href="/colaboraciones/entrega-viandas/new"
+                       class="colaboracion-button">colaborar</a>
+                </div>
             </div>
-        </div>
 
-        <div class="item-colaboracion">
-            <h3 class="colaboracion-title">Distribuir Viandas</h3>
-            <div class="colaboracion-button-container">
-                <a href="/colaboraciones/distribucion-viandas/new" class="colaboracion-button">colaborar</a>
+            <div class="item-colaboracion">
+                <h3 class="colaboracion-title">Distribuir Viandas</h3>
+                <div class="colaboracion-button-container">
+                    <a href="/colaboraciones/distribucion-viandas/new" class="colaboracion-button">colaborar</a>
+                </div>
             </div>
-        </div>
 
-        <div class="item-colaboracion">
-            <h3 class="colaboracion-title">Ofrecer Producto / Servicio</h3>
-            <div class="colaboracion-button-container">
-                <a href="/colaboraciones/oferta-producto-servicio/new"
-                   class="colaboracion-button">colaborar</a>
+            <div class="item-colaboracion">
+                <h3 class="colaboracion-title">Ofrecer Producto / Servicio</h3>
+                <div class="colaboracion-button-container">
+                    <a href="/colaboraciones/oferta-producto-servicio/new"
+                       class="colaboracion-button">colaborar</a>
+                </div>
             </div>
-        </div>
 
-        <div class="item-colaboracion">
-            <h3 class="colaboracion-title">Encargarse de Heladeras</h3>
-            <div class="colaboracion-button-container">
-                <a href="/colaboraciones/encargarse-de-heladeras/new" class="colaboracion-button">colaborar</a>
+            <div class="item-colaboracion">
+                <h3 class="colaboracion-title">Encargarse de Heladeras</h3>
+                <div class="colaboracion-button-container">
+                    <a href="/colaboraciones/encargarse-de-heladeras/new"
+                       class="colaboracion-button">colaborar</a>
+                </div>
             </div>
         </div>
-    </div>
+    {{/if}}
 {{/partial}}
 {{> templates/base}}

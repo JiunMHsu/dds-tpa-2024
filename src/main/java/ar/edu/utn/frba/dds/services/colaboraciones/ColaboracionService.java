@@ -7,6 +7,7 @@ import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDinero;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.RepartoDeTarjetas;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.data.Documento;
 import ar.edu.utn.frba.dds.models.entities.data.TipoDocumento;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.ISender;
@@ -28,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import org.apache.commons.csv.CSVFormat;
@@ -79,8 +81,8 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
                         csvRecord.get("Nombre"),
                         csvRecord.get("Apellido"),
                         csvRecord.get("Mail"),
-                        LocalDateTime.parse(csvRecord.get("Fecha por colaboración"), formatter),
-                        csvRecord.get("Forma por colaboración"),
+                        LocalDate.parse(csvRecord.get("Fecha de colaboración"), formatter).atStartOfDay(),
+                        csvRecord.get("Forma de colaboración"),
                         Integer.parseInt(csvRecord.get("Cantidad"))
                 );
 
@@ -105,6 +107,8 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
     private Colaborador generarColaborador(String nombre, String email) {
         Usuario usuario = GeneradorDeCredenciales.generarUsuario(nombre, email);
         Colaborador colaborador = Colaborador.colaborador(usuario);
+        colaborador.setContacto(Contacto.conEmail(email));
+        
         usuarioRepository.guardar(usuario);
         colaboradorRepository.guardar(colaborador);
         return colaborador;
