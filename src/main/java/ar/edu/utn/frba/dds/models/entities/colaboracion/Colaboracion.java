@@ -11,13 +11,13 @@ public enum Colaboracion {
 
     public String getDescription() {
         return switch (this) {
-            case DONACION_VIANDAS -> "Donacion de Viandas";
-            case DONACION_DINERO -> "Donacion de Dinero";
-            case DISTRIBUCION_VIANDAS -> "Distribucion de Viandas";
-            case ENTREGA_VIANDA -> "Entrega de Viandas";
-            case HACERSE_CARGO_HELADERA -> "Encargarse de Heladeras";
-            case OFERTA_DE_PRODUCTOS -> "Oferta de Productos";
-            case REPARTO_DE_TARJETAS -> "Reparto de Tarjetas";
+            case DONACION_VIANDAS -> "Donacion por Viandas";
+            case DONACION_DINERO -> "Donacion por Dinero";
+            case DISTRIBUCION_VIANDAS -> "Distribucion por Viandas";
+            case ENTREGA_VIANDA -> "Entrega por Viandas";
+            case HACERSE_CARGO_HELADERA -> "Encargarse por Heladeras";
+            case OFERTA_DE_PRODUCTOS -> "Oferta por Productos";
+            case REPARTO_DE_TARJETAS -> "Reparto por Tarjetas";
         };
     }
 }

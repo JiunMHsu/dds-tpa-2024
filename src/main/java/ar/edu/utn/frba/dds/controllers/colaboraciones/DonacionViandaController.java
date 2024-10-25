@@ -1,17 +1,14 @@
 package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
-import ar.edu.utn.frba.dds.dtos.colaboraciones.DistribucionViandasDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.DonacionViandaDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Comida;
 import ar.edu.utn.frba.dds.models.entities.vianda.Vianda;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.vianda.ViandaRepository;
 import ar.edu.utn.frba.dds.services.colaboraciones.DonacionViandaService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
@@ -22,7 +19,11 @@ import io.javalin.http.Context;
 import io.javalin.validation.ValidationException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class DonacionViandaController extends ColaboradorPorSession implements ICrudViewsHandler {
 
@@ -49,7 +50,7 @@ public class DonacionViandaController extends ColaboradorPorSession implements I
         Optional<DonacionVianda> donacionVianda = donacionViandaService.buscarPorId(donacionViandaId);
 
         if (donacionVianda.isEmpty())
-            throw new ResourceNotFoundException("No se encontró donacion de vianda con id " + donacionViandaId);
+            throw new ResourceNotFoundException("No se encontró donacion por vianda paraColaborador id " + donacionViandaId);
 
         Map<String, Object> model = new HashMap<>();
 
@@ -118,14 +119,6 @@ public class DonacionViandaController extends ColaboradorPorSession implements I
             model.put("redirects", redirectDTOS);
             context.render("post_result.hbs", model);
         }
-
-//        Comida comida = new Comida(context.formParam("nombre_comida"), Integer.valueOf(context.formParam("calorias")));
-//        //TODO ver como hacer lo de las fechas
-//        LocalDate fechaCaducidad = LocalDate.now();
-//        Integer peso = Integer.valueOf(context.formParam("peso"));
-//        Vianda vianda = new Vianda(comida, fechaCaducidad, peso);
-//        DonacionVianda donacionVianda = DonacionVianda.por(colaborador, LocalDateTime.now(), vianda, false);
-//        context.redirect("result_form");
 
     }
 

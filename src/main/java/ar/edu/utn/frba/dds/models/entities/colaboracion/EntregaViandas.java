@@ -18,7 +18,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
-// TODO - Ver que onda con esta forma de colaboración
+// TODO - Ver que onda paraColaborador esta forma por colaboración
 @Getter
 @Builder
 @AllArgsConstructor
@@ -38,6 +38,6 @@ public class EntregaViandas extends EntidadPersistente {
     @JoinColumn(name = "heladera_destino_id", nullable = false)
     private Heladera destino;
 
-    @Transient // TODO - Mapear la lista de viandas
+    @Transient // TODO - Mapear la lista por viandas
     private List<Vianda> viandas;
 }

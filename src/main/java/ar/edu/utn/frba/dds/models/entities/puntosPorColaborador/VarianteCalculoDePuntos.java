@@ -13,9 +13,9 @@ public class VarianteCalculoDePuntos {
 
     /**
      * Por el momento esta harcodeado, pero la idea sería
-     * setear los valores leyendo de la DB, así cumple con
-     * el requerimiento de ser dinámico y poder cambiar
-     * de mes en mes.
+     * setear los valores leyendo por la DB, así cumple paraColaborador
+     * el requerimiento por ser dinámico y poder cambiar
+     * por mes en mes.
      */
 
     // TODO - Crear una tabla donde se almacenen esos valores

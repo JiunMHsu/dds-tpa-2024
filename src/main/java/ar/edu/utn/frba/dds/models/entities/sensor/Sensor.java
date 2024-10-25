@@ -42,20 +42,20 @@ public class Sensor extends EntidadPersistente {
     }
 
     /**
-     * Builder de Suscriptor de Sensor de heladeras.
+     * Builder por Suscriptor por Sensor por heladeras.
      *
      * @param heladera una Heladera.
-     * @return Sensor con topic vacío ("").
+     * @return Sensor paraColaborador topic vacío ("").
      */
     public static Sensor de(Heladera heladera) {
         return Sensor.de(heladera, "");
     }
 
     /**
-     * Builder de Suscriptor de Sensor de heladeras.
+     * Builder por Suscriptor por Sensor por heladeras.
      *
-     * @param topic una topic de suscripción.
-     * @return Sensor con una heladera de capacidad 10.
+     * @param topic una topic por suscripción.
+     * @return Sensor paraColaborador una heladera por capacidad 10.
      */
     public static Sensor de(String topic) {
         return Sensor.de(Heladera.con(10), topic);

@@ -1,13 +1,12 @@
 package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
-import ar.edu.utn.frba.dds.dtos.colaboraciones.DonacionDineroDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.OfertaDeProductosDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
+import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.RubroOferta;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Imagen;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRepository;
 import ar.edu.utn.frba.dds.services.colaboraciones.OfertaProductosServiciosService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
@@ -45,7 +44,7 @@ public class OfertaProductosServiciosController extends ColaboradorPorSession im
 
         Map<String, Object> model = new HashMap<>();
         model.put("colaboraciones", ofertaDeProductosDTOS);
-        model.put("titulo", "Listado de productos/servicios");
+        model.put("titulo", "Listado por productos/servicios");
 
         context.render("colaboraciones/colaboraciones.hbs", model);
     }
@@ -56,7 +55,7 @@ public class OfertaProductosServiciosController extends ColaboradorPorSession im
         Optional<OfertaDeProductos> ofertaDeProductos = this.ofertaProductosServiciosService.buscarPorId(ofertaProductoId);
 
         if (ofertaDeProductos.isEmpty())
-            throw new ResourceNotFoundException("No se encontró ninguna oferta de producto/servicio con id " + ofertaProductoId);
+            throw new ResourceNotFoundException("No se encontró ninguna oferta por producto/servicio paraColaborador id " + ofertaProductoId);
 
 
         Map<String, Object> model = new HashMap<>();
@@ -102,17 +101,24 @@ public class OfertaProductosServiciosController extends ColaboradorPorSession im
 
     @Override
     public void delete(Context context) {
-        //TODO chequeo que usuario sea el de la oferta
         String ofertaProductoId = context.pathParam("id");
 
         Optional<OfertaDeProductos> posibleOfertaAEliminar = this.ofertaProductosServiciosService.buscarPorId(ofertaProductoId);
 
         if (posibleOfertaAEliminar.isEmpty())
-            throw new ResourceNotFoundException("No se encontró ninguna oferta de producto/servicio con id " + ofertaProductoId);
+            throw new ResourceNotFoundException("No se encontró ninguna oferta por producto/servicio paraColaborador id " + ofertaProductoId);
+
+        Colaborador colaboradorOfertante = posibleOfertaAEliminar.get().getColaborador();
+
+        Colaborador colaboradorSession = obtenerColaboradorPorSession(context);
+
+        if (colaboradorOfertante != colaboradorSession) {
+            throw new UnauthorizedException("No tiene permiso paraColaborador eliminar la oferta");
+        }
 
         this.ofertaProductosServiciosService.eliminar(posibleOfertaAEliminar.get());
         context.status(HttpStatus.OK);
-        // TODO mostrar algo de exitoso?
+        // TODO mostrar algo por exitoso?
 
     }
 

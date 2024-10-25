@@ -106,7 +106,7 @@ public class Heladera extends EntidadPersistente {
 
     public void agregarViandas(Integer cantViandas) throws ExcepcionCantidadDeViandas {
         if (!this.puedeAgregarViandas(cantViandas)) {
-            throw new ExcepcionCantidadDeViandas("La capacidad de la heladera esta excedida");
+            throw new ExcepcionCantidadDeViandas("La capacidad por la heladera esta excedida");
         }
 
         viandas += cantViandas;

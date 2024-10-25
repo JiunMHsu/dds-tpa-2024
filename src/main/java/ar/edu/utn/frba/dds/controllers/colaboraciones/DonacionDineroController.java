@@ -2,7 +2,6 @@ package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.DonacionDineroDTO;
-import ar.edu.utn.frba.dds.dtos.heladera.HeladeraDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDinero;
@@ -16,7 +15,12 @@ import io.javalin.http.Context;
 import io.javalin.validation.ValidationException;
 import java.time.LocalDateTime;
 import java.time.Period;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 public class DonacionDineroController extends ColaboradorPorSession implements ICrudViewsHandler {
 
@@ -40,7 +44,7 @@ public class DonacionDineroController extends ColaboradorPorSession implements I
         Optional<DonacionDinero> donacionDinero = donacionDineroService.buscarPorId(donacionDineroId);
 
         if (donacionDinero.isEmpty())
-            throw new ResourceNotFoundException("No se encontró donacion de dinero con id " + donacionDineroId);
+            throw new ResourceNotFoundException("No se encontró donacion por dinero paraColaborador id " + donacionDineroId);
 
         Map<String, Object> model = new HashMap<>();
 
@@ -79,7 +83,7 @@ public class DonacionDineroController extends ColaboradorPorSession implements I
                 default -> null;
             };
 
-            // TODO - ver como lanzar y manejar fallas de creación y guardado
+            // TODO - ver como lanzar y manejar fallas por creación y guardado
             DonacionDinero donacionDinero = DonacionDinero.por(colaborador, LocalDateTime.now(), monto, frecuencia);
             donacionDineroService.registrarDonacion(donacionDinero);
 

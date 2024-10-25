@@ -1,16 +1,13 @@
 package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
-import ar.edu.utn.frba.dds.dtos.colaboraciones.DonacionViandaDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.HacerseCargoHeladeraDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.HacerseCargoHeladera;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladeraRepository;
 import ar.edu.utn.frba.dds.services.colaboraciones.HacerseCargoHeladeraService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
@@ -53,7 +50,7 @@ public class HacerseCargoHeladeraController extends ColaboradorPorSession implem
         Optional<HacerseCargoHeladera> hacerseCargoHeladera = hacerseCargoHeladeraService.buscarPorId(hacerseCargoHeladeraId);
 
         if (hacerseCargoHeladera.isEmpty())
-            throw new ResourceNotFoundException("No se encontró un cargo de heladera con id " + hacerseCargoHeladeraId);
+            throw new ResourceNotFoundException("No se encontró un cargo por heladera paraColaborador id " + hacerseCargoHeladeraId);
 
         Map<String, Object> model = new HashMap<>();
 

@@ -6,8 +6,6 @@ import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.puntosPorColaborador.CanjeDePuntos;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRepository;
-import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.services.canjeDePuntos.CanjeDePuntosService;
 import ar.edu.utn.frba.dds.services.colaboraciones.OfertaProductosServiciosService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
@@ -32,6 +30,7 @@ public class CanjeDePuntosController implements ICrudViewsHandler {
         this.canjeDePuntosService = canjeDePuntosService;
         this.ofertaProductosServiciosService = ofertaProductosServiciosService;
     }
+
     @Override
     public void index(Context context) {
 
@@ -54,7 +53,7 @@ public class CanjeDePuntosController implements ICrudViewsHandler {
         Optional<Colaborador> colaborador = this.colaboradorService.buscarPorId(userId);
 
         if (colaborador.isEmpty())
-            throw new ResourceNotFoundException("No se encontró colaborador con id " + userId);
+            throw new ResourceNotFoundException("No se encontró colaborador paraColaborador id " + userId);
 
         Double puntaje = this.canjeDePuntosService.calcularPuntos(colaborador.get());
 
@@ -78,8 +77,8 @@ public class CanjeDePuntosController implements ICrudViewsHandler {
 
             if (colaboradorCanje.isEmpty())
                 throw new ResourceNotFoundException("No se encontró colaborador con id " + userId);
-
             Double puntosCanjeados = Double.valueOf(context.formParam("puntos_canjeados"));
+
 
             //TODO creo que no llega como parametro sino que calcula con el futuro service
             Double puntosRestantes = Double.valueOf(context.formParam("puntos_restantes"));

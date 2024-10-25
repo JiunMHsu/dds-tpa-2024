@@ -40,12 +40,12 @@ public class ColaboradorController implements ICrudViewsHandler {
 
     @Override
     public void index(Context context) {
-        //TODO verificar rol de admin
+
         List<Colaborador> colaboradores = this.colaboradorService.buscarTodosColaboradores();
 
         Map<String, Object> model = new HashMap<>();
         model.put("colaboradores.hbs", colaboradores);
-        model.put("titulo", "Listado de colaboradores");
+        model.put("titulo", "Listado por colaboradores");
 
         context.render("colaboradores/colaboradores.hbs", model);
 
@@ -54,15 +54,11 @@ public class ColaboradorController implements ICrudViewsHandler {
     @Override
     public void show(Context context) {
 
-        //TODO verificar rol de admin
         String colaboradorId = context.pathParam("id");
         Optional<Colaborador> posibleColaboradorBuscado = this.colaboradorService.obtenerColaboradorPorID(colaboradorId);
 
-        //TODO verificar empty
-        if (posibleColaboradorBuscado.isEmpty()) {
-            context.status(404);//not found
-            return;
-        }
+        if (posibleColaboradorBuscado.isEmpty())
+            throw new ResourceNotFoundException("No se encontró colaborador paraColaborador id " + colaboradorId);
 
         Map<String, Object> model = new HashMap<>();
         model.put("colaborador", posibleColaboradorBuscado.get());
@@ -77,9 +73,8 @@ public class ColaboradorController implements ICrudViewsHandler {
         Optional<Usuario> usuario = this.usuarioService.obtenerUsuarioPorID(usuarioId);
         Optional<Colaborador> posibleColaboradorBuscado = this.colaboradorService.obtenerColaboradorPorUsuario(usuario.get());
 
-        //TODO verificar empty
         if (posibleColaboradorBuscado.isEmpty()) {
-            throw new ResourceNotFoundException("No encontrado");
+            throw new ResourceNotFoundException("No se encontró colaborador paraColaborador usuario por id " + usuarioId);
         }
 
         Map<String, Object> model = new HashMap<>();
@@ -95,14 +90,12 @@ public class ColaboradorController implements ICrudViewsHandler {
     @Override
     public void create(Context context) {
         //sign up
-        //TODO ver porque en nuestro diseño eran muchas vistas distintas
         context.render("colaboradores/sign_up.hbs");
 
     }
 
     @Override
     public void save(Context context) {
-        //TODO ver rol adminitrador
         Usuario usuario = Usuario.con(context.formParam("nombre"), context.formParam("contrasenia"), context.formParam("email"), TipoRol.COLABORADOR);
         Direccion direccion = Direccion.with(
                 new Barrio(context.formParam("barrio")),
@@ -146,12 +139,12 @@ public class ColaboradorController implements ICrudViewsHandler {
             nuevoColaborador.setNombre(context.formParam("nombre"));
             nuevoColaborador.setApellido(context.formParam("apellido"));
 
-            // Obtener fecha de nacimiento (suponiendo que el formulario tenga campos separados para día, mes, año)
+            // Obtener fecha por nacimiento (suponiendo que el formulario tenga campos separados paraColaborador día, mes, año)
             int diaNacimiento = Integer.parseInt(context.formParam("dia_nacimiento"));
             int mesNacimiento = Integer.parseInt(context.formParam("mes_nacimiento"));
             int anioNacimiento = Integer.parseInt(context.formParam("anio_nacimiento"));
 
-            // Crear el objeto LocalDate para la fecha de nacimiento
+            // Crear el objeto LocalDate paraColaborador la fecha por nacimiento
             LocalDate fechaNacimiento = LocalDate.of(anioNacimiento, mesNacimiento, diaNacimiento);
             nuevoColaborador.setFechaNacimiento(fechaNacimiento);
         }
@@ -166,13 +159,16 @@ public class ColaboradorController implements ICrudViewsHandler {
     }
 
     @Override
-    public void update(Context context) {
-        //esto teniendo en cuenta solo una forma de colaboracion por formulario
-        Optional<Colaborador> posibleColaboradorActualizar = this.colaboradorService.obtenerColaboradorPorID(context.formParam("id"));
-        // TODO - chequeo si no existe
+    public void update(Context context) { // TODO - REFACTOR
+        String colaboradorId = context.pathParam("id");
+        Optional<Colaborador> posibleColaborador = this.colaboradorService.obtenerColaboradorPorID(colaboradorId);
 
-        Colaborador colaboradorActualizado = posibleColaboradorActualizar.get();
-        // colaboradorActualizado.agregarFormaColaborar(Colaboracion.valueOf(context.formParam("nueva_forma_colaborar")));
+        if (posibleColaborador.isEmpty())
+            throw new ResourceNotFoundException("No se encontró colaborador paraColaborador id " + colaboradorId);
+
+        Colaborador colaboradorActualizado = posibleColaborador.get();
+        // TODO ver agregar forma colaborar
+        //  colaboradorActualizado.agregarFormaColaborar(Colaboracion.valueOf(context.formParam("nueva_forma_colaborar")));
         this.colaboradorService.actualizar(colaboradorActualizado);
         context.status(HttpStatus.OK);
     }
@@ -182,22 +178,13 @@ public class ColaboradorController implements ICrudViewsHandler {
         String colaboradorId = context.pathParam("id");
         Optional<Colaborador> posibleColaboradorAEliminar = this.colaboradorService.obtenerColaboradorPorID(colaboradorId);
 
-
-        /*// TODO - chequeo si no existe
+        if (posibleColaboradorAEliminar.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontró colaborador paraColaborador id " + colaboradorId);
+        }
 
         this.colaboradorService.eliminarColaborador(posibleColaboradorAEliminar.get());
         context.status(HttpStatus.OK);
-        // mostrar algo de exitoso*/
-
-        /*ALGO ASI?*/
-        if (posibleColaboradorAEliminar.isPresent()) {
-            this.colaboradorService.eliminarColaborador(posibleColaboradorAEliminar.get());
-            context.status(HttpStatus.OK);
-            context.result("Colaborador eliminado exitosamente.");
-        } else {
-            context.status(HttpStatus.NOT_FOUND);
-            context.result("Colaborador no encontrado.");
-        }
+        // mostrar algo por exitoso*/
 
     }
 
@@ -220,7 +207,7 @@ public class ColaboradorController implements ICrudViewsHandler {
         List<Colaboracion> formasPermitidas = colaborador.getTipoColaborador().colaboracionesPermitidas();
 
         List<ColaboracionDTO> colaboracionDTOS = formasPermitidas.stream()
-                .map(c -> ColaboracionDTO.fromColaboracion(c, formasRegistradas.contains(c)))
+                .map(c -> ColaboracionDTO.configOption(c, formasRegistradas.contains(c)))
                 .toList();
 
         Map<String, Object> model = new HashMap<>();

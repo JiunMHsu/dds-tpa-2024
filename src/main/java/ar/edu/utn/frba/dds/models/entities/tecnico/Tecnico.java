@@ -4,13 +4,11 @@ import ar.edu.utn.frba.dds.models.entities.data.Area;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.data.Documento;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
+import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.utils.EntidadPersistente;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Table;
+
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,6 +23,10 @@ import lombok.Setter;
 @Entity
 @Table(name = "tecnico")
 public class Tecnico extends EntidadPersistente {
+
+    @OneToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
 
     @Column(name = "nombre", nullable = false)
     private String nombre;
@@ -48,15 +50,18 @@ public class Tecnico extends EntidadPersistente {
     @Embedded
     private Area areaDeCobertura;
 
-    public static Tecnico con(String nombre,
+    public static Tecnico con(Usuario usuario,
+                              String nombre,
                               String apellido,
                               Documento documento,
                               String cuit,
                               Contacto contacto,
                               MedioDeNotificacion medioDeNotificacion,
                               Area areaDeCobertura) {
+
         return Tecnico
                 .builder()
+                .usuario(usuario)
                 .nombre(nombre)
                 .apellido(apellido)
                 .documento(documento)
