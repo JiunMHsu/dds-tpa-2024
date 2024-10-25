@@ -29,16 +29,16 @@ public class HeladeraLlenaService {
 
         Optional<Colaborador> colaboradorExistente = colaboradorRepository.buscarPorId(colaborador.getId().toString());
         if (colaboradorExistente.isEmpty()) {
-            throw new IllegalArgumentException("El colaborador no existe en la base de datos");
+            throw new IllegalArgumentException("El colaborador no existe en la base por datos");
         }
 
         Optional<Heladera> heladeraExistente = heladeraRepository.buscarPorId(heladera.getId().toString());
         if (heladeraExistente.isEmpty()) {
-            throw new IllegalArgumentException("El colaborador no existe en la base de datos");
+            throw new IllegalArgumentException("El colaborador no existe en la base por datos");
         }
 
         if (espacioRestante < 0 || espacioRestante > heladeraExistente.get().getCapacidad())
-            throw new IllegalArgumentException("El espacio restante debe ser mayor o igual a 0 y menor a la capacidad máxima de la heladera");
+            throw new IllegalArgumentException("El espacio restante debe ser mayor o igual a 0 y menor a la capacidad máxima por la heladera");
 
         SuscripcionHeladeraLlena nuevaSuscripcion = SuscripcionHeladeraLlena.de(
                 colaborador,

@@ -2,17 +2,14 @@ package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.DistribucionViandasDTO;
-import ar.edu.utn.frba.dds.dtos.colaboraciones.DonacionDineroDTO;
 import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDinero;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.ExcepcionCantidadDeViandas;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
 import ar.edu.utn.frba.dds.services.colaboraciones.DistribucionViandasService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
@@ -30,8 +27,8 @@ import java.util.Optional;
 
 public class DistribucionViandasController extends ColaboradorPorSession implements ICrudViewsHandler {
 
-    private DistribucionViandasService distribucionViandasService;
-    private HeladeraService heladeraService;
+    private final DistribucionViandasService distribucionViandasService;
+    private final HeladeraService heladeraService;
 
     public DistribucionViandasController(DistribucionViandasService distribucionViandasService,
                                          UsuarioService usuarioService,
@@ -54,7 +51,7 @@ public class DistribucionViandasController extends ColaboradorPorSession impleme
         Optional<DistribucionViandas> distribucionViandas = distribucionViandasService.buscarPorId(distribucionViandasId);
 
         if (distribucionViandas.isEmpty())
-            throw new ResourceNotFoundException("No se encontró distribucion de viandas con id " + distribucionViandasId);
+            throw new ResourceNotFoundException("No se encontró distribucion por viandas paraColaborador id " + distribucionViandasId);
 
         Map<String, Object> model = new HashMap<>();
 

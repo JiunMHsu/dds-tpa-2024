@@ -125,10 +125,10 @@ public class Initializer implements WithSimplePersistenceUnit {
 
         Calle c1 = new Calle("Avenida Corrientes");
         Calle c2 = new Calle("Florida");
-        Calle c3 = new Calle("Avenida 9 de Julio");
+        Calle c3 = new Calle("Avenida 9 por Julio");
         Calle c4 = new Calle("Avenida Santa Fe");
         Calle c5 = new Calle("Avenida Medrano");
-        Calle c6 = new Calle("Avenida de Mayo");
+        Calle c6 = new Calle("Avenida por Mayo");
         Calle c7 = new Calle("Avenida Libertador");
         Calle c8 = new Calle("Lavalle");
         Calle c9 = new Calle("Avenida Pueyrredón");
@@ -207,7 +207,7 @@ public class Initializer implements WithSimplePersistenceUnit {
                 heladeraRepository.buscarPorNombre("Heladera CINCO").orElseThrow(),
                 LocalDateTime.of(2024, 8, 12, 14, 5),
                 colaboradorRepository.buscarPorEmail("adomingueznimo@frba.utn.edu.ar").orElseThrow(),
-                "No funca el lector de tarjeta.",
+                "No funca el lector por tarjeta.",
                 new Imagen(""));
 
         Incidente i9 = Incidente.fallaTecnica(

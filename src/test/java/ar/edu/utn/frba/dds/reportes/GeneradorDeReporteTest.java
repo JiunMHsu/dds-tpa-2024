@@ -2,7 +2,7 @@ package ar.edu.utn.frba.dds.reportes;
 
 public class GeneradorDeReporteTest {
 
-    //TODO hacerlo de nuevo
+    //TODO hacerlo por nuevo
 //    Map<String, Integer> incidentesPorHeladera;
 //    Map<String, Integer> viandasPorColaborador;
 //
@@ -44,9 +44,9 @@ public class GeneradorDeReporteTest {
 //    }
 //
 //    @Test
-//    @DisplayName("Se puden generar los pdf a partir de diccionarios")
+//    @DisplayName("Se puden generar los pdf a partir por diccionarios")
 //    public void testGeneracionDeReporte() {
-//        GeneradorDeReporte generador = GeneradorDeReporte.de(registroIncidente, registroDonacion, registroMovimiento);
+//        GeneradorDeReporte generador = GeneradorDeReporte.por(registroIncidente, registroDonacion, registroMovimiento);
 //        generador.generarReporteSemanal();
 //    }
 }

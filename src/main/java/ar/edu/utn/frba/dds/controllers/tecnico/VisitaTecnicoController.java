@@ -13,9 +13,12 @@ import ar.edu.utn.frba.dds.services.tecnico.VisitaTecnicoService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import io.javalin.http.Context;
 import io.javalin.validation.ValidationException;
-
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class VisitaTecnicoController {
 
@@ -25,10 +28,10 @@ public class VisitaTecnicoController {
     private final UsuarioService usuarioService;
 
 
-    public VisitaTecnicoController (VisitaTecnicoService visitaTecnicoService,
-                                    TecnicoService tecnicoService,
-                                    HeladeraService heladeraService,
-                                    UsuarioService usuarioService) {
+    public VisitaTecnicoController(VisitaTecnicoService visitaTecnicoService,
+                                   TecnicoService tecnicoService,
+                                   HeladeraService heladeraService,
+                                   UsuarioService usuarioService) {
 
         this.visitaTecnicoService = visitaTecnicoService;
         this.tecnicoService = tecnicoService;
@@ -40,7 +43,7 @@ public class VisitaTecnicoController {
         context.result("Visita Tecnico");
     }
 
-    public void save(Context context) { // TODO - Ver desp que matchee con las vistas
+    public void save(Context context) { // TODO - Ver desp que matchee paraColaborador las vistas
 
         Map<String, Object> model = new HashMap<>();
         List<RedirectDTO> redirectDTOS = new ArrayList<>();
@@ -50,14 +53,14 @@ public class VisitaTecnicoController {
 
         Optional<Usuario> usuarioSession = usuarioService.obtenerUsuarioPorID(userId);
         if (usuarioSession.isEmpty()) {
-            throw new ResourceNotFoundException("No se encontró el usuario con id " + userId);
+            throw new ResourceNotFoundException("No se encontró el usuario paraColaborador id " + userId);
         }
 
         Usuario usuario = usuarioSession.get();
 
         Optional<Tecnico> tecnicoSession = tecnicoService.obtenerTecnicoPorUsuario(usuarioSession.get());
         if (tecnicoSession.isEmpty()) {
-            throw new ResourceNotFoundException("No se encontró el tecnico con usuario " + usuario.getNombre());
+            throw new ResourceNotFoundException("No se encontró el tecnico paraColaborador usuario " + usuario.getNombre());
         }
 
         Tecnico tecnico = tecnicoSession.get();
@@ -68,7 +71,7 @@ public class VisitaTecnicoController {
             Optional<Heladera> heladera = this.heladeraService.buscarPorId(heladeraId);
 
             if (heladera.isEmpty()) {
-                throw new ResourceNotFoundException("No se encontró heladera con id " + heladeraId);
+                throw new ResourceNotFoundException("No se encontró heladera paraColaborador id " + heladeraId);
             }
 
             Boolean resuelta = context.formParamAsClass("resuelta", Boolean.class).get();

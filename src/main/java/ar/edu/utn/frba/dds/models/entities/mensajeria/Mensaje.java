@@ -1,6 +1,8 @@
 package ar.edu.utn.frba.dds.models.entities.mensajeria;
 
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.models.entities.data.Contacto;
+import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -27,6 +29,7 @@ public class Mensaje {
 
     @Id
     @GeneratedValue(generator = "uuid")
+    @Column(name = "id", columnDefinition = "BINARY(16)")
     private UUID id;
 
     @Column(name = "asunto", nullable = false)
@@ -36,8 +39,12 @@ public class Mensaje {
     private String cuerpo;
 
     @ManyToOne
-    @JoinColumn(name = "colaborador_id", nullable = false)
-    private Colaborador receptor;
+    @JoinColumn(name = "colaborador_id")
+    private Colaborador colaborador;
+
+    @ManyToOne
+    @JoinColumn(name = "tecnico_id")
+    private Tecnico tecnico;
 
     @Setter
     @Enumerated
@@ -48,24 +55,39 @@ public class Mensaje {
     @Column(name = "fecha_envio", nullable = false)
     private LocalDateTime fechaEnvio;
 
-    public static Mensaje con(String asunto,
-                              String cuerpo,
-                              Colaborador receptor,
-                              MedioDeNotificacion medio,
-                              LocalDateTime fechaEnvio) {
+    public static Mensaje para(Colaborador colaborador,
+                               Tecnico tecnico,
+                               String asunto,
+                               String cuerpo,
+                               MedioDeNotificacion medio,
+                               LocalDateTime fechaEnvio) {
         return Mensaje
                 .builder()
                 .asunto(asunto)
                 .cuerpo(cuerpo)
-                .receptor(receptor)
+                .colaborador(colaborador)
+                .tecnico(tecnico)
                 .medio(medio)
                 .fechaEnvio(fechaEnvio)
                 .build();
     }
 
-    public static Mensaje con(String asunto,
-                              String cuerpo,
-                              Colaborador receptor) {
-        return Mensaje.con(asunto, cuerpo, receptor, null, null);
+    public static Mensaje paraColaborador(Colaborador receptor,
+                                          String asunto,
+                                          String cuerpo) {
+        return Mensaje.para(receptor, null, asunto, cuerpo, null, null);
+    }
+
+    public static Mensaje paraTecnico(Tecnico receptor,
+                                      String asunto,
+                                      String cuerpo) {
+        return Mensaje.para(null, receptor, asunto, cuerpo, null, null);
+    }
+
+    public Contacto getContacto() {
+        if (colaborador != null)
+            return colaborador.getContacto();
+        else
+            return tecnico.getContacto();
     }
 }

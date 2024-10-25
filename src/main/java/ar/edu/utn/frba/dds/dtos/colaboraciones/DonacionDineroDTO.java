@@ -1,18 +1,18 @@
 package ar.edu.utn.frba.dds.dtos.colaboraciones;
 
+import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDinero;
-import lombok.Builder;
+import ar.edu.utn.frba.dds.utils.DateTimeParser;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@Builder
-public class DonacionDineroDTO {
+@SuperBuilder
+public class DonacionDineroDTO extends ColaboracionDTO {
 
     private String id;
-
-    private String nombre; // lo agrego xlas, tiene pinta que puede ser util
 
     private String colaborador;
 
@@ -24,31 +24,26 @@ public class DonacionDineroDTO {
 
     public static DonacionDineroDTO completa(DonacionDinero donacionDinero) {
 
-        String nombre = "Donar Dinero"; // Lo dejo asi medio tosco quizas en un futuro c pueda hacer dinamico
-        // En caso de que c cambien los nombres de los metodos de contribuir
-
         return DonacionDineroDTO
                 .builder()
+                .etiqueta(getAction(Colaboracion.DONACION_DINERO))
+                .path(getPath(Colaboracion.DONACION_DINERO))
                 .id(donacionDinero.getId().toString())
-                .nombre(nombre)
                 .colaborador(donacionDinero.getColaborador().getUsuario().getNombre())
-                .fechaHora(donacionDinero.getFechaHora().toString())
+                .fechaHora(DateTimeParser.parseFechaHora(donacionDinero.getFechaHora()))
                 .monto(donacionDinero.getMonto().toString())
-                .frecuencia(donacionDinero.getFrecuencia().toString()) // TODO - Ver que onda el toString con el Period
+                .frecuencia(donacionDinero.getFrecuencia().toString()) // TODO - Ver que onda el toString paraColaborador el Period
                 .build();
     }
 
-    public static DonacionDineroDTO preview(DonacionDinero donacionDinero) { // TODO - ver si se ajusta a la vista
-
-        String nombre = "Donar Dinero"; // Lo dejo asi medio tosco quizas en un futuro c pueda hacer dinamico
-        // En caso de que c cambien los nombres de los metodos de contribuir
+    public static DonacionDineroDTO preview(DonacionDinero donacionDinero) {
 
         return DonacionDineroDTO
                 .builder()
+                .etiqueta(getAction(Colaboracion.DONACION_DINERO))
+                .path(getPath(Colaboracion.DONACION_DINERO))
                 .id(donacionDinero.getId().toString())
-                .nombre(nombre)
-                .monto(donacionDinero.getMonto().toString())
-                .frecuencia(donacionDinero.getFrecuencia().toString())
+                .fechaHora(DateTimeParser.parseFechaHora(donacionDinero.getFechaHora()))
                 .build();
     }
 }

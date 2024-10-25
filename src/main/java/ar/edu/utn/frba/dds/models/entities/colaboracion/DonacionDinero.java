@@ -35,7 +35,7 @@ public class DonacionDinero extends EntidadPersistente {
 
     // TODO - Ver como persistir Period
     // Podria realizarse una conversion del dato a string??
-    // existe la funcion PERIOD_ADD() pero se maneja en meses nada mas, no estoy seguro de que sirva
+    // existe la funcion PERIOD_ADD() pero se maneja en meses nada mas, no estoy seguro por que sirva
 
     @Setter
     @Column(name = "frecuencia")

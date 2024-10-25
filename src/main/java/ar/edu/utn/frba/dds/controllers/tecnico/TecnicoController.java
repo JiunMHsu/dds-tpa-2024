@@ -3,7 +3,12 @@ package ar.edu.utn.frba.dds.controllers.tecnico;
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.tecnico.TecnicoDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
-import ar.edu.utn.frba.dds.models.entities.data.*;
+import ar.edu.utn.frba.dds.models.entities.data.Area;
+import ar.edu.utn.frba.dds.models.entities.data.Barrio;
+import ar.edu.utn.frba.dds.models.entities.data.Contacto;
+import ar.edu.utn.frba.dds.models.entities.data.Documento;
+import ar.edu.utn.frba.dds.models.entities.data.TipoDocumento;
+import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
@@ -13,8 +18,11 @@ import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.validation.ValidationException;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 
 public class TecnicoController implements ICrudViewsHandler {
@@ -23,15 +31,15 @@ public class TecnicoController implements ICrudViewsHandler {
     private final UsuarioService usuarioService;
 
 
-    public TecnicoController (TecnicoService tecnicoService,
-                              UsuarioService usuarioService) {
+    public TecnicoController(TecnicoService tecnicoService,
+                             UsuarioService usuarioService) {
 
         this.tecnicoService = tecnicoService;
         this.usuarioService = usuarioService;
     }
 
     @Override
-    public void index(Context context) { // TODO - Ver desp que matchee con las vistas
+    public void index(Context context) { // TODO - Ver desp que matchee paraColaborador las vistas
         List<Tecnico> tecnicos = this.tecnicoService.buscarTodos();
 
         List<TecnicoDTO> tecnicosDTO = tecnicos.stream()
@@ -45,13 +53,13 @@ public class TecnicoController implements ICrudViewsHandler {
     }
 
     @Override
-    public void show(Context context) { // TODO - Ver desp que matchee con las vistas
+    public void show(Context context) { // TODO - Ver desp que matchee paraColaborador las vistas
 
         String cuitTecnico = context.pathParam("cuit");
         Optional<Tecnico> tecnicoBuscado = this.tecnicoService.buscarTecnicoPorCuit(cuitTecnico); // TODO - hago que se busque por CUIT, ver si va o no
 
         if (tecnicoBuscado.isEmpty()) {
-            throw new ResourceNotFoundException("No se encontró tecnico con cuit " + cuitTecnico);
+            throw new ResourceNotFoundException("No se encontró tecnico paraColaborador cuit " + cuitTecnico);
         }
 
         Map<String, Object> model = new HashMap<>();
@@ -67,7 +75,7 @@ public class TecnicoController implements ICrudViewsHandler {
     }
 
     @Override
-    public void save(Context context) { // TODO - Ver desp que matchee con las vistas
+    public void save(Context context) { // TODO - Ver desp que matchee paraColaborador las vistas
 
         Map<String, Object> model = new HashMap<>();
         List<RedirectDTO> redirectDTOS = new ArrayList<>();
@@ -150,14 +158,14 @@ public class TecnicoController implements ICrudViewsHandler {
 
         Optional<Usuario> usuarioSession = usuarioService.obtenerUsuarioPorID(userId);
         if (usuarioSession.isEmpty()) {
-            throw new ResourceNotFoundException("No se encontró el usuario con id " + userId);
+            throw new ResourceNotFoundException("No se encontró el usuario paraColaborador id " + userId);
         }
 
         Usuario usuario = usuarioSession.get();
 
         Optional<Tecnico> tecnicoSession = tecnicoService.obtenerTecnicoPorUsuario(usuarioSession.get());
         if (tecnicoSession.isEmpty()) {
-            throw new ResourceNotFoundException("No se encontró el tecnico con usuario " + usuario.getNombre());
+            throw new ResourceNotFoundException("No se encontró el tecnico paraColaborador usuario " + usuario.getNombre());
         }
 
         Tecnico tecnicoActualizado = tecnicoSession.get();

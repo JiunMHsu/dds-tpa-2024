@@ -14,7 +14,7 @@ class PuntoDonacionServiceTest {
     private final String authToken = "X7fIr5qr3URp8G3Y0+0a3itVf2SBR-cx";
 
     @Test
-    @DisplayName("Se puede realizar la peticion con exito.")
+    @DisplayName("Se puede realizar la peticion paraColaborador exito.")
     public void fetchApiData() {
         PuntoDonacionService service = new PuntoDonacionService(url, authToken);
         List<PuntoDonacion> lugares = service.obneterPuntoDonacion(-34.61178, -58.417308, null, 100.0);
@@ -23,7 +23,7 @@ class PuntoDonacionServiceTest {
     }
 
     @Test
-    @DisplayName("Falla si faltan los argumentos de latitud y longitud.")
+    @DisplayName("Falla si faltan los argumentos por latitud y longitud.")
     public void requiredArgumentsUnprovided() {
         PuntoDonacionService service = new PuntoDonacionService(url, authToken);
 

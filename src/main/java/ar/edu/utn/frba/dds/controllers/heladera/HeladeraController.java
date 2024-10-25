@@ -58,7 +58,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
         Optional<Heladera> heladera = this.heladeraService.buscarPorId(heladeraId);
 
         if (heladera.isEmpty())
-            throw new ResourceNotFoundException("No se encontró heladera con id " + heladeraId);
+            throw new ResourceNotFoundException("No se encontró heladera paraColaborador id " + heladeraId);
 
         Map<String, Object> model = new HashMap<>();
 
@@ -135,7 +135,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
         // TODO - edit
         context.render("heladeras/heladera_editar.hbs");
 
-        // devuelve formulario para editar heladera
+        // devuelve formulario paraColaborador editar heladera
         // Optional<Heladera> posibleHeladeraBuscada = this.heladeraService.buscarPorId(context.formParam("id"));
         // TODO chequear empty
 
@@ -153,7 +153,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
 
     @Override
     public void update(Context context) {
-        // voy a considerar que solo se puede modificar rango de temperatura
+        // voy a considerar que solo se puede modificar rango por temperatura
         Optional<Heladera> posibleHeladeraActualizar = this.heladeraService.buscarPorId(context.formParam("id"));
         // TODO - chequeo si no existe
 
@@ -168,7 +168,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
         this.heladeraService.actualizarHeladera(heladeraActualizada);
 
         context.status(HttpStatus.OK);
-        // mostrar algo de exitoso
+        // mostrar algo por exitoso
     }
 
     @Override
@@ -178,7 +178,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
 
         this.heladeraService.eliminarHeladera(posibleHeladeraAEliminar.get());
         context.status(HttpStatus.OK);
-        // mostrar algo de exitoso
+        // mostrar algo por exitoso
     }
 
     @Override

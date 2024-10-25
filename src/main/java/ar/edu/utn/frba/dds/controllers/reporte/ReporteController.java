@@ -37,7 +37,7 @@ public class ReporteController {
         Optional<Reporte> reporte = this.reporteService.buscarPorId(reporteId);
 
         if (reporte.isEmpty())
-            throw new ResourceNotFoundException("No se encontró reporte con id " + reporteId);
+            throw new ResourceNotFoundException("No se encontró reporte paraColaborador id " + reporteId);
 
         Map<String, Object> model = new HashMap<>();
 

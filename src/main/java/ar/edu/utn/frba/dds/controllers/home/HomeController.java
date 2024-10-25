@@ -5,8 +5,6 @@ import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.colaborador.TipoColaborador;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
-import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
-import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import ar.edu.utn.frba.dds.services.home.HomeService;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
@@ -19,7 +17,7 @@ public class HomeController implements ICrudViewsHandler {
 
     HomeService homeService;
 
-    public HomeController(HomeService homeService){
+    public HomeController(HomeService homeService) {
         this.homeService = homeService;
     }
 
@@ -59,7 +57,7 @@ public class HomeController implements ICrudViewsHandler {
 
         Map<String, Object> model = new HashMap<>();
         model.put("colaboraciones", colaboraciones);
-        model.put("titulo", "Listado de colaboraciones");
+        model.put("titulo", "Listado por colaboraciones");
 
         context.render("home.hbs", model);
     }
