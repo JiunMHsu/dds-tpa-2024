@@ -25,7 +25,6 @@ import lombok.Builder;
 import lombok.Setter;
 
 @Setter
-@Builder
 public class CanjeDePuntosService {
     private final DonacionDineroRepository donacionDineroRepository;
     private final DistribucionViandasRepository distribucionViandasRepository;
@@ -38,17 +37,14 @@ public class CanjeDePuntosService {
     private VarianteCalculoDePuntos variante;
     private CanjeDePuntosRepository canjeDePuntosRepository;
 
-    public CanjeDePuntosService of(DonacionDineroRepository donacionDineroRepository, DistribucionViandasRepository distribucionViandasRepository, DonacionViandaRepository donacionViandaRepository, RepartoDeTarjetasRepository repartoDeTarjetasRepository, HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository, CanjeDePuntosRepository canjeDePuntosRepository) {
-        return CanjeDePuntosService
-                .builder()
-                .donacionDineroRepository(donacionDineroRepository)
-                .distribucionViandasRepository(distribucionViandasRepository)
-                .donacionViandaRepository(donacionViandaRepository)
-                .repartoDeTarjetasRepository(repartoDeTarjetasRepository)
-                .hacerseCargoHeladeraRepository(hacerseCargoHeladeraRepository)
-                .variante(ServiceLocator.instanceOf(VarianteCalculoDePuntos.class))//TODO asi o que le entre parametro la instancia
-                .canjeDePuntosRepository(canjeDePuntosRepository)
-                .build();
+    public CanjeDePuntosService(DonacionDineroRepository donacionDineroRepository, DistribucionViandasRepository distribucionViandasRepository, DonacionViandaRepository donacionViandaRepository, RepartoDeTarjetasRepository repartoDeTarjetasRepository, HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository, CanjeDePuntosRepository canjeDePuntosRepository) {
+        this.donacionDineroRepository = donacionDineroRepository;
+        this.distribucionViandasRepository = distribucionViandasRepository;
+        this.donacionViandaRepository = donacionViandaRepository;
+        this.repartoDeTarjetasRepository = repartoDeTarjetasRepository;
+        this.hacerseCargoHeladeraRepository = hacerseCargoHeladeraRepository;
+        this.variante = new VarianteCalculoDePuntos();
+        this.canjeDePuntosRepository = canjeDePuntosRepository;
     }
 
     private void actualizarUltimaFechaCanje(Colaborador colaborador) {
@@ -84,7 +80,7 @@ public class CanjeDePuntosService {
     }
 
     private Double calcularPorPesosDonados() {
-        List<DonacionDinero> listaDonacionesDinero = donacionDineroRepository
+        List<DonacionDinero> listaDonacionesDinero = this.donacionDineroRepository
                 .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
         Double pesosDonados = listaDonacionesDinero.stream()
@@ -98,7 +94,7 @@ public class CanjeDePuntosService {
     }
 
     private Double calcularPorViandasDistribuidas() {
-        List<DistribucionViandas> listaViandasDistribuidas = distribucionViandasRepository
+        List<DistribucionViandas> listaViandasDistribuidas = this.distribucionViandasRepository
                 .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
         Double viandasDistribuidas = listaViandasDistribuidas.stream()
@@ -112,7 +108,7 @@ public class CanjeDePuntosService {
     }
 
     private Double calcularPorViandasDonadas() {
-        List<DonacionVianda> listaViandasDonadas = donacionViandaRepository
+        List<DonacionVianda> listaViandasDonadas = this.donacionViandaRepository
                 .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
         Double viandasDonadas = (double) listaViandasDonadas.size();
@@ -124,7 +120,7 @@ public class CanjeDePuntosService {
     }
 
     private Double calcularPorTarjetasRepartidas() {
-        List<RepartoDeTarjetas> listaTarjetasRepartidas = repartoDeTarjetasRepository
+        List<RepartoDeTarjetas> listaTarjetasRepartidas = this.repartoDeTarjetasRepository
                 .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
         Double tarjetasRepartidas = (double) listaTarjetasRepartidas.size();
@@ -136,7 +132,7 @@ public class CanjeDePuntosService {
     }
 
     private Double calcularPorHeladerasActivas() {
-        List<Heladera> listaHeladerasACargo = hacerseCargoHeladeraRepository
+        List<Heladera> listaHeladerasACargo = this.hacerseCargoHeladeraRepository
                 .obtenerPorColaborador(colaborador)
                 .stream()
                 .map(HacerseCargoHeladera::getHeladeraACargo)
@@ -191,10 +187,10 @@ public class CanjeDePuntosService {
     }
 
     public Optional<CanjeDePuntos> obtenerUltimoPorColaborador(Colaborador unColaborador) {
-        return canjeDePuntosRepository.obtenerUltimoPorColaborador(unColaborador);
+        return this.canjeDePuntosRepository.obtenerUltimoPorColaborador(unColaborador);
     }
 
     public void guardar(CanjeDePuntos canjeDePuntos) {
-        canjeDePuntosRepository.guardar(canjeDePuntos);
+        this.canjeDePuntosRepository.guardar(canjeDePuntos);
     }
 }
