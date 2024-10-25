@@ -26,12 +26,14 @@ public class ReporteService implements WithSimplePersistenceUnit {
 
     public static ReporteService de(ReporteRepository reporteRepository,
                                     DonacionViandaRepository donacionViandaRepository,
+                                    IncidenteRepository incidenteRepository,
                                     RegistroMovimiento registroMovimiento) {
 
         return ReporteService
                 .builder()
                 .reporteRepository(reporteRepository)
                 .donacionViandaRepository(donacionViandaRepository)
+                .incidenteRepository(incidenteRepository)
                 .registroMovimiento(registroMovimiento)
                 .build();
     }
@@ -78,12 +80,12 @@ public class ReporteService implements WithSimplePersistenceUnit {
 
         String pathReporteFalla = pdfGenerator.generateDocument("Fallas por Heladera", incidentesPorHeladera);
         String reporteDonaciones = pdfGenerator.generateDocument("Viandas Donadas por Colaborador", donacionPorColaborador);
-        String reporteMovimientos = pdfGenerator.generateDocumentWithSections("Cantidad de Viandas Retiradas/Colocadas", movimientos);
+        String reporteMovimientos = pdfGenerator.generateDocumentWithSections("Movimiento de Viandas", movimientos);
 
         beginTransaction();
         reporteRepository.guardar(Reporte.de("Fallas por Heladera", pathReporteFalla));
         reporteRepository.guardar(Reporte.de("Viandas Donadas por Colaborador", reporteDonaciones));
-        reporteRepository.guardar(Reporte.de("Cantidad de Viandas Retiradas/Colocadas", reporteMovimientos));
+        reporteRepository.guardar(Reporte.de("Movimiento de Viandas", reporteMovimientos));
         commitTransaction();
 
         registroMovimiento.vaciarRegistro();

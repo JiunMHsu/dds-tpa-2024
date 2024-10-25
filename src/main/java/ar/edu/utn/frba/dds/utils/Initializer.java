@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.utils;
 
+import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
@@ -18,6 +19,7 @@ import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
+import ar.edu.utn.frba.dds.services.reporte.ReporteService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -34,6 +36,9 @@ public class Initializer implements WithSimplePersistenceUnit {
         instance.withColaboradores();
         instance.withHeladeras();
         instance.withIncidentes();
+
+        PDFGenerator pdfGenerator = new PDFGenerator(AppProperties.getInstance().propertyFromName("REPORT_DIR"));
+        ServiceLocator.instanceOf(ReporteService.class).generarReporteSemanal(pdfGenerator);
     }
 
     public void withSuperUser() {

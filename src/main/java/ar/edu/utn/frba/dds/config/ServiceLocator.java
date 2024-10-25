@@ -78,6 +78,11 @@ public class ServiceLocator {
             instances.put(componentName, instance);
         }
 
+        if (componentName.equals(RegistroMovimiento.class.getName())) {
+            RegistroMovimiento instance = RegistroMovimiento.getInstancia();
+            instances.put(componentName, instance);
+        }
+
         // ========================= CONTROLLERS =========================
 
         if (componentName.equals(SessionController.class.getName())) {
@@ -208,9 +213,9 @@ public class ServiceLocator {
 
         if (componentName.equals(CanjeDePuntosController.class.getName())) {
             CanjeDePuntosController instance = new CanjeDePuntosController(
-                instanceOf(ColaboradorService.class),
-                instanceOf(CanjeDePuntosService.class),
-                instanceOf(OfertaProductosServiciosService.class));
+                    instanceOf(ColaboradorService.class),
+                    instanceOf(CanjeDePuntosService.class),
+                    instanceOf(OfertaProductosServiciosService.class));
             instances.put(componentName, instance);
         }
 
@@ -291,9 +296,9 @@ public class ServiceLocator {
             instances.put(componentName, instance);
         }
 
-        if(componentName.equals(OfertaProductosServiciosService.class.getName())){
+        if (componentName.equals(OfertaProductosServiciosService.class.getName())) {
             OfertaProductosServiciosService instance = new OfertaProductosServiciosService(
-                instanceOf(OfertaDeProductosRepository.class)
+                    instanceOf(OfertaDeProductosRepository.class)
             );
             instances.put(componentName, instance);
         }
@@ -320,18 +325,19 @@ public class ServiceLocator {
             ReporteService instance = ReporteService.de(
                     instanceOf(ReporteRepository.class),
                     instanceOf(DonacionViandaRepository.class),
+                    instanceOf(IncidenteRepository.class),
                     instanceOf(RegistroMovimiento.class));
             instances.put(componentName, instance);
         }
 
         if (componentName.equals(CanjeDePuntosService.class.getName())) {
             CanjeDePuntosService instance = new CanjeDePuntosService(
-                instanceOf(DonacionDineroRepository.class),
-                instanceOf(DistribucionViandasRepository.class),
-                instanceOf(DonacionViandaRepository.class),
-                instanceOf(RepartoDeTarjetasRepository.class),
-                instanceOf(HacerseCargoHeladeraRepository.class),
-                instanceOf(CanjeDePuntosRepository.class));
+                    instanceOf(DonacionDineroRepository.class),
+                    instanceOf(DistribucionViandasRepository.class),
+                    instanceOf(DonacionViandaRepository.class),
+                    instanceOf(RepartoDeTarjetasRepository.class),
+                    instanceOf(HacerseCargoHeladeraRepository.class),
+                    instanceOf(CanjeDePuntosRepository.class));
             instances.put(componentName, instance);
         }
 
