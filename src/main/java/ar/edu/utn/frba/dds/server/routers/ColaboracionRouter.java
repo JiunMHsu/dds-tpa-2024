@@ -11,7 +11,7 @@ import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionDineroController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionViandaController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.HacerseCargoHeladeraController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.OfertaProductosServiciosController;
-import ar.edu.utn.frba.dds.controllers.personaVulnerable.PersonaVulnerableController;
+import ar.edu.utn.frba.dds.controllers.colaboraciones.RepartoDeTarjetaController;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import io.javalin.config.RouterConfig;
 
@@ -59,10 +59,10 @@ public class ColaboracionRouter implements IRouter {
 
     private void routeRegistroPersonaVulnerable() {
         path("/registro-persona-vulnerable", () -> {
-            post(ServiceLocator.instanceOf(PersonaVulnerableController.class)::save, TipoRol.COLABORADOR);
+            post(ServiceLocator.instanceOf(RepartoDeTarjetaController.class)::save, TipoRol.COLABORADOR);
 
-            get("/new", ServiceLocator.instanceOf(PersonaVulnerableController.class)::create, TipoRol.COLABORADOR);
-            get("/{id}", ServiceLocator.instanceOf(PersonaVulnerableController.class)::show, TipoRol.COLABORADOR, TipoRol.ADMIN);
+            get("/new", ServiceLocator.instanceOf(RepartoDeTarjetaController.class)::create, TipoRol.COLABORADOR);
+            get("/{id}", ServiceLocator.instanceOf(RepartoDeTarjetaController.class)::show, TipoRol.COLABORADOR, TipoRol.ADMIN);
         });
     }
 

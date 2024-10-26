@@ -2,8 +2,8 @@ package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
-import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.RepartoDeTarjetas;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
@@ -12,6 +12,7 @@ import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.data.Documento;
 import ar.edu.utn.frba.dds.models.entities.data.TipoDocumento;
 import ar.edu.utn.frba.dds.models.entities.personaVulnerable.PersonaVulnerable;
+import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaPersonaVulnerable;
 import ar.edu.utn.frba.dds.services.colaboraciones.RepartoDeTarjetaService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
@@ -20,6 +21,7 @@ import ar.edu.utn.frba.dds.utils.UserRequired;
 import io.javalin.http.Context;
 import io.javalin.validation.ValidationException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,12 +40,10 @@ public class RepartoDeTarjetaController extends UserRequired implements ICrudVie
 
     @Override
     public void index(Context context) {
-
     }
 
     @Override
     public void show(Context context) {
-
     }
 
     @Override
@@ -72,8 +72,7 @@ public class RepartoDeTarjetaController extends UserRequired implements ICrudVie
             Direccion direccion = Direccion.formularioPV(
                     new Barrio(context.formParamAsClass("barrio", String.class).get()),
                     new Calle(context.formParamAsClass("calle", String.class).get()),
-                    Integer.valueOf(context.formParamAsClass("altura", Integer.class).get())
-            );
+                    context.formParamAsClass("altura", Integer.class).get());
 
             PersonaVulnerable nuevaPV = new PersonaVulnerable(
                     context.formParamAsClass("nombre", String.class).get(),
@@ -81,19 +80,19 @@ public class RepartoDeTarjetaController extends UserRequired implements ICrudVie
                     LocalDate.parse(context.formParamAsClass("fecha_nacimiento", String.class).get()),
                     LocalDate.now(),
                     direccion,
-                    Integer.valueOf(context.formParamAsClass("menores_a_cargo", Integer.class).get())
-            );
+                    context.formParamAsClass("menores_a_cargo", Integer.class).get());
 
-            // this.personaVulnerableService.guardarPV(nuevaPV);
+            TarjetaPersonaVulnerable tarjetaPV = TarjetaPersonaVulnerable.de(
+                    context.formParamAsClass("tarjeta", String.class).get(), nuevaPV);
 
-            // TarjetaPersonaVulnerable tarjeta = this.tarjetaPersonaVulnerableService.registrarTarjetaPV(context.formParamAsClass("tarjeta", String.class).get(), nuevaPV);
+            RepartoDeTarjetas repartoDeTarjetas = RepartoDeTarjetas.por(colaborador, LocalDateTime.now(), tarjetaPV, nuevaPV);
 
-            this.repartoDeTarjetaService.registrar(colaborador, nuevaPV, null);
+            this.repartoDeTarjetaService.registrar(repartoDeTarjetas);
 
             operationSuccess = true;
             redirectDTOS.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));
 
-        } catch (ResourceNotFoundException | NonColaboratorException e) {
+        } catch (NonColaboratorException e) {
             throw new UnauthorizedException();
         } catch (ValidationException v) {
             redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
@@ -106,16 +105,13 @@ public class RepartoDeTarjetaController extends UserRequired implements ICrudVie
 
     @Override
     public void edit(Context context) {
-
     }
 
     @Override
     public void update(Context context) {
-
     }
 
     @Override
     public void delete(Context context) {
-
     }
 }

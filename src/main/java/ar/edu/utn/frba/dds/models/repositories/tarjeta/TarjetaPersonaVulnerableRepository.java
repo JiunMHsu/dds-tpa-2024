@@ -8,7 +8,7 @@ import java.util.UUID;
 public class TarjetaPersonaVulnerableRepository implements WithSimplePersistenceUnit {
 
     public void guardar(TarjetaPersonaVulnerable tarjeta) {
-        withTransaction(() -> entityManager().persist(tarjeta));
+        entityManager().persist(tarjeta);
     }
 
     public Optional<TarjetaPersonaVulnerable> obtenerPorCodigo(String codigo) {

@@ -126,7 +126,6 @@ public class ServiceLocator {
         if (componentName.equals(PersonaVulnerableController.class.getName())) {
             PersonaVulnerableController instance = new PersonaVulnerableController(
                     instanceOf(PersonaVulnerableService.class),
-                    instanceOf(RepartoDeTarjetaService.class),
                     instanceOf(TarjetaPersonaVulnerableService.class),
                     instanceOf(ColaboradorService.class),
                     instanceOf(UsuarioService.class));
@@ -289,8 +288,7 @@ public class ServiceLocator {
             RepartoDeTarjetaService instance = new RepartoDeTarjetaService(
                     instanceOf(RepartoDeTarjetasRepository.class),
                     instanceOf(PersonaVulnerableRepository.class),
-                    instanceOf(TarjetaPersonaVulnerableRepository.class),
-                    instanceOf(ColaboradorRepository.class));
+                    instanceOf(TarjetaPersonaVulnerableRepository.class));
             instances.put(componentName, instance);
         }
 

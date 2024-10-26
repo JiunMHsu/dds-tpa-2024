@@ -8,7 +8,6 @@ import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.data.Documento;
 import ar.edu.utn.frba.dds.models.entities.data.TipoDocumento;
 import ar.edu.utn.frba.dds.models.entities.personaVulnerable.PersonaVulnerable;
-import ar.edu.utn.frba.dds.services.colaboraciones.RepartoDeTarjetaService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.personaVulnerable.PersonaVulnerableService;
 import ar.edu.utn.frba.dds.services.tarjeta.TarjetaPersonaVulnerableService;
@@ -28,18 +27,15 @@ import java.util.stream.Collectors;
 public class PersonaVulnerableController extends ColaboradorPorSession implements ICrudViewsHandler {
 
     private final PersonaVulnerableService personaVulnerableService;
-    private final RepartoDeTarjetaService repartoDeTarjetaService;
     private final TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService;
 
     public PersonaVulnerableController(PersonaVulnerableService personaVulnerableService,
-                                       RepartoDeTarjetaService repartoDeTarjetaService,
                                        TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService,
                                        ColaboradorService colaboradorService,
                                        UsuarioService usuarioService) {
 
         super(usuarioService, colaboradorService);
         this.personaVulnerableService = personaVulnerableService;
-        this.repartoDeTarjetaService = repartoDeTarjetaService;
         this.tarjetaPersonaVulnerableService = tarjetaPersonaVulnerableService;
     }
 
@@ -77,7 +73,6 @@ public class PersonaVulnerableController extends ColaboradorPorSession implement
 
     @Override
     public void create(Context context) {
-
     }
 
     @Override
@@ -101,7 +96,6 @@ public class PersonaVulnerableController extends ColaboradorPorSession implement
     }
 
     @Override
-
     public void update(Context context) {
         try {
             Documento documento = Documento.with(
