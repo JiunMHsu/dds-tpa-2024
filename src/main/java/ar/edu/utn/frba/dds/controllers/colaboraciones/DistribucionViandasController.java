@@ -5,8 +5,8 @@ import ar.edu.utn.frba.dds.dtos.colaboraciones.DistribucionViandasDTO;
 import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.ExcepcionCantidadDeViandas;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
@@ -69,7 +69,7 @@ public class DistribucionViandasController extends ColaboradorPorSession impleme
 
             boolean tieneColaboracion = colaborador.getFormaDeColaborar()
                     .stream()
-                    .anyMatch(colaboracion -> colaboracion.equals(Colaboracion.DISTRIBUCION_VIANDAS));
+                    .anyMatch(colaboracion -> colaboracion.equals(TipoColaboracion.DISTRIBUCION_VIANDAS));
 
             if (!tieneColaboracion) {
                 throw new UnauthorizedException("No tienes permiso");

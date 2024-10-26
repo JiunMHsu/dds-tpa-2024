@@ -7,5 +7,4 @@ public class DonacionDineroRepository extends ColaboracionRepository<DonacionDin
     public DonacionDineroRepository() {
         super(DonacionDinero.class);
     }
-
 }

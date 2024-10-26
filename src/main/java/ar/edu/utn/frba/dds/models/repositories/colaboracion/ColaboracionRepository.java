@@ -20,33 +20,35 @@ public abstract class ColaboracionRepository<T extends EntidadPersistente> imple
         entityManager().persist(colaboracion);
     }
 
-    public List<T> obtenerPorColaborador(Colaborador unColaborador) {
+    public List<T> buscarPorColaborador(Colaborador colaborador) {
         return entityManager()
-                .createQuery("from " + type.getName() + " c where c.colaborador = :id_colaborador and c.alta = :alta", type)
-                .setParameter("id_colaborador", unColaborador.getId())
-                .getResultList();
-    }
-
-    public List<T> obtenerPorColaboradorId(String id_string) {
-        UUID id = UUID.fromString(id_string);
-        return entityManager()
-                .createQuery("from " + type.getName() + " c where c.colaborador.usuario.id = :id_usuario and c.alta = :alta", type)
-                .setParameter("id_usuario", id_string)
+                .createQuery("from " + type.getName() + " c where c.alta = :alta and c.colaborador = :colaborador", type)
+                .setParameter("colaborador", colaborador)
                 .setParameter("alta", true)
                 .getResultList();
     }
 
-    public List<T> obtenerPorColaboradorAPartirDe(Colaborador unColaborador, LocalDateTime fechaHora) {
+    public List<T> buscarPorColaboradorAPartirDe(Colaborador unColaborador, LocalDateTime fechaHora) {
         return entityManager()
-                .createQuery("from " + type.getName() + " d where d.colaborador = :id_colaborador and d.fechaHora >= :fecha", type)
-                .setParameter("id_colaborador", unColaborador.getId())
+                .createQuery("from " + type.getName() + " c where c.alta = :alta and c.colaborador = :colaborador and c.fechaHora >= :fecha", type)
+                .setParameter("colaborador", unColaborador)
                 .setParameter("fecha", fechaHora)
+                .setParameter("alta", true)
+                .getResultList();
+    }
+
+    public List<T> buscarAPartirDe(LocalDateTime fechaHora) {
+        return entityManager()
+                .createQuery("from " + type.getName() + " c where c.alta = :alta and c.fechaHora >= :fecha", type)
+                .setParameter("fecha", fechaHora)
+                .setParameter("alta", true)
                 .getResultList();
     }
 
     public List<T> buscarTodos() {
         return entityManager()
-                .createQuery("from" + type.getName(), type)
+                .createQuery("from " + type.getName() + " c where c.alta = :alta", type)
+                .setParameter("alta", true)
                 .getResultList();
     }
 

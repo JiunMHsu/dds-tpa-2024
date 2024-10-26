@@ -6,7 +6,7 @@ import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
 import ar.edu.utn.frba.dds.exceptions.PersonaVulnerableNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
 import ar.edu.utn.frba.dds.models.entities.data.Calle;
@@ -91,7 +91,7 @@ public class PersonaVulnerableController extends ColaboradorPorSession implement
 
             boolean tieneColaboracion = colaborador.getFormaDeColaborar()
                     .stream()
-                    .anyMatch(colaboracion -> colaboracion.equals(Colaboracion.REPARTO_DE_TARJETAS));
+                    .anyMatch(colaboracion -> colaboracion.equals(TipoColaboracion.REPARTO_DE_TARJETAS));
 
             if (!tieneColaboracion) {
                 throw new UnauthorizedException("No tienes permiso");

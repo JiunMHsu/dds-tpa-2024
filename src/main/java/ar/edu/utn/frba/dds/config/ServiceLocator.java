@@ -264,13 +264,15 @@ public class ServiceLocator {
 
         if (componentName.equals(ColaboracionService.class.getName())) {
             ColaboracionService instance = new ColaboracionService(
-                    new SafeMailSender(),
                     instanceOf(UsuarioRepository.class),
                     instanceOf(ColaboradorRepository.class),
-                    instanceOf(DistribucionViandasRepository.class),
-                    instanceOf(DonacionDineroRepository.class),
                     instanceOf(DonacionViandaRepository.class),
+                    instanceOf(DonacionDineroRepository.class),
+                    instanceOf(DistribucionViandasRepository.class),
+                    instanceOf(HacerseCargoHeladeraRepository.class),
+                    instanceOf(OfertaDeProductosRepository.class),
                     instanceOf(RepartoDeTarjetasRepository.class),
+                    new SafeMailSender(),
                     instanceOf(MensajeRepository.class));
             instances.put(componentName, instance);
         }

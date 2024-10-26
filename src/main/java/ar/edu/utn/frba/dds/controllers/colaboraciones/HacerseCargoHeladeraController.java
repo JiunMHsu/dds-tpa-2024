@@ -5,8 +5,8 @@ import ar.edu.utn.frba.dds.dtos.colaboraciones.HacerseCargoHeladeraDTO;
 import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.HacerseCargoHeladera;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.services.colaboraciones.HacerseCargoHeladeraService;
@@ -69,7 +69,7 @@ public class HacerseCargoHeladeraController extends ColaboradorPorSession implem
 
             boolean tieneColaboracion = colaborador.getFormaDeColaborar()
                     .stream()
-                    .anyMatch(colaboracion -> colaboracion.equals(Colaboracion.HACERSE_CARGO_HELADERA));
+                    .anyMatch(colaboracion -> colaboracion.equals(TipoColaboracion.HACERSE_CARGO_HELADERA));
 
             if (!tieneColaboracion) {
                 throw new UnauthorizedException("No tienes permiso");

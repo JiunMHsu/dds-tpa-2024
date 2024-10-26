@@ -5,8 +5,8 @@ import ar.edu.utn.frba.dds.dtos.colaboraciones.DonacionDineroDTO;
 import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDinero;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.services.colaboraciones.DonacionDineroService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
@@ -64,7 +64,7 @@ public class DonacionDineroController extends ColaboradorPorSession implements I
 
             boolean tieneColaboracion = colaborador.getFormaDeColaborar()
                     .stream()
-                    .anyMatch(colaboracion -> colaboracion.equals(Colaboracion.DONACION_DINERO));
+                    .anyMatch(colaboracion -> colaboracion.equals(TipoColaboracion.DONACION_DINERO));
 
             if (!tieneColaboracion) {
                 throw new UnauthorizedException("No tienes permiso");

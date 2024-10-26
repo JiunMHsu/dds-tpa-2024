@@ -9,6 +9,4 @@ public interface IColaboradorRepository extends ICrudRepository<Colaborador> {
     Optional<Colaborador> buscarPorEmail(String email);
 
     Optional<Colaborador> buscarPorUsuario(Usuario usuario);
-
-    Optional<Colaborador> buscarPorId(String id);
 }

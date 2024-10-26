@@ -17,6 +17,8 @@ import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladeraRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetasRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.mensajeria.MensajeRepository;
@@ -32,38 +34,69 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 public class ColaboracionService implements WithSimplePersistenceUnit {
 
-    private final ISender mailSender;
     private final UsuarioRepository usuarioRepository;
     private final ColaboradorRepository colaboradorRepository;
-    private final DistribucionViandasRepository distribucionViandasRepository;
-    private final DonacionDineroRepository donacionDineroRepository;
+
     private final DonacionViandaRepository donacionViandaRepository;
+    private final DonacionDineroRepository donacionDineroRepository;
+    private final DistribucionViandasRepository distribucionViandasRepository;
+    private final HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository;
+    private final OfertaDeProductosRepository ofertaDeProductosRepository;
     private final RepartoDeTarjetasRepository repartoDeTarjetasRepository;
+
+    private final ISender mailSender;
     private final MensajeRepository mensajeRepository;
 
-    public ColaboracionService(ISender mailSender,
-                               UsuarioRepository usuarioRepository,
+    public ColaboracionService(UsuarioRepository usuarioRepository,
                                ColaboradorRepository colaboradorRepository,
-                               DistribucionViandasRepository distribucionViandasRepository,
-                               DonacionDineroRepository donacionDineroRepository,
                                DonacionViandaRepository donacionViandaRepository,
+                               DonacionDineroRepository donacionDineroRepository,
+                               DistribucionViandasRepository distribucionViandasRepository,
+                               HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository,
+                               OfertaDeProductosRepository ofertaDeProductosRepository,
                                RepartoDeTarjetasRepository repartoDeTarjetasRepository,
+                               ISender mailSender,
                                MensajeRepository mensajeRepository) {
-
-        this.mailSender = mailSender;
         this.usuarioRepository = usuarioRepository;
         this.colaboradorRepository = colaboradorRepository;
-        this.distribucionViandasRepository = distribucionViandasRepository;
-        this.donacionDineroRepository = donacionDineroRepository;
         this.donacionViandaRepository = donacionViandaRepository;
+        this.donacionDineroRepository = donacionDineroRepository;
+        this.distribucionViandasRepository = distribucionViandasRepository;
+        this.hacerseCargoHeladeraRepository = hacerseCargoHeladeraRepository;
+        this.ofertaDeProductosRepository = ofertaDeProductosRepository;
         this.repartoDeTarjetasRepository = repartoDeTarjetasRepository;
+        this.mailSender = mailSender;
         this.mensajeRepository = mensajeRepository;
+    }
+
+    List<Object> buscarTodas() {
+        List<Object> colaboraciones = new ArrayList<>();
+        colaboraciones.addAll(donacionViandaRepository.buscarTodos());
+        colaboraciones.addAll(donacionDineroRepository.buscarTodos());
+        colaboraciones.addAll(distribucionViandasRepository.buscarTodos());
+        colaboraciones.addAll(hacerseCargoHeladeraRepository.buscarTodos());
+        colaboraciones.addAll(ofertaDeProductosRepository.buscarTodos());
+        colaboraciones.addAll(repartoDeTarjetasRepository.buscarTodos());
+        return colaboraciones;
+    }
+
+    List<Object> buscarTodasPorColaborador(Colaborador colaborador) {
+        List<Object> colaboraciones = new ArrayList<>();
+        colaboraciones.addAll(donacionViandaRepository.buscarPorColaborador(colaborador));
+        colaboraciones.addAll(donacionDineroRepository.buscarPorColaborador(colaborador));
+        colaboraciones.addAll(distribucionViandasRepository.buscarPorColaborador(colaborador));
+        colaboraciones.addAll(hacerseCargoHeladeraRepository.buscarPorColaborador(colaborador));
+        colaboraciones.addAll(ofertaDeProductosRepository.buscarPorColaborador(colaborador));
+        colaboraciones.addAll(repartoDeTarjetasRepository.buscarPorColaborador(colaborador));
+        return colaboraciones;
     }
 
     public void cargarColaboraciones(InputStream csv) throws CargaMasivaException {

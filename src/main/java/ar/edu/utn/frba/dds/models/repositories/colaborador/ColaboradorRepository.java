@@ -32,7 +32,8 @@ public class ColaboradorRepository implements IColaboradorRepository, WithSimple
     public Optional<Colaborador> buscarPorId(String id) {
         try {
             UUID uuid = UUID.fromString(id);
-            return Optional.ofNullable(entityManager().find(Colaborador.class, uuid));
+            return Optional.ofNullable(entityManager().find(Colaborador.class, uuid))
+                    .filter(Colaborador::getAlta);
         } catch (IllegalArgumentException e) {
             return Optional.empty();
         }
@@ -41,7 +42,8 @@ public class ColaboradorRepository implements IColaboradorRepository, WithSimple
     public Optional<Colaborador> buscarPorEmail(String email) {
         try {
             return Optional.of(entityManager()
-                    .createQuery("from Colaborador c where c.usuario.email = :email", Colaborador.class)
+                    .createQuery("from Colaborador c where c.alta = :alta and c.usuario.email = :email", Colaborador.class)
+                    .setParameter("alta", true)
                     .setParameter("email", email)
                     .getSingleResult());
         } catch (NoResultException e) {
@@ -52,8 +54,9 @@ public class ColaboradorRepository implements IColaboradorRepository, WithSimple
     public Optional<Colaborador> buscarPorUsuario(Usuario usuario) {
         try {
             return Optional.of(entityManager()
-                    .createQuery("from Colaborador c where c.usuario.id = :usuario_id", Colaborador.class)
-                    .setParameter("usuario_id", usuario.getId())
+                    .createQuery("from Colaborador c where c.alta = :alta and c.usuario = :usuario", Colaborador.class)
+                    .setParameter("alta", true)
+                    .setParameter("usuario", usuario)
                     .getSingleResult());
         } catch (NoResultException e) {
             return Optional.empty();
@@ -62,7 +65,8 @@ public class ColaboradorRepository implements IColaboradorRepository, WithSimple
 
     public List<Colaborador> buscarTodos() {
         return entityManager()
-                .createQuery("from Colaborador ", Colaborador.class)
+                .createQuery("from Colaborador c where c.alta = :alta", Colaborador.class)
+                .setParameter("alta", true)
                 .getResultList();
     }
 }

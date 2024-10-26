@@ -1,14 +1,15 @@
 package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.ColaboracionDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.OfertaDeProductosDTO;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
 import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.RubroOferta;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Imagen;
 import ar.edu.utn.frba.dds.services.colaboraciones.OfertaProductosServiciosService;
@@ -28,7 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class OfertaProductosServiciosController extends ColaboradorPorSession implements ICrudViewsHandler {
 
@@ -50,9 +50,9 @@ public class OfertaProductosServiciosController extends ColaboradorPorSession im
     public void index(Context context) {
         List<OfertaDeProductos> productos = this.ofertaProductosServiciosService.buscarTodos();
 
-        List<OfertaDeProductosDTO> ofertaDeProductosDTOS = productos.stream()
+        List<ColaboracionDTO> ofertaDeProductosDTOS = productos.stream()
                 .map(OfertaDeProductosDTO::preview)
-                .collect(Collectors.toList());
+                .toList();
 
         Map<String, Object> model = new HashMap<>();
         model.put("colaboraciones", ofertaDeProductosDTOS);
@@ -87,7 +87,7 @@ public class OfertaProductosServiciosController extends ColaboradorPorSession im
 
             boolean tieneColaboracion = colaborador.getFormaDeColaborar()
                     .stream()
-                    .anyMatch(colaboracion -> colaboracion.equals(Colaboracion.OFERTA_DE_PRODUCTOS));
+                    .anyMatch(colaboracion -> colaboracion.equals(TipoColaboracion.OFERTA_DE_PRODUCTOS));
 
             if (!tieneColaboracion) {
                 throw new UnauthorizedException("No tienes permiso");

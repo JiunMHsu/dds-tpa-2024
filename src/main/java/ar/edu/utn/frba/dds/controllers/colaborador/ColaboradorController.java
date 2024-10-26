@@ -1,11 +1,11 @@
 package ar.edu.utn.frba.dds.controllers.colaborador;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
-import ar.edu.utn.frba.dds.dtos.colaboraciones.ColaboracionDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.TipoColaboracionDTO;
 import ar.edu.utn.frba.dds.dtos.colaborador.ColaboradorDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
 import ar.edu.utn.frba.dds.models.entities.data.Calle;
@@ -120,14 +120,14 @@ public class ColaboradorController implements ICrudViewsHandler {
 
         String colaboracionesParam = context.formParam("colaboraciones");
 
-        ArrayList<Colaboracion> colaboraciones = new ArrayList<>();
+        ArrayList<TipoColaboracion> colaboraciones = new ArrayList<>();
         if (colaboracionesParam != null && !colaboracionesParam.isEmpty()) {
             String[] colaboracionesStr = colaboracionesParam.split(",");
 
             // Convertimos cada string en un valor del enum Colaboracion
             for (String colaboracionStr : colaboracionesStr) {
                 try {
-                    Colaboracion colaboracion = Colaboracion.valueOf(colaboracionStr.trim().toUpperCase());
+                    TipoColaboracion colaboracion = TipoColaboracion.valueOf(colaboracionStr.trim().toUpperCase());
                     colaboraciones.add(colaboracion);
                 } catch (IllegalArgumentException e) {
                     //nunca va a pasar esto
@@ -157,7 +157,7 @@ public class ColaboradorController implements ICrudViewsHandler {
             nuevoColaborador.setFechaNacimiento(fechaNacimiento);
         }
 
-        this.colaboradorService.guardarColaborador(nuevoColaborador);
+        this.colaboradorService.guardar(nuevoColaborador);
         context.redirect("/colaboradores/sign_up_exitoso.hbs");
     }
 
@@ -199,11 +199,12 @@ public class ColaboradorController implements ICrudViewsHandler {
         String pathId = context.pathParam("id");
         Colaborador colaborador = restrictByOwner(context, pathId);
 
-        List<Colaboracion> formasRegistradas = colaborador.getFormaDeColaborar();
-        List<Colaboracion> formasPermitidas = colaborador.getTipoColaborador().colaboracionesPermitidas();
+        List<TipoColaboracion> formasRegistradas = colaborador.getFormaDeColaborar();
+        System.out.println(formasRegistradas);
+        List<TipoColaboracion> formasPermitidas = colaborador.getTipoColaborador().colaboracionesPermitidas();
 
-        List<ColaboracionDTO> colaboracionDTOS = formasPermitidas.stream()
-                .map(c -> ColaboracionDTO.configOption(c, formasRegistradas.contains(c)))
+        List<TipoColaboracionDTO> colaboracionDTOS = formasPermitidas.stream()
+                .map(c -> TipoColaboracionDTO.configOption(c, formasRegistradas.contains(c)))
                 .toList();
 
         Map<String, Object> model = new HashMap<>();
@@ -222,8 +223,8 @@ public class ColaboradorController implements ICrudViewsHandler {
 
         try {
             List<String> colaboracionesForm = context.formParams("colaboracion");
-            ArrayList<Colaboracion> colaboraciones = colaboracionesForm.stream()
-                    .map(Colaboracion::valueOf).collect(Collectors.toCollection(ArrayList::new));
+            ArrayList<TipoColaboracion> colaboraciones = colaboracionesForm.stream()
+                    .map(TipoColaboracion::valueOf).collect(Collectors.toCollection(ArrayList::new));
 
             System.out.println(colaboraciones);
 

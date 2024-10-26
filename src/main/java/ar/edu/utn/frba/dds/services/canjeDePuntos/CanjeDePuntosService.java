@@ -79,7 +79,7 @@ public class CanjeDePuntosService {
 
     private Double calcularPorPesosDonados() {
         List<DonacionDinero> listaDonacionesDinero = this.donacionDineroRepository
-                .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
+                .buscarPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
         Double pesosDonados = listaDonacionesDinero.stream()
                 .mapToDouble(DonacionDinero::getMonto)
@@ -93,7 +93,7 @@ public class CanjeDePuntosService {
 
     private Double calcularPorViandasDistribuidas() {
         List<DistribucionViandas> listaViandasDistribuidas = this.distribucionViandasRepository
-                .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
+                .buscarPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
         Double viandasDistribuidas = listaViandasDistribuidas.stream()
                 .mapToDouble(DistribucionViandas::getViandas)
@@ -107,7 +107,7 @@ public class CanjeDePuntosService {
 
     private Double calcularPorViandasDonadas() {
         List<DonacionVianda> listaViandasDonadas = this.donacionViandaRepository
-                .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
+                .buscarPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
         Double viandasDonadas = (double) listaViandasDonadas.size();
 
@@ -119,7 +119,7 @@ public class CanjeDePuntosService {
 
     private Double calcularPorTarjetasRepartidas() {
         List<RepartoDeTarjetas> listaTarjetasRepartidas = this.repartoDeTarjetasRepository
-                .obtenerPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
+                .buscarPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
         Double tarjetasRepartidas = (double) listaTarjetasRepartidas.size();
 
@@ -131,7 +131,7 @@ public class CanjeDePuntosService {
 
     private Double calcularPorHeladerasActivas() {
         List<Heladera> listaHeladerasACargo = this.hacerseCargoHeladeraRepository
-                .obtenerPorColaborador(colaborador)
+                .buscarPorColaborador(colaborador)
                 .stream()
                 .map(HacerseCargoHeladera::getHeladeraACargo)
                 .toList();
