@@ -165,7 +165,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
 
         heladeraActualizada.setRangoTemperatura(new RangoTemperatura(nuevoMaximo, nuevoMinimo));
 
-        this.heladeraService.actualizarHeladera(heladeraActualizada);
+        this.heladeraService.actualizarHeladeras(heladeraActualizada);
 
         context.status(HttpStatus.OK);
         // mostrar algo por exitoso

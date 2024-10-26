@@ -41,12 +41,12 @@ public class HeladerasMasCercanasTest {
 //        heladera5.setViandas(40);
 //        heladera6.setViandas(45);
 //
-//        heladeraRepository.guardar(heladera1);
-//        heladeraRepository.guardar(heladera2);
-//        heladeraRepository.guardar(heladera3);
-//        heladeraRepository.guardar(heladera4);
-//        heladeraRepository.guardar(heladera5);
-//        heladeraRepository.guardar(heladera6);
+//        heladeraRepository.registrar(heladera1);
+//        heladeraRepository.registrar(heladera2);
+//        heladeraRepository.registrar(heladera3);
+//        heladeraRepository.registrar(heladera4);
+//        heladeraRepository.registrar(heladera5);
+//        heladeraRepository.registrar(heladera6);
 //
 //        List<Heladera> heladerasSeleccionadas = new ArrayList<>();
 //        heladerasSeleccionadas.add(heladera1);

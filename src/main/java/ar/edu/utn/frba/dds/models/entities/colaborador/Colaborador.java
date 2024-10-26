@@ -149,4 +149,8 @@ public class Colaborador extends EntidadPersistente {
                 .build();
     }
 
+    public boolean puedeColaborar(TipoColaboracion tipoColaboracion) {
+        return this.formaDeColaborar.contains(tipoColaboracion);
+    }
+
 }

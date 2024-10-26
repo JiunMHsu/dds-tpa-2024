@@ -45,7 +45,7 @@ public interface ICrudViewsHandler {
     void edit(Context context);
 
     /**
-     * Recibe los datos del recurso modificado y pretende guardar dicha modificación.
+     * Recibe los datos del recurso modificado y pretende registrar dicha modificación.
      * La ruta asociada debería ser POST /recurso/{id}/edit
      *
      * @param context Objeto Context por io.javalin.http
