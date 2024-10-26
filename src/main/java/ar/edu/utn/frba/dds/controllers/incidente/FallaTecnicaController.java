@@ -7,8 +7,8 @@ import ar.edu.utn.frba.dds.models.entities.data.Imagen;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
-import ar.edu.utn.frba.dds.services.files.FileService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
+import ar.edu.utn.frba.dds.services.images.ImageService;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.ColaboradorPorSession;
@@ -26,11 +26,11 @@ public class FallaTecnicaController extends ColaboradorPorSession {
 
     private final IncidenteService incidenteService;
     private final HeladeraService heladeraService;
-    private final FileService fileService;
+    private final ImageService fileService;
 
     public FallaTecnicaController(IncidenteService incidenteService,
                                   HeladeraService heladeraService,
-                                  FileService fileService,
+                                  ImageService fileService,
                                   ColaboradorService colaboradorService,
                                   UsuarioService usuarioService) {
         super(usuarioService, colaboradorService);

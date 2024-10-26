@@ -45,8 +45,8 @@ import ar.edu.utn.frba.dds.services.colaboraciones.HacerseCargoHeladeraService;
 import ar.edu.utn.frba.dds.services.colaboraciones.OfertaProductosServiciosService;
 import ar.edu.utn.frba.dds.services.colaboraciones.RepartoDeTarjetaService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
-import ar.edu.utn.frba.dds.services.files.FileService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
+import ar.edu.utn.frba.dds.services.images.ImageService;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.personaVulnerable.PersonaVulnerableService;
 import ar.edu.utn.frba.dds.services.puntoIdeal.PuntoIdealService;
@@ -109,7 +109,7 @@ public class ServiceLocator {
             FallaTecnicaController instance = new FallaTecnicaController(
                     instanceOf(IncidenteService.class),
                     instanceOf(HeladeraService.class),
-                    instanceOf(FileService.class),
+                    instanceOf(ImageService.class),
                     instanceOf(ColaboradorService.class),
                     instanceOf(UsuarioService.class));
             instances.put(componentName, instance);
@@ -172,10 +172,10 @@ public class ServiceLocator {
 
         if (componentName.equals(OfertaProductosServiciosController.class.getName())) {
             OfertaProductosServiciosController instance = new OfertaProductosServiciosController(
-                    instanceOf(OfertaProductosServiciosService.class),
-                    instanceOf(FileService.class),
                     instanceOf(UsuarioService.class),
-                    instanceOf(ColaboradorService.class));
+                    instanceOf(ColaboradorService.class),
+                    instanceOf(OfertaProductosServiciosService.class),
+                    instanceOf(ImageService.class));
             instances.put(componentName, instance);
         }
 
@@ -220,8 +220,8 @@ public class ServiceLocator {
 
         // ========================= SERVICES =========================
 
-        if (componentName.equals(FileService.class.getName())) {
-            FileService instance = new FileService(instanceOf(RandomString.class));
+        if (componentName.equals(ImageService.class.getName())) {
+            ImageService instance = new ImageService(instanceOf(RandomString.class));
             instances.put(componentName, instance);
         }
 

@@ -28,9 +28,9 @@
                 <select name="rubro" required>
                     <option value="" disabled selected>Seleccionar</option>
                     <!-- iterar según define el sistema -->
-                    <option value="GASTRONOMIA">Gastronomía</option>
-                    <option value="ELECTRONICA">Electrónica</option>
-                    <option value="HOGAR">Hogar</option>
+                    {{#each rubros}}
+                        <option value="{{this}}">{{this}}</option>
+                    {{/each}}
                 </select>
             </label>
 

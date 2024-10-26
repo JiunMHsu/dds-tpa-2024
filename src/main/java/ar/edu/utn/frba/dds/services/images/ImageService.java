@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.services.files;
+package ar.edu.utn.frba.dds.services.images;
 
 import ar.edu.utn.frba.dds.utils.AppProperties;
 import ar.edu.utn.frba.dds.utils.RandomString;
@@ -9,11 +9,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
-public class FileService {
+public class ImageService {
 
     private final RandomString randomString;
 
-    public FileService(RandomString randomString) {
+    public ImageService(RandomString randomString) {
         this.randomString = randomString;
     }
 
