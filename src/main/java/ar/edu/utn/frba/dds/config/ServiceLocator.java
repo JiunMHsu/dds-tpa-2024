@@ -181,10 +181,10 @@ public class ServiceLocator {
 
         if (componentName.equals(HacerseCargoHeladeraController.class.getName())) {
             HacerseCargoHeladeraController instance = new HacerseCargoHeladeraController(
-                    instanceOf(HacerseCargoHeladeraService.class),
-                    instanceOf(HeladeraService.class),
                     instanceOf(UsuarioService.class),
-                    instanceOf(ColaboradorService.class));
+                    instanceOf(ColaboradorService.class),
+                    instanceOf(HacerseCargoHeladeraService.class),
+                    instanceOf(HeladeraService.class));
             instances.put(componentName, instance);
         }
 
@@ -302,6 +302,12 @@ public class ServiceLocator {
         if (componentName.equals(DonacionDineroService.class.getName())) {
             DonacionDineroService instance = new DonacionDineroService(
                     instanceOf(DonacionDineroRepository.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(HacerseCargoHeladeraService.class.getName())) {
+            HacerseCargoHeladeraService instance = new HacerseCargoHeladeraService(
+                    instanceOf(HacerseCargoHeladeraRepository.class));
             instances.put(componentName, instance);
         }
 

@@ -11,12 +11,12 @@ public class PersonaVulnerableRepository implements IPersonaVulnerableRepository
 
     @Override
     public void guardar(PersonaVulnerable personaVulnerable) {
-        withTransaction(() -> entityManager().persist(personaVulnerable));
+        entityManager().persist(personaVulnerable);
     }
 
     @Override
     public void actualizar(PersonaVulnerable personaVulnerable) {
-        withTransaction(() -> entityManager().merge(personaVulnerable));
+        entityManager().merge(personaVulnerable);
     }
 
     @Override

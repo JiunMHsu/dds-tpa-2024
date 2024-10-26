@@ -85,7 +85,7 @@ public class ColaboracionRouter implements IRouter {
     }
 
     private void routeEncargarseDeHeladeras() {
-        path("/encargarse-por-heladeras", () -> {
+        path("/encargarse-de-heladeras", () -> {
             post(ServiceLocator.instanceOf(HacerseCargoHeladeraController.class)::save, TipoRol.COLABORADOR);
 
             get("/new", ServiceLocator.instanceOf(HacerseCargoHeladeraController.class)::create, TipoRol.COLABORADOR);

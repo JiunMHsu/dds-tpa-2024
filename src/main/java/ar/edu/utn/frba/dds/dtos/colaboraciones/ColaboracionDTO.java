@@ -22,7 +22,7 @@ public class ColaboracionDTO {
             case DONACION_DINERO -> "donacion-dinero";
             case DISTRIBUCION_VIANDAS -> "distribucion-viandas";
             case ENTREGA_VIANDA -> "entrega-viandas";
-            case HACERSE_CARGO_HELADERA -> "encargarse-por-heladeras";
+            case HACERSE_CARGO_HELADERA -> "encargarse-de-heladeras";
             case OFERTA_DE_PRODUCTOS -> "oferta-producto-servicio";
             case REPARTO_DE_TARJETAS -> "registro-persona-vulnerable";
         };
