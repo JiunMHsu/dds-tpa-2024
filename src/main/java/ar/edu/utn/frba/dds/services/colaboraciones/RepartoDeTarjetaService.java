@@ -29,7 +29,7 @@ public class RepartoDeTarjetaService {
         this.colaboradorRepository = colaboradorRepository;
     }
 
-    public void registrarReparto(Colaborador colaborador, PersonaVulnerable personaVulnerable, TarjetaPersonaVulnerable tarjeta) {
+    public void registrar(Colaborador colaborador, PersonaVulnerable personaVulnerable, TarjetaPersonaVulnerable tarjeta) {
 
         Optional<Colaborador> colaboradorExistente = colaboradorRepository.buscarPorId(colaborador.getId().toString());
         if (colaboradorExistente.isEmpty()) {
@@ -46,12 +46,7 @@ public class RepartoDeTarjetaService {
             throw new IllegalArgumentException("La tarjeta no existe en la base por datos");
         }
 
-        RepartoDeTarjetas reparto = RepartoDeTarjetas.por(
-                colaborador,
-                LocalDateTime.now(),
-                tarjeta,
-                personaVulnerable
-        );
+        RepartoDeTarjetas reparto = RepartoDeTarjetas.por(colaborador, LocalDateTime.now(), tarjeta, personaVulnerable);
 
         repartoDeTarjetasRepository.guardar(reparto);
     }

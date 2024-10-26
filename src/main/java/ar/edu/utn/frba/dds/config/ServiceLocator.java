@@ -7,6 +7,7 @@ import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionDineroController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionViandaController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.HacerseCargoHeladeraController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.OfertaProductosServiciosController;
+import ar.edu.utn.frba.dds.controllers.colaboraciones.RepartoDeTarjetaController;
 import ar.edu.utn.frba.dds.controllers.colaborador.ColaboradorController;
 import ar.edu.utn.frba.dds.controllers.heladera.HeladeraController;
 import ar.edu.utn.frba.dds.controllers.heladera.PuntoIdealController;
@@ -185,6 +186,14 @@ public class ServiceLocator {
                     instanceOf(ColaboradorService.class),
                     instanceOf(HacerseCargoHeladeraService.class),
                     instanceOf(HeladeraService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(RepartoDeTarjetaController.class.getName())) {
+            RepartoDeTarjetaController instance = new RepartoDeTarjetaController(
+                    instanceOf(UsuarioService.class),
+                    instanceOf(ColaboradorService.class),
+                    instanceOf(RepartoDeTarjetaService.class));
             instances.put(componentName, instance);
         }
 
