@@ -24,12 +24,13 @@ public class DistribucionViandasService implements WithSimplePersistenceUnit {
         Heladera heladeraDestino = distribucionViandas.getDestino();
         Integer viandas = distribucionViandas.getViandas();
 
-        beginTransaction();
         heladeraOrigen.quitarViandas(viandas);
         heladeraDestino.agregarViandas(viandas);
-        heladeraRepository.actualizar(heladeraOrigen);
-        heladeraRepository.actualizar(heladeraDestino);
-        distribucionViandasRepository.guardar(distribucionViandas);
+
+        beginTransaction();
+        this.heladeraRepository.actualizar(heladeraOrigen);
+        this.heladeraRepository.actualizar(heladeraDestino);
+        this.distribucionViandasRepository.guardar(distribucionViandas);
         commitTransaction();
     }
 

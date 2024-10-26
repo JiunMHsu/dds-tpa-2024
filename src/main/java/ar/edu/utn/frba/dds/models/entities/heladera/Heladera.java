@@ -98,25 +98,18 @@ public class Heladera extends EntidadPersistente {
     }
 
     public static Heladera con(Integer capacidad) {
-        return Heladera
-                .builder()
-                .capacidad(capacidad)
-                .build();
+        return Heladera.builder().capacidad(capacidad).build();
     }
 
     public void agregarViandas(Integer cantViandas) throws ExcepcionCantidadDeViandas {
-        if (!this.puedeAgregarViandas(cantViandas)) {
-            throw new ExcepcionCantidadDeViandas("La capacidad por la heladera esta excedida");
-        }
-
+        if (!this.puedeAgregarViandas(cantViandas))
+            throw new ExcepcionCantidadDeViandas();
         viandas += cantViandas;
     }
 
     public void quitarViandas(Integer cantViandas) throws ExcepcionCantidadDeViandas {
-        if (!this.puedeQuitarViandas(cantViandas)) {
-            throw new ExcepcionCantidadDeViandas("La heladera esta vacia");
-        }
-
+        if (!this.puedeQuitarViandas(cantViandas))
+            throw new ExcepcionCantidadDeViandas();
         viandas -= cantViandas;
     }
 

@@ -149,8 +149,7 @@ public class ServiceLocator {
             DistribucionViandasController instance = new DistribucionViandasController(
                     instanceOf(UsuarioService.class),
                     instanceOf(ColaboradorService.class),
-                    instanceOf(DistribucionViandasService.class),
-                    instanceOf(HeladeraService.class));
+                    instanceOf(DistribucionViandasService.class));
             instances.put(componentName, instance);
         }
 
