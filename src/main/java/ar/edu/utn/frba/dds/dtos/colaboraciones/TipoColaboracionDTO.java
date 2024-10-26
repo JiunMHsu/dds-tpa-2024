@@ -46,13 +46,13 @@ public class TipoColaboracionDTO {
 
     protected static String getPath(TipoColaboracion colaboracion) {
         return switch (colaboracion) {
-            case DONACION_VIANDAS -> "donacion-dinero";
-            case DONACION_DINERO -> "donacion-vianda";
-            case DISTRIBUCION_VIANDAS -> "registro-persona-vulnerable";
+            case DONACION_VIANDAS -> "donacion-vianda";
+            case DONACION_DINERO -> "donacion-dinero";
+            case DISTRIBUCION_VIANDAS -> "distribucion-viandas";
             case ENTREGA_VIANDA -> "entrega-viandas";
-            case HACERSE_CARGO_HELADERA -> "distribucion-viandas";
+            case HACERSE_CARGO_HELADERA -> "encargarse-por-heladeras";
             case OFERTA_DE_PRODUCTOS -> "oferta-producto-servicio";
-            case REPARTO_DE_TARJETAS -> "encargarse-por-heladeras";
+            case REPARTO_DE_TARJETAS -> "registro-persona-vulnerable";
         };
     }
 }

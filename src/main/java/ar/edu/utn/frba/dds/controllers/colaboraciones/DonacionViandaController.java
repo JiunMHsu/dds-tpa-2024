@@ -78,7 +78,7 @@ public class DonacionViandaController extends ColaboradorPorSession implements I
             context.render("colaboraciones/donacion_vianda_crear.hbs");
 
         } catch (ResourceNotFoundException | NonColaboratorException e) {
-            throw new UnauthorizedException();
+            throw new UnauthorizedException(e.getMessage());
         }
     }
 
