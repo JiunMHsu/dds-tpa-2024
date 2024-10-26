@@ -18,7 +18,7 @@ public class DonacionViandaService implements WithSimplePersistenceUnit {
     public void registrar(DonacionVianda donacionVianda) {
         beginTransaction();
         this.viandaRepository.guardar(donacionVianda.getVianda());
-        donacionViandaRepository.guardar(donacionVianda);
+        this.donacionViandaRepository.guardar(donacionVianda);
         commitTransaction();
     }
 
