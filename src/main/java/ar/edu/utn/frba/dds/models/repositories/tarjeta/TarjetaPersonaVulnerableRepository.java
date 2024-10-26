@@ -17,6 +17,7 @@ public class TarjetaPersonaVulnerableRepository implements WithSimplePersistence
                 .setParameter("codigo", codigo)
                 .getSingleResult());
     }
+
     public void eliminar(TarjetaPersonaVulnerable tarjeta) {
         withTransaction(() -> entityManager().remove(tarjeta));
     }
@@ -25,9 +26,9 @@ public class TarjetaPersonaVulnerableRepository implements WithSimplePersistence
         try {
             UUID uuid = UUID.fromString(personaId);
             return Optional.ofNullable(entityManager()
-                .createQuery("from TarjetaPersonaVulnerable t where t.duenio.id = :personaId", TarjetaPersonaVulnerable.class)
-                .setParameter("personaId", uuid)
-                .getSingleResult());
+                    .createQuery("from TarjetaPersonaVulnerable t where t.duenio.id = :personaId", TarjetaPersonaVulnerable.class)
+                    .setParameter("personaId", uuid)
+                    .getSingleResult());
         } catch (IllegalArgumentException e) {
             return Optional.empty();
         }

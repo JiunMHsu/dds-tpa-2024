@@ -11,10 +11,12 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
 
     private final IColaboradorRepository colaboradorRepository;
 
-    public Optional<Colaborador> buscarPorId(String id){return this.colaboradorRepository.buscarPorId(id);}
-
     public ColaboradorService(IColaboradorRepository colaboradorRepository) {
         this.colaboradorRepository = colaboradorRepository;
+    }
+
+    public Optional<Colaborador> buscarPorId(String id) {
+        return this.colaboradorRepository.buscarPorId(id);
     }
 
     public void guardarColaborador(Colaborador colaborador) {

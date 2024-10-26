@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.services.canjeDePuntos;
 
-import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDinero;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
@@ -21,7 +20,6 @@ import java.time.Period;
 import java.time.chrono.ChronoLocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import lombok.Builder;
 import lombok.Setter;
 
 @Setter

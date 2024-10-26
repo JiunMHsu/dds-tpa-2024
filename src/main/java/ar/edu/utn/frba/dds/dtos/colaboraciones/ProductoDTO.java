@@ -8,7 +8,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @SuperBuilder
-public class ProductoDTO{
+public class ProductoDTO {
 
     private String id;
 

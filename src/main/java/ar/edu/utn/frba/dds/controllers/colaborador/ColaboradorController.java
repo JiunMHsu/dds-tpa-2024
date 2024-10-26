@@ -3,7 +3,6 @@ package ar.edu.utn.frba.dds.controllers.colaborador;
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.ColaboracionDTO;
 import ar.edu.utn.frba.dds.dtos.colaborador.ColaboradorDTO;
-import ar.edu.utn.frba.dds.dtos.heladera.HeladeraDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;

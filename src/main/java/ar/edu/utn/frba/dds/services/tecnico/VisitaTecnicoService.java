@@ -7,7 +7,11 @@ public class VisitaTecnicoService {
 
     private final VisitaTecnicoRepository visitaTecnicoRepository;
 
-    public VisitaTecnicoService (VisitaTecnicoRepository visitaTecnicoRepository) { this.visitaTecnicoRepository = visitaTecnicoRepository; }
+    public VisitaTecnicoService(VisitaTecnicoRepository visitaTecnicoRepository) {
+        this.visitaTecnicoRepository = visitaTecnicoRepository;
+    }
 
-    public void registrarVisita(VisitaTecnico visitaTecnico) { this.visitaTecnicoRepository.guardar(visitaTecnico); }
+    public void registrarVisita(VisitaTecnico visitaTecnico) {
+        this.visitaTecnicoRepository.guardar(visitaTecnico);
+    }
 }

@@ -1,18 +1,11 @@
 package ar.edu.utn.frba.dds.dtos.colaborador;
 
-import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.colaborador.TipoColaborador;
-import ar.edu.utn.frba.dds.models.entities.data.Contacto;
-import ar.edu.utn.frba.dds.models.entities.data.Direccion;
-import ar.edu.utn.frba.dds.models.entities.formulario.FormularioRespondido;
-import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
+import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -38,14 +31,16 @@ public class ColaboradorDTO {
     private String apellido;
 
     private String fechaNacimiento;
+
     public static ColaboradorDTO completa(Colaborador colaborador) {
 
-        if (colaborador.getTipoColaborador().equals(TipoColaborador.HUMANO)){
+        if (colaborador.getTipoColaborador().equals(TipoColaborador.HUMANO)) {
             return ColaboradorDTO.completaHumano(colaborador);
         }
         return ColaboradorDTO.completaJuridico(colaborador);
 
     }
+
     public static ColaboradorDTO completaHumano(Colaborador colaborador) {
 
         String domicilioString = colaborador.getDireccion().getCalle().getNombre() + " " + colaborador.getDireccion().getAltura().toString();
@@ -59,10 +54,11 @@ public class ColaboradorDTO {
                 .fechaNacimiento(colaborador.getFechaNacimiento().toString())
                 .direccion(domicilioString)
                 .formaDeColaborar(formasDeColaborar)
-               // .contacto(contactos)
+                // .contacto(contactos)
                 .tipoColaborador("HUMANO")
                 .build();
     }
+
     public static ColaboradorDTO completaJuridico(Colaborador colaborador) {
 
         String domicilioString = colaborador.getDireccion().getCalle().getNombre() + " " + colaborador.getDireccion().getAltura().toString();
@@ -80,14 +76,16 @@ public class ColaboradorDTO {
                 .tipoColaborador("JURIDICO")
                 .build();
     }
+
     public static ColaboradorDTO preview(Colaborador colaborador) {
-        if (colaborador.getTipoColaborador().equals(TipoColaborador.HUMANO)){
+        if (colaborador.getTipoColaborador().equals(TipoColaborador.HUMANO)) {
             return ColaboradorDTO.previewHumano(colaborador);
         }
         return ColaboradorDTO.previewJuridico(colaborador);
 
     }
-        public static ColaboradorDTO previewHumano(Colaborador colaborador) {
+
+    public static ColaboradorDTO previewHumano(Colaborador colaborador) {
         String formasDeColaborar = colaborador.getFormaDeColaborar().stream().map(Enum::name).collect(Collectors.joining(" "));
         return ColaboradorDTO
                 .builder()
@@ -97,6 +95,7 @@ public class ColaboradorDTO {
                 .tipoColaborador("HUMANO")
                 .build();
     }
+
     public static ColaboradorDTO previewJuridico(Colaborador colaborador) {
         String formasDeColaborar = colaborador.getFormaDeColaborar().stream().map(Enum::name).collect(Collectors.joining(" "));
         return ColaboradorDTO

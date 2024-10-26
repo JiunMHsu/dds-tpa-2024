@@ -3,8 +3,6 @@ package ar.edu.utn.frba.dds.models.entities.data;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
-
-import com.aspose.pdf.operators.Do;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,9 +24,9 @@ public class Area {
     @Column(name = "barrio")
     private Barrio barrio;
 
-    public static Area with (Ubicacion ubicacion,
-                             Integer radio,
-                             Barrio barrio) {
+    public static Area with(Ubicacion ubicacion,
+                            Integer radio,
+                            Barrio barrio) {
         return Area
                 .builder()
                 .ubicacion(ubicacion)

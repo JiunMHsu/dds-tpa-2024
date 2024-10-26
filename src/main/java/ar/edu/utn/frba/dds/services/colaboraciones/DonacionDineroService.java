@@ -1,9 +1,7 @@
 package ar.edu.utn.frba.dds.services.colaboraciones;
 
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDinero;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroRepository;
-
 import java.util.Optional;
 
 public class DonacionDineroService {
@@ -17,6 +15,8 @@ public class DonacionDineroService {
         donacionDineroRepository.guardar(donacion);
     }
 
-    public Optional<DonacionDinero> buscarPorId(String id){return donacionDineroRepository.buscarPorId(id);}
+    public Optional<DonacionDinero> buscarPorId(String id) {
+        return donacionDineroRepository.buscarPorId(id);
+    }
 
 }
