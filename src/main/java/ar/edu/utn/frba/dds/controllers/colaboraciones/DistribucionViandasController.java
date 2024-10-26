@@ -12,6 +12,7 @@ import ar.edu.utn.frba.dds.models.entities.heladera.ExcepcionCantidadDeViandas;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.services.colaboraciones.DistribucionViandasService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
+import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import ar.edu.utn.frba.dds.utils.UserRequired;
@@ -27,13 +28,16 @@ import java.util.Optional;
 public class DistribucionViandasController extends UserRequired implements ICrudViewsHandler {
 
     private final DistribucionViandasService distribucionViandasService;
+    private final HeladeraService heladeraService;
 
     public DistribucionViandasController(UsuarioService usuarioService,
                                          ColaboradorService colaboradorService,
-                                         DistribucionViandasService distribucionViandasService) {
+                                         DistribucionViandasService distribucionViandasService,
+                                         HeladeraService heladeraService) {
 
         super(usuarioService, colaboradorService);
         this.distribucionViandasService = distribucionViandasService;
+        this.heladeraService = heladeraService;
     }
 
     @Override
