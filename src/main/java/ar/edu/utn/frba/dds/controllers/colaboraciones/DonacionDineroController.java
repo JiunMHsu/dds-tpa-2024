@@ -60,7 +60,7 @@ public class DonacionDineroController extends UserRequired implements ICrudViews
     public void create(Context context) {
         Colaborador colaborador = colaboradorFromSession(context);
 
-        if (!colaborador.puedeColaborar(TipoColaboracion.DISTRIBUCION_VIANDAS))
+        if (!colaborador.puedeColaborar(TipoColaboracion.DONACION_DINERO))
             throw new UnauthorizedException("No tiene permiso");
 
         render(context, "colaboraciones/donacion_dinero_crear.hbs", new HashMap<>());

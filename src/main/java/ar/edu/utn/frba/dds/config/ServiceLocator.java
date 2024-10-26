@@ -164,10 +164,9 @@ public class ServiceLocator {
 
         if (componentName.equals(DonacionViandaController.class.getName())) {
             DonacionViandaController instance = new DonacionViandaController(
-                    instanceOf(DonacionViandaService.class),
-                    instanceOf(ViandaRepository.class),
                     instanceOf(UsuarioService.class),
-                    instanceOf(ColaboradorService.class));
+                    instanceOf(ColaboradorService.class),
+                    instanceOf(DonacionViandaService.class));
             instances.put(componentName, instance);
         }
 
@@ -290,6 +289,13 @@ public class ServiceLocator {
             DistribucionViandasService instance = new DistribucionViandasService(
                     instanceOf(DistribucionViandasRepository.class),
                     instanceOf(HeladeraRepository.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(DonacionViandaService.class.getName())) {
+            DonacionViandaService instance = new DonacionViandaService(
+                    instanceOf(DonacionViandaRepository.class),
+                    instanceOf(ViandaRepository.class));
             instances.put(componentName, instance);
         }
 
