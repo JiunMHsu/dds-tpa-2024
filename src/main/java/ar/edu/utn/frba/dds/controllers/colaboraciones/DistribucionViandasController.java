@@ -66,7 +66,7 @@ public class DistribucionViandasController extends UserRequired implements ICrud
         Colaborador colaborador = colaboradorFromSession(context);
 
         if (!colaborador.puedeColaborar(TipoColaboracion.DISTRIBUCION_VIANDAS))
-            throw new UnauthorizedException("No tienes permiso");
+            throw new UnauthorizedException("No tiene permiso");
 
         render(context, "colaboraciones/distribucion_viandas_crear.hbs", new HashMap<>());
     }

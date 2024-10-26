@@ -391,6 +391,11 @@ public class ServiceLocator {
             instances.put(componentName, instance);
         }
 
+        if (componentName.equals(DonacionDineroRepository.class.getName())) {
+            DonacionDineroRepository instance = new DonacionDineroRepository();
+            instances.put(componentName, instance);
+        }
+
         if (componentName.equals(DonacionViandaRepository.class.getName())) {
             DonacionViandaRepository instance = new DonacionViandaRepository();
             instances.put(componentName, instance);
