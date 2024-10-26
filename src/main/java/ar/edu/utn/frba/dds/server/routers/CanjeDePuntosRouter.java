@@ -14,14 +14,14 @@ public class CanjeDePuntosRouter implements IRouter {
     @Override
     public void apply(RouterConfig config) {
         config.apiBuilder(() ->
-            path("/canjes-puntos", () -> {
-                get(ServiceLocator.instanceOf(CanjeDePuntosController.class)::create,TipoRol.COLABORADOR, TipoRol.ADMIN);
+                path("/canjes-puntos", () -> {
+                    get(ServiceLocator.instanceOf(CanjeDePuntosController.class)::create, TipoRol.COLABORADOR, TipoRol.ADMIN);
 
-                path("/{id}", () -> {
-                  post(ServiceLocator.instanceOf(CanjeDePuntosController.class)::save, TipoRol.ADMIN, TipoRol.COLABORADOR);
-                });
+                    path("/{id}", () -> {
+                        post(ServiceLocator.instanceOf(CanjeDePuntosController.class)::save, TipoRol.ADMIN, TipoRol.COLABORADOR);
+                    });
 
-            })
+                })
         );
     }
 }

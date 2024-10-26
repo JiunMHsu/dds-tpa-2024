@@ -59,7 +59,7 @@ public class ReporteService implements WithSimplePersistenceUnit {
 
     private Map<String, Integer> donacionesPorColaborador() {
         LocalDateTime haceUnaSemana = LocalDateTime.now().minusWeeks(1);
-        List<DonacionVianda> donaciones = donacionViandaRepository.obtenerAPartirDe(haceUnaSemana);
+        List<DonacionVianda> donaciones = donacionViandaRepository.buscarAPartirDe(haceUnaSemana);
 
         Map<String, Integer> viandasPorColaborador = new HashMap<>();
         for (DonacionVianda donacion : donaciones) {

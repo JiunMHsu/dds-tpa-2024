@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.controllers.home;
 
-import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.colaborador.TipoColaborador;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
@@ -53,7 +53,7 @@ public class HomeController implements ICrudViewsHandler {
 
         Colaborador colaborador = colaboradorOpt.get();
         TipoColaborador tipoColaborador = colaborador.getTipoColaborador();
-        List<Colaboracion> colaboraciones = tipoColaborador.colaboracionesPermitidas();
+        List<TipoColaboracion> colaboraciones = tipoColaborador.colaboracionesPermitidas();
 
         Map<String, Object> model = new HashMap<>();
         model.put("colaboraciones", colaboraciones);

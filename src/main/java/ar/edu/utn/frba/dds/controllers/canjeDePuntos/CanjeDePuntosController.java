@@ -60,8 +60,8 @@ public class CanjeDePuntosController implements ICrudViewsHandler {
         Map<String, Object> model = new HashMap<>();
         model.put("productos-canjear", productosDTOS);
         model.put("titulo", "Listado de productos/servicios");
-        model.put("puntaje" , puntaje);
-      
+        model.put("puntaje", puntaje);
+
         context.render("canje_de_puntos/productos_canjear.hbs");
     }
 

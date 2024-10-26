@@ -1,5 +1,5 @@
 {{#partial "title"}}
-   Canjear Puntos
+    Canjear Puntos
 {{/partial}}
 {{#partial "links"}}
     <link rel="stylesheet" href="/css/canjearPuntos/canjearPuntos.css"/>
@@ -8,27 +8,27 @@
     <script src="/js/example_productos.js"></script>
 {{/partial}}
 {{#partial "main-content"}}
-   <h2 class="list-title">Canjear puntos por Producto</h2>
-   <div class="header">
+    <h2 class="list-title">Canjear puntos por Producto</h2>
+    <div class="header">
         <div class="puntaje">Puntaje: {{puntaje}}</div>
-   </div>
-   <div class="product-container">
+    </div>
+    <div class="product-container">
         {{#each productos-canjear}}
-                <div class="product-item">
-                     <h3>{{this.nombre}}</h3>
-                     <img src="{{this.image}}" alt="Imagen del Producto">
-                     <div class="attributes">
-                          <p>Rubro: {{this.rubro}}</p>
-                          <p>Puntos necesarios: {{this.puntosNecesarios}}</p>
-                     </div>
-                     <form action="/canje" method="post">
-                          <input type="hidden" name="oferta_id" value="{{this.id}}">
-                          <input type="hidden" name="puntos_canjeados" value="{{this.puntosNecesarios}}">
-                          <button type="submit">Canjear</button>
-                     </form>
+            <div class="product-item">
+                <h3>{{this.nombre}}</h3>
+                <img src="{{this.image}}" alt="Imagen del Producto">
+                <div class="attributes">
+                    <p>Rubro: {{this.rubro}}</p>
+                    <p>Puntos necesarios: {{this.puntosNecesarios}}</p>
                 </div>
-           {{/each}}
-   </div>
+                <form action="/canje" method="post">
+                    <input type="hidden" name="oferta_id" value="{{this.id}}">
+                    <input type="hidden" name="puntos_canjeados" value="{{this.puntosNecesarios}}">
+                    <button type="submit">Canjear</button>
+                </form>
+            </div>
+        {{/each}}
+    </div>
 
 {{/partial}}
 {{> templates/base}}

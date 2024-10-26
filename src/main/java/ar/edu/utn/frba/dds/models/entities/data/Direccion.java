@@ -28,29 +28,14 @@ public class Direccion {
     private Ubicacion ubicacion;
 
     public static Direccion with(Barrio barrio, Calle calle, Integer altura, Ubicacion ubicacion) {
-        return Direccion
-                .builder()
-                .barrio(barrio)
-                .calle(calle)
-                .altura(altura)
-                .ubicacion(ubicacion)
-                .build();
+        return Direccion.builder().barrio(barrio).calle(calle).altura(altura).ubicacion(ubicacion).build();
     }
 
     public static Direccion with(Calle calle, Integer altura) {
-        return Direccion
-                .builder()
-                .calle(calle)
-                .altura(altura)
-                .build();
+        return Direccion.builder().calle(calle).altura(altura).build();
     }
 
     public static Direccion formularioPV(Barrio barrio, Calle calle, Integer altura) {
-        return Direccion
-                .builder()
-                .barrio(barrio)
-                .calle(calle)
-                .altura(altura)
-                .build();
+        return Direccion.builder().barrio(barrio).calle(calle).altura(altura).build();
     }
 }

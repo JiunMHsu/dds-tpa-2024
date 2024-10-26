@@ -8,7 +8,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @SuperBuilder
-public class ProductoDTO{
+public class ProductoDTO {
 
     private String id;
 
@@ -19,8 +19,7 @@ public class ProductoDTO{
     private String pathImagen;
 
     public static ProductoDTO completa(OfertaDeProductos producto) {
-        return ProductoDTO
-                .builder()
+        return ProductoDTO.builder()
                 .id(producto.getId().toString())
                 .nombreProducto(producto.getNombre())
                 .rubro(producto.getRubro().toString())
@@ -30,8 +29,7 @@ public class ProductoDTO{
 
     public static ProductoDTO preview(OfertaDeProductos producto) {
 
-        return ProductoDTO
-                .builder()
+        return ProductoDTO.builder()
                 .id(producto.getId().toString())
                 .nombreProducto(producto.getNombre())
                 .pathImagen(producto.getImagen().getRuta())

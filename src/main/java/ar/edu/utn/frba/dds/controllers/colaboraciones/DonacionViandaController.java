@@ -5,17 +5,16 @@ import ar.edu.utn.frba.dds.dtos.colaboraciones.DonacionViandaDTO;
 import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Comida;
 import ar.edu.utn.frba.dds.models.entities.vianda.Vianda;
-import ar.edu.utn.frba.dds.models.repositories.vianda.ViandaRepository;
 import ar.edu.utn.frba.dds.services.colaboraciones.DonacionViandaService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
-import ar.edu.utn.frba.dds.utils.ColaboradorPorSession;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
+import ar.edu.utn.frba.dds.utils.UserRequired;
 import io.javalin.http.Context;
 import io.javalin.validation.ValidationException;
 import java.time.LocalDate;
@@ -26,27 +25,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class DonacionViandaController extends ColaboradorPorSession implements ICrudViewsHandler {
+public class DonacionViandaController extends UserRequired implements ICrudViewsHandler {
 
-    private DonacionViandaService donacionViandaService;
-    private ViandaRepository viandaRepository;
+    private final DonacionViandaService donacionViandaService;
 
-    public DonacionViandaController(DonacionViandaService donacionViandaService,
-                                    ViandaRepository viandaRepository,
-                                    UsuarioService usuarioService,
-                                    ColaboradorService colaboradorService) {
+    public DonacionViandaController(UsuarioService usuarioService,
+                                    ColaboradorService colaboradorService,
+                                    DonacionViandaService donacionViandaService) {
         super(usuarioService, colaboradorService);
         this.donacionViandaService = donacionViandaService;
-        this.viandaRepository = viandaRepository;
     }
 
     @Override
     public void index(Context context) {
-
+        // TODO - Implementar
     }
 
     @Override
-    public void show(Context context) {
+    public void show(Context context) { // TODO - Revisar
         String donacionViandaId = context.pathParam("id");
         Optional<DonacionVianda> donacionVianda = donacionViandaService.buscarPorId(donacionViandaId);
 
@@ -63,23 +59,12 @@ public class DonacionViandaController extends ColaboradorPorSession implements I
 
     @Override
     public void create(Context context) {
+        Colaborador colaborador = colaboradorFromSession(context);
 
-        try {
-            Colaborador colaborador = obtenerColaboradorPorSession(context);
+        if (!colaborador.puedeColaborar(TipoColaboracion.DONACION_VIANDAS))
+            throw new UnauthorizedException("No tienes permiso");
 
-            boolean tieneColaboracion = colaborador.getFormaDeColaborar()
-                    .stream()
-                    .anyMatch(colaboracion -> colaboracion.equals(Colaboracion.DONACION_VIANDAS));
-
-            if (!tieneColaboracion) {
-                throw new UnauthorizedException("No tienes permiso");
-            }
-
-            context.render("colaboraciones/donacion_vianda_crear.hbs");
-
-        } catch (ResourceNotFoundException | NonColaboratorException e) {
-            throw new UnauthorizedException();
-        }
+        render(context, "colaboraciones/donacion_vianda_crear.hbs", new HashMap<>());
     }
 
     @Override
@@ -90,35 +75,26 @@ public class DonacionViandaController extends ColaboradorPorSession implements I
         boolean operationSuccess = false;
 
         try {
-
-            Colaborador colaborador = obtenerColaboradorPorSession(context);
+            Colaborador colaborador = colaboradorFromSession(context);
 
             Comida comida = Comida.with(
                     context.formParamAsClass("comida", String.class).get(),
-                    Integer.valueOf(context.formParamAsClass("calorias", Integer.class).get())
-            );
+                    context.formParamAsClass("calorias", Integer.class).get());
 
             Vianda vianda = Vianda.with(
                     comida,
                     LocalDate.parse(context.formParamAsClass("caducidad", String.class).get()),
-                    Integer.valueOf(context.formParamAsClass("peso", Integer.class).get())
-            );
-
-            this.viandaRepository.guardar(vianda);
+                    context.formParamAsClass("peso", Integer.class).get());
 
             DonacionVianda donacionVianda = DonacionVianda.por(
-                    colaborador,
-                    LocalDateTime.now(),
-                    vianda,
-                    false
-            );
+                    colaborador, LocalDateTime.now(), vianda, false);
 
-            this.donacionViandaService.guardar(donacionVianda);
+            this.donacionViandaService.registrar(donacionVianda);
 
             operationSuccess = true;
             redirectDTOS.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));
 
-        } catch (ResourceNotFoundException | NonColaboratorException e) {
+        } catch (NonColaboratorException e) {
             throw new UnauthorizedException();
         } catch (ValidationException v) {
             redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
@@ -127,7 +103,6 @@ public class DonacionViandaController extends ColaboradorPorSession implements I
             model.put("redirects", redirectDTOS);
             context.render("post_result.hbs", model);
         }
-
     }
 
     @Override

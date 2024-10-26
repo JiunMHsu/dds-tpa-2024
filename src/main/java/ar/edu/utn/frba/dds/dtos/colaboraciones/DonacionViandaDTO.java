@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.dtos.colaboraciones;
 
-import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.utils.DateTimeParser;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,11 +12,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class DonacionViandaDTO extends ColaboracionDTO {
 
-    private String id;
-
     private String colaborador;
-
-    private String fechaHora;
 
     private String esEntregada;
 
@@ -31,13 +27,12 @@ public class DonacionViandaDTO extends ColaboracionDTO {
 
     public static DonacionViandaDTO completa(DonacionVianda donacionVianda) { // Completa segun los atributos por la clase
 
-        return DonacionViandaDTO
-                .builder()
-                .etiqueta(getAction(Colaboracion.DONACION_VIANDAS))
-                .path(getPath(Colaboracion.DONACION_VIANDAS))
+        return DonacionViandaDTO.builder()
                 .id(donacionVianda.getId().toString())
-                .colaborador(donacionVianda.getColaborador().getUsuario().getNombre())
+                .nombre(TipoColaboracion.DONACION_VIANDAS.getDescription())
                 .fechaHora(DateTimeParser.parseFechaHora(donacionVianda.getFechaHora()))
+                .path(getPath(TipoColaboracion.DONACION_VIANDAS))
+                .colaborador(donacionVianda.getColaborador().getUsuario().getNombre())
                 .esEntregada(donacionVianda.getEsEntregada() ? "Entregada" : "No entregada")
                 .nombreComida(donacionVianda.getVianda().getComida().getNombre())
                 .pesoVianda(donacionVianda.getVianda().getPeso().toString())
@@ -46,14 +41,13 @@ public class DonacionViandaDTO extends ColaboracionDTO {
                 .build();
     }
 
-    public static DonacionViandaDTO preview(DonacionVianda donacionVianda) {
+    public static ColaboracionDTO preview(DonacionVianda donacionVianda) {
 
-        return DonacionViandaDTO
-                .builder()
-                .etiqueta(getAction(Colaboracion.DONACION_VIANDAS))
-                .path(getPath(Colaboracion.DONACION_VIANDAS))
+        return ColaboracionDTO.builder()
                 .id(donacionVianda.getId().toString())
+                .nombre(TipoColaboracion.DONACION_VIANDAS.getDescription())
                 .fechaHora(DateTimeParser.parseFechaHora(donacionVianda.getFechaHora()))
+                .path(getPath(TipoColaboracion.DONACION_VIANDAS))
                 .build();
     }
 }
