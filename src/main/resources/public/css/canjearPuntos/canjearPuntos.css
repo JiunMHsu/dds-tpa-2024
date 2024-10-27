@@ -3,59 +3,90 @@ body {
     margin: 0;
     padding: 0;
 }
-
+.container{
+    display: flex;
+    width: 100%;
+}
 .header {
     display: flex;
-    justify-content: flex-end;
-    padding: 10px;
-    background-color: #f8f8f8;
-    border-bottom: 1px solid #ddd;
+    align-items: center;
+    padding: 0.5rem 2rem;
+    margin-top: 0.5rem;
+    margin-right: 0.5rem;
+    color: var(--foreground-0);
+    background-color: var(--background-2);
+    border-radius: 0.5rem;
+    justify-content: space-between;
+}
+.list-title {
+    display: flex;
+    font-size: 2rem;
+    font-weight: bold;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}
+.puntaje {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+.puntaje span {
+    font-weight: bold;
+    font-size: 1.1rem;
 }
 
-.puntaje {
-    font-size: 16px;
-    font-weight: bold;
+.puntaje div {
+    margin-top: 0.5rem;
+    font-size: 1rem;
 }
+
 
 .product-container {
     display: flex;
-    flex-wrap: wrap; /* Permite que los elementos se envuelvan a la siguiente línea */
-    justify-content: space-between; /* Espacio entre los elementos */
-    padding: 10px;
-    overflow-x: auto; /* Permite el desplazamiento horizontal */
+    flex-wrap: wrap;
+    justify-content: space-between;
+    overflow-y: scroll;
+    width: 80rem;
+    height: 34rem;
+    margin-top:1rem;
 }
 
 .product-item {
     border: 1px solid #000;
-    padding: 10px;
-    margin: 10px;
+    padding: 2rem;
+    margin: 1rem;
     color: var(--foreground-0);
     background-color: var(--background-2);
-    transition: transform 0.2s; /* Transición suave para el escalado */
-    width: calc(20% - 20px); /* Cinco elementos por fila con márgenes */
-    box-sizing: border-box; /* Incluye el padding y el borde en el ancho total */
-    text-align: center; /* Centra el contenido */
+    transition: transform 0.2s;
+    width: calc(22%);
+    box-sizing: border-box;
+    text-align: center;
+    border-radius: 1rem;
 }
 
 .product-item:hover {
-    transform: scale(1.05); /* Escala el producto un 5% más grande */
+    transform: scale(1.05);
     color: var(--background-0);
     background-color: var(--main-light-0);
 }
 
 img {
-    width: 100%;
-    height: auto;
+    width: 12rem;
+    height: 12rem;
+    border-radius: 0.5rem;
 }
 
 .attributes {
-    margin-top: 10px;
+    margin-top: 0.5rem;
 }
 
 button {
-    margin-top: 10px;
-    padding: 5px 10px;
+    margin-top: 1rem;
+    padding: 0.5rem 2rem;
     cursor: pointer;
     color: var(--foreground-3);
-    border: 1px solid var(--background-3);
+    border: 0.1rem solid var(--background-3);
+    border-radius: 0.5rem;
+    font-color: white;
 }

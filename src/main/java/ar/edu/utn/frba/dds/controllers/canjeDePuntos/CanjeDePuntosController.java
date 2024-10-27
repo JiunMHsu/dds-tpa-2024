@@ -2,13 +2,14 @@ package ar.edu.utn.frba.dds.controllers.canjeDePuntos;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.ProductoDTO;
-import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.puntosPorColaborador.CanjeDePuntos;
 import ar.edu.utn.frba.dds.services.canjeDePuntos.CanjeDePuntosService;
 import ar.edu.utn.frba.dds.services.colaboraciones.OfertaProductosServiciosService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
+import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
+import ar.edu.utn.frba.dds.utils.ColaboradorPorSession;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import java.time.LocalDateTime;
@@ -16,17 +17,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class CanjeDePuntosController implements ICrudViewsHandler {
+public class CanjeDePuntosController extends ColaboradorPorSession implements ICrudViewsHandler {
+    private final CanjeDePuntosService canjeDePuntosService;
+    private final OfertaProductosServiciosService ofertaProductosServiciosService;
 
-    private ColaboradorService colaboradorService;
-    private CanjeDePuntosService canjeDePuntosService;
-    private OfertaProductosServiciosService ofertaProductosServiciosService;
-
-    public CanjeDePuntosController(ColaboradorService colaboradorService, CanjeDePuntosService canjeDePuntosService, OfertaProductosServiciosService ofertaProductosServiciosService) {
-        this.colaboradorService = colaboradorService;
+    public CanjeDePuntosController(UsuarioService usuarioService, ColaboradorService colaboradorService, CanjeDePuntosService canjeDePuntosService, OfertaProductosServiciosService ofertaProductosServiciosService) {
+        super(usuarioService, colaboradorService);
         this.canjeDePuntosService = canjeDePuntosService;
         this.ofertaProductosServiciosService = ofertaProductosServiciosService;
     }
@@ -49,13 +47,10 @@ public class CanjeDePuntosController implements ICrudViewsHandler {
                 .map(ProductoDTO::preview)
                 .collect(Collectors.toList());
 
-        String userId = context.sessionAttribute("userId");
-        Optional<Colaborador> colaborador = this.colaboradorService.buscarPorId(userId);
 
-        if (colaborador.isEmpty())
-            throw new ResourceNotFoundException("No se encontró colaborador paraColaborador id " + userId);
+        Colaborador colaborador = this.obtenerColaboradorPorSession(context);
 
-        Double puntaje = this.canjeDePuntosService.calcularPuntos(colaborador.get());
+        Double puntaje = this.canjeDePuntosService.calcularPuntos(colaborador);
 
         Map<String, Object> model = new HashMap<>();
         model.put("productos-canjear", productosDTOS);
@@ -72,20 +67,18 @@ public class CanjeDePuntosController implements ICrudViewsHandler {
         boolean operationSuccess = false;
 
         try {
-            String userId = context.sessionAttribute("userId");
-            Optional<Colaborador> colaboradorCanje = this.colaboradorService.buscarPorId(userId);
+            //TODO - refactor extends colaboradorPorSession
 
-            if (colaboradorCanje.isEmpty())
-                throw new ResourceNotFoundException("No se encontró colaborador con id " + userId);
+            Colaborador colaboradorCanje = this.obtenerColaboradorPorSession(context);
+
             Double puntosCanjeados = Double.valueOf(context.formParam("puntos_canjeados"));
-
 
             //TODO creo que no llega como parametro sino que calcula con el futuro service
             Double puntosRestantes = Double.valueOf(context.formParam("puntos_restantes"));
             puntosRestantes = 3.14159;
 
             OfertaDeProductos oferta = this.ofertaProductosServiciosService.buscarPorId(context.formParam("oferta_id")).get();
-            CanjeDePuntos canjeDePuntosNuevo = CanjeDePuntos.por(colaboradorCanje.get(), LocalDateTime.now(), puntosCanjeados, puntosRestantes, oferta);
+            CanjeDePuntos canjeDePuntosNuevo = CanjeDePuntos.por(colaboradorCanje, LocalDateTime.now(), puntosCanjeados, puntosRestantes, oferta);
 
             this.canjeDePuntosService.guardar(canjeDePuntosNuevo);
 

@@ -220,6 +220,7 @@ public class ServiceLocator {
 
         if (componentName.equals(CanjeDePuntosController.class.getName())) {
             CanjeDePuntosController instance = new CanjeDePuntosController(
+                    instanceOf(UsuarioService.class),
                     instanceOf(ColaboradorService.class),
                     instanceOf(CanjeDePuntosService.class),
                     instanceOf(OfertaProductosServiciosService.class));

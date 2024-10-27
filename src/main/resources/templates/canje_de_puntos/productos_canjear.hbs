@@ -4,31 +4,191 @@
 {{#partial "links"}}
     <link rel="stylesheet" href="/css/canjearPuntos/canjearPuntos.css"/>
 {{/partial}}
-{{#partial "scripts"}}
-    <script src="/js/example_productos.js"></script>
-{{/partial}}
 {{#partial "main-content"}}
-    <h2 class="list-title">Canjear puntos por Producto</h2>
-    <div class="header">
-        <div class="puntaje">Puntaje: {{puntaje}}</div>
-    </div>
-    <div class="product-container">
-        {{#each productos-canjear}}
-            <div class="product-item">
-                <h3>{{this.nombre}}</h3>
-                <img src="{{this.image}}" alt="Imagen del Producto">
-                <div class="attributes">
-                    <p>Rubro: {{this.rubro}}</p>
-                    <p>Puntos necesarios: {{this.puntosNecesarios}}</p>
+    <div class="body">
+        <div class="container">
+            <h2 class="list-title">Canjear puntos por Producto</h2>
+            <div class="header">
+                <div class="puntaje">
+                    <span>Puntaje</span>
+                    <div>{{puntaje}}</div>
                 </div>
-                <form action="/canje" method="post">
-                    <input type="hidden" name="oferta_id" value="{{this.id}}">
-                    <input type="hidden" name="puntos_canjeados" value="{{this.puntosNecesarios}}">
+            </div>
+        </div>
+        <div class="product-container">
+            {{#each productos-canjear}}
+                <div class="product-item">
+                    <h3>{{this.nombre}}</h3>
+                    <img src="{{this.image}}" alt="Imagen del Producto">
+                    <div class="attributes">
+                        <p>Rubro: {{this.rubro}}</p>
+                        <p>Puntos necesarios: {{this.puntosNecesarios}}</p>
+                    </div>
+                    <form action="/canje-puntos" method="post">
+                        <input type="hidden" name="oferta_id" value="{{this.id}}">
+                        <input type="hidden" name="puntos_canjeados"
+                               value="{{this.puntosNecesarios}}">
+                        <button type="submit">Canjear</button>
+                    </form>
+                </div>
+            {{/each}}
+            <div class="product-item">
+                <h3>Producto 1</h3>
+                <img src="img/prueba.jpg" alt="Imagen del Producto 1">
+                <div class="attributes">
+                    <p>Rubro: Rubro 1</p>
+                    <p>Puntos necesarios: 1100</p>
+                </div>
+                <form action="/canje-puntos" method="post">
+                    <input type="hidden" name="oferta_id" value="id1">
+                    <input type="hidden" name="puntos_canjeados" value="1100">
                     <button type="submit">Canjear</button>
                 </form>
             </div>
-        {{/each}}
+            <div class="product-item">
+                <h3>Producto 2</h3>
+                <img src="img/prueba.jpg" alt="Imagen del Producto 2">
+                <div class="attributes">
+                    <p>Rubro: Rubro 2</p>
+                    <p>Puntos necesarios: 1200</p>
+                </div>
+                <form action="/canje-puntos" method="post">
+                    <input type="hidden" name="oferta_id" value="id2">
+                    <input type="hidden" name="puntos_canjeados" value="1200">
+                    <button type="submit">Canjear</button>
+                </form>
+            </div>
+            <div class="product-item">
+                <h3>Producto 3</h3>
+                <img src="img/prueba.jpg" alt="Imagen del Producto 3">
+                <div class="attributes">
+                    <p>Rubro: Rubro 3</p>
+                    <p>Puntos necesarios: 1300</p>
+                </div>
+                <form action="/canje-puntos" method="post">
+                    <input type="hidden" name="oferta_id" value="id3">
+                    <input type="hidden" name="puntos_canjeados" value="1300">
+                    <button type="submit">Canjear</button>
+                </form>
+            </div>
+            <div class="product-item">
+                <h3>Producto 4</h3>
+                <img src="img/prueba.jpg" alt="Imagen del Producto 4">
+                <div class="attributes">
+                    <p>Rubro: Rubro 4</p>
+                    <p>Puntos necesarios: 1400</p>
+                </div>
+                <form action="/canje-puntos" method="post">
+                    <input type="hidden" name="oferta_id" value="id4">
+                    <input type="hidden" name="puntos_canjeados" value="1400">
+                    <button type="submit">Canjear</button>
+                </form>
+            </div>
+            <div class="product-item">
+                <h3>Producto 5</h3>
+                <img src="img/prueba.jpg" alt="Imagen del Producto 5">
+                <div class="attributes">
+                    <p>Rubro: Rubro 5</p>
+                    <p>Puntos necesarios: 1500</p>
+                </div>
+                <form action="/canje" method="post">
+                    <input type="hidden" name="oferta_id" value="id5">
+                    <input type="hidden" name="puntos_canjeados" value="1500">
+                    <button type="submit">Canjear</button>
+                </form>
+            </div>
+            <div class="product-item">
+                <h3>Producto 6</h3>
+                <img src="img/prueba.jpg" alt="Imagen del Producto 6">
+                <div class="attributes">
+                    <p>Rubro: Rubro 6</p>
+                    <p>Puntos necesarios: 1600</p>
+                </div>
+                <form action="/canje" method="post">
+                    <input type="hidden" name="oferta_id" value="id6">
+                    <input type="hidden" name="puntos_canjeados" value="1600">
+                    <button type="submit">Canjear</button>
+                </form>
+            </div>
+            <div class="product-item">
+                <h3>Producto 7</h3>
+                <img src="img/prueba.jpg" alt="Imagen del Producto 7">
+                <div class="attributes">
+                    <p>Rubro: Rubro 7</p>
+                    <p>Puntos necesarios: 1700</p>
+                </div>
+                <form action="/canje" method="post">
+                    <input type="hidden" name="oferta_id" value="id7">
+                    <input type="hidden" name="puntos_canjeados" value="1700">
+                    <button type="submit">Canjear</button>
+                </form>
+            </div>
+            <div class="product-item">
+                <h3>Producto 8</h3>
+                <img src="img/prueba.jpg" alt="Imagen del Producto 8">
+                <div class="attributes">
+                    <p>Rubro: Rubro 8</p>
+                    <p>Puntos necesarios: 1800</p>
+                </div>
+                <form action="/canje" method="post">
+                    <input type="hidden" name="oferta_id" value="id8">
+                    <input type="hidden" name="puntos_canjeados" value="1800">
+                    <button type="submit">Canjear</button>
+                </form>
+            </div>
+            <div class="product-item">
+                <h3>Producto 9</h3>
+                <img src="img/prueba.jpg" alt="Imagen del Producto 9">
+                <div class="attributes">
+                    <p>Rubro: Rubro 9</p>
+                    <p>Puntos necesarios: 1900</p>
+                </div>
+                <form action="/canje" method="post">
+                    <input type="hidden" name="oferta_id" value="id9">
+                    <input type="hidden" name="puntos_canjeados" value="1900">
+                    <button type="submit">Canjear</button>
+                </form>
+            </div>
+            <div class="product-item">
+                <h3>Producto 10</h3>
+                <img src="img/prueba.jpg" alt="Imagen del Producto 10">
+                <div class="attributes">
+                    <p>Rubro: Rubro 10</p>
+                    <p>Puntos necesarios: 2000</p>
+                </div>
+                <form action="/canje" method="post">
+                    <input type="hidden" name="oferta_id" value="id10">
+                    <input type="hidden" name="puntos_canjeados" value="2000">
+                    <button type="submit">Canjear</button>
+                </form>
+            </div>
+            <div class="product-item">
+                <h3>Producto 11</h3>
+                <img src="img/prueba.jpg" alt="Imagen del Producto 11">
+                <div class="attributes">
+                    <p>Rubro: Rubro 11</p>
+                    <p>Puntos necesarios: 2100</p>
+                </div>
+                <form action="/canje" method="post">
+                    <input type="hidden" name="oferta_id" value="id11">
+                    <input type="hidden" name="puntos_canjeados" value="2100">
+                    <button type="submit">Canjear</button>
+                </form>
+            </div>
+            <div class="product-item">
+                <h3>Producto 12</h3>
+                <img src="img/prueba.jpg" alt="Imagen del Producto 12">
+                <div class="attributes">
+                    <p>Rubro: Rubro 12</p>
+                    <p>Puntos necesarios: 2200</p>
+                </div>
+                <form action="/canje" method="post">
+                    <input type="hidden" name="oferta_id" value="id11">
+                    <input type="hidden" name="puntos_canjeados" value="2100">
+                    <button type="submit">Canjear</button>
+                </form>
+            </div>
+        </div>
     </div>
-
 {{/partial}}
 {{> templates/base}}
