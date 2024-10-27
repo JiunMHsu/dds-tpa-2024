@@ -11,7 +11,8 @@
     <div class="form-container">
         <h2 class="form-title">Ofrecer Producto o Servicio</h2>
 
-        <form action="/colaboraciones/oferta-producto-servicio" method="post" class="form">
+        <form action="/colaboraciones/oferta-producto-servicio" method="post" class="form"
+              enctype="multipart/form-data">
             <label class="field-nombre">
                 Nombre de Producto / Servicio
                 <input
@@ -27,9 +28,9 @@
                 <select name="rubro" required>
                     <option value="" disabled selected>Seleccionar</option>
                     <!-- iterar según define el sistema -->
-                    <option value="gastronomia">Gastronomía</option>
-                    <option value="electronica">Electrónica</option>
-                    <option value="hogar">Hogar</option>
+                    {{#each rubros}}
+                        <option value="{{this}}">{{this}}</option>
+                    {{/each}}
                 </select>
             </label>
 

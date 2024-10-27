@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.dtos.colaboraciones;
 
-import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.utils.DateTimeParser;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,11 +12,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class DistribucionViandasDTO extends ColaboracionDTO {
 
-    private String id;
-
     private String colaborador;
-
-    private String fechaHora;
 
     private String heladeraOrigen;
 
@@ -28,13 +24,12 @@ public class DistribucionViandasDTO extends ColaboracionDTO {
 
     public static DistribucionViandasDTO completa(DistribucionViandas distribucionViandas) {
 
-        return DistribucionViandasDTO
-                .builder()
-                .etiqueta(getAction(Colaboracion.DISTRIBUCION_VIANDAS))
-                .path(getPath(Colaboracion.DISTRIBUCION_VIANDAS))
+        return DistribucionViandasDTO.builder()
                 .id(distribucionViandas.getId().toString())
-                .colaborador(distribucionViandas.getColaborador().getUsuario().getNombre())
+                .nombre(TipoColaboracion.DISTRIBUCION_VIANDAS.getDescription())
                 .fechaHora(DateTimeParser.parseFechaHora(distribucionViandas.getFechaHora()))
+                .path(getPath(TipoColaboracion.DISTRIBUCION_VIANDAS))
+                .colaborador(distribucionViandas.getColaborador().getUsuario().getNombre())
                 .heladeraOrigen(distribucionViandas.getOrigen().getNombre())
                 .heladeraDestino(distribucionViandas.getDestino().getNombre())
                 .cantViandas(distribucionViandas.getViandas().toString())
@@ -42,14 +37,13 @@ public class DistribucionViandasDTO extends ColaboracionDTO {
                 .build();
     }
 
-    public static DistribucionViandasDTO preview(DistribucionViandas distribucionViandas) {
+    public static ColaboracionDTO preview(DistribucionViandas distribucionViandas) {
 
-        return DistribucionViandasDTO
-                .builder()
-                .etiqueta(getAction(Colaboracion.DISTRIBUCION_VIANDAS))
-                .path(getPath(Colaboracion.DISTRIBUCION_VIANDAS))
+        return ColaboracionDTO.builder()
                 .id(distribucionViandas.getId().toString())
                 .fechaHora(DateTimeParser.parseFechaHora(distribucionViandas.getFechaHora()))
+                .nombre(TipoColaboracion.DISTRIBUCION_VIANDAS.getDescription())
+                .path(getPath(TipoColaboracion.DISTRIBUCION_VIANDAS))
                 .build();
     }
 }

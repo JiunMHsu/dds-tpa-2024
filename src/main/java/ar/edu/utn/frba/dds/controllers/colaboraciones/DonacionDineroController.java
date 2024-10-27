@@ -2,15 +2,17 @@ package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.DonacionDineroDTO;
+import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDinero;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.services.colaboraciones.DonacionDineroService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
-import ar.edu.utn.frba.dds.utils.ColaboradorPorSession;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
+import ar.edu.utn.frba.dds.utils.UserRequired;
 import io.javalin.http.Context;
 import io.javalin.validation.ValidationException;
 import java.time.LocalDateTime;
@@ -19,10 +21,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
-public class DonacionDineroController extends ColaboradorPorSession implements ICrudViewsHandler {
+public class DonacionDineroController extends UserRequired implements ICrudViewsHandler {
 
     private final DonacionDineroService donacionDineroService;
 
@@ -36,10 +37,11 @@ public class DonacionDineroController extends ColaboradorPorSession implements I
 
     @Override
     public void index(Context context) {
+        // TODO - Implementar
     }
 
     @Override
-    public void show(Context context) {
+    public void show(Context context) { // TODO - Revisar
         String donacionDineroId = context.pathParam("id");
         Optional<DonacionDinero> donacionDinero = donacionDineroService.buscarPorId(donacionDineroId);
 
@@ -56,7 +58,12 @@ public class DonacionDineroController extends ColaboradorPorSession implements I
 
     @Override
     public void create(Context context) {
-        context.render("colaboraciones/donacion_dinero_crear.hbs");
+        Colaborador colaborador = colaboradorFromSession(context);
+
+        if (!colaborador.puedeColaborar(TipoColaboracion.DONACION_DINERO))
+            throw new UnauthorizedException("No tiene permiso");
+
+        render(context, "colaboraciones/donacion_dinero_crear.hbs", new HashMap<>());
     }
 
     @Override
@@ -66,7 +73,7 @@ public class DonacionDineroController extends ColaboradorPorSession implements I
         boolean operationSuccess = false;
 
         try {
-            Colaborador colaborador = obtenerColaboradorPorSession(context);
+            Colaborador colaborador = colaboradorFromSession(context);
 
             Integer monto = context.formParamAsClass("monto", Integer.class).get();
 
@@ -85,13 +92,13 @@ public class DonacionDineroController extends ColaboradorPorSession implements I
 
             // TODO - ver como lanzar y manejar fallas por creación y guardado
             DonacionDinero donacionDinero = DonacionDinero.por(colaborador, LocalDateTime.now(), monto, frecuencia);
-            donacionDineroService.registrarDonacion(donacionDinero);
+            donacionDineroService.registrar(donacionDinero);
 
             operationSuccess = true;
             redirectDTOS.add(new RedirectDTO("/colaboraciones", "Colaboraciones"));
 
-        } catch (NoSuchElementException e) {
-            throw new UnauthorizedException();
+        } catch (NonColaboratorException e) {
+            throw new UnauthorizedException(e.getMessage());
         } catch (ValidationException v) {
             redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
         } finally {

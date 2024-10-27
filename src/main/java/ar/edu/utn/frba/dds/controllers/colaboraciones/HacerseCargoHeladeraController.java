@@ -2,18 +2,19 @@ package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.HacerseCargoHeladeraDTO;
+import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.HacerseCargoHeladera;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.services.colaboraciones.HacerseCargoHeladeraService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
-import ar.edu.utn.frba.dds.utils.ColaboradorPorSession;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
+import ar.edu.utn.frba.dds.utils.UserRequired;
 import io.javalin.http.Context;
 import io.javalin.validation.ValidationException;
 import java.time.LocalDateTime;
@@ -23,16 +24,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class HacerseCargoHeladeraController extends ColaboradorPorSession implements ICrudViewsHandler {
+public class HacerseCargoHeladeraController extends UserRequired implements ICrudViewsHandler {
 
-    private HacerseCargoHeladeraService hacerseCargoHeladeraService;
-    private HeladeraService heladeraService;
+    private final HacerseCargoHeladeraService hacerseCargoHeladeraService;
+    private final HeladeraService heladeraService;
 
 
-    public HacerseCargoHeladeraController(HacerseCargoHeladeraService hacerseCargoHeladeraService,
-                                          HeladeraService heladeraService,
-                                          UsuarioService usuarioService,
-                                          ColaboradorService colaboradorService) {
+    public HacerseCargoHeladeraController(UsuarioService usuarioService,
+                                          ColaboradorService colaboradorService,
+                                          HacerseCargoHeladeraService hacerseCargoHeladeraService,
+                                          HeladeraService heladeraService) {
 
         super(usuarioService, colaboradorService);
         this.heladeraService = heladeraService;
@@ -41,11 +42,11 @@ public class HacerseCargoHeladeraController extends ColaboradorPorSession implem
 
     @Override
     public void index(Context context) {
-
+        // TODO - Implementar
     }
 
     @Override
-    public void show(Context context) {
+    public void show(Context context) { // TODO - Revisar
         String hacerseCargoHeladeraId = context.pathParam("id");
         Optional<HacerseCargoHeladera> hacerseCargoHeladera = hacerseCargoHeladeraService.buscarPorId(hacerseCargoHeladeraId);
 
@@ -62,47 +63,40 @@ public class HacerseCargoHeladeraController extends ColaboradorPorSession implem
 
     @Override
     public void create(Context context) {
+        Colaborador colaborador = colaboradorFromSession(context);
 
-        Colaborador colaborador = obtenerColaboradorPorSession(context);
+        System.out.println(colaborador.getFormaDeColaborar());
 
-        boolean tieneColaboracionDistribucionViandas = colaborador.getFormaDeColaborar()
-                .stream()
-                .anyMatch(colaboracion -> colaboracion.equals(Colaboracion.HACERSE_CARGO_HELADERA));
-
-        if (!tieneColaboracionDistribucionViandas) {
+        if (!colaborador.puedeColaborar(TipoColaboracion.HACERSE_CARGO_HELADERA))
             throw new UnauthorizedException("No tienes permiso");
-        }
 
-        context.render("colaboraciones/encargarse_de_heladera_crear.hbs");
-
+        render(context, "colaboraciones/encargarse_de_heladera_crear.hbs", new HashMap<>());
     }
 
     @Override
     public void save(Context context) {
-
         Map<String, Object> model = new HashMap<>();
         List<RedirectDTO> redirectDTOS = new ArrayList<>();
         boolean operationSuccess = false;
 
-        Colaborador colaborador = obtenerColaboradorPorSession(context);
-
         try {
+            Colaborador colaborador = colaboradorFromSession(context);
 
-            Optional<Heladera> heladeraACargo = heladeraService.buscarPorNombre(context.formParamAsClass("heladera", String.class).get());
+            Heladera heladeraAEncargarse = heladeraService
+                    .buscarPorNombre(context.formParamAsClass("heladera", String.class).get())
+                    .orElseThrow(ResourceNotFoundException::new);
 
-            if (heladeraACargo.isEmpty()) {
-                throw new ResourceNotFoundException("Heladera no Encontrada");
-            }
+            HacerseCargoHeladera hacerseCargoHeladera = HacerseCargoHeladera.por(colaborador, LocalDateTime.now(), heladeraAEncargarse);
 
-            HacerseCargoHeladera hacerseCargoHeladera = HacerseCargoHeladera.por(colaborador, LocalDateTime.now(), heladeraACargo.get());
-
-            this.hacerseCargoHeladeraService.guardar(hacerseCargoHeladera);
+            this.hacerseCargoHeladeraService.registrar(hacerseCargoHeladera);
 
             operationSuccess = true;
             redirectDTOS.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));
 
-        } catch (ValidationException e) {
-            redirectDTOS.add(new RedirectDTO("/colaboraciones", "Reintentar"));
+        } catch (NonColaboratorException e) {
+            throw new UnauthorizedException();
+        } catch (ValidationException | ResourceNotFoundException e) {
+            redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
         } finally {
             model.put("success", operationSuccess);
             model.put("redirects", redirectDTOS);

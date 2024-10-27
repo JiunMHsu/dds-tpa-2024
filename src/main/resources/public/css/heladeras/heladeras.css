@@ -56,6 +56,14 @@
     background-color: var(--main-light-0);
 }
 
+.list {
+    gap: 1rem;
+}
+
+.item-card {
+    border: 1px solid var(--background-3);
+}
+
 .side-panel {
     width: 35vw;
 }

@@ -1,10 +1,11 @@
 package ar.edu.utn.frba.dds.controllers.colaborador;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
-import ar.edu.utn.frba.dds.dtos.colaboraciones.ColaboracionDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.TipoColaboracionDTO;
+import ar.edu.utn.frba.dds.dtos.colaborador.ColaboradorDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
 import ar.edu.utn.frba.dds.models.entities.data.Calle;
@@ -40,33 +41,40 @@ public class ColaboradorController implements ICrudViewsHandler {
 
     @Override
     public void index(Context context) {
+        Map<String, Object> model = new HashMap<>();
 
         List<Colaborador> colaboradores = this.colaboradorService.buscarTodosColaboradores();
 
-        Map<String, Object> model = new HashMap<>();
-        model.put("colaboradores.hbs", colaboradores);
-        model.put("titulo", "Listado por colaboradores");
+        List<ColaboradorDTO> colaboradoresDTO = colaboradores.stream()
+                .map(ColaboradorDTO::preview)
+                .toList();
+        model.put("colaboradores", colaboradoresDTO);
 
-        context.render("colaboradores/colaboradores.hbs", model);
+        context.result("PENDIENTE");
 
+        // TODO - vista listado de colaboradores
+        // context.render("colaboradores/colaboradores.hbs", model);
     }
 
     @Override
     public void show(Context context) {
-
         String colaboradorId = context.pathParam("id");
-        Optional<Colaborador> posibleColaboradorBuscado = this.colaboradorService.obtenerColaboradorPorID(colaboradorId);
-
-        if (posibleColaboradorBuscado.isEmpty())
-            throw new ResourceNotFoundException("No se encontró colaborador paraColaborador id " + colaboradorId);
+        Colaborador colaborador = this.colaboradorService
+                .obtenerColaboradorPorID(colaboradorId)
+                .orElseThrow(ResourceNotFoundException::new);
 
         Map<String, Object> model = new HashMap<>();
-        model.put("colaborador", posibleColaboradorBuscado.get());
+        ColaboradorDTO colaboradorDTO = ColaboradorDTO.completa(colaborador);
+        model.put("colaborador", colaboradorDTO);
 
-        context.render("colaboradores/colaborador_detalle.hbs", model);
+        context.result("PENDIENTE");
+
+        // TODO - vista detalle de colaborador
+        // context.render("colaboradores/colaborador_detalle.hbs", model);
 
     }
 
+    // TODO - REVISAR
     public void getProfile(Context context) {
 
         String usuarioId = context.sessionAttribute("userId");
@@ -91,9 +99,9 @@ public class ColaboradorController implements ICrudViewsHandler {
     public void create(Context context) {
         //sign up
         context.render("colaboradores/sign_up.hbs");
-
     }
 
+    // TODO - REVISAR
     @Override
     public void save(Context context) {
         Usuario usuario = Usuario.con(context.formParam("nombre"), context.formParam("contrasenia"), context.formParam("email"), TipoRol.COLABORADOR);
@@ -112,14 +120,14 @@ public class ColaboradorController implements ICrudViewsHandler {
 
         String colaboracionesParam = context.formParam("colaboraciones");
 
-        ArrayList<Colaboracion> colaboraciones = new ArrayList<>();
+        ArrayList<TipoColaboracion> colaboraciones = new ArrayList<>();
         if (colaboracionesParam != null && !colaboracionesParam.isEmpty()) {
             String[] colaboracionesStr = colaboracionesParam.split(",");
 
             // Convertimos cada string en un valor del enum Colaboracion
             for (String colaboracionStr : colaboracionesStr) {
                 try {
-                    Colaboracion colaboracion = Colaboracion.valueOf(colaboracionStr.trim().toUpperCase());
+                    TipoColaboracion colaboracion = TipoColaboracion.valueOf(colaboracionStr.trim().toUpperCase());
                     colaboraciones.add(colaboracion);
                 } catch (IllegalArgumentException e) {
                     //nunca va a pasar esto
@@ -149,13 +157,12 @@ public class ColaboradorController implements ICrudViewsHandler {
             nuevoColaborador.setFechaNacimiento(fechaNacimiento);
         }
 
-        this.colaboradorService.guardarColaborador(nuevoColaborador);
+        this.colaboradorService.guardar(nuevoColaborador);
         context.redirect("/colaboradores/sign_up_exitoso.hbs");
     }
 
     @Override
     public void edit(Context context) {
-        // por handlebars
     }
 
     @Override
@@ -189,25 +196,15 @@ public class ColaboradorController implements ICrudViewsHandler {
     }
 
     public void editFormasDeColaborar(Context context) {
-
-        // TODO - refactorizar
-        TipoRol userRol = TipoRol.valueOf(context.sessionAttribute("userRol"));
-        String userId = context.sessionAttribute("userId");
-
         String pathId = context.pathParam("id");
+        Colaborador colaborador = restrictByOwner(context, pathId);
 
-        if (userRol == TipoRol.COLABORADOR && !Objects.equals(userId, pathId))
-            throw new UnauthorizedException();
+        List<TipoColaboracion> formasRegistradas = colaborador.getFormaDeColaborar();
+        System.out.println(formasRegistradas);
+        List<TipoColaboracion> formasPermitidas = colaborador.getTipoColaborador().colaboracionesPermitidas();
 
-        Optional<Colaborador> colaboradorBuscado = colaboradorService.obtenerColaboradorPorID(pathId);
-        if (colaboradorBuscado.isEmpty()) throw new ResourceNotFoundException();
-
-        Colaborador colaborador = colaboradorBuscado.get();
-        List<Colaboracion> formasRegistradas = colaborador.getFormaDeColaborar();
-        List<Colaboracion> formasPermitidas = colaborador.getTipoColaborador().colaboracionesPermitidas();
-
-        List<ColaboracionDTO> colaboracionDTOS = formasPermitidas.stream()
-                .map(c -> ColaboracionDTO.configOption(c, formasRegistradas.contains(c)))
+        List<TipoColaboracionDTO> colaboracionDTOS = formasPermitidas.stream()
+                .map(c -> TipoColaboracionDTO.configOption(c, formasRegistradas.contains(c)))
                 .toList();
 
         Map<String, Object> model = new HashMap<>();
@@ -218,18 +215,7 @@ public class ColaboradorController implements ICrudViewsHandler {
     }
 
     public void updateFormasDeColaborar(Context context) {
-        TipoRol userRol = TipoRol.valueOf(context.sessionAttribute("userRol"));
-        String userId = context.sessionAttribute("userId");
-
-        String pathId = context.pathParam("id");
-
-        if (userRol == TipoRol.COLABORADOR && !Objects.equals(userId, pathId))
-            throw new UnauthorizedException();
-
-        Optional<Colaborador> colaboradorBuscado = colaboradorService.obtenerColaboradorPorID(pathId);
-        if (colaboradorBuscado.isEmpty()) throw new ResourceNotFoundException();
-
-        Colaborador colaborador = colaboradorBuscado.get();
+        Colaborador colaborador = restrictByOwner(context, context.pathParam("id"));
 
         Map<String, Object> model = new HashMap<>();
         List<RedirectDTO> redirectDTOS = new ArrayList<>();
@@ -237,8 +223,8 @@ public class ColaboradorController implements ICrudViewsHandler {
 
         try {
             List<String> colaboracionesForm = context.formParams("colaboracion");
-            ArrayList<Colaboracion> colaboraciones = colaboracionesForm.stream()
-                    .map(Colaboracion::valueOf).collect(Collectors.toCollection(ArrayList::new));
+            ArrayList<TipoColaboracion> colaboraciones = colaboracionesForm.stream()
+                    .map(TipoColaboracion::valueOf).collect(Collectors.toCollection(ArrayList::new));
 
             System.out.println(colaboraciones);
 
@@ -246,6 +232,7 @@ public class ColaboradorController implements ICrudViewsHandler {
             colaboradorService.actualizar(colaborador);
 
             operationSuccess = true;
+            redirectDTOS.add(new RedirectDTO("/colaboraciones", "Colaborar"));
 
         } catch (ValidationException e) {
             redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
@@ -254,6 +241,19 @@ public class ColaboradorController implements ICrudViewsHandler {
             model.put("redirects", redirectDTOS);
             context.render("post_result.hbs", model);
         }
+    }
+
+    private Colaborador restrictByOwner(Context context, String colaboradorId) {
+        String userId = context.sessionAttribute("userId");
+
+        Colaborador colaborador = colaboradorService
+                .obtenerColaboradorPorID(colaboradorId)
+                .orElseThrow(ResourceNotFoundException::new);
+
+        if (!Objects.equals(colaborador.getUsuario().getId().toString(), userId))
+            throw new UnauthorizedException();
+
+        return colaborador;
     }
 
 }

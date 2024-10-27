@@ -11,36 +11,8 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
 
     private final IColaboradorRepository colaboradorRepository;
 
-    public Optional<Colaborador> buscarPorId(String id){return this.colaboradorRepository.buscarPorId(id);}
-
     public ColaboradorService(IColaboradorRepository colaboradorRepository) {
         this.colaboradorRepository = colaboradorRepository;
-    }
-
-    public void guardarColaborador(Colaborador colaborador) {
-        // TODO - validaciones
-        withTransaction(() -> this.colaboradorRepository.guardar(colaborador));
-    }
-
-    public void actualizarColaborador(Colaborador colaboradorActualizado) {
-        this.colaboradorRepository.actualizar(colaboradorActualizado);
-    }
-
-    public void eliminarColaborador(Colaborador colaborador) {
-        this.colaboradorRepository.eliminar(colaborador);
-    }
-
-    public List<Colaborador> buscarTodosColaboradores() {
-        return this.colaboradorRepository.buscarTodos();
-    }
-
-    public Optional<Colaborador> obtenerColaboradorPorID(String id) {
-
-        if (id == null || id.isEmpty()) {
-            throw new IllegalArgumentException("El ID del colaborador no puede ser null o vacío");
-        }
-
-        return this.colaboradorRepository.buscarPorId(id);
     }
 
     public void guardar(Colaborador colaborador) {
@@ -61,6 +33,27 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
             throw new IllegalArgumentException("El colaboradores debe tener un Usuario");
         }
         return this.colaboradorRepository.buscarPorUsuario(usuario);
+    }
+
+    public Optional<Colaborador> buscarPorId(String id) {
+        return this.colaboradorRepository.buscarPorId(id);
+    }
+
+    public void eliminarColaborador(Colaborador colaborador) {
+        this.colaboradorRepository.eliminar(colaborador);
+    }
+
+    public List<Colaborador> buscarTodosColaboradores() {
+        return this.colaboradorRepository.buscarTodos();
+    }
+
+    public Optional<Colaborador> obtenerColaboradorPorID(String id) {
+
+        if (id == null || id.isEmpty()) {
+            throw new IllegalArgumentException("El ID del colaborador no puede ser null o vacío");
+        }
+
+        return this.colaboradorRepository.buscarPorId(id);
     }
 
 

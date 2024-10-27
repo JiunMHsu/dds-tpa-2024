@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.models.entities.colaborador;
 
-import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.data.TipoRazonSocial;
@@ -56,7 +56,7 @@ public class Colaborador extends EntidadPersistente {
     @ElementCollection
     @CollectionTable(name = "formas_de_colaborar", joinColumns = @JoinColumn(name = "colaborador_id"))
     @Column(name = "colaboracion")
-    private List<Colaboracion> formaDeColaborar;
+    private List<TipoColaboracion> formaDeColaborar;
 
     @Column(name = "razon_social")
     private String razonSocial;
@@ -83,7 +83,7 @@ public class Colaborador extends EntidadPersistente {
                                        String rubro,
                                        Contacto contacto,
                                        Direccion direccion,
-                                       ArrayList<Colaboracion> formaDeColaborar) {
+                                       ArrayList<TipoColaboracion> formaDeColaborar) {
         return Colaborador
                 .builder()
                 .tipoColaborador(TipoColaborador.JURIDICO)
@@ -111,7 +111,7 @@ public class Colaborador extends EntidadPersistente {
                                      LocalDate fechaNacimiento,
                                      Contacto contacto,
                                      Direccion direccion,
-                                     ArrayList<Colaboracion> formaDeColaborar) {
+                                     ArrayList<TipoColaboracion> formaDeColaborar) {
         return Colaborador
                 .builder()
                 .tipoColaborador(TipoColaborador.HUMANO)
@@ -139,7 +139,7 @@ public class Colaborador extends EntidadPersistente {
     public static Colaborador colaborador(Usuario usuario,
                                           Contacto contacto,
                                           Direccion direccion,
-                                          ArrayList<Colaboracion> formaDeColaborar) {
+                                          ArrayList<TipoColaboracion> formaDeColaborar) {
         return Colaborador
                 .builder()
                 .usuario(usuario)
@@ -147,6 +147,10 @@ public class Colaborador extends EntidadPersistente {
                 .direccion(direccion)
                 .formaDeColaborar(formaDeColaborar)
                 .build();
+    }
+
+    public boolean puedeColaborar(TipoColaboracion tipoColaboracion) {
+        return this.formaDeColaborar.contains(tipoColaboracion);
     }
 
 }

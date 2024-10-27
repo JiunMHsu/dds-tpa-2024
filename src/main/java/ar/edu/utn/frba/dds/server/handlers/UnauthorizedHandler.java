@@ -7,7 +7,7 @@ public class UnauthorizedHandler implements IHandler {
     @Override
     public void setHandler(Javalin app) {
         app.exception(UnauthorizedException.class, (e, ctx) -> {
-            System.out.println("error por autorizacion");
+            System.out.println("Error de autorizacion. Error: " + e.getMessage());
             ctx.status(401); // en realidad, es un 403, por falta por permisos
             ctx.render("unauthorized.hbs");
         });

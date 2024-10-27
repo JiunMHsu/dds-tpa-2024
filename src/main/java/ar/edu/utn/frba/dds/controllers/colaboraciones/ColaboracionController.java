@@ -1,13 +1,16 @@
 package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.TipoColaboracionDTO;
 import ar.edu.utn.frba.dds.exceptions.CargaMasivaException;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
+import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
+import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.services.colaboraciones.ColaboracionService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
-import ar.edu.utn.frba.dds.utils.ColaboradorPorSession;
+import ar.edu.utn.frba.dds.utils.UserRequired;
 import io.javalin.http.Context;
 import io.javalin.http.UploadedFile;
 import io.javalin.validation.ValidationException;
@@ -17,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class ColaboracionController extends ColaboradorPorSession {
+public class ColaboracionController extends UserRequired {
 
     private final ColaboracionService colaboracionService;
 
@@ -30,13 +33,19 @@ public class ColaboracionController extends ColaboradorPorSession {
 
     public void index(Context context) {
         Map<String, Object> model = new HashMap<>();
+        Usuario usuario = usuarioFromSession(context);
 
-        Boolean isAdmin = Objects.equals(context.sessionAttribute("userRol"), TipoRol.ADMIN.toString());
-        Boolean isColaborador = Objects.equals(context.sessionAttribute("userRol"), TipoRol.COLABORADOR.toString());
+        if (Objects.equals(usuario.getRol(), TipoRol.COLABORADOR)) {
+            Colaborador colaborador = colaboradorFromSession(context);
 
-        model.put("isAdmin", isAdmin);
-        model.put("isColaborador", isColaborador);
-        context.render("colaboraciones/colaboraciones.hbs", model);
+            List<TipoColaboracionDTO> colaboraciones = colaborador.getFormaDeColaborar()
+                    .stream().map(TipoColaboracionDTO::redirectable)
+                    .toList();
+            model.put("colaboraciones", colaboraciones);
+            model.put("colaboradorId", colaborador.getId().toString());
+        }
+
+        render(context, "colaboraciones/colaboraciones.hbs", model);
     }
 
     public void cargarColaboraciones(Context context) {

@@ -29,9 +29,9 @@ public class ColaboradorRouter implements IRouter {
 
                     get("/edit", ctx -> ctx.result("GET Form edit"));
 
-                    path("/formas-por-colaboracion", () -> {
-                        get(ServiceLocator.instanceOf(ColaboradorController.class)::editFormasDeColaborar, TipoRol.COLABORADOR, TipoRol.ADMIN);
-                        post(ServiceLocator.instanceOf(ColaboradorController.class)::updateFormasDeColaborar, TipoRol.COLABORADOR, TipoRol.ADMIN);
+                    path("/formas-de-colaboracion", () -> {
+                        get(ServiceLocator.instanceOf(ColaboradorController.class)::editFormasDeColaborar, TipoRol.COLABORADOR);
+                        post(ServiceLocator.instanceOf(ColaboradorController.class)::updateFormasDeColaborar, TipoRol.COLABORADOR);
                     });
 
                 });

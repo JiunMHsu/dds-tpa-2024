@@ -1,8 +1,7 @@
 package ar.edu.utn.frba.dds.controllers.canjeDePuntos;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
-import ar.edu.utn.frba.dds.dtos.colaboraciones.OfertaDeProductosDTO;
-import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.ProductoDTO;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.puntosPorColaborador.CanjeDePuntos;
@@ -18,14 +17,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class CanjeDePuntosController extends ColaboradorPorSession implements ICrudViewsHandler {
-    private CanjeDePuntosService canjeDePuntosService;
-    private OfertaProductosServiciosService ofertaProductosServiciosService;
+    private final CanjeDePuntosService canjeDePuntosService;
+    private final OfertaProductosServiciosService ofertaProductosServiciosService;
 
-    public CanjeDePuntosController(ColaboradorService colaboradorService, UsuarioService usuarioService ,CanjeDePuntosService canjeDePuntosService, OfertaProductosServiciosService ofertaProductosServiciosService) {
+    public CanjeDePuntosController(UsuarioService usuarioService, ColaboradorService colaboradorService, CanjeDePuntosService canjeDePuntosService, OfertaProductosServiciosService ofertaProductosServiciosService) {
         super(usuarioService, colaboradorService);
         this.canjeDePuntosService = canjeDePuntosService;
         this.ofertaProductosServiciosService = ofertaProductosServiciosService;
@@ -45,8 +43,8 @@ public class CanjeDePuntosController extends ColaboradorPorSession implements IC
     public void create(Context context) {
         List<OfertaDeProductos> productos = this.ofertaProductosServiciosService.buscarTodos();
 
-        List<OfertaDeProductosDTO> ofertaDeProductosDTOS = productos.stream()
-                .map(OfertaDeProductosDTO::preview)
+        List<ProductoDTO> productosDTOS = productos.stream()
+                .map(ProductoDTO::preview)
                 .collect(Collectors.toList());
 
 
@@ -55,9 +53,9 @@ public class CanjeDePuntosController extends ColaboradorPorSession implements IC
         Double puntaje = this.canjeDePuntosService.calcularPuntos(colaborador);
 
         Map<String, Object> model = new HashMap<>();
-        model.put("productos-canjear", ofertaDeProductosDTOS);
+        model.put("productos-canjear", productosDTOS);
         model.put("titulo", "Listado de productos/servicios");
-        model.put("puntaje" , puntaje);
+        model.put("puntaje", puntaje);
 
         context.render("canje_de_puntos/productos_canjear.hbs");
     }

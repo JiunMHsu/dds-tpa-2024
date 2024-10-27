@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.utils;
 
-import ar.edu.utn.frba.dds.models.entities.colaboracion.Colaboracion;
+import ar.edu.utn.frba.dds.config.ServiceLocator;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
 import ar.edu.utn.frba.dds.models.entities.data.Calle;
@@ -18,6 +19,7 @@ import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
+import ar.edu.utn.frba.dds.services.reporte.ReporteService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -34,6 +36,9 @@ public class Initializer implements WithSimplePersistenceUnit {
         instance.withColaboradores();
         instance.withHeladeras();
         instance.withIncidentes();
+
+        PDFGenerator pdfGenerator = new PDFGenerator(AppProperties.getInstance().propertyFromName("REPORT_DIR"));
+        ServiceLocator.instanceOf(ReporteService.class).generarReporteSemanal(pdfGenerator);
     }
 
     public void withSuperUser() {
@@ -65,10 +70,10 @@ public class Initializer implements WithSimplePersistenceUnit {
                 new Ubicacion(-34.59857981526152, -58.420110294464294)
         );
 
-        List<Colaboracion> colabHumana1 = List.of(Colaboracion.DISTRIBUCION_VIANDAS, Colaboracion.DONACION_DINERO);
-        List<Colaboracion> colabHumana2 = List.of(Colaboracion.DISTRIBUCION_VIANDAS, Colaboracion.REPARTO_DE_TARJETAS, Colaboracion.DONACION_VIANDAS);
-        List<Colaboracion> colabJuridica1 = List.of(Colaboracion.DONACION_DINERO, Colaboracion.HACERSE_CARGO_HELADERA);
-        List<Colaboracion> colabJuridica2 = List.of(Colaboracion.HACERSE_CARGO_HELADERA, Colaboracion.OFERTA_DE_PRODUCTOS, Colaboracion.DONACION_DINERO);
+        List<TipoColaboracion> colabHumana1 = List.of(TipoColaboracion.DISTRIBUCION_VIANDAS, TipoColaboracion.DONACION_DINERO);
+        List<TipoColaboracion> colabHumana2 = List.of(TipoColaboracion.DISTRIBUCION_VIANDAS, TipoColaboracion.REPARTO_DE_TARJETAS, TipoColaboracion.DONACION_VIANDAS);
+        List<TipoColaboracion> colabJuridica1 = List.of(TipoColaboracion.DONACION_DINERO, TipoColaboracion.HACERSE_CARGO_HELADERA);
+        List<TipoColaboracion> colabJuridica2 = List.of(TipoColaboracion.HACERSE_CARGO_HELADERA, TipoColaboracion.OFERTA_DE_PRODUCTOS, TipoColaboracion.DONACION_DINERO);
 
         Colaborador c1 = Colaborador.humana(u1, "Jiun Ming", "Hsu", LocalDate.now(), Contacto.vacio(), direccion, new ArrayList<>(colabHumana1));
         Colaborador c2 = Colaborador.humana(u2, "Abril", "Nimo Dominguez", LocalDate.now(), Contacto.vacio(), direccion, new ArrayList<>(colabHumana2));
