@@ -13,40 +13,31 @@ import java.util.Optional;
 public class FallaHeladeraService {
 
     private final FallaHeladeraRepository fallaHeladeraRepository;
-    private final ColaboradorRepository colaboradorRepository;
-    private final HeladeraRepository heladeraRepository;
 
-    public FallaHeladeraService(FallaHeladeraRepository fallaHeladeraRepository,
-                                ColaboradorRepository colaboradorRepository,
-                                HeladeraRepository heladeraRepository) {
-
-        this.fallaHeladeraRepository = fallaHeladeraRepository;
-        this.colaboradorRepository = colaboradorRepository;
-        this.heladeraRepository = heladeraRepository;
-    }
+    public FallaHeladeraService(FallaHeladeraRepository fallaHeladeraRepository) { this.fallaHeladeraRepository = fallaHeladeraRepository; }
 
     public void registrarSuscripcionFallaHeladera(Colaborador colaborador, Heladera heladera, MedioDeNotificacion medioDeNotificacion) {
 
-        Optional<Colaborador> colaboradorExistente = colaboradorRepository.buscarPorId(colaborador.getId().toString());
-        if (colaboradorExistente.isEmpty()) {
-            throw new IllegalArgumentException("El colaborador no existe en la base por datos");
-        }
+//        Optional<Colaborador> colaboradorExistente = colaboradorRepository.buscarPorId(colaborador.getId().toString());
+//        if (colaboradorExistente.isEmpty()) {
+//            throw new IllegalArgumentException("El colaborador no existe en la base por datos");
+//        }
+//
+//        Optional<Heladera> heladeraExistente = heladeraRepository.buscarPorId(heladera.getId().toString());
+//        if (heladeraExistente.isEmpty()) {
+//            throw new IllegalArgumentException("El colaborador no existe en la base por datos");
+//        }
+//
+//        SuscripcionFallaHeladera nuevaSuscripcion = SuscripcionFallaHeladera.de(
+//                colaborador,
+//                heladera,
+//                medioDeNotificacion);
+//
+//        fallaHeladeraRepository.guardar(nuevaSuscripcion);
+      }
 
-        Optional<Heladera> heladeraExistente = heladeraRepository.buscarPorId(heladera.getId().toString());
-        if (heladeraExistente.isEmpty()) {
-            throw new IllegalArgumentException("El colaborador no existe en la base por datos");
-        }
-
-        SuscripcionFallaHeladera nuevaSuscripcion = SuscripcionFallaHeladera.de(
-                colaborador,
-                heladera,
-                medioDeNotificacion);
-
-        fallaHeladeraRepository.guardar(nuevaSuscripcion);
-    }
-
-    public List<SuscripcionFallaHeladera> buscarTodasLasSuscripcionesDe(Colaborador colaborador) {
-        return fallaHeladeraRepository.obtenerPorColaborador(colaborador);
-    }
+//    public List<SuscripcionFallaHeladera> buscarTodasLasSuscripcionesDe(Colaborador colaborador) {
+//        return fallaHeladeraRepository.obtenerPorColaborador(colaborador);
+//    }
 
 }

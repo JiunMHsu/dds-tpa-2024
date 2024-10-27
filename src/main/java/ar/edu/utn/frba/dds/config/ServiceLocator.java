@@ -16,6 +16,7 @@ import ar.edu.utn.frba.dds.controllers.incidente.FallaTecnicaController;
 import ar.edu.utn.frba.dds.controllers.personaVulnerable.PersonaVulnerableController;
 import ar.edu.utn.frba.dds.controllers.reporte.ReporteController;
 import ar.edu.utn.frba.dds.controllers.session.SessionController;
+import ar.edu.utn.frba.dds.controllers.suscripcion.SuscripcionHeladeraController;
 import ar.edu.utn.frba.dds.controllers.tecnico.TecnicoController;
 import ar.edu.utn.frba.dds.controllers.tecnico.VisitaTecnicoController;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.CanjeDePuntosRepository;
@@ -31,6 +32,9 @@ import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
 import ar.edu.utn.frba.dds.models.repositories.mensajeria.MensajeRepository;
 import ar.edu.utn.frba.dds.models.repositories.personaVulnerable.PersonaVulnerableRepository;
 import ar.edu.utn.frba.dds.models.repositories.reporte.ReporteRepository;
+import ar.edu.utn.frba.dds.models.repositories.suscripcion.FallaHeladeraRepository;
+import ar.edu.utn.frba.dds.models.repositories.suscripcion.FaltaViandaRepository;
+import ar.edu.utn.frba.dds.models.repositories.suscripcion.HeladeraLlenaRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjeta.TarjetaPersonaVulnerableRepository;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.TecnicoRepository;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.VisitaTecnicoRepository;
@@ -52,6 +56,9 @@ import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.personaVulnerable.PersonaVulnerableService;
 import ar.edu.utn.frba.dds.services.puntoIdeal.PuntoIdealService;
 import ar.edu.utn.frba.dds.services.reporte.ReporteService;
+import ar.edu.utn.frba.dds.services.suscripcion.FallaHeladeraService;
+import ar.edu.utn.frba.dds.services.suscripcion.FaltaViandaService;
+import ar.edu.utn.frba.dds.services.suscripcion.HeladeraLlenaService;
 import ar.edu.utn.frba.dds.services.tarjeta.TarjetaPersonaVulnerableService;
 import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import ar.edu.utn.frba.dds.services.tecnico.VisitaTecnicoService;
@@ -227,6 +234,17 @@ public class ServiceLocator {
             instances.put(componentName, instance);
         }
 
+        if (componentName.equals(SuscripcionHeladeraController.class.getName())) {
+            SuscripcionHeladeraController instance = new SuscripcionHeladeraController(
+                    instanceOf(HeladeraService.class),
+                    instanceOf(FallaHeladeraService.class),
+                    instanceOf(FaltaViandaService.class),
+                    instanceOf(HeladeraLlenaService.class)
+
+            );
+            instances.put(componentName, instance);
+        }
+
         // ========================= SERVICES =========================
 
         if (componentName.equals(ImageService.class.getName())) {
@@ -364,6 +382,27 @@ public class ServiceLocator {
             instances.put(componentName, instance);
         }
 
+        if (componentName.equals(FallaHeladeraService.class.getName())) {
+            FallaHeladeraService instance = new FallaHeladeraService(
+                    instanceOf(FallaHeladeraRepository.class)
+            );
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(FaltaViandaService.class.getName())) {
+            FaltaViandaService instance = new FaltaViandaService(
+                    instanceOf(FaltaViandaRepository.class)
+            );
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(HeladeraLlenaService.class.getName())) {
+            HeladeraLlenaService instance = new HeladeraLlenaService(
+                    instanceOf(HeladeraLlenaRepository.class)
+            );
+            instances.put(componentName, instance);
+        }
+
         // ========================= REPOSITORIES =========================
 
         if (componentName.equals(HeladeraRepository.class.getName())) {
@@ -453,6 +492,21 @@ public class ServiceLocator {
 
         if (componentName.equals(CanjeDePuntosRepository.class.getName())) {
             CanjeDePuntosRepository instance = new CanjeDePuntosRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(FallaHeladeraRepository.class.getName())) {
+            FallaHeladeraRepository instance = new FallaHeladeraRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(FaltaViandaRepository.class.getName())) {
+            FaltaViandaRepository instance = new FaltaViandaRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(HeladeraLlenaRepository.class.getName())) {
+            HeladeraLlenaRepository instance = new HeladeraLlenaRepository();
             instances.put(componentName, instance);
         }
 

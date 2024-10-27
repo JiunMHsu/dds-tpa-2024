@@ -13,40 +13,31 @@ import java.util.Optional;
 public class HeladeraLlenaService {
 
     private final HeladeraLlenaRepository heladeraLlenaRepositoy;
-    private final ColaboradorRepository colaboradorRepository;
-    private final HeladeraRepository heladeraRepository;
 
-    public HeladeraLlenaService(HeladeraLlenaRepository heladeraLlenaRepositoy,
-                                ColaboradorRepository colaboradorRepository,
-                                HeladeraRepository heladeraRepository) {
-
-        this.heladeraLlenaRepositoy = heladeraLlenaRepositoy;
-        this.colaboradorRepository = colaboradorRepository;
-        this.heladeraRepository = heladeraRepository;
-    }
+    public HeladeraLlenaService(HeladeraLlenaRepository heladeraLlenaRepositoy) { this.heladeraLlenaRepositoy = heladeraLlenaRepositoy; }
 
     public void registrarSuscripcionHeladeraLlena(Colaborador colaborador, Heladera heladera, MedioDeNotificacion medioDeNotificacion, Integer espacioRestante) {
 
-        Optional<Colaborador> colaboradorExistente = colaboradorRepository.buscarPorId(colaborador.getId().toString());
-        if (colaboradorExistente.isEmpty()) {
-            throw new IllegalArgumentException("El colaborador no existe en la base por datos");
-        }
-
-        Optional<Heladera> heladeraExistente = heladeraRepository.buscarPorId(heladera.getId().toString());
-        if (heladeraExistente.isEmpty()) {
-            throw new IllegalArgumentException("El colaborador no existe en la base por datos");
-        }
-
-        if (espacioRestante < 0 || espacioRestante > heladeraExistente.get().getCapacidad())
-            throw new IllegalArgumentException("El espacio restante debe ser mayor o igual a 0 y menor a la capacidad máxima por la heladera");
-
-        SuscripcionHeladeraLlena nuevaSuscripcion = SuscripcionHeladeraLlena.de(
-                colaborador,
-                heladera,
-                medioDeNotificacion,
-                espacioRestante);
-
-        heladeraLlenaRepositoy.guardar(nuevaSuscripcion);
+//        Optional<Colaborador> colaboradorExistente = colaboradorRepository.buscarPorId(colaborador.getId().toString());
+//        if (colaboradorExistente.isEmpty()) {
+//            throw new IllegalArgumentException("El colaborador no existe en la base por datos");
+//        }
+//
+//        Optional<Heladera> heladeraExistente = heladeraRepository.buscarPorId(heladera.getId().toString());
+//        if (heladeraExistente.isEmpty()) {
+//            throw new IllegalArgumentException("El colaborador no existe en la base por datos");
+//        }
+//
+//        if (espacioRestante < 0 || espacioRestante > heladeraExistente.get().getCapacidad())
+//            throw new IllegalArgumentException("El espacio restante debe ser mayor o igual a 0 y menor a la capacidad máxima por la heladera");
+//
+//        SuscripcionHeladeraLlena nuevaSuscripcion = SuscripcionHeladeraLlena.de(
+//                colaborador,
+//                heladera,
+//                medioDeNotificacion,
+//                espacioRestante);
+//
+//        heladeraLlenaRepositoy.guardar(nuevaSuscripcion);
     }
 
     public List<SuscripcionHeladeraLlena> buscarTodasLasSuscripcionesDe(Colaborador colaborador) {
