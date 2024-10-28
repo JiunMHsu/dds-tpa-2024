@@ -3,7 +3,7 @@ package ar.edu.utn.frba.dds.services.canjeDePuntos;
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.CanjeDePuntos;
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.Puntos;
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.PuntosInvalidosException;
-import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.VarianteCalculoDePuntos;
+import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.VarianteDePuntos;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDinero;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
@@ -12,6 +12,7 @@ import ar.edu.utn.frba.dds.models.entities.colaboracion.RepartoDeTarjetas;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.CanjeDePuntosRepository;
+import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.VarianteDePuntosRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaRepository;
@@ -25,9 +26,7 @@ import java.time.YearMonth;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
-import lombok.Setter;
 
-@Setter
 public class CanjeDePuntosService implements WithSimplePersistenceUnit {
     private final CanjeDePuntosRepository canjeDePuntosRepository;
     private final DonacionDineroRepository donacionDineroRepository;
@@ -36,9 +35,7 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
     private final RepartoDeTarjetasRepository repartoDeTarjetasRepository;
     private final HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository;
     private final ColaboradorRepository colaboradorRepository;
-
-    private VarianteCalculoDePuntos variante;
-
+    private final VarianteDePuntosRepository varianteDePuntosRepository;
 
     public CanjeDePuntosService(CanjeDePuntosRepository canjeDePuntosRepository,
                                 DonacionDineroRepository donacionDineroRepository,
@@ -46,7 +43,8 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
                                 DonacionViandaRepository donacionViandaRepository,
                                 RepartoDeTarjetasRepository repartoDeTarjetasRepository,
                                 HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository,
-                                ColaboradorRepository colaboradorRepository) {
+                                ColaboradorRepository colaboradorRepository,
+                                VarianteDePuntosRepository varianteDePuntosRepository) {
         this.canjeDePuntosRepository = canjeDePuntosRepository;
         this.donacionDineroRepository = donacionDineroRepository;
         this.distribucionViandasRepository = distribucionViandasRepository;
@@ -54,23 +52,27 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
         this.repartoDeTarjetasRepository = repartoDeTarjetasRepository;
         this.hacerseCargoHeladeraRepository = hacerseCargoHeladeraRepository;
         this.colaboradorRepository = colaboradorRepository;
-        this.variante = new VarianteCalculoDePuntos();
+        this.varianteDePuntosRepository = varianteDePuntosRepository;
     }
 
     public double getPuntosDeColaborador(Colaborador colaborador) {
-        double puntos;
         try {
-            puntos = colaborador.puntos();
+            double puntos = colaborador.puntos();
+            System.out.println("se obtuvieron los puntos almacenados de " + colaborador.getNombre());
             return puntos;
         } catch (PuntosInvalidosException e) {
-            puntos = this.calcularPuntos(colaborador);
-            colaborador.setPuntos(new Puntos(puntos, true, LocalDate.now().plusMonths(1)));
+            VarianteDePuntos variante = this.varianteDePuntosRepository.buscarUltimo()
+                    .orElseThrow(() -> new IllegalStateException("No hay variante de puntos configurada"));
+
+            double puntos = this.calcularPuntos(colaborador, variante);
+            colaborador.setPuntos(new Puntos(puntos, true, LocalDate.now().plusMonths(1).withDayOfMonth(1)));
             withTransaction(() -> this.colaboradorRepository.actualizar(colaborador));
+            System.out.println("se recalcularon los puntos de " + colaborador.getNombre() + " a " + puntos);
             return puntos;
         }
     }
 
-    private double calcularPuntos(Colaborador colaborador) {
+    private double calcularPuntos(Colaborador colaborador, VarianteDePuntos variante) {
         LocalDateTime fechaUltimoCanje = null;
         double puntosRestantes = 0;
 
@@ -82,61 +84,43 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
             puntosRestantes = ultimoCanje.get().getPuntosRestantes();
         }
 
-        return this.calcularPorPesosDonados(colaborador, fechaUltimoCanje)
-                + this.calcularPorViandasDistribuidas(colaborador, fechaUltimoCanje)
-                + this.calcularPorViandasDonadas(colaborador, fechaUltimoCanje)
-                + this.calcularPorTarjetasRepartidas(colaborador, fechaUltimoCanje)
-                + this.calcularPorHeladerasActivas(colaborador, fechaUltimoCanje)
+        return this.pesosDonados(colaborador, fechaUltimoCanje) * variante.getDonacionDinero()
+                + this.viandasDistribuidas(colaborador, fechaUltimoCanje) * variante.getDistribucionViandas()
+                + this.viandasDonadas(colaborador, fechaUltimoCanje) * variante.getDonacionVianda()
+                + this.tarjetasRepartidas(colaborador, fechaUltimoCanje) * variante.getRepartoTarjeta()
+                + this.heladerasPorMesesActivas(colaborador, fechaUltimoCanje) * variante.getHeladerasActivas()
                 + puntosRestantes;
     }
 
-    private double calcularPorPesosDonados(Colaborador colaborador, LocalDateTime fechaUltimoCanje) {
+    private double pesosDonados(Colaborador colaborador, LocalDateTime fechaUltimoCanje) {
         List<DonacionDinero> colaboraciones = this.donacionDineroRepository
                 .buscarPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
-        double pesosDonados = colaboraciones.stream()
-                .mapToDouble(DonacionDinero::getMonto)
-                .sum();
-
-        double puntaje = pesosDonados * variante.getDonacionDinero();
-        System.out.println("puntos por donacion dinero: " + puntaje);
-        return puntaje;
+        return colaboraciones.stream().mapToDouble(DonacionDinero::getMonto).sum();
     }
 
-    private double calcularPorViandasDistribuidas(Colaborador colaborador, LocalDateTime fechaUltimoCanje) {
+    private double viandasDistribuidas(Colaborador colaborador, LocalDateTime fechaUltimoCanje) {
         List<DistribucionViandas> colaboraciones = this.distribucionViandasRepository
                 .buscarPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
-        double viandasDistribuidas = colaboraciones.stream()
-                .mapToDouble(DistribucionViandas::getViandas)
-                .sum();
-
-        double puntaje = viandasDistribuidas * variante.getDistribucionViandas();
-        System.out.println("puntos por viandas distribuidas" + puntaje);
-        return puntaje;
+        return colaboraciones.stream().mapToDouble(DistribucionViandas::getViandas).sum();
     }
 
-    private double calcularPorViandasDonadas(Colaborador colaborador, LocalDateTime fechaUltimoCanje) {
+    private double viandasDonadas(Colaborador colaborador, LocalDateTime fechaUltimoCanje) {
         List<DonacionVianda> colaboraciones = this.donacionViandaRepository
                 .buscarPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
-        double viandasDonadas = colaboraciones.size();
-        double puntaje = viandasDonadas * variante.getDonacionVianda();
-        System.out.println("puntos por viandas donadas: " + puntaje);
-        return puntaje;
+        return colaboraciones.size();
     }
 
-    private double calcularPorTarjetasRepartidas(Colaborador colaborador, LocalDateTime fechaUltimoCanje) {
+    private double tarjetasRepartidas(Colaborador colaborador, LocalDateTime fechaUltimoCanje) {
         List<RepartoDeTarjetas> colaboraciones = this.repartoDeTarjetasRepository
                 .buscarPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
 
-        double tarjetasRepartidas = colaboraciones.size();
-        double puntaje = tarjetasRepartidas * variante.getRepartoTarjeta();
-        System.out.println("puntos por tarjeras repartidas: " + puntaje);
-        return puntaje;
+        return colaboraciones.size();
     }
 
-    private double calcularPorHeladerasActivas(Colaborador colaborador, LocalDateTime fechaUltimoCanje) {
+    private double heladerasPorMesesActivas(Colaborador colaborador, LocalDateTime fechaUltimoCanje) {
         List<Heladera> heladerasActivasACargo = this.hacerseCargoHeladeraRepository
                 .buscarPorColaborador(colaborador).stream()
                 .map(HacerseCargoHeladera::getHeladeraACargo)
@@ -152,9 +136,7 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
                     return this.mesesEntre(fechaPartida, LocalDateTime.now());
                 }).sum();
 
-        double puntaje = heladerasActivas * mesesActivas * variante.getHeladerasActivas();
-        System.out.println("puntos por hacerse cargo heladera: " + puntaje);
-        return puntaje;
+        return heladerasActivas * mesesActivas;
     }
 
     /**

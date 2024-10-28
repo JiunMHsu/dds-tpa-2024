@@ -46,6 +46,10 @@ public class CanjeDePuntos {
     @Column(name = "puntos_restates", nullable = false)
     private double puntosRestantes;
 
+    // @ManyToOne
+    // @JoinColumn(name = "variante_usado", nullable = false)
+    // private VarianteDePuntos varianteUsado;
+
     public static CanjeDePuntos por(Colaborador colaborador,
                                     OfertaDeProductos oferta,
                                     LocalDateTime fechaCanjeo,

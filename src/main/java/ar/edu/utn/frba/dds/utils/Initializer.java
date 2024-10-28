@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.utils;
 
 import ar.edu.utn.frba.dds.config.ServiceLocator;
+import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.VarianteDePuntos;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
@@ -15,6 +16,7 @@ import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
+import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.VarianteDePuntosRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
@@ -37,6 +39,7 @@ public class Initializer implements WithSimplePersistenceUnit {
         instance.withColaboradores();
         instance.withHeladeras();
         instance.withIncidentes();
+        instance.withVarianteDePuntos();
 
         PDFGenerator pdfGenerator = new PDFGenerator(AppProperties.getInstance().propertyFromName("REPORT_DIR"));
         ServiceLocator.instanceOf(ReporteService.class).generarReporteSemanal(pdfGenerator);
@@ -246,8 +249,15 @@ public class Initializer implements WithSimplePersistenceUnit {
         commitTransaction();
     }
 
+    private void withVarianteDePuntos() {
+        // TODO - Implementar
+    }
+
     private void cleanupDatabase() {
-        withTransaction(() -> {
-        });
+        VarianteDePuntos variante = new VarianteDePuntos(
+                LocalDate.now(), 0.5, 1.0, 1.5, 2.0, 5.0);
+
+        VarianteDePuntosRepository repository = new VarianteDePuntosRepository();
+        withTransaction(() -> repository.guardar(variante));
     }
 }
