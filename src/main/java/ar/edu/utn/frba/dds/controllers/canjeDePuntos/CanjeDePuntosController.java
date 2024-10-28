@@ -2,9 +2,9 @@ package ar.edu.utn.frba.dds.controllers.canjeDePuntos;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.ProductoDTO;
+import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.CanjeDePuntos;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.models.entities.puntosPorColaborador.CanjeDePuntos;
 import ar.edu.utn.frba.dds.services.canjeDePuntos.CanjeDePuntosService;
 import ar.edu.utn.frba.dds.services.colaboraciones.OfertaProductosServiciosService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
@@ -31,12 +31,10 @@ public class CanjeDePuntosController extends ColaboradorPorSession implements IC
 
     @Override
     public void index(Context context) {
-
     }
 
     @Override
     public void show(Context context) {
-
     }
 
     @Override
@@ -50,7 +48,7 @@ public class CanjeDePuntosController extends ColaboradorPorSession implements IC
 
         Colaborador colaborador = this.obtenerColaboradorPorSession(context);
 
-        Double puntaje = this.canjeDePuntosService.calcularPuntos(colaborador);
+        double puntaje = this.canjeDePuntosService.getPuntosDeColaborador(colaborador);
 
         Map<String, Object> model = new HashMap<>();
         model.put("productos-canjear", productosDTOS);
@@ -78,9 +76,9 @@ public class CanjeDePuntosController extends ColaboradorPorSession implements IC
             puntosRestantes = 3.14159;
 
             OfertaDeProductos oferta = this.ofertaProductosServiciosService.buscarPorId(context.formParam("oferta_id")).get();
-            CanjeDePuntos canjeDePuntosNuevo = CanjeDePuntos.por(colaboradorCanje, LocalDateTime.now(), puntosCanjeados, puntosRestantes, oferta);
+            CanjeDePuntos canjeDePuntosNuevo = CanjeDePuntos.por(colaboradorCanje, oferta, LocalDateTime.now(), puntosCanjeados, 0); // no siempre es 0, hay q calcular los restantes
 
-            this.canjeDePuntosService.guardar(canjeDePuntosNuevo);
+            this.canjeDePuntosService.registrar(canjeDePuntosNuevo);
 
             operationSuccess = true;
             redirectDTOS.add(new RedirectDTO("/canjes-puntos", "Ver Productos"));
@@ -94,17 +92,14 @@ public class CanjeDePuntosController extends ColaboradorPorSession implements IC
 
     @Override
     public void edit(Context context) {
-
     }
 
     @Override
     public void update(Context context) {
-
     }
 
     @Override
     public void delete(Context context) {
-
     }
 
 }

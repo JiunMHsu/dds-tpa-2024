@@ -98,6 +98,10 @@ public class DistribucionViandasController extends UserRequired implements ICrud
 
             this.distribucionViandasService.registrar(distribucionViandas);
 
+            // TODO - Delegar a Service??
+            colaborador.invalidarPuntos();
+            this.colaboradorService.actualizar(colaborador);
+
             operationSuccess = true;
             redirectDTOS.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));
 

@@ -1,5 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.colaborador;
 
+import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.Puntos;
+import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.PuntosInvalidosException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
@@ -77,6 +79,9 @@ public class Colaborador extends EntidadPersistente {
     @Column(name = "fecha_nacimiento", columnDefinition = "DATE")
     private LocalDate fechaNacimiento;
 
+    @Embedded
+    private Puntos puntos;
+
     public static Colaborador juridica(Usuario usuario,
                                        String razonSocial,
                                        TipoRazonSocial tipoRazonSocial,
@@ -84,8 +89,7 @@ public class Colaborador extends EntidadPersistente {
                                        Contacto contacto,
                                        Direccion direccion,
                                        ArrayList<TipoColaboracion> formaDeColaborar) {
-        return Colaborador
-                .builder()
+        return Colaborador.builder()
                 .tipoColaborador(TipoColaborador.JURIDICO)
                 .usuario(usuario)
                 .razonSocial(razonSocial)
@@ -97,14 +101,6 @@ public class Colaborador extends EntidadPersistente {
                 .build();
     }
 
-    public static Colaborador juridica(Usuario usuario,
-                                       String razonSocial,
-                                       TipoRazonSocial tipoRazonSocial,
-                                       Contacto contacto,
-                                       Direccion direccion) {
-        return Colaborador.juridica(usuario, razonSocial, tipoRazonSocial, "", contacto, direccion, new ArrayList<>());
-    }
-
     public static Colaborador humana(Usuario usuario,
                                      String nombre,
                                      String apellido,
@@ -112,8 +108,7 @@ public class Colaborador extends EntidadPersistente {
                                      Contacto contacto,
                                      Direccion direccion,
                                      ArrayList<TipoColaboracion> formaDeColaborar) {
-        return Colaborador
-                .builder()
+        return Colaborador.builder()
                 .tipoColaborador(TipoColaborador.HUMANO)
                 .usuario(usuario)
                 .nombre(nombre)
@@ -140,8 +135,7 @@ public class Colaborador extends EntidadPersistente {
                                           Contacto contacto,
                                           Direccion direccion,
                                           ArrayList<TipoColaboracion> formaDeColaborar) {
-        return Colaborador
-                .builder()
+        return Colaborador.builder()
                 .usuario(usuario)
                 .contacto(contacto)
                 .direccion(direccion)
@@ -153,4 +147,12 @@ public class Colaborador extends EntidadPersistente {
         return this.formaDeColaborar.contains(tipoColaboracion);
     }
 
+    public double puntos() throws PuntosInvalidosException {
+        if (!puntos.esValido(tipoColaborador)) throw new PuntosInvalidosException();
+        return puntos.getPuntos();
+    }
+
+    public void invalidarPuntos() {
+        puntos.setEsValido(false);
+    }
 }

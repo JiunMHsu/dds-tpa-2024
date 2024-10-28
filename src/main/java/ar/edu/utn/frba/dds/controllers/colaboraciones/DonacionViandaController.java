@@ -91,6 +91,10 @@ public class DonacionViandaController extends UserRequired implements ICrudViews
 
             this.donacionViandaService.registrar(donacionVianda);
 
+            // TODO - Delegar a Service??
+            colaborador.invalidarPuntos();
+            this.colaboradorService.actualizar(colaborador);
+
             operationSuccess = true;
             redirectDTOS.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));
 

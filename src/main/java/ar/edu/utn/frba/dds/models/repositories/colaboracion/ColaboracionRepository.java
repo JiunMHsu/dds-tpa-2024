@@ -28,17 +28,21 @@ public abstract class ColaboracionRepository<T extends EntidadPersistente> imple
                 .getResultList();
     }
 
-    public List<T> buscarPorColaboradorAPartirDe(Colaborador unColaborador, LocalDateTime fechaHora) {
-        return entityManager()
+    public List<T> buscarPorColaboradorAPartirDe(Colaborador colaborador, LocalDateTime fechaHora) {
+        return fechaHora == null
+                ? buscarPorColaborador(colaborador)
+                : entityManager()
                 .createQuery("from " + type.getName() + " c where c.alta = :alta and c.colaborador = :colaborador and c.fechaHora >= :fecha", type)
-                .setParameter("colaborador", unColaborador)
+                .setParameter("colaborador", colaborador)
                 .setParameter("fecha", fechaHora)
                 .setParameter("alta", true)
                 .getResultList();
     }
 
     public List<T> buscarAPartirDe(LocalDateTime fechaHora) {
-        return entityManager()
+        return fechaHora == null
+                ? buscarTodos()
+                : entityManager()
                 .createQuery("from " + type.getName() + " c where c.alta = :alta and c.fechaHora >= :fecha", type)
                 .setParameter("fecha", fechaHora)
                 .setParameter("alta", true)

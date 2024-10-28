@@ -355,12 +355,13 @@ public class ServiceLocator {
 
         if (componentName.equals(CanjeDePuntosService.class.getName())) {
             CanjeDePuntosService instance = new CanjeDePuntosService(
+                    instanceOf(CanjeDePuntosRepository.class),
                     instanceOf(DonacionDineroRepository.class),
                     instanceOf(DistribucionViandasRepository.class),
                     instanceOf(DonacionViandaRepository.class),
                     instanceOf(RepartoDeTarjetasRepository.class),
                     instanceOf(HacerseCargoHeladeraRepository.class),
-                    instanceOf(CanjeDePuntosRepository.class));
+                    instanceOf(ColaboradorRepository.class));
             instances.put(componentName, instance);
         }
 

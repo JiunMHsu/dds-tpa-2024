@@ -90,6 +90,10 @@ public class HacerseCargoHeladeraController extends UserRequired implements ICru
 
             this.hacerseCargoHeladeraService.registrar(hacerseCargoHeladera);
 
+            // TODO - Delegar a Service??
+            colaborador.invalidarPuntos();
+            this.colaboradorService.actualizar(colaborador);
+
             operationSuccess = true;
             redirectDTOS.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));
 
