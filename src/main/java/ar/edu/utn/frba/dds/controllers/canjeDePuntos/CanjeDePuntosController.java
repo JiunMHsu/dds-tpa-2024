@@ -9,8 +9,7 @@ import ar.edu.utn.frba.dds.services.canjeDePuntos.CanjeDePuntosService;
 import ar.edu.utn.frba.dds.services.colaboraciones.OfertaProductosServiciosService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
-import ar.edu.utn.frba.dds.utils.ColaboradorPorSession;
-import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
+import ar.edu.utn.frba.dds.utils.UserRequired;
 import io.javalin.http.Context;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class CanjeDePuntosController extends ColaboradorPorSession implements ICrudViewsHandler {
+public class CanjeDePuntosController extends UserRequired {
     private final CanjeDePuntosService canjeDePuntosService;
     private final OfertaProductosServiciosService ofertaProductosServiciosService;
 
@@ -29,11 +28,9 @@ public class CanjeDePuntosController extends ColaboradorPorSession implements IC
         this.ofertaProductosServiciosService = ofertaProductosServiciosService;
     }
 
-    @Override
     public void index(Context context) {
     }
 
-    @Override
     public void show(Context context) {
     }
 
@@ -88,18 +85,6 @@ public class CanjeDePuntosController extends ColaboradorPorSession implements IC
             model.put("redirects", redirectDTOS);
             context.render("post_result.hbs", model);
         }
-    }
-
-    @Override
-    public void edit(Context context) {
-    }
-
-    @Override
-    public void update(Context context) {
-    }
-
-    @Override
-    public void delete(Context context) {
     }
 
 }

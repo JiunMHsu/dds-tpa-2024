@@ -77,7 +77,7 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
         double puntosRestantes = 0;
 
         Optional<CanjeDePuntos> ultimoCanje = this.canjeDePuntosRepository
-                .ultimoCanjePorColaborador(colaborador);
+                .ultimoPorColaborador(colaborador);
 
         if (ultimoCanje.isPresent()) {
             fechaUltimoCanje = ultimoCanje.get().getFechaHora();

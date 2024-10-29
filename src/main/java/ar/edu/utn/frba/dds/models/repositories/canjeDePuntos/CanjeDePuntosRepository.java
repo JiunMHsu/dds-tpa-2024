@@ -20,7 +20,7 @@ public class CanjeDePuntosRepository implements WithSimplePersistenceUnit {
                 .getResultList();
     }
 
-    public Optional<CanjeDePuntos> ultimoCanjePorColaborador(Colaborador colaborador) {
+    public Optional<CanjeDePuntos> ultimoPorColaborador(Colaborador colaborador) {
         try {
             return Optional.of(entityManager()
                     .createQuery("from CanjeDePuntos c where c.colaborador = :colaborador order by c.fechaHora desc", CanjeDePuntos.class)
