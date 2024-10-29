@@ -239,8 +239,9 @@ public class ServiceLocator {
                     instanceOf(HeladeraService.class),
                     instanceOf(FallaHeladeraService.class),
                     instanceOf(FaltaViandaService.class),
-                    instanceOf(HeladeraLlenaService.class)
-
+                    instanceOf(HeladeraLlenaService.class),
+                    instanceOf(UsuarioService.class),
+                    instanceOf(ColaboradorService.class)
             );
             instances.put(componentName, instance);
         }
