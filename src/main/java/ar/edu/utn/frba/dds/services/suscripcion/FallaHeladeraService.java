@@ -7,37 +7,26 @@ import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFallaHeladera;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.suscripcion.FallaHeladeraRepository;
+import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+
 import java.util.List;
 import java.util.Optional;
 
-public class FallaHeladeraService {
+public class FallaHeladeraService implements WithSimplePersistenceUnit {
 
     private final FallaHeladeraRepository fallaHeladeraRepository;
 
     public FallaHeladeraService(FallaHeladeraRepository fallaHeladeraRepository) { this.fallaHeladeraRepository = fallaHeladeraRepository; }
 
-    public void registrarSuscripcionFallaHeladera(Colaborador colaborador, Heladera heladera, MedioDeNotificacion medioDeNotificacion) {
+    public void registrar(Colaborador colaborador, Heladera heladera, MedioDeNotificacion medioDeNotificacion) {
 
-//        Optional<Colaborador> colaboradorExistente = colaboradorRepository.buscarPorId(colaborador.getId().toString());
-//        if (colaboradorExistente.isEmpty()) {
-//            throw new IllegalArgumentException("El colaborador no existe en la base por datos");
-//        }
-//
-//        Optional<Heladera> heladeraExistente = heladeraRepository.buscarPorId(heladera.getId().toString());
-//        if (heladeraExistente.isEmpty()) {
-//            throw new IllegalArgumentException("El colaborador no existe en la base por datos");
-//        }
-//
-//        SuscripcionFallaHeladera nuevaSuscripcion = SuscripcionFallaHeladera.de(
-//                colaborador,
-//                heladera,
-//                medioDeNotificacion);
-//
-//        fallaHeladeraRepository.guardar(nuevaSuscripcion);
+        SuscripcionFallaHeladera nuevaSuscripcion = SuscripcionFallaHeladera.de(
+                colaborador,
+                heladera,
+                medioDeNotificacion);
+
+        beginTransaction();
+        fallaHeladeraRepository.guardar(nuevaSuscripcion);
+        commitTransaction();
       }
-
-//    public List<SuscripcionFallaHeladera> buscarTodasLasSuscripcionesDe(Colaborador colaborador) {
-//        return fallaHeladeraRepository.obtenerPorColaborador(colaborador);
-//    }
-
 }

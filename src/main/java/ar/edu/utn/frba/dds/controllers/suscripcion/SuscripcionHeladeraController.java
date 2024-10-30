@@ -1,9 +1,7 @@
 package ar.edu.utn.frba.dds.controllers.suscripcion;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
-import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
-import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
-import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
+import ar.edu.utn.frba.dds.exceptions.*;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
@@ -46,6 +44,7 @@ public class SuscripcionHeladeraController extends UserRequired {
     }
 
 
+
     public void create(Context context) {
 
     }
@@ -57,11 +56,8 @@ public class SuscripcionHeladeraController extends UserRequired {
     public void createHeladeraLlena(Context context) { render(context, "suscripciones/suscripcion_heladera_llena", new HashMap<>()); }
 
     public void saveFallaHeladera(Context context) {
-        // TODO - ver que se deberia hacer
-    }
 
-    public void saveFaltaVianda(Context context) { // TODO - ver que matchee con las vistas y excepciones
-
+        // TODO - habiamos quedado que con solo dar el boton c efectuaba, entonces no deberia recibir nada x formulario
 
         Map<String, Object> model = new HashMap<>();
         List<RedirectDTO> redirectDTOS = new ArrayList<>();
@@ -77,13 +73,48 @@ public class SuscripcionHeladeraController extends UserRequired {
 
             MedioDeNotificacion medioDeNotificacion = MedioDeNotificacion.valueOf(context.formParamAsClass("medio", String.class).get());
 
-            Integer viandasRestantes = context.formParamAsClass("viandas", Integer.class).get();
+            this.fallaHeladeraService.registrar(colaborador, heladera, medioDeNotificacion);
 
-            this.faltaViandaService.registrarSuscripcionFaltaVianda(colaborador, heladera, medioDeNotificacion, viandasRestantes);
+            operationSuccess = true;
+            redirectDTOS.add(new RedirectDTO("/suscripciones", "Ir a suscripciones"));
 
         } catch (NonColaboratorException e) {
             throw new UnauthorizedException(e.getMessage());
-        } catch (ValidationException | ResourceNotFoundException e) {
+        } finally {
+            model.put("success", operationSuccess);
+            model.put("redirects", redirectDTOS);
+            context.render("post_result.hbs", model);
+        }
+    }
+
+    public void saveFaltaVianda(Context context) { // TODO - ver que matchee con las vistas y excepciones
+
+
+        Map<String, Object> model = new HashMap<>();
+        List<RedirectDTO> redirectDTOS = new ArrayList<>();
+        boolean operationSuccess = false;
+
+        try {
+
+            Colaborador colaborador = colaboradorFromSession(context);
+
+            // TODO - me parece que no deberia haber un campo Heladera en el formulario, sino que se obtenia directamente
+            Heladera heladera = heladeraService
+                    .buscarPorNombre(context.formParamAsClass("heladera", String.class).get())
+                    .orElseThrow(ResourceNotFoundException::new);
+
+            MedioDeNotificacion medioDeNotificacion = MedioDeNotificacion.valueOf(context.formParamAsClass("medio", String.class).get());
+
+            Integer viandasRestantes = context.formParamAsClass("viandas", Integer.class).get();
+
+            this.faltaViandaService.registrar(colaborador, heladera, medioDeNotificacion, viandasRestantes);
+
+            operationSuccess = true;
+            redirectDTOS.add(new RedirectDTO("/suscripciones", "Ir a suscripciones"));
+
+        } catch (NonColaboratorException e) {
+            throw new UnauthorizedException(e.getMessage());
+        } catch (ValidationException | ResourceNotFoundException | SuscripcionFaltaViandaException e) {
             redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
         } finally {
             model.put("success", operationSuccess);
@@ -102,6 +133,7 @@ public class SuscripcionHeladeraController extends UserRequired {
 
             Colaborador colaborador = colaboradorFromSession(context);
 
+            // TODO - idem que Falta Vianda
             Heladera heladera = heladeraService
                     .buscarPorNombre(context.formParamAsClass("heladera", String.class).get())
                     .orElseThrow(ResourceNotFoundException::new);
@@ -110,19 +142,20 @@ public class SuscripcionHeladeraController extends UserRequired {
 
             Integer espacioRestante = context.formParamAsClass("espacio-restante", Integer.class).get();
 
-            this.heladeraLlenaService.registrarSuscripcionHeladeraLlena(colaborador, heladera, medioDeNotificacion, espacioRestante);
+            this.heladeraLlenaService.registrar(colaborador, heladera, medioDeNotificacion, espacioRestante);
+
+            operationSuccess = true;
+            redirectDTOS.add(new RedirectDTO("/suscripciones", "Ir a suscripciones"));
 
         } catch (NonColaboratorException e) {
             throw new UnauthorizedException(e.getMessage());
-        } catch (ValidationException | ResourceNotFoundException e) {
+        } catch (ValidationException | ResourceNotFoundException | SuscripcionHeladeraLlenaException e) {
             redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
         } finally {
             model.put("success", operationSuccess);
             model.put("redirects", redirectDTOS);
             context.render("post_result.hbs", model);
         }
-
     }
-
 
 }
