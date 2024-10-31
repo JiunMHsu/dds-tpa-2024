@@ -103,7 +103,7 @@ public class PersonaVulnerableController extends ColaboradorPorSession implement
                     context.formParamAsClass("nro_documento", String.class).get()
             );
 
-            Direccion direccion = Direccion.formularioPV(
+            Direccion direccion = Direccion.with(
                     new Barrio(context.formParamAsClass("barrio", String.class).get()),
                     new Calle(context.formParamAsClass("calle", String.class).get()),
                     Integer.valueOf(context.formParamAsClass("altura", Integer.class).get())

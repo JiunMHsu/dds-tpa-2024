@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.services.colaborador;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.IColaboradorRepository;
+import ar.edu.utn.frba.dds.models.repositories.usuario.IUsuarioRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
 import java.util.Optional;
@@ -10,14 +11,22 @@ import java.util.Optional;
 public class ColaboradorService implements WithSimplePersistenceUnit {
 
     private final IColaboradorRepository colaboradorRepository;
+    private final IUsuarioRepository usuarioRepository;
 
-    public ColaboradorService(IColaboradorRepository colaboradorRepository) {
+    public ColaboradorService(IColaboradorRepository colaboradorRepository,
+                              IUsuarioRepository usuarioRepository) {
         this.colaboradorRepository = colaboradorRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     public void guardar(Colaborador colaborador) {
-        // TODO - validaciones??
-        withTransaction(() -> this.colaboradorRepository.guardar(colaborador));
+
+        Usuario usuarioNuevo = colaborador.getUsuario();
+
+        beginTransaction();
+        this.usuarioRepository.guardar(usuarioNuevo);
+        this.colaboradorRepository.guardar(colaborador);
+        commitTransaction();
     }
 
     public void actualizar(Colaborador colaborador) {

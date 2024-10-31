@@ -22,12 +22,7 @@ import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.validation.ValidationException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ColaboradorController implements ICrudViewsHandler {
@@ -98,68 +93,173 @@ public class ColaboradorController implements ICrudViewsHandler {
     @Override
     public void create(Context context) {
         //sign up
-        context.render("colaboradores/sign_up.hbs");
+        context.render("signs/sign.hbs");
     }
 
     // TODO - REVISAR
     @Override
     public void save(Context context) {
-        Usuario usuario = Usuario.con(context.formParam("nombre"), context.formParam("contrasenia"), context.formParam("email"), TipoRol.COLABORADOR);
-        Direccion direccion = Direccion.with(
-                new Barrio(context.formParam("barrio")),
-                new Calle(context.formParam("calle")),
-                Integer.valueOf(context.formParam("altura")),
-                new Ubicacion(Double.valueOf(context.formParam("latitud")), Double.valueOf(context.formParam("longitud")))
-        );
-        Contacto contacto = Contacto.con(
-                context.formParam("email"),
-                context.formParam("telefono"),
-                context.formParam("whatsapp"),
-                context.formParam("telegram")
-        );
-
-        String colaboracionesParam = context.formParam("colaboraciones");
-
-        ArrayList<TipoColaboracion> colaboraciones = new ArrayList<>();
-        if (colaboracionesParam != null && !colaboracionesParam.isEmpty()) {
-            String[] colaboracionesStr = colaboracionesParam.split(",");
-
-            // Convertimos cada string en un valor del enum Colaboracion
-            for (String colaboracionStr : colaboracionesStr) {
-                try {
-                    TipoColaboracion colaboracion = TipoColaboracion.valueOf(colaboracionStr.trim().toUpperCase());
-                    colaboraciones.add(colaboracion);
-                } catch (IllegalArgumentException e) {
-                    //nunca va a pasar esto
-                    System.out.println("Colaboración inválida: " + colaboracionStr);
-                }
-            }
-        }
-
-        Colaborador nuevoColaborador = Colaborador.colaborador(usuario, contacto, direccion, colaboraciones);
-
-        String tipoColaborador = context.formParam("tipo_colaborador");
-        if ("JURIDICO".equals(tipoColaborador)) {
-            nuevoColaborador.setRazonSocial(context.formParam("razon_social"));
-            nuevoColaborador.setTipoRazonSocial(TipoRazonSocial.valueOf(context.formParam("tipo_razon_social").toUpperCase()));
-            nuevoColaborador.setRubro(context.formParam("rubro"));
-        } else if ("HUMANA".equals(tipoColaborador)) {
-            nuevoColaborador.setNombre(context.formParam("nombre"));
-            nuevoColaborador.setApellido(context.formParam("apellido"));
-
-            // Obtener fecha por nacimiento (suponiendo que el formulario tenga campos separados paraColaborador día, mes, año)
-            int diaNacimiento = Integer.parseInt(context.formParam("dia_nacimiento"));
-            int mesNacimiento = Integer.parseInt(context.formParam("mes_nacimiento"));
-            int anioNacimiento = Integer.parseInt(context.formParam("anio_nacimiento"));
-
-            // Crear el objeto LocalDate paraColaborador la fecha por nacimiento
-            LocalDate fechaNacimiento = LocalDate.of(anioNacimiento, mesNacimiento, diaNacimiento);
-            nuevoColaborador.setFechaNacimiento(fechaNacimiento);
-        }
-
-        this.colaboradorService.guardar(nuevoColaborador);
-        context.redirect("/colaboradores/sign_up_exitoso.hbs");
+//        Usuario usuario = Usuario.con(context.formParam("nombre"), context.formParam("contrasenia"), context.formParam("email"), TipoRol.COLABORADOR);
+//        Direccion direccion = Direccion.with(
+//                new Barrio(context.formParam("barrio")),
+//                new Calle(context.formParam("calle")),
+//                Integer.valueOf(context.formParam("altura")),
+//                new Ubicacion(Double.valueOf(context.formParam("latitud")), Double.valueOf(context.formParam("longitud")))
+//        );
+//        Contacto contacto = Contacto.con(
+//                context.formParam("email"),
+//                context.formParam("telefono"),
+//                context.formParam("whatsapp"),
+//                context.formParam("telegram")
+//        );
+//
+//        String colaboracionesParam = context.formParam("colaboraciones");
+//
+//        ArrayList<TipoColaboracion> colaboraciones = new ArrayList<>();
+//        if (colaboracionesParam != null && !colaboracionesParam.isEmpty()) {
+//            String[] colaboracionesStr = colaboracionesParam.split(",");
+//
+//            // Convertimos cada string en un valor del enum Colaboracion
+//            for (String colaboracionStr : colaboracionesStr) {
+//                try {
+//                    TipoColaboracion colaboracion = TipoColaboracion.valueOf(colaboracionStr.trim().toUpperCase());
+//                    colaboraciones.add(colaboracion);
+//                } catch (IllegalArgumentException e) {
+//                    //nunca va a pasar esto
+//                    System.out.println("Colaboración inválida: " + colaboracionStr);
+//                }
+//            }
+//        }
+//
+//        Colaborador nuevoColaborador = Colaborador.colaborador(usuario, contacto, direccion, colaboraciones);
+//
+//        String tipoColaborador = context.formParam("tipo_colaborador");
+//        if ("JURIDICO".equals(tipoColaborador)) {
+//            nuevoColaborador.setRazonSocial(context.formParam("razon_social"));
+//            nuevoColaborador.setTipoRazonSocial(TipoRazonSocial.valueOf(context.formParam("tipo_razon_social").toUpperCase()));
+//            nuevoColaborador.setRubro(context.formParam("rubro"));
+//        } else if ("HUMANA".equals(tipoColaborador)) {
+//            nuevoColaborador.setNombre(context.formParam("nombre"));
+//            nuevoColaborador.setApellido(context.formParam("apellido"));
+//
+//            // Obtener fecha por nacimiento (suponiendo que el formulario tenga campos separados paraColaborador día, mes, año)
+//            int diaNacimiento = Integer.parseInt(context.formParam("dia_nacimiento"));
+//            int mesNacimiento = Integer.parseInt(context.formParam("mes_nacimiento"));
+//            int anioNacimiento = Integer.parseInt(context.formParam("anio_nacimiento"));
+//
+//            // Crear el objeto LocalDate paraColaborador la fecha por nacimiento
+//            LocalDate fechaNacimiento = LocalDate.of(anioNacimiento, mesNacimiento, diaNacimiento);
+//            nuevoColaborador.setFechaNacimiento(fechaNacimiento);
+//        }
+//
+//        this.colaboradorService.guardar(nuevoColaborador);
+//        context.redirect("/colaboradores/sign_up_exitoso.hbs");
     }
+
+    public void saveHumana(Context context) {
+
+        Map<String, Object> model = new HashMap<>();
+        List<RedirectDTO> redirectDTOS = new ArrayList<>();
+        boolean operationSuccess = false;
+
+        try {
+            Usuario usuario = Usuario.con(
+                    context.formParamAsClass("nombre_usuario", String.class).get(),
+                    context.formParamAsClass("contrasenia", String.class).get(),
+                    context.formParamAsClass("email", String.class).get(),
+                    TipoRol.COLABORADOR
+            );
+
+            Direccion direccion = Direccion.with(
+                    new Barrio(context.formParamAsClass("barrio", String.class).get()),
+                    new Calle(context.formParamAsClass("calle", String.class).get()),
+                    Integer.valueOf(context.formParamAsClass("altura", String.class).get())
+            );
+
+            Contacto contacto = Contacto.con(
+                    context.formParamAsClass("email", String.class).get(),
+                    context.formParamAsClass("telefono", String.class).get(),
+                    context.formParamAsClass("whatsapp", String.class).get(),
+                    context.formParamAsClass("telegram", String.class).get()
+            );
+
+            ArrayList<TipoColaboracion> formasDeColaborar = new ArrayList<TipoColaboracion>();
+
+            Colaborador colaboradorNuevo = Colaborador.humana(
+                    usuario,
+                    context.formParamAsClass("nombre", String.class).get(),
+                    context.formParamAsClass("apellido", String.class).get(),
+                    LocalDate.parse(context.formParamAsClass("fecha_nacimiento", String.class).get()),
+                    contacto,
+                    direccion,
+                    formasDeColaborar
+            );
+
+            this.colaboradorService.guardar(colaboradorNuevo);
+
+            operationSuccess = true;
+
+        } catch (ValidationException v) {
+            redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
+        } finally {
+            model.put("success", operationSuccess);
+            model.put("redirects", redirectDTOS);
+            context.render("post_result.hbs", model);
+        }
+    }
+
+    public void saveJuridica(Context context) {
+        Map<String, Object> model = new HashMap<>();
+        List<RedirectDTO> redirectDTOS = new ArrayList<>();
+        boolean operationSuccess = false;
+
+        try {
+            Usuario usuario = Usuario.con(
+                    context.formParamAsClass("nombre_usuario", String.class).get(),
+                    context.formParamAsClass("contrasenia", String.class).get(),
+                    context.formParamAsClass("email", String.class).get(),
+                    TipoRol.COLABORADOR
+            );
+
+            Direccion direccion = Direccion.with(
+                    new Barrio(context.formParamAsClass("barrio", String.class).get()),
+                    new Calle(context.formParamAsClass("calle", String.class).get()),
+                    Integer.valueOf(context.formParamAsClass("altura", String.class).get())
+            );
+
+            Contacto contacto = Contacto.con(
+                    context.formParamAsClass("email", String.class).get(),
+                    context.formParamAsClass("telefono", String.class).get(),
+                    context.formParamAsClass("whatsapp", String.class).get(),
+                    context.formParamAsClass("telegram", String.class).get()
+            );
+
+            ArrayList<TipoColaboracion> formasDeColaborar = new ArrayList<TipoColaboracion>();
+
+            Colaborador colaboradorNuevo = Colaborador.juridica(
+                    usuario,
+                    context.formParamAsClass("razon_social", String.class).get(),
+                    TipoRazonSocial.valueOf(context.formParamAsClass("tipo_razon_social", String.class).get()),
+                    context.formParamAsClass("rubro", String.class).get(),
+                    contacto,
+                    direccion,
+                    formasDeColaborar
+            );
+
+            this.colaboradorService.guardar(colaboradorNuevo);
+
+            operationSuccess = true;
+
+        } catch (ValidationException v) {
+            redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
+        } finally {
+            model.put("success", operationSuccess);
+            model.put("redirects", redirectDTOS);
+            context.render("post_result.hbs", model);
+        }
+
+    }
+
 
     @Override
     public void edit(Context context) {
