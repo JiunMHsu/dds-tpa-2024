@@ -35,7 +35,7 @@ public class Direccion {
         return Direccion.builder().calle(calle).altura(altura).build();
     }
 
-    public static Direccion formularioPV(Barrio barrio, Calle calle, Integer altura) {
+    public static Direccion with(Barrio barrio, Calle calle, Integer altura) {
         return Direccion.builder().barrio(barrio).calle(calle).altura(altura).build();
     }
 }
