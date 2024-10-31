@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.utils;
 
 import ar.edu.utn.frba.dds.config.ServiceLocator;
+import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.Puntos;
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.VarianteDePuntos;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
@@ -79,11 +80,11 @@ public class Initializer implements WithSimplePersistenceUnit {
         List<TipoColaboracion> colabJuridica1 = List.of(TipoColaboracion.DONACION_DINERO, TipoColaboracion.HACERSE_CARGO_HELADERA);
         List<TipoColaboracion> colabJuridica2 = List.of(TipoColaboracion.HACERSE_CARGO_HELADERA, TipoColaboracion.OFERTA_DE_PRODUCTOS, TipoColaboracion.DONACION_DINERO);
 
-        Colaborador c1 = Colaborador.humana(u1, "Jiun Ming", "Hsu", LocalDate.now(), Contacto.vacio(), direccion, new ArrayList<>(colabHumana1));
-        Colaborador c2 = Colaborador.humana(u2, "Abril", "Nimo Dominguez", LocalDate.now(), Contacto.vacio(), direccion, new ArrayList<>(colabHumana2));
-        Colaborador c3 = Colaborador.humana(u3, "Matías Leonel", "Juncos Mieres", LocalDate.now(), Contacto.vacio(), direccion, new ArrayList<>(colabHumana1));
-        Colaborador c4 = Colaborador.juridica(u4, "MELSELEP SRL", TipoRazonSocial.EMPRESA, "Música", Contacto.vacio(), direccion, new ArrayList<>(colabJuridica2));
-        Colaborador c5 = Colaborador.juridica(u5, "JOACO SA", TipoRazonSocial.EMPRESA, "Tecnología", Contacto.vacio(), direccion, new ArrayList<>(colabJuridica1));
+        Colaborador c1 = Colaborador.humana(u1, "Jiun Ming", "Hsu", LocalDate.now(), Contacto.vacio(), direccion, new ArrayList<>(colabHumana1), new Puntos(0, false, null));
+        Colaborador c2 = Colaborador.humana(u2, "Abril", "Nimo Dominguez", LocalDate.now(), Contacto.vacio(), direccion, new ArrayList<>(colabHumana2), new Puntos(0, false, null));
+        Colaborador c3 = Colaborador.humana(u3, "Matías Leonel", "Juncos Mieres", LocalDate.now(), Contacto.vacio(), direccion, new ArrayList<>(colabHumana1), new Puntos(0, false, null));
+        Colaborador c4 = Colaborador.juridica(u4, "MELSELEP SRL", TipoRazonSocial.EMPRESA, "Música", Contacto.vacio(), direccion, new ArrayList<>(colabJuridica2), new Puntos(0, false, null));
+        Colaborador c5 = Colaborador.juridica(u5, "JOACO SA", TipoRazonSocial.EMPRESA, "Tecnología", Contacto.vacio(), direccion, new ArrayList<>(colabJuridica1), new Puntos(0, false, null));
 
         UsuarioRepository usuarioRepository = new UsuarioRepository();
         ColaboradorRepository colaboradorRepository = new ColaboradorRepository();
@@ -250,14 +251,15 @@ public class Initializer implements WithSimplePersistenceUnit {
     }
 
     private void withVarianteDePuntos() {
-        // TODO - Implementar
-    }
-
-    private void cleanupDatabase() {
         VarianteDePuntos variante = new VarianteDePuntos(
                 LocalDate.now(), 0.5, 1.0, 1.5, 2.0, 5.0);
 
         VarianteDePuntosRepository repository = new VarianteDePuntosRepository();
         withTransaction(() -> repository.guardar(variante));
+    }
+
+    private void cleanupDatabase() {
+        withTransaction(() -> {
+        });
     }
 }

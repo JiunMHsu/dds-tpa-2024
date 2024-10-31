@@ -88,7 +88,8 @@ public class Colaborador extends EntidadPersistente {
                                        String rubro,
                                        Contacto contacto,
                                        Direccion direccion,
-                                       ArrayList<TipoColaboracion> formaDeColaborar) {
+                                       ArrayList<TipoColaboracion> formaDeColaborar,
+                                       Puntos puntos) {
         return Colaborador.builder()
                 .tipoColaborador(TipoColaborador.JURIDICO)
                 .usuario(usuario)
@@ -98,6 +99,7 @@ public class Colaborador extends EntidadPersistente {
                 .contacto(contacto)
                 .direccion(direccion)
                 .formaDeColaborar(formaDeColaborar)
+                .puntos(puntos)
                 .build();
     }
 
@@ -107,7 +109,8 @@ public class Colaborador extends EntidadPersistente {
                                      LocalDate fechaNacimiento,
                                      Contacto contacto,
                                      Direccion direccion,
-                                     ArrayList<TipoColaboracion> formaDeColaborar) {
+                                     ArrayList<TipoColaboracion> formaDeColaborar,
+                                     Puntos puntos) {
         return Colaborador.builder()
                 .tipoColaborador(TipoColaborador.HUMANO)
                 .usuario(usuario)
@@ -117,6 +120,7 @@ public class Colaborador extends EntidadPersistente {
                 .contacto(contacto)
                 .direccion(direccion)
                 .formaDeColaborar(formaDeColaborar)
+                .puntos(puntos)
                 .build();
     }
 
@@ -124,7 +128,7 @@ public class Colaborador extends EntidadPersistente {
                                      String nombre,
                                      String apellido,
                                      LocalDate fechaNacimiento) {
-        return Colaborador.humana(usuario, nombre, apellido, fechaNacimiento, null, null, new ArrayList<>());
+        return Colaborador.humana(usuario, nombre, apellido, fechaNacimiento, null, null, new ArrayList<>(), new Puntos(0, false, null));
     }
 
     public static Colaborador colaborador(Usuario usuario) {

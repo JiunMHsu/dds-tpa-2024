@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class CanjeDePuntosController extends UserRequired {
     private final CanjeDePuntosService canjeDePuntosService;
@@ -34,37 +33,33 @@ public class CanjeDePuntosController extends UserRequired {
     public void show(Context context) {
     }
 
-    @Override
     public void create(Context context) {
-        List<OfertaDeProductos> productos = this.ofertaProductosServiciosService.buscarTodos();
+        Colaborador colaborador = colaboradorFromSession(context);
+        double puntaje = this.canjeDePuntosService.getPuntosDeColaborador(colaborador);
 
+        List<OfertaDeProductos> productos = this.ofertaProductosServiciosService.buscarTodos();
         List<ProductoDTO> productosDTOS = productos.stream()
                 .map(ProductoDTO::preview)
-                .collect(Collectors.toList());
-
-
-        Colaborador colaborador = this.obtenerColaboradorPorSession(context);
-
-        double puntaje = this.canjeDePuntosService.getPuntosDeColaborador(colaborador);
+                .toList();
 
         Map<String, Object> model = new HashMap<>();
         model.put("productos-canjear", productosDTOS);
-        model.put("titulo", "Listado de productos/servicios");
         model.put("puntaje", puntaje);
 
-        context.render("canje_de_puntos/productos_canjear.hbs");
+        render(context, "canje_de_puntos/productos_canjear.hbs", model);
     }
 
-    @Override
     public void save(Context context) {
         Map<String, Object> model = new HashMap<>();
         List<RedirectDTO> redirectDTOS = new ArrayList<>();
         boolean operationSuccess = false;
 
         try {
-            //TODO - refactor extends colaboradorPorSession
+            Colaborador colaboradorCanje = colaboradorFromSession(context);
 
-            Colaborador colaboradorCanje = this.obtenerColaboradorPorSession(context);
+
+            // TODO ===================================
+
 
             Double puntosCanjeados = Double.valueOf(context.formParam("puntos_canjeados"));
 
