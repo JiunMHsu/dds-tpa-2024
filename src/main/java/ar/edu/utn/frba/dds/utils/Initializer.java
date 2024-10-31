@@ -3,6 +3,8 @@ package ar.edu.utn.frba.dds.utils;
 import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.Puntos;
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.VarianteDePuntos;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.RubroOferta;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
@@ -18,6 +20,7 @@ import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.VarianteDePuntosRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
@@ -41,6 +44,7 @@ public class Initializer implements WithSimplePersistenceUnit {
         instance.withHeladeras();
         instance.withIncidentes();
         instance.withVarianteDePuntos();
+        instance.withOfertas();
 
         PDFGenerator pdfGenerator = new PDFGenerator(AppProperties.getInstance().propertyFromName("REPORT_DIR"));
         ServiceLocator.instanceOf(ReporteService.class).generarReporteSemanal(pdfGenerator);
@@ -80,7 +84,7 @@ public class Initializer implements WithSimplePersistenceUnit {
         List<TipoColaboracion> colabJuridica1 = List.of(TipoColaboracion.DONACION_DINERO, TipoColaboracion.HACERSE_CARGO_HELADERA);
         List<TipoColaboracion> colabJuridica2 = List.of(TipoColaboracion.HACERSE_CARGO_HELADERA, TipoColaboracion.OFERTA_DE_PRODUCTOS, TipoColaboracion.DONACION_DINERO);
 
-        Colaborador c1 = Colaborador.humana(u1, "Jiun Ming", "Hsu", LocalDate.now(), Contacto.vacio(), direccion, new ArrayList<>(colabHumana1), new Puntos(0, false, null));
+        Colaborador c1 = Colaborador.humana(u1, "Jiun Ming", "Hsu", LocalDate.now(), Contacto.vacio(), direccion, new ArrayList<>(colabHumana1), new Puntos(2039, true, null));
         Colaborador c2 = Colaborador.humana(u2, "Abril", "Nimo Dominguez", LocalDate.now(), Contacto.vacio(), direccion, new ArrayList<>(colabHumana2), new Puntos(0, false, null));
         Colaborador c3 = Colaborador.humana(u3, "Matías Leonel", "Juncos Mieres", LocalDate.now(), Contacto.vacio(), direccion, new ArrayList<>(colabHumana1), new Puntos(0, false, null));
         Colaborador c4 = Colaborador.juridica(u4, "MELSELEP SRL", TipoRazonSocial.EMPRESA, "Música", Contacto.vacio(), direccion, new ArrayList<>(colabJuridica2), new Puntos(0, false, null));
@@ -256,6 +260,38 @@ public class Initializer implements WithSimplePersistenceUnit {
 
         VarianteDePuntosRepository repository = new VarianteDePuntosRepository();
         withTransaction(() -> repository.guardar(variante));
+    }
+
+    private void withOfertas() {
+        ColaboradorRepository colaboradorRepository = new ColaboradorRepository();
+        Colaborador c1 = colaboradorRepository.buscarPorEmail("melperez@frba.utn.edu.ar").orElseThrow();
+        Colaborador c2 = colaboradorRepository.buscarPorEmail("jgandola@frba.utn.edu.ar").orElseThrow();
+
+        Imagen img = new Imagen("image-test.png");
+
+        OfertaDeProductosRepository repository = new OfertaDeProductosRepository();
+        beginTransaction();
+        repository.guardar(OfertaDeProductos.por(c1, LocalDateTime.now(), "Producto 1", 55, RubroOferta.ELECTRONICA, img));
+        repository.guardar(OfertaDeProductos.por(c2, LocalDateTime.now(), "Producto 2", 20, RubroOferta.GASTRONOMIA, img));
+        repository.guardar(OfertaDeProductos.por(c1, LocalDateTime.now(), "Producto 3", 50, RubroOferta.HOGAR, img));
+        repository.guardar(OfertaDeProductos.por(c2, LocalDateTime.now(), "Producto 4", 60, RubroOferta.GASTRONOMIA, img));
+        repository.guardar(OfertaDeProductos.por(c1, LocalDateTime.now(), "Producto 5", 35, RubroOferta.ELECTRONICA, img));
+        repository.guardar(OfertaDeProductos.por(c2, LocalDateTime.now(), "Producto 6", 65, RubroOferta.HOGAR, img));
+        repository.guardar(OfertaDeProductos.por(c1, LocalDateTime.now(), "Producto 7", 40, RubroOferta.ELECTRONICA, img));
+        repository.guardar(OfertaDeProductos.por(c2, LocalDateTime.now(), "Producto 8", 70, RubroOferta.HOGAR, img));
+        repository.guardar(OfertaDeProductos.por(c1, LocalDateTime.now(), "Producto 9", 20, RubroOferta.GASTRONOMIA, img));
+        repository.guardar(OfertaDeProductos.por(c2, LocalDateTime.now(), "Producto 10", 45, RubroOferta.HOGAR, img));
+        repository.guardar(OfertaDeProductos.por(c1, LocalDateTime.now(), "Producto 11", 65, RubroOferta.GASTRONOMIA, img));
+        repository.guardar(OfertaDeProductos.por(c2, LocalDateTime.now(), "Producto 12", 50, RubroOferta.HOGAR, img));
+        repository.guardar(OfertaDeProductos.por(c1, LocalDateTime.now(), "Producto 13", 30, RubroOferta.ELECTRONICA, img));
+        repository.guardar(OfertaDeProductos.por(c2, LocalDateTime.now(), "Producto 14", 40, RubroOferta.HOGAR, img));
+        repository.guardar(OfertaDeProductos.por(c1, LocalDateTime.now(), "Producto 15", 35, RubroOferta.ELECTRONICA, img));
+        repository.guardar(OfertaDeProductos.por(c2, LocalDateTime.now(), "Producto 16", 75, RubroOferta.HOGAR, img));
+        repository.guardar(OfertaDeProductos.por(c1, LocalDateTime.now(), "Producto 17", 25, RubroOferta.HOGAR, img));
+        repository.guardar(OfertaDeProductos.por(c2, LocalDateTime.now(), "Producto 18", 80, RubroOferta.GASTRONOMIA, img));
+        repository.guardar(OfertaDeProductos.por(c1, LocalDateTime.now(), "Producto 19", 20, RubroOferta.HOGAR, img));
+        repository.guardar(OfertaDeProductos.por(c2, LocalDateTime.now(), "Producto 20", 30, RubroOferta.ELECTRONICA, img));
+        commitTransaction();
     }
 
     private void cleanupDatabase() {

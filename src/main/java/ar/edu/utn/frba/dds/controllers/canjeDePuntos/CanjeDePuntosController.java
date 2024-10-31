@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.controllers.canjeDePuntos;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.ProductoDTO;
+import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.CanjeDePuntos;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
@@ -43,7 +44,7 @@ public class CanjeDePuntosController extends UserRequired {
                 .toList();
 
         Map<String, Object> model = new HashMap<>();
-        model.put("productos-canjear", productosDTOS);
+        model.put("productos", productosDTOS);
         model.put("puntaje", puntaje);
 
         render(context, "canje_de_puntos/canje_puntos_crear.hbs", model);
@@ -55,26 +56,27 @@ public class CanjeDePuntosController extends UserRequired {
         boolean operationSuccess = false;
 
         try {
-            Colaborador colaboradorCanje = colaboradorFromSession(context);
+            Colaborador colaborador = colaboradorFromSession(context);
+            double puntaje = this.canjeDePuntosService.getPuntosDeColaborador(colaborador);
+
+            String ofertaId = context.queryParam("oferta");
+            OfertaDeProductos oferta = ofertaProductosServiciosService.buscarPorId(ofertaId)
+                    .orElseThrow(ResourceNotFoundException::new);
 
 
-            // TODO ===================================
+            double puntosRestantes = puntaje - oferta.getPuntosNecesarios();
+            if (puntosRestantes < 0) {
+                System.out.println("puntos insuficientes");
+                throw new Exception();
+            }
 
-
-            Double puntosCanjeados = Double.valueOf(context.formParam("puntos_canjeados"));
-
-            //TODO creo que no llega como parametro sino que calcula con el futuro service
-            Double puntosRestantes = Double.valueOf(context.formParam("puntos_restantes"));
-            puntosRestantes = 3.14159;
-
-            OfertaDeProductos oferta = this.ofertaProductosServiciosService.buscarPorId(context.formParam("oferta_id")).get();
-            CanjeDePuntos canjeDePuntosNuevo = CanjeDePuntos.por(colaboradorCanje, oferta, LocalDateTime.now(), puntosCanjeados, 0); // no siempre es 0, hay q calcular los restantes
-
+            CanjeDePuntos canjeDePuntosNuevo = CanjeDePuntos.por(colaborador, oferta, LocalDateTime.now(), oferta.getPuntosNecesarios(), puntosRestantes);
             this.canjeDePuntosService.registrar(canjeDePuntosNuevo);
 
             operationSuccess = true;
-            redirectDTOS.add(new RedirectDTO("/canjes-puntos", "Ver Productos"));
-            /*no se si deberia ir una excepcion*/
+            redirectDTOS.add(new RedirectDTO("/canje-de-puntos/new", "Ver Productos"));
+        } catch (Exception e) {
+            redirectDTOS.add(new RedirectDTO("/canje-de-puntos/new", "Reintentar"));
         } finally {
             model.put("success", operationSuccess);
             model.put("redirects", redirectDTOS);

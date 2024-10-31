@@ -2,28 +2,27 @@
     Canjear Puntos
 {{/partial}}
 {{#partial "links"}}
-    <link rel="stylesheet" href="/css/canje_de_puntos/canje_puntos_crear.css.css"/>
+    <link rel="stylesheet" href="/css/canje_de_puntos/canje_puntos_crear.css"/>
 {{/partial}}
 {{#partial "main-content"}}
     <div class="container">
         <div class="header">
             <h2 class="header-title">Canjear Producto o Servicio</h2>
-            <div class="puntos">puntos: 2390</div>
+            <div class="puntos">puntos: {{puntaje}}</div>
         </div>
         <div class="product-container">
             {{#each productos}}
                 <div class="product-card">
                     <div class="product-img">
-                        <img src="/img/prueba.jpg" alt="igor"/>
+                        <img src="/image/{{this.pathImagen}}" alt="igor"/>
                     </div>
                     <div class="product-info">
-                        <h3 class="product-name">IGOR</h3>
-                        <div class="product-price">200 puntos</div>
+                        <h3 class="product-name">{{this.nombre}}</h3>
+                        <div class="product-price">{{this.puntosNecesarios}} puntos</div>
                     </div>
 
-                    <!-- meter en el action el id -->
-                    <form action="/" method="post">
-                        <button class="canje-button">canjear</button>
+                    <form action="/canje-de-puntos?oferta={{this.id}}" method="post">
+                    <button class="canje-button">canjear</button>
                     </form>
                 </div>
             {{/each}}

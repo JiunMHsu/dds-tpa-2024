@@ -148,6 +148,11 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
     }
 
     public void registrar(CanjeDePuntos canjeDePuntos) {
+        canjeDePuntos.getColaborador().invalidarPuntos();
+
+        beginTransaction();
+        this.colaboradorRepository.actualizar(canjeDePuntos.getColaborador());
         this.canjeDePuntosRepository.guardar(canjeDePuntos);
+        commitTransaction();
     }
 }
