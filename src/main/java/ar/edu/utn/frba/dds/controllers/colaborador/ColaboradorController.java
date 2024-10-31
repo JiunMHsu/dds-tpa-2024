@@ -162,8 +162,6 @@ public class ColaboradorController implements ICrudViewsHandler {
 
         try {
 
-            System.out.println("Antes de Usuario");
-
             Usuario usuario = Usuario.con(
                     context.formParamAsClass("nombre_usuario", String.class).get(),
                     context.formParamAsClass("contrasenia", String.class).get(),
@@ -171,22 +169,11 @@ public class ColaboradorController implements ICrudViewsHandler {
                     TipoRol.COLABORADOR
             );
 
-            System.out.println("Despues de Usuario");
-            System.out.println("Usuario: " + usuario);
-
-
-            System.out.println("Antes de Direccion");
-
             Direccion direccion = Direccion.with(
                     new Barrio(context.formParamAsClass("barrio", String.class).get()),
                     new Calle(context.formParamAsClass("calle", String.class).get()),
                     Integer.valueOf(context.formParamAsClass("altura", String.class).get())
             );
-
-            System.out.println("Despues de Direccion");
-            System.out.println("Direccion: " + direccion);
-
-            System.out.println("Antes de Contacto");
 
             Contacto contacto = Contacto.con(
                     context.formParamAsClass("email", String.class).get(),
@@ -195,17 +182,7 @@ public class ColaboradorController implements ICrudViewsHandler {
                     context.formParamAsClass("telegram", String.class).get()
             );
 
-            System.out.printf("Despues de Contacto");
-            System.out.printf("Contacto: " + contacto);
-
-            System.out.printf("Antes de Formas de Colaborar");
-
             ArrayList<TipoColaboracion> formasDeColaborar = new ArrayList<TipoColaboracion>();
-
-            System.out.printf("Despues de Formas de Colaborar");
-            System.out.printf("Formas de Colaborar: " + formasDeColaborar);
-
-            System.out.printf("Antes de Colaborador");
 
             Colaborador colaboradorNuevo = Colaborador.juridica(
                     usuario,
@@ -216,9 +193,6 @@ public class ColaboradorController implements ICrudViewsHandler {
                     direccion,
                     formasDeColaborar
             );
-
-            System.out.printf("Despues de Colaborador");
-            System.out.printf("Colaborador: " + colaboradorNuevo);
 
             this.colaboradorService.guardar(colaboradorNuevo);
 
