@@ -46,7 +46,7 @@ public class CanjeDePuntosController extends UserRequired {
         model.put("productos-canjear", productosDTOS);
         model.put("puntaje", puntaje);
 
-        render(context, "canje_de_puntos/productos_canjear.hbs", model);
+        render(context, "canje_de_puntos/canje_puntos_crear.hbs", model);
     }
 
     public void save(Context context) {
