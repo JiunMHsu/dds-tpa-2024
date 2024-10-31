@@ -12,17 +12,20 @@ public class ProductoDTO {
 
     private String id;
 
-    private String nombreProducto;
+    private String nombre;
 
     private String rubro;
+
+    private String puntosNecesarios;
 
     private String pathImagen;
 
     public static ProductoDTO completa(OfertaDeProductos producto) {
         return ProductoDTO.builder()
                 .id(producto.getId().toString())
-                .nombreProducto(producto.getNombre())
+                .nombre(producto.getNombre())
                 .rubro(producto.getRubro().toString())
+                .puntosNecesarios(Double.toString(producto.getPuntosNecesarios()))
                 .pathImagen(producto.getImagen().getRuta())
                 .build();
     }
@@ -31,7 +34,8 @@ public class ProductoDTO {
 
         return ProductoDTO.builder()
                 .id(producto.getId().toString())
-                .nombreProducto(producto.getNombre())
+                .nombre(producto.getNombre())
+                .puntosNecesarios(Double.toString(producto.getPuntosNecesarios()))
                 .pathImagen(producto.getImagen().getRuta())
                 .build();
     }

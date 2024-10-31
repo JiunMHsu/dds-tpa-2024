@@ -14,8 +14,8 @@ public class CanjeDePuntosRouter implements IRouter {
     @Override
     public void apply(RouterConfig config) {
         config.apiBuilder(() ->
-                path("/canjes-puntos", () -> {
-                    get(ServiceLocator.instanceOf(CanjeDePuntosController.class)::create, TipoRol.COLABORADOR);
+                path("/canje-de-puntos", () -> {
+                    get("/new", ServiceLocator.instanceOf(CanjeDePuntosController.class)::create, TipoRol.COLABORADOR);
                     post(ServiceLocator.instanceOf(CanjeDePuntosController.class)::save, TipoRol.COLABORADOR);
                 }));
     }

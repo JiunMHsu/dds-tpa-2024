@@ -1,5 +1,6 @@
-package ar.edu.utn.frba.dds.utils;
+package ar.edu.utn.frba.dds.reportes;
 
+import ar.edu.utn.frba.dds.utils.IPDFGenerator;
 import com.aspose.pdf.Color;
 import com.aspose.pdf.Document;
 import com.aspose.pdf.HtmlFragment;

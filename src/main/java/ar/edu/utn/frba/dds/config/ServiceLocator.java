@@ -20,6 +20,7 @@ import ar.edu.utn.frba.dds.controllers.suscripcion.SuscripcionHeladeraController
 import ar.edu.utn.frba.dds.controllers.tecnico.TecnicoController;
 import ar.edu.utn.frba.dds.controllers.tecnico.VisitaTecnicoController;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.CanjeDePuntosRepository;
+import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.VarianteDePuntosRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaRepository;
@@ -101,6 +102,8 @@ public class ServiceLocator {
 
         if (componentName.equals(HeladeraController.class.getName())) {
             HeladeraController instance = new HeladeraController(
+                    instanceOf(UsuarioService.class),
+                    instanceOf(ColaboradorService.class),
                     instanceOf(HeladeraService.class),
                     instanceOf(PuntoIdealService.class),
                     instanceOf(IncidenteService.class));
@@ -109,17 +112,19 @@ public class ServiceLocator {
 
         if (componentName.equals(AlertaController.class.getName())) {
             AlertaController instance = new AlertaController(
+                    instanceOf(UsuarioService.class),
+                    instanceOf(ColaboradorService.class),
                     instanceOf(IncidenteService.class));
             instances.put(componentName, instance);
         }
 
         if (componentName.equals(FallaTecnicaController.class.getName())) {
             FallaTecnicaController instance = new FallaTecnicaController(
+                    instanceOf(UsuarioService.class),
+                    instanceOf(ColaboradorService.class),
                     instanceOf(IncidenteService.class),
                     instanceOf(HeladeraService.class),
-                    instanceOf(ImageService.class),
-                    instanceOf(ColaboradorService.class),
-                    instanceOf(UsuarioService.class));
+                    instanceOf(ImageService.class));
             instances.put(componentName, instance);
         }
 
@@ -376,12 +381,14 @@ public class ServiceLocator {
 
         if (componentName.equals(CanjeDePuntosService.class.getName())) {
             CanjeDePuntosService instance = new CanjeDePuntosService(
+                    instanceOf(CanjeDePuntosRepository.class),
                     instanceOf(DonacionDineroRepository.class),
                     instanceOf(DistribucionViandasRepository.class),
                     instanceOf(DonacionViandaRepository.class),
                     instanceOf(RepartoDeTarjetasRepository.class),
                     instanceOf(HacerseCargoHeladeraRepository.class),
-                    instanceOf(CanjeDePuntosRepository.class));
+                    instanceOf(ColaboradorRepository.class),
+                    instanceOf(VarianteDePuntosRepository.class));
             instances.put(componentName, instance);
         }
 
@@ -510,6 +517,10 @@ public class ServiceLocator {
 
         if (componentName.equals(HeladeraLlenaRepository.class.getName())) {
             HeladeraLlenaRepository instance = new HeladeraLlenaRepository();
+            instances.put(componentName, instance);
+        }
+        if (componentName.equals(VarianteDePuntosRepository.class.getName())) {
+            VarianteDePuntosRepository instance = new VarianteDePuntosRepository();
             instances.put(componentName, instance);
         }
 

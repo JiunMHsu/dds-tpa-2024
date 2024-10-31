@@ -117,6 +117,10 @@ public class OfertaProductosServiciosController extends UserRequired implements 
 
             this.ofertaProductosServiciosService.registrar(oferta);
 
+            // TODO - Delegar a Service??
+            colaborador.invalidarPuntos();
+            this.colaboradorService.actualizar(colaborador);
+
             operationSuccess = true;
             redirectDTOS.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));
 

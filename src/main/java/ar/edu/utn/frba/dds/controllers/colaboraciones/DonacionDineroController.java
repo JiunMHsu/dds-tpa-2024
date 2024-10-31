@@ -92,7 +92,11 @@ public class DonacionDineroController extends UserRequired implements ICrudViews
 
             // TODO - ver como lanzar y manejar fallas por creación y guardado
             DonacionDinero donacionDinero = DonacionDinero.por(colaborador, LocalDateTime.now(), monto, frecuencia);
-            donacionDineroService.registrar(donacionDinero);
+            this.donacionDineroService.registrar(donacionDinero);
+
+            // TODO - Delegar a Service??
+            colaborador.invalidarPuntos();
+            this.colaboradorService.actualizar(colaborador);
 
             operationSuccess = true;
             redirectDTOS.add(new RedirectDTO("/colaboraciones", "Colaboraciones"));

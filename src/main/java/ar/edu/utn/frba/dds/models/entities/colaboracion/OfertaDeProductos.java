@@ -36,7 +36,7 @@ public class OfertaDeProductos extends EntidadPersistente {
     private String nombre;
 
     @Column(name = "puntos_necesarios", nullable = false)
-    private Double puntosNecesarios;
+    private double puntosNecesarios;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "rubro", nullable = false)
@@ -48,11 +48,10 @@ public class OfertaDeProductos extends EntidadPersistente {
     public static OfertaDeProductos por(Colaborador colaborador,
                                         LocalDateTime fechaOferta,
                                         String nombre,
-                                        Double puntosNecesarios,
+                                        double puntosNecesarios,
                                         RubroOferta rubro,
                                         Imagen imagen) {
-        return OfertaDeProductos
-                .builder()
+        return OfertaDeProductos.builder()
                 .colaborador(colaborador)
                 .fechaHora(fechaOferta)
                 .nombre(nombre)
