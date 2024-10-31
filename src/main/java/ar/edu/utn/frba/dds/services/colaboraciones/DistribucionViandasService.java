@@ -31,6 +31,7 @@ public class DistribucionViandasService implements WithSimplePersistenceUnit {
         this.heladeraRepository.actualizar(heladeraOrigen);
         this.heladeraRepository.actualizar(heladeraDestino);
         this.distribucionViandasRepository.guardar(distribucionViandas);
+        
         commitTransaction();
     }
 

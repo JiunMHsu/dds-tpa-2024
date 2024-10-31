@@ -10,11 +10,14 @@ import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
+import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.puntoIdeal.PuntoIdealService;
+import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
+import ar.edu.utn.frba.dds.utils.UserRequired;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.validation.ValidationException;
@@ -24,15 +27,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHandler {
+public class HeladeraController extends UserRequired implements ICrudViewsHandler, IBrokerMessageHandler {
 
     private final HeladeraService heladeraService;
     private final PuntoIdealService puntoIdealService;
     private final IncidenteService incidenteService;
 
-    public HeladeraController(HeladeraService heladeraService,
+    public HeladeraController(UsuarioService usuarioService,
+                              ColaboradorService colaboradorService,
+                              HeladeraService heladeraService,
                               PuntoIdealService puntoIdealService,
                               IncidenteService incidenteService) {
+        super(usuarioService, colaboradorService);
         this.heladeraService = heladeraService;
         this.puntoIdealService = puntoIdealService;
         this.incidenteService = incidenteService;
@@ -65,7 +71,7 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
         HeladeraDTO heladeraDTO = HeladeraDTO.completa(heladera.get());
         model.put("heladera", heladeraDTO);
 
-        context.render("heladeras/heladera_detalle.hbs", model);
+        render(context, "heladeras/heladera_detalle.hbs", model);
     }
 
     @Override
@@ -83,9 +89,9 @@ public class HeladeraController implements ICrudViewsHandler, IBrokerMessageHand
             Map<String, Object> model = new HashMap<>();
             model.put("puntosRecomendados", ubicaciones);
 
-            context.render("heladeras/heladera_crear.hbs", model);
+            render(context, "heladeras/heladera_crear.hbs", model);
         } catch (ValidationException e) {
-            context.render("heladeras/heladera_crear.hbs");
+            render(context, "heladeras/heladera_crear.hbs", new HashMap<>());
         }
 
     }

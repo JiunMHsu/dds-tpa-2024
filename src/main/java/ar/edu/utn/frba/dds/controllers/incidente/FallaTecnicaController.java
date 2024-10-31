@@ -11,7 +11,7 @@ import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.images.ImageService;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
-import ar.edu.utn.frba.dds.utils.ColaboradorPorSession;
+import ar.edu.utn.frba.dds.utils.UserRequired;
 import io.javalin.http.Context;
 import io.javalin.http.UploadedFile;
 import io.javalin.validation.ValidationException;
@@ -22,17 +22,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FallaTecnicaController extends ColaboradorPorSession {
+public class FallaTecnicaController extends UserRequired {
 
     private final IncidenteService incidenteService;
     private final HeladeraService heladeraService;
     private final ImageService fileService;
 
-    public FallaTecnicaController(IncidenteService incidenteService,
-                                  HeladeraService heladeraService,
-                                  ImageService fileService,
+    public FallaTecnicaController(UsuarioService usuarioService,
                                   ColaboradorService colaboradorService,
-                                  UsuarioService usuarioService) {
+                                  IncidenteService incidenteService,
+                                  HeladeraService heladeraService,
+                                  ImageService fileService) {
         super(usuarioService, colaboradorService);
         this.incidenteService = incidenteService;
         this.heladeraService = heladeraService;
@@ -40,15 +40,13 @@ public class FallaTecnicaController extends ColaboradorPorSession {
     }
 
     public void index(Context context) {
-
     }
 
     public void show(Context context) {
-
     }
 
     public void create(Context context) {
-        context.render("falla_tecnica/falla_tecnica_crear.hbs");
+        render(context, "falla_tecnica/falla_tecnica_crear.hbs", new HashMap<>());
     }
 
     public void save(Context context) {
@@ -57,7 +55,7 @@ public class FallaTecnicaController extends ColaboradorPorSession {
         boolean operationSuccess = false;
 
         try {
-            Colaborador colaborador = obtenerColaboradorPorSession(context);
+            Colaborador colaborador = colaboradorFromSession(context);
 
             String nombreHeladera = context.formParamAsClass("nombre", String.class).get();
             Heladera heladera = this.heladeraService

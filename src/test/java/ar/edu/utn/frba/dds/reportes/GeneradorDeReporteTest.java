@@ -1,7 +1,6 @@
 package ar.edu.utn.frba.dds.reportes;
 
 import ar.edu.utn.frba.dds.utils.AppProperties;
-import ar.edu.utn.frba.dds.utils.PDFGenerator;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
