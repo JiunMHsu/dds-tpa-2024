@@ -96,73 +96,20 @@ public class ColaboradorController implements ICrudViewsHandler {
         context.render("signs/sign.hbs");
     }
 
-    // TODO - REVISAR
+
     @Override
     public void save(Context context) {
-//        Usuario usuario = Usuario.con(context.formParam("nombre"), context.formParam("contrasenia"), context.formParam("email"), TipoRol.COLABORADOR);
-//        Direccion direccion = Direccion.with(
-//                new Barrio(context.formParam("barrio")),
-//                new Calle(context.formParam("calle")),
-//                Integer.valueOf(context.formParam("altura")),
-//                new Ubicacion(Double.valueOf(context.formParam("latitud")), Double.valueOf(context.formParam("longitud")))
-//        );
-//        Contacto contacto = Contacto.con(
-//                context.formParam("email"),
-//                context.formParam("telefono"),
-//                context.formParam("whatsapp"),
-//                context.formParam("telegram")
-//        );
-//
-//        String colaboracionesParam = context.formParam("colaboraciones");
-//
-//        ArrayList<TipoColaboracion> colaboraciones = new ArrayList<>();
-//        if (colaboracionesParam != null && !colaboracionesParam.isEmpty()) {
-//            String[] colaboracionesStr = colaboracionesParam.split(",");
-//
-//            // Convertimos cada string en un valor del enum Colaboracion
-//            for (String colaboracionStr : colaboracionesStr) {
-//                try {
-//                    TipoColaboracion colaboracion = TipoColaboracion.valueOf(colaboracionStr.trim().toUpperCase());
-//                    colaboraciones.add(colaboracion);
-//                } catch (IllegalArgumentException e) {
-//                    //nunca va a pasar esto
-//                    System.out.println("Colaboración inválida: " + colaboracionStr);
-//                }
-//            }
-//        }
-//
-//        Colaborador nuevoColaborador = Colaborador.colaborador(usuario, contacto, direccion, colaboraciones);
-//
-//        String tipoColaborador = context.formParam("tipo_colaborador");
-//        if ("JURIDICO".equals(tipoColaborador)) {
-//            nuevoColaborador.setRazonSocial(context.formParam("razon_social"));
-//            nuevoColaborador.setTipoRazonSocial(TipoRazonSocial.valueOf(context.formParam("tipo_razon_social").toUpperCase()));
-//            nuevoColaborador.setRubro(context.formParam("rubro"));
-//        } else if ("HUMANA".equals(tipoColaborador)) {
-//            nuevoColaborador.setNombre(context.formParam("nombre"));
-//            nuevoColaborador.setApellido(context.formParam("apellido"));
-//
-//            // Obtener fecha por nacimiento (suponiendo que el formulario tenga campos separados paraColaborador día, mes, año)
-//            int diaNacimiento = Integer.parseInt(context.formParam("dia_nacimiento"));
-//            int mesNacimiento = Integer.parseInt(context.formParam("mes_nacimiento"));
-//            int anioNacimiento = Integer.parseInt(context.formParam("anio_nacimiento"));
-//
-//            // Crear el objeto LocalDate paraColaborador la fecha por nacimiento
-//            LocalDate fechaNacimiento = LocalDate.of(anioNacimiento, mesNacimiento, diaNacimiento);
-//            nuevoColaborador.setFechaNacimiento(fechaNacimiento);
-//        }
-//
-//        this.colaboradorService.guardar(nuevoColaborador);
-//        context.redirect("/colaboradores/sign_up_exitoso.hbs");
+
     }
 
-    public void saveHumana(Context context) {
+    public void saveHumana(Context context) { // TODO - Se puede hacer mejor seguramente pero x ahora anda 👌
 
         Map<String, Object> model = new HashMap<>();
         List<RedirectDTO> redirectDTOS = new ArrayList<>();
         boolean operationSuccess = false;
 
         try {
+
             Usuario usuario = Usuario.con(
                     context.formParamAsClass("nombre_usuario", String.class).get(),
                     context.formParamAsClass("contrasenia", String.class).get(),
@@ -214,6 +161,9 @@ public class ColaboradorController implements ICrudViewsHandler {
         boolean operationSuccess = false;
 
         try {
+
+            System.out.println("Antes de Usuario");
+
             Usuario usuario = Usuario.con(
                     context.formParamAsClass("nombre_usuario", String.class).get(),
                     context.formParamAsClass("contrasenia", String.class).get(),
@@ -221,11 +171,22 @@ public class ColaboradorController implements ICrudViewsHandler {
                     TipoRol.COLABORADOR
             );
 
+            System.out.println("Despues de Usuario");
+            System.out.println("Usuario: " + usuario);
+
+
+            System.out.println("Antes de Direccion");
+
             Direccion direccion = Direccion.with(
                     new Barrio(context.formParamAsClass("barrio", String.class).get()),
                     new Calle(context.formParamAsClass("calle", String.class).get()),
                     Integer.valueOf(context.formParamAsClass("altura", String.class).get())
             );
+
+            System.out.println("Despues de Direccion");
+            System.out.println("Direccion: " + direccion);
+
+            System.out.println("Antes de Contacto");
 
             Contacto contacto = Contacto.con(
                     context.formParamAsClass("email", String.class).get(),
@@ -234,7 +195,17 @@ public class ColaboradorController implements ICrudViewsHandler {
                     context.formParamAsClass("telegram", String.class).get()
             );
 
+            System.out.printf("Despues de Contacto");
+            System.out.printf("Contacto: " + contacto);
+
+            System.out.printf("Antes de Formas de Colaborar");
+
             ArrayList<TipoColaboracion> formasDeColaborar = new ArrayList<TipoColaboracion>();
+
+            System.out.printf("Despues de Formas de Colaborar");
+            System.out.printf("Formas de Colaborar: " + formasDeColaborar);
+
+            System.out.printf("Antes de Colaborador");
 
             Colaborador colaboradorNuevo = Colaborador.juridica(
                     usuario,
@@ -245,6 +216,9 @@ public class ColaboradorController implements ICrudViewsHandler {
                     direccion,
                     formasDeColaborar
             );
+
+            System.out.printf("Despues de Colaborador");
+            System.out.printf("Colaborador: " + colaboradorNuevo);
 
             this.colaboradorService.guardar(colaboradorNuevo);
 
