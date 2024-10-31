@@ -1,0 +1,77 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    gap: 1.5rem;
+}
+
+.header {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 0 0 5%;
+}
+
+.title {
+    flex-grow: 1;
+    display: flex;
+    width: 100%;
+    margin: 0;
+    font-size: 2rem;
+}
+
+.subscription-type {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+}
+
+.subscription-type h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 300px;
+}
+
+.subscription-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: var(--foreground-0);
+    background-color: var(--background-2);
+    border: 1px solid var(--background-3);
+    transition: all 0.3s ease;
+}
+
+.subscription-button:hover {
+    color: var(--main-light-0);
+    background-color: var(--background-1);
+    text-shadow: 0 0 0.1rem var(--main-light-0);
+    box-shadow: 0 0 0.5rem var(--background-3);
+}
+
+.side-panel {
+    width: 35vw;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+}

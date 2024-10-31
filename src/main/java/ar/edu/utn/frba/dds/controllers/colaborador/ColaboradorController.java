@@ -5,6 +5,7 @@ import ar.edu.utn.frba.dds.dtos.colaboraciones.TipoColaboracionDTO;
 import ar.edu.utn.frba.dds.dtos.colaborador.ColaboradorDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
+import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.Puntos;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
@@ -132,6 +133,12 @@ public class ColaboradorController implements ICrudViewsHandler {
 
             ArrayList<TipoColaboracion> formasDeColaborar = new ArrayList<TipoColaboracion>();
 
+            Puntos puntos = new Puntos(
+                    0,
+                    false,
+                    null
+            );
+
             Colaborador colaboradorNuevo = Colaborador.humana(
                     usuario,
                     context.formParamAsClass("nombre", String.class).get(),
@@ -139,7 +146,8 @@ public class ColaboradorController implements ICrudViewsHandler {
                     LocalDate.parse(context.formParamAsClass("fecha_nacimiento", String.class).get()),
                     contacto,
                     direccion,
-                    formasDeColaborar
+                    formasDeColaborar,
+                    puntos
             );
 
             this.colaboradorService.guardar(colaboradorNuevo);
@@ -184,6 +192,12 @@ public class ColaboradorController implements ICrudViewsHandler {
 
             ArrayList<TipoColaboracion> formasDeColaborar = new ArrayList<TipoColaboracion>();
 
+            Puntos puntos = new Puntos(
+                    0,
+                    false,
+                    null
+            );
+
             Colaborador colaboradorNuevo = Colaborador.juridica(
                     usuario,
                     context.formParamAsClass("razon_social", String.class).get(),
@@ -191,7 +205,8 @@ public class ColaboradorController implements ICrudViewsHandler {
                     context.formParamAsClass("rubro", String.class).get(),
                     contacto,
                     direccion,
-                    formasDeColaborar
+                    formasDeColaborar,
+                    puntos
             );
 
             this.colaboradorService.guardar(colaboradorNuevo);

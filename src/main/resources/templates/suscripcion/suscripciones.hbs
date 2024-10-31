@@ -1,0 +1,34 @@
+{{#partial "title"}}
+    {{heladera.nombre}}
+{{/partial}}
+{{#partial "links"}}
+    <link
+            rel="stylesheet" href="/css/suscripciones/suscripciones.css"
+            rel="stylesheet"
+    />
+{{/partial}}
+{{#partial "scripts"}}
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+    <script src="/js/map.js"></script>
+{{/partial}}
+{{#partial "main-content"}}
+    <div class="container">
+        <div class="header">
+            <h2 class="title">{{heladera.nombre}}</h2>
+        </div>
+
+        <div class="subscription-type">
+            <h3 class="subtitle">Tipo de Suscripciones</h3>
+
+            <div class="button-container">
+                <a href="/heladeras/{{heladera.id}}/suscripcion/falla-tecnica" class="subscription-button">Falla Técnica</a>
+                <a href="/heladeras/{{heladera.id}}/suscripcion/falta-viandas" class="subscription-button">Falta Viandas</a>
+                <a href="/heladeras/{{heladera.id}}/suscripcion/heladera-llena" class="subscription-button">Heladera Llena</a>
+            </div>
+        </div>
+    </div>
+{{/partial}}
+{{#partial "side-panel"}}
+    <div id="map"></div>
+{{/partial}}
+{{> templates/base}}

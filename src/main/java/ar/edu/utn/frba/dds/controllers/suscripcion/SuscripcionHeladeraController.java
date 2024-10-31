@@ -49,11 +49,17 @@ public class SuscripcionHeladeraController extends UserRequired {
 
     }
 
-    public void createFallaHeladera(Context context) { render(context, "suscripciones/suscripcion_falla_heladera", new HashMap<>()); }
+    public void createFallaHeladera(Context context) {
+        render(context, "suscripcion/suscripcion_falla_heladera.hbs", new HashMap<>());
+    }
 
-    public void createFaltaVianda(Context context) { render(context, "suscripciones/suscripcion_falta_vianda", new HashMap<>()); }
+    public void createFaltaVianda(Context context) {
+        render(context, "suscripcion/suscripcion_falta_viandas.hbs", new HashMap<>());
+    }
 
-    public void createHeladeraLlena(Context context) { render(context, "suscripciones/suscripcion_heladera_llena", new HashMap<>()); }
+    public void createHeladeraLlena(Context context) {
+        render(context, "suscripcion/suscripcion_heladera_llena.hbs", new HashMap<>());
+    }
 
     public void saveFallaHeladera(Context context) {
 
@@ -67,8 +73,10 @@ public class SuscripcionHeladeraController extends UserRequired {
 
             Colaborador colaborador = colaboradorFromSession(context);
 
-            Heladera heladera = heladeraService
-                    .buscarPorNombre(context.formParamAsClass("heladera", String.class).get())
+            String heladeraId = context.pathParam("id");
+
+            Heladera heladera = this.heladeraService
+                    .buscarPorId(heladeraId)
                     .orElseThrow(ResourceNotFoundException::new);
 
             MedioDeNotificacion medioDeNotificacion = MedioDeNotificacion.valueOf(context.formParamAsClass("medio", String.class).get());
@@ -98,14 +106,15 @@ public class SuscripcionHeladeraController extends UserRequired {
 
             Colaborador colaborador = colaboradorFromSession(context);
 
-            // TODO - me parece que no deberia haber un campo Heladera en el formulario, sino que se obtenia directamente
-            Heladera heladera = heladeraService
-                    .buscarPorNombre(context.formParamAsClass("heladera", String.class).get())
+            String heladeraId = context.pathParam("id");
+
+            Heladera heladera = this.heladeraService
+                    .buscarPorId(heladeraId)
                     .orElseThrow(ResourceNotFoundException::new);
 
-            MedioDeNotificacion medioDeNotificacion = MedioDeNotificacion.valueOf(context.formParamAsClass("medio", String.class).get());
+            Integer viandasRestantes = context.formParamAsClass("cantidad_viandas", Integer.class).get();
 
-            Integer viandasRestantes = context.formParamAsClass("viandas", Integer.class).get();
+            MedioDeNotificacion medioDeNotificacion = MedioDeNotificacion.valueOf(context.formParamAsClass("medio_notificacion", String.class).get());
 
             this.faltaViandaService.registrar(colaborador, heladera, medioDeNotificacion, viandasRestantes);
 
@@ -123,7 +132,7 @@ public class SuscripcionHeladeraController extends UserRequired {
         }
     }
 
-    public void saveHeladeraLlena(Context context) { // TODO - ver que matchee con las vistas y excepciones
+    public void saveHeladeraLlena(Context context) {
 
         Map<String, Object> model = new HashMap<>();
         List<RedirectDTO> redirectDTOS = new ArrayList<>();
@@ -133,14 +142,15 @@ public class SuscripcionHeladeraController extends UserRequired {
 
             Colaborador colaborador = colaboradorFromSession(context);
 
-            // TODO - idem que Falta Vianda
-            Heladera heladera = heladeraService
-                    .buscarPorNombre(context.formParamAsClass("heladera", String.class).get())
+            String heladeraId = context.pathParam("id");
+
+            Heladera heladera = this.heladeraService
+                    .buscarPorId(heladeraId)
                     .orElseThrow(ResourceNotFoundException::new);
 
-            MedioDeNotificacion medioDeNotificacion = MedioDeNotificacion.valueOf(context.formParamAsClass("medio", String.class).get());
+            MedioDeNotificacion medioDeNotificacion = MedioDeNotificacion.valueOf(context.formParamAsClass("medio_notificacion", String.class).get());
 
-            Integer espacioRestante = context.formParamAsClass("espacio-restante", Integer.class).get();
+            Integer espacioRestante = context.formParamAsClass("viandas-restantes", Integer.class).get();
 
             this.heladeraLlenaService.registrar(colaborador, heladera, medioDeNotificacion, espacioRestante);
 
