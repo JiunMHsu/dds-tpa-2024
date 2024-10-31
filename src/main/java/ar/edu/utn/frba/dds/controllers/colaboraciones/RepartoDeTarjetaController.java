@@ -69,7 +69,7 @@ public class RepartoDeTarjetaController extends UserRequired implements ICrudVie
                     TipoDocumento.valueOf(context.formParamAsClass("tipo_documento", String.class).getOrDefault(null)),
                     context.formParamAsClass("nro_documento", String.class).getOrDefault(null));
 
-            Direccion direccion = Direccion.formularioPV(
+            Direccion direccion = Direccion.with(
                     new Barrio(context.formParamAsClass("barrio", String.class).get()),
                     new Calle(context.formParamAsClass("calle", String.class).get()),
                     context.formParamAsClass("altura", Integer.class).get());

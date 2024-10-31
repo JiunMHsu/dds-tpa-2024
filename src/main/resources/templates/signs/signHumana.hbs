@@ -7,18 +7,18 @@
 {{/partial}}
 
 {{#partial "main-content"}}
-    <img src="img/Map.png" class="main-section">
+    <img src="/img/Map.png" class="main-section" alt="">
 
     <div class="form-container">
         <div class="form-title">
             Sign Up Humana
         </div>
-        <form action="/save" method="post" class="form">
+        <form action="/signup/humana" method="post" class="form">
             <div class="contenedores">
                 <div class="izquierda">
                     <input type="hidden" name="tipo_colaborador" value="HUMANA">
                     <label>
-                        <input type="text" name="nombre" placeholder="Nombre" required>
+                        <input type="text" name="nombre_usuario" placeholder="Nombre de Usuario" required>
                     </label>
                     <label>
                         <input type="password" name="contrasenia" placeholder="Contraseña" required>
@@ -27,19 +27,13 @@
                         <input type="email" name="email" placeholder="Email Usuario" required>
                     </label>
                     <label>
+                        <input type="text" name="nombre" placeholder="Nombre" required>
+                    </label>
+                    <label>
                         <input type="text" name="apellido" placeholder="Apellido" required>
                     </label>
                     <label>
-                        <input type="number" name="dia_nacimiento" placeholder="Día de Nacimiento"
-                               required>
-                    </label>
-                    <label>
-                        <input type="number" name="mes_nacimiento" placeholder="Mes de Nacimiento"
-                               required>
-                    </label>
-                    <label>
-                        <input type="number" name="anio_nacimiento" placeholder="Año de Nacimiento"
-                               required>
+                        <input type="date" name="fecha_nacimiento" required>
                     </label>
                 </div>
                 <div class="centro">
@@ -53,22 +47,16 @@
                         <input type="number" name="altura" placeholder="Altura" required>
                     </label>
                     <label>
-                        <input type="text" name="latitud" placeholder="Latitud" required>
+                        <input type="text" name="email" placeholder="Email" >
                     </label>
                     <label>
-                        <input type="text" name="longitud" placeholder="Longitud" required>
+                        <input type="text" name="telefono" placeholder="Telefono" >
                     </label>
                     <label>
-                        <select name="tipo_contacto" required>
-                            <option value="" disabled selected>Tipo de Contacto</option>
-                            <option value="email">Email</option>
-                            <option value="telefono">Telefono</option>
-                            <option value="whatsapp">Whatsapp</option>
-                            <option value="telegram">Telegram</option>
+                        <input type="text" name="whatsapp" placeholder="WhatsApp" >
                     </label>
                     <label>
-                        <input type="text" name="info_contacto"
-                               placeholder="Información de Contacto" required>
+                        <input type="text" name="telegram" placeholder="Telegram" >
                     </label>
                 </div>
                 <div class="derecha">
@@ -80,15 +68,13 @@
                         <button type="submit" value="DONACION_VIANDAS">Donación de Viandas</button>
                     </div>
                     <div class="form-button-container">
-                        <button type="submit" value="DISTRIBUCION_VIANDAS">Distribucion de Viandas
-                        </button>
+                        <button type="submit" value="DISTRIBUCION_VIANDAS">Distribución de Viandas</button>
                     </div>
                     <div class="form-button-container">
                         <button type="submit" value="ENTREGA_VIANDA">Entregar Viandas</button>
                     </div>
                     <div class="form-button-container">
-                        <button type="submit" value="REPARTO_DE_TARJETAS">Reparto de Trajetas
-                        </button>
+                        <button type="submit" value="REPARTO_DE_TARJETAS">Reparto de Tarjetas</button>
                     </div>
                     <div class="form-button-container">
                         <div class="ajuste">
@@ -96,6 +82,7 @@
                         </div>
                     </div>
                 </div>
+            </div>
         </form>
     </div>
 {{/partial}}

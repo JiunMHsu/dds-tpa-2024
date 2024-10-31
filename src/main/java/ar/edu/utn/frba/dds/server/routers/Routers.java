@@ -5,6 +5,7 @@ import static io.javalin.apibuilder.ApiBuilder.path;
 import static io.javalin.apibuilder.ApiBuilder.post;
 
 import ar.edu.utn.frba.dds.config.ServiceLocator;
+import ar.edu.utn.frba.dds.controllers.colaborador.ColaboradorController;
 import ar.edu.utn.frba.dds.controllers.session.SessionController;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
@@ -41,6 +42,20 @@ public class Routers {
                 get(ServiceLocator.instanceOf(SessionController.class)::index, TipoRol.GUEST);
                 post(ServiceLocator.instanceOf(SessionController.class)::create, TipoRol.GUEST);
             });
+
+            // ========================= MOMENTANEO ==============================
+
+            path("/signup", () -> {
+                get(ServiceLocator.instanceOf(ColaboradorController.class)::create, TipoRol.GUEST);
+
+                get("/humana", ctx -> ctx.render("signs/signHumana.hbs"), TipoRol.GUEST);
+                post("/humana", ServiceLocator.instanceOf(ColaboradorController.class)::saveHumana, TipoRol.GUEST);
+
+                get("/juridica", ctx -> ctx.render("signs/signJuridica.hbs"), TipoRol.GUEST);
+                post("/juridica", ServiceLocator.instanceOf(ColaboradorController.class)::saveJuridica, TipoRol.GUEST);
+            });
+
+            // ========================= MOMENTANEO ==============================
 
             get("/image/{id}", ctx -> {
                 String relativePath = AppProperties.getInstance().propertyFromName("IMAGE_DIR");

@@ -268,7 +268,9 @@ public class ServiceLocator {
 
         if (componentName.equals(ColaboradorService.class.getName())) {
             ColaboradorService instance = new ColaboradorService(
-                    instanceOf(ColaboradorRepository.class));
+                    instanceOf(ColaboradorRepository.class),
+                    instanceOf(UsuarioRepository.class)
+            );
             instances.put(componentName, instance);
         }
 
