@@ -15,28 +15,24 @@ public class SuscripcionRouter implements IRouter {
     public void apply(RouterConfig config) {
 
         config.apiBuilder(() ->
+                path("/suscripciones", () -> {
+                    get("/new", ServiceLocator.instanceOf(SuscripcionHeladeraController.class)::create, TipoRol.COLABORADOR);
 
-        path("/suscripciones", () -> {
-            get("/new", ServiceLocator.instanceOf(SuscripcionHeladeraController.class)::create, TipoRol.COLABORADOR );
+                    path("/falla-tecnica", () -> {
+                        post(ServiceLocator.instanceOf(SuscripcionHeladeraController.class)::saveFallaHeladera, TipoRol.COLABORADOR);
+                        get("/new", ServiceLocator.instanceOf(SuscripcionHeladeraController.class)::createFallaHeladera, TipoRol.COLABORADOR);
+                    });
 
-            path("/falla-tecnica", () -> {
-                post(ServiceLocator.instanceOf(SuscripcionHeladeraController.class)::saveFallaHeladera, TipoRol.COLABORADOR);
+                    path("/falta-viandas", () -> {
+                        post(ServiceLocator.instanceOf(SuscripcionHeladeraController.class)::saveFaltaVianda, TipoRol.COLABORADOR);
+                        get("/new", ServiceLocator.instanceOf(SuscripcionHeladeraController.class)::createFaltaVianda, TipoRol.COLABORADOR);
+                    });
 
-                get("/new", ServiceLocator.instanceOf(SuscripcionHeladeraController.class)::createFallaHeladera, TipoRol.COLABORADOR);
-            });
-
-            path("/falta-viandas", () -> {
-                post(ServiceLocator.instanceOf(SuscripcionHeladeraController.class)::saveFaltaVianda, TipoRol.COLABORADOR);
-
-                get("/new", ServiceLocator.instanceOf(SuscripcionHeladeraController.class)::createFaltaVianda, TipoRol.COLABORADOR);
-            });
-
-            path("/heladera-llena", () -> {
-                post(ServiceLocator.instanceOf(SuscripcionHeladeraController.class)::saveHeladeraLlena, TipoRol.COLABORADOR);
-
-                get("/new", ServiceLocator.instanceOf(SuscripcionHeladeraController.class)::createHeladeraLlena, TipoRol.COLABORADOR);
-            });
-        })
+                    path("/heladera-llena", () -> {
+                        post(ServiceLocator.instanceOf(SuscripcionHeladeraController.class)::saveHeladeraLlena, TipoRol.COLABORADOR);
+                        get("/new", ServiceLocator.instanceOf(SuscripcionHeladeraController.class)::createHeladeraLlena, TipoRol.COLABORADOR);
+                    });
+                })
         );
     }
 }

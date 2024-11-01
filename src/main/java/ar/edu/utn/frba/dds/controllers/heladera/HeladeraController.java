@@ -70,11 +70,10 @@ public class HeladeraController extends UserRequired implements ICrudViewsHandle
                 .buscarPorId(heladeraId)
                 .orElseThrow(ResourceNotFoundException::new);
 
-
         boolean puedeConfigurar;
         try {
             Colaborador colaborador = colaboradorFromSession(context);
-            puedeConfigurar = heladeraService.puedeConfigurar(colaborador, heladera.get());
+            puedeConfigurar = heladeraService.puedeConfigurar(colaborador, heladera);
         } catch (NonColaboratorException e) {
             Usuario usuario = usuarioFromSession(context);
             puedeConfigurar = usuario.getRol().isAdmin();

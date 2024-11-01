@@ -79,7 +79,7 @@ public class SuscripcionHeladeraController extends UserRequired {
 
             Colaborador colaborador = colaboradorFromSession(context);
 
-            String heladeraId = context.queryParamAsClass("id", String.class).get();
+            String heladeraId = context.queryParamAsClass("heladera", String.class).get();
 
             Heladera heladera = this.heladeraService
                     .buscarPorId(heladeraId)
@@ -101,7 +101,7 @@ public class SuscripcionHeladeraController extends UserRequired {
         }
     }
 
-    public void saveFaltaVianda(Context context) { // TODO - ver que matchee con las vistas y excepciones
+    public void saveFaltaVianda(Context context) {
 
 
         Map<String, Object> model = new HashMap<>();
@@ -112,17 +112,11 @@ public class SuscripcionHeladeraController extends UserRequired {
 
             Colaborador colaborador = colaboradorFromSession(context);
 
-            System.out.println("Colaborador: " + colaborador);
-
             String heladeraId = context.queryParamAsClass("heladera", String.class).get();
-
-            System.out.println("Id de la heladera: " + heladeraId);
 
             Heladera heladera = this.heladeraService
                     .buscarPorId(heladeraId)
                     .orElseThrow(ResourceNotFoundException::new);
-
-            System.out.println("Heladera: " + heladera);
 
             Integer viandasRestantes = context.formParamAsClass("cantidad-viandas", Integer.class).get();
 
