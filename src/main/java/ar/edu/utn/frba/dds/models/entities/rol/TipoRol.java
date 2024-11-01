@@ -6,5 +6,9 @@ public enum TipoRol implements RouteRole {
     GUEST,
     ADMIN,
     COLABORADOR,
-    TECNICO,
+    TECNICO;
+
+    public boolean isAdmin() {
+        return this == ADMIN;
+    }
 }

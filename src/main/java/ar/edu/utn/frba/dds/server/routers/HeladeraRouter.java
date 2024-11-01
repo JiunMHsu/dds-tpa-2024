@@ -21,7 +21,7 @@ public class HeladeraRouter implements IRouter {
                     get("/new", ServiceLocator.instanceOf(HeladeraController.class)::create, TipoRol.ADMIN);
 
                     path("/{id}", () -> {
-                        get(ServiceLocator.instanceOf(HeladeraController.class)::show, TipoRol.COLABORADOR, TipoRol.ADMIN);
+                        get(ServiceLocator.instanceOf(HeladeraController.class)::show, TipoRol.ADMIN, TipoRol.COLABORADOR);
                         post(ServiceLocator.instanceOf(HeladeraController.class)::update, TipoRol.ADMIN, TipoRol.COLABORADOR);
 
                         get("/edit", ServiceLocator.instanceOf(HeladeraController.class)::edit, TipoRol.ADMIN, TipoRol.COLABORADOR);
