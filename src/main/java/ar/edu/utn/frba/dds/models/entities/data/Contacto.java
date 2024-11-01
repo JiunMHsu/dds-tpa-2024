@@ -3,12 +3,11 @@ package ar.edu.utn.frba.dds.models.entities.data;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
