@@ -28,6 +28,7 @@ import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRep
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetasRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
+import ar.edu.utn.frba.dds.models.repositories.heladera.RetiroDeViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
 import ar.edu.utn.frba.dds.models.repositories.mensajeria.MensajeRepository;
 import ar.edu.utn.frba.dds.models.repositories.personaVulnerable.PersonaVulnerableRepository;
@@ -353,11 +354,12 @@ public class ServiceLocator {
         }
 
         if (componentName.equals(ReporteService.class.getName())) {
-            ReporteService instance = ReporteService.de(
+            ReporteService instance = new ReporteService(
                     instanceOf(ReporteRepository.class),
                     instanceOf(DonacionViandaRepository.class),
                     instanceOf(IncidenteRepository.class),
-                    instanceOf(RegistroMovimiento.class));
+                    instanceOf(DistribucionViandasRepository.class),
+                    instanceOf(RetiroDeViandaRepository.class));
             instances.put(componentName, instance);
         }
 
@@ -468,6 +470,11 @@ public class ServiceLocator {
 
         if (componentName.equals(VarianteDePuntosRepository.class.getName())) {
             VarianteDePuntosRepository instance = new VarianteDePuntosRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(RetiroDeViandaRepository.class.getName())) {
+            RetiroDeViandaRepository instance = new RetiroDeViandaRepository();
             instances.put(componentName, instance);
         }
 

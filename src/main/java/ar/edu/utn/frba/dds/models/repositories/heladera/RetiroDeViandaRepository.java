@@ -1,35 +1,18 @@
 package ar.edu.utn.frba.dds.models.repositories.heladera;
 
 import ar.edu.utn.frba.dds.models.entities.heladera.RetiroDeVianda;
-import ar.edu.utn.frba.dds.utils.ICrudRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class RetiroDeViandaRepository implements
-        ICrudRepository<RetiroDeVianda>,
-        WithSimplePersistenceUnit {
+public class RetiroDeViandaRepository implements WithSimplePersistenceUnit {
 
-    @Override
     public void guardar(RetiroDeVianda retiroDeVianda) {
-        withTransaction(() -> entityManager().persist(retiroDeVianda));
+        entityManager().persist(retiroDeVianda);
     }
 
-    @Override
-    public void actualizar(RetiroDeVianda retiroDeVianda) {
-        withTransaction(() -> entityManager().merge(retiroDeVianda));
-    }
-
-    @Override
-    public void eliminar(RetiroDeVianda retiroDeVianda) {
-        withTransaction(() -> {
-            retiroDeVianda.setAlta(false);
-            entityManager().merge(retiroDeVianda);
-        });
-    }
-
-    @Override
     public Optional<RetiroDeVianda> buscarPorId(String id) {
         try {
             UUID uuid = UUID.fromString(id);
@@ -40,10 +23,19 @@ public class RetiroDeViandaRepository implements
         }
     }
 
-    @Override
     public List<RetiroDeVianda> buscarTodos() {
         return entityManager()
                 .createQuery("from RetiroDeVianda", RetiroDeVianda.class)
+                .getResultList();
+    }
+
+    public List<RetiroDeVianda> buscarAPartirDe(LocalDateTime fechaHora) {
+        return fechaHora == null
+                ? buscarTodos()
+                : entityManager()
+                .createQuery("from RetiroDeVianda r where r.alta = :alta and r.fechaHora >= :fecha", RetiroDeVianda.class)
+                .setParameter("fecha", fechaHora)
+                .setParameter("alta", true)
                 .getResultList();
     }
 }
