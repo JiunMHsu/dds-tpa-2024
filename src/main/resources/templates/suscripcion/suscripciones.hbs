@@ -1,5 +1,5 @@
 {{#partial "title"}}
-    {{heladera.nombre}}
+    Suscribir a Heladera {{heladera.nombre}}
 {{/partial}}
 {{#partial "links"}}
     <link
@@ -14,16 +14,16 @@
 {{#partial "main-content"}}
     <div class="container">
         <div class="header">
-            <h2 class="title">{{heladera.nombre}}</h2>
+            <h2 class="title">Suscribir a Heladera {{heladera.nombre}}</h2>
         </div>
 
         <div class="subscription-type">
             <h3 class="subtitle">Tipo de Suscripciones</h3>
 
             <div class="button-container">
-                <a href="/heladeras/{{heladera.id}}/suscripcion/falla-tecnica" class="subscription-button">Falla Técnica</a>
-                <a href="/heladeras/{{heladera.id}}/suscripcion/falta-viandas" class="subscription-button">Falta Viandas</a>
-                <a href="/heladeras/{{heladera.id}}/suscripcion/heladera-llena" class="subscription-button">Heladera Llena</a>
+                <a href="/suscripciones/falla-tecnica/new?heladera={{heladera.id}}" class="subscription-button">Falla Técnica</a>
+                <a href="/suscripciones/falta-viandas/new?heladera={{heladera.id}}" class="subscription-button">Falta Viandas</a>
+                <a href="/suscripciones/heladera-llena/new?heladera={{heladera.id}}" class="subscription-button">Heladera Llena</a>
             </div>
         </div>
     </div>
