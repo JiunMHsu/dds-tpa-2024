@@ -65,16 +65,15 @@ public class HeladeraController extends UserRequired implements ICrudViewsHandle
     @Override
     public void show(Context context) {
         String heladeraId = context.pathParam("id");
-        Optional<Heladera> heladera = this.heladeraService.buscarPorId(heladeraId);
 
-        if (heladera.isEmpty())
-            throw new ResourceNotFoundException("No se encontró heladera paraColaborador id " + heladeraId);
-
+        Heladera heladera = this.heladeraService
+                .buscarPorId(heladeraId)
+                .orElseThrow(ResourceNotFoundException::new);
 
         boolean puedeConfigurar;
         try {
             Colaborador colaborador = colaboradorFromSession(context);
-            puedeConfigurar = heladeraService.puedeConfigurar(colaborador, heladera.get());
+            puedeConfigurar = heladeraService.puedeConfigurar(colaborador, heladera);
         } catch (NonColaboratorException e) {
             Usuario usuario = usuarioFromSession(context);
             puedeConfigurar = usuario.getRol().isAdmin();
@@ -82,7 +81,7 @@ public class HeladeraController extends UserRequired implements ICrudViewsHandle
 
         Map<String, Object> model = new HashMap<>();
 
-        HeladeraDTO heladeraDTO = HeladeraDTO.completa(heladera.get());
+        HeladeraDTO heladeraDTO = HeladeraDTO.completa(heladera);
         model.put("heladera", heladeraDTO);
         model.put("puedeConfigurar", puedeConfigurar);
 

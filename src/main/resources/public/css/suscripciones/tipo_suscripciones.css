@@ -1,0 +1,33 @@
+.main-section {
+    border: 1px solid var(--background-3);
+}
+
+.form {
+    grid-template-columns: 2fr 1fr;
+}
+
+.form-title {
+    font-size: 2rem;
+    color: var(--foreground-1);
+}
+
+.field-viandas-restantes {
+    grid-column: 1 / -1;
+}
+
+.field-cantidad-viandas {
+    grid-column: 1 / -1;
+}
+
+.field-medio-notificacion {
+    grid-column: 1 / -1;
+}
+
+.side-panel {
+    width: 35vw;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+}

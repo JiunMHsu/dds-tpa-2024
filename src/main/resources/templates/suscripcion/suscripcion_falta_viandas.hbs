@@ -1,0 +1,61 @@
+{{#partial "links"}}
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/suscripciones/tipo_suscripciones.css"/>
+    <link
+            href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css"
+            rel="stylesheet"
+    />
+{{/partial}}
+{{#partial "scripts"}}
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+    <script src="/js/map.js"></script>
+{{/partial}}
+{{#partial "main-content"}}
+    <div class="form-container">
+        <h2 class="form-title">Suscripción por Falta de Viandas</h2>
+
+        <form action="/suscripciones/falta-viandas?heladera={{heladera.id}}" method="post" class="form">
+            <label class="field-cantidad-viandas">
+                Cantidad de Viandas
+                <input
+                        type="number"
+                        min="1"
+                        step="1"
+                        name="cantidad-viandas"
+                        placeholder="Ejemplo: 50"
+                        required
+                />
+            </label>
+
+            <label class="field-medio-notificacion">
+                Medio de Notificación
+                <select name="medio-notificacion" required>
+                    <option value="" disabled selected>Seleccionar</option>
+                    <option value="WHATSAPP">WhatsApp</option>
+                    <option value="TELEGRAM">Telegram</option>
+                    <option value="EMAIL">Email</option>
+                </select>
+            </label>
+
+            <label class="field-contacto">
+                Informacion contacto
+                <input
+                        type="text"
+                        min="1"
+                        step="1"
+                        name="contacto"
+                        placeholder=""
+                        required
+                />
+            </label>
+
+            <div class="form-button-container">
+                <button type="submit">Aceptar</button>
+            </div>
+        </form>
+    </div>
+{{/partial}}
+{{#partial "side-panel"}}
+    <div id="map"></div>
+{{/partial}}
+{{> templates/base}}
