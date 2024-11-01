@@ -58,15 +58,51 @@ public class SuscripcionHeladeraController extends UserRequired {
     }
 
     public void createFallaHeladera(Context context) {
-        render(context, "suscripcion/suscripcion_falla_heladera.hbs", new HashMap<>());
+
+        String heladeraId = context.queryParamAsClass("heladera", String.class).get();
+
+        Heladera heladera = this.heladeraService
+                .buscarPorId(heladeraId)
+                .orElseThrow(ResourceNotFoundException::new);
+
+        Map<String, Object> model = new HashMap<>();
+
+        HeladeraDTO heladeraDTO = HeladeraDTO.completa(heladera);
+        model.put("heladera", heladeraDTO);
+
+        render(context, "suscripcion/suscripcion_falla_heladera.hbs", model);
     }
 
     public void createFaltaVianda(Context context) {
-        render(context, "suscripcion/suscripcion_falta_viandas.hbs", new HashMap<>());
+
+        String heladeraId = context.queryParamAsClass("heladera", String.class).get();
+
+        Heladera heladera = this.heladeraService
+                .buscarPorId(heladeraId)
+                .orElseThrow(ResourceNotFoundException::new);
+
+        Map<String, Object> model = new HashMap<>();
+
+        HeladeraDTO heladeraDTO = HeladeraDTO.completa(heladera);
+        model.put("heladera", heladeraDTO);
+
+        render(context, "suscripcion/suscripcion_falta_viandas.hbs", model);
     }
 
     public void createHeladeraLlena(Context context) {
-        render(context, "suscripcion/suscripcion_heladera_llena.hbs", new HashMap<>());
+
+        String heladeraId = context.queryParamAsClass("heladera", String.class).get();
+
+        Heladera heladera = this.heladeraService
+                .buscarPorId(heladeraId)
+                .orElseThrow(ResourceNotFoundException::new);
+
+        Map<String, Object> model = new HashMap<>();
+
+        HeladeraDTO heladeraDTO = HeladeraDTO.completa(heladera);
+        model.put("heladera", heladeraDTO);
+
+        render(context, "suscripcion/suscripcion_heladera_llena.hbs", model);
     }
 
     public void saveFallaHeladera(Context context) {
@@ -87,7 +123,9 @@ public class SuscripcionHeladeraController extends UserRequired {
 
             MedioDeNotificacion medioDeNotificacion = MedioDeNotificacion.valueOf(context.formParamAsClass("medio-notificacion", String.class).get());
 
-            this.fallaHeladeraService.registrar(colaborador, heladera, medioDeNotificacion);
+            String infoContacto = context.formParamAsClass("contacto", String.class).get();
+
+            this.fallaHeladeraService.registrar(colaborador, heladera, medioDeNotificacion, infoContacto);
 
             operationSuccess = true;
             redirectDTOS.add(new RedirectDTO("/heladeras", "Ir a Heladeras"));
@@ -122,7 +160,9 @@ public class SuscripcionHeladeraController extends UserRequired {
 
             MedioDeNotificacion medioDeNotificacion = MedioDeNotificacion.valueOf(context.formParamAsClass("medio-notificacion", String.class).get());
 
-            this.faltaViandaService.registrar(colaborador, heladera, medioDeNotificacion, viandasRestantes);
+            String infoContacto = context.formParamAsClass("contacto", String.class).get();
+
+            this.faltaViandaService.registrar(colaborador, heladera, viandasRestantes, medioDeNotificacion, infoContacto);
 
             operationSuccess = true;
             redirectDTOS.add(new RedirectDTO("/heladeras", "Ir a Heladeras"));
@@ -148,17 +188,19 @@ public class SuscripcionHeladeraController extends UserRequired {
 
             Colaborador colaborador = colaboradorFromSession(context);
 
-            String heladeraId = context.queryParam("heladera");
+            String heladeraId = context.queryParamAsClass("heladera", String.class).get();
 
             Heladera heladera = this.heladeraService
                     .buscarPorId(heladeraId)
                     .orElseThrow(ResourceNotFoundException::new);
 
-            MedioDeNotificacion medioDeNotificacion = MedioDeNotificacion.valueOf(context.formParamAsClass("medio-notificacion", String.class).get());
-
             Integer espacioRestante = context.formParamAsClass("viandas-restantes", Integer.class).get();
 
-            this.heladeraLlenaService.registrar(colaborador, heladera, medioDeNotificacion, espacioRestante);
+            MedioDeNotificacion medioDeNotificacion = MedioDeNotificacion.valueOf(context.formParamAsClass("medio-notificacion", String.class).get());
+
+            String infoContacto = context.formParamAsClass("contacto", String.class).get();
+
+            this.heladeraLlenaService.registrar(colaborador, heladera, espacioRestante, medioDeNotificacion, infoContacto);
 
             operationSuccess = true;
             redirectDTOS.add(new RedirectDTO("/heladeras", "Ir a Heladeras"));

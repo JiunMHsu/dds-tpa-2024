@@ -1,12 +1,15 @@
 package ar.edu.utn.frba.dds.services.reporte;
 
+import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
+import ar.edu.utn.frba.dds.models.entities.heladera.RetiroDeVianda;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.models.entities.reporte.Reporte;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaRepository;
+import ar.edu.utn.frba.dds.models.repositories.heladera.RetiroDeViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
 import ar.edu.utn.frba.dds.models.repositories.reporte.ReporteRepository;
-import ar.edu.utn.frba.dds.reportes.RegistroMovimiento;
 import ar.edu.utn.frba.dds.utils.AppProperties;
 import ar.edu.utn.frba.dds.utils.IPDFGenerator;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
@@ -27,20 +30,19 @@ public class ReporteService implements WithSimplePersistenceUnit {
     private final ReporteRepository reporteRepository;
     private final DonacionViandaRepository donacionViandaRepository;
     private final IncidenteRepository incidenteRepository;
-    private final RegistroMovimiento registroMovimiento;
+    private final DistribucionViandasRepository distribucionViandasRepository;
+    private final RetiroDeViandaRepository retiroDeViandaRepository;
 
-    public static ReporteService de(ReporteRepository reporteRepository,
-                                    DonacionViandaRepository donacionViandaRepository,
-                                    IncidenteRepository incidenteRepository,
-                                    RegistroMovimiento registroMovimiento) {
-
-        return ReporteService
-                .builder()
-                .reporteRepository(reporteRepository)
-                .donacionViandaRepository(donacionViandaRepository)
-                .incidenteRepository(incidenteRepository)
-                .registroMovimiento(registroMovimiento)
-                .build();
+    public ReporteService(ReporteRepository reporteRepository,
+                          DonacionViandaRepository donacionViandaRepository,
+                          IncidenteRepository incidenteRepository,
+                          DistribucionViandasRepository distribucionViandasRepository,
+                          RetiroDeViandaRepository retiroDeViandaRepository) {
+        this.reporteRepository = reporteRepository;
+        this.donacionViandaRepository = donacionViandaRepository;
+        this.incidenteRepository = incidenteRepository;
+        this.distribucionViandasRepository = distribucionViandasRepository;
+        this.retiroDeViandaRepository = retiroDeViandaRepository;
     }
 
     private Map<String, Integer> incidentesPorHeladera() {
@@ -75,13 +77,39 @@ public class ReporteService implements WithSimplePersistenceUnit {
         return viandasPorColaborador;
     }
 
-    public void generarReporteSemanal(IPDFGenerator pdfGenerator) {
+    private Map<String, Map<String, Integer>> movimientosPorHeladera() {
+        LocalDateTime haceUnaSemana = LocalDateTime.now().minusWeeks(1);
+        List<DistribucionViandas> distribuciones = distribucionViandasRepository.buscarAPartirDe(haceUnaSemana);
+        List<RetiroDeVianda> retiros = retiroDeViandaRepository.buscarAPartirDe(haceUnaSemana);
 
+        Map<String, Map<String, Integer>> movimientos = new HashMap<>();
+        Map<String, Integer> viandasAgregadas = new HashMap<>();
+        Map<String, Integer> viandasQuitadas = new HashMap<>();
+
+        for (DistribucionViandas distribucion : distribuciones) {
+            String key = distribucion.getOrigen().getId().toString();
+
+            int entradas = viandasAgregadas.getOrDefault(key, 0) + 1;
+            viandasAgregadas.put(key, entradas);
+            int salidas = viandasQuitadas.getOrDefault(key, 0) + 1;
+            viandasQuitadas.put(key, salidas);
+        }
+
+        for (RetiroDeVianda retiro : retiros) {
+            String key = retiro.getHeladera().getId().toString();
+            int salidas = viandasQuitadas.getOrDefault(key, 0) + 1;
+            viandasQuitadas.put(key, salidas);
+        }
+
+        movimientos.put("Viandas Agregadas", viandasAgregadas);
+        movimientos.put("Viandas Quitadas", viandasQuitadas);
+        return movimientos;
+    }
+
+    public void generarReporteSemanal(IPDFGenerator pdfGenerator) {
         Map<String, Integer> incidentesPorHeladera = this.incidentesPorHeladera();
         Map<String, Integer> donacionPorColaborador = this.donacionesPorColaborador();
-        Map<String, Map<String, Integer>> movimientos = new HashMap<>();
-        movimientos.put("Viandas Agregadas", registroMovimiento.getViandasAgregadas());
-        movimientos.put("Viandas Quitadas", registroMovimiento.getViandasQuitadas());
+        Map<String, Map<String, Integer>> movimientos = movimientosPorHeladera();
 
         String pathReporteFalla = pdfGenerator.generateDocument("Fallas por Heladera", incidentesPorHeladera);
         String reporteDonaciones = pdfGenerator.generateDocument("Viandas Donadas por Colaborador", donacionPorColaborador);
@@ -92,8 +120,6 @@ public class ReporteService implements WithSimplePersistenceUnit {
         reporteRepository.guardar(Reporte.de("Viandas Donadas por Colaborador", reporteDonaciones));
         reporteRepository.guardar(Reporte.de("Movimiento de Viandas", reporteMovimientos));
         commitTransaction();
-
-        registroMovimiento.vaciarRegistro();
 
         System.out.println("Reportes generados correctamente.");
     }
