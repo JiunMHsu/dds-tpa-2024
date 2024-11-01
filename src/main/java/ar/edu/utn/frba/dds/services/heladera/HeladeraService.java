@@ -1,6 +1,9 @@
 package ar.edu.utn.frba.dds.services.heladera;
 
+import ar.edu.utn.frba.dds.models.entities.colaboracion.HacerseCargoHeladera;
+import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
@@ -9,9 +12,12 @@ import java.util.Optional;
 public class HeladeraService implements WithSimplePersistenceUnit {
 
     private final HeladeraRepository heladeraRepository;
+    private final HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository;
 
-    public HeladeraService(HeladeraRepository heladeraRepository) {
+    public HeladeraService(HeladeraRepository heladeraRepository,
+                           HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository) {
         this.heladeraRepository = heladeraRepository;
+        this.hacerseCargoHeladeraRepository = hacerseCargoHeladeraRepository;
     }
 
     public List<Heladera> buscarTodas() {
@@ -34,14 +40,18 @@ public class HeladeraService implements WithSimplePersistenceUnit {
         withTransaction(() -> this.heladeraRepository.guardar(heladera));
     }
 
-    // Lo dejo asi medio basico, pero seguramente se deba validar que los nuevos atributos:
-    // 1. no sean null o sean coherentes (asumo)
-    // 2. no sean exactamente los mismos
     public void actualizarHeladera(Heladera heladeraActualizada) {
+        beginTransaction();
         this.heladeraRepository.actualizar(heladeraActualizada);
+        commitTransaction();
     }
 
     public void eliminarHeladera(Heladera heladera) {
         this.heladeraRepository.eliminar(heladera);
+    }
+
+    public boolean puedeConfigurar(Colaborador colaborador, Heladera heladera) {
+        List<HacerseCargoHeladera> encargos = hacerseCargoHeladeraRepository.buscarPorColaborador(colaborador);
+        return encargos.stream().anyMatch(encargo -> encargo.getHeladeraACargo().equals(heladera));
     }
 }

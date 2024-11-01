@@ -3,13 +3,17 @@ package ar.edu.utn.frba.dds.controllers.heladera;
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.UbicacionDTO;
 import ar.edu.utn.frba.dds.dtos.heladera.HeladeraDTO;
+import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
+import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
+import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
 import ar.edu.utn.frba.dds.models.entities.data.Calle;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
+import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
@@ -66,10 +70,21 @@ public class HeladeraController extends UserRequired implements ICrudViewsHandle
         if (heladera.isEmpty())
             throw new ResourceNotFoundException("No se encontró heladera paraColaborador id " + heladeraId);
 
+
+        boolean puedeConfigurar;
+        try {
+            Colaborador colaborador = colaboradorFromSession(context);
+            puedeConfigurar = heladeraService.puedeConfigurar(colaborador, heladera.get());
+        } catch (NonColaboratorException e) {
+            Usuario usuario = usuarioFromSession(context);
+            puedeConfigurar = usuario.getRol().isAdmin();
+        }
+
         Map<String, Object> model = new HashMap<>();
 
         HeladeraDTO heladeraDTO = HeladeraDTO.completa(heladera.get());
         model.put("heladera", heladeraDTO);
+        model.put("puedeConfigurar", puedeConfigurar);
 
         render(context, "heladeras/heladera_detalle.hbs", model);
     }
@@ -138,43 +153,60 @@ public class HeladeraController extends UserRequired implements ICrudViewsHandle
 
     @Override
     public void edit(Context context) {
-        // TODO - edit
-        context.render("heladeras/heladera_editar.hbs");
+        Heladera heladera = heladeraFromPath(context);
 
-        // devuelve formulario paraColaborador editar heladera
-        // Optional<Heladera> posibleHeladeraBuscada = this.heladeraService.buscarPorId(context.formParam("id"));
-        // TODO chequear empty
+        try {
+            Colaborador colaborador = colaboradorFromSession(context);
+            if (!heladeraService.puedeConfigurar(colaborador, heladera))
+                throw new UnauthorizedException("no es encargado de la heladera");
+        } catch (NonColaboratorException e) {
+            Usuario usuario = usuarioFromSession(context);
+            if (!usuario.getRol().isAdmin())
+                throw new UnauthorizedException("no es administrador");
+        } finally {
+            Map<String, Object> model = new HashMap<>();
 
-        // if(posibleHeladeraBuscada.isEmpty()) {
-        //     context.status(HttpStatus.NOT_FOUND);
-        //     return;
-        // }
-
-        // Map<String, Object> model = new HashMap<>();
-        // model.put("heladera", posibleHeladeraBuscada.get());
-        // model.put("edicion", true);
-
-        // context.render("heladeras/heladera_detalle.hbs", model);
+            HeladeraDTO heladeraDTO = HeladeraDTO.completa(heladera);
+            model.put("heladera", heladeraDTO);
+            render(context, "heladeras/heladera_editar.hbs", model);
+        }
     }
 
     @Override
     public void update(Context context) {
-        // voy a considerar que solo se puede modificar rango por temperatura
-        Optional<Heladera> posibleHeladeraActualizar = this.heladeraService.buscarPorId(context.formParam("id"));
-        // TODO - chequeo si no existe
+        Heladera heladera = heladeraFromPath(context);
 
-        // interpreto que los campos son obligatorios (no pueden ser null)
-        Double nuevoMaximo = Double.valueOf(context.formParam("maximo"));
-        Double nuevoMinimo = Double.valueOf(context.formParam("minimo"));
+        try {
+            Colaborador colaborador = colaboradorFromSession(context);
+            if (!heladeraService.puedeConfigurar(colaborador, heladera))
+                throw new UnauthorizedException("no es encargado de la heladera");
+        } catch (NonColaboratorException e) {
+            Usuario usuario = usuarioFromSession(context);
+            if (!usuario.getRol().isAdmin())
+                throw new UnauthorizedException("no es administrador");
+        }
 
-        Heladera heladeraActualizada = posibleHeladeraActualizar.get();
+        Map<String, Object> model = new HashMap<>();
+        List<RedirectDTO> redirectDTOS = new ArrayList<>();
+        boolean operationSuccess = false;
 
-        heladeraActualizada.setRangoTemperatura(new RangoTemperatura(nuevoMaximo, nuevoMinimo));
+        try {
+            Double nuevoMaximo = context.formParamAsClass("maxima", Double.class).get();
+            Double nuevoMinimo = context.formParamAsClass("minima", Double.class).get();
 
-        this.heladeraService.actualizarHeladera(heladeraActualizada);
+            heladera.setRangoTemperatura(new RangoTemperatura(nuevoMaximo, nuevoMinimo));
+            this.heladeraService.actualizarHeladera(heladera);
 
-        context.status(HttpStatus.OK);
-        // mostrar algo por exitoso
+            operationSuccess = true;
+            redirectDTOS.add(new RedirectDTO("/heladeras", "Ver Heladeras"));
+
+        } catch (ValidationException e) {
+            redirectDTOS.add(new RedirectDTO("/heladeras/" + heladera.getId() + "/edit", "Reintentar"));
+        } finally {
+            model.put("success", operationSuccess);
+            model.put("redirects", redirectDTOS);
+            context.render("post_result.hbs", model);
+        }
     }
 
     @Override
@@ -185,6 +217,13 @@ public class HeladeraController extends UserRequired implements ICrudViewsHandle
         this.heladeraService.eliminarHeladera(posibleHeladeraAEliminar.get());
         context.status(HttpStatus.OK);
         // mostrar algo por exitoso
+    }
+
+    Heladera heladeraFromPath(Context context) {
+        String heladeraId = context.pathParam("id");
+        return this.heladeraService
+                .buscarPorId(heladeraId)
+                .orElseThrow(ResourceNotFoundException::new);
     }
 
     @Override

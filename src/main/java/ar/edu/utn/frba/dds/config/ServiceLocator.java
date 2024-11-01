@@ -241,7 +241,8 @@ public class ServiceLocator {
 
         if (componentName.equals(HeladeraService.class.getName())) {
             HeladeraService instance = new HeladeraService(
-                    instanceOf(HeladeraRepository.class));
+                    instanceOf(HeladeraRepository.class),
+                    instanceOf(HacerseCargoHeladeraRepository.class));
             instances.put(componentName, instance);
         }
 

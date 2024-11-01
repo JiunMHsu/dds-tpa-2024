@@ -2,7 +2,7 @@
     Configurar {{heladera.nombre}}
 {{/partial}}
 {{#partial "links"}}
-    <link rel="stylesheet" href="/css/heladeras/heladera_detalle.css"/>
+    <link rel="stylesheet" href="/css/heladeras/heladera_editar.css"/>
     <link
             href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css"
             rel="stylesheet"
@@ -13,10 +13,15 @@
     <script src="/js/map.js"></script>
 {{/partial}}
 {{#partial "main-content"}}
-    <div class="container">
+    <form action="/heladeras/{{heladera.id}}" method="post" class="container">
         <div class="header">
+            <!-- <fieldset class="title-fieldset">
+              <legend class="title-legend">nombre</legend>
+              <input type="text" value="Heladera Medrano UTN" class="title-input">
+            </fieldset> -->
+
             <h2 class="title">{{heladera.nombre}}</h2>
-            <a href="/heladeras/{{heladera.id}}/edit" class="edit-button">Configurar</a>
+            <button type="submit" class="confirm-button">Guardar</button>
         </div>
 
         <div class="ultimo-estado card">
@@ -46,15 +51,25 @@
 
         <div class="rango-temp card-container">
             <h3>Temperaturas</h3>
-            <div class="card">
-                <p>
-                    <span class="material-symbols-rounded card-detail-icon">thermometer_add</span>
-                    máxima: {{heladera.temperaturaMaxima}}°C
-                </p>
-                <p>
-                    <span class="material-symbols-rounded card-detail-icon">thermometer_minus</span>
-                    mínima: {{heladera.temperaturaMinima}}°C
-                </p>
+            <div class="has-fieldset">
+                <fieldset class="temp-fieldset">
+                    <legend class="temp-legend">
+                        <span class="material-symbols-rounded card-detail-icon">thermometer_add</span>
+                        máxima
+                    </legend>
+                    <input type="number" name="maxima" step="1"
+                           value="{{heladera.temperaturaMaxima}}"
+                           class="temp-input"/>
+                </fieldset>
+                <fieldset class="temp-fieldset">
+                    <legend class="temp-legend">
+                        <span class="material-symbols-rounded card-detail-icon">thermometer_add</span>
+                        mínima
+                    </legend>
+                    <input type="number" name="minima" step="1"
+                           value="{{heladera.temperaturaMinima}}"
+                           class="temp-input"/>
+                </fieldset>
             </div>
         </div>
 
@@ -85,7 +100,7 @@
                 </p>
             </div>
         </div>
-    </div>
+    </form>
 {{/partial}}
 {{#partial "side-panel"}}
     <div id="map"></div>
