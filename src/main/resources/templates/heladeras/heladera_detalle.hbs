@@ -16,7 +16,9 @@
     <div class="container">
         <div class="header">
             <h2 class="title">{{heladera.nombre}}</h2>
-            <a href="/heladeras/{{heladera.id}}/edit" class="edit-button">Configurar</a>
+            {{#if puedeConfigurar}}
+                <a href="/heladeras/{{heladera.id}}/edit" class="edit-button">Configurar</a>
+            {{/if}}
             <a href="/heladeras/{{heladera.id}}/suscribirse" class="edit-button">Suscribirse</a>
         </div>
 

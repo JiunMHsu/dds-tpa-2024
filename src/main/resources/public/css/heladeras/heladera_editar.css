@@ -1,0 +1,177 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.main-section {
+    justify-content: center;
+    overflow: hidden;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    column-gap: 1.5rem;
+    padding: 1rem 1rem;
+    width: 75%;
+
+    overflow-y: scroll;
+}
+
+.header {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 0 0 5%;
+}
+
+.title {
+    flex-grow: 1;
+    display: flex;
+    width: 100%;
+    margin: 0;
+    font-size: 2rem;
+}
+
+.confirm-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: .5rem 1rem;
+    border-radius: .5rem;
+    background-color: var(--background-2);
+    border: 1px solid var(--background-3);
+
+    color: var(--foreground-0);
+    text-decoration: none;
+
+    transition-property: all;
+    transition-duration: 300ms;
+}
+
+.confirm-button:hover {
+    cursor: pointer;
+    color: var(--main-light-0);
+    text-shadow: 0 0 .1rem var(--main-light-0);
+    box-shadow: 0 0 1rem var(--background-3);
+}
+
+.ultimo-estado {
+    grid-column: 1 / -1;
+}
+
+.direccion {
+    grid-column: 1 / -1;
+}
+
+.inicio-funcionamiento {
+    grid-column: 1 / -1;
+}
+
+.card-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-container h3 {
+    margin: .5rem 0;
+}
+
+.card {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    border-radius: .5rem;
+    color: var(--foreground-0);
+    background-color: var(--background-2);
+    border: 1px solid var(--background-3);
+
+    transition-property: all;
+    transition-duration: 300ms;
+}
+
+.card:hover {
+    color: var(--main-light-0);
+    text-shadow: 0 0 .1rem var(--main-light-0);
+    background-color: var(--background-1);
+}
+
+.card p {
+    display: flex;
+    align-items: center;
+    margin: .1rem;
+    font-size: 1rem;
+}
+
+.card-detail-icon {
+    font-size: 1rem;
+    margin-right: .5rem;
+}
+
+fieldset {
+    border: 1px solid var(--background-3);
+    border-radius: .5rem;
+    margin: 0;
+    transition-property: all;
+    transition-duration: 300ms;
+}
+
+fieldset:hover {
+    color: var(--main-light-0);
+}
+
+fieldset:focus-within {
+    color: var(--main-light-0);
+    background-color: var(--background-2);
+}
+
+input {
+    margin: 0;
+    border: none;
+    outline: none;
+    background: none;
+    width: 100%;
+    font-weight: bolder;
+}
+
+legend {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: .9rem;
+    margin: 0;
+    padding: 0 .5rem;
+}
+
+.title-fieldset {
+    flex-grow: 1;
+    margin-right: 2rem;
+}
+
+.title-input {
+    display: flex;
+    width: 100%;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.has-fieldset {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    gap: .5rem;
+}
+
+.side-panel {
+    width: 35vw;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+}

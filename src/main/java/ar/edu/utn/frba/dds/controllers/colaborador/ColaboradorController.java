@@ -13,7 +13,6 @@ import ar.edu.utn.frba.dds.models.entities.data.Calle;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.data.TipoRazonSocial;
-import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
@@ -23,7 +22,12 @@ import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.validation.ValidationException;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ColaboradorController implements ICrudViewsHandler {
@@ -133,12 +137,6 @@ public class ColaboradorController implements ICrudViewsHandler {
 
             ArrayList<TipoColaboracion> formasDeColaborar = new ArrayList<TipoColaboracion>();
 
-            Puntos puntos = new Puntos(
-                    0,
-                    false,
-                    null
-            );
-
             Colaborador colaboradorNuevo = Colaborador.humana(
                     usuario,
                     context.formParamAsClass("nombre", String.class).get(),
@@ -147,7 +145,7 @@ public class ColaboradorController implements ICrudViewsHandler {
                     contacto,
                     direccion,
                     formasDeColaborar,
-                    puntos
+                    new Puntos(0, false, null)
             );
 
             this.colaboradorService.guardar(colaboradorNuevo);
@@ -192,12 +190,6 @@ public class ColaboradorController implements ICrudViewsHandler {
 
             ArrayList<TipoColaboracion> formasDeColaborar = new ArrayList<TipoColaboracion>();
 
-            Puntos puntos = new Puntos(
-                    0,
-                    false,
-                    null
-            );
-
             Colaborador colaboradorNuevo = Colaborador.juridica(
                     usuario,
                     context.formParamAsClass("razon_social", String.class).get(),
@@ -206,7 +198,7 @@ public class ColaboradorController implements ICrudViewsHandler {
                     contacto,
                     direccion,
                     formasDeColaborar,
-                    puntos
+                    new Puntos(0, false, null)
             );
 
             this.colaboradorService.guardar(colaboradorNuevo);
