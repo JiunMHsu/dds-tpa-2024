@@ -39,11 +39,17 @@ public class VisitaTecnicoController {
         this.usuarioService = usuarioService;
     }
 
+    public void index(Context context) {
+    }
+
+    public void show(Context context) {
+    }
+
     public void create(Context context) {
         context.result("Visita Tecnico");
     }
 
-    public void save(Context context) { // TODO - Ver desp que matchee paraColaborador las vistas
+    public void save(Context context) { // TODO - Ver desp que matchee para Colaborador las vistas
 
         Map<String, Object> model = new HashMap<>();
         List<RedirectDTO> redirectDTOS = new ArrayList<>();
