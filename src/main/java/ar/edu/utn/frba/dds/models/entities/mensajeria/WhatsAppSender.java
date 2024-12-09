@@ -1,82 +1,35 @@
 package ar.edu.utn.frba.dds.models.entities.mensajeria;
 
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
-import ar.edu.utn.frba.dds.utils.AppProperties;
-import lombok.Getter;
-import lombok.Setter;
-import org.apache.camel.CamelContext;
-import org.apache.camel.ProducerTemplate;
-import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.component.whatsapp.model.TextMessage;
-import org.apache.camel.component.whatsapp.model.TextMessageRequest;
-import org.apache.camel.impl.DefaultCamelContext;
+import com.twilio.Twilio;
+import com.twilio.converter.Promoter;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
+import jakarta.mail.MessagingException;
 
-@Getter
-@Setter
-public class WhatsAppSender implements ISender {
+import java.net.URI;
+import java.math.BigDecimal;
 
-    private final String phoneNumberId;
-    private final String authorizationToken;
-    private CamelContext camelContext;
-
-    public WhatsAppSender(String phoneNumberId, String authorizationToken) {
-        this.phoneNumberId = phoneNumberId;
-        this.authorizationToken = authorizationToken;
-        this.camelContext = new DefaultCamelContext();
-        setupRoutes();
-    }
-
-    public WhatsAppSender() {
-        this.phoneNumberId = AppProperties.getInstance().propertyFromName("WHATSAPP_PHONE_NUMBER_ID");
-        this.authorizationToken = AppProperties.getInstance().propertyFromName("WHATSAPP_AUTHORIZATION_TOKEN");
-        this.camelContext = new DefaultCamelContext();
-        setupRoutes();
-    }
-
-    private void setupRoutes() {
-        try {
-            camelContext.addRoutes(new RouteBuilder() {
-                @Override
-                public void configure() {
-                    from("direct:start")
-                            .toF("whatsapp:%s?authorizationToken=%s", phoneNumberId, authorizationToken);
-                }
-            });
-            camelContext.start();
-            System.out.println("CamelContext configurado e iniciado correctamente.");
-        } catch (Exception e) {
-            System.err.println("Error al configurar CamelContext: " + e.getMessage());
-        }
-    }
+public class WhatsAppSender implements ISender{
+    public static final String ACCOUNT_SID = "AC4f1c322286418f58f51c78ac7f4a2b58";
+    public static final String AUTH_TOKEN = "8314490451d9bcb1d0b0f0163c244555";
 
     @Override
-    public void enviarMensaje(Contacto contacto, String asunto, String cuerpo) {
-        String numero_receptor = contacto.getContacto(MedioDeNotificacion.WHATSAPP);
+    public void enviarMensaje(Contacto contacto, String asunto, String cuerpo) throws IllegalArgumentException, MessagingException {
 
-        try {
-            TextMessageRequest request = new TextMessageRequest();
-            request.setTo(numero_receptor);
-            request.setText(new TextMessage());
-            request.getText().setPreviewUrl(false);
-            request.getText().setBody(asunto + "\n" + cuerpo);
+        String receptor = contacto.getContacto(MedioDeNotificacion.WHATSAPP);
+        if (receptor == null)
+            throw new IllegalArgumentException("El contacto no tiene un email asociado");
 
-            ProducerTemplate producerTemplate = camelContext.createProducerTemplate();
-            producerTemplate.requestBody("direct:start", request);
+        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+        Message message = Message
+                .creator(
+                        new PhoneNumber(receptor),
+                        new PhoneNumber("whatsapp:+14155238886"),
+                        asunto + "\n\n" + cuerpo
+                )
+                .create();
 
-        } catch (Exception e) {
-            System.err.println("Error al enviar el mensaje: " + e.getMessage());
-        } finally {
-            stopContext();
-        }
-    }
-
-    public void stopContext() {
-        try {
-            if (camelContext != null) {
-                camelContext.stop();
-            }
-        } catch (Exception e) {
-            System.err.println("Error al detener CamelContext: " + e.getMessage());
-        }
+        System.out.println("Mensaje fue enviado al WhatsApp Correctamente");
     }
 }

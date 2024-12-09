@@ -131,7 +131,7 @@ public class ColaboradorController implements ICrudViewsHandler {
             Contacto contacto = Contacto.con(
                     context.formParamAsClass("email", String.class).get(),
                     context.formParamAsClass("telefono", String.class).get(),
-                    context.formParamAsClass("whatsapp", String.class).get(),
+                    "whatsapp:" + context.formParamAsClass("whatsapp", String.class).get(),
                     context.formParamAsClass("telegram", String.class).get()
             );
 
@@ -184,7 +184,7 @@ public class ColaboradorController implements ICrudViewsHandler {
             Contacto contacto = Contacto.con(
                     context.formParamAsClass("email", String.class).get(),
                     context.formParamAsClass("telefono", String.class).get(),
-                    context.formParamAsClass("whatsapp", String.class).get(),
+                    "whatsapp:+" + context.formParamAsClass("whatsapp", String.class).get(),
                     context.formParamAsClass("telegram", String.class).get()
             );
 
