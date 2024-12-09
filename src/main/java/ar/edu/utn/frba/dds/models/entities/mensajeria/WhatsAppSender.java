@@ -19,7 +19,7 @@ public class WhatsAppSender implements ISender{
 
         String receptor = contacto.getContacto(MedioDeNotificacion.WHATSAPP);
         if (receptor == null)
-            throw new IllegalArgumentException("El contacto no tiene un email asociado");
+            throw new IllegalArgumentException("El contacto no tiene una cuenta de WhatsApp asociado");
 
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         Message message = Message
