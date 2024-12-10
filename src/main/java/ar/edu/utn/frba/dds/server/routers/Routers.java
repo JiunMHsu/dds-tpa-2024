@@ -37,6 +37,7 @@ public class Routers {
         config.apiBuilder(() -> {
             get("/", ctx -> ctx.redirect("/home"), TipoRol.COLABORADOR, TipoRol.ADMIN);
             get("/home", ctx -> ctx.render("home/home.hbs"), TipoRol.COLABORADOR, TipoRol.ADMIN);
+            //TODO VER   get("/home_admin", ctx -> ctx.render("/home/home_admin.hbs"), TipoRol.ADMIN);
             get("/test", ctx -> ctx.result("DDS TPA"));
 
             path("/login", () -> {
