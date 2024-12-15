@@ -28,7 +28,7 @@
                         <select name="tipo_razon_social" required>
                             <option value="" disabled selected>Tipo de Razon Social</option>
                             <option value="GUBERNMENTAL">Gubernamental</option>
-                            <option value="ONG">Ong</option>
+                            <option value="ONG">ONG</option>
                             <option value="EMPRESA">Empresa</option>
                             <option value="INSTITUCION">Institucion</option>
                         </select>
@@ -65,11 +65,13 @@
                 </div>
                 <div class="derecha">
                     <label for="colaboraciones">Colaboraciones:</label>
-                    <div class="form-button-container">
-                        <button type="submit" name="colaboracion" value="DONACION_DINERO">Donación de Dinero</button>
+                    <div>
+                        <input type="checkbox" id="donacion-dinero" name="colaboraciones" value="DONACION_DINERO" />
+                        <label for="donacion-dinero">Donación de Dinero</label>
                     </div>
-                    <div class="form-button-container">
-                        <button type="submit" name="colaboracion" value="HACERSE_CARGO_HELADERA">Hacerse Cargo de Heladera</button>
+                    <div>
+                        <input type="checkbox" id="hacerse-cargo-heladera" name="colaboraciones" value="HACERSE_CARGO_HELADERA" />
+                        <label for="hacerse-cargo-heladera">Hacerse Cargo de Heladera</label>
                     </div>
                     <div class="form-button-container">
                         <div class="ajuste">

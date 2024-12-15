@@ -135,7 +135,12 @@ public class ColaboradorController implements ICrudViewsHandler {
                     context.formParamAsClass("telegram", String.class).get()
             );
 
-            ArrayList<TipoColaboracion> formasDeColaborar = new ArrayList<TipoColaboracion>();
+            List<String> colaboracionesSeleccionadas = context.formParams("colaboraciones");
+            ArrayList<TipoColaboracion> formasDeColaborar = new ArrayList<>();
+
+            for (String colaboracion : colaboracionesSeleccionadas) {
+                formasDeColaborar.add(TipoColaboracion.valueOf(colaboracion));
+            }
 
             Colaborador colaboradorNuevo = Colaborador.humana(
                     usuario,
@@ -188,8 +193,13 @@ public class ColaboradorController implements ICrudViewsHandler {
                     context.formParamAsClass("telegram", String.class).get()
             );
 
-            ArrayList<TipoColaboracion> formasDeColaborar = new ArrayList<TipoColaboracion>();
+            List<String> colaboracionesSeleccionadas = context.formParams("colaboraciones");
+            ArrayList<TipoColaboracion> formasDeColaborar = new ArrayList<>();
 
+            for (String colaboracion : colaboracionesSeleccionadas) {
+                formasDeColaborar.add(TipoColaboracion.valueOf(colaboracion));
+            }
+            
             Colaborador colaboradorNuevo = Colaborador.juridica(
                     usuario,
                     context.formParamAsClass("razon_social", String.class).get(),
