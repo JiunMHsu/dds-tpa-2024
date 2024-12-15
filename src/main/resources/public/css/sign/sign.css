@@ -157,3 +157,32 @@
 .derecha select {
     width: 100%;
 }
+
+input[type="checkbox"] {
+    display: none;
+}
+
+input[type="checkbox"] + label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 15rem;
+    height: 2.5rem;
+    border: 1px solid black;
+    border-radius: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: rgb(75, 75, 75);
+    color: var(--foreground-3);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    margin-bottom: 0.5rem;
+}
+
+input[type="checkbox"]:checked + label {
+    background-color: var(--main-light-0);
+    color: #4B4B4B;
+    transform: scale(1.05);
+}
