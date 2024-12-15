@@ -1,0 +1,107 @@
+package ar.edu.utn.frba.dds.services.mensajeria;
+
+import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.models.entities.mensajeria.*;
+import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFallaHeladera;
+import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFaltaVianda;
+import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionHeladeraLlena;
+import ar.edu.utn.frba.dds.models.repositories.mensajeria.MensajeRepository;
+
+import java.time.LocalDateTime;
+import java.util.EnumMap;
+import java.util.Map;
+
+public class MensajeriaService {
+
+    private final MensajeRepository mensajeRepository;
+    private final Map<MedioDeNotificacion, ISender> senders;
+
+    public MensajeriaService(MensajeRepository mensajeRepository) {
+        this.mensajeRepository = mensajeRepository;
+        Map<MedioDeNotificacion, ISender> senders = new EnumMap<>(MedioDeNotificacion.class);
+
+        senders.put(MedioDeNotificacion.EMAIL, new EmailSender());
+        senders.put(MedioDeNotificacion.WHATSAPP, new WhatsAppSender());
+        senders.put(MedioDeNotificacion.TELEGRAM, new TelegramSender());
+
+        this.senders = senders;
+    }
+
+    public void notificacionFaltaVianda(SuscripcionFaltaVianda suscripcion, Colaborador colaborador) {
+        String asunto = "Heladera con baja disponibilidad de viandas";
+        String cuerpo = String.format(
+                "Estimado/a %s,\n\n" +
+                        "La %s tiene solo %d viandas restantes. Por favor, lleve más viandas para reabastecerla.\n\n" +
+                        "Gracias por su colaboración.",
+                suscripcion.getColaborador().getNombre(),
+                suscripcion.getHeladera().getNombre(),
+                suscripcion.getViandasRestantes()
+        );
+
+        Mensaje mensaje = Mensaje.paraColaborador(
+                suscripcion.getColaborador(),
+                asunto,
+                cuerpo
+        );
+
+        enviarPorMedio(mensaje, suscripcion.getMedioDeNotificacion());
+    }
+
+    public void notificacionHeladeraLlena(SuscripcionHeladeraLlena suscripcion, Colaborador colaborador) {
+        String asunto = "Heladera casi llena";
+        String cuerpo = String.format(
+                "Estimado/a %s,\n\n" +
+                        "La %s está a punto de llenarse, con solo espacio para %d viandas más. " +
+                        "Por favor, redistribuir algunas viandas a otras heladeras.\n\n" +
+                        "Gracias por su colaboración.",
+                suscripcion.getColaborador().getNombre(),
+                suscripcion.getHeladera().getNombre(),
+                suscripcion.getEspacioRestante()
+        );
+
+        Mensaje mensaje = Mensaje.paraColaborador(
+                suscripcion.getColaborador(),
+                asunto,
+                cuerpo
+        );
+
+        enviarPorMedio(mensaje, suscripcion.getMedioDeNotificacion());
+    }
+
+    public void notificacionFallaHeladera(SuscripcionFallaHeladera suscripcion, Colaborador colaborador) {
+        String asunto = "Falla en la heladera";
+        String cuerpo = String.format(
+                "Estimado/a %s,\n\n" +
+                        "La %s ha sufrido un desperfecto.\n\n" +
+                        "Por favor, traslade las viandas a las siguientes heladeras sugeridas:\n\n" +
+                        "%s\n" +
+                        "Gracias por su rápida acción.",
+                suscripcion.getColaborador().getNombre(),
+                suscripcion.getHeladera().getNombre(),
+                // sugerencias.toString() TODO - ver como pingo hacerlo
+        );
+
+        Mensaje mensaje = Mensaje.paraColaborador(
+                suscripcion.getColaborador(),
+                asunto,
+                cuerpo
+        );
+
+        enviarPorMedio(mensaje, suscripcion.getMedioDeNotificacion());
+    }
+
+    public void enviarPorMedio(Mensaje mensaje, MedioDeNotificacion medio) {
+        ISender sender = senders.get(medio);
+        if (sender == null) {
+            throw new UnsupportedOperationException("Medio de notificación no soportado: " + medio);
+        }
+
+        try {
+            sender.enviarMensaje(mensaje.getContacto(), mensaje.getAsunto(), mensaje.getCuerpo());
+            mensaje.setFechaEnvio(LocalDateTime.now());
+            mensajeRepository.guardar(mensaje);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al enviar el mensaje: " + e.getMessage(), e);
+        }
+    }
+}
