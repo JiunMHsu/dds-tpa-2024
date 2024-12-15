@@ -48,6 +48,11 @@ public class TelegramSender implements ISender {
 
     @Override
     public void enviarMensaje(Contacto contacto, String asunto, String cuerpo) {
+
+        String receptor = contacto.getContacto(MedioDeNotificacion.TELEGRAM);
+        if (receptor == null)
+            throw new IllegalArgumentException("El contacto no tiene una cuenta de Telegram asociada");
+
         if (camelContext == null || producerTemplate == null) {
             configurarCamelContext();
         }

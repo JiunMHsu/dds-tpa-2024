@@ -2,12 +2,23 @@ package ar.edu.utn.frba.dds.mensajeria;
 
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.WhatsAppSender;
+import jakarta.mail.MessagingException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class WhatsAppTest {
     @Test
     public void enviarWhatsApp() {
         WhatsAppSender whatsAppSender = new WhatsAppSender();
-        whatsAppSender.enviarMensaje(Contacto.conWhatsApp("541160499220"), "test", "Test - Grupo 22");
+
+        try {
+            whatsAppSender.enviarMensaje(
+                    Contacto.conWhatsApp("whatsapp:+5491132420699"),
+                    "TEST DDS WHATSAPP SENDER",
+                    "test"
+            );
+        } catch (MessagingException e) {
+            Assertions.fail();
+        }
     }
 }
