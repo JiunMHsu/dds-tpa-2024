@@ -45,20 +45,6 @@ public class Routers {
                 post(ServiceLocator.instanceOf(SessionController.class)::create, TipoRol.GUEST);
             });
 
-            // ========================= MOMENTANEO ==============================
-
-            path("/signup", () -> {
-                get(ServiceLocator.instanceOf(ColaboradorController.class)::create, TipoRol.GUEST);
-
-                get("/humana", ctx -> ctx.render("signs/signHumana.hbs"), TipoRol.GUEST);
-                post("/humana", ServiceLocator.instanceOf(ColaboradorController.class)::saveHumana, TipoRol.GUEST);
-
-                get("/juridica", ctx -> ctx.render("signs/signJuridica.hbs"), TipoRol.GUEST);
-                post("/juridica", ServiceLocator.instanceOf(ColaboradorController.class)::saveJuridica, TipoRol.GUEST);
-            });
-
-            // ========================= MOMENTANEO ==============================
-
             get("/image/{id}", ctx -> {
                 String relativePath = AppProperties.getInstance().propertyFromName("IMAGE_DIR");
                 if (relativePath == null)

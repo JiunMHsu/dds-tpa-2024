@@ -1,11 +1,13 @@
 package ar.edu.utn.frba.dds.dtos.colaboraciones;
 
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
 @Getter
 @SuperBuilder
+@Builder
 public class ColaboracionDTO {
 
     protected String id;
