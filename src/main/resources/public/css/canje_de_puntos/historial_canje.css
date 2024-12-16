@@ -1,0 +1,68 @@
+.header-title {
+    flex-grow: 1;
+    margin: 0;
+    text-align: center;
+    font-size: 1.8rem;
+}
+
+.canje-card {
+    display: flex;
+    flex-direction: column;
+    background-color: #333;
+    border-radius: 8px;
+    margin: 20px auto;
+    padding: 20px;
+    color: white;
+    max-width: 600px;
+    width: 90%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.list-item {
+    list-style: none;
+}
+
+.card-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.product-img {
+    display: flex;
+    width: 10rem;
+    height: 10rem;
+    border-radius: .5rem;
+    overflow: hidden;
+}
+
+.card-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+}
+
+.card-title {
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.card-details p {
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+}
+
+.card-detail-icon {
+    margin-right: 7px;
+}
+
+.no-data-message {
+    text-align: center;
+    margin: 20px auto;
+    color: #F0DBAAFF;
+    font-size: 18px;
+    font-weight: bold;
+}

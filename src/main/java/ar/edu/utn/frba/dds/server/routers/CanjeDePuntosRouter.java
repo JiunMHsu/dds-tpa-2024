@@ -17,6 +17,8 @@ public class CanjeDePuntosRouter implements IRouter {
                 path("/canje-de-puntos", () -> {
                     get("/new", ServiceLocator.instanceOf(CanjeDePuntosController.class)::create, TipoRol.COLABORADOR);
                     post(ServiceLocator.instanceOf(CanjeDePuntosController.class)::save, TipoRol.COLABORADOR);
+
+                    get("/historial", ServiceLocator.instanceOf(CanjeDePuntosController.class)::index, TipoRol.COLABORADOR);
                 }));
     }
 }

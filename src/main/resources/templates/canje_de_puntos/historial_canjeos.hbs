@@ -1,0 +1,55 @@
+{{#partial "title"}}
+    Historial Canjeos
+{{/partial}}
+
+{{#partial "links"}}
+    <link rel="stylesheet" href="/css/list.css"/>
+    <link rel="stylesheet" href="/css/canje_de_puntos/historial_canje.css"/>
+{{/partial}}
+
+{{#partial "main-content"}}
+    <div class="list-container">
+        <h2 class="header-title">Historial de Canejos</h2>
+
+    {{#if canjes.length}}
+        <div class="scrollable">
+            <ul class="list">
+                {{#each canjes}}
+                    <li class="list-item">
+                        <div class="canje-card">
+                            <div class="card-content">
+                                <div class="product-img">
+                                    <img src="/image/{{this.imagenProducto}}" alt="igor"/>
+                                </div>
+                                <div class="card-details">
+                                    <h3 class="card-title">{{this.nombreProducto}}</h3>
+                                    <p>
+                                        <span class="material-symbols-rounded card-detail-icon">category</span>
+                                        Rubro: {{this.rubroProducto}}
+                                    </p>
+                                    <p>
+                                        <span class="material-symbols-rounded card-detail-icon">calendar_today</span>
+                                        Fecha de Canjeo: {{this.fechaHoraCanjeo}}
+                                    </p>
+                                    <p>
+                                        <span class="material-symbols-rounded card-detail-icon">star</span>
+                                        Puntos Canjeados: {{this.puntosCanjeados}}
+                                    </p>
+                                    <p>
+                                        <span class="material-symbols-rounded card-detail-icon">person</span>
+                                        Publicado por: {{this.colaboradorPublicador}}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                {{/each}}
+            </ul>
+        </div>
+    {{else}}
+        <p class="no-data-message">No hay canjeos registrados 😣</p>
+    {{/if}}
+    </div>
+{{/partial}}
+
+{{> templates/base}}
