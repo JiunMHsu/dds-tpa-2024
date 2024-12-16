@@ -49,6 +49,9 @@ public class Incidente extends EntidadPersistente {
     @Embedded
     private Imagen foto;
 
+    @Column(name = "fue_resuelta", nullable = false)
+    private Boolean fallaResuelta;
+
     private static Incidente con(Heladera heladera,
                                  LocalDateTime fechaHora,
                                  TipoIncidente tipo,
@@ -64,6 +67,7 @@ public class Incidente extends EntidadPersistente {
                 .colaborador(colaborador)
                 .descripcion(descripcion)
                 .foto(foto)
+                .fallaResuelta(false)
                 .build();
     }
 

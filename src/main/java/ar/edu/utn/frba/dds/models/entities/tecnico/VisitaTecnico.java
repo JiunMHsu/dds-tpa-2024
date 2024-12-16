@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.models.entities.tecnico;
 
 import ar.edu.utn.frba.dds.models.entities.data.Imagen;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
+import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -32,6 +33,10 @@ public class VisitaTecnico {
     @ManyToOne
     @JoinColumn(name = "tecnico_id", nullable = false)
     private Tecnico tecnico;
+    
+    @ManyToOne
+    @JoinColumn(name = "incidente_id", nullable = false)
+    private Incidente incidente;
 
     @ManyToOne
     @JoinColumn(name = "heladera_id", nullable = false)
@@ -46,23 +51,21 @@ public class VisitaTecnico {
     @Embedded
     private Imagen foto;
 
-    @Column(name = "fue_resuelta", nullable = false)
-    private Boolean fallaResuelta;
-
     public static VisitaTecnico por(Tecnico tecnico,
+                                    Incidente incidente,
                                     Heladera heladera,
                                     LocalDateTime fechaHora,
                                     String descripcion,
-                                    Imagen foto,
-                                    Boolean fallaResuelta) {
+                                    Imagen foto
+    ) {
         return VisitaTecnico
                 .builder()
                 .tecnico(tecnico)
+                .incidente(incidente)
                 .heladera(heladera)
                 .fechaHora(fechaHora)
                 .descripcion(descripcion)
                 .foto(foto)
-                .fallaResuelta(fallaResuelta)
                 .build();
     }
 

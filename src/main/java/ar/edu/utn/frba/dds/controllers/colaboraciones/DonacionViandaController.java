@@ -10,11 +10,11 @@ import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Comida;
 import ar.edu.utn.frba.dds.models.entities.vianda.Vianda;
+import ar.edu.utn.frba.dds.permissions.ColaboradorRequired;
 import ar.edu.utn.frba.dds.services.colaboraciones.DonacionViandaService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
-import ar.edu.utn.frba.dds.utils.UserRequired;
 import io.javalin.http.Context;
 import io.javalin.validation.ValidationException;
 import java.time.LocalDate;
@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class DonacionViandaController extends UserRequired implements ICrudViewsHandler {
+public class DonacionViandaController extends ColaboradorRequired implements ICrudViewsHandler {
 
     private final DonacionViandaService donacionViandaService;
 

@@ -29,7 +29,8 @@ public class Routers {
             new IncidenteRouter(),
             new CanjeDePuntosRouter(),
             new ReporteRouter(),
-            new TecnicoRouter()
+            new TecnicoRouter(),
+            new VisitaTecnicoRouter(),
     };
 
     public static void apply(RouterConfig config) {
