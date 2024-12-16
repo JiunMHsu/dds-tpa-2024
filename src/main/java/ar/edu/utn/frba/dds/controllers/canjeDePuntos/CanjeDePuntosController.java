@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.controllers.canjeDePuntos;
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.ProductoDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
+import ar.edu.utn.frba.dds.dtos.CanjeDePuntos.CanjeDePuntosDTO;
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.CanjeDePuntos;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
@@ -29,9 +30,22 @@ public class CanjeDePuntosController extends UserRequired {
     }
 
     public void index(Context context) {
+
+        Colaborador colaborador = colaboradorFromSession(context);
+        List<CanjeDePuntos> canjeDePuntos = this.canjeDePuntosService.buscarTodosxColaborador(colaborador);
+
+        List<CanjeDePuntosDTO> canjeDePuntosDTOS = canjeDePuntos.stream()
+                .map(CanjeDePuntosDTO::preview)
+                .toList();
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("canjes", canjeDePuntosDTOS);
+
+        context.render("canje_de_puntos/historial_canjeos.hbs", model);
     }
 
     public void show(Context context) {
+
     }
 
     public void create(Context context) {

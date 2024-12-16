@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.models.repositories.canjeDePuntos;
 
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.CanjeDePuntos;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
 import java.util.Optional;
@@ -32,4 +33,9 @@ public class CanjeDePuntosRepository implements WithSimplePersistenceUnit {
         }
     }
 
-}
+    public List<CanjeDePuntos> buscarTodosXColaborador(Colaborador colaborador) {
+        return entityManager()
+                .createQuery("from CanjeDePuntos c where c.colaborador = :colaborador", CanjeDePuntos.class)
+                .setParameter("colaborador", colaborador)
+                .getResultList();
+    }}
