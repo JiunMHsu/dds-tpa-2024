@@ -210,8 +210,8 @@ public class ServiceLocator {
 
         if (componentName.equals(TecnicoController.class.getName())) {
             TecnicoController instance = new TecnicoController(
-                    instanceOf(TecnicoService.class),
-                    instanceOf(UsuarioService.class));
+                    instanceOf(UsuarioService.class),
+                    instanceOf(TecnicoService.class));
             instances.put(componentName, instance);
         }
 
