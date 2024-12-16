@@ -2,26 +2,31 @@ package ar.edu.utn.frba.dds.controllers.suscripcion;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.heladera.HeladeraDTO;
-import ar.edu.utn.frba.dds.exceptions.*;
+import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
+import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
+import ar.edu.utn.frba.dds.exceptions.SuscripcionFaltaViandaException;
+import ar.edu.utn.frba.dds.exceptions.SuscripcionHeladeraLlenaException;
+import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
+import ar.edu.utn.frba.dds.permissions.ColaboradorRequired;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.suscripcion.FallaHeladeraService;
 import ar.edu.utn.frba.dds.services.suscripcion.FaltaViandaService;
 import ar.edu.utn.frba.dds.services.suscripcion.HeladeraLlenaService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
-import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
-import ar.edu.utn.frba.dds.utils.UserRequired;
 import io.javalin.http.Context;
 import io.javalin.validation.ValidationException;
-import org.hibernate.query.criteria.internal.expression.function.AggregationFunction;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import java.util.*;
 
-public class SuscripcionHeladeraController extends UserRequired {
+// TODO - Refactorizar
+public class SuscripcionHeladeraController extends ColaboradorRequired {
 
     private final HeladeraService heladeraService;
     private final FallaHeladeraService fallaHeladeraService;
@@ -54,7 +59,7 @@ public class SuscripcionHeladeraController extends UserRequired {
         HeladeraDTO heladeraDTO = HeladeraDTO.completa(heladera);
         model.put("heladera", heladeraDTO);
 
-        render(context,"suscripcion/suscripciones.hbs", model);
+        render(context, "suscripcion/suscripciones.hbs", model);
     }
 
     public void createFallaHeladera(Context context) {
@@ -169,7 +174,8 @@ public class SuscripcionHeladeraController extends UserRequired {
 
         } catch (NonColaboratorException e) {
             throw new UnauthorizedException(e.getMessage());
-        } catch (ValidationException | ResourceNotFoundException | SuscripcionFaltaViandaException e) {
+        } catch (ValidationException | ResourceNotFoundException |
+                 SuscripcionFaltaViandaException e) {
             redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
         } finally {
             model.put("success", operationSuccess);
@@ -207,7 +213,8 @@ public class SuscripcionHeladeraController extends UserRequired {
 
         } catch (NonColaboratorException e) {
             throw new UnauthorizedException(e.getMessage());
-        } catch (ValidationException | ResourceNotFoundException | SuscripcionHeladeraLlenaException e) {
+        } catch (ValidationException | ResourceNotFoundException |
+                 SuscripcionHeladeraLlenaException e) {
             redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
         } finally {
             model.put("success", operationSuccess);

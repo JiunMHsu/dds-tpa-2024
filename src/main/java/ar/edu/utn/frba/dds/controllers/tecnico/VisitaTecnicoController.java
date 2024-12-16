@@ -4,9 +4,10 @@ import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.data.Imagen;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
+import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.entities.tecnico.VisitaTecnico;
-import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
+import ar.edu.utn.frba.dds.permissions.TecnicoRequired;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import ar.edu.utn.frba.dds.services.tecnico.VisitaTecnicoService;
@@ -20,26 +21,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class VisitaTecnicoController {
+public class VisitaTecnicoController extends TecnicoRequired {
 
     private final VisitaTecnicoService visitaTecnicoService;
-    private final TecnicoService tecnicoService;
     private final HeladeraService heladeraService;
-    private final UsuarioService usuarioService;
 
-
-    public VisitaTecnicoController(VisitaTecnicoService visitaTecnicoService,
+    public VisitaTecnicoController(UsuarioService usuarioService,
                                    TecnicoService tecnicoService,
-                                   HeladeraService heladeraService,
-                                   UsuarioService usuarioService) {
+                                   VisitaTecnicoService visitaTecnicoService,
+                                   HeladeraService heladeraService) {
 
+        super(usuarioService, tecnicoService);
         this.visitaTecnicoService = visitaTecnicoService;
-        this.tecnicoService = tecnicoService;
         this.heladeraService = heladeraService;
-        this.usuarioService = usuarioService;
-    }
-
-    public void index(Context context) {
     }
 
     public void show(Context context) {
@@ -55,23 +49,10 @@ public class VisitaTecnicoController {
         List<RedirectDTO> redirectDTOS = new ArrayList<>();
         boolean operationSuccess = false;
 
-        String userId = context.sessionAttribute("userId");
-
-        Optional<Usuario> usuarioSession = usuarioService.obtenerUsuarioPorID(userId);
-        if (usuarioSession.isEmpty()) {
-            throw new ResourceNotFoundException("No se encontró el usuario paraColaborador id " + userId);
-        }
-
-        Usuario usuario = usuarioSession.get();
-
-        Optional<Tecnico> tecnicoSession = tecnicoService.obtenerTecnicoPorUsuario(usuarioSession.get());
-        if (tecnicoSession.isEmpty()) {
-            throw new ResourceNotFoundException("No se encontró el tecnico paraColaborador usuario " + usuario.getNombre());
-        }
-
-        Tecnico tecnico = tecnicoSession.get();
+        Tecnico tecnico = tecnicoFromSession(context);
 
         try {
+            // id incidente por query param
 
             String heladeraId = context.formParamAsClass("id-heladera", String.class).get();
             Optional<Heladera> heladera = this.heladeraService.buscarPorId(heladeraId);
@@ -84,15 +65,14 @@ public class VisitaTecnicoController {
 
             VisitaTecnico visitaTecnico = VisitaTecnico.por(
                     tecnico,
+                    new Incidente(), //TODO - va el incidente recuperado por id
                     heladera.get(),
                     LocalDateTime.now(),
                     context.formParamAsClass("descripcion", String.class).get(),
-                    new Imagen(context.formParamAsClass("foto", String.class).get()),
-                    resuelta
+                    new Imagen(context.formParamAsClass("foto", String.class).get())
             );
 
             this.visitaTecnicoService.registrarVisita(visitaTecnico);
-
         } catch (ValidationException e) {
             redirectDTOS.add(new RedirectDTO("/home", "Reintentar"));
         } finally {

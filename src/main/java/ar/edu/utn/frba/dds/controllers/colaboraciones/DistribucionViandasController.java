@@ -10,12 +10,12 @@ import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.ExcepcionCantidadDeViandas;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
+import ar.edu.utn.frba.dds.permissions.ColaboradorRequired;
 import ar.edu.utn.frba.dds.services.colaboraciones.DistribucionViandasService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
-import ar.edu.utn.frba.dds.utils.UserRequired;
 import io.javalin.http.Context;
 import io.javalin.validation.ValidationException;
 import java.time.LocalDateTime;
@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class DistribucionViandasController extends UserRequired implements ICrudViewsHandler {
+public class DistribucionViandasController extends ColaboradorRequired implements ICrudViewsHandler {
 
     private final DistribucionViandasService distribucionViandasService;
     private final HeladeraService heladeraService;
@@ -42,7 +42,7 @@ public class DistribucionViandasController extends UserRequired implements ICrud
 
     @Override
     public void index(Context context) {
-        // TODO: Implementar
+        // TODO - Implementar
     }
 
     @Override

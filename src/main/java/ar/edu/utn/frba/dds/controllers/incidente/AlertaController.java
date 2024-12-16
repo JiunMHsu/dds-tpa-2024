@@ -2,10 +2,9 @@ package ar.edu.utn.frba.dds.controllers.incidente;
 
 import ar.edu.utn.frba.dds.dtos.incidente.AlertaDTO;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
-import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
+import ar.edu.utn.frba.dds.permissions.UserRequired;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
-import ar.edu.utn.frba.dds.utils.UserRequired;
 import io.javalin.http.Context;
 import java.util.HashMap;
 import java.util.List;
@@ -16,9 +15,8 @@ public class AlertaController extends UserRequired {
     private final IncidenteService incidenteService;
 
     public AlertaController(UsuarioService usuarioService,
-                            ColaboradorService colaboradorService,
                             IncidenteService incidenteService) {
-        super(usuarioService, colaboradorService);
+        super(usuarioService);
         this.incidenteService = incidenteService;
     }
 

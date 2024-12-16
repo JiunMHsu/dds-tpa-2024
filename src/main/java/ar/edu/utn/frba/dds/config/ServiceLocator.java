@@ -114,7 +114,6 @@ public class ServiceLocator {
         if (componentName.equals(AlertaController.class.getName())) {
             AlertaController instance = new AlertaController(
                     instanceOf(UsuarioService.class),
-                    instanceOf(ColaboradorService.class),
                     instanceOf(IncidenteService.class));
             instances.put(componentName, instance);
         }
@@ -218,10 +217,9 @@ public class ServiceLocator {
 
         if (componentName.equals(VisitaTecnicoController.class.getName())) {
             VisitaTecnicoController instance = new VisitaTecnicoController(
-                    instanceOf(VisitaTecnicoService.class),
-                    instanceOf(TecnicoService.class),
-                    instanceOf(HeladeraService.class),
-                    instanceOf(UsuarioService.class));
+                    instanceOf(UsuarioService.class), instanceOf(TecnicoService.class), instanceOf(VisitaTecnicoService.class),
+                    instanceOf(HeladeraService.class)
+            );
             instances.put(componentName, instance);
         }
 

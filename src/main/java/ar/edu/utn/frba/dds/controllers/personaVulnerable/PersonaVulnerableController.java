@@ -24,6 +24,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
+// TODO - usar ColaboradorRquired en lugar de ColaboradorPorSession
 public class PersonaVulnerableController extends ColaboradorPorSession implements ICrudViewsHandler {
 
     private final PersonaVulnerableService personaVulnerableService;

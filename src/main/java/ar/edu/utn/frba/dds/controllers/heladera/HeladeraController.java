@@ -14,6 +14,7 @@ import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
+import ar.edu.utn.frba.dds.permissions.ColaboradorRequired;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
@@ -21,7 +22,6 @@ import ar.edu.utn.frba.dds.services.puntoIdeal.PuntoIdealService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
-import ar.edu.utn.frba.dds.utils.UserRequired;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.validation.ValidationException;
@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class HeladeraController extends UserRequired implements ICrudViewsHandler, IBrokerMessageHandler {
+public class HeladeraController extends ColaboradorRequired implements ICrudViewsHandler, IBrokerMessageHandler {
 
     private final HeladeraService heladeraService;
     private final PuntoIdealService puntoIdealService;
