@@ -271,7 +271,7 @@ public class Initializer implements WithSimplePersistenceUnit {
 
         OfertaDeProductosRepository repository = new OfertaDeProductosRepository();
         beginTransaction();
-        repository.guardar(OfertaDeProductos.por(c1, LocalDateTime.now(), "Producto 1", 55, RubroOferta.ELECTRONICA, img));
+        repository.guardar(OfertaDeProductos.por(c1, LocalDateTime.now(), "Producto 1", 1, RubroOferta.ELECTRONICA, img));
         repository.guardar(OfertaDeProductos.por(c2, LocalDateTime.now(), "Producto 2", 20, RubroOferta.GASTRONOMIA, img));
         repository.guardar(OfertaDeProductos.por(c1, LocalDateTime.now(), "Producto 3", 50, RubroOferta.HOGAR, img));
         repository.guardar(OfertaDeProductos.por(c2, LocalDateTime.now(), "Producto 4", 60, RubroOferta.GASTRONOMIA, img));

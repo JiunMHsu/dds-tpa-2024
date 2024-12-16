@@ -104,3 +104,33 @@
 .side-panel {
     display: none;
 }
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.historial-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    padding: .5rem;
+    border-radius: .5rem;
+    border: 1px solid var(--background-3);
+    font-size: 1.2rem;
+    transition-property: all;
+    transition-duration: 300ms;
+    color: inherit;
+    background-color: transparent;
+}
+
+.historial-button:hover {
+    cursor: default;
+    text-shadow: 0 0 .5rem var(--background-3);
+    color: var(--main-light-0);
+}

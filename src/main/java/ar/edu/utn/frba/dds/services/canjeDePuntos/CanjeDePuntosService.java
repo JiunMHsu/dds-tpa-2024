@@ -155,4 +155,6 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
         this.canjeDePuntosRepository.guardar(canjeDePuntos);
         commitTransaction();
     }
+
+    public List<CanjeDePuntos> buscarTodosxColaborador(Colaborador colaborador) { return canjeDePuntosRepository.buscarTodosXColaborador(colaborador); }
 }
