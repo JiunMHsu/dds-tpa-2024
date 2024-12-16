@@ -14,18 +14,26 @@ public class ColaboradorRouter implements IRouter {
     @Override
     public void apply(RouterConfig config) {
         config.apiBuilder(() -> {
+
+            path("/signup", () -> {
+                get(ServiceLocator.instanceOf(ColaboradorController.class)::create, TipoRol.GUEST);
+
+                get("/humana", ctx -> ctx.render("signs/signHumana.hbs"), TipoRol.GUEST);
+                post("/humana", ServiceLocator.instanceOf(ColaboradorController.class)::saveHumana, TipoRol.GUEST);
+
+                get("/juridica", ctx -> ctx.render("signs/signJuridica.hbs"), TipoRol.GUEST);
+                post("/juridica", ServiceLocator.instanceOf(ColaboradorController.class)::saveJuridica, TipoRol.GUEST);
+            });
+
             path("/perfil", () ->
                     get(ServiceLocator.instanceOf(ColaboradorController.class)::getProfile, TipoRol.COLABORADOR)
             );
 
             path("/colaboradores", () -> {
-                get(ctx -> ctx.result("GET Colaboradores"));
+                get(ServiceLocator.instanceOf(ColaboradorController.class)::index, TipoRol.ADMIN);
                 post(ctx -> ctx.result("POST Colaboradores"));
 
-                // get("/new", ctx -> ctx.result("FORM REGISTRO")); (es el sign up)
                 path("/{id}", () -> {
-                    get(ctx -> ctx.result("GET Colaborador " + ctx.pathParam("id")));
-                    post(ctx -> ctx.result("POST Colaborador " + ctx.pathParam("id")));
 
                     get("/edit", ctx -> ctx.result("GET Form edit"));
 

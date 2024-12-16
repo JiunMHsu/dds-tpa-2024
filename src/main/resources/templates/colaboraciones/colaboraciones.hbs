@@ -19,19 +19,23 @@
         </div>
 
         <div class="scrollable">
-            <ul class="list">
-                <!-- !! MODELO DE ITEM -->
-                <li class="list-item">
-                    <a href="" class="item-card">
-                        <h3 class="card-title">Donación de Dinero</h3>
-                        <p>
-                            <span class="material-symbols-rounded card-detail-icon">today</span>
-                            Fecha: 12/10/2021
-                        </p>
-                    </a>
-                </li>
-
-            </ul>
+            {{#if colaboraciones.length}}
+                <ul class="list">
+                    {{#each colaboraciones}}
+                        <li class="list-item">
+                            <a href="{{this.path}}" class="item-card">
+                                <h3 class="card-title">{{this.nombre}}</h3>
+                                <p>
+                                    <span class="material-symbols-rounded card-detail-icon">today</span>
+                                    Fecha: {{this.fechaHora}}
+                                </p>
+                            </a>
+                        </li>
+                    {{/each}}
+                </ul>
+            {{else}}
+                <p class="no-data-message">No hay colaboraciones registradas.</p>
+            {{/if}}
         </div>
     </div>
 {{/partial}}
