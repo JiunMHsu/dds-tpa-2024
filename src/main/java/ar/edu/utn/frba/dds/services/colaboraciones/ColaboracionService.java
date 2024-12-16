@@ -77,7 +77,7 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
         this.mensajeRepository = mensajeRepository;
     }
 
-    List<Object> buscarTodas() {
+    public List<Object> buscarTodas() {
         List<Object> colaboraciones = new ArrayList<>();
         colaboraciones.addAll(donacionViandaRepository.buscarTodos());
         colaboraciones.addAll(donacionDineroRepository.buscarTodos());
@@ -88,7 +88,7 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
         return colaboraciones;
     }
 
-    List<Object> buscarTodasPorColaborador(Colaborador colaborador) {
+    public List<Object> buscarTodasPorColaborador(Colaborador colaborador) {
         List<Object> colaboraciones = new ArrayList<>();
         colaboraciones.addAll(donacionViandaRepository.buscarPorColaborador(colaborador));
         colaboraciones.addAll(donacionDineroRepository.buscarPorColaborador(colaborador));

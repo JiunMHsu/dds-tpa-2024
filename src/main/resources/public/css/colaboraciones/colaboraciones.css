@@ -98,3 +98,11 @@
     margin: 0 0 2rem;
     text-align: center;
 }
+
+.no-data-message {
+    text-align: center;
+    margin: 20px auto;
+    color: #F0DBAAFF;
+    font-size: 18px;
+    font-weight: bold;
+}

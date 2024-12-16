@@ -1,7 +1,11 @@
 package ar.edu.utn.frba.dds.dtos.colaborador;
 
+import ar.edu.utn.frba.dds.dtos.colaboraciones.ColaboracionDTO;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.colaborador.TipoColaborador;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
+
+import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,6 +15,8 @@ import lombok.Setter;
 @Setter
 @Builder
 public class ColaboradorDTO {
+
+    private String id;
 
     private String tipoColaborador;
 
@@ -31,6 +37,8 @@ public class ColaboradorDTO {
     private String apellido;
 
     private String fechaNacimiento;
+
+    private Boolean isHumano;
 
     public static ColaboradorDTO completa(Colaborador colaborador) {
 
@@ -86,25 +94,38 @@ public class ColaboradorDTO {
     }
 
     public static ColaboradorDTO previewHumano(Colaborador colaborador) {
-        String formasDeColaborar = colaborador.getFormaDeColaborar().stream().map(Enum::name).collect(Collectors.joining(" "));
+        String formasDeColaborar = colaborador.getFormaDeColaborar()
+                .stream()
+                .map(TipoColaboracion::getDescription)
+                .collect(Collectors.joining(", "));
+
         return ColaboradorDTO
                 .builder()
+                .id(colaborador.getId().toString())
                 .nombre(colaborador.getNombre())
                 .apellido(colaborador.getApellido())
+                .fechaNacimiento(colaborador.getFechaNacimiento().toString())
                 .formaDeColaborar(formasDeColaborar)
                 .tipoColaborador("HUMANO")
+                .isHumano(true)
                 .build();
     }
 
     public static ColaboradorDTO previewJuridico(Colaborador colaborador) {
-        String formasDeColaborar = colaborador.getFormaDeColaborar().stream().map(Enum::name).collect(Collectors.joining(" "));
+        String formasDeColaborar = colaborador.getFormaDeColaborar()
+                .stream()
+                .map(TipoColaboracion::getDescription)
+                .collect(Collectors.joining(", "));
+
         return ColaboradorDTO
                 .builder()
+                .id(colaborador.getId().toString())
                 .rubro(colaborador.getRubro())
                 .formaDeColaborar(formasDeColaborar)
                 .razonSocial(colaborador.getRazonSocial())
                 .tipoRazonSocial(colaborador.getTipoRazonSocial().name())
                 .tipoColaborador("JURIDICO")
+                .isHumano(false)
                 .build();
     }
 }

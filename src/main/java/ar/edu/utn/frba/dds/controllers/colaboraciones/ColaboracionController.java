@@ -1,7 +1,9 @@
 package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.ColaboracionDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.TipoColaboracionDTO;
+import ar.edu.utn.frba.dds.dtos.colaborador.ColaboradorDTO;
 import ar.edu.utn.frba.dds.exceptions.CargaMasivaException;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
@@ -36,13 +38,28 @@ public class ColaboracionController extends ColaboradorRequired {
         Usuario usuario = usuarioFromSession(context);
 
         if (Objects.equals(usuario.getRol(), TipoRol.COLABORADOR)) {
-            Colaborador colaborador = colaboradorFromSession(context);
 
-            List<TipoColaboracionDTO> colaboraciones = colaborador.getFormaDeColaborar()
+            Colaborador colaborador = colaboradorFromSession(context);
+            List<Object> colaboracionesRealizadas = colaboracionService.buscarTodasPorColaborador(colaborador);
+
+            List<ColaboracionDTO> colaboracionesRealizadasDTO = colaboracionesRealizadas.stream()
+                    .map(ColaboracionDTO::toDTO)
+                    .toList();
+
+            List<TipoColaboracionDTO> formasDeColaborar = colaborador.getFormaDeColaborar()
                     .stream().map(TipoColaboracionDTO::redirectable)
                     .toList();
-            model.put("colaboraciones", colaboraciones);
+
+            model.put("colaboracionesRealizadas", colaboracionesRealizadasDTO);
+            model.put("formasDeColaborar", formasDeColaborar);
             model.put("colaboradorId", colaborador.getId().toString());
+        } else if (Objects.equals(usuario.getRol(), TipoRol.ADMIN)) {
+
+            List<Object> colaboraciones = this.colaboracionService.buscarTodas();
+            List<ColaboracionDTO> colaboracionDTOS = colaboraciones.stream()
+                    .map(ColaboracionDTO::toDTO)
+                    .toList();
+            model.put("colaboraciones", colaboracionDTOS);
         }
 
         render(context, "colaboraciones/colaboraciones.hbs", model);
