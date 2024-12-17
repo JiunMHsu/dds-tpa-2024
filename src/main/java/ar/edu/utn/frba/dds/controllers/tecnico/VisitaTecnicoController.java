@@ -1,6 +1,8 @@
 package ar.edu.utn.frba.dds.controllers.tecnico;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
+import ar.edu.utn.frba.dds.dtos.incidente.FallaTecnicaDTO;
+import ar.edu.utn.frba.dds.exceptions.InvalidFallaTecnica;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.data.Imagen;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
@@ -9,6 +11,7 @@ import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.entities.tecnico.VisitaTecnico;
 import ar.edu.utn.frba.dds.permissions.TecnicoRequired;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
+import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import ar.edu.utn.frba.dds.services.tecnico.VisitaTecnicoService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
@@ -24,15 +27,18 @@ import java.util.Optional;
 public class VisitaTecnicoController extends TecnicoRequired {
 
     private final VisitaTecnicoService visitaTecnicoService;
+    private final IncidenteService incidenteService;
     private final HeladeraService heladeraService;
 
     public VisitaTecnicoController(UsuarioService usuarioService,
                                    TecnicoService tecnicoService,
                                    VisitaTecnicoService visitaTecnicoService,
+                                   IncidenteService incidenteService,
                                    HeladeraService heladeraService) {
 
         super(usuarioService, tecnicoService);
         this.visitaTecnicoService = visitaTecnicoService;
+        this.incidenteService = incidenteService;
         this.heladeraService = heladeraService;
     }
 
@@ -40,13 +46,23 @@ public class VisitaTecnicoController extends TecnicoRequired {
     }
 
     public void create(Context context) {
-        // TODO - requiere por query param id de incidente
-        // TODO - render form de visita tecnico (descripcion, foto, marcar como resuelto o no)
-        context.result("Visita Tecnico");
+        Map<String, Object> model = new HashMap<>();
+
+        try {
+            String incidenteId = context.queryParamAsClass("incidente", String.class).getOrThrow(ValidationException::new);
+            Incidente incidente = this.incidenteService.buscarIncidentePorId(incidenteId).orElseThrow(ResourceNotFoundException::new);
+            if (incidente.getFallaResuelta())
+                throw new InvalidFallaTecnica("El incidente ya está resuelto");
+
+            model.put("incidente", FallaTecnicaDTO.completa(incidente));
+            render(context, "visitas_tecnico/visita_tecnico_crear.hbs", model);
+        } catch (ValidationException | InvalidFallaTecnica e) {
+            render(context, "visitas_tecnico/falla_tecnica_invalida.hbs", model);
+        }
     }
 
     public void save(Context context) {
-        
+
         Map<String, Object> model = new HashMap<>();
         List<RedirectDTO> redirectDTOS = new ArrayList<>();
         boolean operationSuccess = false;
