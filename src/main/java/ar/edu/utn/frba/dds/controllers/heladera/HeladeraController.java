@@ -249,9 +249,23 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
     }
 
     @Override
-    public void recibirMovimiento() {
-        // TODO
+    public void recibirMovimiento(Heladera heladera) {
+        Incidente incidente = Incidente.fraude(heladera, LocalDateTime.now());
+        incidenteService.registrarIncidente(incidente);
+
+        List<SuscripcionFallaHeladera> suscripcionesAHeladera = fallaHeladeraService.obtenerPorHeladera(heladera);
+        suscripcionesAHeladera.forEach(mensajeriaService::notificacionFallaHeladera);
     }
+
+    @Override
+    public void recibirFallaConexion(Heladera heladera){
+        Incidente incidente = Incidente.fallaConexion(heladera, LocalDateTime.now());
+        incidenteService.registrarIncidente(incidente);
+
+        List<SuscripcionFallaHeladera> suscripcionesAHeladera = fallaHeladeraService.obtenerPorHeladera(heladera);
+        suscripcionesAHeladera.forEach(mensajeriaService::notificacionFallaHeladera);
+    }
+
 
     @Override
     public void recibirCodigoTarjeta(String codigoTarjeta) {

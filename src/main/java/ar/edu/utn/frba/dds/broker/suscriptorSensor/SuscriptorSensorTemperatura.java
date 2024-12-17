@@ -40,6 +40,7 @@ public class SuscriptorSensorTemperatura extends SuscriptorSensor {
     }
 
     public void manejarRetrasoMensaje() {
+        ServiceLocator.instanceOf(HeladeraController.class).recibirFallaConexion(getSuscriptorSensor().getHeladera());
     }
 
     private void verificarRetrasoMensaje() {

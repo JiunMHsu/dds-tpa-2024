@@ -9,7 +9,9 @@ public interface IBrokerMessageHandler {
     /**
      * En teoría llega un mensaje, pero se usa paraColaborador nada
      */
-    void recibirMovimiento();
+    void recibirMovimiento(Heladera heladera);
+
+    void recibirFallaConexion(Heladera heladera);
 
     void recibirCodigoTarjeta(String codigoTarjeta);
 }

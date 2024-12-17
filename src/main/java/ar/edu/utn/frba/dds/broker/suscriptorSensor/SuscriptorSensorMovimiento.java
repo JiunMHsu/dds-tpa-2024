@@ -12,7 +12,7 @@ public class SuscriptorSensorMovimiento extends SuscriptorSensor {
 
     @Override
     public void recibirMensaje(String mensaje) {
-        ServiceLocator.instanceOf(HeladeraController.class).recibirMovimiento();
+        ServiceLocator.instanceOf(HeladeraController.class).recibirMovimiento(getSuscriptorSensor().getHeladera());
     }
 
 }
