@@ -5,6 +5,7 @@ import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.PuntosInvalidosExceptio
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
+import ar.edu.utn.frba.dds.models.entities.data.Documento;
 import ar.edu.utn.frba.dds.models.entities.data.TipoRazonSocial;
 import ar.edu.utn.frba.dds.models.entities.formulario.FormularioRespondido;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
@@ -22,6 +23,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.aspose.pdf.operators.Do;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -76,6 +79,9 @@ public class Colaborador extends EntidadPersistente {
     @Column(name = "apellido")
     private String apellido;
 
+    @Embedded
+    private Documento documento;
+
     @Column(name = "fecha_nacimiento", columnDefinition = "DATE")
     private LocalDate fechaNacimiento;
 
@@ -106,6 +112,7 @@ public class Colaborador extends EntidadPersistente {
     public static Colaborador humana(Usuario usuario,
                                      String nombre,
                                      String apellido,
+                                     Documento documento,
                                      LocalDate fechaNacimiento,
                                      Contacto contacto,
                                      Direccion direccion,
@@ -116,6 +123,7 @@ public class Colaborador extends EntidadPersistente {
                 .usuario(usuario)
                 .nombre(nombre)
                 .apellido(apellido)
+                .documento(documento)
                 .fechaNacimiento(fechaNacimiento)
                 .contacto(contacto)
                 .direccion(direccion)
@@ -128,7 +136,14 @@ public class Colaborador extends EntidadPersistente {
                                      String nombre,
                                      String apellido,
                                      LocalDate fechaNacimiento) {
-        return Colaborador.humana(usuario, nombre, apellido, fechaNacimiento, null, null, new ArrayList<>(), new Puntos(0, false, null));
+        return Colaborador.humana(usuario, nombre, apellido, null, fechaNacimiento, null, null, new ArrayList<>(), new Puntos(0, false, null));
+    }
+
+    public static Colaborador humanaDocumento(Usuario usuario,
+                                             String nombre,
+                                             String apellido,
+                                             Documento documento) {
+        return Colaborador.humana(usuario, nombre, apellido, documento, null, null, null, new ArrayList<>(), new Puntos(0, false, null));
     }
 
     public static Colaborador colaborador(Usuario usuario) {

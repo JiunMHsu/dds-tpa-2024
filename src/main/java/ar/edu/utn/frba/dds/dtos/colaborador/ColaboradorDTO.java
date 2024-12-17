@@ -1,7 +1,11 @@
 package ar.edu.utn.frba.dds.dtos.colaborador;
 
+import ar.edu.utn.frba.dds.dtos.colaboraciones.ColaboracionDTO;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.colaborador.TipoColaborador;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
+
+import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,6 +15,8 @@ import lombok.Setter;
 @Setter
 @Builder
 public class ColaboradorDTO {
+
+    private String id;
 
     private String tipoColaborador;
 
@@ -32,6 +38,13 @@ public class ColaboradorDTO {
 
     private String fechaNacimiento;
 
+    private String mail;
+
+    private String documento;
+
+    private Boolean isHumano;
+
+
     public static ColaboradorDTO completa(Colaborador colaborador) {
 
         if (colaborador.getTipoColaborador().equals(TipoColaborador.HUMANO)) {
@@ -43,8 +56,12 @@ public class ColaboradorDTO {
 
     public static ColaboradorDTO completaHumano(Colaborador colaborador) {
 
+        String formasDeColaborar = colaborador.getFormaDeColaborar()
+                .stream()
+                .map(TipoColaboracion::getDescription)
+                .collect(Collectors.joining(", "));
+
         String domicilioString = colaborador.getDireccion().getCalle().getNombre() + " " + colaborador.getDireccion().getAltura().toString();
-        String formasDeColaborar = colaborador.getFormaDeColaborar().stream().map(Enum::name).collect(Collectors.joining(" "));
         //String contactos = colaborador.getContacto().getTelegram() + " " + colaborador.getContacto().getEmail() + " " + colaborador.getContacto().getWhatsApp() + " " + colaborador.getContacto().getTelefono();
         // TODO si alguno de los contactos es null chequearlo porque sino imprime los nulls creo
         return ColaboradorDTO
@@ -61,9 +78,13 @@ public class ColaboradorDTO {
 
     public static ColaboradorDTO completaJuridico(Colaborador colaborador) {
 
+        String formasDeColaborar = colaborador.getFormaDeColaborar()
+                .stream()
+                .map(TipoColaboracion::getDescription)
+                .collect(Collectors.joining(", "));
+
         String domicilioString = colaborador.getDireccion().getCalle().getNombre() + " " + colaborador.getDireccion().getAltura().toString();
-        String formasDeColaborar = colaborador.getFormaDeColaborar().stream().map(Enum::name).collect(Collectors.joining(" "));
-        //String contactos = colaborador.getContacto().getTelegram() + " " + colaborador.getContacto().getEmail() + " " + colaborador.getContacto().getWhatsApp() + " " + colaborador.getContacto().getTelefono();
+             //String contactos = colaborador.getContacto().getTelegram() + " " + colaborador.getContacto().getEmail() + " " + colaborador.getContacto().getWhatsApp() + " " + colaborador.getContacto().getTelefono();
         // TODO si alguno de los contactos es null chequearlo porque sino imprime los nulls creo
         return ColaboradorDTO
                 .builder()
@@ -80,31 +101,37 @@ public class ColaboradorDTO {
     public static ColaboradorDTO preview(Colaborador colaborador) {
         if (colaborador.getTipoColaborador().equals(TipoColaborador.HUMANO)) {
             return ColaboradorDTO.previewHumano(colaborador);
+        } else {
+            return ColaboradorDTO.previewJuridico(colaborador);
         }
-        return ColaboradorDTO.previewJuridico(colaborador);
-
     }
 
     public static ColaboradorDTO previewHumano(Colaborador colaborador) {
-        String formasDeColaborar = colaborador.getFormaDeColaborar().stream().map(Enum::name).collect(Collectors.joining(" "));
+
+        String numeroDocumento = colaborador.getDocumento() != null
+                ? colaborador.getDocumento().getNumero()
+                : "Indocumentado";
+
         return ColaboradorDTO
                 .builder()
                 .nombre(colaborador.getNombre())
                 .apellido(colaborador.getApellido())
-                .formaDeColaborar(formasDeColaborar)
+                .mail(colaborador.getUsuario().getEmail())
+                .documento(numeroDocumento)
                 .tipoColaborador("HUMANO")
+                .isHumano(true)
                 .build();
     }
 
     public static ColaboradorDTO previewJuridico(Colaborador colaborador) {
-        String formasDeColaborar = colaborador.getFormaDeColaborar().stream().map(Enum::name).collect(Collectors.joining(" "));
+
         return ColaboradorDTO
                 .builder()
                 .rubro(colaborador.getRubro())
-                .formaDeColaborar(formasDeColaborar)
                 .razonSocial(colaborador.getRazonSocial())
                 .tipoRazonSocial(colaborador.getTipoRazonSocial().name())
                 .tipoColaborador("JURIDICO")
+                .isHumano(false)
                 .build();
     }
 }

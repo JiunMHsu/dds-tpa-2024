@@ -50,10 +50,7 @@ public class ColaboradorController implements ICrudViewsHandler {
                 .toList();
         model.put("colaboradores", colaboradoresDTO);
 
-        context.result("PENDIENTE");
-
-        // TODO - vista listado de colaboradores
-        // context.render("colaboradores/colaboradores.hbs", model);
+        context.render("colaboradores/colaboradores.hbs", model);
     }
 
     @Override
@@ -146,6 +143,7 @@ public class ColaboradorController implements ICrudViewsHandler {
                     usuario,
                     context.formParamAsClass("nombre", String.class).get(),
                     context.formParamAsClass("apellido", String.class).get(),
+                    null,
                     LocalDate.parse(context.formParamAsClass("fecha_nacimiento", String.class).get()),
                     contacto,
                     direccion,

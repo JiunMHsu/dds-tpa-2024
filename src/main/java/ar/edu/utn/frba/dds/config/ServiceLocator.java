@@ -11,6 +11,7 @@ import ar.edu.utn.frba.dds.controllers.colaboraciones.RepartoDeTarjetaController
 import ar.edu.utn.frba.dds.controllers.colaborador.ColaboradorController;
 import ar.edu.utn.frba.dds.controllers.heladera.HeladeraController;
 import ar.edu.utn.frba.dds.controllers.heladera.PuntoIdealController;
+import ar.edu.utn.frba.dds.controllers.heladera.SolicitudDeAperturaController;
 import ar.edu.utn.frba.dds.controllers.incidente.AlertaController;
 import ar.edu.utn.frba.dds.controllers.incidente.FallaTecnicaController;
 import ar.edu.utn.frba.dds.controllers.personaVulnerable.PersonaVulnerableController;
@@ -28,8 +29,10 @@ import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladera
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetasRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
+import ar.edu.utn.frba.dds.models.repositories.heladera.AperturaHeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.RetiroDeViandaRepository;
+import ar.edu.utn.frba.dds.models.repositories.heladera.SolicitudDeAperturaRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
 import ar.edu.utn.frba.dds.models.repositories.mensajeria.MensajeRepository;
 import ar.edu.utn.frba.dds.models.repositories.personaVulnerable.PersonaVulnerableRepository;
@@ -52,9 +55,13 @@ import ar.edu.utn.frba.dds.services.colaboraciones.HacerseCargoHeladeraService;
 import ar.edu.utn.frba.dds.services.colaboraciones.OfertaProductosServiciosService;
 import ar.edu.utn.frba.dds.services.colaboraciones.RepartoDeTarjetaService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
+import ar.edu.utn.frba.dds.services.heladera.AperturaHeladeraService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
+import ar.edu.utn.frba.dds.services.heladera.RetiroDeViandaService;
+import ar.edu.utn.frba.dds.services.heladera.SolicitudDeAperturaService;
 import ar.edu.utn.frba.dds.services.images.ImageService;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
+import ar.edu.utn.frba.dds.services.mensajeria.MensajeriaService;
 import ar.edu.utn.frba.dds.services.personaVulnerable.PersonaVulnerableService;
 import ar.edu.utn.frba.dds.services.puntoIdeal.PuntoIdealService;
 import ar.edu.utn.frba.dds.services.reporte.ReporteService;
@@ -107,7 +114,20 @@ public class ServiceLocator {
                     instanceOf(ColaboradorService.class),
                     instanceOf(HeladeraService.class),
                     instanceOf(PuntoIdealService.class),
-                    instanceOf(IncidenteService.class));
+                    instanceOf(IncidenteService.class),
+                    instanceOf(FallaHeladeraService.class),
+                    instanceOf(MensajeriaService.class),
+                    instanceOf(SolicitudDeAperturaService.class),
+                    instanceOf(TarjetaPersonaVulnerableService.class),
+                    instanceOf(AperturaHeladeraService.class),
+                    instanceOf(RetiroDeViandaService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(SolicitudDeAperturaController.class.getName())) {
+            SolicitudDeAperturaController instance = new SolicitudDeAperturaController(
+                    instanceOf(HeladeraService.class),
+                    instanceOf(SolicitudDeAperturaService.class));
             instances.put(componentName, instance);
         }
 
@@ -264,6 +284,24 @@ public class ServiceLocator {
             instances.put(componentName, instance);
         }
 
+        if (componentName.equals(SolicitudDeAperturaService.class.getName())) {
+            SolicitudDeAperturaService instance = new SolicitudDeAperturaService(
+                    instanceOf(SolicitudDeAperturaRepository.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(AperturaHeladeraService.class.getName())) {
+            AperturaHeladeraService instance = new AperturaHeladeraService(
+                    instanceOf(AperturaHeladeraRepository.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(RetiroDeViandaService.class.getName())) {
+            RetiroDeViandaService instance = new RetiroDeViandaService(
+                    instanceOf(RetiroDeViandaRepository.class));
+            instances.put(componentName, instance);
+        }
+
         if (componentName.equals(IncidenteService.class.getName())) {
             IncidenteService instance = new IncidenteService(
                     instanceOf(IncidenteRepository.class),
@@ -355,6 +393,13 @@ public class ServiceLocator {
         if (componentName.equals(TarjetaPersonaVulnerableService.class.getName())) {
             TarjetaPersonaVulnerableService instance = new TarjetaPersonaVulnerableService(
                     instanceOf(TarjetaPersonaVulnerableRepository.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(MensajeriaService.class.getName())) {
+            MensajeriaService instance = new MensajeriaService(
+                    instanceOf(MensajeRepository.class),
+                    instanceOf(HeladeraService.class));
             instances.put(componentName, instance);
         }
 

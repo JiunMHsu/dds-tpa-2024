@@ -35,11 +35,12 @@ public class SuscriptorSensorTemperatura extends SuscriptorSensor {
 
     @Override
     public void recibirMensaje(String mensaje) {
-        ServiceLocator.instanceOf(HeladeraController.class).recibirTemperatura(Double.parseDouble(mensaje));
+        ServiceLocator.instanceOf(HeladeraController.class).recibirTemperatura(Double.parseDouble(mensaje), getSuscriptorSensor().getHeladera());
         tiempoUltimoMensaje = Instant.now();
     }
 
     public void manejarRetrasoMensaje() {
+        ServiceLocator.instanceOf(HeladeraController.class).recibirFallaConexion(getSuscriptorSensor().getHeladera());
     }
 
     private void verificarRetrasoMensaje() {

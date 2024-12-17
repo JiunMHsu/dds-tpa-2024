@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.models.repositories.heladera;
 
+import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.SolicitudDeApertura;
 import ar.edu.utn.frba.dds.utils.ICrudRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
@@ -59,6 +60,21 @@ public class SolicitudDeAperturaRepository implements
                 .setParameter("cod_tarjeta", tarjeta)
                 .getResultList();
     }
+
+    @Override
+    public List<SolicitudDeApertura> buscarPorTarjetaHeladeraEnLasUltimas(String tarjeta, Heladera heladera) {
+        return entityManager()
+                .createQuery("SELECT s FROM SolicitudDeApertura s " +
+                                "WHERE s.tarjeta.codigo = :cod_tarjeta " +
+                                "AND s.heladera = :heladera_id " +
+                                "AND s.fechaHora >= CURRENT_TIMESTAMP - 3 * 3600", // Rango de 3 horas en segundos
+                        SolicitudDeApertura.class)
+                .setParameter("cod_tarjeta", tarjeta)
+                .setParameter("heladera_id", heladera)
+                .getResultList();
+    }
+//3 horas
+
 
     @Override
     public Optional<SolicitudDeApertura> buscarUltimoPorTarjeta(String tarjeta) {
