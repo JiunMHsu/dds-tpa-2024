@@ -2,6 +2,8 @@ package ar.edu.utn.frba.dds.models.repositories.tarjeta;
 
 import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaPersonaVulnerable;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+
+import javax.persistence.NoResultException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -33,6 +35,18 @@ public class TarjetaPersonaVulnerableRepository implements WithSimplePersistence
             return Optional.empty();
         }
     }
+
+    public Optional<TarjetaPersonaVulnerable> buscarTarjetaPorCodigo(String cod_tarjeta) {
+        try {
+            return Optional.ofNullable(entityManager()
+                    .createQuery("from TarjetaPersonaVulnerable t where t.codigo = :codigo_tarjeta", TarjetaPersonaVulnerable.class)
+                    .setParameter("codigo_tarjeta", cod_tarjeta)
+                    .getSingleResult());
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
+    }
+
 
 
 }

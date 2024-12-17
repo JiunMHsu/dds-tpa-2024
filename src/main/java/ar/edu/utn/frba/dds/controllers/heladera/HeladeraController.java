@@ -19,10 +19,12 @@ import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.permissions.ColaboradorRequired;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
+import ar.edu.utn.frba.dds.services.heladera.SolicitudDeAperturaService;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.mensajeria.MensajeriaService;
 import ar.edu.utn.frba.dds.services.puntoIdeal.PuntoIdealService;
 import ar.edu.utn.frba.dds.services.suscripcion.FallaHeladeraService;
+import ar.edu.utn.frba.dds.services.tarjeta.TarjetaPersonaVulnerableService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
@@ -43,22 +45,26 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
     private final PuntoIdealService puntoIdealService;
     private final IncidenteService incidenteService;
     private final FallaHeladeraService fallaHeladeraService;
-
     private final MensajeriaService mensajeriaService;
-
+    private final SolicitudDeAperturaService solicitudDeAperturaService;
+    private final TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService;
     public HeladeraController(UsuarioService usuarioService,
                               ColaboradorService colaboradorService,
                               HeladeraService heladeraService,
                               PuntoIdealService puntoIdealService,
                               IncidenteService incidenteService,
                               FallaHeladeraService fallaHeladeraService,
-                              MensajeriaService mensajeriaService) {
+                              MensajeriaService mensajeriaService,
+                              SolicitudDeAperturaService solicitudDeAperturaService,
+                              TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService) {
         super(usuarioService, colaboradorService);
         this.heladeraService = heladeraService;
         this.puntoIdealService = puntoIdealService;
         this.incidenteService = incidenteService;
         this.fallaHeladeraService = fallaHeladeraService;
         this.mensajeriaService = mensajeriaService;
+        this.solicitudDeAperturaService = solicitudDeAperturaService;
+        this.tarjetaPersonaVulnerableService = tarjetaPersonaVulnerableService;
     }
 
     @Override
@@ -268,7 +274,17 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
 
 
     @Override
-    public void recibirCodigoTarjeta(String codigoTarjeta) {
-        // TODO
+    public void recibirCodigoTarjeta(String codigoTarjeta, Heladera heladera) {
+        if(!solicitudDeAperturaService.buscarPorTarjetaHeladeraEnLasUltimas(codigoTarjeta,heladera).isEmpty()){
+            //apertura de heladera
+            //registrar movimientos
+        }
+        else if(tarjetaPersonaVulnerableService.buscarTarjetaPorCodigo(codigoTarjeta).isPresent()){
+            //apertura de heladera
+            //registrar movimientos
+        }
+        else {
+            //no se le da acceso para que abra la heladera
+        }
     }
 }

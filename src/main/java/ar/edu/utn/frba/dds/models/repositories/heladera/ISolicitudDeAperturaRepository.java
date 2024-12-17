@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.models.repositories.heladera;
 
+import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.SolicitudDeApertura;
 import java.util.List;
 import java.util.Optional;
@@ -10,4 +11,7 @@ public interface ISolicitudDeAperturaRepository {
     List<SolicitudDeApertura> buscarPorTarjeta(String tarjeta);
 
     Optional<SolicitudDeApertura> buscarUltimoPorTarjeta(String tarjeta);
-}
+
+    List<SolicitudDeApertura> buscarPorTarjetaHeladeraEnLasUltimas(String tarjeta, Heladera heladera);
+
+    }

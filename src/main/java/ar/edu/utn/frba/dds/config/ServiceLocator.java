@@ -53,6 +53,7 @@ import ar.edu.utn.frba.dds.services.colaboraciones.OfertaProductosServiciosServi
 import ar.edu.utn.frba.dds.services.colaboraciones.RepartoDeTarjetaService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
+import ar.edu.utn.frba.dds.services.heladera.SolicitudDeAperturaService;
 import ar.edu.utn.frba.dds.services.images.ImageService;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.mensajeria.MensajeriaService;
@@ -110,7 +111,9 @@ public class ServiceLocator {
                     instanceOf(PuntoIdealService.class),
                     instanceOf(IncidenteService.class),
                     instanceOf(FallaHeladeraService.class),
-                    instanceOf(MensajeriaService.class));
+                    instanceOf(MensajeriaService.class),
+                    instanceOf(SolicitudDeAperturaService.class),
+                    instanceOf(TarjetaPersonaVulnerableService.class));
             instances.put(componentName, instance);
         }
 

@@ -13,5 +13,5 @@ public interface IBrokerMessageHandler {
 
     void recibirFallaConexion(Heladera heladera);
 
-    void recibirCodigoTarjeta(String codigoTarjeta);
+    void recibirCodigoTarjeta(String codigoTarjeta, Heladera heladera);
 }
