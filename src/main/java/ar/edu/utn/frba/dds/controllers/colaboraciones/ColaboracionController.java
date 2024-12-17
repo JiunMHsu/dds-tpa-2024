@@ -59,7 +59,7 @@ public class ColaboracionController extends ColaboradorRequired {
             List<ColaboracionDTO> colaboracionDTOS = colaboraciones.stream()
                     .map(ColaboracionDTO::toDTO)
                     .toList();
-            model.put("colaboraciones", colaboracionDTOS);
+            model.put("colaboracionesRealizadas", colaboracionDTOS);
         }
 
         render(context, "colaboraciones/colaboraciones.hbs", model);

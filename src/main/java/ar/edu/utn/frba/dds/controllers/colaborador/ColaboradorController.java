@@ -143,6 +143,7 @@ public class ColaboradorController implements ICrudViewsHandler {
                     usuario,
                     context.formParamAsClass("nombre", String.class).get(),
                     context.formParamAsClass("apellido", String.class).get(),
+                    null,
                     LocalDate.parse(context.formParamAsClass("fecha_nacimiento", String.class).get()),
                     contacto,
                     direccion,

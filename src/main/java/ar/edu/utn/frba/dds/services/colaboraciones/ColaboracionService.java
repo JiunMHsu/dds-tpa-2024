@@ -121,7 +121,10 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
 
                 Colaborador colaborador = colaboradorRepository
                         .buscarPorEmail(colaboracionPrevia.getEmail())
-                        .orElse(generarColaborador(colaboracionPrevia.getNombre(), colaboracionPrevia.getEmail()));
+                        .orElse(generarColaborador(colaboracionPrevia.getNombre(),
+                                                   colaboracionPrevia.getApellido(),
+                                                   colaboracionPrevia.getDocumento(),
+                                                   colaboracionPrevia.getEmail()));
 
                 Mensaje mail = generarMensajePara(colaborador);
                 mailSender.enviarMensaje(mail.getContacto(), mail.getAsunto(), mail.getCuerpo());
@@ -137,9 +140,9 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
         }
     }
 
-    private Colaborador generarColaborador(String nombre, String email) {
+    private Colaborador generarColaborador(String nombre, String apellido, Documento documento ,String email) {
         Usuario usuario = GeneradorDeCredenciales.generarUsuario(nombre, email);
-        Colaborador colaborador = Colaborador.colaborador(usuario);
+        Colaborador colaborador = Colaborador.humanaDocumento(usuario, nombre, apellido, documento);
         colaborador.setContacto(Contacto.conEmail(email));
 
         usuarioRepository.guardar(usuario);
