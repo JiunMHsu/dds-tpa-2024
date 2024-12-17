@@ -42,4 +42,8 @@ public class TarjetaPersonaVulnerableService {
         }
     }
 
+    public Optional<TarjetaPersonaVulnerable> buscarTarjetaPorCodigo(String cod_tarjeta) {
+        return this.buscarTarjetaPorCodigo(cod_tarjeta);
+    }
+
 }

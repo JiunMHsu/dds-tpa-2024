@@ -12,6 +12,7 @@ import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
+import ar.edu.utn.frba.dds.permissions.TecnicoRequired;
 import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
@@ -25,31 +26,24 @@ import java.util.Map;
 import java.util.Optional;
 
 
-public class TecnicoController implements ICrudViewsHandler {
+public class TecnicoController extends TecnicoRequired implements ICrudViewsHandler {
 
-    private final TecnicoService tecnicoService;
-    private final UsuarioService usuarioService;
-
-
-    public TecnicoController(TecnicoService tecnicoService,
-                             UsuarioService usuarioService) {
-
-        this.tecnicoService = tecnicoService;
-        this.usuarioService = usuarioService;
+    public TecnicoController(UsuarioService usuarioService,
+                             TecnicoService tecnicoService) {
+        super(usuarioService, tecnicoService);
     }
 
     @Override
-    public void index(Context context) { // TODO - Ver desp que matchee paraColaborador las vistas
-        List<Tecnico> tecnicos = this.tecnicoService.buscarTodos();
+    public void index(Context context) {
+        Map<String, Object> model = new HashMap<>();
 
+        List<Tecnico> tecnicos = this.tecnicoService.buscarTodos();
         List<TecnicoDTO> tecnicosDTO = tecnicos.stream()
                 .map(TecnicoDTO::preview)
                 .toList();
 
-        Map<String, Object> model = new HashMap<>();
         model.put("tecnicos", tecnicosDTO);
-
-        // context.render("/", model);
+        render(context, "tecnicos/tecnicos.hbs", model);
     }
 
     @Override

@@ -3,11 +3,8 @@ package ar.edu.utn.frba.dds.models.entities.heladera;
 import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaColaborador;
 import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import java.time.LocalDateTime;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,14 +29,20 @@ public class AperturaHeladera extends EntidadPersistente {
     @Column(name = "fecha_hora")
     private LocalDateTime fechaHora;
 
+    @OneToOne
+    @JoinColumn(name = "solicitud_apertura_id", referencedColumnName = "id")
+    private SolicitudDeApertura solicitudDeApertura;
+
     public static AperturaHeladera por(TarjetaColaborador tarjetaColaborador,
                                        Heladera heladera,
-                                       LocalDateTime fechaHora) {
+                                       LocalDateTime fechaHora,
+                                       SolicitudDeApertura solicitudDeApertura) {
         return AperturaHeladera
                 .builder()
                 .tarjetaColaborador(tarjetaColaborador)
                 .heladera(heladera)
                 .fechaHora(fechaHora)
+                .solicitudDeApertura(solicitudDeApertura)
                 .build();
     }
 

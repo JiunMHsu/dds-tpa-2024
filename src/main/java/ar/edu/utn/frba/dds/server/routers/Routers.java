@@ -5,7 +5,6 @@ import static io.javalin.apibuilder.ApiBuilder.path;
 import static io.javalin.apibuilder.ApiBuilder.post;
 
 import ar.edu.utn.frba.dds.config.ServiceLocator;
-import ar.edu.utn.frba.dds.controllers.colaborador.ColaboradorController;
 import ar.edu.utn.frba.dds.controllers.session.SessionController;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
@@ -37,7 +36,6 @@ public class Routers {
         config.apiBuilder(() -> {
             get("/", ctx -> ctx.redirect("/home"), TipoRol.COLABORADOR, TipoRol.ADMIN);
             get("/home", ctx -> ctx.render("home/home.hbs"), TipoRol.COLABORADOR, TipoRol.ADMIN);
-            //TODO VER   get("/home_admin", ctx -> ctx.render("/home/home_admin.hbs"), TipoRol.ADMIN);
             get("/test", ctx -> ctx.result("DDS TPA"));
 
             path("/login", () -> {

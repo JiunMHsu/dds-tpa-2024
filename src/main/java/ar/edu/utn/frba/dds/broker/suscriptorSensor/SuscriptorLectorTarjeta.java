@@ -12,7 +12,7 @@ public class SuscriptorLectorTarjeta extends SuscriptorSensor {
 
     @Override
     public void recibirMensaje(String mensaje) {
-        ServiceLocator.instanceOf(HeladeraController.class).recibirCodigoTarjeta(mensaje);
+        ServiceLocator.instanceOf(HeladeraController.class).recibirCodigoTarjeta(mensaje, getSuscriptorSensor().getHeladera());
     }
 
 }

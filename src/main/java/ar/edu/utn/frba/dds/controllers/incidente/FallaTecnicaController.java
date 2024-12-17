@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.controllers.incidente;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
+import ar.edu.utn.frba.dds.dtos.incidente.FallaTecnicaDTO;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Imagen;
@@ -40,9 +41,26 @@ public class FallaTecnicaController extends ColaboradorRequired {
     }
 
     public void index(Context context) {
+        Map<String, Object> model = new HashMap<>();
+
+        String filtro = context.queryParamAsClass("filtro", String.class).getOrDefault("todas");
+
+        List<Incidente> fallasTecnicas = this.incidenteService.buscarTodasFallasTecnicas();
+        List<FallaTecnicaDTO> fallasTecnicasDTO = switch (filtro) {
+            case "resueltas" ->
+                    fallasTecnicas.stream().filter(Incidente::getFallaResuelta).map(FallaTecnicaDTO::preview).toList();
+            case "pendientes" ->
+                    fallasTecnicas.stream().filter(falla -> !falla.getFallaResuelta()).map(FallaTecnicaDTO::preview).toList();
+            default -> // caso "todas"
+                    fallasTecnicas.stream().map(FallaTecnicaDTO::preview).toList();
+        };
+
+        model.put("fallas", fallasTecnicasDTO);
+        render(context, "fallas_tecnicas/fallas_tecnicas.hbs", model);
     }
 
     public void show(Context context) {
+        // TODO - Implementar
     }
 
     public void create(Context context) {

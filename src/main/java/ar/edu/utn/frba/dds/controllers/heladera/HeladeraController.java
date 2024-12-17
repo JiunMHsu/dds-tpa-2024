@@ -11,41 +11,67 @@ import ar.edu.utn.frba.dds.models.entities.data.Barrio;
 import ar.edu.utn.frba.dds.models.entities.data.Calle;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
-import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
+import ar.edu.utn.frba.dds.models.entities.heladera.*;
+import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
+import ar.edu.utn.frba.dds.models.entities.personaVulnerable.PersonaVulnerable;
+import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFallaHeladera;
+import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaPersonaVulnerable;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.permissions.ColaboradorRequired;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
+import ar.edu.utn.frba.dds.services.heladera.AperturaHeladeraService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
+import ar.edu.utn.frba.dds.services.heladera.RetiroDeViandaService;
+import ar.edu.utn.frba.dds.services.heladera.SolicitudDeAperturaService;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
+import ar.edu.utn.frba.dds.services.mensajeria.MensajeriaService;
 import ar.edu.utn.frba.dds.services.puntoIdeal.PuntoIdealService;
+import ar.edu.utn.frba.dds.services.suscripcion.FallaHeladeraService;
+import ar.edu.utn.frba.dds.services.tarjeta.TarjetaPersonaVulnerableService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.validation.ValidationException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+
+import java.time.LocalDateTime;
+import java.util.*;
+
+import static java.lang.VersionProps.print;
 
 public class HeladeraController extends ColaboradorRequired implements ICrudViewsHandler, IBrokerMessageHandler {
 
     private final HeladeraService heladeraService;
     private final PuntoIdealService puntoIdealService;
     private final IncidenteService incidenteService;
-
+    private final FallaHeladeraService fallaHeladeraService;
+    private final MensajeriaService mensajeriaService;
+    private final SolicitudDeAperturaService solicitudDeAperturaService;
+    private final TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService;
+    private final AperturaHeladeraService aperturaHeladeraService;
+    private final RetiroDeViandaService retiroDeViandaService;
     public HeladeraController(UsuarioService usuarioService,
                               ColaboradorService colaboradorService,
                               HeladeraService heladeraService,
                               PuntoIdealService puntoIdealService,
-                              IncidenteService incidenteService) {
+                              IncidenteService incidenteService,
+                              FallaHeladeraService fallaHeladeraService,
+                              MensajeriaService mensajeriaService,
+                              SolicitudDeAperturaService solicitudDeAperturaService,
+                              TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService,
+                              AperturaHeladeraService aperturaHeladeraService,
+                              RetiroDeViandaService retiroDeViandaService) {
         super(usuarioService, colaboradorService);
         this.heladeraService = heladeraService;
         this.puntoIdealService = puntoIdealService;
         this.incidenteService = incidenteService;
+        this.fallaHeladeraService = fallaHeladeraService;
+        this.mensajeriaService = mensajeriaService;
+        this.solicitudDeAperturaService = solicitudDeAperturaService;
+        this.tarjetaPersonaVulnerableService = tarjetaPersonaVulnerableService;
+        this.aperturaHeladeraService = aperturaHeladeraService;
+        this.retiroDeViandaService = retiroDeViandaService;
     }
 
     @Override
@@ -224,20 +250,58 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
                 .buscarPorId(heladeraId)
                 .orElseThrow(ResourceNotFoundException::new);
     }
-
     @Override
-    public void recibirTemperatura(double temperatura) {
-        // TODO
+    public void recibirTemperatura(double temperatura, Heladera heladera) {
+        if(!heladera.admiteTemperatura(temperatura)){
+            Incidente incidente = Incidente.fallaTemperatura(heladera, LocalDateTime.now());
+            this.incidenteService.registrarIncidente(incidente);
+
+            List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
+            suscripcionesAHeladera.forEach(this.mensajeriaService::notificacionFallaHeladera);
+        }
     }
 
     @Override
-    public void recibirMovimiento() {
-        // TODO
+    public void recibirMovimiento(Heladera heladera) {
+        Incidente incidente = Incidente.fraude(heladera, LocalDateTime.now());
+        this.incidenteService.registrarIncidente(incidente);
+
+        List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
+        suscripcionesAHeladera.forEach(this.mensajeriaService::notificacionFallaHeladera);
     }
 
     @Override
-    public void recibirCodigoTarjeta(String codigoTarjeta) {
-        // TODO
+    public void recibirFallaConexion(Heladera heladera){
+        Incidente incidente = Incidente.fallaConexion(heladera, LocalDateTime.now());
+        this.incidenteService.registrarIncidente(incidente);
+
+        List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
+        suscripcionesAHeladera.forEach(this.mensajeriaService::notificacionFallaHeladera);
     }
 
+
+    @Override
+    public void recibirCodigoTarjeta(String codigoTarjeta, Heladera heladera) {
+        Optional<SolicitudDeApertura> solicitudDeApertura = solicitudDeAperturaService.buscarPorTarjetaHeladeraEnLasUltimas(codigoTarjeta, heladera)
+                .stream()
+                .filter(solicitud -> this.aperturaHeladeraService.buscarPorSolicitud(solicitud).isEmpty()) //solicitudes que no tienen aperturas
+                .min(Comparator.comparing(SolicitudDeApertura::getFechaHora)); // obtengo la más vieja
+
+        if(solicitudDeApertura.isPresent()){
+            AperturaHeladera aperturaHeladera = AperturaHeladera.por(solicitudDeApertura.get().getTarjeta(), solicitudDeApertura.get().getHeladera(), LocalDateTime.now(),solicitudDeApertura.get());
+            this.aperturaHeladeraService.guardar(aperturaHeladera);
+            System.out.println("no permito acceso");
+            //TODO deberia registrar movimientos
+        }
+        else{
+            Optional<TarjetaPersonaVulnerable> tarjetaPersonaVulnerable= tarjetaPersonaVulnerableService.buscarTarjetaPorCodigo(codigoTarjeta);
+            if(tarjetaPersonaVulnerable.isPresent()){
+                RetiroDeVianda retiroDeVianda = RetiroDeVianda.por(tarjetaPersonaVulnerable.get(),heladera, LocalDateTime.now());
+                this.retiroDeViandaService.guardar(retiroDeVianda);
+                System.out.println("no permito acceso");            }
+            else {
+                //TODO no se le da acceso para que abra la heladera
+                System.out.println("no permito acceso");            }
+        }
+    }
 }
