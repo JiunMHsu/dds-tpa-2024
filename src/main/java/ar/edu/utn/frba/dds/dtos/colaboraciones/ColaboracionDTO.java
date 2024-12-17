@@ -46,8 +46,6 @@ public class ColaboracionDTO {
             return OfertaDeProductosDTO.preview((OfertaDeProductos) colaboracion);
         } else if (colaboracion instanceof RepartoDeTarjetas) {
             return RepartoDeTarjetasDTO.preview((RepartoDeTarjetas) colaboracion);
-//        } else if (colaboracion instanceof ColaboracionPrevia) {
-//            return ColaboracionPreviaDTO.preview((ColaboracionPrevia) colaboracion);
         } else {
             throw new IllegalArgumentException("Tipo de colaboración desconocido: " + colaboracion.getClass());
         }
