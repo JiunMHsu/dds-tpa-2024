@@ -361,6 +361,13 @@ public class ServiceLocator {
             instances.put(componentName, instance);
         }
 
+        if (componentName.equals(MensajeriaService.class.getName())) {
+            MensajeriaService instance = new MensajeriaService(
+                    instanceOf(MensajeRepository.class),
+                    instanceOf(HeladeraService.class));
+            instances.put(componentName, instance);
+        }
+
         if (componentName.equals(TecnicoService.class.getName())) {
             TecnicoService instance = new TecnicoService(
                     instanceOf(TecnicoRepository.class));

@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.services.heladera;
 
 import ar.edu.utn.frba.dds.models.entities.colaboracion.HacerseCargoHeladera;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.models.entities.data.Barrio;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
@@ -35,6 +36,7 @@ public class HeladeraService implements WithSimplePersistenceUnit {
         return this.heladeraRepository.buscarPorNombre(nombre);
     }
 
+    public List<Heladera> buscarPorBarrio(Barrio barrio){return this.heladeraRepository.buscarPorBarrio(barrio);}
     public void guardarHeladera(Heladera heladera) {
         // TODO - validaciones??
         withTransaction(() -> this.heladeraRepository.guardar(heladera));

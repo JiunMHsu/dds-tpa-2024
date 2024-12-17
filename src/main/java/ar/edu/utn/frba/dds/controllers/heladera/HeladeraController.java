@@ -237,7 +237,6 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
                 .buscarPorId(heladeraId)
                 .orElseThrow(ResourceNotFoundException::new);
     }
-
     @Override
     public void recibirTemperatura(double temperatura, Heladera heladera) {
         if(!heladera.admiteTemperatura(temperatura)){
@@ -258,5 +257,4 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
     public void recibirCodigoTarjeta(String codigoTarjeta) {
         // TODO
     }
-
 }
