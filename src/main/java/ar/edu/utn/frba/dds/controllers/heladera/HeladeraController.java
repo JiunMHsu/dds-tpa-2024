@@ -38,6 +38,8 @@ import io.javalin.validation.ValidationException;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import static java.lang.VersionProps.print;
+
 public class HeladeraController extends ColaboradorRequired implements ICrudViewsHandler, IBrokerMessageHandler {
 
     private final HeladeraService heladeraService;
@@ -288,17 +290,18 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
         if(solicitudDeApertura.isPresent()){
             AperturaHeladera aperturaHeladera = AperturaHeladera.por(solicitudDeApertura.get().getTarjeta(), solicitudDeApertura.get().getHeladera(), LocalDateTime.now(),solicitudDeApertura.get());
             this.aperturaHeladeraService.guardar(aperturaHeladera);
-            //registrar movimientos
+            System.out.println("no permito acceso");
+            //TODO deberia registrar movimientos
         }
         else{
             Optional<TarjetaPersonaVulnerable> tarjetaPersonaVulnerable= tarjetaPersonaVulnerableService.buscarTarjetaPorCodigo(codigoTarjeta);
             if(tarjetaPersonaVulnerable.isPresent()){
                 RetiroDeVianda retiroDeVianda = RetiroDeVianda.por(tarjetaPersonaVulnerable.get(),heladera, LocalDateTime.now());
                 this.retiroDeViandaService.guardar(retiroDeVianda);
-            }
+                System.out.println("no permito acceso");            }
             else {
-                //TODO hago algo? no se le da acceso para que abra la heladera
-            }
+                //TODO no se le da acceso para que abra la heladera
+                System.out.println("no permito acceso");            }
         }
     }
 }
