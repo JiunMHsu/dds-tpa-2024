@@ -5,6 +5,7 @@ import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.PuntosInvalidosExceptio
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
+import ar.edu.utn.frba.dds.models.entities.data.Documento;
 import ar.edu.utn.frba.dds.models.entities.data.TipoRazonSocial;
 import ar.edu.utn.frba.dds.models.entities.formulario.FormularioRespondido;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
@@ -75,6 +76,9 @@ public class Colaborador extends EntidadPersistente {
 
     @Column(name = "apellido")
     private String apellido;
+
+    @Embedded
+    private Documento documento;
 
     @Column(name = "fecha_nacimiento", columnDefinition = "DATE")
     private LocalDate fechaNacimiento;

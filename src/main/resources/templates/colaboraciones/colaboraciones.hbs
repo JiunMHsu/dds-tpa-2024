@@ -19,19 +19,23 @@
         </div>
 
         <div class="scrollable">
-            <ul class="list">
-                <!-- !! MODELO DE ITEM -->
-                <li class="list-item">
-                    <a href="" class="item-card">
-                        <h3 class="card-title">Donación de Dinero</h3>
-                        <p>
-                            <span class="material-symbols-rounded card-detail-icon">today</span>
-                            Fecha: 12/10/2021
-                        </p>
-                    </a>
-                </li>
-
-            </ul>
+            {{#if colaboracionesRealizadas.length}}
+                <ul class="list">
+                    {{#each colaboracionesRealizadas}}
+                        <li class="list-item">
+                            <a href="{{this.path}}" class="item-card">
+                                <h3 class="card-title">{{this.nombre}}</h3>
+                                <p>
+                                    <span class="material-symbols-rounded card-detail-icon">today</span>
+                                    Fecha: {{this.fechaHora}}
+                                </p>
+                            </a>
+                        </li>
+                    {{/each}}
+                </ul>
+            {{else}}
+                <p class="no-data-message">No has realizado ninguna colaboración aún 😣</p>
+            {{/if}}
         </div>
     </div>
 {{/partial}}
@@ -55,13 +59,11 @@
 
     {{#if isColaborador}}
         <div class="lista-colaboraciones">
-            {{#each colaboraciones}}
-                <!-- iterar las formas de colaboracion -->
+            {{#each formasDeColaborar}}
                 <div class="item-colaboracion">
                     <h3 class="colaboracion-title">{{this.etiqueta}}</h3>
                     <div class="colaboracion-button-container">
-                        <a href="/colaboraciones/{{this.path}}/new"
-                           class="colaboracion-button">colaborar</a>
+                        <a href="/colaboraciones/{{this.path}}/new" class="colaboracion-button">colaborar</a>
                     </div>
                 </div>
             {{/each}}
@@ -69,8 +71,7 @@
             <div class="item-colaboracion">
                 <h3 class="colaboracion-title">Configurar Contribuciones</h3>
                 <div class="colaboracion-button-container">
-                    <a href="/colaboradores/{{colaboradorId}}/formas-de-colaboracion"
-                       class="colaboracion-button">configurar</a>
+                    <a href="/colaboradores/{{colaboradorId}}/formas-de-colaboracion" class="colaboracion-button">configurar</a>
                 </div>
             </div>
         </div>

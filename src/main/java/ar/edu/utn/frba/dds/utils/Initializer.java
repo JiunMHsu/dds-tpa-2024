@@ -84,9 +84,9 @@ public class Initializer implements WithSimplePersistenceUnit {
         List<TipoColaboracion> colabJuridica1 = List.of(TipoColaboracion.DONACION_DINERO, TipoColaboracion.HACERSE_CARGO_HELADERA);
         List<TipoColaboracion> colabJuridica2 = List.of(TipoColaboracion.HACERSE_CARGO_HELADERA, TipoColaboracion.OFERTA_DE_PRODUCTOS, TipoColaboracion.DONACION_DINERO);
 
-        Colaborador c1 = Colaborador.humana(u1, "Jiun Ming", "Hsu", LocalDate.now(), Contacto.vacio(), direccion, new ArrayList<>(colabHumana1), new Puntos(2039, true, null));
-        Colaborador c2 = Colaborador.humana(u2, "Abril", "Nimo Dominguez", LocalDate.now(), Contacto.vacio(), direccion, new ArrayList<>(colabHumana2), new Puntos(0, false, null));
-        Colaborador c3 = Colaborador.humana(u3, "Matías Leonel", "Juncos Mieres", LocalDate.now(), Contacto.vacio(), direccion, new ArrayList<>(colabHumana1), new Puntos(0, false, null));
+        Colaborador c1 = Colaborador.humana(u1, "Jiun Ming", "Hsu", LocalDate.of(2002, 2, 19), Contacto.vacio(), direccion, new ArrayList<>(colabHumana1), new Puntos(2039, true, null));
+        Colaborador c2 = Colaborador.humana(u2, "Abril", "Nimo Dominguez", LocalDate.of(2004, 1, 8), Contacto.vacio(), direccion, new ArrayList<>(colabHumana2), new Puntos(0, false, null));
+        Colaborador c3 = Colaborador.humana(u3, "Matías Leonel", "Juncos Mieres", LocalDate.of(2003, 12, 1), Contacto.vacio(), direccion, new ArrayList<>(colabHumana1), new Puntos(0, false, null));
         Colaborador c4 = Colaborador.juridica(u4, "MELSELEP SRL", TipoRazonSocial.EMPRESA, "Música", Contacto.vacio(), direccion, new ArrayList<>(colabJuridica2), new Puntos(0, false, null));
         Colaborador c5 = Colaborador.juridica(u5, "JOACO SA", TipoRazonSocial.EMPRESA, "Tecnología", Contacto.vacio(), direccion, new ArrayList<>(colabJuridica1), new Puntos(0, false, null));
 

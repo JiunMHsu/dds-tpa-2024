@@ -1,16 +1,18 @@
 package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.ColaboracionDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.TipoColaboracionDTO;
+import ar.edu.utn.frba.dds.dtos.colaborador.ColaboradorDTO;
 import ar.edu.utn.frba.dds.exceptions.CargaMasivaException;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
+import ar.edu.utn.frba.dds.permissions.ColaboradorRequired;
 import ar.edu.utn.frba.dds.services.colaboraciones.ColaboracionService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
-import ar.edu.utn.frba.dds.utils.UserRequired;
 import io.javalin.http.Context;
 import io.javalin.http.UploadedFile;
 import io.javalin.validation.ValidationException;
@@ -20,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class ColaboracionController extends UserRequired {
+public class ColaboracionController extends ColaboradorRequired {
 
     private final ColaboracionService colaboracionService;
 
@@ -36,13 +38,28 @@ public class ColaboracionController extends UserRequired {
         Usuario usuario = usuarioFromSession(context);
 
         if (Objects.equals(usuario.getRol(), TipoRol.COLABORADOR)) {
-            Colaborador colaborador = colaboradorFromSession(context);
 
-            List<TipoColaboracionDTO> colaboraciones = colaborador.getFormaDeColaborar()
+            Colaborador colaborador = colaboradorFromSession(context);
+            List<Object> colaboracionesRealizadas = colaboracionService.buscarTodasPorColaborador(colaborador);
+
+            List<ColaboracionDTO> colaboracionesRealizadasDTO = colaboracionesRealizadas.stream()
+                    .map(ColaboracionDTO::toDTO)
+                    .toList();
+
+            List<TipoColaboracionDTO> formasDeColaborar = colaborador.getFormaDeColaborar()
                     .stream().map(TipoColaboracionDTO::redirectable)
                     .toList();
-            model.put("colaboraciones", colaboraciones);
+
+            model.put("colaboracionesRealizadas", colaboracionesRealizadasDTO);
+            model.put("formasDeColaborar", formasDeColaborar);
             model.put("colaboradorId", colaborador.getId().toString());
+        } else if (Objects.equals(usuario.getRol(), TipoRol.ADMIN)) {
+
+            List<Object> colaboraciones = this.colaboracionService.buscarTodas();
+            List<ColaboracionDTO> colaboracionDTOS = colaboraciones.stream()
+                    .map(ColaboracionDTO::toDTO)
+                    .toList();
+            model.put("colaboraciones", colaboracionDTOS);
         }
 
         render(context, "colaboraciones/colaboraciones.hbs", model);
