@@ -13,18 +13,24 @@ import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
+import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
+import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFallaHeladera;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.permissions.ColaboradorRequired;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
+import ar.edu.utn.frba.dds.services.mensajeria.MensajeriaService;
 import ar.edu.utn.frba.dds.services.puntoIdeal.PuntoIdealService;
+import ar.edu.utn.frba.dds.services.suscripcion.FallaHeladeraService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.validation.ValidationException;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,16 +42,23 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
     private final HeladeraService heladeraService;
     private final PuntoIdealService puntoIdealService;
     private final IncidenteService incidenteService;
+    private final FallaHeladeraService fallaHeladeraService;
+
+    private final MensajeriaService mensajeriaService;
 
     public HeladeraController(UsuarioService usuarioService,
                               ColaboradorService colaboradorService,
                               HeladeraService heladeraService,
                               PuntoIdealService puntoIdealService,
-                              IncidenteService incidenteService) {
+                              IncidenteService incidenteService,
+                              FallaHeladeraService fallaHeladeraService,
+                              MensajeriaService mensajeriaService) {
         super(usuarioService, colaboradorService);
         this.heladeraService = heladeraService;
         this.puntoIdealService = puntoIdealService;
         this.incidenteService = incidenteService;
+        this.fallaHeladeraService = fallaHeladeraService;
+        this.mensajeriaService = mensajeriaService;
     }
 
     @Override
@@ -226,8 +239,14 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
     }
 
     @Override
-    public void recibirTemperatura(double temperatura) {
-        // TODO
+    public void recibirTemperatura(double temperatura, Heladera heladera) {
+        if(!heladera.admiteTemperatura(temperatura)){
+            Incidente incidente = Incidente.fallaTemperatura(heladera, LocalDateTime.now());
+            incidenteService.registrarIncidente(incidente);
+
+            List<SuscripcionFallaHeladera> suscripcionesAHeladera = fallaHeladeraService.obtenerPorHeladera(heladera);
+            suscripcionesAHeladera.forEach(mensajeriaService::notificacionFallaHeladera);
+        }
     }
 
     @Override
