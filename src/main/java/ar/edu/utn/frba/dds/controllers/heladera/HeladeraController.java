@@ -11,9 +11,12 @@ import ar.edu.utn.frba.dds.models.entities.data.Barrio;
 import ar.edu.utn.frba.dds.models.entities.data.Calle;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
-import ar.edu.utn.frba.dds.models.entities.heladera.*;
+import ar.edu.utn.frba.dds.models.entities.heladera.AperturaHeladera;
+import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
+import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
+import ar.edu.utn.frba.dds.models.entities.heladera.RetiroDeVianda;
+import ar.edu.utn.frba.dds.models.entities.heladera.SolicitudDeApertura;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
-import ar.edu.utn.frba.dds.models.entities.personaVulnerable.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFallaHeladera;
 import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaPersonaVulnerable;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
@@ -34,11 +37,13 @@ import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.validation.ValidationException;
-
 import java.time.LocalDateTime;
-import java.util.*;
-
-import static java.lang.VersionProps.print;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class HeladeraController extends ColaboradorRequired implements ICrudViewsHandler, IBrokerMessageHandler {
 
@@ -51,6 +56,7 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
     private final TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService;
     private final AperturaHeladeraService aperturaHeladeraService;
     private final RetiroDeViandaService retiroDeViandaService;
+
     public HeladeraController(UsuarioService usuarioService,
                               ColaboradorService colaboradorService,
                               HeladeraService heladeraService,
@@ -250,9 +256,10 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
                 .buscarPorId(heladeraId)
                 .orElseThrow(ResourceNotFoundException::new);
     }
+
     @Override
     public void recibirTemperatura(double temperatura, Heladera heladera) {
-        if(!heladera.admiteTemperatura(temperatura)){
+        if (!heladera.admiteTemperatura(temperatura)) {
             Incidente incidente = Incidente.fallaTemperatura(heladera, LocalDateTime.now());
             this.incidenteService.registrarIncidente(incidente);
 
@@ -271,7 +278,7 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
     }
 
     @Override
-    public void recibirFallaConexion(Heladera heladera){
+    public void recibirFallaConexion(Heladera heladera) {
         Incidente incidente = Incidente.fallaConexion(heladera, LocalDateTime.now());
         this.incidenteService.registrarIncidente(incidente);
 
@@ -287,21 +294,21 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
                 .filter(solicitud -> this.aperturaHeladeraService.buscarPorSolicitud(solicitud).isEmpty()) //solicitudes que no tienen aperturas
                 .min(Comparator.comparing(SolicitudDeApertura::getFechaHora)); // obtengo la más vieja
 
-        if(solicitudDeApertura.isPresent()){
-            AperturaHeladera aperturaHeladera = AperturaHeladera.por(solicitudDeApertura.get().getTarjeta(), solicitudDeApertura.get().getHeladera(), LocalDateTime.now(),solicitudDeApertura.get());
+        if (solicitudDeApertura.isPresent()) {
+            AperturaHeladera aperturaHeladera = AperturaHeladera.por(solicitudDeApertura.get().getTarjeta(), solicitudDeApertura.get().getHeladera(), LocalDateTime.now(), solicitudDeApertura.get());
             this.aperturaHeladeraService.guardar(aperturaHeladera);
             System.out.println("no permito acceso");
             //TODO deberia registrar movimientos
-        }
-        else{
-            Optional<TarjetaPersonaVulnerable> tarjetaPersonaVulnerable= tarjetaPersonaVulnerableService.buscarTarjetaPorCodigo(codigoTarjeta);
-            if(tarjetaPersonaVulnerable.isPresent()){
-                RetiroDeVianda retiroDeVianda = RetiroDeVianda.por(tarjetaPersonaVulnerable.get(),heladera, LocalDateTime.now());
+        } else {
+            Optional<TarjetaPersonaVulnerable> tarjetaPersonaVulnerable = tarjetaPersonaVulnerableService.buscarTarjetaPorCodigo(codigoTarjeta);
+            if (tarjetaPersonaVulnerable.isPresent()) {
+                RetiroDeVianda retiroDeVianda = RetiroDeVianda.por(tarjetaPersonaVulnerable.get(), heladera, LocalDateTime.now());
                 this.retiroDeViandaService.guardar(retiroDeVianda);
-                System.out.println("no permito acceso");            }
-            else {
+                System.out.println("no permito acceso");
+            } else {
                 //TODO no se le da acceso para que abra la heladera
-                System.out.println("no permito acceso");            }
+                System.out.println("no permito acceso");
+            }
         }
     }
 }
