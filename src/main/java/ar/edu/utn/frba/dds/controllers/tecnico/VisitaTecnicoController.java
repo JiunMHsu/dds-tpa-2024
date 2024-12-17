@@ -40,11 +40,13 @@ public class VisitaTecnicoController extends TecnicoRequired {
     }
 
     public void create(Context context) {
+        // TODO - requiere por query param id de incidente
+        // TODO - render form de visita tecnico (descripcion, foto, marcar como resuelto o no)
         context.result("Visita Tecnico");
     }
 
-    public void save(Context context) { // TODO - Ver desp que matchee para Colaborador las vistas
-
+    public void save(Context context) {
+        
         Map<String, Object> model = new HashMap<>();
         List<RedirectDTO> redirectDTOS = new ArrayList<>();
         boolean operationSuccess = false;
