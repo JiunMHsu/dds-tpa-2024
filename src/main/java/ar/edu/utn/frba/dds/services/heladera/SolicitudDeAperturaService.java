@@ -17,4 +17,5 @@ public class SolicitudDeAperturaService {
     public List<SolicitudDeApertura> buscarPorTarjetaHeladeraEnLasUltimas(String tarjeta, Heladera heladera) {
         return this.solicitudDeAperturaRepository.buscarPorTarjetaHeladeraEnLasUltimas(tarjeta, heladera);
     }
+
 }
