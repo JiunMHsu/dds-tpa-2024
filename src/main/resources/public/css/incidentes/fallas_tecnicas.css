@@ -2,6 +2,25 @@
     width: 70%;
 }
 
+.content-wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+.falla-image {
+    display: flex;
+    width: 5rem;
+    height: 5rem;
+    object-fit: cover;
+    border-radius: .5rem;
+}
+
+.description {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+}
+
 .side-panel {
     display: none;
 }

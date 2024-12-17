@@ -13,23 +13,40 @@
 
         <div class="filter-container">
             <div class="filter">FILTROS</div>
+            <!-- TODO - Implementar filtros por resualto y no -->
             <!-- barra por búsqueda y filtros -->
             <!-- filtro: activo, suscripto, encargado -->
         </div>
 
         <div class="scrollable">
             <ul class="list">
-                <!-- !! MODELO DE ITEM -->
-                <li class="list-item">
-                    <a href="" class="item-card">
-                        <h3 class="card-title">Donación de Dinero</h3>
-                        <p>
-                            <span class="material-symbols-rounded card-detail-icon">today</span>
-                            Fecha: 12/10/2021
-                        </p>
-                    </a>
-                </li>
-
+                {{#each fallas}}
+                    <li class="list-item">
+                        <a href="/fallas-tecnicas/{{this.id}}" class="item-card">
+                            <h3 class="card-title"> {{this.heladera}} </h3>
+                            <div class="content-wrapper">
+                                <img src="/image/{{this.foto}}" alt="foto-falla"
+                                     class="falla-image">
+                                <div class="description">
+                                    <p>
+                                        <span class="material-symbols-rounded card-detail-icon"> today </span>
+                                        Fecha y Hora: {{this.fecha}} {{this.hora}}
+                                    </p>
+                                    <p class="estado"
+                                        {{#if this.resuelto}}
+                                       style="color: #A7C957"
+                                        {{else}}
+                                       style="color: #e37f8f"
+                                        {{/if}}>
+                                        <span class="material-symbols-rounded card-detail-icon"> radio_button_checked </span>
+                                        Estado:
+                                        {{#if this.resuelto}} Resuelto {{else}} Pendiente {{/if}}
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                {{/each}}
             </ul>
         </div>
     </div>

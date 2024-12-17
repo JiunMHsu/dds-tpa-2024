@@ -222,21 +222,21 @@ public class Initializer implements WithSimplePersistenceUnit {
                 LocalDateTime.of(2024, 8, 12, 14, 5),
                 colaboradorRepository.buscarPorEmail("adomingueznimo@frba.utn.edu.ar").orElseThrow(),
                 "No funca el lector por tarjeta.",
-                new Imagen(""));
+                new Imagen("image-test.png"));
 
         Incidente i9 = Incidente.fallaTecnica(
                 heladeraRepository.buscarPorNombre("Heladera CUATRO").orElseThrow(),
                 LocalDateTime.of(2024, 9, 17, 19, 40),
                 colaboradorRepository.buscarPorEmail("adomingueznimo@frba.utn.edu.ar").orElseThrow(),
                 "La vianda no sale",
-                new Imagen(""));
+                new Imagen("image-test.png"));
 
         Incidente i10 = Incidente.fallaTecnica(
                 heladeraRepository.buscarPorNombre("Heladera DOCE").orElseThrow(),
                 LocalDateTime.of(2024, 12, 1, 7, 55),
                 colaboradorRepository.buscarPorEmail("jgandola@frba.utn.edu.ar").orElseThrow(),
                 "Ni idea lo que paso",
-                new Imagen(""));
+                new Imagen("image-test.png"));
 
         IncidenteRepository incidenteRepository = new IncidenteRepository();
 

@@ -17,13 +17,14 @@ public class FallaTecnicaDTO {
 
     private String hora;
 
-    private String tipo;
-
     private String colaborador;
 
     private String descripcion;
 
     private String foto;
+
+    private boolean resuelto;
+
 
     // En la vista completa podría mapearse más info del colaborador y la heladera
     // puede servir paraColaborador redirecciones
@@ -33,10 +34,10 @@ public class FallaTecnicaDTO {
                 .heladera(incidente.getHeladera().getNombre())
                 .fecha(DateTimeParser.parseFecha(incidente.getFechaHora().toLocalDate()))
                 .hora(DateTimeParser.parseHora(incidente.getFechaHora().toLocalTime()))
-                .tipo(incidente.getTipo().toString())
                 .colaborador(incidente.getColaborador().getNombre())
                 .descripcion(incidente.getDescripcion())
                 .foto(incidente.getFoto().getRuta())
+                .resuelto(incidente.getFallaResuelta())
                 .build();
     }
 
@@ -46,8 +47,9 @@ public class FallaTecnicaDTO {
                 .heladera(incidente.getHeladera().getNombre())
                 .fecha(DateTimeParser.parseFecha(incidente.getFechaHora().toLocalDate()))
                 .hora(DateTimeParser.parseHora(incidente.getFechaHora().toLocalTime()))
-                .tipo(incidente.getTipo().toString())
                 .foto(incidente.getFoto().getRuta())
+                .resuelto(incidente.getFallaResuelta())
                 .build();
     }
+
 }
