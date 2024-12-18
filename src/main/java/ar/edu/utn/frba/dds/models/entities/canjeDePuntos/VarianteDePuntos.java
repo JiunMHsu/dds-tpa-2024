@@ -18,39 +18,39 @@ import lombok.NoArgsConstructor;
 @Table(name = "variante_puntos")
 public class VarianteDePuntos {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
 
-    @Column(name = "fecha_configuracion", columnDefinition = "DATE", nullable = false)
-    private LocalDate fechaConfiguracion;
+  @Column(name = "fecha_configuracion", columnDefinition = "DATE", nullable = false)
+  private LocalDate fechaConfiguracion;
 
-    @Column(name = "donacion_dinero", nullable = false)
-    private double donacionDinero;
+  @Column(name = "donacion_dinero", nullable = false)
+  private double donacionDinero;
 
-    @Column(name = "distribucion_viandas", nullable = false)
-    private double distribucionViandas;
+  @Column(name = "distribucion_viandas", nullable = false)
+  private double distribucionViandas;
 
-    @Column(name = "donacion_vianda", nullable = false)
-    private double donacionVianda;
+  @Column(name = "donacion_vianda", nullable = false)
+  private double donacionVianda;
 
-    @Column(name = "reparto_tarjeta", nullable = false)
-    private double repartoTarjeta;
+  @Column(name = "reparto_tarjeta", nullable = false)
+  private double repartoTarjeta;
 
-    @Column(name = "heladeras_activas", nullable = false)
-    private double heladerasActivas;
+  @Column(name = "heladeras_activas", nullable = false)
+  private double heladerasActivas;
 
-    public VarianteDePuntos(LocalDate fechaConfiguracion,
-                            double donacionDinero,
-                            double distribucionViandas,
-                            double donacionVianda,
-                            double repartoTarjeta,
-                            double heladerasActivas) {
-        this.fechaConfiguracion = fechaConfiguracion;
-        this.donacionDinero = donacionDinero;
-        this.distribucionViandas = distribucionViandas;
-        this.donacionVianda = donacionVianda;
-        this.repartoTarjeta = repartoTarjeta;
-        this.heladerasActivas = heladerasActivas;
-    }
+  public VarianteDePuntos(LocalDate fechaConfiguracion,
+                          double donacionDinero,
+                          double distribucionViandas,
+                          double donacionVianda,
+                          double repartoTarjeta,
+                          double heladerasActivas) {
+    this.fechaConfiguracion = fechaConfiguracion;
+    this.donacionDinero = donacionDinero;
+    this.distribucionViandas = distribucionViandas;
+    this.donacionVianda = donacionVianda;
+    this.repartoTarjeta = repartoTarjeta;
+    this.heladerasActivas = heladerasActivas;
+  }
 }

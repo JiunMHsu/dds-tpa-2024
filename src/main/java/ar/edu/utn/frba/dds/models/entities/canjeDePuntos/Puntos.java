@@ -14,21 +14,21 @@ import lombok.Setter;
 @Embeddable
 public class Puntos {
 
-    @Getter
-    @Column(name = "puntos")
-    private double puntos;
+  @Getter
+  @Column(name = "puntos")
+  private double puntos;
 
-    @Setter
-    @Column(name = "es_valido")
-    private boolean esValido;
+  @Setter
+  @Column(name = "es_valido")
+  private boolean esValido;
 
-    @Column(name = "valido_hasta", columnDefinition = "DATE")
-    private LocalDate validoHasta;
+  @Column(name = "valido_hasta", columnDefinition = "DATE")
+  private LocalDate validoHasta;
 
-    public boolean esValido(TipoColaborador tipoColaborador) {
-        return switch (tipoColaborador) {
-            case HUMANO -> esValido;
-            case JURIDICO -> esValido && validoHasta.isAfter(LocalDate.now());
-        };
-    }
+  public boolean esValido(TipoColaborador tipoColaborador) {
+    return switch (tipoColaborador) {
+      case HUMANO -> esValido;
+      case JURIDICO -> esValido && validoHasta.isAfter(LocalDate.now());
+    };
+  }
 }

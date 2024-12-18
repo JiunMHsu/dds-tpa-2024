@@ -24,32 +24,32 @@ import lombok.NoArgsConstructor;
 @Table(name = "suscripcion_heladera_llena")
 public class SuscripcionHeladeraLlena extends EntidadPersistente {
 
-    @ManyToOne
-    @JoinColumn(name = "colaborador_id", nullable = false)
-    private Colaborador colaborador;
+  @ManyToOne
+  @JoinColumn(name = "colaborador_id", nullable = false)
+  private Colaborador colaborador;
 
-    @ManyToOne
-    @JoinColumn(name = "heladera_id", nullable = false)
-    private Heladera heladera;
+  @ManyToOne
+  @JoinColumn(name = "heladera_id", nullable = false)
+  private Heladera heladera;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "medio_notificacion", nullable = false)
-    private MedioDeNotificacion medioDeNotificacion;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "medio_notificacion", nullable = false)
+  private MedioDeNotificacion medioDeNotificacion;
 
-    @Column(name = "espacio_restante", nullable = false)
-    private Integer espacioRestante;
+  @Column(name = "espacio_restante", nullable = false)
+  private Integer espacioRestante;
 
-    public static SuscripcionHeladeraLlena de(Colaborador colaborador,
-                                              Heladera heladera,
-                                              MedioDeNotificacion medioDeNotificacion,
-                                              Integer espacioRestante) {
-        return SuscripcionHeladeraLlena
-                .builder()
-                .colaborador(colaborador)
-                .heladera(heladera)
-                .medioDeNotificacion(medioDeNotificacion)
-                .espacioRestante(espacioRestante)
-                .build();
-    }
+  public static SuscripcionHeladeraLlena de(Colaborador colaborador,
+                                            Heladera heladera,
+                                            MedioDeNotificacion medioDeNotificacion,
+                                            Integer espacioRestante) {
+    return SuscripcionHeladeraLlena
+        .builder()
+        .colaborador(colaborador)
+        .heladera(heladera)
+        .medioDeNotificacion(medioDeNotificacion)
+        .espacioRestante(espacioRestante)
+        .build();
+  }
 
 }

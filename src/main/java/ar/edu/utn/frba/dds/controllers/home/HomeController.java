@@ -15,80 +15,80 @@ import java.util.Optional;
 
 public class HomeController implements ICrudViewsHandler {
 
-    HomeService homeService;
+  HomeService homeService;
 
-    public HomeController(HomeService homeService) {
-        this.homeService = homeService;
+  public HomeController(HomeService homeService) {
+    this.homeService = homeService;
+  }
+
+  @Override
+  public void index(Context context) {
+
+    String idUsuario = context.sessionAttribute("idUsuario");
+
+    if (idUsuario == null) {
+      context.redirect("/login");
+      return;
     }
 
-    @Override
-    public void index(Context context) {
-
-        String idUsuario = context.sessionAttribute("idUsuario");
-
-        if (idUsuario == null) {
-            context.redirect("/login");
-            return;
-        }
-
-        Optional<Usuario> usuarioOpt = this.homeService.buscarPorId(idUsuario);
-        if (!usuarioOpt.isPresent()) {
-            context.redirect("/login");
-            return;
-        }
-
-        Usuario usuario = usuarioOpt.get();
-
-        if (usuario.getRol() != TipoRol.COLABORADOR) {
-            context.redirect("/prohibido");
-            return;
-        }
-
-        Optional<Colaborador> colaboradorOpt = this.homeService.buscarPorUsuario(usuario);
-
-        if (!colaboradorOpt.isPresent()) {
-            context.redirect("/login");
-            return;
-        }
-
-        Colaborador colaborador = colaboradorOpt.get();
-        TipoColaborador tipoColaborador = colaborador.getTipoColaborador();
-        List<TipoColaboracion> colaboraciones = tipoColaborador.colaboracionesPermitidas();
-
-        Map<String, Object> model = new HashMap<>();
-        model.put("colaboraciones", colaboraciones);
-        model.put("titulo", "Listado por colaboraciones");
-
-        context.render("home.hbs", model);
+    Optional<Usuario> usuarioOpt = this.homeService.buscarPorId(idUsuario);
+    if (!usuarioOpt.isPresent()) {
+      context.redirect("/login");
+      return;
     }
 
-    @Override
-    public void show(Context context) {
+    Usuario usuario = usuarioOpt.get();
 
+    if (usuario.getRol() != TipoRol.COLABORADOR) {
+      context.redirect("/prohibido");
+      return;
     }
 
-    @Override
-    public void create(Context context) {
+    Optional<Colaborador> colaboradorOpt = this.homeService.buscarPorUsuario(usuario);
 
+    if (!colaboradorOpt.isPresent()) {
+      context.redirect("/login");
+      return;
     }
 
-    @Override
-    public void save(Context context) {
+    Colaborador colaborador = colaboradorOpt.get();
+    TipoColaborador tipoColaborador = colaborador.getTipoColaborador();
+    List<TipoColaboracion> colaboraciones = tipoColaborador.colaboracionesPermitidas();
 
-    }
+    Map<String, Object> model = new HashMap<>();
+    model.put("colaboraciones", colaboraciones);
+    model.put("titulo", "Listado por colaboraciones");
 
-    @Override
-    public void edit(Context context) {
+    context.render("home.hbs", model);
+  }
 
-    }
+  @Override
+  public void show(Context context) {
 
-    @Override
-    public void update(Context context) {
+  }
 
-    }
+  @Override
+  public void create(Context context) {
 
-    @Override
-    public void delete(Context context) {
+  }
 
-    }
+  @Override
+  public void save(Context context) {
+
+  }
+
+  @Override
+  public void edit(Context context) {
+
+  }
+
+  @Override
+  public void update(Context context) {
+
+  }
+
+  @Override
+  public void delete(Context context) {
+
+  }
 }

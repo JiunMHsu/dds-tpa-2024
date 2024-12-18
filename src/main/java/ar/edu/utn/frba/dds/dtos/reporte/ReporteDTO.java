@@ -11,22 +11,22 @@ import lombok.Setter;
 @Builder
 public class ReporteDTO {
 
-    private String id;
+  private String id;
 
-    private String titulo;
+  private String titulo;
 
-    private String fecha;
+  private String fecha;
 
-    private String nombreArchivo;
+  private String nombreArchivo;
 
-    public static ReporteDTO completa(Reporte reporte) {
-        return ReporteDTO
-                .builder()
-                .id(reporte.getId().toString())
-                .titulo(reporte.getTitulo())
-                .fecha(DateTimeParser.parseFecha(reporte.getFecha()))
-                .nombreArchivo(reporte.getNombreArchivo())
-                .build();
-    }
+  public static ReporteDTO completa(Reporte reporte) {
+    return ReporteDTO
+        .builder()
+        .id(reporte.getId().toString())
+        .titulo(reporte.getTitulo())
+        .fecha(DateTimeParser.parseFecha(reporte.getFecha()))
+        .nombreArchivo(reporte.getNombreArchivo())
+        .build();
+  }
 
 }

@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface IPersonaVulnerableRepository extends ICrudRepository<PersonaVulnerable> {
 
-    Optional<PersonaVulnerable> buscarPorDocumento(String documento);
+  Optional<PersonaVulnerable> buscarPorDocumento(String documento);
 }

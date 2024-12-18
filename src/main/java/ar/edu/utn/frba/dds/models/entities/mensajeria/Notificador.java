@@ -5,14 +5,14 @@ import java.time.LocalDateTime;
 
 public class Notificador {
 
-    private final ISender sender;
+  private final ISender sender;
 
-    public Notificador(ISender sender) {
-        this.sender = sender;
-    }
+  public Notificador(ISender sender) {
+    this.sender = sender;
+  }
 
-    public void enviarNotificacion(Mensaje mensaje) throws MessagingException {
-        sender.enviarMensaje(mensaje.getContacto(), mensaje.getAsunto(), mensaje.getCuerpo());
-        mensaje.setFechaEnvio(LocalDateTime.now());
-    }
+  public void enviarNotificacion(Mensaje mensaje) throws MessagingException {
+    sender.enviarMensaje(mensaje.getContacto(), mensaje.getAsunto(), mensaje.getCuerpo());
+    mensaje.setFechaEnvio(LocalDateTime.now());
+  }
 }

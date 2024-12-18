@@ -9,33 +9,33 @@ import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.Optional;
 
 public class DistribucionViandasService implements WithSimplePersistenceUnit {
-    private final DistribucionViandasRepository distribucionViandasRepository;
-    private final IHeladeraRepository heladeraRepository;
+  private final DistribucionViandasRepository distribucionViandasRepository;
+  private final IHeladeraRepository heladeraRepository;
 
-    public DistribucionViandasService(DistribucionViandasRepository distribucionViandasRepository,
-                                      IHeladeraRepository heladeraRepository) {
-        this.distribucionViandasRepository = distribucionViandasRepository;
-        this.heladeraRepository = heladeraRepository;
-    }
+  public DistribucionViandasService(DistribucionViandasRepository distribucionViandasRepository,
+                                    IHeladeraRepository heladeraRepository) {
+    this.distribucionViandasRepository = distribucionViandasRepository;
+    this.heladeraRepository = heladeraRepository;
+  }
 
-    public void registrar(DistribucionViandas distribucionViandas) throws ExcepcionCantidadDeViandas {
+  public void registrar(DistribucionViandas distribucionViandas) throws ExcepcionCantidadDeViandas {
 
-        Heladera heladeraOrigen = distribucionViandas.getOrigen();
-        Heladera heladeraDestino = distribucionViandas.getDestino();
-        Integer viandas = distribucionViandas.getViandas();
+    Heladera heladeraOrigen = distribucionViandas.getOrigen();
+    Heladera heladeraDestino = distribucionViandas.getDestino();
+    Integer viandas = distribucionViandas.getViandas();
 
-        heladeraOrigen.quitarViandas(viandas);
-        heladeraDestino.agregarViandas(viandas);
+    heladeraOrigen.quitarViandas(viandas);
+    heladeraDestino.agregarViandas(viandas);
 
-        beginTransaction();
-        this.heladeraRepository.actualizar(heladeraOrigen);
-        this.heladeraRepository.actualizar(heladeraDestino);
-        this.distribucionViandasRepository.guardar(distribucionViandas);
-        
-        commitTransaction();
-    }
+    beginTransaction();
+    this.heladeraRepository.actualizar(heladeraOrigen);
+    this.heladeraRepository.actualizar(heladeraDestino);
+    this.distribucionViandasRepository.guardar(distribucionViandas);
 
-    public Optional<DistribucionViandas> buscarPorId(String id) {
-        return distribucionViandasRepository.buscarPorId(id);
-    }
+    commitTransaction();
+  }
+
+  public Optional<DistribucionViandas> buscarPorId(String id) {
+    return distribucionViandasRepository.buscarPorId(id);
+  }
 }

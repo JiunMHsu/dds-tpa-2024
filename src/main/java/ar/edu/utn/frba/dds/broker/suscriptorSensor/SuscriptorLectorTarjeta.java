@@ -6,13 +6,13 @@ import ar.edu.utn.frba.dds.models.entities.sensor.Sensor;
 
 public class SuscriptorLectorTarjeta extends SuscriptorSensor {
 
-    public SuscriptorLectorTarjeta(Sensor suscriptor) {
-        super(suscriptor);
-    }
+  public SuscriptorLectorTarjeta(Sensor suscriptor) {
+    super(suscriptor);
+  }
 
-    @Override
-    public void recibirMensaje(String mensaje) {
-        ServiceLocator.instanceOf(HeladeraController.class).recibirCodigoTarjeta(mensaje, getSuscriptorSensor().getHeladera());
-    }
+  @Override
+  public void recibirMensaje(String mensaje) {
+    ServiceLocator.instanceOf(HeladeraController.class).recibirCodigoTarjeta(mensaje, getSuscriptorSensor().getHeladera());
+  }
 
 }

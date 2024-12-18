@@ -42,160 +42,160 @@ import org.apache.commons.csv.CSVRecord;
 
 public class ColaboracionService implements WithSimplePersistenceUnit {
 
-    private final UsuarioRepository usuarioRepository;
-    private final ColaboradorRepository colaboradorRepository;
+  private final UsuarioRepository usuarioRepository;
+  private final ColaboradorRepository colaboradorRepository;
 
-    private final DonacionViandaRepository donacionViandaRepository;
-    private final DonacionDineroRepository donacionDineroRepository;
-    private final DistribucionViandasRepository distribucionViandasRepository;
-    private final HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository;
-    private final OfertaDeProductosRepository ofertaDeProductosRepository;
-    private final RepartoDeTarjetasRepository repartoDeTarjetasRepository;
+  private final DonacionViandaRepository donacionViandaRepository;
+  private final DonacionDineroRepository donacionDineroRepository;
+  private final DistribucionViandasRepository distribucionViandasRepository;
+  private final HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository;
+  private final OfertaDeProductosRepository ofertaDeProductosRepository;
+  private final RepartoDeTarjetasRepository repartoDeTarjetasRepository;
 
-    private final ISender mailSender;
-    private final MensajeRepository mensajeRepository;
+  private final ISender mailSender;
+  private final MensajeRepository mensajeRepository;
 
-    public ColaboracionService(UsuarioRepository usuarioRepository,
-                               ColaboradorRepository colaboradorRepository,
-                               DonacionViandaRepository donacionViandaRepository,
-                               DonacionDineroRepository donacionDineroRepository,
-                               DistribucionViandasRepository distribucionViandasRepository,
-                               HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository,
-                               OfertaDeProductosRepository ofertaDeProductosRepository,
-                               RepartoDeTarjetasRepository repartoDeTarjetasRepository,
-                               ISender mailSender,
-                               MensajeRepository mensajeRepository) {
-        this.usuarioRepository = usuarioRepository;
-        this.colaboradorRepository = colaboradorRepository;
-        this.donacionViandaRepository = donacionViandaRepository;
-        this.donacionDineroRepository = donacionDineroRepository;
-        this.distribucionViandasRepository = distribucionViandasRepository;
-        this.hacerseCargoHeladeraRepository = hacerseCargoHeladeraRepository;
-        this.ofertaDeProductosRepository = ofertaDeProductosRepository;
-        this.repartoDeTarjetasRepository = repartoDeTarjetasRepository;
-        this.mailSender = mailSender;
-        this.mensajeRepository = mensajeRepository;
+  public ColaboracionService(UsuarioRepository usuarioRepository,
+                             ColaboradorRepository colaboradorRepository,
+                             DonacionViandaRepository donacionViandaRepository,
+                             DonacionDineroRepository donacionDineroRepository,
+                             DistribucionViandasRepository distribucionViandasRepository,
+                             HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository,
+                             OfertaDeProductosRepository ofertaDeProductosRepository,
+                             RepartoDeTarjetasRepository repartoDeTarjetasRepository,
+                             ISender mailSender,
+                             MensajeRepository mensajeRepository) {
+    this.usuarioRepository = usuarioRepository;
+    this.colaboradorRepository = colaboradorRepository;
+    this.donacionViandaRepository = donacionViandaRepository;
+    this.donacionDineroRepository = donacionDineroRepository;
+    this.distribucionViandasRepository = distribucionViandasRepository;
+    this.hacerseCargoHeladeraRepository = hacerseCargoHeladeraRepository;
+    this.ofertaDeProductosRepository = ofertaDeProductosRepository;
+    this.repartoDeTarjetasRepository = repartoDeTarjetasRepository;
+    this.mailSender = mailSender;
+    this.mensajeRepository = mensajeRepository;
+  }
+
+  public List<Object> buscarTodas() {
+    List<Object> colaboraciones = new ArrayList<>();
+    colaboraciones.addAll(donacionViandaRepository.buscarTodos());
+    colaboraciones.addAll(donacionDineroRepository.buscarTodos());
+    colaboraciones.addAll(distribucionViandasRepository.buscarTodos());
+    colaboraciones.addAll(hacerseCargoHeladeraRepository.buscarTodos());
+    colaboraciones.addAll(ofertaDeProductosRepository.buscarTodos());
+    colaboraciones.addAll(repartoDeTarjetasRepository.buscarTodos());
+    return colaboraciones;
+  }
+
+  public List<Object> buscarTodasPorColaborador(Colaborador colaborador) {
+    List<Object> colaboraciones = new ArrayList<>();
+    colaboraciones.addAll(donacionViandaRepository.buscarPorColaborador(colaborador));
+    colaboraciones.addAll(donacionDineroRepository.buscarPorColaborador(colaborador));
+    colaboraciones.addAll(distribucionViandasRepository.buscarPorColaborador(colaborador));
+    colaboraciones.addAll(hacerseCargoHeladeraRepository.buscarPorColaborador(colaborador));
+    colaboraciones.addAll(ofertaDeProductosRepository.buscarPorColaborador(colaborador));
+    colaboraciones.addAll(repartoDeTarjetasRepository.buscarPorColaborador(colaborador));
+    return colaboraciones;
+  }
+
+  public void cargarColaboraciones(InputStream csv) throws CargaMasivaException {
+    try {
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+      BufferedReader reader = new BufferedReader(new InputStreamReader(csv, StandardCharsets.UTF_8));
+      CSVParser csvParser = new CSVParser(reader, CSVFormat.Builder.create().setHeader().build());
+
+      beginTransaction();
+      for (CSVRecord csvRecord : csvParser) {
+        Documento documento = new Documento(TipoDocumento.valueOf(csvRecord.get("Tipo Doc")), csvRecord.get("Documento"));
+
+        ColaboracionPrevia colaboracionPrevia = ColaboracionPrevia.por(
+            documento,
+            csvRecord.get("Nombre"),
+            csvRecord.get("Apellido"),
+            csvRecord.get("Mail"),
+            LocalDate.parse(csvRecord.get("Fecha de colaboración"), formatter).atStartOfDay(),
+            csvRecord.get("Forma de colaboración"),
+            Integer.parseInt(csvRecord.get("Cantidad"))
+        );
+
+        Colaborador colaborador = colaboradorRepository
+            .buscarPorEmail(colaboracionPrevia.getEmail())
+            .orElse(generarColaborador(colaboracionPrevia.getNombre(),
+                colaboracionPrevia.getApellido(),
+                colaboracionPrevia.getDocumento(),
+                colaboracionPrevia.getEmail()));
+
+        Mensaje mail = generarMensajePara(colaborador);
+        mailSender.enviarMensaje(mail.getContacto(), mail.getAsunto(), mail.getCuerpo());
+        mail.setFechaEnvio(LocalDateTime.now());
+        mensajeRepository.guardar(mail);
+
+        this.registrarColaboracion(colaboracionPrevia, colaborador);
+      }
+      commitTransaction();
+    } catch (IOException | IllegalArgumentException | MessagingException e) {
+      rollbackTransaction();
+      throw new CargaMasivaException("Error al cargar las colaboraciones. Error: " + e.getMessage());
     }
+  }
 
-    public List<Object> buscarTodas() {
-        List<Object> colaboraciones = new ArrayList<>();
-        colaboraciones.addAll(donacionViandaRepository.buscarTodos());
-        colaboraciones.addAll(donacionDineroRepository.buscarTodos());
-        colaboraciones.addAll(distribucionViandasRepository.buscarTodos());
-        colaboraciones.addAll(hacerseCargoHeladeraRepository.buscarTodos());
-        colaboraciones.addAll(ofertaDeProductosRepository.buscarTodos());
-        colaboraciones.addAll(repartoDeTarjetasRepository.buscarTodos());
-        return colaboraciones;
-    }
+  private Colaborador generarColaborador(String nombre, String apellido, Documento documento, String email) {
+    Usuario usuario = GeneradorDeCredenciales.generarUsuario(nombre, email);
+    Colaborador colaborador = Colaborador.humanaDocumento(usuario, nombre, apellido, documento);
+    colaborador.setContacto(Contacto.conEmail(email));
 
-    public List<Object> buscarTodasPorColaborador(Colaborador colaborador) {
-        List<Object> colaboraciones = new ArrayList<>();
-        colaboraciones.addAll(donacionViandaRepository.buscarPorColaborador(colaborador));
-        colaboraciones.addAll(donacionDineroRepository.buscarPorColaborador(colaborador));
-        colaboraciones.addAll(distribucionViandasRepository.buscarPorColaborador(colaborador));
-        colaboraciones.addAll(hacerseCargoHeladeraRepository.buscarPorColaborador(colaborador));
-        colaboraciones.addAll(ofertaDeProductosRepository.buscarPorColaborador(colaborador));
-        colaboraciones.addAll(repartoDeTarjetasRepository.buscarPorColaborador(colaborador));
-        return colaboraciones;
-    }
+    usuarioRepository.guardar(usuario);
+    colaboradorRepository.guardar(colaborador);
+    return colaborador;
+  }
 
-    public void cargarColaboraciones(InputStream csv) throws CargaMasivaException {
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(csv, StandardCharsets.UTF_8));
-            CSVParser csvParser = new CSVParser(reader, CSVFormat.Builder.create().setHeader().build());
+  private Mensaje generarMensajePara(Colaborador colaborador) {
+    Usuario usuario = colaborador.getUsuario();
 
-            beginTransaction();
-            for (CSVRecord csvRecord : csvParser) {
-                Documento documento = new Documento(TipoDocumento.valueOf(csvRecord.get("Tipo Doc")), csvRecord.get("Documento"));
+    String asunto = "Credencial por usuario";
+    String cuerpo = "Esta es la credencial:"
+        + " - Nombre por usuario provicional: " + usuario.getNombre()
+        + " - Contrasenia por usuario provicional: " + usuario.getContrasenia();
 
-                ColaboracionPrevia colaboracionPrevia = ColaboracionPrevia.por(
-                        documento,
-                        csvRecord.get("Nombre"),
-                        csvRecord.get("Apellido"),
-                        csvRecord.get("Mail"),
-                        LocalDate.parse(csvRecord.get("Fecha de colaboración"), formatter).atStartOfDay(),
-                        csvRecord.get("Forma de colaboración"),
-                        Integer.parseInt(csvRecord.get("Cantidad"))
-                );
+    Mensaje mensaje = Mensaje.paraColaborador(colaborador, asunto, cuerpo);
+    mensaje.setMedio(MedioDeNotificacion.EMAIL);
 
-                Colaborador colaborador = colaboradorRepository
-                        .buscarPorEmail(colaboracionPrevia.getEmail())
-                        .orElse(generarColaborador(colaboracionPrevia.getNombre(),
-                                                   colaboracionPrevia.getApellido(),
-                                                   colaboracionPrevia.getDocumento(),
-                                                   colaboracionPrevia.getEmail()));
+    return mensaje;
+  }
 
-                Mensaje mail = generarMensajePara(colaborador);
-                mailSender.enviarMensaje(mail.getContacto(), mail.getAsunto(), mail.getCuerpo());
-                mail.setFechaEnvio(LocalDateTime.now());
-                mensajeRepository.guardar(mail);
+  private void registrarColaboracion(ColaboracionPrevia colaboracionPrevia, Colaborador colaborador) {
+    switch (colaboracionPrevia.getFormaDeColaboracion()) {
+      case "DINERO":
+        DonacionDinero donacionDinero = DonacionDinero
+            .por(colaborador, colaboracionPrevia.getFechaHora(), colaboracionPrevia.getCantidad());
+        donacionDineroRepository.guardar(donacionDinero);
+        break;
 
-                this.registrarColaboracion(colaboracionPrevia, colaborador);
-            }
-            commitTransaction();
-        } catch (IOException | IllegalArgumentException | MessagingException e) {
-            rollbackTransaction();
-            throw new CargaMasivaException("Error al cargar las colaboraciones. Error: " + e.getMessage());
+      case "DONACION_VIANDAS":
+        for (int i = 0; i < colaboracionPrevia.getCantidad(); i++) {
+          DonacionVianda donacionVianda = DonacionVianda
+              .por(colaborador, colaboracionPrevia.getFechaHora());
+          donacionViandaRepository.guardar(donacionVianda);
         }
-    }
+        break;
 
-    private Colaborador generarColaborador(String nombre, String apellido, Documento documento ,String email) {
-        Usuario usuario = GeneradorDeCredenciales.generarUsuario(nombre, email);
-        Colaborador colaborador = Colaborador.humanaDocumento(usuario, nombre, apellido, documento);
-        colaborador.setContacto(Contacto.conEmail(email));
+      case "REDISTRIBUCION_VIANDAS":
+        DistribucionViandas distribucionViandas = DistribucionViandas
+            .por(colaborador, colaboracionPrevia.getFechaHora(), colaboracionPrevia.getCantidad());
+        distribucionViandasRepository.guardar(distribucionViandas);
+        break;
 
-        usuarioRepository.guardar(usuario);
-        colaboradorRepository.guardar(colaborador);
-        return colaborador;
-    }
-
-    private Mensaje generarMensajePara(Colaborador colaborador) {
-        Usuario usuario = colaborador.getUsuario();
-
-        String asunto = "Credencial por usuario";
-        String cuerpo = "Esta es la credencial:"
-                + " - Nombre por usuario provicional: " + usuario.getNombre()
-                + " - Contrasenia por usuario provicional: " + usuario.getContrasenia();
-
-        Mensaje mensaje = Mensaje.paraColaborador(colaborador, asunto, cuerpo);
-        mensaje.setMedio(MedioDeNotificacion.EMAIL);
-
-        return mensaje;
-    }
-
-    private void registrarColaboracion(ColaboracionPrevia colaboracionPrevia, Colaborador colaborador) {
-        switch (colaboracionPrevia.getFormaDeColaboracion()) {
-            case "DINERO":
-                DonacionDinero donacionDinero = DonacionDinero
-                        .por(colaborador, colaboracionPrevia.getFechaHora(), colaboracionPrevia.getCantidad());
-                donacionDineroRepository.guardar(donacionDinero);
-                break;
-
-            case "DONACION_VIANDAS":
-                for (int i = 0; i < colaboracionPrevia.getCantidad(); i++) {
-                    DonacionVianda donacionVianda = DonacionVianda
-                            .por(colaborador, colaboracionPrevia.getFechaHora());
-                    donacionViandaRepository.guardar(donacionVianda);
-                }
-                break;
-
-            case "REDISTRIBUCION_VIANDAS":
-                DistribucionViandas distribucionViandas = DistribucionViandas
-                        .por(colaborador, colaboracionPrevia.getFechaHora(), colaboracionPrevia.getCantidad());
-                distribucionViandasRepository.guardar(distribucionViandas);
-                break;
-
-            case "ENTREGA_TARJETAS":
-                for (int i = 0; i < colaboracionPrevia.getCantidad(); i++) {
-                    RepartoDeTarjetas repartoDeTarjetas = RepartoDeTarjetas
-                            .por(colaborador, colaboracionPrevia.getFechaHora());
-                    repartoDeTarjetasRepository.guardar(repartoDeTarjetas);
-                }
-                break;
-
-            default:
-                break;
+      case "ENTREGA_TARJETAS":
+        for (int i = 0; i < colaboracionPrevia.getCantidad(); i++) {
+          RepartoDeTarjetas repartoDeTarjetas = RepartoDeTarjetas
+              .por(colaborador, colaboracionPrevia.getFechaHora());
+          repartoDeTarjetasRepository.guardar(repartoDeTarjetas);
         }
+        break;
+
+      default:
+        break;
     }
+  }
 }

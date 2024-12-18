@@ -29,52 +29,52 @@ import lombok.Setter;
 @Table(name = "tecnico")
 public class Tecnico extends EntidadPersistente {
 
-    @OneToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuario;
+  @OneToOne
+  @JoinColumn(name = "usuario_id", nullable = false)
+  private Usuario usuario;
 
-    @Column(name = "nombre", nullable = false)
-    private String nombre;
+  @Column(name = "nombre", nullable = false)
+  private String nombre;
 
-    @Column(name = "apellido", nullable = false)
-    private String apellido;
+  @Column(name = "apellido", nullable = false)
+  private String apellido;
 
-    @Embedded
-    private Documento documento;
+  @Embedded
+  private Documento documento;
 
-    @Column(name = "cuit", unique = true, nullable = false)
-    private String cuit;
+  @Column(name = "cuit", unique = true, nullable = false)
+  private String cuit;
 
-    @Embedded
-    private Contacto contacto;
+  @Embedded
+  private Contacto contacto;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "medio_notificacion", nullable = false)
-    private MedioDeNotificacion medioDeNotificacion;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "medio_notificacion", nullable = false)
+  private MedioDeNotificacion medioDeNotificacion;
 
-    @Embedded
-    private Area areaDeCobertura;
+  @Embedded
+  private Area areaDeCobertura;
 
-    public static Tecnico con(Usuario usuario,
-                              String nombre,
-                              String apellido,
-                              Documento documento,
-                              String cuit,
-                              Contacto contacto,
-                              MedioDeNotificacion medioDeNotificacion,
-                              Area areaDeCobertura) {
+  public static Tecnico con(Usuario usuario,
+                            String nombre,
+                            String apellido,
+                            Documento documento,
+                            String cuit,
+                            Contacto contacto,
+                            MedioDeNotificacion medioDeNotificacion,
+                            Area areaDeCobertura) {
 
-        return Tecnico
-                .builder()
-                .usuario(usuario)
-                .nombre(nombre)
-                .apellido(apellido)
-                .documento(documento)
-                .cuit(cuit)
-                .contacto(contacto)
-                .medioDeNotificacion(medioDeNotificacion)
-                .areaDeCobertura(areaDeCobertura)
-                .build();
-    }
+    return Tecnico
+        .builder()
+        .usuario(usuario)
+        .nombre(nombre)
+        .apellido(apellido)
+        .documento(documento)
+        .cuit(cuit)
+        .contacto(contacto)
+        .medioDeNotificacion(medioDeNotificacion)
+        .areaDeCobertura(areaDeCobertura)
+        .build();
+  }
 
 }

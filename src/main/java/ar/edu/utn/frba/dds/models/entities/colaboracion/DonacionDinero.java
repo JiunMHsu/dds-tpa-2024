@@ -23,37 +23,37 @@ import lombok.Setter;
 @Table(name = "donacion_dinero")
 public class DonacionDinero extends EntidadPersistente {
 
-    @ManyToOne
-    @JoinColumn(name = "colaborador_id", nullable = false)
-    private Colaborador colaborador;
+  @ManyToOne
+  @JoinColumn(name = "colaborador_id", nullable = false)
+  private Colaborador colaborador;
 
-    @Column(name = "fecha_hora", columnDefinition = "DATETIME", nullable = false)
-    private LocalDateTime fechaHora;
+  @Column(name = "fecha_hora", columnDefinition = "DATETIME", nullable = false)
+  private LocalDateTime fechaHora;
 
-    @Column(name = "monto", nullable = false)
-    private Integer monto;
+  @Column(name = "monto", nullable = false)
+  private Integer monto;
 
-    @Setter
-    @Column(name = "frecuencia", columnDefinition = "VARCHAR(50)")
-    private Period frecuencia;
+  @Setter
+  @Column(name = "frecuencia", columnDefinition = "VARCHAR(50)")
+  private Period frecuencia;
 
-    public static DonacionDinero por(Colaborador colaborador,
-                                     LocalDateTime fechaDonacion,
-                                     Integer monto,
-                                     Period frecuencia) {
-        return DonacionDinero
-                .builder()
-                .colaborador(colaborador)
-                .fechaHora(fechaDonacion)
-                .monto(monto)
-                .frecuencia(frecuencia)
-                .build();
-    }
+  public static DonacionDinero por(Colaborador colaborador,
+                                   LocalDateTime fechaDonacion,
+                                   Integer monto,
+                                   Period frecuencia) {
+    return DonacionDinero
+        .builder()
+        .colaborador(colaborador)
+        .fechaHora(fechaDonacion)
+        .monto(monto)
+        .frecuencia(frecuencia)
+        .build();
+  }
 
-    public static DonacionDinero por(Colaborador colaborador,
-                                     LocalDateTime fechaDonacion,
-                                     Integer monto) {
-        return DonacionDinero.por(colaborador, fechaDonacion, monto, null);
-    }
+  public static DonacionDinero por(Colaborador colaborador,
+                                   LocalDateTime fechaDonacion,
+                                   Integer monto) {
+    return DonacionDinero.por(colaborador, fechaDonacion, monto, null);
+  }
 
 }

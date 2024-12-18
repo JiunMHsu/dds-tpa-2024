@@ -27,17 +27,17 @@ import lombok.NoArgsConstructor;
 @Table(name = "entrega_viandas")
 public class EntregaViandas extends EntidadPersistente {
 
-    @ManyToOne
-    @JoinColumn(name = "colaborador_id", nullable = false)
-    private Colaborador colaborador;
+  @ManyToOne
+  @JoinColumn(name = "colaborador_id", nullable = false)
+  private Colaborador colaborador;
 
-    @Column(name = "fecha_hora", columnDefinition = "DATETIME", nullable = false)
-    private LocalDateTime fechaHora;
+  @Column(name = "fecha_hora", columnDefinition = "DATETIME", nullable = false)
+  private LocalDateTime fechaHora;
 
-    @ManyToOne
-    @JoinColumn(name = "heladera_destino_id", nullable = false)
-    private Heladera destino;
+  @ManyToOne
+  @JoinColumn(name = "heladera_destino_id", nullable = false)
+  private Heladera destino;
 
-    @Transient // TODO - Mapear la lista por viandas
-    private List<Vianda> viandas;
+  @Transient // TODO - Mapear la lista por viandas
+  private List<Vianda> viandas;
 }

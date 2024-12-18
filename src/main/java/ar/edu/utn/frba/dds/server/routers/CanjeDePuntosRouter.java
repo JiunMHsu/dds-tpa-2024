@@ -11,14 +11,14 @@ import io.javalin.config.RouterConfig;
 
 public class CanjeDePuntosRouter implements IRouter {
 
-    @Override
-    public void apply(RouterConfig config) {
-        config.apiBuilder(() ->
-                path("/canje-de-puntos", () -> {
-                    get("/new", ServiceLocator.instanceOf(CanjeDePuntosController.class)::create, TipoRol.COLABORADOR);
-                    post(ServiceLocator.instanceOf(CanjeDePuntosController.class)::save, TipoRol.COLABORADOR);
+  @Override
+  public void apply(RouterConfig config) {
+    config.apiBuilder(() ->
+        path("/canje-de-puntos", () -> {
+          get("/new", ServiceLocator.instanceOf(CanjeDePuntosController.class)::create, TipoRol.COLABORADOR);
+          post(ServiceLocator.instanceOf(CanjeDePuntosController.class)::save, TipoRol.COLABORADOR);
 
-                    get("/historial", ServiceLocator.instanceOf(CanjeDePuntosController.class)::index, TipoRol.COLABORADOR);
-                }));
-    }
+          get("/historial", ServiceLocator.instanceOf(CanjeDePuntosController.class)::index, TipoRol.COLABORADOR);
+        }));
+  }
 }

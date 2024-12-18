@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 
 public class CanjePuntosRepositoryTest {
 
-    private CanjeDePuntosRepository canjePuntosRepository;
+  private CanjeDePuntosRepository canjePuntosRepository;
 
-    @Test
-    public void testAgregar() {
+  @Test
+  public void testAgregar() {
 
-    }
+  }
 }

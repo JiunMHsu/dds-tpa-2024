@@ -12,29 +12,29 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class HacerseCargoHeladeraDTO extends ColaboracionDTO {
 
-    private String colaborador;
+  private String colaborador;
 
-    private String heladeraACargo;
+  private String heladeraACargo;
 
-    public static HacerseCargoHeladeraDTO completa(HacerseCargoHeladera hacerseCargoHeladera) {
+  public static HacerseCargoHeladeraDTO completa(HacerseCargoHeladera hacerseCargoHeladera) {
 
-        return HacerseCargoHeladeraDTO.builder()
-                .id(hacerseCargoHeladera.getId().toString())
-                .nombre(TipoColaboracion.HACERSE_CARGO_HELADERA.getDescription())
-                .fechaHora(DateTimeParser.parseFechaHora(hacerseCargoHeladera.getFechaHora()))
-                .path(getPath(TipoColaboracion.HACERSE_CARGO_HELADERA))
-                .colaborador(hacerseCargoHeladera.getColaborador().getUsuario().getNombre())
-                .heladeraACargo(hacerseCargoHeladera.getHeladeraACargo().getNombre())
-                .build();
-    }
+    return HacerseCargoHeladeraDTO.builder()
+        .id(hacerseCargoHeladera.getId().toString())
+        .nombre(TipoColaboracion.HACERSE_CARGO_HELADERA.getDescription())
+        .fechaHora(DateTimeParser.parseFechaHora(hacerseCargoHeladera.getFechaHora()))
+        .path(getPath(TipoColaboracion.HACERSE_CARGO_HELADERA))
+        .colaborador(hacerseCargoHeladera.getColaborador().getUsuario().getNombre())
+        .heladeraACargo(hacerseCargoHeladera.getHeladeraACargo().getNombre())
+        .build();
+  }
 
-    public static ColaboracionDTO preview(HacerseCargoHeladera hacerseCargoHeladera) { // TODO - ver si se ajusta a la vista
+  public static ColaboracionDTO preview(HacerseCargoHeladera hacerseCargoHeladera) { // TODO - ver si se ajusta a la vista
 
-        return ColaboracionDTO.builder()
-                .id(hacerseCargoHeladera.getId().toString())
-                .nombre(TipoColaboracion.HACERSE_CARGO_HELADERA.getDescription())
-                .fechaHora(DateTimeParser.parseFechaHora(hacerseCargoHeladera.getFechaHora()))
-                .path(getPath(TipoColaboracion.HACERSE_CARGO_HELADERA))
-                .build();
-    }
+    return ColaboracionDTO.builder()
+        .id(hacerseCargoHeladera.getId().toString())
+        .nombre(TipoColaboracion.HACERSE_CARGO_HELADERA.getDescription())
+        .fechaHora(DateTimeParser.parseFechaHora(hacerseCargoHeladera.getFechaHora()))
+        .path(getPath(TipoColaboracion.HACERSE_CARGO_HELADERA))
+        .build();
+  }
 }

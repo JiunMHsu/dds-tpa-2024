@@ -15,27 +15,27 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class Direccion {
 
-    @Embedded
-    private Barrio barrio;
+  @Embedded
+  private Barrio barrio;
 
-    @Embedded
-    private Calle calle;
+  @Embedded
+  private Calle calle;
 
-    @Column(name = "altura")
-    private Integer altura;
+  @Column(name = "altura")
+  private Integer altura;
 
-    @Embedded
-    private Ubicacion ubicacion;
+  @Embedded
+  private Ubicacion ubicacion;
 
-    public static Direccion with(Barrio barrio, Calle calle, Integer altura, Ubicacion ubicacion) {
-        return Direccion.builder().barrio(barrio).calle(calle).altura(altura).ubicacion(ubicacion).build();
-    }
+  public static Direccion with(Barrio barrio, Calle calle, Integer altura, Ubicacion ubicacion) {
+    return Direccion.builder().barrio(barrio).calle(calle).altura(altura).ubicacion(ubicacion).build();
+  }
 
-    public static Direccion with(Calle calle, Integer altura) {
-        return Direccion.builder().calle(calle).altura(altura).build();
-    }
+  public static Direccion with(Calle calle, Integer altura) {
+    return Direccion.builder().calle(calle).altura(altura).build();
+  }
 
-    public static Direccion with(Barrio barrio, Calle calle, Integer altura) {
-        return Direccion.builder().barrio(barrio).calle(calle).altura(altura).build();
-    }
+  public static Direccion with(Barrio barrio, Calle calle, Integer altura) {
+    return Direccion.builder().barrio(barrio).calle(calle).altura(altura).build();
+  }
 }

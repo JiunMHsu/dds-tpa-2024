@@ -12,81 +12,81 @@ import lombok.Setter;
 @Setter
 public class PersonaVulnerableService {
 
-    private final PersonaVulnerableRepository personaVulnerableRepository;
+  private final PersonaVulnerableRepository personaVulnerableRepository;
 
-    public PersonaVulnerableService(PersonaVulnerableRepository personaVulnerableRepository) {
-        this.personaVulnerableRepository = personaVulnerableRepository;
+  public PersonaVulnerableService(PersonaVulnerableRepository personaVulnerableRepository) {
+    this.personaVulnerableRepository = personaVulnerableRepository;
+  }
+
+  public List<PersonaVulnerable> buscarTodosPV() {
+    return this.personaVulnerableRepository.buscarTodos();
+  }
+
+  public Optional<PersonaVulnerable> buscarPVPorId(String id) {
+
+    if (id == null || id.isEmpty()) {
+      throw new IllegalArgumentException("El ID por la persona en situacion vulnerable no puede ser null o vacío");
     }
 
-    public List<PersonaVulnerable> buscarTodosPV() {
-        return this.personaVulnerableRepository.buscarTodos();
+    return this.personaVulnerableRepository.buscarPorId(id);
+  }
+
+  public void guardarPV(PersonaVulnerable personaVulnerable) {
+
+    System.out.println("Antes del if documento service pv");
+
+    if (personaVulnerable.getDocumento() == null || personaVulnerable.getDomicilio() == null) {
+      throw new IllegalArgumentException("Datos incompletos por la persona vulnerable");
     }
 
-    public Optional<PersonaVulnerable> buscarPVPorId(String id) {
+    System.out.println("Desp del if documento service pv");
 
-        if (id == null || id.isEmpty()) {
-            throw new IllegalArgumentException("El ID por la persona en situacion vulnerable no puede ser null o vacío");
-        }
+    System.out.println("Antes del if service pv");
 
-        return this.personaVulnerableRepository.buscarPorId(id);
+    Optional<PersonaVulnerable> existente = personaVulnerableRepository.buscarPorDocumento(personaVulnerable.getDocumento().getNumero());
+
+    if (existente.isPresent()) {
+      throw new IllegalArgumentException("El documento ya está registrado en el sistema");
     }
 
-    public void guardarPV(PersonaVulnerable personaVulnerable) {
-
-        System.out.println("Antes del if documento service pv");
-
-        if (personaVulnerable.getDocumento() == null || personaVulnerable.getDomicilio() == null) {
-            throw new IllegalArgumentException("Datos incompletos por la persona vulnerable");
-        }
-
-        System.out.println("Desp del if documento service pv");
-
-        System.out.println("Antes del if service pv");
-
-        Optional<PersonaVulnerable> existente = personaVulnerableRepository.buscarPorDocumento(personaVulnerable.getDocumento().getNumero());
-
-        if (existente.isPresent()) {
-            throw new IllegalArgumentException("El documento ya está registrado en el sistema");
-        }
-
-        System.out.println("Desp del if service pv");
+    System.out.println("Desp del if service pv");
 
 
-        this.personaVulnerableRepository.guardar(personaVulnerable);
+    this.personaVulnerableRepository.guardar(personaVulnerable);
+  }
+
+  public void eliminarPV(String id) {
+
+    if (id == null || id.isEmpty()) {
+      throw new IllegalArgumentException("El ID por la persona en situación vulnerable no puede ser null o vacío");
     }
 
-    public void eliminarPV(String id) {
-
-        if (id == null || id.isEmpty()) {
-            throw new IllegalArgumentException("El ID por la persona en situación vulnerable no puede ser null o vacío");
-        }
-
-        Optional<PersonaVulnerable> posiblePersonaVulnerable = this.personaVulnerableRepository.buscarPorId(id);
-        if (posiblePersonaVulnerable.isEmpty()) {
-            throw new IllegalArgumentException("La persona en situación vulnerable vulnerable no existe en el sistema");
-        }
-
-        this.personaVulnerableRepository.eliminar(posiblePersonaVulnerable.get());
-
-        // Deberia haber aplicar alguna logica sobre las tarjetas vinculadas a la PV?
+    Optional<PersonaVulnerable> posiblePersonaVulnerable = this.personaVulnerableRepository.buscarPorId(id);
+    if (posiblePersonaVulnerable.isEmpty()) {
+      throw new IllegalArgumentException("La persona en situación vulnerable vulnerable no existe en el sistema");
     }
 
-    public void actualizarPV(String id, PersonaVulnerable personaVulnerableActualizada) {
-        Optional<PersonaVulnerable> personaExistente = this.personaVulnerableRepository.buscarPorId(id);
+    this.personaVulnerableRepository.eliminar(posiblePersonaVulnerable.get());
 
-        if (personaExistente.isEmpty()) {
-            throw new PersonaVulnerableNotFoundException("Persona vulnerable paraColaborador ID " + id + " no encontrada");
-        }
+    // Deberia haber aplicar alguna logica sobre las tarjetas vinculadas a la PV?
+  }
 
-        PersonaVulnerable persona = personaExistente.get();
-        persona.setNombre(personaVulnerableActualizada.getNombre());
-        persona.setDocumento(personaVulnerableActualizada.getDocumento());
-        persona.setFechaNacimiento(personaVulnerableActualizada.getFechaNacimiento());
-        persona.setDomicilio(personaVulnerableActualizada.getDomicilio());
-        persona.setMenoresACargo(personaVulnerableActualizada.getMenoresACargo());
+  public void actualizarPV(String id, PersonaVulnerable personaVulnerableActualizada) {
+    Optional<PersonaVulnerable> personaExistente = this.personaVulnerableRepository.buscarPorId(id);
 
-        this.personaVulnerableRepository.guardar(persona);
+    if (personaExistente.isEmpty()) {
+      throw new PersonaVulnerableNotFoundException("Persona vulnerable paraColaborador ID " + id + " no encontrada");
     }
+
+    PersonaVulnerable persona = personaExistente.get();
+    persona.setNombre(personaVulnerableActualizada.getNombre());
+    persona.setDocumento(personaVulnerableActualizada.getDocumento());
+    persona.setFechaNacimiento(personaVulnerableActualizada.getFechaNacimiento());
+    persona.setDomicilio(personaVulnerableActualizada.getDomicilio());
+    persona.setMenoresACargo(personaVulnerableActualizada.getMenoresACargo());
+
+    this.personaVulnerableRepository.guardar(persona);
+  }
 
 
 }

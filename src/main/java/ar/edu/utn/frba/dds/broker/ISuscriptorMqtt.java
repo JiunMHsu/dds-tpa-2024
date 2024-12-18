@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.broker;
 
 public interface ISuscriptorMqtt {
-    String topic();
+  String topic();
 
-    void recibirMensaje(String mensaje);
+  void recibirMensaje(String mensaje);
 }

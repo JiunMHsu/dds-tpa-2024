@@ -11,71 +11,69 @@ import ar.edu.utn.frba.dds.models.repositories.colaborador.IColaboradorRepositor
 import ar.edu.utn.frba.dds.models.repositories.suscripcion.HeladeraLlenaRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 
-import java.util.List;
-
 public class HeladeraLlenaService implements WithSimplePersistenceUnit {
 
-    private final HeladeraLlenaRepository heladeraLlenaRepositoy;
-    private final IColaboradorRepository colaboradorRepository;
+  private final HeladeraLlenaRepository heladeraLlenaRepositoy;
+  private final IColaboradorRepository colaboradorRepository;
 
 
-    public HeladeraLlenaService(HeladeraLlenaRepository heladeraLlenaRepositoy,
-                                ColaboradorRepository colaboradorRepository) {
-        this.heladeraLlenaRepositoy = heladeraLlenaRepositoy;
-        this.colaboradorRepository = colaboradorRepository;
+  public HeladeraLlenaService(HeladeraLlenaRepository heladeraLlenaRepositoy,
+                              ColaboradorRepository colaboradorRepository) {
+    this.heladeraLlenaRepositoy = heladeraLlenaRepositoy;
+    this.colaboradorRepository = colaboradorRepository;
+  }
+
+  public void registrar(Colaborador colaborador, Heladera heladera, Integer espacioRestante, MedioDeNotificacion medioDeNotificacion, String infoContacto) throws SuscripcionHeladeraLlenaException {
+
+    Contacto contacto = colaborador.getContacto();
+
+    if (contacto == null) {
+      contacto = Contacto.vacio();
+      colaborador.setContacto(contacto);
     }
 
-    public void registrar(Colaborador colaborador, Heladera heladera, Integer espacioRestante, MedioDeNotificacion medioDeNotificacion, String infoContacto) throws SuscripcionHeladeraLlenaException {
+    boolean contactoActualizado = false;
 
-        Contacto contacto = colaborador.getContacto();
-
-        if (contacto == null) {
-            contacto = Contacto.vacio();
-            colaborador.setContacto(contacto);
+    switch (medioDeNotificacion) {
+      case WHATSAPP:
+        if (contacto.getWhatsApp() == null) {
+          contacto.setWhatsApp(infoContacto);
+          contactoActualizado = true;
         }
-
-        boolean contactoActualizado = false;
-
-        switch (medioDeNotificacion) {
-            case WHATSAPP:
-                if (contacto.getWhatsApp() == null) {
-                    contacto.setWhatsApp(infoContacto);
-                    contactoActualizado = true;
-                }
-                break;
-            case TELEGRAM:
-                if (contacto.getTelegram() == null) {
-                    contacto.setTelegram(infoContacto);
-                    contactoActualizado = true;
-                }
-                break;
-            case EMAIL:
-                if (contacto.getEmail() == null) {
-                    contacto.setEmail(infoContacto);
-                    contactoActualizado = true;
-                }
-                break;
+        break;
+      case TELEGRAM:
+        if (contacto.getTelegram() == null) {
+          contacto.setTelegram(infoContacto);
+          contactoActualizado = true;
         }
-
-        if (espacioRestante < 0 || espacioRestante > heladera.getCapacidad())
-            throw new SuscripcionHeladeraLlenaException("El espacio restante debe ser mayor o igual a 0 y menor a la capacidad máxima por la heladera");
-
-        SuscripcionHeladeraLlena nuevaSuscripcion = SuscripcionHeladeraLlena.de(
-                colaborador,
-                heladera,
-                medioDeNotificacion,
-                espacioRestante);
-
-        if (contactoActualizado) {
-            beginTransaction();
-            colaboradorRepository.actualizar(colaborador);
-            heladeraLlenaRepositoy.guardar(nuevaSuscripcion);
-            commitTransaction();
-        } else {
-            beginTransaction();
-            heladeraLlenaRepositoy.guardar(nuevaSuscripcion);
-            commitTransaction();
+        break;
+      case EMAIL:
+        if (contacto.getEmail() == null) {
+          contacto.setEmail(infoContacto);
+          contactoActualizado = true;
         }
+        break;
     }
+
+    if (espacioRestante < 0 || espacioRestante > heladera.getCapacidad())
+      throw new SuscripcionHeladeraLlenaException("El espacio restante debe ser mayor o igual a 0 y menor a la capacidad máxima por la heladera");
+
+    SuscripcionHeladeraLlena nuevaSuscripcion = SuscripcionHeladeraLlena.de(
+        colaborador,
+        heladera,
+        medioDeNotificacion,
+        espacioRestante);
+
+    if (contactoActualizado) {
+      beginTransaction();
+      colaboradorRepository.actualizar(colaborador);
+      heladeraLlenaRepositoy.guardar(nuevaSuscripcion);
+      commitTransaction();
+    } else {
+      beginTransaction();
+      heladeraLlenaRepositoy.guardar(nuevaSuscripcion);
+      commitTransaction();
+    }
+  }
 
 }

@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ICrudRepository<T> {
-    void guardar(T entidad);
+  void guardar(T entidad);
 
-    void actualizar(T entidad);
+  void actualizar(T entidad);
 
-    void eliminar(T entidad);
+  void eliminar(T entidad);
 
-    Optional<T> buscarPorId(String id);
+  Optional<T> buscarPorId(String id);
 
-    List<T> buscarTodos();
+  List<T> buscarTodos();
 }

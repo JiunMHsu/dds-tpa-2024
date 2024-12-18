@@ -8,24 +8,24 @@ import java.util.UUID;
 
 public class ViandaRepository implements WithSimplePersistenceUnit {
 
-    public void guardar(Vianda vianda) {
-        entityManager().persist(vianda);
-    }
+  public void guardar(Vianda vianda) {
+    entityManager().persist(vianda);
+  }
 
-    public Optional<Vianda> buscarPorId(String id) {
-        try {
-            UUID uuid = UUID.fromString(id);
-            return Optional.ofNullable(entityManager().find(Vianda.class, uuid))
-                    .filter(Vianda::getAlta);
-        } catch (IllegalArgumentException e) {
-            return Optional.empty();
-        }
+  public Optional<Vianda> buscarPorId(String id) {
+    try {
+      UUID uuid = UUID.fromString(id);
+      return Optional.ofNullable(entityManager().find(Vianda.class, uuid))
+          .filter(Vianda::getAlta);
+    } catch (IllegalArgumentException e) {
+      return Optional.empty();
     }
+  }
 
-    public List<Vianda> buscarTodos() {
-        return entityManager()
-                .createQuery("from Vianda v where v.alta = :alta", Vianda.class)
-                .setParameter("alta", true)
-                .getResultList();
-    }
+  public List<Vianda> buscarTodos() {
+    return entityManager()
+        .createQuery("from Vianda v where v.alta = :alta", Vianda.class)
+        .setParameter("alta", true)
+        .getResultList();
+  }
 }

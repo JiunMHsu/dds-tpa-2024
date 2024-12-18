@@ -25,89 +25,89 @@ import java.util.Map;
 
 public class FallaTecnicaController extends ColaboradorRequired {
 
-    private final IncidenteService incidenteService;
-    private final HeladeraService heladeraService;
-    private final ImageService fileService;
+  private final IncidenteService incidenteService;
+  private final HeladeraService heladeraService;
+  private final ImageService fileService;
 
-    public FallaTecnicaController(UsuarioService usuarioService,
-                                  ColaboradorService colaboradorService,
-                                  IncidenteService incidenteService,
-                                  HeladeraService heladeraService,
-                                  ImageService fileService) {
-        super(usuarioService, colaboradorService);
-        this.incidenteService = incidenteService;
-        this.heladeraService = heladeraService;
-        this.fileService = fileService;
+  public FallaTecnicaController(UsuarioService usuarioService,
+                                ColaboradorService colaboradorService,
+                                IncidenteService incidenteService,
+                                HeladeraService heladeraService,
+                                ImageService fileService) {
+    super(usuarioService, colaboradorService);
+    this.incidenteService = incidenteService;
+    this.heladeraService = heladeraService;
+    this.fileService = fileService;
+  }
+
+  public void index(Context context) {
+    Map<String, Object> model = new HashMap<>();
+
+    String filtro = context.queryParamAsClass("filtro", String.class).getOrDefault("todas");
+
+    List<Incidente> fallasTecnicas = this.incidenteService.buscarTodasFallasTecnicas();
+    List<FallaTecnicaDTO> fallasTecnicasDTO = switch (filtro) {
+      case "resueltas" ->
+          fallasTecnicas.stream().filter(Incidente::getFallaResuelta).map(FallaTecnicaDTO::preview).toList();
+      case "pendientes" ->
+          fallasTecnicas.stream().filter(falla -> !falla.getFallaResuelta()).map(FallaTecnicaDTO::preview).toList();
+      default -> // caso "todas"
+          fallasTecnicas.stream().map(FallaTecnicaDTO::preview).toList();
+    };
+
+    model.put("fallas", fallasTecnicasDTO);
+    render(context, "fallas_tecnicas/fallas_tecnicas.hbs", model);
+  }
+
+  public void show(Context context) {
+    // TODO - Implementar
+  }
+
+  public void create(Context context) {
+    // colaborador
+    render(context, "falla_tecnica/falla_tecnica_crear.hbs", new HashMap<>());
+  }
+
+  public void save(Context context) {
+    Map<String, Object> model = new HashMap<>();
+    List<RedirectDTO> redirectDTOS = new ArrayList<>();
+    boolean operationSuccess = false;
+
+    try {
+      Colaborador colaborador = colaboradorFromSession(context);
+
+      String nombreHeladera = context.formParamAsClass("nombre", String.class).get();
+      Heladera heladera = this.heladeraService
+          .buscarPorNombre(nombreHeladera)
+          .orElseThrow(InvalidFormParamException::new);
+
+      String descripcion = context.formParamAsClass("descripcion", String.class).get();
+
+      UploadedFile uploadedFile = context.uploadedFile("imagen");
+      if (uploadedFile == null) throw new InvalidFormParamException();
+      String pathImagen = fileService.guardarImagen(uploadedFile.content(), uploadedFile.extension());
+
+      Incidente nuevaFallaTecnica = Incidente.fallaTecnica(
+          heladera,
+          LocalDateTime.now(),
+          colaborador,
+          descripcion,
+          new Imagen(pathImagen)
+      );
+
+      this.incidenteService.registrarIncidente(nuevaFallaTecnica);
+
+      operationSuccess = true;
+      redirectDTOS.add(new RedirectDTO("/fallas-tecnicas/new", "Reportar otra Falla"));
+
+    } catch (ValidationException | InvalidFormParamException | IOException e) {
+      redirectDTOS.add(new RedirectDTO("/fallas-tecnicas/new", "Reintentar"));
+    } finally {
+      model.put("success", operationSuccess);
+      model.put("redirects", redirectDTOS);
+
+      context.render("post_result.hbs", model);
     }
-
-    public void index(Context context) {
-        Map<String, Object> model = new HashMap<>();
-
-        String filtro = context.queryParamAsClass("filtro", String.class).getOrDefault("todas");
-
-        List<Incidente> fallasTecnicas = this.incidenteService.buscarTodasFallasTecnicas();
-        List<FallaTecnicaDTO> fallasTecnicasDTO = switch (filtro) {
-            case "resueltas" ->
-                    fallasTecnicas.stream().filter(Incidente::getFallaResuelta).map(FallaTecnicaDTO::preview).toList();
-            case "pendientes" ->
-                    fallasTecnicas.stream().filter(falla -> !falla.getFallaResuelta()).map(FallaTecnicaDTO::preview).toList();
-            default -> // caso "todas"
-                    fallasTecnicas.stream().map(FallaTecnicaDTO::preview).toList();
-        };
-
-        model.put("fallas", fallasTecnicasDTO);
-        render(context, "fallas_tecnicas/fallas_tecnicas.hbs", model);
-    }
-
-    public void show(Context context) {
-        // TODO - Implementar
-    }
-
-    public void create(Context context) {
-        // colaborador
-        render(context, "falla_tecnica/falla_tecnica_crear.hbs", new HashMap<>());
-    }
-
-    public void save(Context context) {
-        Map<String, Object> model = new HashMap<>();
-        List<RedirectDTO> redirectDTOS = new ArrayList<>();
-        boolean operationSuccess = false;
-
-        try {
-            Colaborador colaborador = colaboradorFromSession(context);
-
-            String nombreHeladera = context.formParamAsClass("nombre", String.class).get();
-            Heladera heladera = this.heladeraService
-                    .buscarPorNombre(nombreHeladera)
-                    .orElseThrow(InvalidFormParamException::new);
-
-            String descripcion = context.formParamAsClass("descripcion", String.class).get();
-
-            UploadedFile uploadedFile = context.uploadedFile("imagen");
-            if (uploadedFile == null) throw new InvalidFormParamException();
-            String pathImagen = fileService.guardarImagen(uploadedFile.content(), uploadedFile.extension());
-
-            Incidente nuevaFallaTecnica = Incidente.fallaTecnica(
-                    heladera,
-                    LocalDateTime.now(),
-                    colaborador,
-                    descripcion,
-                    new Imagen(pathImagen)
-            );
-
-            this.incidenteService.registrarIncidente(nuevaFallaTecnica);
-
-            operationSuccess = true;
-            redirectDTOS.add(new RedirectDTO("/fallas-tecnicas/new", "Reportar otra Falla"));
-
-        } catch (ValidationException | InvalidFormParamException | IOException e) {
-            redirectDTOS.add(new RedirectDTO("/fallas-tecnicas/new", "Reintentar"));
-        } finally {
-            model.put("success", operationSuccess);
-            model.put("redirects", redirectDTOS);
-
-            context.render("post_result.hbs", model);
-        }
-    }
+  }
 
 }

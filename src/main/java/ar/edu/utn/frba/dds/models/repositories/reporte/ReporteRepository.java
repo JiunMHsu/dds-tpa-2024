@@ -9,32 +9,32 @@ import java.util.UUID;
 
 public class ReporteRepository implements WithSimplePersistenceUnit {
 
-    public void guardar(Reporte reporte) {
-        entityManager().persist(reporte);
-    }
+  public void guardar(Reporte reporte) {
+    entityManager().persist(reporte);
+  }
 
-    public Optional<Reporte> buscarPorId(String id) {
-        try {
-            UUID uuid = UUID.fromString(id);
-            return Optional.ofNullable(entityManager().find(Reporte.class, uuid))
-                    .filter(Reporte::getAlta);
-        } catch (IllegalArgumentException e) {
-            return Optional.empty();
-        }
+  public Optional<Reporte> buscarPorId(String id) {
+    try {
+      UUID uuid = UUID.fromString(id);
+      return Optional.ofNullable(entityManager().find(Reporte.class, uuid))
+          .filter(Reporte::getAlta);
+    } catch (IllegalArgumentException e) {
+      return Optional.empty();
     }
+  }
 
-    public List<Reporte> buscarTodos() {
-        return entityManager()
-                .createQuery("from Reporte r where r.alta = :alta", Reporte.class)
-                .setParameter("alta", true)
-                .getResultList();
-    }
+  public List<Reporte> buscarTodos() {
+    return entityManager()
+        .createQuery("from Reporte r where r.alta = :alta", Reporte.class)
+        .setParameter("alta", true)
+        .getResultList();
+  }
 
-    public List<Reporte> obtenerAPartirDe(LocalDate fecha) {
-        return entityManager()
-                .createQuery("from Reporte r where r.fecha >= :fecha", Reporte.class)
-                .setParameter("fecha", fecha)
-                .getResultList();
-    }
+  public List<Reporte> obtenerAPartirDe(LocalDate fecha) {
+    return entityManager()
+        .createQuery("from Reporte r where r.fecha >= :fecha", Reporte.class)
+        .setParameter("fecha", fecha)
+        .getResultList();
+  }
 
 }

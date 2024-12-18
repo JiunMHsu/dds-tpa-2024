@@ -9,14 +9,14 @@ import lombok.Setter;
 @Setter
 @Builder
 public class UbicacionDTO {
-    private String latitud;
-    private String longitud;
+  private String latitud;
+  private String longitud;
 
-    public static UbicacionDTO fromUbicacion(Ubicacion ubicacion) {
-        return UbicacionDTO
-                .builder()
-                .latitud(String.valueOf(ubicacion.getLatitud()))
-                .longitud(String.valueOf(ubicacion.getLongitud()))
-                .build();
-    }
+  public static UbicacionDTO fromUbicacion(Ubicacion ubicacion) {
+    return UbicacionDTO
+        .builder()
+        .latitud(String.valueOf(ubicacion.getLatitud()))
+        .longitud(String.valueOf(ubicacion.getLongitud()))
+        .build();
+  }
 }

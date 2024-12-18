@@ -15,28 +15,28 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class Area {
 
-    @Embedded
-    private Ubicacion ubicacion;
+  @Embedded
+  private Ubicacion ubicacion;
 
-    @Column(name = "radio")
-    private Integer radio;
+  @Column(name = "radio")
+  private Integer radio;
 
-    @Column(name = "barrio")
-    private Barrio barrio;
+  @Column(name = "barrio")
+  private Barrio barrio;
 
-    public static Area with(Ubicacion ubicacion,
-                            Integer radio,
-                            Barrio barrio) {
-        return Area
-                .builder()
-                .ubicacion(ubicacion)
-                .radio(radio)
-                .barrio(barrio)
-                .build();
-    }
+  public static Area with(Ubicacion ubicacion,
+                          Integer radio,
+                          Barrio barrio) {
+    return Area
+        .builder()
+        .ubicacion(ubicacion)
+        .radio(radio)
+        .barrio(barrio)
+        .build();
+  }
 
-    public double distanciaA(Ubicacion unaUbicacion) {
-        double distanciaEntreUbicaciones = this.ubicacion.distanciaA(unaUbicacion);
-        return distanciaEntreUbicaciones - radio;
-    }
+  public double distanciaA(Ubicacion unaUbicacion) {
+    double distanciaEntreUbicaciones = this.ubicacion.distanciaA(unaUbicacion);
+    return distanciaEntreUbicaciones - radio;
+  }
 }

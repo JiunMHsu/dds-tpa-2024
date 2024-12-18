@@ -14,18 +14,18 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class Comida {
 
-    @Column(name = "comida_nombre", nullable = false)
-    private String nombre;
+  @Column(name = "comida_nombre", nullable = false)
+  private String nombre;
 
-    @Column(name = "comida_calorias", nullable = false)
-    private Integer calorias;
+  @Column(name = "comida_calorias", nullable = false)
+  private Integer calorias;
 
-    public static Comida with(String nombre,
-                              Integer calorias) {
-        return Comida
-                .builder()
-                .nombre(nombre)
-                .calorias(calorias)
-                .build();
-    }
+  public static Comida with(String nombre,
+                            Integer calorias) {
+    return Comida
+        .builder()
+        .nombre(nombre)
+        .calorias(calorias)
+        .build();
+  }
 }

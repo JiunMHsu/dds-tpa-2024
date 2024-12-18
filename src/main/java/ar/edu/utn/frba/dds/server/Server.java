@@ -16,61 +16,61 @@ import java.io.IOException;
 
 public class Server {
 
-    private static Javalin app = null;
+  private static Javalin app = null;
 
-    public static Javalin app() {
-        if (app == null)
-            throw new RuntimeException("App no inicializada");
+  public static Javalin app() {
+    if (app == null)
+      throw new RuntimeException("App no inicializada");
 
-        return app;
+    return app;
+  }
+
+  public static void init() {
+    if (app != null) {
+      return;
     }
 
-    public static void init() {
-        if (app != null) {
-            return;
-        }
+    int port = AppProperties.getInstance().intPropertyFromName("SERVER_PORT");
+    app = Javalin.create(config -> {
+          setStaticFiles(config);
+          setFileRenderer(config);
+          AuthMiddleware.apply(config.router);
+          Routers.apply(config.router);
+        })
+        .error(HttpStatus.NOT_FOUND, context -> {
+          throw new ResourceNotFoundException("Resource not found for endpoint " + context.path());
+        })
+        .start(port);
 
-        int port = AppProperties.getInstance().intPropertyFromName("SERVER_PORT");
-        app = Javalin.create(config -> {
-                    setStaticFiles(config);
-                    setFileRenderer(config);
-                    AuthMiddleware.apply(config.router);
-                    Routers.apply(config.router);
-                })
-                .error(HttpStatus.NOT_FOUND, context -> {
-                    throw new ResourceNotFoundException("Resource not found for endpoint " + context.path());
-                })
-                .start(port);
+    AppHandlers.apply(app);
 
-        AppHandlers.apply(app);
-
-        if (AppProperties.getInstance().boolPropertyFromName("DEV_MODE")) {
-            Initializer.init();
-        }
+    if (AppProperties.getInstance().boolPropertyFromName("DEV_MODE")) {
+      Initializer.init();
     }
+  }
 
-    private static void setStaticFiles(JavalinConfig config) {
-        config.staticFiles.add(staticFiles -> {
-            staticFiles.hostedPath = "/";
-            staticFiles.directory = "/public";
-        });
-    }
+  private static void setStaticFiles(JavalinConfig config) {
+    config.staticFiles.add(staticFiles -> {
+      staticFiles.hostedPath = "/";
+      staticFiles.directory = "/public";
+    });
+  }
 
-    private static void setFileRenderer(JavalinConfig config) {
-        config.fileRenderer(new JavalinRenderer().register("hbs", (path, model, context) -> {
-            Handlebars handlebars = new Handlebars();
-            Template template;
+  private static void setFileRenderer(JavalinConfig config) {
+    config.fileRenderer(new JavalinRenderer().register("hbs", (path, model, context) -> {
+      Handlebars handlebars = new Handlebars();
+      Template template;
 
-            try {
-                template = handlebars.compile(
-                        "templates/" + path.replace(".hbs", "")
-                );
-                return template.apply(model);
-            } catch (IOException e) {
-                e.printStackTrace();
-                context.status(HttpStatus.NOT_FOUND);
-                return "No se encuentra la página indicada...";
-            }
-        }));
-    }
+      try {
+        template = handlebars.compile(
+            "templates/" + path.replace(".hbs", "")
+        );
+        return template.apply(model);
+      } catch (IOException e) {
+        e.printStackTrace();
+        context.status(HttpStatus.NOT_FOUND);
+        return "No se encuentra la página indicada...";
+      }
+    }));
+  }
 }

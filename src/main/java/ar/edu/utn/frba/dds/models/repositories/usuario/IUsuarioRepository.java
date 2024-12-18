@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface IUsuarioRepository extends ICrudRepository<Usuario> {
 
-    Optional<Usuario> obtenerPorEmail(String mail);
+  Optional<Usuario> obtenerPorEmail(String mail);
 }

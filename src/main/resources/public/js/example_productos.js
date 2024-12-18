@@ -1,5 +1,6 @@
 {
-    "productos_canjear":
+    "productos_canjear"
+:
     [
         {
             "id": "1",

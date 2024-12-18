@@ -5,7 +5,7 @@ import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 
 public class VisitaTecnicoRepository implements WithSimplePersistenceUnit {
 
-    public void guardar(VisitaTecnico visitaTecnico) {
-        withTransaction(() -> entityManager().persist(visitaTecnico));
-    }
+  public void guardar(VisitaTecnico visitaTecnico) {
+    withTransaction(() -> entityManager().persist(visitaTecnico));
+  }
 }

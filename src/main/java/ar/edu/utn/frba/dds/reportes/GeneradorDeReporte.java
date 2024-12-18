@@ -8,21 +8,21 @@ import java.util.concurrent.TimeUnit;
 
 public class GeneradorDeReporte {
 
-    private final ReporteService reporteService;
-    private final ScheduledExecutorService planificador;
+  private final ReporteService reporteService;
+  private final ScheduledExecutorService planificador;
 
-    public GeneradorDeReporte(ReporteService reporteService) {
-        this.reporteService = reporteService;
-        this.planificador = Executors.newScheduledThreadPool(1);
-    }
+  public GeneradorDeReporte(ReporteService reporteService) {
+    this.reporteService = reporteService;
+    this.planificador = Executors.newScheduledThreadPool(1);
+  }
 
-    public void planificar(int frecuencia, TimeUnit unidadDeFrecuencia) {
-        String dir = AppProperties.getInstance().propertyFromName("REPORT_DIR");
-        PDFGenerator generator = new PDFGenerator(dir);
-        planificador.scheduleAtFixedRate(
-                () -> reporteService.generarReporteSemanal(generator),
-                0,
-                frecuencia,
-                unidadDeFrecuencia);
-    }
+  public void planificar(int frecuencia, TimeUnit unidadDeFrecuencia) {
+    String dir = AppProperties.getInstance().propertyFromName("REPORT_DIR");
+    PDFGenerator generator = new PDFGenerator(dir);
+    planificador.scheduleAtFixedRate(
+        () -> reporteService.generarReporteSemanal(generator),
+        0,
+        frecuencia,
+        unidadDeFrecuencia);
+  }
 }

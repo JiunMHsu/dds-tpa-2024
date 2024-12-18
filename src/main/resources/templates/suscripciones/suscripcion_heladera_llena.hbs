@@ -14,44 +14,45 @@
     <div class="form-container">
         <h2 class="form-title">Suscripción por Heladera Llena</h2>
 
-        <form action="/suscripciones/heladera-llena?heladera={{heladera.id}}" method="post" class="form">
-            <label class="field-viandas-restantes">
-                Numero de viandas restantes
-                <input
-                        type="number"
-                        min="1"
-                        step="1"
-                        name="viandas-restantes"
-                        placeholder="Ejemplo: 50"
-                        required
-                />
-            </label>
+        <form action="/suscripciones/heladera-llena?heladera={{heladera.id}}" method="post"
+        class="form">
+        <label class="field-viandas-restantes">
+            Numero de viandas restantes
+            <input
+                    type="number"
+                    min="1"
+                    step="1"
+                    name="viandas-restantes"
+                    placeholder="Ejemplo: 50"
+                    required
+            />
+        </label>
 
-            <label class="field-medio-notificacion">
-                Medio de Notificación
-                <select name="medio-notificacion" required>
-                    <option value="" disabled selected>Seleccionar</option>
-                    <option value="WHATSAPP">WhatsApp</option>
-                    <option value="TELEGRAM">Telegram</option>
-                    <option value="EMAIL">Email</option>
-                </select>
-            </label>
+        <label class="field-medio-notificacion">
+            Medio de Notificación
+            <select name="medio-notificacion" required>
+                <option value="" disabled selected>Seleccionar</option>
+                <option value="WHATSAPP">WhatsApp</option>
+                <option value="TELEGRAM">Telegram</option>
+                <option value="EMAIL">Email</option>
+            </select>
+        </label>
 
-            <label class="field-contacto">
-                Informacion contacto
-                <input
-                        type="text"
-                        min="1"
-                        step="1"
-                        name="contacto"
-                        placeholder=""
-                        required
-                />
-            </label>
+        <label class="field-contacto">
+            Informacion contacto
+            <input
+                    type="text"
+                    min="1"
+                    step="1"
+                    name="contacto"
+                    placeholder=""
+                    required
+            />
+        </label>
 
-            <div class="form-button-container">
-                <button type="submit">Aceptar</button>
-            </div>
+        <div class="form-button-container">
+            <button type="submit">Aceptar</button>
+        </div>
         </form>
     </div>
 {{/partial}}

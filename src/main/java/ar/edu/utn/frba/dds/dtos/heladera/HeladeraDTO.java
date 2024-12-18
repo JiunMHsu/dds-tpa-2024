@@ -10,75 +10,75 @@ import lombok.Setter;
 @Setter
 @Builder
 public class HeladeraDTO {
-    private String id;
+  private String id;
 
-    private String nombre;
+  private String nombre;
 
-    private String estado;
+  private String estado;
 
-    private String calleYAltura;
+  private String calleYAltura;
 
-    private String barrio;
+  private String barrio;
 
-    private String capacidad;
+  private String capacidad;
 
-    private String ubicacion;
+  private String ubicacion;
 
-    private String cantViandas; // cambie nombre, un poco mas expresivo
+  private String cantViandas; // cambie nombre, un poco mas expresivo
 
-    private String fechaInicio;
+  private String fechaInicio;
 
-    private String ultimaTemp;
+  private String ultimaTemp;
 
-    private String temperaturaMaxima;
+  private String temperaturaMaxima;
 
-    private String temperaturaMinima;
+  private String temperaturaMinima;
 
-    public static HeladeraDTO completa(Heladera heladera) {
+  public static HeladeraDTO completa(Heladera heladera) {
 
-        String direccionString = heladera.getDireccion().getCalle().getNombre() + " " + heladera.getDireccion().getAltura().toString();
-        String latitudLongitudString = heladera.getDireccion().getUbicacion().getLatitud() + ", " + heladera.getDireccion().getUbicacion().getLongitud();
+    String direccionString = heladera.getDireccion().getCalle().getNombre() + " " + heladera.getDireccion().getAltura().toString();
+    String latitudLongitudString = heladera.getDireccion().getUbicacion().getLatitud() + ", " + heladera.getDireccion().getUbicacion().getLongitud();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String inicioFuncionamiento = heladera.getInicioFuncionamiento() != null
-                ? heladera.getInicioFuncionamiento().format(formatter)
-                : "--/--/--";
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    String inicioFuncionamiento = heladera.getInicioFuncionamiento() != null
+        ? heladera.getInicioFuncionamiento().format(formatter)
+        : "--/--/--";
 
-        String ultimaTempString = heladera.getUltimaTemperatura() != null
-                ? heladera.getUltimaTemperatura().toString()
-                : "--";
+    String ultimaTempString = heladera.getUltimaTemperatura() != null
+        ? heladera.getUltimaTemperatura().toString()
+        : "--";
 
-        return HeladeraDTO
-                .builder()
-                .id(heladera.getId().toString())
-                .nombre(heladera.getNombre())
-                .estado(heladera.getEstado().toString())
-                .calleYAltura(direccionString)
-                .barrio(heladera.getDireccion().getBarrio().getNombre())
-                .capacidad(heladera.getCapacidad().toString())
-                .ubicacion(latitudLongitudString)
-                .cantViandas(heladera.getViandas().toString())
-                .fechaInicio(inicioFuncionamiento)
-                .ultimaTemp(ultimaTempString)
-                .temperaturaMaxima(heladera.getRangoTemperatura().getMaxima().toString())
-                .temperaturaMinima(heladera.getRangoTemperatura().getMinima().toString())
-                .build();
-    }
+    return HeladeraDTO
+        .builder()
+        .id(heladera.getId().toString())
+        .nombre(heladera.getNombre())
+        .estado(heladera.getEstado().toString())
+        .calleYAltura(direccionString)
+        .barrio(heladera.getDireccion().getBarrio().getNombre())
+        .capacidad(heladera.getCapacidad().toString())
+        .ubicacion(latitudLongitudString)
+        .cantViandas(heladera.getViandas().toString())
+        .fechaInicio(inicioFuncionamiento)
+        .ultimaTemp(ultimaTempString)
+        .temperaturaMaxima(heladera.getRangoTemperatura().getMaxima().toString())
+        .temperaturaMinima(heladera.getRangoTemperatura().getMinima().toString())
+        .build();
+  }
 
-    public static HeladeraDTO preview(Heladera heladera) {
+  public static HeladeraDTO preview(Heladera heladera) {
 
-        String direccionString = heladera.getDireccion().getCalle().getNombre() + " " + heladera.getDireccion().getAltura().toString();
+    String direccionString = heladera.getDireccion().getCalle().getNombre() + " " + heladera.getDireccion().getAltura().toString();
 
-        String latitudLongitudString = heladera.getDireccion().getUbicacion().getLatitud() + ", " + heladera.getDireccion().getUbicacion().getLongitud();
+    String latitudLongitudString = heladera.getDireccion().getUbicacion().getLatitud() + ", " + heladera.getDireccion().getUbicacion().getLongitud();
 
-        return HeladeraDTO
-                .builder()
-                .id(heladera.getId().toString())
-                .nombre(heladera.getNombre())
-                .estado(heladera.getEstado().toString())
-                .calleYAltura(direccionString)
-                .ubicacion(latitudLongitudString)
-                .cantViandas(heladera.getViandas().toString())
-                .build();
-    }
+    return HeladeraDTO
+        .builder()
+        .id(heladera.getId().toString())
+        .nombre(heladera.getNombre())
+        .estado(heladera.getEstado().toString())
+        .calleYAltura(direccionString)
+        .ubicacion(latitudLongitudString)
+        .cantViandas(heladera.getViandas().toString())
+        .build();
+  }
 }

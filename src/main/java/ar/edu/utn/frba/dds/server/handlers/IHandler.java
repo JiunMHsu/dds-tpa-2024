@@ -4,5 +4,5 @@ import io.javalin.Javalin;
 
 public interface IHandler {
 
-    void setHandler(Javalin app);
+  void setHandler(Javalin app);
 }

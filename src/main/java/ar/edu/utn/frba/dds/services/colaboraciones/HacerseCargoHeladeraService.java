@@ -7,21 +7,21 @@ import java.util.Optional;
 
 public class HacerseCargoHeladeraService implements WithSimplePersistenceUnit {
 
-    private final HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository;
+  private final HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository;
 
-    public HacerseCargoHeladeraService(HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository) {
-        this.hacerseCargoHeladeraRepository = hacerseCargoHeladeraRepository;
-    }
+  public HacerseCargoHeladeraService(HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository) {
+    this.hacerseCargoHeladeraRepository = hacerseCargoHeladeraRepository;
+  }
 
-    public Optional<HacerseCargoHeladera> buscarPorId(String id) {
-        return hacerseCargoHeladeraRepository.buscarPorId(id);
-    }
+  public Optional<HacerseCargoHeladera> buscarPorId(String id) {
+    return hacerseCargoHeladeraRepository.buscarPorId(id);
+  }
 
-    public void registrar(HacerseCargoHeladera hacerseCargoHeladera) {
-        beginTransaction();
-        hacerseCargoHeladeraRepository.guardar(hacerseCargoHeladera);
-        commitTransaction();
-    }
+  public void registrar(HacerseCargoHeladera hacerseCargoHeladera) {
+    beginTransaction();
+    hacerseCargoHeladeraRepository.guardar(hacerseCargoHeladera);
+    commitTransaction();
+  }
 
-    ;
+  ;
 }

@@ -10,19 +10,19 @@ import lombok.Setter;
 @Builder
 public class FallaHeladeraDTO {
 
-    private String colaborador;
+  private String colaborador;
 
-    private String heladera;
+  private String heladera;
 
-    private String medioDeNotificacion;
+  private String medioDeNotificacion;
 
-    public static FallaHeladeraDTO completa(SuscripcionFallaHeladera suscripcionFallaHeladera) {
+  public static FallaHeladeraDTO completa(SuscripcionFallaHeladera suscripcionFallaHeladera) {
 
-        return FallaHeladeraDTO
-                .builder()
-                .colaborador(suscripcionFallaHeladera.getColaborador().getUsuario().getNombre())
-                .heladera(suscripcionFallaHeladera.getHeladera().getNombre())
-                .medioDeNotificacion(suscripcionFallaHeladera.getMedioDeNotificacion().toString())
-                .build();
-    }
+    return FallaHeladeraDTO
+        .builder()
+        .colaborador(suscripcionFallaHeladera.getColaborador().getUsuario().getNombre())
+        .heladera(suscripcionFallaHeladera.getHeladera().getNombre())
+        .medioDeNotificacion(suscripcionFallaHeladera.getMedioDeNotificacion().toString())
+        .build();
+  }
 }

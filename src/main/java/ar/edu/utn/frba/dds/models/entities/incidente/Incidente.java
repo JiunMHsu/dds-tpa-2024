@@ -28,70 +28,70 @@ import lombok.Setter;
 @Table(name = "incidente")
 public class Incidente extends EntidadPersistente {
 
-    @ManyToOne
-    @JoinColumn(name = "heladera_id", nullable = false)
-    protected Heladera heladera;
+  @ManyToOne
+  @JoinColumn(name = "heladera_id", nullable = false)
+  protected Heladera heladera;
 
-    @Column(name = "fecha_hora", nullable = false)
-    protected LocalDateTime fechaHora;
+  @Column(name = "fecha_hora", nullable = false)
+  protected LocalDateTime fechaHora;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_incidente", nullable = false)
-    protected TipoIncidente tipo;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "tipo_incidente", nullable = false)
+  protected TipoIncidente tipo;
 
-    @ManyToOne
-    @JoinColumn(name = "colaborador_id")
-    private Colaborador colaborador;
+  @ManyToOne
+  @JoinColumn(name = "colaborador_id")
+  private Colaborador colaborador;
 
-    @Column(name = "descripcion", columnDefinition = "TEXT")
-    private String descripcion;
+  @Column(name = "descripcion", columnDefinition = "TEXT")
+  private String descripcion;
 
-    @Embedded
-    private Imagen foto;
+  @Embedded
+  private Imagen foto;
 
-    @Column(name = "fue_resuelta", nullable = false)
-    private Boolean fallaResuelta;
+  @Column(name = "fue_resuelta", nullable = false)
+  private Boolean fallaResuelta;
 
-    private static Incidente con(Heladera heladera,
-                                 LocalDateTime fechaHora,
-                                 TipoIncidente tipo,
-                                 Colaborador colaborador,
-                                 String descripcion,
-                                 Imagen foto) {
+  private static Incidente con(Heladera heladera,
+                               LocalDateTime fechaHora,
+                               TipoIncidente tipo,
+                               Colaborador colaborador,
+                               String descripcion,
+                               Imagen foto) {
 
-        return Incidente
-                .builder()
-                .heladera(heladera)
-                .fechaHora(fechaHora)
-                .tipo(tipo)
-                .colaborador(colaborador)
-                .descripcion(descripcion)
-                .foto(foto)
-                .fallaResuelta(false)
-                .build();
-    }
+    return Incidente
+        .builder()
+        .heladera(heladera)
+        .fechaHora(fechaHora)
+        .tipo(tipo)
+        .colaborador(colaborador)
+        .descripcion(descripcion)
+        .foto(foto)
+        .fallaResuelta(false)
+        .build();
+  }
 
-    public static Incidente fallaTecnica(Heladera heladera,
-                                         LocalDateTime fechaHora,
-                                         Colaborador colaborador,
-                                         String descripcion,
-                                         Imagen foto) {
-        return con(heladera, fechaHora, TipoIncidente.FALLA_TECNICA, colaborador, descripcion, foto);
-    }
+  public static Incidente fallaTecnica(Heladera heladera,
+                                       LocalDateTime fechaHora,
+                                       Colaborador colaborador,
+                                       String descripcion,
+                                       Imagen foto) {
+    return con(heladera, fechaHora, TipoIncidente.FALLA_TECNICA, colaborador, descripcion, foto);
+  }
 
-    public static Incidente fallaTemperatura(Heladera heladera,
-                                             LocalDateTime fechaHora) {
-        return con(heladera, fechaHora, TipoIncidente.FALLA_TEMPERATURA, null, null, null);
-    }
+  public static Incidente fallaTemperatura(Heladera heladera,
+                                           LocalDateTime fechaHora) {
+    return con(heladera, fechaHora, TipoIncidente.FALLA_TEMPERATURA, null, null, null);
+  }
 
-    public static Incidente fallaConexion(Heladera heladera,
-                                          LocalDateTime fechaHora) {
-        return con(heladera, fechaHora, TipoIncidente.FALLA_CONEXION, null, null, null);
-    }
+  public static Incidente fallaConexion(Heladera heladera,
+                                        LocalDateTime fechaHora) {
+    return con(heladera, fechaHora, TipoIncidente.FALLA_CONEXION, null, null, null);
+  }
 
-    public static Incidente fraude(Heladera heladera,
-                                   LocalDateTime fechaHora) {
-        return con(heladera, fechaHora, TipoIncidente.FRAUDE, null, null, null);
-    }
+  public static Incidente fraude(Heladera heladera,
+                                 LocalDateTime fechaHora) {
+    return con(heladera, fechaHora, TipoIncidente.FRAUDE, null, null, null);
+  }
 
 }

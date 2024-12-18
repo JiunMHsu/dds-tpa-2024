@@ -8,18 +8,18 @@ import org.junit.jupiter.api.Test;
 
 public class EmailSenderTest {
 
-    @Test
-    public void testEmailSender() {
-        EmailSender mailSender = new EmailSender();
+  @Test
+  public void testEmailSender() {
+    EmailSender mailSender = new EmailSender();
 
-        try {
-            mailSender.enviarMensaje(
-                    Contacto.conEmail("jhsu@frba.utn.edu.ar"),
-                    "TEST DDS EMAIL SENDER",
-                    "test");
-        } catch (MessagingException e) {
-            Assertions.fail();
-        }
+    try {
+      mailSender.enviarMensaje(
+          Contacto.conEmail("jhsu@frba.utn.edu.ar"),
+          "TEST DDS EMAIL SENDER",
+          "test");
+    } catch (MessagingException e) {
+      Assertions.fail();
     }
+  }
 
 }

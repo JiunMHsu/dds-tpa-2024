@@ -16,11 +16,11 @@ import lombok.NoArgsConstructor;
 @Table(name = "pregunta")
 public class Pregunta {
 
-    @Id
-    @GeneratedValue
-    private Long id;
+  @Id
+  @GeneratedValue
+  private Long id;
 
-    @Column(name = "contenido", columnDefinition = "TEXT", nullable = false)
-    private String contenido;
+  @Column(name = "contenido", columnDefinition = "TEXT", nullable = false)
+  private String contenido;
 
 }

@@ -12,48 +12,51 @@ import java.util.Optional;
 
 public class HeladeraService implements WithSimplePersistenceUnit {
 
-    private final HeladeraRepository heladeraRepository;
-    private final HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository;
+  private final HeladeraRepository heladeraRepository;
+  private final HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository;
 
-    public HeladeraService(HeladeraRepository heladeraRepository,
-                           HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository) {
-        this.heladeraRepository = heladeraRepository;
-        this.hacerseCargoHeladeraRepository = hacerseCargoHeladeraRepository;
-    }
+  public HeladeraService(HeladeraRepository heladeraRepository,
+                         HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository) {
+    this.heladeraRepository = heladeraRepository;
+    this.hacerseCargoHeladeraRepository = hacerseCargoHeladeraRepository;
+  }
 
-    public List<Heladera> buscarTodas() {
-        return this.heladeraRepository.buscarTodos();
-    }
+  public List<Heladera> buscarTodas() {
+    return this.heladeraRepository.buscarTodos();
+  }
 
-    public Optional<Heladera> buscarPorId(String id) {
-        if (id == null || id.isEmpty())
-            throw new IllegalArgumentException("El ID por la heladera no puede ser null o vacío");
+  public Optional<Heladera> buscarPorId(String id) {
+    if (id == null || id.isEmpty())
+      throw new IllegalArgumentException("El ID por la heladera no puede ser null o vacío");
 
-        return this.heladeraRepository.buscarPorId(id);
-    }
+    return this.heladeraRepository.buscarPorId(id);
+  }
 
-    public Optional<Heladera> buscarPorNombre(String nombre) {
-        return this.heladeraRepository.buscarPorNombre(nombre);
-    }
+  public Optional<Heladera> buscarPorNombre(String nombre) {
+    return this.heladeraRepository.buscarPorNombre(nombre);
+  }
 
-    public List<Heladera> buscarPorBarrio(Barrio barrio){return this.heladeraRepository.buscarPorBarrio(barrio);}
-    public void guardarHeladera(Heladera heladera) {
-        // TODO - validaciones??
-        withTransaction(() -> this.heladeraRepository.guardar(heladera));
-    }
+  public List<Heladera> buscarPorBarrio(Barrio barrio) {
+    return this.heladeraRepository.buscarPorBarrio(barrio);
+  }
 
-    public void actualizarHeladera(Heladera heladeraActualizada) {
-        beginTransaction();
-        this.heladeraRepository.actualizar(heladeraActualizada);
-        commitTransaction();
-    }
+  public void guardarHeladera(Heladera heladera) {
+    // TODO - validaciones??
+    withTransaction(() -> this.heladeraRepository.guardar(heladera));
+  }
 
-    public void eliminarHeladera(Heladera heladera) {
-        this.heladeraRepository.eliminar(heladera);
-    }
+  public void actualizarHeladera(Heladera heladeraActualizada) {
+    beginTransaction();
+    this.heladeraRepository.actualizar(heladeraActualizada);
+    commitTransaction();
+  }
 
-    public boolean puedeConfigurar(Colaborador colaborador, Heladera heladera) {
-        List<HacerseCargoHeladera> encargos = hacerseCargoHeladeraRepository.buscarPorColaborador(colaborador);
-        return encargos.stream().anyMatch(encargo -> encargo.getHeladeraACargo().equals(heladera));
-    }
+  public void eliminarHeladera(Heladera heladera) {
+    this.heladeraRepository.eliminar(heladera);
+  }
+
+  public boolean puedeConfigurar(Colaborador colaborador, Heladera heladera) {
+    List<HacerseCargoHeladera> encargos = hacerseCargoHeladeraRepository.buscarPorColaborador(colaborador);
+    return encargos.stream().anyMatch(encargo -> encargo.getHeladeraACargo().equals(heladera));
+  }
 }

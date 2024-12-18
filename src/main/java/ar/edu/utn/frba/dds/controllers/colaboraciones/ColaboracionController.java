@@ -3,7 +3,6 @@ package ar.edu.utn.frba.dds.controllers.colaboraciones;
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.ColaboracionDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.TipoColaboracionDTO;
-import ar.edu.utn.frba.dds.dtos.colaborador.ColaboradorDTO;
 import ar.edu.utn.frba.dds.exceptions.CargaMasivaException;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
@@ -24,69 +23,69 @@ import java.util.Objects;
 
 public class ColaboracionController extends ColaboradorRequired {
 
-    private final ColaboracionService colaboracionService;
+  private final ColaboracionService colaboracionService;
 
-    public ColaboracionController(UsuarioService usuarioService,
-                                  ColaboradorService colaboradorService,
-                                  ColaboracionService colaboracionService) {
-        super(usuarioService, colaboradorService);
-        this.colaboracionService = colaboracionService;
+  public ColaboracionController(UsuarioService usuarioService,
+                                ColaboradorService colaboradorService,
+                                ColaboracionService colaboracionService) {
+    super(usuarioService, colaboradorService);
+    this.colaboracionService = colaboracionService;
+  }
+
+  public void index(Context context) {
+    Map<String, Object> model = new HashMap<>();
+    Usuario usuario = usuarioFromSession(context);
+
+    if (Objects.equals(usuario.getRol(), TipoRol.COLABORADOR)) {
+
+      Colaborador colaborador = colaboradorFromSession(context);
+      List<Object> colaboracionesRealizadas = colaboracionService.buscarTodasPorColaborador(colaborador);
+
+      List<ColaboracionDTO> colaboracionesRealizadasDTO = colaboracionesRealizadas.stream()
+          .map(ColaboracionDTO::toDTO)
+          .toList();
+
+      List<TipoColaboracionDTO> formasDeColaborar = colaborador.getFormaDeColaborar()
+          .stream().map(TipoColaboracionDTO::redirectable)
+          .toList();
+
+      model.put("colaboracionesRealizadas", colaboracionesRealizadasDTO);
+      model.put("formasDeColaborar", formasDeColaborar);
+      model.put("colaboradorId", colaborador.getId().toString());
+    } else if (Objects.equals(usuario.getRol(), TipoRol.ADMIN)) {
+
+      List<Object> colaboraciones = this.colaboracionService.buscarTodas();
+      List<ColaboracionDTO> colaboracionDTOS = colaboraciones.stream()
+          .map(ColaboracionDTO::toDTO)
+          .toList();
+      model.put("colaboracionesRealizadas", colaboracionDTOS);
     }
 
-    public void index(Context context) {
-        Map<String, Object> model = new HashMap<>();
-        Usuario usuario = usuarioFromSession(context);
+    render(context, "colaboraciones/colaboraciones.hbs", model);
+  }
 
-        if (Objects.equals(usuario.getRol(), TipoRol.COLABORADOR)) {
+  public void cargarColaboraciones(Context context) {
+    Map<String, Object> model = new HashMap<>();
+    List<RedirectDTO> redirectDTOS = new ArrayList<>();
+    boolean operationSuccess = false;
 
-            Colaborador colaborador = colaboradorFromSession(context);
-            List<Object> colaboracionesRealizadas = colaboracionService.buscarTodasPorColaborador(colaborador);
+    try {
+      UploadedFile uploadedFile = context.uploadedFile("csv");
+      if (uploadedFile == null) throw new InvalidFormParamException();
 
-            List<ColaboracionDTO> colaboracionesRealizadasDTO = colaboracionesRealizadas.stream()
-                    .map(ColaboracionDTO::toDTO)
-                    .toList();
+      colaboracionService.cargarColaboraciones(uploadedFile.content());
 
-            List<TipoColaboracionDTO> formasDeColaborar = colaborador.getFormaDeColaborar()
-                    .stream().map(TipoColaboracionDTO::redirectable)
-                    .toList();
+      operationSuccess = true;
+      redirectDTOS.add(new RedirectDTO("/colaboraciones", "Ver Colaboraciones"));
 
-            model.put("colaboracionesRealizadas", colaboracionesRealizadasDTO);
-            model.put("formasDeColaborar", formasDeColaborar);
-            model.put("colaboradorId", colaborador.getId().toString());
-        } else if (Objects.equals(usuario.getRol(), TipoRol.ADMIN)) {
+    } catch (ValidationException | CargaMasivaException e) {
+      System.out.println(e.getMessage());
+      redirectDTOS.add(new RedirectDTO("/colaboraciones", "Reintentar"));
+    } finally {
+      model.put("success", operationSuccess);
+      model.put("redirects", redirectDTOS);
 
-            List<Object> colaboraciones = this.colaboracionService.buscarTodas();
-            List<ColaboracionDTO> colaboracionDTOS = colaboraciones.stream()
-                    .map(ColaboracionDTO::toDTO)
-                    .toList();
-            model.put("colaboracionesRealizadas", colaboracionDTOS);
-        }
-
-        render(context, "colaboraciones/colaboraciones.hbs", model);
+      context.render("post_result.hbs", model);
     }
-
-    public void cargarColaboraciones(Context context) {
-        Map<String, Object> model = new HashMap<>();
-        List<RedirectDTO> redirectDTOS = new ArrayList<>();
-        boolean operationSuccess = false;
-
-        try {
-            UploadedFile uploadedFile = context.uploadedFile("csv");
-            if (uploadedFile == null) throw new InvalidFormParamException();
-
-            colaboracionService.cargarColaboraciones(uploadedFile.content());
-
-            operationSuccess = true;
-            redirectDTOS.add(new RedirectDTO("/colaboraciones", "Ver Colaboraciones"));
-
-        } catch (ValidationException | CargaMasivaException e) {
-            System.out.println(e.getMessage());
-            redirectDTOS.add(new RedirectDTO("/colaboraciones", "Reintentar"));
-        } finally {
-            model.put("success", operationSuccess);
-            model.put("redirects", redirectDTOS);
-
-            context.render("post_result.hbs", model);
-        }
-    }
+  }
 }

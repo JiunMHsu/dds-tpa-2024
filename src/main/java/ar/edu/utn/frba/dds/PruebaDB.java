@@ -31,171 +31,171 @@ import java.util.Optional;
 
 public class PruebaDB implements WithSimplePersistenceUnit {
 
-    private HeladeraRepository heladeraRepository;
-    private TecnicoRepository tecnicoRepository;
-    private ColaboradorRepository colaboradorRepository;
-    private UsuarioRepository usuarioRepository;
-    private IncidenteRepository incidenteRepository;
+  private HeladeraRepository heladeraRepository;
+  private TecnicoRepository tecnicoRepository;
+  private ColaboradorRepository colaboradorRepository;
+  private UsuarioRepository usuarioRepository;
+  private IncidenteRepository incidenteRepository;
 
-    public static void main(String[] args) {
-        PruebaDB instance = new PruebaDB();
+  public static void main(String[] args) {
+    PruebaDB instance = new PruebaDB();
 
-        instance.usuarioRepository = new UsuarioRepository();
+    instance.usuarioRepository = new UsuarioRepository();
 
-        instance.heladeraRepository = new HeladeraRepository();
-        instance.guardarHeladera();
-        instance.recuperarHeladera();
+    instance.heladeraRepository = new HeladeraRepository();
+    instance.guardarHeladera();
+    instance.recuperarHeladera();
 
-        instance.tecnicoRepository = new TecnicoRepository();
-        instance.guardarTecnico();
-        instance.recuperarTecnico();
+    instance.tecnicoRepository = new TecnicoRepository();
+    instance.guardarTecnico();
+    instance.recuperarTecnico();
 
-        instance.colaboradorRepository = new ColaboradorRepository();
-        instance.guardarColaborador();
-        instance.recuperarColaborador();
+    instance.colaboradorRepository = new ColaboradorRepository();
+    instance.guardarColaborador();
+    instance.recuperarColaborador();
 
-        instance.incidenteRepository = new IncidenteRepository();
-        instance.guardarIncidentes();
-        instance.mostrarIncidentes();
+    instance.incidenteRepository = new IncidenteRepository();
+    instance.guardarIncidentes();
+    instance.mostrarIncidentes();
 
+  }
+
+  private void guardarHeladera() {
+    Direccion direccion = new Direccion(
+        new Barrio("Almagro"),
+        new Calle("Medrano"),
+        951,
+        new Ubicacion(-34.59857981526152, -58.420110294464294)
+    );
+
+    Heladera heladera = Heladera.con(
+        "UTN Medrano",
+        direccion,
+        20,
+        new RangoTemperatura(5.0, -10.0)
+    );
+
+    heladera.setEstado(EstadoHeladera.INACTIVA);
+    heladera.setViandas(0);
+
+    heladeraRepository.guardar(heladera);
+  }
+
+  private void recuperarHeladera() {
+    Optional<Heladera> heladeraRecuperada = heladeraRepository.buscarPorNombre("UTN Medrano");
+
+    heladeraRecuperada.ifPresent(heladera ->
+        System.out.println("Heladera: " + heladera.getNombre() + "\n" + "Id: " + heladera.getId().toString())
+    );
+  }
+
+  private void guardarColaborador() {
+    Usuario unUsuario = Usuario.con("JiunMHsu", "iMC4(*&A^F0OK?%87", "utn.dds.g22@gmail.com", TipoRol.ADMIN);
+    Direccion direccion = new Direccion(
+        new Barrio("Almagro"),
+        new Calle("Medrano"),
+        951,
+        new Ubicacion(-34.59857981526152, -58.420110294464294)
+    );
+
+    Colaborador unColaborador = Colaborador.humana(
+        unUsuario,
+        "Jiun Ming",
+        "Hsu",
+        LocalDate.of(2003, 2, 19)
+    );
+
+    unColaborador.setDireccion(direccion);
+
+    withTransaction(() -> {
+      usuarioRepository.guardar(unUsuario);
+      colaboradorRepository.guardar(unColaborador);
+    });
+  }
+
+  private void recuperarColaborador() {
+    Optional<Colaborador> unColaborador = colaboradorRepository.buscarPorEmail("hsujm219@gmail.com");
+
+    unColaborador.ifPresent(colaborador -> System.out.println(
+        "Colaborador: " + colaborador.getNombre() + "\n"
+            + "Id: " + colaborador.getId().toString() + "\n"
+            + "Usuario: " + colaborador.getUsuario().getNombre() + "\n"
+            + "Clave: " + colaborador.getUsuario().getContrasenia() + "\n"
+    ));
+  }
+
+  private void guardarTecnico() {
+    Barrio almagro = new Barrio("Almagro");
+
+    Usuario usuarioT1 = Usuario.conEmail("mjuncosmieres@frba.utn.edu.ar");
+    Usuario usuarioT2 = Usuario.conEmail("jgandola@frba.utn.edu.ar");
+
+    Tecnico unTecnico = Tecnico.con(
+        usuarioT1,
+        "Matias Leonel",
+        "Juncos Mieres",
+        new Documento(TipoDocumento.DNI, "12345678"),
+        "24-12345678-0",
+        Contacto.conTelegram("7652931546"),
+        MedioDeNotificacion.TELEGRAM,
+        new Area(new Ubicacion(-34.60011743355092, -58.417371449916324), 500, almagro)
+    );
+
+    Tecnico otroTecnico = Tecnico.con(
+        usuarioT2,
+        "Joaquín",
+        "Gándola",
+        new Documento(TipoDocumento.DNI, "82738291"),
+        "22-82738291-1",
+        Contacto.conWhatsApp("8881928172"),
+        MedioDeNotificacion.WHATSAPP,
+        new Area(new Ubicacion(-34.60711989660622, -58.414045825102896), 400, almagro)
+    );
+
+    tecnicoRepository.guardar(unTecnico);
+    tecnicoRepository.guardar(otroTecnico);
+  }
+
+  private void recuperarTecnico() {
+    List<Tecnico> tecnicosDeAlmagro = tecnicoRepository.obtenerPorBarrio(new Barrio("Almagro"));
+
+    if (!tecnicosDeAlmagro.isEmpty()) {
+      for (Tecnico tecnico : tecnicosDeAlmagro) {
+        System.out.println("Tecnico: " + tecnico.getNombre() + "\n"
+            + "Id: " + tecnico.getId().toString() + "\n"
+            + "Fecha Alta: " + tecnico.getFechaAlta() + "\n");
+      }
     }
+  }
 
-    private void guardarHeladera() {
-        Direccion direccion = new Direccion(
-                new Barrio("Almagro"),
-                new Calle("Medrano"),
-                951,
-                new Ubicacion(-34.59857981526152, -58.420110294464294)
-        );
+  public void impactarEnBase() {
+    withTransaction(() -> {
+    });
+  }
 
-        Heladera heladera = Heladera.con(
-                "UTN Medrano",
-                direccion,
-                20,
-                new RangoTemperatura(5.0, -10.0)
-        );
+  private void guardarIncidentes() {
 
-        heladera.setEstado(EstadoHeladera.INACTIVA);
-        heladera.setViandas(0);
-
-        heladeraRepository.guardar(heladera);
-    }
-
-    private void recuperarHeladera() {
-        Optional<Heladera> heladeraRecuperada = heladeraRepository.buscarPorNombre("UTN Medrano");
-
-        heladeraRecuperada.ifPresent(heladera ->
-                System.out.println("Heladera: " + heladera.getNombre() + "\n" + "Id: " + heladera.getId().toString())
-        );
-    }
-
-    private void guardarColaborador() {
-        Usuario unUsuario = Usuario.con("JiunMHsu", "iMC4(*&A^F0OK?%87", "utn.dds.g22@gmail.com", TipoRol.ADMIN);
-        Direccion direccion = new Direccion(
-                new Barrio("Almagro"),
-                new Calle("Medrano"),
-                951,
-                new Ubicacion(-34.59857981526152, -58.420110294464294)
-        );
-
-        Colaborador unColaborador = Colaborador.humana(
-                unUsuario,
-                "Jiun Ming",
-                "Hsu",
-                LocalDate.of(2003, 2, 19)
-        );
-
-        unColaborador.setDireccion(direccion);
-
-        withTransaction(() -> {
-            usuarioRepository.guardar(unUsuario);
-            colaboradorRepository.guardar(unColaborador);
-        });
-    }
-
-    private void recuperarColaborador() {
-        Optional<Colaborador> unColaborador = colaboradorRepository.buscarPorEmail("hsujm219@gmail.com");
-
-        unColaborador.ifPresent(colaborador -> System.out.println(
-                "Colaborador: " + colaborador.getNombre() + "\n"
-                        + "Id: " + colaborador.getId().toString() + "\n"
-                        + "Usuario: " + colaborador.getUsuario().getNombre() + "\n"
-                        + "Clave: " + colaborador.getUsuario().getContrasenia() + "\n"
-        ));
-    }
-
-    private void guardarTecnico() {
-        Barrio almagro = new Barrio("Almagro");
-
-        Usuario usuarioT1 = Usuario.conEmail("mjuncosmieres@frba.utn.edu.ar");
-        Usuario usuarioT2 = Usuario.conEmail("jgandola@frba.utn.edu.ar");
-
-        Tecnico unTecnico = Tecnico.con(
-                usuarioT1,
-                "Matias Leonel",
-                "Juncos Mieres",
-                new Documento(TipoDocumento.DNI, "12345678"),
-                "24-12345678-0",
-                Contacto.conTelegram("7652931546"),
-                MedioDeNotificacion.TELEGRAM,
-                new Area(new Ubicacion(-34.60011743355092, -58.417371449916324), 500, almagro)
-        );
-
-        Tecnico otroTecnico = Tecnico.con(
-                usuarioT2,
-                "Joaquín",
-                "Gándola",
-                new Documento(TipoDocumento.DNI, "82738291"),
-                "22-82738291-1",
-                Contacto.conWhatsApp("8881928172"),
-                MedioDeNotificacion.WHATSAPP,
-                new Area(new Ubicacion(-34.60711989660622, -58.414045825102896), 400, almagro)
-        );
-
-        tecnicoRepository.guardar(unTecnico);
-        tecnicoRepository.guardar(otroTecnico);
-    }
-
-    private void recuperarTecnico() {
-        List<Tecnico> tecnicosDeAlmagro = tecnicoRepository.obtenerPorBarrio(new Barrio("Almagro"));
-
-        if (!tecnicosDeAlmagro.isEmpty()) {
-            for (Tecnico tecnico : tecnicosDeAlmagro) {
-                System.out.println("Tecnico: " + tecnico.getNombre() + "\n"
-                        + "Id: " + tecnico.getId().toString() + "\n"
-                        + "Fecha Alta: " + tecnico.getFechaAlta() + "\n");
-            }
-        }
-    }
-
-    public void impactarEnBase() {
-        withTransaction(() -> {
-        });
-    }
-
-    private void guardarIncidentes() {
-
-        Incidente fallaTemperatura = new Incidente();
-        fallaTemperatura.setHeladera(Heladera.con("Heladera 1"));
-        fallaTemperatura.setFechaHora(LocalDateTime.now());
-        fallaTemperatura.setTipo(TipoIncidente.FALLA_TEMPERATURA);
-        fallaTemperatura.setDescripcion("La temperatura ha excedido los límites permitidos.");
+    Incidente fallaTemperatura = new Incidente();
+    fallaTemperatura.setHeladera(Heladera.con("Heladera 1"));
+    fallaTemperatura.setFechaHora(LocalDateTime.now());
+    fallaTemperatura.setTipo(TipoIncidente.FALLA_TEMPERATURA);
+    fallaTemperatura.setDescripcion("La temperatura ha excedido los límites permitidos.");
 
 
-        Incidente fraude = new Incidente();
-        fraude.setHeladera(Heladera.con("Heladera 2"));
-        fraude.setFechaHora(LocalDateTime.now());
-        fraude.setTipo(TipoIncidente.FRAUDE);
-        fraude.setDescripcion("Se ha detectado movimiento en la heladera cuando estaba cerrada.");
+    Incidente fraude = new Incidente();
+    fraude.setHeladera(Heladera.con("Heladera 2"));
+    fraude.setFechaHora(LocalDateTime.now());
+    fraude.setTipo(TipoIncidente.FRAUDE);
+    fraude.setDescripcion("Se ha detectado movimiento en la heladera cuando estaba cerrada.");
 
 
-        incidenteRepository.guardar(fallaTemperatura);
-        incidenteRepository.guardar(fraude);
-    }
+    incidenteRepository.guardar(fallaTemperatura);
+    incidenteRepository.guardar(fraude);
+  }
 
-    private void mostrarIncidentes() {
-        // Obtener todos los incidentes y mostrarlos
-        List<Incidente> incidentes = incidenteRepository.buscarTodos();
-        incidentes.forEach(System.out::println);
-    }
+  private void mostrarIncidentes() {
+    // Obtener todos los incidentes y mostrarlos
+    List<Incidente> incidentes = incidenteRepository.buscarTodos();
+    incidentes.forEach(System.out::println);
+  }
 }

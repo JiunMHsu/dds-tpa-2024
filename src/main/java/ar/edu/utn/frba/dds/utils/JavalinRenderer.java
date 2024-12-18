@@ -8,17 +8,17 @@ import org.jetbrains.annotations.NotNull;
 
 public class JavalinRenderer implements FileRenderer {
 
-    private final Map<String, FileRenderer> renderers = new HashMap<>();
+  private final Map<String, FileRenderer> renderers = new HashMap<>();
 
-    public JavalinRenderer register(String extension, FileRenderer renderer) {
-        renderers.put(extension, renderer);
-        return this;
-    }
+  public JavalinRenderer register(String extension, FileRenderer renderer) {
+    renderers.put(extension, renderer);
+    return this;
+  }
 
-    @NotNull
-    @Override
-    public String render(@NotNull String s, @NotNull Map<String, ?> map, @NotNull Context context) {
-        String extension = s.substring(s.lastIndexOf(".") + 1);
-        return renderers.get(extension).render(s, map, context);
-    }
+  @NotNull
+  @Override
+  public String render(@NotNull String s, @NotNull Map<String, ?> map, @NotNull Context context) {
+    String extension = s.substring(s.lastIndexOf(".") + 1);
+    return renderers.get(extension).render(s, map, context);
+  }
 }
