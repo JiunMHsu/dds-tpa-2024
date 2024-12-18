@@ -8,8 +8,8 @@ import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.Optional;
 
 public class HomeService implements WithSimplePersistenceUnit {
-  private ColaboradorRepository colaboradorRepository;
-  private UsuarioRepository usuarioRepository;
+  private final ColaboradorRepository colaboradorRepository;
+  private final UsuarioRepository usuarioRepository;
 
   public HomeService(ColaboradorRepository colaboradorRepository,
                      UsuarioRepository usuarioRepository) {

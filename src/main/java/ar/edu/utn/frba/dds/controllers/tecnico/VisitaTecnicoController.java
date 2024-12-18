@@ -61,7 +61,7 @@ public class VisitaTecnicoController extends TecnicoRequired {
     }
   }
 
-  public void save(Context context) {
+  public void save(Context context) { // TODO - Ver desp que matchee para Colaborador las vistas
 
     Map<String, Object> model = new HashMap<>();
     List<RedirectDTO> redirectDTOS = new ArrayList<>();

@@ -22,6 +22,4 @@ public class HacerseCargoHeladeraService implements WithSimplePersistenceUnit {
     hacerseCargoHeladeraRepository.guardar(hacerseCargoHeladera);
     commitTransaction();
   }
-
-  ;
 }

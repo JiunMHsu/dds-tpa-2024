@@ -7,9 +7,9 @@ import io.javalin.http.Context;
 
 public class SolicitudDeAperturaController implements ICrudViewsHandler {
 
-  private HeladeraService heladeraService;
-  private SolicitudDeAperturaService solicitudDeAperturaService;
-
+  private final HeladeraService heladeraService;
+  private final SolicitudDeAperturaService solicitudDeAperturaService;
+  
   public SolicitudDeAperturaController(HeladeraService heladeraService,
                                        SolicitudDeAperturaService solicitudDeAperturaService) {
     this.heladeraService = heladeraService;

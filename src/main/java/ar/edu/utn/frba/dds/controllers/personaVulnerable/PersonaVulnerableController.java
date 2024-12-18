@@ -108,7 +108,7 @@ public class PersonaVulnerableController extends ColaboradorPorSession implement
       Direccion direccion = Direccion.with(
           new Barrio(context.formParamAsClass("barrio", String.class).get()),
           new Calle(context.formParamAsClass("calle", String.class).get()),
-          Integer.valueOf(context.formParamAsClass("altura", Integer.class).get())
+          context.formParamAsClass("altura", Integer.class).get()
       );
 
       PersonaVulnerable personaVulnerableActualizada = new PersonaVulnerable(
@@ -117,7 +117,7 @@ public class PersonaVulnerableController extends ColaboradorPorSession implement
           LocalDate.parse(context.formParamAsClass("fecha_nacimiento", String.class).get()),
           LocalDate.now(),
           direccion,
-          Integer.valueOf(context.formParamAsClass("menores_a_cargo", Integer.class).get())
+          context.formParamAsClass("menores_a_cargo", Integer.class).get()
       );
 
       this.personaVulnerableService.actualizarPV(context.pathParam("id"), personaVulnerableActualizada);
