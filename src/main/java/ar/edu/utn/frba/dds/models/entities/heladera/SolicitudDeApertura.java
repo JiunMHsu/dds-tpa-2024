@@ -21,41 +21,41 @@ import lombok.NoArgsConstructor;
 @Table(name = "solicitud_apertura")
 public class SolicitudDeApertura extends EntidadPersistente {
 
-    @ManyToOne
-    @JoinColumn(name = "tarjeta_id", nullable = false)
-    private TarjetaColaborador tarjeta;
+  @ManyToOne
+  @JoinColumn(name = "tarjeta_id", nullable = false)
+  private TarjetaColaborador tarjeta;
 
-    @ManyToOne
-    @JoinColumn(name = "heladera_id", nullable = false)
-    private Heladera heladera;
+  @ManyToOne
+  @JoinColumn(name = "heladera_id", nullable = false)
+  private Heladera heladera;
 
-    @Column(name = "fecha_hora")
-    private LocalDateTime fechaHora;
+  @Column(name = "fecha_hora")
+  private LocalDateTime fechaHora;
 
-    @Column(name = "motivo", columnDefinition = "TEXT")
-    private String motivo;
+  @Column(name = "motivo", columnDefinition = "TEXT")
+  private String motivo;
 
-    public static SolicitudDeApertura por(TarjetaColaborador tarjeta,
-                                          Heladera heladera,
-                                          LocalDateTime fechaHora,
-                                          String motivo) {
-        return SolicitudDeApertura
-                .builder()
-                .tarjeta(tarjeta)
-                .heladera(heladera)
-                .fechaHora(fechaHora)
-                .motivo(motivo)
-                .build();
-    }
+  public static SolicitudDeApertura por(TarjetaColaborador tarjeta,
+                                        Heladera heladera,
+                                        LocalDateTime fechaHora,
+                                        String motivo) {
+    return SolicitudDeApertura
+        .builder()
+        .tarjeta(tarjeta)
+        .heladera(heladera)
+        .fechaHora(fechaHora)
+        .motivo(motivo)
+        .build();
+  }
 
-    public static SolicitudDeApertura por(TarjetaColaborador tarjeta,
-                                          Heladera heladera) {
-        return SolicitudDeApertura.por(
-                tarjeta,
-                heladera,
-                LocalDateTime.now(),
-                ""
-        );
-    }
+  public static SolicitudDeApertura por(TarjetaColaborador tarjeta,
+                                        Heladera heladera) {
+    return SolicitudDeApertura.por(
+        tarjeta,
+        heladera,
+        LocalDateTime.now(),
+        ""
+    );
+  }
 
 }

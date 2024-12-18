@@ -12,24 +12,24 @@ import io.javalin.config.RouterConfig;
 
 public class IncidenteRouter implements IRouter {
 
-    @Override
-    public void apply(RouterConfig config) {
-        config.apiBuilder(() -> {
-            path("/alertas", () -> {
-                get(ServiceLocator.instanceOf(AlertaController.class)::index, TipoRol.COLABORADOR, TipoRol.ADMIN, TipoRol.TECNICO);
-                get("/{id}", ServiceLocator.instanceOf(AlertaController.class)::show, TipoRol.COLABORADOR, TipoRol.ADMIN, TipoRol.TECNICO);
-            });
+  @Override
+  public void apply(RouterConfig config) {
+    config.apiBuilder(() -> {
+      path("/alertas", () -> {
+        get(ServiceLocator.instanceOf(AlertaController.class)::index, TipoRol.COLABORADOR, TipoRol.ADMIN, TipoRol.TECNICO);
+        get("/{id}", ServiceLocator.instanceOf(AlertaController.class)::show, TipoRol.COLABORADOR, TipoRol.ADMIN, TipoRol.TECNICO);
+      });
 
-            path("/fallas-tecnicas", () -> {
-                get(ServiceLocator.instanceOf(FallaTecnicaController.class)::index, TipoRol.COLABORADOR, TipoRol.ADMIN, TipoRol.TECNICO);
-                post(ServiceLocator.instanceOf(FallaTecnicaController.class)::save, TipoRol.COLABORADOR);
+      path("/fallas-tecnicas", () -> {
+        get(ServiceLocator.instanceOf(FallaTecnicaController.class)::index, TipoRol.COLABORADOR, TipoRol.ADMIN, TipoRol.TECNICO);
+        post(ServiceLocator.instanceOf(FallaTecnicaController.class)::save, TipoRol.COLABORADOR);
 
-                get("/new", ServiceLocator.instanceOf(FallaTecnicaController.class)::create, TipoRol.COLABORADOR);
-                get("/{id}", ServiceLocator.instanceOf(FallaTecnicaController.class)::show, TipoRol.COLABORADOR, TipoRol.ADMIN, TipoRol.TECNICO);
-            });
+        get("/new", ServiceLocator.instanceOf(FallaTecnicaController.class)::create, TipoRol.COLABORADOR);
+        get("/{id}", ServiceLocator.instanceOf(FallaTecnicaController.class)::show, TipoRol.COLABORADOR, TipoRol.ADMIN, TipoRol.TECNICO);
+      });
 
-        });
+    });
 
-    }
+  }
 
 }

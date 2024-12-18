@@ -5,23 +5,23 @@ import io.javalin.validation.ValidationException;
 
 public class PuntoIdealController {
 
-    public void create(Context context) {
-        try {
+  public void create(Context context) {
+    try {
 
-            // TODO - recuperar los datos del form
+      // TODO - recuperar los datos del form
 
-            String latitudQuery = "lat=";
-            String longitudQuery = "lon=";
-            String radioQuery = "radio=";
+      String latitudQuery = "lat=";
+      String longitudQuery = "lon=";
+      String radioQuery = "radio=";
 
-            context.redirect("/heladeras/new?"
-                    + latitudQuery
-                    + "&" + longitudQuery
-                    + "&" + radioQuery);
+      context.redirect("/heladeras/new?"
+          + latitudQuery
+          + "&" + longitudQuery
+          + "&" + radioQuery);
 
-        } catch (ValidationException e) {
-            // error
-            context.status(400);
-        }
+    } catch (ValidationException e) {
+      // error
+      context.status(400);
     }
+  }
 }

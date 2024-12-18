@@ -27,119 +27,119 @@ import lombok.Builder;
 @Builder
 public class ReporteService implements WithSimplePersistenceUnit {
 
-    private final ReporteRepository reporteRepository;
-    private final DonacionViandaRepository donacionViandaRepository;
-    private final IncidenteRepository incidenteRepository;
-    private final DistribucionViandasRepository distribucionViandasRepository;
-    private final RetiroDeViandaRepository retiroDeViandaRepository;
+  private final ReporteRepository reporteRepository;
+  private final DonacionViandaRepository donacionViandaRepository;
+  private final IncidenteRepository incidenteRepository;
+  private final DistribucionViandasRepository distribucionViandasRepository;
+  private final RetiroDeViandaRepository retiroDeViandaRepository;
 
-    public ReporteService(ReporteRepository reporteRepository,
-                          DonacionViandaRepository donacionViandaRepository,
-                          IncidenteRepository incidenteRepository,
-                          DistribucionViandasRepository distribucionViandasRepository,
-                          RetiroDeViandaRepository retiroDeViandaRepository) {
-        this.reporteRepository = reporteRepository;
-        this.donacionViandaRepository = donacionViandaRepository;
-        this.incidenteRepository = incidenteRepository;
-        this.distribucionViandasRepository = distribucionViandasRepository;
-        this.retiroDeViandaRepository = retiroDeViandaRepository;
+  public ReporteService(ReporteRepository reporteRepository,
+                        DonacionViandaRepository donacionViandaRepository,
+                        IncidenteRepository incidenteRepository,
+                        DistribucionViandasRepository distribucionViandasRepository,
+                        RetiroDeViandaRepository retiroDeViandaRepository) {
+    this.reporteRepository = reporteRepository;
+    this.donacionViandaRepository = donacionViandaRepository;
+    this.incidenteRepository = incidenteRepository;
+    this.distribucionViandasRepository = distribucionViandasRepository;
+    this.retiroDeViandaRepository = retiroDeViandaRepository;
+  }
+
+  private Map<String, Integer> incidentesPorHeladera() {
+    LocalDateTime haceUnaSemana = LocalDateTime.now().minusWeeks(1);
+    List<Incidente> incidentes = incidenteRepository.buscarAPartirDe(haceUnaSemana);
+
+    Map<String, Integer> incidentesPorHeladera = new HashMap<>();
+
+    for (Incidente incidente : incidentes) {
+      int cantidad = incidentesPorHeladera.getOrDefault(incidente.getHeladera().getNombre(), 0) + 1;
+      incidentesPorHeladera.put(incidente.getHeladera().getNombre(), cantidad);
     }
 
-    private Map<String, Integer> incidentesPorHeladera() {
-        LocalDateTime haceUnaSemana = LocalDateTime.now().minusWeeks(1);
-        List<Incidente> incidentes = incidenteRepository.buscarAPartirDe(haceUnaSemana);
+    return incidentesPorHeladera;
+  }
 
-        Map<String, Integer> incidentesPorHeladera = new HashMap<>();
+  private Map<String, Integer> donacionesPorColaborador() {
+    LocalDateTime haceUnaSemana = LocalDateTime.now().minusWeeks(1);
+    List<DonacionVianda> donaciones = donacionViandaRepository.buscarAPartirDe(haceUnaSemana);
 
-        for (Incidente incidente : incidentes) {
-            int cantidad = incidentesPorHeladera.getOrDefault(incidente.getHeladera().getNombre(), 0) + 1;
-            incidentesPorHeladera.put(incidente.getHeladera().getNombre(), cantidad);
-        }
+    Map<String, Integer> viandasPorColaborador = new HashMap<>();
+    for (DonacionVianda donacion : donaciones) {
+      // Tampoco es la forma más segura, habría que hacer por email o algo así
+      String key = donacion.getColaborador().getNombre() + " "
+          + donacion.getColaborador().getApellido() + " "
+          + donacion.getColaborador().getUsuario().getEmail();
 
-        return incidentesPorHeladera;
+      int cantidad = viandasPorColaborador.getOrDefault(key, 0) + 1;
+      viandasPorColaborador.put(key, cantidad);
     }
 
-    private Map<String, Integer> donacionesPorColaborador() {
-        LocalDateTime haceUnaSemana = LocalDateTime.now().minusWeeks(1);
-        List<DonacionVianda> donaciones = donacionViandaRepository.buscarAPartirDe(haceUnaSemana);
+    return viandasPorColaborador;
+  }
 
-        Map<String, Integer> viandasPorColaborador = new HashMap<>();
-        for (DonacionVianda donacion : donaciones) {
-            // Tampoco es la forma más segura, habría que hacer por email o algo así
-            String key = donacion.getColaborador().getNombre() + " "
-                    + donacion.getColaborador().getApellido() + " "
-                    + donacion.getColaborador().getUsuario().getEmail();
+  private Map<String, Map<String, Integer>> movimientosPorHeladera() {
+    LocalDateTime haceUnaSemana = LocalDateTime.now().minusWeeks(1);
+    List<DistribucionViandas> distribuciones = distribucionViandasRepository.buscarAPartirDe(haceUnaSemana);
+    List<RetiroDeVianda> retiros = retiroDeViandaRepository.buscarAPartirDe(haceUnaSemana);
 
-            int cantidad = viandasPorColaborador.getOrDefault(key, 0) + 1;
-            viandasPorColaborador.put(key, cantidad);
-        }
+    Map<String, Map<String, Integer>> movimientos = new HashMap<>();
+    Map<String, Integer> viandasAgregadas = new HashMap<>();
+    Map<String, Integer> viandasQuitadas = new HashMap<>();
 
-        return viandasPorColaborador;
+    for (DistribucionViandas distribucion : distribuciones) {
+      String key = distribucion.getOrigen().getId().toString();
+
+      int entradas = viandasAgregadas.getOrDefault(key, 0) + 1;
+      viandasAgregadas.put(key, entradas);
+      int salidas = viandasQuitadas.getOrDefault(key, 0) + 1;
+      viandasQuitadas.put(key, salidas);
     }
 
-    private Map<String, Map<String, Integer>> movimientosPorHeladera() {
-        LocalDateTime haceUnaSemana = LocalDateTime.now().minusWeeks(1);
-        List<DistribucionViandas> distribuciones = distribucionViandasRepository.buscarAPartirDe(haceUnaSemana);
-        List<RetiroDeVianda> retiros = retiroDeViandaRepository.buscarAPartirDe(haceUnaSemana);
-
-        Map<String, Map<String, Integer>> movimientos = new HashMap<>();
-        Map<String, Integer> viandasAgregadas = new HashMap<>();
-        Map<String, Integer> viandasQuitadas = new HashMap<>();
-
-        for (DistribucionViandas distribucion : distribuciones) {
-            String key = distribucion.getOrigen().getId().toString();
-
-            int entradas = viandasAgregadas.getOrDefault(key, 0) + 1;
-            viandasAgregadas.put(key, entradas);
-            int salidas = viandasQuitadas.getOrDefault(key, 0) + 1;
-            viandasQuitadas.put(key, salidas);
-        }
-
-        for (RetiroDeVianda retiro : retiros) {
-            String key = retiro.getHeladera().getId().toString();
-            int salidas = viandasQuitadas.getOrDefault(key, 0) + 1;
-            viandasQuitadas.put(key, salidas);
-        }
-
-        movimientos.put("Viandas Agregadas", viandasAgregadas);
-        movimientos.put("Viandas Quitadas", viandasQuitadas);
-        return movimientos;
+    for (RetiroDeVianda retiro : retiros) {
+      String key = retiro.getHeladera().getId().toString();
+      int salidas = viandasQuitadas.getOrDefault(key, 0) + 1;
+      viandasQuitadas.put(key, salidas);
     }
 
-    public void generarReporteSemanal(IPDFGenerator pdfGenerator) {
-        Map<String, Integer> incidentesPorHeladera = this.incidentesPorHeladera();
-        Map<String, Integer> donacionPorColaborador = this.donacionesPorColaborador();
-        Map<String, Map<String, Integer>> movimientos = movimientosPorHeladera();
+    movimientos.put("Viandas Agregadas", viandasAgregadas);
+    movimientos.put("Viandas Quitadas", viandasQuitadas);
+    return movimientos;
+  }
 
-        String pathReporteFalla = pdfGenerator.generateDocument("Fallas por Heladera", incidentesPorHeladera);
-        String reporteDonaciones = pdfGenerator.generateDocument("Viandas Donadas por Colaborador", donacionPorColaborador);
-        String reporteMovimientos = pdfGenerator.generateDocumentWithSections("Movimiento de Viandas", movimientos);
+  public void generarReporteSemanal(IPDFGenerator pdfGenerator) {
+    Map<String, Integer> incidentesPorHeladera = this.incidentesPorHeladera();
+    Map<String, Integer> donacionPorColaborador = this.donacionesPorColaborador();
+    Map<String, Map<String, Integer>> movimientos = movimientosPorHeladera();
 
-        beginTransaction();
-        reporteRepository.guardar(Reporte.de("Fallas por Heladera", pathReporteFalla));
-        reporteRepository.guardar(Reporte.de("Viandas Donadas por Colaborador", reporteDonaciones));
-        reporteRepository.guardar(Reporte.de("Movimiento de Viandas", reporteMovimientos));
-        commitTransaction();
+    String pathReporteFalla = pdfGenerator.generateDocument("Fallas por Heladera", incidentesPorHeladera);
+    String reporteDonaciones = pdfGenerator.generateDocument("Viandas Donadas por Colaborador", donacionPorColaborador);
+    String reporteMovimientos = pdfGenerator.generateDocumentWithSections("Movimiento de Viandas", movimientos);
 
-        System.out.println("Reportes generados correctamente.");
-    }
+    beginTransaction();
+    reporteRepository.guardar(Reporte.de("Fallas por Heladera", pathReporteFalla));
+    reporteRepository.guardar(Reporte.de("Viandas Donadas por Colaborador", reporteDonaciones));
+    reporteRepository.guardar(Reporte.de("Movimiento de Viandas", reporteMovimientos));
+    commitTransaction();
 
-    public List<Reporte> buscarTodas() {
-        return this.reporteRepository.buscarTodos();
-    }
+    System.out.println("Reportes generados correctamente.");
+  }
 
-    public Optional<Reporte> buscarPorId(String id) {
-        if (id == null || id.isEmpty())
-            throw new IllegalArgumentException("El ID por la heladera no puede ser null o vacío");
+  public List<Reporte> buscarTodas() {
+    return this.reporteRepository.buscarTodos();
+  }
 
-        return this.reporteRepository.buscarPorId(id);
-    }
+  public Optional<Reporte> buscarPorId(String id) {
+    if (id == null || id.isEmpty())
+      throw new IllegalArgumentException("El ID por la heladera no puede ser null o vacío");
 
-    public InputStream buscarReporte(Reporte reporte) throws FileNotFoundException {
-        Path path = Path.of(
-                AppProperties.getInstance().propertyFromName("REPORT_DIR"),
-                reporte.getNombreArchivo()).toAbsolutePath();
+    return this.reporteRepository.buscarPorId(id);
+  }
 
-        return new FileInputStream(path.toString());
-    }
+  public InputStream buscarReporte(Reporte reporte) throws FileNotFoundException {
+    Path path = Path.of(
+        AppProperties.getInstance().propertyFromName("REPORT_DIR"),
+        reporte.getNombreArchivo()).toAbsolutePath();
+
+    return new FileInputStream(path.toString());
+  }
 }

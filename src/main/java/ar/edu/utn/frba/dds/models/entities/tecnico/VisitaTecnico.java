@@ -26,47 +26,47 @@ import lombok.NoArgsConstructor;
 @Table(name = "visita_tecnico")
 public class VisitaTecnico {
 
-    @Id
-    @GeneratedValue(generator = "uuid")
-    private UUID id;
+  @Id
+  @GeneratedValue(generator = "uuid")
+  private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "tecnico_id", nullable = false)
-    private Tecnico tecnico;
-    
-    @ManyToOne
-    @JoinColumn(name = "incidente_id", nullable = false)
-    private Incidente incidente;
+  @ManyToOne
+  @JoinColumn(name = "tecnico_id", nullable = false)
+  private Tecnico tecnico;
 
-    @ManyToOne
-    @JoinColumn(name = "heladera_id", nullable = false)
-    private Heladera heladera;
+  @ManyToOne
+  @JoinColumn(name = "incidente_id", nullable = false)
+  private Incidente incidente;
 
-    @Column(name = "fecha_hora", columnDefinition = "DATETIME", nullable = false)
-    private LocalDateTime fechaHora;
+  @ManyToOne
+  @JoinColumn(name = "heladera_id", nullable = false)
+  private Heladera heladera;
 
-    @Column(name = "descripcion", columnDefinition = "TEXT", nullable = false)
-    private String descripcion;
+  @Column(name = "fecha_hora", columnDefinition = "DATETIME", nullable = false)
+  private LocalDateTime fechaHora;
 
-    @Embedded
-    private Imagen foto;
+  @Column(name = "descripcion", columnDefinition = "TEXT", nullable = false)
+  private String descripcion;
 
-    public static VisitaTecnico por(Tecnico tecnico,
-                                    Incidente incidente,
-                                    Heladera heladera,
-                                    LocalDateTime fechaHora,
-                                    String descripcion,
-                                    Imagen foto
-    ) {
-        return VisitaTecnico
-                .builder()
-                .tecnico(tecnico)
-                .incidente(incidente)
-                .heladera(heladera)
-                .fechaHora(fechaHora)
-                .descripcion(descripcion)
-                .foto(foto)
-                .build();
-    }
+  @Embedded
+  private Imagen foto;
+
+  public static VisitaTecnico por(Tecnico tecnico,
+                                  Incidente incidente,
+                                  Heladera heladera,
+                                  LocalDateTime fechaHora,
+                                  String descripcion,
+                                  Imagen foto
+  ) {
+    return VisitaTecnico
+        .builder()
+        .tecnico(tecnico)
+        .incidente(incidente)
+        .heladera(heladera)
+        .fechaHora(fechaHora)
+        .descripcion(descripcion)
+        .foto(foto)
+        .build();
+  }
 
 }

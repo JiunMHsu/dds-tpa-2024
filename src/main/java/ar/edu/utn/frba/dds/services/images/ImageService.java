@@ -11,26 +11,26 @@ import java.nio.file.StandardCopyOption;
 
 public class ImageService {
 
-    private final RandomString randomString;
+  private final RandomString randomString;
 
-    public ImageService(RandomString randomString) {
-        this.randomString = randomString;
-    }
+  public ImageService(RandomString randomString) {
+    this.randomString = randomString;
+  }
 
-    public String guardarImagen(InputStream imagen, String extension) throws IOException {
-        String relativePath = AppProperties.getInstance().propertyFromName("IMAGE_DIR");
-        if (relativePath == null) throw new IOException();
+  public String guardarImagen(InputStream imagen, String extension) throws IOException {
+    String relativePath = AppProperties.getInstance().propertyFromName("IMAGE_DIR");
+    if (relativePath == null) throw new IOException();
 
-        String fileName = randomString.nextString() + extension;
-        Path path = Path.of(relativePath, fileName).toAbsolutePath();
-        System.out.println(path);
+    String fileName = randomString.nextString() + extension;
+    Path path = Path.of(relativePath, fileName).toAbsolutePath();
+    System.out.println(path);
 
-        Files.copy(imagen, path, StandardCopyOption.REPLACE_EXISTING);
-        return fileName;
-    }
+    Files.copy(imagen, path, StandardCopyOption.REPLACE_EXISTING);
+    return fileName;
+  }
 
-    public File obtenerImagen(String nombre) {
-        return null;
-    }
+  public File obtenerImagen(String nombre) {
+    return null;
+  }
 
 }

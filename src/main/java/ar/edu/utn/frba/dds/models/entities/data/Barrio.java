@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Embeddable
 public class Barrio {
-    @Column(name = "barrio_nombre")
-    private String nombre;
+  @Column(name = "barrio_nombre")
+  private String nombre;
 }

@@ -18,19 +18,19 @@ import lombok.Setter;
 @Embeddable
 public class Documento {
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_documento")
-    private TipoDocumento tipo;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "tipo_documento")
+  private TipoDocumento tipo;
 
-    @Column(name = "numero")
-    private String numero;
+  @Column(name = "numero")
+  private String numero;
 
-    public static Documento with(TipoDocumento tipoDocumento, String nroDocumento) {
+  public static Documento with(TipoDocumento tipoDocumento, String nroDocumento) {
 
-        return Documento
-                .builder()
-                .tipo(tipoDocumento)
-                .numero(nroDocumento)
-                .build();
-    }
+    return Documento
+        .builder()
+        .tipo(tipoDocumento)
+        .numero(nroDocumento)
+        .build();
+  }
 }

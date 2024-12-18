@@ -5,13 +5,13 @@ import java.util.Arrays;
 
 public class AppHandlers {
 
-    private final IHandler[] handlers = new IHandler[]{
-            new UnauthorizedHandler(),
-            new UnauthenticatedHandler(),
-            new ResourceNotFoundExceptionHandler()
-    };
+  private final IHandler[] handlers = new IHandler[]{
+      new UnauthorizedHandler(),
+      new UnauthenticatedHandler(),
+      new ResourceNotFoundExceptionHandler()
+  };
 
-    public static void apply(Javalin app) {
-        Arrays.stream(new AppHandlers().handlers).toList().forEach(handler -> handler.setHandler(app));
-    }
+  public static void apply(Javalin app) {
+    Arrays.stream(new AppHandlers().handlers).toList().forEach(handler -> handler.setHandler(app));
+  }
 }

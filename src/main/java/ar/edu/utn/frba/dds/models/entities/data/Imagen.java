@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class Imagen {
 
-    @Column(name = "ruta", columnDefinition = "TEXT")
-    private String ruta;
+  @Column(name = "ruta", columnDefinition = "TEXT")
+  private String ruta;
 }

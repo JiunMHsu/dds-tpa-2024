@@ -7,27 +7,27 @@ import java.util.List;
 import java.util.Optional;
 
 public class OfertaProductosServiciosService implements WithSimplePersistenceUnit {
-    private final OfertaDeProductosRepository ofertaDeProductosRepository;
+  private final OfertaDeProductosRepository ofertaDeProductosRepository;
 
-    public OfertaProductosServiciosService(OfertaDeProductosRepository ofertaDeProductosRepository) {
-        this.ofertaDeProductosRepository = ofertaDeProductosRepository;
-    }
+  public OfertaProductosServiciosService(OfertaDeProductosRepository ofertaDeProductosRepository) {
+    this.ofertaDeProductosRepository = ofertaDeProductosRepository;
+  }
 
-    public void registrar(OfertaDeProductos oferta) {
-        beginTransaction();
-        this.ofertaDeProductosRepository.guardar(oferta);
-        commitTransaction();
-    }
+  public void registrar(OfertaDeProductos oferta) {
+    beginTransaction();
+    this.ofertaDeProductosRepository.guardar(oferta);
+    commitTransaction();
+  }
 
-    public void eliminar(OfertaDeProductos oferta) {
-        this.ofertaDeProductosRepository.eliminar(oferta);
-    }
+  public void eliminar(OfertaDeProductos oferta) {
+    this.ofertaDeProductosRepository.eliminar(oferta);
+  }
 
-    public Optional<OfertaDeProductos> buscarPorId(String id) {
-        return this.ofertaDeProductosRepository.buscarPorId(id);
-    }
+  public Optional<OfertaDeProductos> buscarPorId(String id) {
+    return this.ofertaDeProductosRepository.buscarPorId(id);
+  }
 
-    public List<OfertaDeProductos> buscarTodos() {
-        return this.ofertaDeProductosRepository.buscarTodos();
-    }
+  public List<OfertaDeProductos> buscarTodos() {
+    return this.ofertaDeProductosRepository.buscarTodos();
+  }
 }

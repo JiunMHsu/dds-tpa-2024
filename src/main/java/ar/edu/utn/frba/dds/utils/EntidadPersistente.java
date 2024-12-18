@@ -13,22 +13,22 @@ import lombok.Setter;
 @MappedSuperclass
 public abstract class EntidadPersistente {
 
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @Column(name = "id", columnDefinition = "BINARY(16)")
-    private UUID id;
+  @Id
+  @GeneratedValue(generator = "uuid")
+  @Column(name = "id", columnDefinition = "BINARY(16)")
+  private UUID id;
 
-    @Setter
-    @Column(name = "alta", nullable = false)
-    private Boolean alta;
+  @Setter
+  @Column(name = "alta", nullable = false)
+  private Boolean alta;
 
-    @Setter
-    @Column(name = "fecha_alta", columnDefinition = "DATETIME", nullable = false)
-    private LocalDateTime fechaAlta;
+  @Setter
+  @Column(name = "fecha_alta", columnDefinition = "DATETIME", nullable = false)
+  private LocalDateTime fechaAlta;
 
-    public EntidadPersistente() {
-        this.alta = true;
-        this.fechaAlta = LocalDateTime.now();
-    }
+  public EntidadPersistente() {
+    this.alta = true;
+    this.fechaAlta = LocalDateTime.now();
+  }
 }
 

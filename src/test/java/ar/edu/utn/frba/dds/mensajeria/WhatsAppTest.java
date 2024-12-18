@@ -7,18 +7,18 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class WhatsAppTest {
-    @Test
-    public void enviarWhatsApp() {
-        WhatsAppSender whatsAppSender = new WhatsAppSender();
+  @Test
+  public void enviarWhatsApp() {
+    WhatsAppSender whatsAppSender = new WhatsAppSender();
 
-        try {
-            whatsAppSender.enviarMensaje(
-                    Contacto.conWhatsApp("whatsapp:+5491132420699"),
-                    "TEST DDS WHATSAPP SENDER",
-                    "test"
-            );
-        } catch (MessagingException e) {
-            Assertions.fail();
-        }
+    try {
+      whatsAppSender.enviarMensaje(
+          Contacto.conWhatsApp("whatsapp:+5491132420699"),
+          "TEST DDS WHATSAPP SENDER",
+          "test"
+      );
+    } catch (MessagingException e) {
+      Assertions.fail();
     }
+  }
 }

@@ -6,19 +6,19 @@ import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.Optional;
 
 public class DonacionDineroService implements WithSimplePersistenceUnit {
-    private final DonacionDineroRepository donacionDineroRepository;
+  private final DonacionDineroRepository donacionDineroRepository;
 
-    public DonacionDineroService(DonacionDineroRepository repository) {
-        this.donacionDineroRepository = repository;
-    }
+  public DonacionDineroService(DonacionDineroRepository repository) {
+    this.donacionDineroRepository = repository;
+  }
 
-    public void registrar(DonacionDinero donacion) {
-        // TODO - Validaciones??
-        withTransaction(() -> donacionDineroRepository.guardar(donacion));
-    }
+  public void registrar(DonacionDinero donacion) {
+    // TODO - Validaciones??
+    withTransaction(() -> donacionDineroRepository.guardar(donacion));
+  }
 
-    public Optional<DonacionDinero> buscarPorId(String id) {
-        return donacionDineroRepository.buscarPorId(id);
-    }
+  public Optional<DonacionDinero> buscarPorId(String id) {
+    return donacionDineroRepository.buscarPorId(id);
+  }
 
 }

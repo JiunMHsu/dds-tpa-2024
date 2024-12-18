@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface IHeladeraRepository extends ICrudRepository<Heladera> {
 
-    Optional<Heladera> buscarPorNombre(String nombre);
+  Optional<Heladera> buscarPorNombre(String nombre);
 
-    List<Heladera> buscarPorBarrio(Barrio barrio);
+  List<Heladera> buscarPorBarrio(Barrio barrio);
 }

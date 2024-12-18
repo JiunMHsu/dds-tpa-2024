@@ -20,20 +20,20 @@ import lombok.Setter;
 @Table(name = "reporte")
 public class Reporte extends EntidadPersistente {
 
-    @Column(name = "titulo", nullable = false)
-    private String titulo;
+  @Column(name = "titulo", nullable = false)
+  private String titulo;
 
-    @Column(name = "fecha", nullable = false)
-    private LocalDate fecha;
+  @Column(name = "fecha", nullable = false)
+  private LocalDate fecha;
 
-    @Column(name = "path", nullable = false)
-    private String nombreArchivo;
+  @Column(name = "path", nullable = false)
+  private String nombreArchivo;
 
-    public static Reporte de(String titulo, LocalDate fecha, String nombreArchivo) {
-        return Reporte.builder().titulo(titulo).fecha(fecha).nombreArchivo(nombreArchivo).build();
-    }
+  public static Reporte de(String titulo, LocalDate fecha, String nombreArchivo) {
+    return Reporte.builder().titulo(titulo).fecha(fecha).nombreArchivo(nombreArchivo).build();
+  }
 
-    public static Reporte de(String titulo, String nombreArchivo) {
-        return Reporte.de(titulo, LocalDate.now(), nombreArchivo);
-    }
+  public static Reporte de(String titulo, String nombreArchivo) {
+    return Reporte.de(titulo, LocalDate.now(), nombreArchivo);
+  }
 }

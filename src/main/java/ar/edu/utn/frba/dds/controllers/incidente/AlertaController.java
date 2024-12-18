@@ -12,30 +12,30 @@ import java.util.Map;
 
 public class AlertaController extends UserRequired {
 
-    private final IncidenteService incidenteService;
+  private final IncidenteService incidenteService;
 
-    public AlertaController(UsuarioService usuarioService,
-                            IncidenteService incidenteService) {
-        super(usuarioService);
-        this.incidenteService = incidenteService;
-    }
+  public AlertaController(UsuarioService usuarioService,
+                          IncidenteService incidenteService) {
+    super(usuarioService);
+    this.incidenteService = incidenteService;
+  }
 
-    public void index(Context context) {
-        List<Incidente> incidentes = this.incidenteService.buscarTodasAlertas();
+  public void index(Context context) {
+    List<Incidente> incidentes = this.incidenteService.buscarTodasAlertas();
 
-        List<AlertaDTO> alertasDTOS = incidentes.stream()
-                .map(AlertaDTO::preview)
-                .toList();
+    List<AlertaDTO> alertasDTOS = incidentes.stream()
+        .map(AlertaDTO::preview)
+        .toList();
 
-        Map<String, Object> model = new HashMap<>();
-        model.put("alertas", alertasDTOS);
+    Map<String, Object> model = new HashMap<>();
+    model.put("alertas", alertasDTOS);
 
-        context.render("alertas/alertas.hbs", model);
-    }
+    context.render("alertas/alertas.hbs", model);
+  }
 
-    public void show(Context context) {
-        context.result("ALERTA ID: " + context.pathParam("id"));
-    }
+  public void show(Context context) {
+    context.result("ALERTA ID: " + context.pathParam("id"));
+  }
 
 
 }

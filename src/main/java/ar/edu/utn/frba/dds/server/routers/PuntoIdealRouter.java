@@ -10,10 +10,10 @@ import io.javalin.config.RouterConfig;
 
 public class PuntoIdealRouter implements IRouter {
 
-    @Override
-    public void apply(RouterConfig config) {
-        config.apiBuilder(() -> path("/punto-ideal", () ->
-                post(ServiceLocator.instanceOf(PuntoIdealController.class)::create, TipoRol.ADMIN))
-        );
-    }
+  @Override
+  public void apply(RouterConfig config) {
+    config.apiBuilder(() -> path("/punto-ideal", () ->
+        post(ServiceLocator.instanceOf(PuntoIdealController.class)::create, TipoRol.ADMIN))
+    );
+  }
 }

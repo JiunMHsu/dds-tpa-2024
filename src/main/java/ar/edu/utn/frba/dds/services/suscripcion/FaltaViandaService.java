@@ -11,73 +11,70 @@ import ar.edu.utn.frba.dds.models.repositories.colaborador.IColaboradorRepositor
 import ar.edu.utn.frba.dds.models.repositories.suscripcion.FaltaViandaRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 
-import java.util.List;
-import java.util.Optional;
-
 public class FaltaViandaService implements WithSimplePersistenceUnit {
 
-    private final FaltaViandaRepository faltaViandaRepository;
-    private final IColaboradorRepository colaboradorRepository;
+  private final FaltaViandaRepository faltaViandaRepository;
+  private final IColaboradorRepository colaboradorRepository;
 
 
-    public FaltaViandaService(FaltaViandaRepository faltaViandaRepository,
-                              ColaboradorRepository colaboradorRepository) {
-        this.faltaViandaRepository = faltaViandaRepository;
-        this.colaboradorRepository = colaboradorRepository;
+  public FaltaViandaService(FaltaViandaRepository faltaViandaRepository,
+                            ColaboradorRepository colaboradorRepository) {
+    this.faltaViandaRepository = faltaViandaRepository;
+    this.colaboradorRepository = colaboradorRepository;
+  }
+
+  public void registrar(Colaborador colaborador, Heladera heladera, Integer viandasRestantes, MedioDeNotificacion medioDeNotificacion, String infoContacto) throws SuscripcionFaltaViandaException {
+
+    Contacto contacto = colaborador.getContacto();
+
+    if (contacto == null) {
+      contacto = Contacto.vacio();
+      colaborador.setContacto(contacto);
     }
 
-    public void registrar(Colaborador colaborador, Heladera heladera, Integer viandasRestantes, MedioDeNotificacion medioDeNotificacion, String infoContacto) throws SuscripcionFaltaViandaException {
+    boolean contactoActualizado = false;
 
-        Contacto contacto = colaborador.getContacto();
-
-        if (contacto == null) {
-            contacto = Contacto.vacio();
-            colaborador.setContacto(contacto);
+    switch (medioDeNotificacion) {
+      case WHATSAPP:
+        if (contacto.getWhatsApp() == null) {
+          contacto.setWhatsApp(infoContacto);
+          contactoActualizado = true;
         }
-
-        boolean contactoActualizado = false;
-
-        switch (medioDeNotificacion) {
-            case WHATSAPP:
-                if (contacto.getWhatsApp() == null) {
-                    contacto.setWhatsApp(infoContacto);
-                    contactoActualizado = true;
-                }
-                break;
-            case TELEGRAM:
-                if (contacto.getTelegram() == null) {
-                    contacto.setTelegram(infoContacto);
-                    contactoActualizado = true;
-                }
-                break;
-            case EMAIL:
-                if (contacto.getEmail() == null) {
-                    contacto.setEmail(infoContacto);
-                    contactoActualizado = true;
-                }
-                break;
+        break;
+      case TELEGRAM:
+        if (contacto.getTelegram() == null) {
+          contacto.setTelegram(infoContacto);
+          contactoActualizado = true;
         }
-
-        if (viandasRestantes <= 0 || viandasRestantes > heladera.getCapacidad()) {
-            throw new SuscripcionFaltaViandaException("La cantidad por viandas restantes debe ser mayor a 0 y menor o igual a la capacidad máxima por la heladera");
+        break;
+      case EMAIL:
+        if (contacto.getEmail() == null) {
+          contacto.setEmail(infoContacto);
+          contactoActualizado = true;
         }
-
-        SuscripcionFaltaVianda nuevaSuscripcion = SuscripcionFaltaVianda.de(
-                colaborador,
-                heladera,
-                medioDeNotificacion,
-                viandasRestantes);
-
-        if (contactoActualizado) {
-            beginTransaction();
-            colaboradorRepository.actualizar(colaborador);
-            faltaViandaRepository.guardar(nuevaSuscripcion);
-            commitTransaction();
-        } else {
-            beginTransaction();
-            faltaViandaRepository.guardar(nuevaSuscripcion);
-            commitTransaction();
-        }
+        break;
     }
+
+    if (viandasRestantes <= 0 || viandasRestantes > heladera.getCapacidad()) {
+      throw new SuscripcionFaltaViandaException("La cantidad por viandas restantes debe ser mayor a 0 y menor o igual a la capacidad máxima por la heladera");
+    }
+
+    SuscripcionFaltaVianda nuevaSuscripcion = SuscripcionFaltaVianda.de(
+        colaborador,
+        heladera,
+        medioDeNotificacion,
+        viandasRestantes);
+
+    if (contactoActualizado) {
+      beginTransaction();
+      colaboradorRepository.actualizar(colaborador);
+      faltaViandaRepository.guardar(nuevaSuscripcion);
+      commitTransaction();
+    } else {
+      beginTransaction();
+      faltaViandaRepository.guardar(nuevaSuscripcion);
+      commitTransaction();
+    }
+  }
 
 }

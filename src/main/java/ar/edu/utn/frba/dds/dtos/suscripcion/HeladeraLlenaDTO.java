@@ -10,22 +10,22 @@ import lombok.Setter;
 @Builder
 public class HeladeraLlenaDTO {
 
-    private String colaborador;
+  private String colaborador;
 
-    private String heladera;
+  private String heladera;
 
-    private String medioDeNotificacion;
+  private String medioDeNotificacion;
 
-    private String espacioRestante;
+  private String espacioRestante;
 
-    public static HeladeraLlenaDTO completa(SuscripcionHeladeraLlena suscripcionHeladeraLlena) {
+  public static HeladeraLlenaDTO completa(SuscripcionHeladeraLlena suscripcionHeladeraLlena) {
 
-        return HeladeraLlenaDTO
-                .builder()
-                .colaborador(suscripcionHeladeraLlena.getColaborador().getUsuario().getNombre())
-                .heladera(suscripcionHeladeraLlena.getHeladera().getNombre())
-                .medioDeNotificacion(suscripcionHeladeraLlena.getMedioDeNotificacion().toString())
-                .espacioRestante(suscripcionHeladeraLlena.getEspacioRestante().toString())
-                .build();
-    }
+    return HeladeraLlenaDTO
+        .builder()
+        .colaborador(suscripcionHeladeraLlena.getColaborador().getUsuario().getNombre())
+        .heladera(suscripcionHeladeraLlena.getHeladera().getNombre())
+        .medioDeNotificacion(suscripcionHeladeraLlena.getMedioDeNotificacion().toString())
+        .espacioRestante(suscripcionHeladeraLlena.getEspacioRestante().toString())
+        .build();
+  }
 }

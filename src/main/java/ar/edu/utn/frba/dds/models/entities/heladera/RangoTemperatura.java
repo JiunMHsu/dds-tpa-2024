@@ -12,16 +12,16 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class RangoTemperatura {
 
-    @Column(name = "temperatura_maxima", nullable = false)
-    private Double maxima;
+  @Column(name = "temperatura_maxima", nullable = false)
+  private Double maxima;
 
-    @Column(name = "temperatura_minima", nullable = false)
-    private Double minima;
+  @Column(name = "temperatura_minima", nullable = false)
+  private Double minima;
 
-    public Boolean incluye(Double temperatura) {
-        return (maxima != null)
-                && (minima != null)
-                && (temperatura < maxima)
-                && (temperatura > minima);
-    }
+  public Boolean incluye(Double temperatura) {
+    return (maxima != null)
+        && (minima != null)
+        && (temperatura < maxima)
+        && (temperatura > minima);
+  }
 }

@@ -9,36 +9,36 @@ import java.util.Map;
 
 public abstract class UserRequired {
 
-    protected final UsuarioService usuarioService;
+  protected final UsuarioService usuarioService;
 
-    protected UserRequired(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
+  protected UserRequired(UsuarioService usuarioService) {
+    this.usuarioService = usuarioService;
+  }
+
+  protected Usuario usuarioFromSession(Context context) throws UnauthenticatedException {
+    String userId = context.sessionAttribute("userId");
+    return usuarioService.obtenerUsuarioPorID(userId)
+        .orElseThrow(() -> new UnauthenticatedException("Usuario no encontrado con ID: " + userId));
+  }
+
+  protected void render(Context context, String view, Map<String, Object> model) {
+
+    TipoRol sessionRol = TipoRol.valueOf(context.sessionAttribute("userRol"));
+    switch (sessionRol) {
+      case ADMIN:
+        model.put("isAdmin", true);
+        break;
+      case COLABORADOR:
+        model.put("isColaborador", true);
+        break;
+      case TECNICO:
+        model.put("isTecnico", true);
+        break;
+      default:
+        break;
     }
 
-    protected Usuario usuarioFromSession(Context context) throws UnauthenticatedException {
-        String userId = context.sessionAttribute("userId");
-        return usuarioService.obtenerUsuarioPorID(userId)
-                .orElseThrow(() -> new UnauthenticatedException("Usuario no encontrado con ID: " + userId));
-    }
-
-    protected void render(Context context, String view, Map<String, Object> model) {
-
-        TipoRol sessionRol = TipoRol.valueOf(context.sessionAttribute("userRol"));
-        switch (sessionRol) {
-            case ADMIN:
-                model.put("isAdmin", true);
-                break;
-            case COLABORADOR:
-                model.put("isColaborador", true);
-                break;
-            case TECNICO:
-                model.put("isTecnico", true);
-                break;
-            default:
-                break;
-        }
-
-        context.render(view, model);
-    }
+    context.render(view, model);
+  }
 
 }

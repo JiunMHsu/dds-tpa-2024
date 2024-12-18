@@ -19,50 +19,50 @@
         </div>
 
     {{#if colaboradores.length}}
-        <div class="scrollable">
-            <ul class="list">
-                {{#each colaboradores}}
-                    <li class="list-item">
-                        <a href="/colaboradores/{{this.id}}" class="item-card">
-                            <h3 class="card-title">
-                                {{#if this.nombre}}
-                                    {{this.nombre}} {{this.apellido}}
+            <div class="scrollable">
+                <ul class="list">
+                    {{#each colaboradores}}
+                        <li class="list-item">
+                            <a href="/colaboradores/{{this.id}}" class="item-card">
+                                <h3 class="card-title">
+                                    {{#if this.nombre}}
+                                        {{this.nombre}} {{this.apellido}}
+                                    {{else}}
+                                        {{this.razonSocial}}
+                                    {{/if}}
+                                </h3>
+
+                                <p>
+                                    <span class="material-symbols-rounded card-detail-icon">person</span>
+                                    Tipo Colaborador: {{this.tipoColaborador}}
+                                </p>
+
+                                {{#if this.isHumano}}
+                                    <p>
+                                        <span class="material-symbols-rounded card-detail-icon">badge</span>
+                                        Documento: {{this.documento}}
+                                    </p>
+
+                                    <p>
+                                        <span class="material-symbols-rounded card-detail-icon">email</span>
+                                        Mail: {{this.mail}}
+                                    </p>
                                 {{else}}
-                                    {{this.razonSocial}}
+                                    <p>
+                                        <span class="material-symbols-rounded card-detail-icon">account_balance</span>
+                                        Tipo Razón Social: {{this.tipoRazonSocial}}
+                                    </p>
+                                    <p>
+                                        <span class="material-symbols-rounded card-detail-icon">business</span>
+                                        Rubro: {{this.rubro}}
+                                    </p>
                                 {{/if}}
-                            </h3>
-
-                            <p>
-                                <span class="material-symbols-rounded card-detail-icon">person</span>
-                                Tipo Colaborador: {{this.tipoColaborador}}
-                            </p>
-
-                            {{#if this.isHumano}}
-                                <p>
-                                    <span class="material-symbols-rounded card-detail-icon">badge</span>
-                                    Documento: {{this.documento}}
-                                </p>
-
-                                <p>
-                                    <span class="material-symbols-rounded card-detail-icon">email</span>
-                                    Mail: {{this.mail}}
-                                </p>
-                            {{else}}
-                                <p>
-                                    <span class="material-symbols-rounded card-detail-icon">account_balance</span>
-                                    Tipo Razón Social: {{this.tipoRazonSocial}}
-                                </p>
-                                <p>
-                                    <span class="material-symbols-rounded card-detail-icon">business</span>
-                                    Rubro: {{this.rubro}}
-                                </p>
-                            {{/if}}
-                        </a>
-                    </li>
-                {{/each}}
-            </ul>
+                            </a>
+                        </li>
+                    {{/each}}
+                </ul>
+            </div>
         </div>
-    </div>
     {{else}}
         <p class="no-data-message">No hay Colaboradores cargados 😣</p>
     {{/if}}

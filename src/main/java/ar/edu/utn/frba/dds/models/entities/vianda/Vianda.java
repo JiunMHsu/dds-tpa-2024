@@ -20,25 +20,25 @@ import lombok.NoArgsConstructor;
 @Table(name = "vianda")
 public class Vianda extends EntidadPersistente {
 
-    @Embedded
-    private Comida comida;
+  @Embedded
+  private Comida comida;
 
-    @Column(name = "fecha_caducidad", columnDefinition = "DATE", nullable = false)
-    private LocalDate fechaCaducidad;
+  @Column(name = "fecha_caducidad", columnDefinition = "DATE", nullable = false)
+  private LocalDate fechaCaducidad;
 
-    @Column(name = "peso", nullable = false)
-    private Integer peso;
+  @Column(name = "peso", nullable = false)
+  private Integer peso;
 
-    public static Vianda with(Comida comida,
-                              LocalDate fechaCaducidad,
-                              Integer peso) {
+  public static Vianda with(Comida comida,
+                            LocalDate fechaCaducidad,
+                            Integer peso) {
 
-        return Vianda
-                .builder()
-                .comida(comida)
-                .fechaCaducidad(fechaCaducidad)
-                .peso(peso)
-                .build();
-    }
+    return Vianda
+        .builder()
+        .comida(comida)
+        .fechaCaducidad(fechaCaducidad)
+        .peso(peso)
+        .build();
+  }
 
 }

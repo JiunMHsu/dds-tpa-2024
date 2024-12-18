@@ -19,16 +19,16 @@ import lombok.NoArgsConstructor;
 @Table(name = "formulario_respondido")
 public class FormularioRespondido {
 
-    @Id
-    @GeneratedValue
-    private Long id;
+  @Id
+  @GeneratedValue
+  private Long id;
 
-    @OneToMany
-    @JoinColumn(name = "formulario_respondido_id")
-    private List<Respuesta> respuestas;
+  @OneToMany
+  @JoinColumn(name = "formulario_respondido_id")
+  private List<Respuesta> respuestas;
 
-    @ManyToOne
-    @JoinColumn(name = "formulario_id")
-    private Formulario formulario;
+  @ManyToOne
+  @JoinColumn(name = "formulario_id")
+  private Formulario formulario;
 
 }

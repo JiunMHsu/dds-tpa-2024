@@ -11,39 +11,39 @@ import java.util.Optional;
 
 public class IncidenteService implements WithSimplePersistenceUnit {
 
-    private final IncidenteRepository incidenteRepository;
-    private final HeladeraRepository heladeraRepository;
+  private final IncidenteRepository incidenteRepository;
+  private final HeladeraRepository heladeraRepository;
 
-    public IncidenteService(IncidenteRepository incidenteRepository, HeladeraRepository heladeraRepository) {
-        this.incidenteRepository = incidenteRepository;
-        this.heladeraRepository = heladeraRepository;
+  public IncidenteService(IncidenteRepository incidenteRepository, HeladeraRepository heladeraRepository) {
+    this.incidenteRepository = incidenteRepository;
+    this.heladeraRepository = heladeraRepository;
+  }
+
+  public List<Incidente> buscarTodasAlertas() {
+    return this.incidenteRepository.buscarAlertas();
+  }
+
+  public List<Incidente> buscarTodasFallasTecnicas() {
+    return this.incidenteRepository.buscarPorTipo(TipoIncidente.FALLA_TECNICA);
+  }
+
+  public Optional<Incidente> buscarIncidentePorId(String id) {
+    return this.incidenteRepository.buscarPorId(id);
+  }
+
+  public void registrarIncidente(Incidente incidente) {
+    if (incidente.getTipo().equals(TipoIncidente.FALLA_TECNICA) && incidente.getColaborador() == null) {
+      throw new IllegalArgumentException("Las Fallas Tecnicas deben tener asociado un Colaborador");
     }
 
-    public List<Incidente> buscarTodasAlertas() {
-        return this.incidenteRepository.buscarAlertas();
-    }
+    incidente.getHeladera().setEstado(EstadoHeladera.INACTIVA);
 
-    public List<Incidente> buscarTodasFallasTecnicas() {
-        return this.incidenteRepository.buscarPorTipo(TipoIncidente.FALLA_TECNICA);
-    }
+    withTransaction(() -> {
+      heladeraRepository.actualizar(incidente.getHeladera());
+      incidenteRepository.guardar(incidente);
+    });
 
-    public Optional<Incidente> buscarIncidentePorId(String id) {
-        return this.incidenteRepository.buscarPorId(id);
-    }
-
-    public void registrarIncidente(Incidente incidente) {
-        if (incidente.getTipo().equals(TipoIncidente.FALLA_TECNICA) && incidente.getColaborador() == null) {
-            throw new IllegalArgumentException("Las Fallas Tecnicas deben tener asociado un Colaborador");
-        }
-
-        incidente.getHeladera().setEstado(EstadoHeladera.INACTIVA);
-
-        withTransaction(() -> {
-            heladeraRepository.actualizar(incidente.getHeladera());
-            incidenteRepository.guardar(incidente);
-        });
-
-        // TODO - avisar a técnicos, enviar respectivos mensajes
-    }
+    // TODO - avisar a técnicos, enviar respectivos mensajes
+  }
 
 }

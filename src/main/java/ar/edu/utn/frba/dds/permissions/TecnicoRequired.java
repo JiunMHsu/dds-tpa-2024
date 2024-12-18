@@ -10,16 +10,16 @@ import io.javalin.http.Context;
 
 public abstract class TecnicoRequired extends UserRequired {
 
-    protected final TecnicoService tecnicoService;
+  protected final TecnicoService tecnicoService;
 
-    protected TecnicoRequired(UsuarioService usuarioService, TecnicoService tecnicoService) {
-        super(usuarioService);
-        this.tecnicoService = tecnicoService;
-    }
+  protected TecnicoRequired(UsuarioService usuarioService, TecnicoService tecnicoService) {
+    super(usuarioService);
+    this.tecnicoService = tecnicoService;
+  }
 
-    protected Tecnico tecnicoFromSession(Context context) throws UnauthenticatedException, NonTecnicoException {
-        Usuario usuarioSession = usuarioFromSession(context);
-        return tecnicoService.obtenerTecnicoPorUsuario(usuarioSession)
-                .orElseThrow(() -> new NonTecnicoException("Tecnico no encontrado con Usuario: " + usuarioSession.getNombre()));
-    }
+  protected Tecnico tecnicoFromSession(Context context) throws UnauthenticatedException, NonTecnicoException {
+    Usuario usuarioSession = usuarioFromSession(context);
+    return tecnicoService.obtenerTecnicoPorUsuario(usuarioSession)
+        .orElseThrow(() -> new NonTecnicoException("Tecnico no encontrado con Usuario: " + usuarioSession.getNombre()));
+  }
 }

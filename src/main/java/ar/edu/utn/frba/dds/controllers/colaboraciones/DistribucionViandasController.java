@@ -27,105 +27,105 @@ import java.util.Optional;
 
 public class DistribucionViandasController extends ColaboradorRequired implements ICrudViewsHandler {
 
-    private final DistribucionViandasService distribucionViandasService;
-    private final HeladeraService heladeraService;
+  private final DistribucionViandasService distribucionViandasService;
+  private final HeladeraService heladeraService;
 
-    public DistribucionViandasController(UsuarioService usuarioService,
-                                         ColaboradorService colaboradorService,
-                                         DistribucionViandasService distribucionViandasService,
-                                         HeladeraService heladeraService) {
+  public DistribucionViandasController(UsuarioService usuarioService,
+                                       ColaboradorService colaboradorService,
+                                       DistribucionViandasService distribucionViandasService,
+                                       HeladeraService heladeraService) {
 
-        super(usuarioService, colaboradorService);
-        this.distribucionViandasService = distribucionViandasService;
-        this.heladeraService = heladeraService;
+    super(usuarioService, colaboradorService);
+    this.distribucionViandasService = distribucionViandasService;
+    this.heladeraService = heladeraService;
+  }
+
+  @Override
+  public void index(Context context) {
+    // TODO - Implementar
+  }
+
+  @Override
+  public void show(Context context) { // TODO - Revisar
+    String distribucionViandasId = context.pathParam("id");
+    Optional<DistribucionViandas> distribucionViandas = distribucionViandasService.buscarPorId(distribucionViandasId);
+
+    if (distribucionViandas.isEmpty())
+      throw new ResourceNotFoundException("No se encontró distribucion por viandas paraColaborador id " + distribucionViandasId);
+
+    Map<String, Object> model = new HashMap<>();
+
+    DistribucionViandasDTO distribucionViandasDTO = DistribucionViandasDTO.completa(distribucionViandas.get());
+    model.put("distribucion_viandas", distribucionViandasDTO);
+
+    context.render("colaboraciones/colaboracion_detalle.hbs", model);
+  }
+
+  @Override
+  public void create(Context context) {
+    Colaborador colaborador = colaboradorFromSession(context);
+
+    if (!colaborador.puedeColaborar(TipoColaboracion.DISTRIBUCION_VIANDAS))
+      throw new UnauthorizedException("No tiene permiso");
+
+    render(context, "colaboraciones/distribucion_viandas_crear.hbs", new HashMap<>());
+  }
+
+  @Override
+  public void save(Context context) {
+
+    Map<String, Object> model = new HashMap<>();
+    List<RedirectDTO> redirectDTOS = new ArrayList<>();
+    boolean operationSuccess = false;
+
+    try {
+      Colaborador colaborador = colaboradorFromSession(context);
+
+      Heladera heladeraOrigen = heladeraService
+          .buscarPorNombre(context.formParamAsClass("origen", String.class).get())
+          .orElseThrow(ResourceNotFoundException::new);
+
+      Heladera heladeraDestino = heladeraService
+          .buscarPorNombre(context.formParamAsClass("destino", String.class).get())
+          .orElseThrow(ResourceNotFoundException::new);
+
+      Integer viandas = context.formParamAsClass("cantidad", Integer.class).get();
+      String motivo = context.formParamAsClass("motivo", String.class).get();
+
+      DistribucionViandas distribucionViandas = DistribucionViandas.por(
+          colaborador, LocalDateTime.now(), heladeraOrigen, heladeraDestino, viandas, motivo
+      );
+
+      this.distribucionViandasService.registrar(distribucionViandas);
+
+      // TODO - Delegar a Service??
+      colaborador.invalidarPuntos();
+      this.colaboradorService.actualizar(colaborador);
+
+      operationSuccess = true;
+      redirectDTOS.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));
+
+    } catch (NonColaboratorException e) {
+      throw new UnauthorizedException(e.getMessage());
+    } catch (ValidationException | ResourceNotFoundException | ExcepcionCantidadDeViandas e) {
+      redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
+    } finally {
+      model.put("success", operationSuccess);
+      model.put("redirects", redirectDTOS);
+      context.render("post_result.hbs", model);
     }
+  }
 
-    @Override
-    public void index(Context context) {
-        // TODO - Implementar
-    }
+  @Override
+  public void edit(Context context) {
+  }
 
-    @Override
-    public void show(Context context) { // TODO - Revisar
-        String distribucionViandasId = context.pathParam("id");
-        Optional<DistribucionViandas> distribucionViandas = distribucionViandasService.buscarPorId(distribucionViandasId);
+  @Override
+  public void update(Context context) {
+  }
 
-        if (distribucionViandas.isEmpty())
-            throw new ResourceNotFoundException("No se encontró distribucion por viandas paraColaborador id " + distribucionViandasId);
-
-        Map<String, Object> model = new HashMap<>();
-
-        DistribucionViandasDTO distribucionViandasDTO = DistribucionViandasDTO.completa(distribucionViandas.get());
-        model.put("distribucion_viandas", distribucionViandasDTO);
-
-        context.render("colaboraciones/colaboracion_detalle.hbs", model);
-    }
-
-    @Override
-    public void create(Context context) {
-        Colaborador colaborador = colaboradorFromSession(context);
-
-        if (!colaborador.puedeColaborar(TipoColaboracion.DISTRIBUCION_VIANDAS))
-            throw new UnauthorizedException("No tiene permiso");
-
-        render(context, "colaboraciones/distribucion_viandas_crear.hbs", new HashMap<>());
-    }
-
-    @Override
-    public void save(Context context) {
-
-        Map<String, Object> model = new HashMap<>();
-        List<RedirectDTO> redirectDTOS = new ArrayList<>();
-        boolean operationSuccess = false;
-
-        try {
-            Colaborador colaborador = colaboradorFromSession(context);
-
-            Heladera heladeraOrigen = heladeraService
-                    .buscarPorNombre(context.formParamAsClass("origen", String.class).get())
-                    .orElseThrow(ResourceNotFoundException::new);
-
-            Heladera heladeraDestino = heladeraService
-                    .buscarPorNombre(context.formParamAsClass("destino", String.class).get())
-                    .orElseThrow(ResourceNotFoundException::new);
-
-            Integer viandas = context.formParamAsClass("cantidad", Integer.class).get();
-            String motivo = context.formParamAsClass("motivo", String.class).get();
-
-            DistribucionViandas distribucionViandas = DistribucionViandas.por(
-                    colaborador, LocalDateTime.now(), heladeraOrigen, heladeraDestino, viandas, motivo
-            );
-
-            this.distribucionViandasService.registrar(distribucionViandas);
-
-            // TODO - Delegar a Service??
-            colaborador.invalidarPuntos();
-            this.colaboradorService.actualizar(colaborador);
-
-            operationSuccess = true;
-            redirectDTOS.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));
-
-        } catch (NonColaboratorException e) {
-            throw new UnauthorizedException(e.getMessage());
-        } catch (ValidationException | ResourceNotFoundException | ExcepcionCantidadDeViandas e) {
-            redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
-        } finally {
-            model.put("success", operationSuccess);
-            model.put("redirects", redirectDTOS);
-            context.render("post_result.hbs", model);
-        }
-    }
-
-    @Override
-    public void edit(Context context) {
-    }
-
-    @Override
-    public void update(Context context) {
-    }
-
-    @Override
-    public void delete(Context context) {
-    }
+  @Override
+  public void delete(Context context) {
+  }
 }
 

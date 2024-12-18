@@ -6,6 +6,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class RedirectDTO {
-    private String url;
-    private String label;
+  private String url;
+  private String label;
 }

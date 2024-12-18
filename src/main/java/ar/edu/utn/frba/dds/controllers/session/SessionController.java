@@ -12,61 +12,61 @@ import java.util.Objects;
 
 public class SessionController {
 
-    private final UsuarioService usuarioService;
+  private final UsuarioService usuarioService;
 
-    public SessionController(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
+  public SessionController(UsuarioService usuarioService) {
+    this.usuarioService = usuarioService;
+  }
+
+  public void index(Context context) {
+    String forward = this.getForwardRoute(context);
+
+    if (context.sessionAttribute("userId") != null) {
+      context.status(HttpStatus.FOUND).redirect(forward);
+      return;
     }
 
-    public void index(Context context) {
-        String forward = this.getForwardRoute(context);
+    Map<String, Object> model = new HashMap<>();
+    model.put("forward", forward);
+    context.render("login/login.hbs", model);
+  }
 
-        if (context.sessionAttribute("userId") != null) {
-            context.status(HttpStatus.FOUND).redirect(forward);
-            return;
-        }
+  public void create(Context context) {
+    String forward = this.getForwardRoute(context);
 
-        Map<String, Object> model = new HashMap<>();
-        model.put("forward", forward);
-        context.render("login/login.hbs", model);
+    try {
+      String email = context.formParamAsClass("email", String.class).get();
+      String claveIngresada = context.formParamAsClass("clave", String.class).get();
+
+      Usuario usuario = usuarioService.obtenerUsuarioPorEmail(email)
+          .orElseThrow(InvalidFormParamException::new);
+
+      String claveDelUsuario = usuario.getContrasenia();
+      if (!Objects.equals(claveIngresada, claveDelUsuario))
+        throw new InvalidFormParamException();
+
+      context.sessionAttribute("userId", usuario.getId().toString());
+      context.sessionAttribute("userRol", usuario.getRol().toString());
+      context.req().changeSessionId();
+
+      context.redirect(forward);
+    } catch (ValidationException | InvalidFormParamException e) {
+      Map<String, Object> model = new HashMap<>();
+      model.put("isRetry", true);
+      model.put("forward", forward);
+
+      context.status(400).render("login/login.hbs", model);
     }
+  }
 
-    public void create(Context context) {
-        String forward = this.getForwardRoute(context);
+  public void delete(Context context) {
+    context.req().getSession().invalidate();
+    context.redirect("/login");
+  }
 
-        try {
-            String email = context.formParamAsClass("email", String.class).get();
-            String claveIngresada = context.formParamAsClass("clave", String.class).get();
-
-            Usuario usuario = usuarioService.obtenerUsuarioPorEmail(email)
-                    .orElseThrow(InvalidFormParamException::new);
-
-            String claveDelUsuario = usuario.getContrasenia();
-            if (!Objects.equals(claveIngresada, claveDelUsuario))
-                throw new InvalidFormParamException();
-
-            context.sessionAttribute("userId", usuario.getId().toString());
-            context.sessionAttribute("userRol", usuario.getRol().toString());
-            context.req().changeSessionId();
-
-            context.redirect(forward);
-        } catch (ValidationException | InvalidFormParamException e) {
-            Map<String, Object> model = new HashMap<>();
-            model.put("isRetry", true);
-            model.put("forward", forward);
-
-            context.status(400).render("login/login.hbs", model);
-        }
-    }
-
-    public void delete(Context context) {
-        context.req().getSession().invalidate();
-        context.redirect("/login");
-    }
-
-    private String getForwardRoute(Context context) {
-        String forward = context.queryParamAsClass("forward", String.class).getOrDefault("/");
-        System.out.println(forward);
-        return forward;
-    }
+  private String getForwardRoute(Context context) {
+    String forward = context.queryParamAsClass("forward", String.class).getOrDefault("/");
+    System.out.println(forward);
+    return forward;
+  }
 }

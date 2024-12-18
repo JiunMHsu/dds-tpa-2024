@@ -8,45 +8,45 @@ import java.util.Properties;
 
 public class AppProperties {
 
-    private static AppProperties instance = null;
-    private final Properties props;
+  private static AppProperties instance = null;
+  private final Properties props;
 
-    private AppProperties() {
-        this.props = new Properties();
-        this.readProperties();
-    }
+  private AppProperties() {
+    this.props = new Properties();
+    this.readProperties();
+  }
 
-    public static AppProperties getInstance() {
-        if (instance == null) {
-            instance = new AppProperties();
-        }
-        return instance;
+  public static AppProperties getInstance() {
+    if (instance == null) {
+      instance = new AppProperties();
     }
+    return instance;
+  }
 
-    private void readProperties() {
-        try {
-            InputStream input = new FileInputStream("src/main/resources/config.properties");
-            this.props.load(input);
-        } catch (FileNotFoundException e) {
-            System.out.println("No se encontró el archivo por configuración");
-            e.printStackTrace();
-            System.exit(1);
-        } catch (IOException e) {
-            System.out.println("Error por entrada salida");
-            e.printStackTrace();
-            System.exit(1);
-        }
+  private void readProperties() {
+    try {
+      InputStream input = new FileInputStream("src/main/resources/config.properties");
+      this.props.load(input);
+    } catch (FileNotFoundException e) {
+      System.out.println("No se encontró el archivo por configuración");
+      e.printStackTrace();
+      System.exit(1);
+    } catch (IOException e) {
+      System.out.println("Error por entrada salida");
+      e.printStackTrace();
+      System.exit(1);
     }
+  }
 
-    public String propertyFromName(String name) {
-        return this.props.getProperty(name);
-    }
+  public String propertyFromName(String name) {
+    return this.props.getProperty(name);
+  }
 
-    public Integer intPropertyFromName(String name) {
-        return Integer.parseInt(propertyFromName(name));
-    }
+  public Integer intPropertyFromName(String name) {
+    return Integer.parseInt(propertyFromName(name));
+  }
 
-    public Boolean boolPropertyFromName(String name) {
-        return Boolean.parseBoolean(propertyFromName(name));
-    }
+  public Boolean boolPropertyFromName(String name) {
+    return Boolean.parseBoolean(propertyFromName(name));
+  }
 }

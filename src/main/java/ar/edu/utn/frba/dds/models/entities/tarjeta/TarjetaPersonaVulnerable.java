@@ -24,76 +24,76 @@ import lombok.Setter;
 @Table(name = "tarjeta_persona_vulnerable")
 public class TarjetaPersonaVulnerable extends EntidadPersistente {
 
-    @Column(name = "codigo", nullable = false)
-    private String codigo;
+  @Column(name = "codigo", nullable = false)
+  private String codigo;
 
-    @OneToOne
-    @JoinColumn(name = "persona_vulnerable_id", unique = true, nullable = false)
-    private PersonaVulnerable duenio;
+  @OneToOne
+  @JoinColumn(name = "persona_vulnerable_id", unique = true, nullable = false)
+  private PersonaVulnerable duenio;
 
-    @Setter
-    @Column(name = "usos_del_dia")
-    private Integer usosEnElDia;
+  @Setter
+  @Column(name = "usos_del_dia")
+  private Integer usosEnElDia;
 
-    @Setter
-    @Column(name = "fecha_ultimo_uso", columnDefinition = "DATE")
-    private LocalDate ultimoUso;
+  @Setter
+  @Column(name = "fecha_ultimo_uso", columnDefinition = "DATE")
+  private LocalDate ultimoUso;
 
-    public static TarjetaPersonaVulnerable de(String codigo,
-                                              PersonaVulnerable duenio,
-                                              int usosEnElDia,
-                                              LocalDate ultimoUso) {
-        return TarjetaPersonaVulnerable
-                .builder()
-                .codigo(codigo)
-                .duenio(duenio)
-                .usosEnElDia(usosEnElDia)
-                .ultimoUso(ultimoUso)
-                .build();
+  public static TarjetaPersonaVulnerable de(String codigo,
+                                            PersonaVulnerable duenio,
+                                            int usosEnElDia,
+                                            LocalDate ultimoUso) {
+    return TarjetaPersonaVulnerable
+        .builder()
+        .codigo(codigo)
+        .duenio(duenio)
+        .usosEnElDia(usosEnElDia)
+        .ultimoUso(ultimoUso)
+        .build();
+  }
+
+  public static TarjetaPersonaVulnerable de(String codigo,
+                                            PersonaVulnerable duenio) {
+    return TarjetaPersonaVulnerable.de(
+        codigo,
+        duenio,
+        0,
+        LocalDate.now());
+  }
+
+  public static TarjetaPersonaVulnerable de(PersonaVulnerable duenio) {
+    return TarjetaPersonaVulnerable.de(
+        new RandomString(11).nextString(),
+        duenio,
+        0,
+        LocalDate.now());
+  }
+
+  public static TarjetaPersonaVulnerable de() {
+    return TarjetaPersonaVulnerable.de(null);
+  }
+
+  private Boolean puedeUsar() {
+    if (LocalDate.now().isAfter(ultimoUso)) {
+      this.setUsosEnElDia(0);
     }
+    return usosEnElDia < this.usosPorDia();
+  }
 
-    public static TarjetaPersonaVulnerable de(String codigo,
-                                              PersonaVulnerable duenio) {
-        return TarjetaPersonaVulnerable.de(
-                codigo,
-                duenio,
-                0,
-                LocalDate.now());
-    }
+  public Boolean puedeUsarseEn(Heladera heladera) {
+    return heladera.estaActiva() && this.puedeUsar();
+  }
 
-    public static TarjetaPersonaVulnerable de(PersonaVulnerable duenio) {
-        return TarjetaPersonaVulnerable.de(
-                new RandomString(11).nextString(),
-                duenio,
-                0,
-                LocalDate.now());
-    }
+  // TODO - Hacerlo atributo? como posible optimización
+  // Para mi es innecesario, porque:
+  // - No es un metodo que se utilice por manera frecuente (tengo entendido que solo cuando se entrega una tarjeta o se modifica la cantidad por menoresACargo)
+  // - Es una pavada el metodo en si
+  // - En caso que se considere adecuado persisitirlo puede ser, pero cmo solo se utilizar paraColaborador validad que la persona pueda utilizar la taerjeta, en mi opinion, no lo es
+  public Integer usosPorDia() {
+    return 4 + duenio.getMenoresACargo() * 2;
+  }
 
-    public static TarjetaPersonaVulnerable de() {
-        return TarjetaPersonaVulnerable.de(null);
-    }
-
-    private Boolean puedeUsar() {
-        if (LocalDate.now().isAfter(ultimoUso)) {
-            this.setUsosEnElDia(0);
-        }
-        return usosEnElDia < this.usosPorDia();
-    }
-
-    public Boolean puedeUsarseEn(Heladera heladera) {
-        return heladera.estaActiva() && this.puedeUsar();
-    }
-
-    // TODO - Hacerlo atributo? como posible optimización
-    // Para mi es innecesario, porque:
-    // - No es un metodo que se utilice por manera frecuente (tengo entendido que solo cuando se entrega una tarjeta o se modifica la cantidad por menoresACargo)
-    // - Es una pavada el metodo en si
-    // - En caso que se considere adecuado persisitirlo puede ser, pero cmo solo se utilizar paraColaborador validad que la persona pueda utilizar la taerjeta, en mi opinion, no lo es
-    public Integer usosPorDia() {
-        return 4 + duenio.getMenoresACargo() * 2;
-    }
-
-    public void sumarUso() {
-        usosEnElDia += 1;
-    }
+  public void sumarUso() {
+    usosEnElDia += 1;
+  }
 }

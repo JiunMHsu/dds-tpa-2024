@@ -24,44 +24,44 @@ import lombok.NoArgsConstructor;
 @Table(name = "canje_puntos")
 public class CanjeDePuntos {
 
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @Column(name = "id", columnDefinition = "BINARY(16)")
-    private UUID id;
+  @Id
+  @GeneratedValue(generator = "uuid")
+  @Column(name = "id", columnDefinition = "BINARY(16)")
+  private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "colaborador_id", nullable = false)
-    private Colaborador colaborador;
+  @ManyToOne
+  @JoinColumn(name = "colaborador_id", nullable = false)
+  private Colaborador colaborador;
 
-    @ManyToOne
-    @JoinColumn(name = "oferta_id", nullable = false)
-    private OfertaDeProductos oferta;
+  @ManyToOne
+  @JoinColumn(name = "oferta_id", nullable = false)
+  private OfertaDeProductos oferta;
 
-    @Column(name = "fecha_canje", nullable = false)
-    private LocalDateTime fechaHora;
+  @Column(name = "fecha_canje", nullable = false)
+  private LocalDateTime fechaHora;
 
-    @Column(name = "puntos_canjeados", nullable = false)
-    private double puntosCanjeados;
+  @Column(name = "puntos_canjeados", nullable = false)
+  private double puntosCanjeados;
 
-    @Column(name = "puntos_restates", nullable = false)
-    private double puntosRestantes;
+  @Column(name = "puntos_restates", nullable = false)
+  private double puntosRestantes;
 
-    // @ManyToOne
-    // @JoinColumn(name = "variante_usado", nullable = false)
-    // private VarianteDePuntos varianteUsado;
+  // @ManyToOne
+  // @JoinColumn(name = "variante_usado", nullable = false)
+  // private VarianteDePuntos varianteUsado;
 
-    public static CanjeDePuntos por(Colaborador colaborador,
-                                    OfertaDeProductos oferta,
-                                    LocalDateTime fechaCanjeo,
-                                    double puntosCanjeados,
-                                    double puntosRestantes
-    ) {
-        return CanjeDePuntos.builder()
-                .colaborador(colaborador)
-                .oferta(oferta)
-                .fechaHora(fechaCanjeo)
-                .puntosCanjeados(puntosCanjeados)
-                .puntosRestantes(puntosRestantes)
-                .build();
-    }
+  public static CanjeDePuntos por(Colaborador colaborador,
+                                  OfertaDeProductos oferta,
+                                  LocalDateTime fechaCanjeo,
+                                  double puntosCanjeados,
+                                  double puntosRestantes
+  ) {
+    return CanjeDePuntos.builder()
+        .colaborador(colaborador)
+        .oferta(oferta)
+        .fechaHora(fechaCanjeo)
+        .puntosCanjeados(puntosCanjeados)
+        .puntosRestantes(puntosRestantes)
+        .build();
+  }
 }

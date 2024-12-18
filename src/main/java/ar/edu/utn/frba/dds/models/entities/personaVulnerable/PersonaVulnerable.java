@@ -23,44 +23,44 @@ import lombok.Setter;
 @Table(name = "persona_vulnerable")
 public class PersonaVulnerable extends EntidadPersistente {
 
-    @Column(name = "nombre")
-    private String nombre;
+  @Column(name = "nombre")
+  private String nombre;
 
-    @Embedded
-    private Documento documento;
+  @Embedded
+  private Documento documento;
 
-    @Column(name = "fecha_nacimiento", columnDefinition = "DATE")
-    private LocalDate fechaNacimiento;
+  @Column(name = "fecha_nacimiento", columnDefinition = "DATE")
+  private LocalDate fechaNacimiento;
 
-    @Column(name = "fecha_registro")
-    private LocalDate fechaRegistro;
+  @Column(name = "fecha_registro")
+  private LocalDate fechaRegistro;
 
-    @Embedded
-    private Direccion domicilio;
+  @Embedded
+  private Direccion domicilio;
 
-    @Column(name = "menores_a_cargo")
-    private Integer menoresACargo;
+  @Column(name = "menores_a_cargo")
+  private Integer menoresACargo;
 
-    public static PersonaVulnerable con(String nombre,
-                                        Documento documento,
-                                        LocalDate fechaNacimiento,
-                                        LocalDate fechaRegistro,
-                                        Direccion domicilio,
-                                        Integer menoresACargo) {
-        return PersonaVulnerable
-                .builder()
-                .nombre(nombre)
-                .documento(documento)
-                .fechaNacimiento(fechaNacimiento)
-                .fechaRegistro(fechaRegistro)
-                .domicilio(domicilio)
-                .menoresACargo(menoresACargo)
-                .build();
-    }
+  public static PersonaVulnerable con(String nombre,
+                                      Documento documento,
+                                      LocalDate fechaNacimiento,
+                                      LocalDate fechaRegistro,
+                                      Direccion domicilio,
+                                      Integer menoresACargo) {
+    return PersonaVulnerable
+        .builder()
+        .nombre(nombre)
+        .documento(documento)
+        .fechaNacimiento(fechaNacimiento)
+        .fechaRegistro(fechaRegistro)
+        .domicilio(domicilio)
+        .menoresACargo(menoresACargo)
+        .build();
+  }
 
-    public static PersonaVulnerable con(String nombre, Integer menoresACargo) {
-        return PersonaVulnerable.con(nombre, null, null, null, null, menoresACargo);
-    }
+  public static PersonaVulnerable con(String nombre, Integer menoresACargo) {
+    return PersonaVulnerable.con(nombre, null, null, null, null, menoresACargo);
+  }
 
 }
 

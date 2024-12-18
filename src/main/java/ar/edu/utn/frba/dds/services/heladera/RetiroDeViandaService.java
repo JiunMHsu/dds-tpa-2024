@@ -4,13 +4,14 @@ import ar.edu.utn.frba.dds.models.entities.heladera.RetiroDeVianda;
 import ar.edu.utn.frba.dds.models.repositories.heladera.RetiroDeViandaRepository;
 
 public class RetiroDeViandaService {
-    RetiroDeViandaRepository retiroDeViandaRepository;
+  RetiroDeViandaRepository retiroDeViandaRepository;
 
-    public RetiroDeViandaService(RetiroDeViandaRepository retiroDeViandaRepository) {
-        this.retiroDeViandaRepository = retiroDeViandaRepository;
-    }
-    public void guardar(RetiroDeVianda retiroDeVianda) {
-        this.retiroDeViandaRepository.guardar(retiroDeVianda);
-    }
+  public RetiroDeViandaService(RetiroDeViandaRepository retiroDeViandaRepository) {
+    this.retiroDeViandaRepository = retiroDeViandaRepository;
+  }
+
+  public void guardar(RetiroDeVianda retiroDeVianda) {
+    this.retiroDeViandaRepository.guardar(retiroDeVianda);
+  }
 
 }

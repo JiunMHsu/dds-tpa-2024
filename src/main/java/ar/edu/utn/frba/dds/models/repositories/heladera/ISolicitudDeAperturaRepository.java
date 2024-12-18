@@ -8,10 +8,10 @@ import java.util.Optional;
 // TODO - Si refectorizamos las entidades por tarjeta, cambiar paraColaborador que se pase la Tarjeta
 public interface ISolicitudDeAperturaRepository {
 
-    List<SolicitudDeApertura> buscarPorTarjeta(String tarjeta);
+  List<SolicitudDeApertura> buscarPorTarjeta(String tarjeta);
 
-    Optional<SolicitudDeApertura> buscarUltimoPorTarjeta(String tarjeta);
+  Optional<SolicitudDeApertura> buscarUltimoPorTarjeta(String tarjeta);
 
-    List<SolicitudDeApertura> buscarPorTarjetaHeladeraEnLasUltimas(String tarjeta, Heladera heladera);
+  List<SolicitudDeApertura> buscarPorTarjetaHeladeraEnLasUltimas(String tarjeta, Heladera heladera);
 
-    }
+}

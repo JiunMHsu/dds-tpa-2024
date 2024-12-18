@@ -23,62 +23,62 @@ import java.util.Optional;
 
 public class VisitaTecnicoController extends TecnicoRequired {
 
-    private final VisitaTecnicoService visitaTecnicoService;
-    private final HeladeraService heladeraService;
+  private final VisitaTecnicoService visitaTecnicoService;
+  private final HeladeraService heladeraService;
 
-    public VisitaTecnicoController(UsuarioService usuarioService,
-                                   TecnicoService tecnicoService,
-                                   VisitaTecnicoService visitaTecnicoService,
-                                   HeladeraService heladeraService) {
+  public VisitaTecnicoController(UsuarioService usuarioService,
+                                 TecnicoService tecnicoService,
+                                 VisitaTecnicoService visitaTecnicoService,
+                                 HeladeraService heladeraService) {
 
-        super(usuarioService, tecnicoService);
-        this.visitaTecnicoService = visitaTecnicoService;
-        this.heladeraService = heladeraService;
+    super(usuarioService, tecnicoService);
+    this.visitaTecnicoService = visitaTecnicoService;
+    this.heladeraService = heladeraService;
+  }
+
+  public void show(Context context) {
+  }
+
+  public void create(Context context) {
+    context.result("Visita Tecnico");
+  }
+
+  public void save(Context context) { // TODO - Ver desp que matchee para Colaborador las vistas
+
+    Map<String, Object> model = new HashMap<>();
+    List<RedirectDTO> redirectDTOS = new ArrayList<>();
+    boolean operationSuccess = false;
+
+    Tecnico tecnico = tecnicoFromSession(context);
+
+    try {
+      // id incidente por query param
+
+      String heladeraId = context.formParamAsClass("id-heladera", String.class).get();
+      Optional<Heladera> heladera = this.heladeraService.buscarPorId(heladeraId);
+
+      if (heladera.isEmpty()) {
+        throw new ResourceNotFoundException("No se encontró heladera paraColaborador id " + heladeraId);
+      }
+
+      Boolean resuelta = context.formParamAsClass("resuelta", Boolean.class).get();
+
+      VisitaTecnico visitaTecnico = VisitaTecnico.por(
+          tecnico,
+          new Incidente(), //TODO - va el incidente recuperado por id
+          heladera.get(),
+          LocalDateTime.now(),
+          context.formParamAsClass("descripcion", String.class).get(),
+          new Imagen(context.formParamAsClass("foto", String.class).get())
+      );
+
+      this.visitaTecnicoService.registrarVisita(visitaTecnico);
+    } catch (ValidationException e) {
+      redirectDTOS.add(new RedirectDTO("/home", "Reintentar"));
+    } finally {
+      model.put("success", operationSuccess);
+      model.put("redirects", redirectDTOS);
+      context.render("post_result.hbs", model);
     }
-
-    public void show(Context context) {
-    }
-
-    public void create(Context context) {
-        context.result("Visita Tecnico");
-    }
-
-    public void save(Context context) { // TODO - Ver desp que matchee para Colaborador las vistas
-
-        Map<String, Object> model = new HashMap<>();
-        List<RedirectDTO> redirectDTOS = new ArrayList<>();
-        boolean operationSuccess = false;
-
-        Tecnico tecnico = tecnicoFromSession(context);
-
-        try {
-            // id incidente por query param
-
-            String heladeraId = context.formParamAsClass("id-heladera", String.class).get();
-            Optional<Heladera> heladera = this.heladeraService.buscarPorId(heladeraId);
-
-            if (heladera.isEmpty()) {
-                throw new ResourceNotFoundException("No se encontró heladera paraColaborador id " + heladeraId);
-            }
-
-            Boolean resuelta = context.formParamAsClass("resuelta", Boolean.class).get();
-
-            VisitaTecnico visitaTecnico = VisitaTecnico.por(
-                    tecnico,
-                    new Incidente(), //TODO - va el incidente recuperado por id
-                    heladera.get(),
-                    LocalDateTime.now(),
-                    context.formParamAsClass("descripcion", String.class).get(),
-                    new Imagen(context.formParamAsClass("foto", String.class).get())
-            );
-
-            this.visitaTecnicoService.registrarVisita(visitaTecnico);
-        } catch (ValidationException e) {
-            redirectDTOS.add(new RedirectDTO("/home", "Reintentar"));
-        } finally {
-            model.put("success", operationSuccess);
-            model.put("redirects", redirectDTOS);
-            context.render("post_result.hbs", model);
-        }
-    }
+  }
 }

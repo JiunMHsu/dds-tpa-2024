@@ -12,42 +12,42 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class DonacionViandaDTO extends ColaboracionDTO {
 
-    private String colaborador;
+  private String colaborador;
 
-    private String esEntregada;
+  private String esEntregada;
 
-    private String nombreComida;
+  private String nombreComida;
 
-    private String pesoVianda;
+  private String pesoVianda;
 
-    private String caloriasComida;
+  private String caloriasComida;
 
-    private String fechaCaducidadComida;
+  private String fechaCaducidadComida;
 
 
-    public static DonacionViandaDTO completa(DonacionVianda donacionVianda) { // Completa segun los atributos por la clase
+  public static DonacionViandaDTO completa(DonacionVianda donacionVianda) { // Completa segun los atributos por la clase
 
-        return DonacionViandaDTO.builder()
-                .id(donacionVianda.getId().toString())
-                .nombre(TipoColaboracion.DONACION_VIANDAS.getDescription())
-                .fechaHora(DateTimeParser.parseFechaHora(donacionVianda.getFechaHora()))
-                .path(getPath(TipoColaboracion.DONACION_VIANDAS))
-                .colaborador(donacionVianda.getColaborador().getUsuario().getNombre())
-                .esEntregada(donacionVianda.getEsEntregada() ? "Entregada" : "No entregada")
-                .nombreComida(donacionVianda.getVianda().getComida().getNombre())
-                .pesoVianda(donacionVianda.getVianda().getPeso().toString())
-                .caloriasComida(String.valueOf(donacionVianda.getVianda().getComida().getCalorias()))
-                .fechaCaducidadComida(donacionVianda.getVianda().getFechaCaducidad().toString())
-                .build();
-    }
+    return DonacionViandaDTO.builder()
+        .id(donacionVianda.getId().toString())
+        .nombre(TipoColaboracion.DONACION_VIANDAS.getDescription())
+        .fechaHora(DateTimeParser.parseFechaHora(donacionVianda.getFechaHora()))
+        .path(getPath(TipoColaboracion.DONACION_VIANDAS))
+        .colaborador(donacionVianda.getColaborador().getUsuario().getNombre())
+        .esEntregada(donacionVianda.getEsEntregada() ? "Entregada" : "No entregada")
+        .nombreComida(donacionVianda.getVianda().getComida().getNombre())
+        .pesoVianda(donacionVianda.getVianda().getPeso().toString())
+        .caloriasComida(String.valueOf(donacionVianda.getVianda().getComida().getCalorias()))
+        .fechaCaducidadComida(donacionVianda.getVianda().getFechaCaducidad().toString())
+        .build();
+  }
 
-    public static ColaboracionDTO preview(DonacionVianda donacionVianda) {
+  public static ColaboracionDTO preview(DonacionVianda donacionVianda) {
 
-        return ColaboracionDTO.builder()
-                .id(donacionVianda.getId().toString())
-                .nombre(TipoColaboracion.DONACION_VIANDAS.getDescription())
-                .fechaHora(DateTimeParser.parseFechaHora(donacionVianda.getFechaHora()))
-                .path(getPath(TipoColaboracion.DONACION_VIANDAS))
-                .build();
-    }
+    return ColaboracionDTO.builder()
+        .id(donacionVianda.getId().toString())
+        .nombre(TipoColaboracion.DONACION_VIANDAS.getDescription())
+        .fechaHora(DateTimeParser.parseFechaHora(donacionVianda.getFechaHora()))
+        .path(getPath(TipoColaboracion.DONACION_VIANDAS))
+        .build();
+  }
 }

@@ -12,35 +12,35 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class OfertaDeProductosDTO extends ColaboracionDTO {
 
-    private String colaborador;
+  private String colaborador;
 
-    private String nombreProducto;
+  private String nombreProducto;
 
-    private String rubro;
+  private String rubro;
 
-    private String pathImagen;
+  private String pathImagen;
 
-    public static OfertaDeProductosDTO completa(OfertaDeProductos ofertaDeProductos) {
+  public static OfertaDeProductosDTO completa(OfertaDeProductos ofertaDeProductos) {
 
-        return OfertaDeProductosDTO.builder()
-                .id(ofertaDeProductos.getId().toString())
-                .nombre(TipoColaboracion.OFERTA_DE_PRODUCTOS.getDescription())
-                .fechaHora(DateTimeParser.parseFechaHora(ofertaDeProductos.getFechaHora()))
-                .path(getPath(TipoColaboracion.OFERTA_DE_PRODUCTOS))
-                .colaborador(ofertaDeProductos.getColaborador().getUsuario().getNombre())
-                .nombreProducto(ofertaDeProductos.getNombre())
-                .rubro(ofertaDeProductos.getRubro().toString())
-                .pathImagen(ofertaDeProductos.getImagen().getRuta())
-                .build();
-    }
+    return OfertaDeProductosDTO.builder()
+        .id(ofertaDeProductos.getId().toString())
+        .nombre(TipoColaboracion.OFERTA_DE_PRODUCTOS.getDescription())
+        .fechaHora(DateTimeParser.parseFechaHora(ofertaDeProductos.getFechaHora()))
+        .path(getPath(TipoColaboracion.OFERTA_DE_PRODUCTOS))
+        .colaborador(ofertaDeProductos.getColaborador().getUsuario().getNombre())
+        .nombreProducto(ofertaDeProductos.getNombre())
+        .rubro(ofertaDeProductos.getRubro().toString())
+        .pathImagen(ofertaDeProductos.getImagen().getRuta())
+        .build();
+  }
 
-    public static ColaboracionDTO preview(OfertaDeProductos ofertaDeProductos) {
+  public static ColaboracionDTO preview(OfertaDeProductos ofertaDeProductos) {
 
-        return ColaboracionDTO.builder()
-                .id(ofertaDeProductos.getId().toString())
-                .nombre(TipoColaboracion.OFERTA_DE_PRODUCTOS.getDescription())
-                .fechaHora(DateTimeParser.parseFechaHora(ofertaDeProductos.getFechaHora()))
-                .path(getPath(TipoColaboracion.OFERTA_DE_PRODUCTOS))
-                .build();
-    }
+    return ColaboracionDTO.builder()
+        .id(ofertaDeProductos.getId().toString())
+        .nombre(TipoColaboracion.OFERTA_DE_PRODUCTOS.getDescription())
+        .fechaHora(DateTimeParser.parseFechaHora(ofertaDeProductos.getFechaHora()))
+        .path(getPath(TipoColaboracion.OFERTA_DE_PRODUCTOS))
+        .build();
+  }
 }

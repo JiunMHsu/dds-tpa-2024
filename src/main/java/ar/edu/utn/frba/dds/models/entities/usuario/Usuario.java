@@ -22,31 +22,31 @@ import lombok.Setter;
 @Table(name = "usuario")
 public class Usuario extends EntidadPersistente {
 
-    @Column(name = "nombre", nullable = false)
-    private String nombre;
+  @Column(name = "nombre", nullable = false)
+  private String nombre;
 
-    @Column(name = "contrasenia", nullable = false)
-    private String contrasenia;
+  @Column(name = "contrasenia", nullable = false)
+  private String contrasenia;
 
-    @Column(name = "email", unique = true, nullable = false)
-    private String email;
+  @Column(name = "email", unique = true, nullable = false)
+  private String email;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_rol")
-    private TipoRol rol;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "tipo_rol")
+  private TipoRol rol;
 
-    public static Usuario con(String nombreUsuario, String contrasenia, String email, TipoRol rol) {
-        return Usuario
-                .builder()
-                .nombre(nombreUsuario)
-                .contrasenia(contrasenia)
-                .email(email)
-                .rol(rol)
-                .build();
-    }
+  public static Usuario con(String nombreUsuario, String contrasenia, String email, TipoRol rol) {
+    return Usuario
+        .builder()
+        .nombre(nombreUsuario)
+        .contrasenia(contrasenia)
+        .email(email)
+        .rol(rol)
+        .build();
+  }
 
-    public static Usuario conEmail(String email) {
-        return Usuario.con("", "", email, null);
-    }
+  public static Usuario conEmail(String email) {
+    return Usuario.con("", "", email, null);
+  }
 
 }

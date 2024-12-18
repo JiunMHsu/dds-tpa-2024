@@ -22,42 +22,42 @@ import lombok.NoArgsConstructor;
 @Table(name = "sensor")
 public class Sensor extends EntidadPersistente {
 
-    @ManyToOne
-    @JoinColumn(name = "heladera_id", nullable = false)
-    private Heladera heladera;
+  @ManyToOne
+  @JoinColumn(name = "heladera_id", nullable = false)
+  private Heladera heladera;
 
-    @Column(name = "topic", columnDefinition = "TEXT", nullable = false)
-    private String topic;
+  @Column(name = "topic", columnDefinition = "TEXT", nullable = false)
+  private String topic;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo")
-    private TipoSensor tipo;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "tipo")
+  private TipoSensor tipo;
 
-    public static Sensor de(Heladera heladera, String topic) {
-        return Sensor
-                .builder()
-                .heladera(heladera)
-                .topic(topic)
-                .build();
-    }
+  public static Sensor de(Heladera heladera, String topic) {
+    return Sensor
+        .builder()
+        .heladera(heladera)
+        .topic(topic)
+        .build();
+  }
 
-    /**
-     * Builder por Suscriptor por Sensor por heladeras.
-     *
-     * @param heladera una Heladera.
-     * @return Sensor paraColaborador topic vacío ("").
-     */
-    public static Sensor de(Heladera heladera) {
-        return Sensor.de(heladera, "");
-    }
+  /**
+   * Builder por Suscriptor por Sensor por heladeras.
+   *
+   * @param heladera una Heladera.
+   * @return Sensor paraColaborador topic vacío ("").
+   */
+  public static Sensor de(Heladera heladera) {
+    return Sensor.de(heladera, "");
+  }
 
-    /**
-     * Builder por Suscriptor por Sensor por heladeras.
-     *
-     * @param topic una topic por suscripción.
-     * @return Sensor paraColaborador una heladera por capacidad 10.
-     */
-    public static Sensor de(String topic) {
-        return Sensor.de(Heladera.con(10), topic);
-    }
+  /**
+   * Builder por Suscriptor por Sensor por heladeras.
+   *
+   * @param topic una topic por suscripción.
+   * @return Sensor paraColaborador una heladera por capacidad 10.
+   */
+  public static Sensor de(String topic) {
+    return Sensor.de(Heladera.con(10), topic);
+  }
 }

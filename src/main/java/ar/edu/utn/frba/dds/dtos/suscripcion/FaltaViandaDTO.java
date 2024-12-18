@@ -10,22 +10,22 @@ import lombok.Setter;
 @Builder
 public class FaltaViandaDTO {
 
-    private String colaborador;
+  private String colaborador;
 
-    private String heladera;
+  private String heladera;
 
-    private String medioDeNotificacion;
+  private String medioDeNotificacion;
 
-    private String viandasRestantes;
+  private String viandasRestantes;
 
-    public static FaltaViandaDTO completa(SuscripcionFaltaVianda suscripcionFaltaVianda) {
+  public static FaltaViandaDTO completa(SuscripcionFaltaVianda suscripcionFaltaVianda) {
 
-        return FaltaViandaDTO
-                .builder()
-                .colaborador(suscripcionFaltaVianda.getColaborador().getUsuario().getNombre())
-                .heladera(suscripcionFaltaVianda.getHeladera().getNombre())
-                .medioDeNotificacion(suscripcionFaltaVianda.getMedioDeNotificacion().toString())
-                .viandasRestantes(suscripcionFaltaVianda.getViandasRestantes().toString())
-                .build();
-    }
+    return FaltaViandaDTO
+        .builder()
+        .colaborador(suscripcionFaltaVianda.getColaborador().getUsuario().getNombre())
+        .heladera(suscripcionFaltaVianda.getHeladera().getNombre())
+        .medioDeNotificacion(suscripcionFaltaVianda.getMedioDeNotificacion().toString())
+        .viandasRestantes(suscripcionFaltaVianda.getViandasRestantes().toString())
+        .build();
+  }
 }

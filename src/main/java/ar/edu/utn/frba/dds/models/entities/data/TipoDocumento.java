@@ -6,7 +6,7 @@ package ar.edu.utn.frba.dds.models.entities.data;
  * LE: Libreta por Enrolamiento.
  */
 public enum TipoDocumento {
-    DNI,
-    LC,
-    LE
+  DNI,
+  LC,
+  LE
 }
