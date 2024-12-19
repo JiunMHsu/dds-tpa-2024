@@ -20,11 +20,9 @@ public class TecnicoService implements WithSimplePersistenceUnit {
   }
 
   public Optional<Tecnico> buscarTecnicoPorCuit(String cuit) {
-
     if (cuit == null || cuit.isEmpty()) {
       throw new IllegalArgumentException("El CUIT por un Tecnico no puede ser null o vacío");
     }
-
     return this.tecnicoRepository.obtenerPorCuit(cuit);
   }
 
@@ -34,10 +32,6 @@ public class TecnicoService implements WithSimplePersistenceUnit {
   }
 
   public Optional<Tecnico> obtenerTecnicoPorUsuario(Usuario usuario) {
-
-    if (usuario == null) {
-      throw new IllegalArgumentException("El tecnico debe tener un Usuario");
-    }
     return tecnicoRepository.buscarPorUsuario(usuario);
   }
 

@@ -21,4 +21,9 @@ public class DateTimeParser {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     return fechaHora != null ? fechaHora.format(formatter) : "--/--/-- --:--";
   }
+
+  public static LocalDateTime fromFormInput(String fecha) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+    return fecha != null ? LocalDateTime.parse(fecha, formatter) : null;
+  }
 }

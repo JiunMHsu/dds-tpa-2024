@@ -1,12 +1,15 @@
 package ar.edu.utn.frba.dds.controllers.incidente;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
+import ar.edu.utn.frba.dds.dtos.heladera.HeladeraDTO;
 import ar.edu.utn.frba.dds.dtos.incidente.FallaTecnicaDTO;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
+import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Imagen;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
+import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.permissions.ColaboradorRequired;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
@@ -47,12 +50,14 @@ public class FallaTecnicaController extends ColaboradorRequired {
 
     List<Incidente> fallasTecnicas = this.incidenteService.buscarTodasFallasTecnicas();
     List<FallaTecnicaDTO> fallasTecnicasDTO = switch (filtro) {
-      case "resueltas" ->
-          fallasTecnicas.stream().filter(Incidente::getFallaResuelta).map(FallaTecnicaDTO::preview).toList();
-      case "pendientes" ->
-          fallasTecnicas.stream().filter(falla -> !falla.getFallaResuelta()).map(FallaTecnicaDTO::preview).toList();
-      default -> // caso "todas"
-          fallasTecnicas.stream().map(FallaTecnicaDTO::preview).toList();
+      case "resueltas" -> fallasTecnicas.stream()
+          .filter(Incidente::getResuelta)
+          .map(FallaTecnicaDTO::preview).toList();
+      case "pendientes" -> fallasTecnicas.stream()
+          .filter(falla -> !falla.getResuelta())
+          .map(FallaTecnicaDTO::preview).toList();
+      default -> fallasTecnicas.stream()
+          .map(FallaTecnicaDTO::preview).toList();
     };
 
     model.put("fallas", fallasTecnicasDTO);
@@ -60,7 +65,23 @@ public class FallaTecnicaController extends ColaboradorRequired {
   }
 
   public void show(Context context) {
-    // TODO - Implementar
+    String fallaId = context.pathParam("id");
+
+    Incidente falla = this.incidenteService.buscarIncidentePorId(fallaId)
+        .orElseThrow(ResourceNotFoundException::new);
+
+    Heladera heladera = falla.getHeladera();
+
+    Usuario usuario = usuarioFromSession(context);
+    boolean puedeResolver = usuario.getRol().isTecnico() && !falla.getResuelta();
+
+    Map<String, Object> model = new HashMap<>();
+
+    model.put("heladera", HeladeraDTO.preview(heladera));
+    model.put("falla", FallaTecnicaDTO.completa(falla));
+    model.put("puedeResolver", puedeResolver);
+
+    render(context, "fallas_tecnicas/falla_tecnica_detalle.hbs", model);
   }
 
   public void create(Context context) {

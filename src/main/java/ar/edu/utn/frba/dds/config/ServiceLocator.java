@@ -237,9 +237,11 @@ public class ServiceLocator {
 
     if (componentName.equals(VisitaTecnicoController.class.getName())) {
       VisitaTecnicoController instance = new VisitaTecnicoController(
-          instanceOf(UsuarioService.class), instanceOf(TecnicoService.class), instanceOf(VisitaTecnicoService.class),
-          instanceOf(HeladeraService.class)
-      );
+          instanceOf(UsuarioService.class),
+          instanceOf(TecnicoService.class),
+          instanceOf(VisitaTecnicoService.class),
+          instanceOf(IncidenteService.class),
+          instanceOf(ImageService.class));
       instances.put(componentName, instance);
     }
 

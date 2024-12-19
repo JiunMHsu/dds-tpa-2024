@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.utils;
 
-import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.Puntos;
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.VarianteDePuntos;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
@@ -17,16 +16,17 @@ import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
+import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
+import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.VarianteDePuntosRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
+import ar.edu.utn.frba.dds.models.repositories.tecnico.TecnicoRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
-import ar.edu.utn.frba.dds.reportes.PDFGenerator;
-import ar.edu.utn.frba.dds.services.reporte.ReporteService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -45,9 +45,10 @@ public class Initializer implements WithSimplePersistenceUnit {
     instance.withIncidentes();
     instance.withVarianteDePuntos();
     instance.withOfertas();
+    instance.withTecnicos();
 
-    PDFGenerator pdfGenerator = new PDFGenerator(AppProperties.getInstance().propertyFromName("REPORT_DIR"));
-    ServiceLocator.instanceOf(ReporteService.class).generarReporteSemanal(pdfGenerator);
+    // PDFGenerator pdfGenerator = new PDFGenerator(AppProperties.getInstance().propertyFromName("REPORT_DIR"));
+    // ServiceLocator.instanceOf(ReporteService.class).generarReporteSemanal(pdfGenerator);
   }
 
   public void withSuperUser() {
@@ -222,21 +223,21 @@ public class Initializer implements WithSimplePersistenceUnit {
         LocalDateTime.of(2024, 8, 12, 14, 5),
         colaboradorRepository.buscarPorEmail("adomingueznimo@frba.utn.edu.ar").orElseThrow(),
         "No funca el lector por tarjeta.",
-        new Imagen(""));
+        new Imagen("image-test.png"));
 
     Incidente i9 = Incidente.fallaTecnica(
         heladeraRepository.buscarPorNombre("Heladera CUATRO").orElseThrow(),
         LocalDateTime.of(2024, 9, 17, 19, 40),
         colaboradorRepository.buscarPorEmail("adomingueznimo@frba.utn.edu.ar").orElseThrow(),
         "La vianda no sale",
-        new Imagen(""));
+        new Imagen("image-test.png"));
 
     Incidente i10 = Incidente.fallaTecnica(
         heladeraRepository.buscarPorNombre("Heladera DOCE").orElseThrow(),
         LocalDateTime.of(2024, 12, 1, 7, 55),
         colaboradorRepository.buscarPorEmail("jgandola@frba.utn.edu.ar").orElseThrow(),
         "Ni idea lo que paso",
-        new Imagen(""));
+        new Imagen("image-test.png"));
 
     IncidenteRepository incidenteRepository = new IncidenteRepository();
 
@@ -291,6 +292,16 @@ public class Initializer implements WithSimplePersistenceUnit {
     repository.guardar(OfertaDeProductos.por(c2, LocalDateTime.now(), "Producto 18", 80, RubroOferta.GASTRONOMIA, img));
     repository.guardar(OfertaDeProductos.por(c1, LocalDateTime.now(), "Producto 19", 20, RubroOferta.HOGAR, img));
     repository.guardar(OfertaDeProductos.por(c2, LocalDateTime.now(), "Producto 20", 30, RubroOferta.ELECTRONICA, img));
+    commitTransaction();
+  }
+
+  private void withTecnicos() {
+    Usuario u1 = Usuario.con("Tecnico1", "1111", "tecnico1@gmail.com", TipoRol.TECNICO);
+    Tecnico t1 = Tecnico.con(u1, "Tecnico", "Uno", null, "20-00019283-1", Contacto.vacio(), MedioDeNotificacion.EMAIL, null);
+
+    beginTransaction();
+    new UsuarioRepository().guardar(u1);
+    new TecnicoRepository().guardar(t1);
     commitTransaction();
   }
 

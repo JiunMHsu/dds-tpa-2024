@@ -11,4 +11,12 @@ public enum TipoRol implements RouteRole {
   public boolean isAdmin() {
     return this == ADMIN;
   }
+
+  public boolean isColaborador() {
+    return this == COLABORADOR;
+  }
+
+  public boolean isTecnico() {
+    return this == TECNICO;
+  }
 }
