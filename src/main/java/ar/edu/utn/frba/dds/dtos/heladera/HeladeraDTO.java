@@ -17,6 +17,10 @@ public class HeladeraDTO {
 
   private String estado;
 
+  private String calle;
+
+  private String altura;
+
   private String calleYAltura;
 
   private String barrio;
@@ -74,19 +78,15 @@ public class HeladeraDTO {
 
   public static HeladeraDTO preview(Heladera heladera) {
 
-    String direccionString = heladera.getDireccion().getCalle().getNombre() + " " + heladera.getDireccion().getAltura().toString();
-
-    String latitudLongitudString = heladera.getDireccion().getUbicacion().getLatitud() + ", " + heladera.getDireccion().getUbicacion().getLongitud();
-
     return HeladeraDTO
             .builder()
             .id(heladera.getId().toString())
             .nombre(heladera.getNombre())
             .estado(heladera.getEstado().toString())
-            .calleYAltura(direccionString)
+            .calle(heladera.getDireccion().getCalle().getNombre())
+            .altura(heladera.getDireccion().getAltura().toString())
             .latitud(String.valueOf(heladera.getDireccion().getUbicacion().getLatitud()))
             .longitud(String.valueOf(heladera.getDireccion().getUbicacion().getLongitud()))
-            .ubicacion(latitudLongitudString)
             .cantViandas(heladera.getViandas().toString())
             .build();
   }
