@@ -9,7 +9,7 @@ public class SolicitudDeAperturaController implements ICrudViewsHandler {
 
   private final HeladeraService heladeraService;
   private final SolicitudDeAperturaService solicitudDeAperturaService;
-  
+
   public SolicitudDeAperturaController(HeladeraService heladeraService,
                                        SolicitudDeAperturaService solicitudDeAperturaService) {
     this.heladeraService = heladeraService;
