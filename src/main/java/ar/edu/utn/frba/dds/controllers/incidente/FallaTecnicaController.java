@@ -51,10 +51,10 @@ public class FallaTecnicaController extends ColaboradorRequired {
     List<Incidente> fallasTecnicas = this.incidenteService.buscarTodasFallasTecnicas();
     List<FallaTecnicaDTO> fallasTecnicasDTO = switch (filtro) {
       case "resueltas" -> fallasTecnicas.stream()
-          .filter(Incidente::getFallaResuelta)
+          .filter(Incidente::getResuelta)
           .map(FallaTecnicaDTO::preview).toList();
       case "pendientes" -> fallasTecnicas.stream()
-          .filter(falla -> !falla.getFallaResuelta())
+          .filter(falla -> !falla.getResuelta())
           .map(FallaTecnicaDTO::preview).toList();
       default -> fallasTecnicas.stream()
           .map(FallaTecnicaDTO::preview).toList();
@@ -73,7 +73,7 @@ public class FallaTecnicaController extends ColaboradorRequired {
     Heladera heladera = falla.getHeladera();
 
     Usuario usuario = usuarioFromSession(context);
-    boolean puedeResolver = usuario.getRol().isTecnico() && !falla.getFallaResuelta();
+    boolean puedeResolver = usuario.getRol().isTecnico() && !falla.getResuelta();
 
     Map<String, Object> model = new HashMap<>();
 

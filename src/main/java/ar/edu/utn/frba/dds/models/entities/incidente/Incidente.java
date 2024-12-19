@@ -50,7 +50,7 @@ public class Incidente extends EntidadPersistente {
   private Imagen foto;
 
   @Column(name = "fue_resuelta", nullable = false)
-  private Boolean fallaResuelta;
+  private Boolean resuelta;
 
   private static Incidente con(Heladera heladera,
                                LocalDateTime fechaHora,
@@ -67,7 +67,7 @@ public class Incidente extends EntidadPersistente {
         .colaborador(colaborador)
         .descripcion(descripcion)
         .foto(foto)
-        .fallaResuelta(false)
+        .resuelta(false)
         .build();
   }
 

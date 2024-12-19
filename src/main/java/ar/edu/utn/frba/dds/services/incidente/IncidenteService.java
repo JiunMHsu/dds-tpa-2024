@@ -46,4 +46,14 @@ public class IncidenteService implements WithSimplePersistenceUnit {
     // TODO - avisar a técnicos, enviar respectivos mensajes
   }
 
+  public void resolverIncidente(Incidente incidente) {
+    incidente.setResuelta(true);
+    incidente.getHeladera().setEstado(EstadoHeladera.ACTIVA);
+
+    withTransaction(() -> {
+      heladeraRepository.actualizar(incidente.getHeladera());
+      incidenteRepository.actualizar(incidente);
+    });
+  }
+
 }

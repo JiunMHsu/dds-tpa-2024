@@ -241,8 +241,7 @@ public class ServiceLocator {
           instanceOf(TecnicoService.class),
           instanceOf(VisitaTecnicoService.class),
           instanceOf(IncidenteService.class),
-          instanceOf(HeladeraService.class)
-      );
+          instanceOf(ImageService.class));
       instances.put(componentName, instance);
     }
 

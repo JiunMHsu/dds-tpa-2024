@@ -10,13 +10,16 @@ import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.entities.tecnico.VisitaTecnico;
 import ar.edu.utn.frba.dds.permissions.TecnicoRequired;
-import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
+import ar.edu.utn.frba.dds.services.images.ImageService;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import ar.edu.utn.frba.dds.services.tecnico.VisitaTecnicoService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
+import ar.edu.utn.frba.dds.utils.DateTimeParser;
 import io.javalin.http.Context;
+import io.javalin.http.UploadedFile;
 import io.javalin.validation.ValidationException;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,21 +30,18 @@ public class VisitaTecnicoController extends TecnicoRequired {
 
   private final VisitaTecnicoService visitaTecnicoService;
   private final IncidenteService incidenteService;
-  private final HeladeraService heladeraService;
+  private final ImageService fileService;
 
   public VisitaTecnicoController(UsuarioService usuarioService,
                                  TecnicoService tecnicoService,
                                  VisitaTecnicoService visitaTecnicoService,
                                  IncidenteService incidenteService,
-                                 HeladeraService heladeraService) {
+                                 ImageService fileService) {
 
     super(usuarioService, tecnicoService);
     this.visitaTecnicoService = visitaTecnicoService;
     this.incidenteService = incidenteService;
-    this.heladeraService = heladeraService;
-  }
-
-  public void show(Context context) {
+    this.fileService = fileService;
   }
 
   public void create(Context context) {
@@ -54,7 +54,7 @@ public class VisitaTecnicoController extends TecnicoRequired {
       Incidente falla = this.incidenteService.buscarIncidentePorId(fallaId)
           .orElseThrow(ResourceNotFoundException::new);
 
-      if (falla.getFallaResuelta()) {
+      if (falla.getResuelta()) {
         throw new InvalidFallaTecnica("El incidente ya está resuelto");
       }
 
@@ -65,7 +65,10 @@ public class VisitaTecnicoController extends TecnicoRequired {
     }
   }
 
-  public void save(Context context) { // TODO - Ver desp que matchee para Colaborador las vistas
+  public void show(Context context) {
+  }
+
+  public void save(Context context) {
 
     Map<String, Object> model = new HashMap<>();
     List<RedirectDTO> redirectDTOS = new ArrayList<>();
@@ -79,7 +82,10 @@ public class VisitaTecnicoController extends TecnicoRequired {
 
       Incidente fallaTecnica = this.incidenteService.buscarIncidentePorId(fallaId)
           .orElseThrow(ResourceNotFoundException::new);
-      LocalDateTime fechaHoraVisita = context.formParamAsClass("fecha-hora-visita", LocalDateTime.class).get();
+      LocalDateTime fechaHoraVisita = DateTimeParser.fromFormInput(
+          context.formParamAsClass("fecha-hora-visita", String.class).get()
+      );
+      String descripcion = context.formParamAsClass("descripcion", String.class).get();
 
       Boolean resuelta = switch (context.formParamAsClass("estado-falla", String.class).getOrDefault("pendiente")) {
         case "resuelta" -> true;
@@ -87,18 +93,34 @@ public class VisitaTecnicoController extends TecnicoRequired {
         default -> throw new InvalidFormParamException("estado falla invalido");
       };
 
+      UploadedFile uploadedFile = context.uploadedFile("foto");
+      if (uploadedFile == null) throw new InvalidFormParamException();
+      String pathImagen = fileService.guardarImagen(uploadedFile.content(), uploadedFile.extension());
+
+      System.out.println(fechaHoraVisita);
+      System.out.println(resuelta);
+
+
       VisitaTecnico visitaTecnico = VisitaTecnico.por(
           tecnico,
           fallaTecnica,
           fallaTecnica.getHeladera(),
           fechaHoraVisita,
-          context.formParamAsClass("descripcion", String.class).get(),
-          new Imagen(context.formParamAsClass("foto", String.class).get())
+          descripcion,
+          new Imagen(pathImagen)
       );
 
       this.visitaTecnicoService.registrarVisita(visitaTecnico);
-    } catch (ValidationException | ResourceNotFoundException e) {
-      redirectDTOS.add(new RedirectDTO("/home", "Reintentar"));
+      if (resuelta) this.incidenteService.resolverIncidente(fallaTecnica);
+
+      operationSuccess = true;
+      redirectDTOS.add(new RedirectDTO("/fallas-tecnicas", "Registrar otra Visita"));
+
+    } catch (ValidationException
+             | ResourceNotFoundException
+             | InvalidFormParamException
+             | IOException e) {
+      redirectDTOS.add(new RedirectDTO("/fallas-tecnicas", "Ver Fallas Tecnicas"));
     } finally {
       model.put("success", operationSuccess);
       model.put("redirects", redirectDTOS);

@@ -34,8 +34,8 @@ public class Routers {
 
   public static void apply(RouterConfig config) {
     config.apiBuilder(() -> {
-      get("/", ctx -> ctx.redirect("/home"), TipoRol.COLABORADOR, TipoRol.ADMIN);
-      get("/home", ctx -> ctx.render("home/home.hbs"), TipoRol.COLABORADOR, TipoRol.ADMIN);
+      get("/", ctx -> ctx.redirect("/home"), TipoRol.COLABORADOR, TipoRol.ADMIN, TipoRol.TECNICO);
+      get("/home", ctx -> ctx.render("home/home.hbs"), TipoRol.COLABORADOR, TipoRol.ADMIN, TipoRol.TECNICO);
       get("/test", ctx -> ctx.result("DDS TPA"));
 
       path("/login", () -> {
