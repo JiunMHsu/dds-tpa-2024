@@ -61,9 +61,7 @@ public class Initializer implements WithSimplePersistenceUnit {
 
     UsuarioRepository usuarioRepository = new UsuarioRepository();
 
-    withTransaction(() -> {
-      usuarioRepository.guardar(superUser);
-    });
+    withTransaction(() -> usuarioRepository.guardar(superUser));
   }
 
   public void withColaboradores() {
