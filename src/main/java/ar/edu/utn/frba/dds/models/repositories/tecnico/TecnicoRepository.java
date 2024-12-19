@@ -11,7 +11,7 @@ import javax.persistence.NoResultException;
 public class TecnicoRepository implements WithSimplePersistenceUnit {
 
   public void guardar(Tecnico tecnico) {
-    withTransaction(() -> entityManager().persist(tecnico));
+    entityManager().persist(tecnico);
   }
 
   public void actualizar(Tecnico tecnico) {
