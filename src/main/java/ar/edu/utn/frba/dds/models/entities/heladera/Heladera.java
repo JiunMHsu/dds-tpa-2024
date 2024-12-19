@@ -1,3 +1,4 @@
+
 package ar.edu.utn.frba.dds.models.entities.heladera;
 
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
@@ -58,16 +59,16 @@ public class Heladera extends EntidadPersistente {
                              EstadoHeladera estado,
                              Integer viandas) {
     return Heladera
-        .builder()
-        .nombre(nombre)
-        .direccion(direccion)
-        .inicioFuncionamiento(inicioFuncionamiento)
-        .capacidad(capacidad)
-        .rangoTemperatura(rangoTemperatura)
-        .ultimaTemperatura(ultimaTemperatura)
-        .estado(estado)
-        .viandas(viandas)
-        .build();
+            .builder()
+            .nombre(nombre)
+            .direccion(direccion)
+            .inicioFuncionamiento(inicioFuncionamiento)
+            .capacidad(capacidad)
+            .rangoTemperatura(rangoTemperatura)
+            .ultimaTemperatura(ultimaTemperatura)
+            .estado(estado)
+            .viandas(viandas)
+            .build();
   }
 
   public static Heladera con(String nombre,
@@ -76,6 +77,15 @@ public class Heladera extends EntidadPersistente {
                              RangoTemperatura rangoTemperatura,
                              Integer viandas) {
     return Heladera.con(nombre, direccion, LocalDateTime.now(), capacidad, rangoTemperatura, null, EstadoHeladera.ACTIVA, viandas);
+  }
+
+  public static Heladera con(String nombre,
+                             Direccion direccion,
+                             Integer capacidad,
+                             RangoTemperatura rangoTemperatura,
+                             EstadoHeladera estado,
+                             Integer viandas) {
+    return Heladera.con(nombre, direccion, LocalDateTime.now(), capacidad, rangoTemperatura, null, estado, viandas);
   }
 
   public static Heladera con(String nombre,
