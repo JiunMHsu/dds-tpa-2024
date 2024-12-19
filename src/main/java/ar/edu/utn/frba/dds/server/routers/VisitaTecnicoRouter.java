@@ -17,7 +17,7 @@ public class VisitaTecnicoRouter implements IRouter {
           post(ServiceLocator.instanceOf(VisitaTecnicoController.class)::save, TipoRol.TECNICO);
           // get(ServiceLocator.instanceOf(VisitaTecnicoController.class)::index, TipoRol.ADMIN, TipoRol.TECNICO);
           get("/{id}", ServiceLocator.instanceOf(VisitaTecnicoController.class)::show, TipoRol.ADMIN, TipoRol.TECNICO);
-          get("/new", ServiceLocator.instanceOf(VisitaTecnicoController.class)::save, TipoRol.TECNICO);
+          get("/new", ServiceLocator.instanceOf(VisitaTecnicoController.class)::create, TipoRol.TECNICO);
         })
     );
   }
