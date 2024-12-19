@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.controllers.tecnico;
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.incidente.FallaTecnicaDTO;
 import ar.edu.utn.frba.dds.exceptions.InvalidFallaTecnica;
+import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.data.Imagen;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
@@ -80,8 +81,11 @@ public class VisitaTecnicoController extends TecnicoRequired {
           .orElseThrow(ResourceNotFoundException::new);
       LocalDateTime fechaHoraVisita = context.formParamAsClass("fecha-hora-visita", LocalDateTime.class).get();
 
-      // va como
-      Boolean resuelta = context.formParamAsClass("resuelta", Boolean.class).get();
+      Boolean resuelta = switch (context.formParamAsClass("estado-falla", String.class).getOrDefault("pendiente")) {
+        case "resuelta" -> true;
+        case "pendiente" -> false;
+        default -> throw new InvalidFormParamException("estado falla invalido");
+      };
 
       VisitaTecnico visitaTecnico = VisitaTecnico.por(
           tecnico,

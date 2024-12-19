@@ -1,0 +1,51 @@
+.main-section {
+    overflow-y: hidden;
+}
+
+.form {
+    grid-template-columns: 15rem 15rem;
+}
+
+.field-fecha-hora {
+    grid-column: 1 / -1;
+    margin-bottom: 1rem;
+}
+
+.field-descripcion {
+    grid-column: 1 / -1;
+    margin-bottom: 1rem;
+}
+
+.field-descripcion textarea {
+    height: 5rem;
+    resize: vertical;
+    min-height: 4rem;
+}
+
+.checkbox-wrapper {
+    display: flex;
+    grid-column: 1 / -1;
+}
+
+.checkbox-wrapper input {
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+.checkbox-wrapper .label-resuelta {
+    font-size: 1.2rem;
+    margin-left: .5rem;
+}
+
+.side-panel {
+    width: 35vw;
+}
+
+
+/* agregar detalle de la falla */
+
+
+#map {
+    height: 100%;
+    width: 100%;
+}

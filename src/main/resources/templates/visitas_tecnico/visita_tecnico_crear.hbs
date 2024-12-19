@@ -3,7 +3,7 @@
 {{/partial}}
 {{#partial "links"}}
     <link rel="stylesheet" href="/css/form.css">
-    <link rel="stylesheet" href="/css/incidentes/visita_tecnica_crear.css"/>
+    <link rel="stylesheet" href="/css/visitas_tecnico/visita_tecnico_crear.css"/>
     <link
             href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css"
             rel="stylesheet"
@@ -17,7 +17,8 @@
     <div class="form-container">
         <h2 class="form-title">Registrar Nueva Visita</h2>
 
-        <form action="/visitas-tecnico?fallaId={{falla.id}}" method="post" class="form">
+        <form action="/visitas-tecnico?fallaId={{falla.id}}" method="post" class="form"
+        enctype="multipart/form-data">
         <label class="field-fecha-hora">
             Fecha Hora
             <input
@@ -27,13 +28,26 @@
             />
         </label>
         <label class="field-descripcion">
-            Descripción
+            Descripción del Trabajo
             <textarea type="text" name="descripcion" required></textarea>
         </label>
+
         <label class="field-imagen">
             Imagen
-            <input type="file" name="imagen" accept=".png, .jpg, .jpeg" required/>
+            <input type="file" name="foto" accept=".png, .jpg, .jpeg" required/>
         </label>
+
+        <div class="checkbox-wrapper">
+            <input
+                    type="checkbox"
+                    id="resuelta"
+                    name="estado-falla"
+                    value="resuelta"
+            />
+            <label class="label-resuelta" for="resuelta">
+                Falla Resuelta
+            </label>
+        </div>
 
         <div class="form-button-container">
             <button type="submit">Registrar</button>
@@ -42,6 +56,7 @@
     </div>
 {{/partial}}
 {{#partial "side-panel"}}
+    <div>INFO DE LA FALLA</div>
     <div id="map"></div>
 {{/partial}}
 {{> templates/base}}
