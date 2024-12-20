@@ -21,8 +21,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "visita_tecnico")
-public class VisitaTecnico extends EntidadPersistente {
+@Table(name = "visita_tecnica")
+public class VisitaTecnica extends EntidadPersistente {
 
   @ManyToOne
   @JoinColumn(name = "tecnico_id", nullable = false)
@@ -45,14 +45,14 @@ public class VisitaTecnico extends EntidadPersistente {
   @Embedded
   private Imagen foto;
 
-  public static VisitaTecnico por(Tecnico tecnico,
+  public static VisitaTecnica por(Tecnico tecnico,
                                   Incidente incidente,
                                   Heladera heladera,
                                   LocalDateTime fechaHora,
                                   String descripcion,
                                   Imagen foto
   ) {
-    return VisitaTecnico
+    return VisitaTecnica
         .builder()
         .tecnico(tecnico)
         .incidente(incidente)

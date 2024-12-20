@@ -8,12 +8,12 @@ import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.data.Imagen;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
-import ar.edu.utn.frba.dds.models.entities.tecnico.VisitaTecnico;
+import ar.edu.utn.frba.dds.models.entities.tecnico.VisitaTecnica;
 import ar.edu.utn.frba.dds.permissions.TecnicoRequired;
 import ar.edu.utn.frba.dds.services.images.ImageService;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
-import ar.edu.utn.frba.dds.services.tecnico.VisitaTecnicoService;
+import ar.edu.utn.frba.dds.services.tecnico.VisitaTecnicaService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.DateTimeParser;
 import io.javalin.http.Context;
@@ -26,20 +26,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class VisitaTecnicoController extends TecnicoRequired {
+public class VisitaTecnicaController extends TecnicoRequired {
 
-  private final VisitaTecnicoService visitaTecnicoService;
+  private final VisitaTecnicaService visitaTecnicaService;
   private final IncidenteService incidenteService;
   private final ImageService fileService;
 
-  public VisitaTecnicoController(UsuarioService usuarioService,
+  public VisitaTecnicaController(UsuarioService usuarioService,
                                  TecnicoService tecnicoService,
-                                 VisitaTecnicoService visitaTecnicoService,
+                                 VisitaTecnicaService visitaTecnicaService,
                                  IncidenteService incidenteService,
                                  ImageService fileService) {
 
     super(usuarioService, tecnicoService);
-    this.visitaTecnicoService = visitaTecnicoService;
+    this.visitaTecnicaService = visitaTecnicaService;
     this.incidenteService = incidenteService;
     this.fileService = fileService;
   }
@@ -60,9 +60,9 @@ public class VisitaTecnicoController extends TecnicoRequired {
 
       // TODO - modificar (contemplar el cado de alerta)
       model.put("falla", FallaTecnicaDTO.completa(incidente));
-      render(context, "visitas_tecnico/visita_tecnico_crear.hbs", model);
+      render(context, "visitas_tecnico/visita_tecnica_crear.hbs", model);
     } catch (ValidationException | InvalidFallaTecnica e) {
-      render(context, "visitas_tecnico/falla_tecnica_invalida.hbs", model);
+      render(context, "visitas_tecnico/incidente_invalido.hbs", model);
     }
   }
 
@@ -102,7 +102,7 @@ public class VisitaTecnicoController extends TecnicoRequired {
       System.out.println(resuelta);
 
 
-      VisitaTecnico visitaTecnico = VisitaTecnico.por(
+      VisitaTecnica visitaTecnica = VisitaTecnica.por(
           tecnico,
           fallaTecnica,
           fallaTecnica.getHeladera(),
@@ -111,7 +111,7 @@ public class VisitaTecnicoController extends TecnicoRequired {
           new Imagen(pathImagen)
       );
 
-      this.visitaTecnicoService.registrarVisita(visitaTecnico);
+      this.visitaTecnicaService.registrarVisita(visitaTecnica);
       if (resuelta) this.incidenteService.resolverIncidente(fallaTecnica);
 
       operationSuccess = true;

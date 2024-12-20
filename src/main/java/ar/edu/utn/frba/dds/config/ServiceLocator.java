@@ -20,7 +20,7 @@ import ar.edu.utn.frba.dds.controllers.reporte.ReporteController;
 import ar.edu.utn.frba.dds.controllers.session.SessionController;
 import ar.edu.utn.frba.dds.controllers.suscripcion.SuscripcionHeladeraController;
 import ar.edu.utn.frba.dds.controllers.tecnico.TecnicoController;
-import ar.edu.utn.frba.dds.controllers.tecnico.VisitaTecnicoController;
+import ar.edu.utn.frba.dds.controllers.tecnico.VisitaTecnicaController;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.CanjeDePuntosRepository;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.VarianteDePuntosRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
@@ -43,7 +43,7 @@ import ar.edu.utn.frba.dds.models.repositories.suscripcion.FaltaViandaRepository
 import ar.edu.utn.frba.dds.models.repositories.suscripcion.HeladeraLlenaRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjeta.TarjetaPersonaVulnerableRepository;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.TecnicoRepository;
-import ar.edu.utn.frba.dds.models.repositories.tecnico.VisitaTecnicoRepository;
+import ar.edu.utn.frba.dds.models.repositories.tecnico.VisitaTecnicaRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import ar.edu.utn.frba.dds.models.repositories.vianda.ViandaRepository;
 import ar.edu.utn.frba.dds.reportes.RegistroMovimiento;
@@ -71,7 +71,7 @@ import ar.edu.utn.frba.dds.services.suscripcion.FaltaViandaService;
 import ar.edu.utn.frba.dds.services.suscripcion.HeladeraLlenaService;
 import ar.edu.utn.frba.dds.services.tarjeta.TarjetaPersonaVulnerableService;
 import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
-import ar.edu.utn.frba.dds.services.tecnico.VisitaTecnicoService;
+import ar.edu.utn.frba.dds.services.tecnico.VisitaTecnicaService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.RandomString;
 import ar.edu.utn.frba.dds.utils.SafeMailSender;
@@ -241,11 +241,11 @@ public class ServiceLocator {
       instances.put(componentName, instance);
     }
 
-    if (componentName.equals(VisitaTecnicoController.class.getName())) {
-      VisitaTecnicoController instance = new VisitaTecnicoController(
+    if (componentName.equals(VisitaTecnicaController.class.getName())) {
+      VisitaTecnicaController instance = new VisitaTecnicaController(
           instanceOf(UsuarioService.class),
           instanceOf(TecnicoService.class),
-          instanceOf(VisitaTecnicoService.class),
+          instanceOf(VisitaTecnicaService.class),
           instanceOf(IncidenteService.class),
           instanceOf(ImageService.class));
       instances.put(componentName, instance);
@@ -417,9 +417,9 @@ public class ServiceLocator {
       instances.put(componentName, instance);
     }
 
-    if (componentName.equals(VisitaTecnicoService.class.getName())) {
-      VisitaTecnicoService instance = new VisitaTecnicoService(
-          instanceOf(VisitaTecnicoRepository.class));
+    if (componentName.equals(VisitaTecnicaService.class.getName())) {
+      VisitaTecnicaService instance = new VisitaTecnicaService(
+          instanceOf(VisitaTecnicaRepository.class));
       instances.put(componentName, instance);
     }
 
@@ -547,8 +547,8 @@ public class ServiceLocator {
       instances.put(componentName, instance);
     }
 
-    if (componentName.equals(VisitaTecnicoRepository.class.getName())) {
-      VisitaTecnicoRepository instance = new VisitaTecnicoRepository();
+    if (componentName.equals(VisitaTecnicaRepository.class.getName())) {
+      VisitaTecnicaRepository instance = new VisitaTecnicaRepository();
       instances.put(componentName, instance);
     }
 

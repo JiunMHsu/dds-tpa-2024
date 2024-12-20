@@ -61,7 +61,7 @@ public class FallaTecnicaController extends ColaboradorRequired {
     };
 
     model.put("fallas", fallasTecnicasDTO);
-    render(context, "fallas_tecnicas/fallas_tecnicas.hbs", model);
+    render(context, "incidentes/fallas_tecnicas.hbs", model);
   }
 
   public void show(Context context) {
@@ -81,12 +81,12 @@ public class FallaTecnicaController extends ColaboradorRequired {
     model.put("falla", FallaTecnicaDTO.completa(falla));
     model.put("puedeResolver", puedeResolver);
 
-    render(context, "fallas_tecnicas/falla_tecnica_detalle.hbs", model);
+    render(context, "incidentes/falla_tecnica_detalle.hbs", model);
   }
 
   public void create(Context context) {
     // colaborador
-    render(context, "falla_tecnica/falla_tecnica_crear.hbs", new HashMap<>());
+    render(context, "incidentes/falla_tecnica_crear.hbs", new HashMap<>());
   }
 
   public void save(Context context) {
