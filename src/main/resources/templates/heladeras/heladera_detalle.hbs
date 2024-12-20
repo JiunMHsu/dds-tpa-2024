@@ -19,12 +19,14 @@
             {{#if puedeConfigurar}}
                 <a href="/heladeras/{{heladera.id}}/edit" class="edit-button">Configurar</a>
             {{/if}}
-            <a href="/suscripciones/new?heladera={{heladera.id}}"
-            class="edit-button">Suscribirse</a>
+            {{#if puedeSuscribirse}}
+                <a href="/suscripciones/new?heladera={{heladera.id}}"
+                class="edit-button">Suscribirse</a>
+            {{/if}}
         </div>
 
         <div class="ultimo-estado card">
-            <p {{#if this.estaActiva}}
+            <p {{#if heladera.estaActiva}}
             style="color: #A7C957" {{else}} style="color: #e37f8f" {{/if}}>
                 <span class="material-symbols-rounded card-detail-icon">radio_button_checked</span>
                 Estado: {{heladera.estado}}

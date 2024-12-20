@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.controllers.tecnico;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
-import ar.edu.utn.frba.dds.dtos.incidente.FallaTecnicaDTO;
+import ar.edu.utn.frba.dds.dtos.incidente.IncidenteDTO;
 import ar.edu.utn.frba.dds.exceptions.IncicenteToFixException;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
@@ -66,8 +66,7 @@ public class VisitaTecnicaController extends TecnicoRequired {
         throw new IncicenteToFixException("El incidente ya está resuelto");
       }
 
-      // TODO - modificar (contemplar el cado de alerta)
-      model.put("falla", FallaTecnicaDTO.completa(incidente));
+      model.put("incidente", IncidenteDTO.preview(incidente));
       render(context, "visitas_tecnicas/visita_tecnica_crear.hbs", model);
     } catch (ValidationException | IncicenteToFixException e) {
       render(context, "visitas_tecnicas/incidente_invalido.hbs", model);
@@ -75,7 +74,6 @@ public class VisitaTecnicaController extends TecnicoRequired {
   }
 
   public void save(Context context) {
-
     Map<String, Object> model = new HashMap<>();
     List<RedirectDTO> redirectDTOS = new ArrayList<>();
     boolean operationSuccess = false;
@@ -83,41 +81,40 @@ public class VisitaTecnicaController extends TecnicoRequired {
     Tecnico tecnico = tecnicoFromSession(context);
 
     try {
-      String fallaId = context.queryParamAsClass("fallaId", String.class)
+      String incidenteId = context.queryParamAsClass("incidente", String.class)
           .getOrThrow(ValidationException::new);
 
-      Incidente fallaTecnica = this.incidenteService.buscarIncidentePorId(fallaId)
+      Incidente incidente = this.incidenteService.buscarIncidentePorId(incidenteId)
           .orElseThrow(ResourceNotFoundException::new);
+
       LocalDateTime fechaHoraVisita = DateTimeParser.fromFormInput(
           context.formParamAsClass("fecha-hora-visita", String.class).get()
       );
+
       String descripcion = context.formParamAsClass("descripcion", String.class).get();
 
-      Boolean resuelta = switch (context.formParamAsClass("estado-falla", String.class).getOrDefault("pendiente")) {
+      Boolean resuelta = switch (context.formParamAsClass("estado-incidente", String.class).getOrDefault("pendiente")) {
         case "resuelta" -> true;
         case "pendiente" -> false;
-        default -> throw new InvalidFormParamException("estado falla invalido");
+        default -> throw new InvalidFormParamException("estado incidente invalido");
       };
 
       UploadedFile uploadedFile = context.uploadedFile("foto");
       if (uploadedFile == null) throw new InvalidFormParamException();
       String pathImagen = fileService.guardarImagen(uploadedFile.content(), uploadedFile.extension());
 
-      System.out.println(fechaHoraVisita);
-      System.out.println(resuelta);
-
-
       VisitaTecnica visitaTecnica = VisitaTecnica.por(
           tecnico,
-          fallaTecnica,
-          fallaTecnica.getHeladera(),
+          incidente,
+          incidente.getHeladera(),
           fechaHoraVisita,
           descripcion,
+          resuelta,
           new Imagen(pathImagen)
       );
 
       this.visitaTecnicaService.registrarVisita(visitaTecnica);
-      if (resuelta) this.incidenteService.resolverIncidente(fallaTecnica);
+      if (resuelta) this.incidenteService.resolverIncidente(incidente);
 
       operationSuccess = true;
       redirectDTOS.add(new RedirectDTO("/fallas-tecnicas", "Registrar otra Visita"));

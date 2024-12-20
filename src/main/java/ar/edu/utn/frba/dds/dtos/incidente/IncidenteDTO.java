@@ -28,18 +28,19 @@ public class IncidenteDTO {
   public static IncidenteDTO preview(Incidente incidente) {
 
     String ruta = switch (incidente.getTipo()) {
-      case FALLA_TECNICA -> "/fallas-tecnicas/" + incidente.getId();
-      default -> "/alertas/" + incidente.getId();
+      case FALLA_TECNICA -> "/fallas-tecnicas/";
+      default -> "/alertas/";
     };
 
     return IncidenteDTO
         .builder()
+        .id(incidente.getId().toString())
         .heladera(incidente.getHeladera().getNombre())
         .fecha(DateTimeParser.parseFecha(incidente.getFechaHora().toLocalDate()))
         .hora(DateTimeParser.parseHora(incidente.getFechaHora().toLocalTime()))
         .tipo(incidente.getTipo().getDescription())
         .resuelto(incidente.getResuelta())
-        .path(ruta)
+        .path(ruta + incidente.getId().toString())
         .build();
   }
 

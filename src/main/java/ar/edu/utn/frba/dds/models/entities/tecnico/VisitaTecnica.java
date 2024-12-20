@@ -42,6 +42,9 @@ public class VisitaTecnica extends EntidadPersistente {
   @Column(name = "descripcion", columnDefinition = "TEXT", nullable = false)
   private String descripcion;
 
+  @Column(name = "pudo_resolverse", nullable = false)
+  private boolean pudoResolverse;
+
   @Embedded
   private Imagen foto;
 
@@ -50,6 +53,7 @@ public class VisitaTecnica extends EntidadPersistente {
                                   Heladera heladera,
                                   LocalDateTime fechaHora,
                                   String descripcion,
+                                  boolean pudoResolverse,
                                   Imagen foto
   ) {
     return VisitaTecnica
@@ -59,6 +63,7 @@ public class VisitaTecnica extends EntidadPersistente {
         .heladera(heladera)
         .fechaHora(fechaHora)
         .descripcion(descripcion)
+        .pudoResolverse(pudoResolverse)
         .foto(foto)
         .build();
   }

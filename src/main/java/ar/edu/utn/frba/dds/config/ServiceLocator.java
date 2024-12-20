@@ -158,6 +158,7 @@ public class ServiceLocator {
           instanceOf(ColaboradorService.class),
           instanceOf(IncidenteService.class),
           instanceOf(HeladeraService.class),
+          instanceOf(VisitaTecnicaService.class),
           instanceOf(ImageService.class));
       instances.put(componentName, instance);
     }

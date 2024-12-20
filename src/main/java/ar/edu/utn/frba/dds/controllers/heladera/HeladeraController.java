@@ -88,11 +88,17 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
         .map(HeladeraDTO::preview)
         .toList();
 
+
+    boolean puedeDarDeAltaHeladera = rolFromSession(context).isAdmin();
+    boolean puedeSuscribirseAHeladera = rolFromSession(context).isColaborador();
+    boolean puedeEncargarseDeHeladera = rolFromSession(context).isColaborador()
+        && tipoColaboradorFromSession(context).esJuridico();
+
     Map<String, Object> model = new HashMap<>();
     model.put("heladeras", heladerasDTO);
-    model.put("puedeDarDeAltaHeladera", this.rolFromSession(context).isAdmin());
-    model.put("puedeEncargarseDeHeladera", this.tipoColaboradorFromSession(context).esJuridico());
-    model.put("puedeSuscribirseAHeladera", this.rolFromSession(context).isColaborador());
+    model.put("puedeDarDeAltaHeladera", puedeDarDeAltaHeladera);
+    model.put("puedeEncargarseDeHeladera", puedeEncargarseDeHeladera);
+    model.put("puedeSuscribirseAHeladera", puedeSuscribirseAHeladera);
 
     render(context, "heladeras/heladeras.hbs", model);
   }
@@ -119,6 +125,7 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
     HeladeraDTO heladeraDTO = HeladeraDTO.completa(heladera);
     model.put("heladera", heladeraDTO);
     model.put("puedeConfigurar", puedeConfigurar);
+    model.put("puedeSuscribirse", this.rolFromSession(context).isColaborador());
 
     render(context, "heladeras/heladera_detalle.hbs", model);
   }
@@ -147,6 +154,8 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
 
   @Override
   public void save(Context context) {
+    // TODO - crear e inicializar cliente del broker
+
     Map<String, Object> model = new HashMap<>();
     List<RedirectDTO> redirectDTOS = new ArrayList<>();
     boolean operationSuccess = false;

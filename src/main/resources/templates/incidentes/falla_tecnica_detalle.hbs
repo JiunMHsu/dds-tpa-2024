@@ -2,6 +2,7 @@
     Falla Técnica en {{falla.heladera}}
 {{/partial}}
 {{#partial "links"}}
+    <link rel="stylesheet" href="/css/list.css"/>
     <link rel="stylesheet" href="/css/incidentes/falla_tecnica_detalle.css"/>
     <link
             href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css"
@@ -15,12 +16,78 @@
 {{#partial "main-content"}}
     <div class="container">
         <div class="header">
-            <h2 class="title"> Falla Técnica en {{falla.heladera}}</h2>
+            <h2 class="title"> Falla Técnica </h2>
             {{#if puedeResolver}}
                 <a href="/visitas-tecnicas/new?incidente={{falla.id}}" class="register-button">
                 Resolver </a>
             {{/if}}
         </div>
+        <div class="info-card card">
+            <p>
+                <span class="material-symbols-rounded card-detail-icon">kitchen</span>
+                Heladera: {{falla.heladera}}
+            </p>
+            <p>
+                <span class="material-symbols-rounded card-detail-icon"> today </span>
+                Fecha y Hora: {{falla.fecha}} {{falla.hora}}
+            </p>
+            <p class="estado"
+                {{#if falla.resuelto}}
+               style="color: #A7C957"
+                {{else}}
+               style="color: #e37f8f"
+                {{/if}}>
+                <span class="material-symbols-rounded card-detail-icon"> radio_button_checked </span>
+                Estado:
+                {{#if falla.resuelto}} Resuelto {{else}} Pendiente {{/if}}
+            </p>
+        </div>
+        <div class="descripcion-card card">
+            <h3 class="descripcion"> Descripción </h3>
+            <p> {{falla.descripcion}} </p>
+        </div>
+
+        <div class="visitas-header">
+            <h2 class="visitas-title"> Visitas Realizadas </h2>
+        </div>
+        {{#if visitasPrevias}}
+            <div class="list-container">
+                <div class="scrollable">
+                    <ul class="list">
+                        {{#each visitasPrevias}}
+                            <li class="list-item">
+                                <a href="/visitas-tecnicas/{{this.id}}" class="item-card">
+                                    <div class="content-wrapper">
+                                        <img src="/image/{{this.foto}}" alt="foto-visita"
+                                             class="visita-image">
+                                        <div class="description">
+                                            <p>
+                                                <span class="material-symbols-rounded card-detail-icon"> today </span>
+                                                Fecha y Hora: {{this.fecha}} {{this.hora}}
+                                            </p>
+                                            <p {{#if this.pudoResolverse}}
+                                            style="color: #A7C957"
+                                            {{else}}
+                                            style="color: #e37f8f"
+                                            {{/if}}>
+                                                <span class="material-symbols-rounded card-detail-icon"> build </span>
+                                                Resolvió la falla: {{#if this.pudoResolverse}}
+                                                Sí {{else}} No {{/if}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+        {{else}}
+            <div class="sin-visitas">
+                No se han realizado visitas técnicas para esta falla.
+            </div>
+        {{/if}}
+
     </div>
 {{/partial}}
 {{#partial "side-panel"}}
