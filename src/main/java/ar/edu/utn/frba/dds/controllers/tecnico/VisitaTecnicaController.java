@@ -87,9 +87,12 @@ public class VisitaTecnicaController extends TecnicoRequired {
       Incidente incidente = this.incidenteService.buscarIncidentePorId(incidenteId)
           .orElseThrow(ResourceNotFoundException::new);
 
+      if (incidente.getResuelta()) {
+        throw new IncicenteToFixException("El incidente ya está resuelto");
+      }
+
       LocalDateTime fechaHoraVisita = DateTimeParser.fromFormInput(
-          context.formParamAsClass("fecha-hora-visita", String.class).get()
-      );
+          context.formParamAsClass("fecha-hora-visita", String.class).get());
 
       String descripcion = context.formParamAsClass("descripcion", String.class).get();
 
@@ -120,7 +123,7 @@ public class VisitaTecnicaController extends TecnicoRequired {
       redirectDTOS.add(new RedirectDTO("/fallas-tecnicas", "Registrar otra Visita"));
 
     } catch (ValidationException
-             | ResourceNotFoundException
+             | IncicenteToFixException
              | InvalidFormParamException
              | IOException e) {
       redirectDTOS.add(new RedirectDTO("/fallas-tecnicas", "Ver Fallas Tecnicas"));

@@ -260,7 +260,7 @@ public class Initializer implements WithSimplePersistenceUnit {
     heladeraRepository.actualizar(h10);
     heladeraRepository.actualizar(h12);
     heladeraRepository.actualizar(h15);
-    
+
     commitTransaction();
   }
 
