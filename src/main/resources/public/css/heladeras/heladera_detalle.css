@@ -86,7 +86,6 @@
 
 .card:hover {
     color: var(--main-light-0);
-    text-shadow: 0 0 .1rem var(--main-light-0);
     background-color: var(--background-1);
 }
 

@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.models.repositories.incidente;
 
+import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.models.entities.incidente.TipoIncidente;
 import ar.edu.utn.frba.dds.utils.ICrudRepository;
@@ -45,6 +46,14 @@ public class IncidenteRepository implements ICrudRepository<Incidente>, WithSimp
     return entityManager()
         .createQuery("from Incidente i where i.alta = :alta", Incidente.class)
         .setParameter("alta", true)
+        .getResultList();
+  }
+
+  public List<Incidente> buscarPorHeladera(Heladera heladera) {
+    return entityManager()
+        .createQuery("from Incidente i where i.alta = :alta and i.heladera = :heladera", Incidente.class)
+        .setParameter("alta", true)
+        .setParameter("heladera", heladera)
         .getResultList();
   }
 

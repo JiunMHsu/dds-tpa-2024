@@ -25,7 +25,6 @@ public class FallaTecnicaDTO {
 
   private boolean resuelto;
 
-
   // En la vista completa podría mapearse más info del colaborador y la heladera
   // puede servir paraColaborador redirecciones
   public static FallaTecnicaDTO completa(Incidente incidente) {

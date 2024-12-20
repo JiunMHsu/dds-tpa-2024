@@ -3,8 +3,8 @@
 }
 
 .container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    display: flex;
+    flex-direction: column;
     gap: .7rem;
     margin-top: .5rem;
     width: 80%;
@@ -13,7 +13,6 @@
 }
 
 .header {
-    grid-column: 1 / -1;
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -79,27 +78,6 @@
 .card-detail-icon {
     font-size: 1rem;
     margin-right: .5rem;
-}
-
-.image-card {
-    grid-column: 5;
-    display: flex;
-    width: 7rem;
-    height: 7rem;
-    object-fit: cover;
-    border-radius: .5rem;
-}
-
-.info-card {
-    grid-column: 1 / 5;
-}
-
-.descripcion-card {
-    grid-column: 1 / -1;
-}
-
-.descripcion {
-    margin: .5rem 0;
 }
 
 .side-panel {

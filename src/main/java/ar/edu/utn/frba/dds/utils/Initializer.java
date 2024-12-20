@@ -13,6 +13,7 @@ import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.data.Imagen;
 import ar.edu.utn.frba.dds.models.entities.data.TipoRazonSocial;
 import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
+import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
@@ -190,50 +191,48 @@ public class Initializer implements WithSimplePersistenceUnit {
     HeladeraRepository heladeraRepository = new HeladeraRepository();
     ColaboradorRepository colaboradorRepository = new ColaboradorRepository();
 
-    Incidente i1 = Incidente.fallaTemperatura(
-        heladeraRepository.buscarPorNombre("Heladera DIEZ").orElseThrow(),
-        LocalDateTime.of(2024, 3, 19, 14, 3));
+    Heladera h1 = heladeraRepository.buscarPorNombre("Heladera UNO").orElseThrow();
+    Heladera h2 = heladeraRepository.buscarPorNombre("Heladera DOS").orElseThrow();
+    Heladera h5 = heladeraRepository.buscarPorNombre("Heladera CINCO").orElseThrow();
+    Heladera h6 = heladeraRepository.buscarPorNombre("Heladera SEIS").orElseThrow();
+    Heladera h8 = heladeraRepository.buscarPorNombre("Heladera OCHO").orElseThrow();
+    Heladera h10 = heladeraRepository.buscarPorNombre("Heladera DIEZ").orElseThrow();
+    Heladera h12 = heladeraRepository.buscarPorNombre("Heladera DOCE").orElseThrow();
+    Heladera h15 = heladeraRepository.buscarPorNombre("Heladera QUINCE").orElseThrow();
 
-    Incidente i2 = Incidente.fallaConexion(
-        heladeraRepository.buscarPorNombre("Heladera UNO").orElseThrow(),
-        LocalDateTime.of(2024, 1, 15, 10, 30));
+    h1.setEstado(EstadoHeladera.INACTIVA);
+    h2.setEstado(EstadoHeladera.INACTIVA);
+    h5.setEstado(EstadoHeladera.INACTIVA);
+    h6.setEstado(EstadoHeladera.INACTIVA);
+    h8.setEstado(EstadoHeladera.INACTIVA);
+    h10.setEstado(EstadoHeladera.INACTIVA);
+    h12.setEstado(EstadoHeladera.INACTIVA);
+    h15.setEstado(EstadoHeladera.INACTIVA);
 
-    Incidente i3 = Incidente.fallaTemperatura(
-        heladeraRepository.buscarPorNombre("Heladera QUINCE").orElseThrow(),
-        LocalDateTime.of(2024, 2, 29, 9, 45));
-
-    Incidente i4 = Incidente.fraude(
-        heladeraRepository.buscarPorNombre("Heladera OCHO").orElseThrow(),
-        LocalDateTime.of(2024, 4, 5, 16, 15));
-
-    Incidente i5 = Incidente.fallaTemperatura(
-        heladeraRepository.buscarPorNombre("Heladera DOS").orElseThrow(),
-        LocalDateTime.of(2024, 5, 20, 8, 0));
-
-    Incidente i6 = Incidente.fallaConexion(
-        heladeraRepository.buscarPorNombre("Heladera TRES").orElseThrow(),
-        LocalDateTime.of(2024, 6, 10, 13, 25));
-
-    Incidente i7 = Incidente.fraude(
-        heladeraRepository.buscarPorNombre("Heladera SEIS").orElseThrow(),
-        LocalDateTime.of(2024, 7, 23, 18, 50));
+    Incidente i1 = Incidente.fallaTemperatura(h10, LocalDateTime.of(2024, 3, 19, 14, 3));
+    Incidente i2 = Incidente.fallaConexion(h1, LocalDateTime.of(2024, 1, 15, 10, 30));
+    Incidente i3 = Incidente.fallaTemperatura(h15, LocalDateTime.of(2024, 2, 29, 9, 45));
+    Incidente i4 = Incidente.fraude(h8, LocalDateTime.of(2024, 4, 5, 16, 15));
+    Incidente i5 = Incidente.fallaTemperatura(h2, LocalDateTime.of(2024, 5, 20, 8, 0));
+    Incidente i6 = Incidente.fallaConexion(h5, LocalDateTime.of(2024, 6, 10, 13, 25));
+    Incidente i7 = Incidente.fraude(h6, LocalDateTime.of(2024, 7, 23, 18, 50));
 
     Incidente i8 = Incidente.fallaTecnica(
-        heladeraRepository.buscarPorNombre("Heladera CINCO").orElseThrow(),
+        h5,
         LocalDateTime.of(2024, 8, 12, 14, 5),
         colaboradorRepository.buscarPorEmail("adomingueznimo@frba.utn.edu.ar").orElseThrow(),
         "No funca el lector por tarjeta.",
         new Imagen("image-test.png"));
 
     Incidente i9 = Incidente.fallaTecnica(
-        heladeraRepository.buscarPorNombre("Heladera CUATRO").orElseThrow(),
+        h6,
         LocalDateTime.of(2024, 9, 17, 19, 40),
         colaboradorRepository.buscarPorEmail("adomingueznimo@frba.utn.edu.ar").orElseThrow(),
         "La vianda no sale",
         new Imagen("image-test.png"));
 
     Incidente i10 = Incidente.fallaTecnica(
-        heladeraRepository.buscarPorNombre("Heladera DOCE").orElseThrow(),
+        h12,
         LocalDateTime.of(2024, 12, 1, 7, 55),
         colaboradorRepository.buscarPorEmail("jgandola@frba.utn.edu.ar").orElseThrow(),
         "Ni idea lo que paso",
@@ -252,6 +251,16 @@ public class Initializer implements WithSimplePersistenceUnit {
     incidenteRepository.guardar(i8);
     incidenteRepository.guardar(i9);
     incidenteRepository.guardar(i10);
+
+    heladeraRepository.actualizar(h1);
+    heladeraRepository.actualizar(h2);
+    heladeraRepository.actualizar(h5);
+    heladeraRepository.actualizar(h6);
+    heladeraRepository.actualizar(h8);
+    heladeraRepository.actualizar(h10);
+    heladeraRepository.actualizar(h12);
+    heladeraRepository.actualizar(h15);
+
     commitTransaction();
   }
 

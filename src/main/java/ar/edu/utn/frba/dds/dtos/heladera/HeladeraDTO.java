@@ -1,7 +1,8 @@
 package ar.edu.utn.frba.dds.dtos.heladera;
 
+import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
-import java.time.format.DateTimeFormatter;
+import ar.edu.utn.frba.dds.utils.DateTimeParser;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,15 +35,12 @@ public class HeladeraDTO {
 
   private String temperaturaMinima;
 
+  private boolean estaActiva;
+
   public static HeladeraDTO completa(Heladera heladera) {
 
     String direccionString = heladera.getDireccion().getCalle().getNombre() + " " + heladera.getDireccion().getAltura().toString();
     String latitudLongitudString = heladera.getDireccion().getUbicacion().getLatitud() + ", " + heladera.getDireccion().getUbicacion().getLongitud();
-
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    String inicioFuncionamiento = heladera.getInicioFuncionamiento() != null
-        ? heladera.getInicioFuncionamiento().format(formatter)
-        : "--/--/--";
 
     String ultimaTempString = heladera.getUltimaTemperatura() != null
         ? heladera.getUltimaTemperatura().toString()
@@ -58,17 +56,17 @@ public class HeladeraDTO {
         .capacidad(heladera.getCapacidad().toString())
         .ubicacion(latitudLongitudString)
         .cantViandas(heladera.getViandas().toString())
-        .fechaInicio(inicioFuncionamiento)
+        .fechaInicio(DateTimeParser.parseFechaHora(heladera.getInicioFuncionamiento()))
         .ultimaTemp(ultimaTempString)
         .temperaturaMaxima(heladera.getRangoTemperatura().getMaxima().toString())
         .temperaturaMinima(heladera.getRangoTemperatura().getMinima().toString())
+        .estaActiva(heladera.getEstado().equals(EstadoHeladera.ACTIVA))
         .build();
   }
 
   public static HeladeraDTO preview(Heladera heladera) {
 
     String direccionString = heladera.getDireccion().getCalle().getNombre() + " " + heladera.getDireccion().getAltura().toString();
-
     String latitudLongitudString = heladera.getDireccion().getUbicacion().getLatitud() + ", " + heladera.getDireccion().getUbicacion().getLongitud();
 
     return HeladeraDTO
@@ -79,6 +77,7 @@ public class HeladeraDTO {
         .calleYAltura(direccionString)
         .ubicacion(latitudLongitudString)
         .cantViandas(heladera.getViandas().toString())
+        .estaActiva(heladera.getEstado().equals(EstadoHeladera.ACTIVA))
         .build();
   }
 }

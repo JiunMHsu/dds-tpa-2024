@@ -1,0 +1,61 @@
+{{#partial "title"}}
+    Incidentes
+{{/partial}}
+{{#partial "links"}}
+    <link rel="stylesheet" href="/css/list.css"/>
+    <link rel="stylesheet" href="/css/incidentes/incidentes.css"/>
+{{/partial}}
+{{#partial "scripts"}}
+{{/partial}}
+{{#partial "main-content"}}
+    <div class="list-container">
+        <h2 class="list-title">Incidentes</h2>
+
+        <div class="filter-container">
+            <div class="filter">FILTROS</div>
+            <!-- TODO - Implementar filtros por resuelto y no -->
+            <!-- barra por búsqueda y filtros -->
+        </div>
+
+        <div class="scrollable">
+            <ul class="list">
+                {{#each incidentes}}
+                    <li class="list-item">
+                        <a href="{{this.path}}" class="item-card">
+                            <h3 class="card-title"> {{this.tipo}} </h3>
+                            <div class="content-wrapper">
+                                <div class="description">
+                                    <p>
+                                        <span class="material-symbols-rounded card-detail-icon">kitchen</span>
+                                        Heladera: {{this.heladera}}
+                                    </p>
+                                    <p>
+                                        <span class="material-symbols-rounded card-detail-icon">today</span>
+                                        Fecha: {{this.fecha}}
+                                    </p>
+                                    <p>
+                                        <span class="material-symbols-rounded card-detail-icon">schedule</span>
+                                        Hora: {{this.hora}}
+                                    </p>
+                                    <p class="estado"
+                                        {{#if this.resuelto}}
+                                       style="color: #A7C957"
+                                        {{else}}
+                                       style="color: #e37f8f"
+                                        {{/if}}>
+                                        <span class="material-symbols-rounded card-detail-icon"> radio_button_checked </span>
+                                        Estado:
+                                        {{#if this.resuelto}} Resuelto {{else}} Pendiente {{/if}}
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+{{/partial}}
+{{#partial "side-panel"}}
+{{/partial}}
+{{> templates/base}}

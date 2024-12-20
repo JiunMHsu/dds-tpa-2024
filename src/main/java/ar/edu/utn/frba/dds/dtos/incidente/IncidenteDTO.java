@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.dtos.incidente;
 
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
+import ar.edu.utn.frba.dds.utils.DateTimeParser;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,45 +15,33 @@ public class IncidenteDTO {
 
   private String heladera;
 
-  private String fechaHora;
+  private String fecha;
+
+  private String hora;
 
   private String tipo;
 
-  private String colaborador;
+  private boolean resuelto;
 
-  private String descripcion;
+  private String path;
 
-  private String foto;
+  public static IncidenteDTO preview(Incidente incidente) {
 
-  public static IncidenteDTO completa(Incidente incidente) {
-
-    return IncidenteDTO
-        .builder()
-        .heladera(incidente.getHeladera().getNombre())
-        .fechaHora(incidente.getFechaHora().toString())
-        .tipo(incidente.getTipo().toString())
-        .colaborador(incidente.getColaborador().getUsuario().getNombre())
-        .descripcion(incidente.getDescripcion())
-        .foto(incidente.getFoto().getRuta())
-        .build();
-  }
-
-  public static IncidenteDTO reporte(Incidente incidente) {
+    String ruta = switch (incidente.getTipo()) {
+      case FALLA_TECNICA -> "/fallas-tecnicas/";
+      default -> "/alertas/";
+    };
 
     return IncidenteDTO
         .builder()
+        .id(incidente.getId().toString())
         .heladera(incidente.getHeladera().getNombre())
-        .descripcion(incidente.getDescripcion())
+        .fecha(DateTimeParser.parseFecha(incidente.getFechaHora().toLocalDate()))
+        .hora(DateTimeParser.parseHora(incidente.getFechaHora().toLocalTime()))
+        .tipo(incidente.getTipo().getDescription())
+        .resuelto(incidente.getResuelta())
+        .path(ruta + incidente.getId().toString())
         .build();
   }
 
-  public static IncidenteDTO alerta(Incidente incidente) {
-
-    return IncidenteDTO
-        .builder()
-        .heladera(incidente.getHeladera().getNombre())
-        .fechaHora(incidente.getFechaHora().toString())
-        .descripcion(incidente.getDescripcion())
-        .build();
-  }
 }

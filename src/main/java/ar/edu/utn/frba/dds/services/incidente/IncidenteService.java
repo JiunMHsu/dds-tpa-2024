@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.services.incidente;
 
 import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
+import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.models.entities.incidente.TipoIncidente;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
@@ -17,6 +18,10 @@ public class IncidenteService implements WithSimplePersistenceUnit {
   public IncidenteService(IncidenteRepository incidenteRepository, HeladeraRepository heladeraRepository) {
     this.incidenteRepository = incidenteRepository;
     this.heladeraRepository = heladeraRepository;
+  }
+
+  public List<Incidente> buscarTodos() {
+    return this.incidenteRepository.buscarTodos();
   }
 
   public List<Incidente> buscarTodasAlertas() {
@@ -48,12 +53,23 @@ public class IncidenteService implements WithSimplePersistenceUnit {
 
   public void resolverIncidente(Incidente incidente) {
     incidente.setResuelta(true);
-    incidente.getHeladera().setEstado(EstadoHeladera.ACTIVA);
+
+    if (!this.tieneOtroIncidentePendiente(incidente.getHeladera())) {
+      incidente.getHeladera().setEstado(EstadoHeladera.ACTIVA);
+
+      // TODO - reanudar los brokers
+    }
 
     withTransaction(() -> {
       heladeraRepository.actualizar(incidente.getHeladera());
       incidenteRepository.actualizar(incidente);
     });
+  }
+
+  private boolean tieneOtroIncidentePendiente(Heladera heladera) {
+    return incidenteRepository.buscarPorHeladera(heladera).stream()
+        .filter(i -> !i.getResuelta())
+        .toList().size() > 1; // mayor a 1 porque el incidente actual cuenta como pendiente
   }
 
 }

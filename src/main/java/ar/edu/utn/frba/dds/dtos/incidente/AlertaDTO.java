@@ -19,6 +19,8 @@ public class AlertaDTO {
 
   private String tipo;
 
+  private boolean resuelto;
+
   // En la vista completa podría mapearse más info del colaborador y la heladera
   // puede servir paraColaborador redirecciones
   public static AlertaDTO completa(Incidente incidente) {
@@ -30,6 +32,7 @@ public class AlertaDTO {
         .fecha(DateTimeParser.parseFecha(incidente.getFechaHora().toLocalDate()))
         .hora(DateTimeParser.parseHora(incidente.getFechaHora().toLocalTime()))
         .tipo(incidente.getTipo().getDescription())
+        .resuelto(incidente.getResuelta())
         .build();
   }
 
@@ -40,6 +43,7 @@ public class AlertaDTO {
         .fecha(DateTimeParser.parseFecha(incidente.getFechaHora().toLocalDate()))
         .hora(DateTimeParser.parseHora(incidente.getFechaHora().toLocalTime()))
         .tipo(incidente.getTipo().getDescription())
+        .resuelto(incidente.getResuelta())
         .build();
   }
 }
