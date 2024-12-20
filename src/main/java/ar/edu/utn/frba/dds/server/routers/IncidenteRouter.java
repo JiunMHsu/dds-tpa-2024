@@ -18,6 +18,7 @@ public class IncidenteRouter implements IRouter {
     config.apiBuilder(() -> {
       path("/incidentes", () -> {
         get(ServiceLocator.instanceOf(IncidenteController.class)::index, TipoRol.COLABORADOR, TipoRol.ADMIN, TipoRol.TECNICO);
+        // get("/{id}", ServiceLocator.instanceOf(IncidenteController.class)::show, TipoRol.COLABORADOR, TipoRol.ADMIN, TipoRol.TECNICO);
       });
 
       path("/alertas", () -> {

@@ -52,7 +52,8 @@
                     <li class="list-item">
                         <a href="/heladeras/{{this.id}}" class="item-card">
                             <h3 class="card-title">{{this.nombre}}</h3>
-                            <p>
+                            <p {{#if this.estaActiva}}
+                            style="color: #A7C957" {{else}} style="color: #e37f8f" {{/if}}>
                                 <span class="material-symbols-rounded card-detail-icon">radio_button_checked</span>
                                 Estado: {{this.estado}}
                             </p>

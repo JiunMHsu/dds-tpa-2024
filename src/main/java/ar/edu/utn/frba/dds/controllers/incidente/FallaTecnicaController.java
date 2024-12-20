@@ -85,7 +85,6 @@ public class FallaTecnicaController extends ColaboradorRequired {
   }
 
   public void create(Context context) {
-    // colaborador
     render(context, "incidentes/falla_tecnica_crear.hbs", new HashMap<>());
   }
 

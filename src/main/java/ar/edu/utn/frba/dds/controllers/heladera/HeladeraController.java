@@ -91,7 +91,7 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
     Map<String, Object> model = new HashMap<>();
     model.put("heladeras", heladerasDTO);
 
-    context.render("heladeras/heladeras.hbs", model);
+    render(context, "heladeras/heladeras.hbs", model);
   }
 
   @Override
@@ -178,7 +178,7 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
     } finally {
       model.put("success", operationSuccess);
       model.put("redirects", redirectDTOS);
-      context.render("post_result.hbs", model);
+      render(context, "post_result.hbs", model);
     }
   }
 
@@ -236,7 +236,7 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
     } finally {
       model.put("success", operationSuccess);
       model.put("redirects", redirectDTOS);
-      context.render("post_result.hbs", model);
+      render(context, "post_result.hbs", model);
     }
   }
 

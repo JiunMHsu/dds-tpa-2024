@@ -30,6 +30,16 @@
                                     <span class="material-symbols-rounded card-detail-icon">schedule</span>
                                     Hora: {{this.hora}}
                                 </p>
+                                <p class="estado"
+                                    {{#if this.resuelto}}
+                                   style="color: #A7C957"
+                                    {{else}}
+                                   style="color: #e37f8f"
+                                    {{/if}}>
+                                    <span class="material-symbols-rounded card-detail-icon"> radio_button_checked </span>
+                                    Estado:
+                                    {{#if this.resuelto}} Resuelto {{else}} Pendiente {{/if}}
+                                </p>
                             </div>
                         </a>
                     </li>

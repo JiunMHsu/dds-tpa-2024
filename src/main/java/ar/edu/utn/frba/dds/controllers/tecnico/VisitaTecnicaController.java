@@ -2,7 +2,7 @@ package ar.edu.utn.frba.dds.controllers.tecnico;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.incidente.FallaTecnicaDTO;
-import ar.edu.utn.frba.dds.exceptions.InvalidFallaTecnica;
+import ar.edu.utn.frba.dds.exceptions.IncicenteToFixException;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.data.Imagen;
@@ -44,6 +44,14 @@ public class VisitaTecnicaController extends TecnicoRequired {
     this.fileService = fileService;
   }
 
+  public void index(Context context) {
+    // TODO - implementar
+  }
+
+  public void show(Context context) {
+    // TODO - implementar
+  }
+
   public void create(Context context) {
     Map<String, Object> model = new HashMap<>();
 
@@ -55,18 +63,15 @@ public class VisitaTecnicaController extends TecnicoRequired {
           .orElseThrow(ResourceNotFoundException::new);
 
       if (incidente.getResuelta()) {
-        throw new InvalidFallaTecnica("El incidente ya está resuelto");
+        throw new IncicenteToFixException("El incidente ya está resuelto");
       }
 
       // TODO - modificar (contemplar el cado de alerta)
       model.put("falla", FallaTecnicaDTO.completa(incidente));
-      render(context, "visitas_tecnico/visita_tecnica_crear.hbs", model);
-    } catch (ValidationException | InvalidFallaTecnica e) {
-      render(context, "visitas_tecnico/incidente_invalido.hbs", model);
+      render(context, "visitas_tecnicas/visita_tecnica_crear.hbs", model);
+    } catch (ValidationException | IncicenteToFixException e) {
+      render(context, "visitas_tecnicas/incidente_invalido.hbs", model);
     }
-  }
-
-  public void show(Context context) {
   }
 
   public void save(Context context) {
