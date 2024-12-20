@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.dtos.incidente;
 
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
+import ar.edu.utn.frba.dds.utils.DateTimeParser;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +15,9 @@ public class IncidenteDTO {
 
   private String heladera;
 
-  private String fechaHora;
+  private String fecha;
+
+  private String hora;
 
   private String tipo;
 
@@ -24,16 +27,17 @@ public class IncidenteDTO {
 
   private String foto;
 
-  public static IncidenteDTO completa(Incidente incidente) {
+  private boolean resuelto;
+
+  public static IncidenteDTO preview(Incidente incidente) {
 
     return IncidenteDTO
         .builder()
         .heladera(incidente.getHeladera().getNombre())
-        .fechaHora(incidente.getFechaHora().toString())
+        .fecha(DateTimeParser.parseFecha(incidente.getFechaHora().toLocalDate()))
+        .hora(DateTimeParser.parseHora(incidente.getFechaHora().toLocalTime()))
         .tipo(incidente.getTipo().toString())
-        .colaborador(incidente.getColaborador().getUsuario().getNombre())
-        .descripcion(incidente.getDescripcion())
-        .foto(incidente.getFoto().getRuta())
+        .resuelto(incidente.getResuelta())
         .build();
   }
 
@@ -42,7 +46,13 @@ public class IncidenteDTO {
     return IncidenteDTO
         .builder()
         .heladera(incidente.getHeladera().getNombre())
+        .fecha(DateTimeParser.parseFecha(incidente.getFechaHora().toLocalDate()))
+        .hora(DateTimeParser.parseHora(incidente.getFechaHora().toLocalTime()))
+        .tipo(incidente.getTipo().toString())
+        .colaborador(incidente.getColaborador().getUsuario().getNombre())
         .descripcion(incidente.getDescripcion())
+        .foto(incidente.getFoto().getRuta())
+        .resuelto(incidente.getResuelta())
         .build();
   }
 
@@ -51,8 +61,9 @@ public class IncidenteDTO {
     return IncidenteDTO
         .builder()
         .heladera(incidente.getHeladera().getNombre())
-        .fechaHora(incidente.getFechaHora().toString())
-        .descripcion(incidente.getDescripcion())
+        .fecha(DateTimeParser.parseFecha(incidente.getFechaHora().toLocalDate()))
+        .hora(DateTimeParser.parseHora(incidente.getFechaHora().toLocalTime()))
+        .resuelto(incidente.getResuelta())
         .build();
   }
 }

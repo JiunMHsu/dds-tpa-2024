@@ -14,6 +14,7 @@ import ar.edu.utn.frba.dds.controllers.heladera.PuntoIdealController;
 import ar.edu.utn.frba.dds.controllers.heladera.SolicitudDeAperturaController;
 import ar.edu.utn.frba.dds.controllers.incidente.AlertaController;
 import ar.edu.utn.frba.dds.controllers.incidente.FallaTecnicaController;
+import ar.edu.utn.frba.dds.controllers.incidente.IncidenteController;
 import ar.edu.utn.frba.dds.controllers.personaVulnerable.PersonaVulnerableController;
 import ar.edu.utn.frba.dds.controllers.reporte.ReporteController;
 import ar.edu.utn.frba.dds.controllers.session.SessionController;
@@ -128,6 +129,11 @@ public class ServiceLocator {
       SolicitudDeAperturaController instance = new SolicitudDeAperturaController(
           instanceOf(HeladeraService.class),
           instanceOf(SolicitudDeAperturaService.class));
+      instances.put(componentName, instance);
+    }
+
+    if (componentName.equals(IncidenteController.class.getName())) {
+      IncidenteController instance = new IncidenteController(instanceOf(IncidenteService.class));
       instances.put(componentName, instance);
     }
 

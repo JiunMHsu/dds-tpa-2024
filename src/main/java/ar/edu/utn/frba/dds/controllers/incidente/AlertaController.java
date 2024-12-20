@@ -30,12 +30,11 @@ public class AlertaController extends UserRequired {
     Map<String, Object> model = new HashMap<>();
     model.put("alertas", alertasDTOS);
 
-    context.render("alertas/alertas.hbs", model);
+    render(context, "alertas/alertas.hbs", model);
   }
 
   public void show(Context context) {
     context.result("ALERTA ID: " + context.pathParam("id"));
   }
-
 
 }

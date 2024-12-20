@@ -48,17 +48,18 @@ public class VisitaTecnicoController extends TecnicoRequired {
     Map<String, Object> model = new HashMap<>();
 
     try {
-      String fallaId = context.queryParamAsClass("fallaId", String.class)
+      String incidenteId = context.queryParamAsClass("incidente", String.class)
           .getOrThrow(ValidationException::new);
 
-      Incidente falla = this.incidenteService.buscarIncidentePorId(fallaId)
+      Incidente incidente = this.incidenteService.buscarIncidentePorId(incidenteId)
           .orElseThrow(ResourceNotFoundException::new);
 
-      if (falla.getResuelta()) {
+      if (incidente.getResuelta()) {
         throw new InvalidFallaTecnica("El incidente ya está resuelto");
       }
 
-      model.put("falla", FallaTecnicaDTO.completa(falla));
+      // TODO - modificar (contemplar el cado de alerta)
+      model.put("falla", FallaTecnicaDTO.completa(incidente));
       render(context, "visitas_tecnico/visita_tecnico_crear.hbs", model);
     } catch (ValidationException | InvalidFallaTecnica e) {
       render(context, "visitas_tecnico/falla_tecnica_invalida.hbs", model);
