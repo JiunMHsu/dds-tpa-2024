@@ -20,6 +20,10 @@ public class IncidenteService implements WithSimplePersistenceUnit {
     this.heladeraRepository = heladeraRepository;
   }
 
+  public List<Incidente> buscarTodos() {
+    return this.incidenteRepository.buscarTodos();
+  }
+
   public List<Incidente> buscarTodasAlertas() {
     return this.incidenteRepository.buscarAlertas();
   }

@@ -139,7 +139,9 @@ public class ServiceLocator {
     }
 
     if (componentName.equals(IncidenteController.class.getName())) {
-      IncidenteController instance = new IncidenteController(instanceOf(IncidenteService.class));
+      IncidenteController instance = new IncidenteController(
+          instanceOf(UsuarioService.class),
+          instanceOf(IncidenteService.class));
       instances.put(componentName, instance);
     }
 

@@ -1,36 +1,41 @@
 {{#partial "title"}}
-    Fallas Técnicas
+    Incidentes
 {{/partial}}
 {{#partial "links"}}
     <link rel="stylesheet" href="/css/list.css"/>
-    <link rel="stylesheet" href="/css/incidentes/fallas_tecnicas.css"/>
+    <link rel="stylesheet" href="/css/incidentes/incidentes.css"/>
 {{/partial}}
 {{#partial "scripts"}}
 {{/partial}}
 {{#partial "main-content"}}
     <div class="list-container">
-        <h2 class="list-title">Fallas Técnicas</h2>
+        <h2 class="list-title">Incidentes</h2>
 
         <div class="filter-container">
             <div class="filter">FILTROS</div>
             <!-- TODO - Implementar filtros por resuelto y no -->
             <!-- barra por búsqueda y filtros -->
-            <!-- filtro: activo, suscripto, encargado -->
         </div>
 
         <div class="scrollable">
             <ul class="list">
-                {{#each fallas}}
+                {{#each incidentes}}
                     <li class="list-item">
-                        <a href="/fallas-tecnicas/{{this.id}}" class="item-card">
-                            <h3 class="card-title"> {{this.heladera}} </h3>
+                        <a href="{{this.path}}" class="item-card">
+                            <h3 class="card-title"> {{this.tipo}} </h3>
                             <div class="content-wrapper">
-                                <img src="/image/{{this.foto}}" alt="foto-falla"
-                                     class="falla-image">
                                 <div class="description">
                                     <p>
-                                        <span class="material-symbols-rounded card-detail-icon"> today </span>
-                                        Fecha y Hora: {{this.fecha}} {{this.hora}}
+                                        <span class="material-symbols-rounded card-detail-icon">kitchen</span>
+                                        Heladera: {{this.heladera}}
+                                    </p>
+                                    <p>
+                                        <span class="material-symbols-rounded card-detail-icon">today</span>
+                                        Fecha: {{this.fecha}}
+                                    </p>
+                                    <p>
+                                        <span class="material-symbols-rounded card-detail-icon">schedule</span>
+                                        Hora: {{this.hora}}
                                     </p>
                                     <p class="estado"
                                         {{#if this.resuelto}}

@@ -1,6 +1,9 @@
 package ar.edu.utn.frba.dds.controllers.incidente;
 
+import ar.edu.utn.frba.dds.dtos.heladera.HeladeraDTO;
 import ar.edu.utn.frba.dds.dtos.incidente.AlertaDTO;
+import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
+import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.permissions.UserRequired;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
@@ -34,7 +37,22 @@ public class AlertaController extends UserRequired {
   }
 
   public void show(Context context) {
-    context.result("ALERTA ID: " + context.pathParam("id"));
+    String alertaId = context.pathParam("id");
+
+    Incidente alerta = this.incidenteService.buscarIncidentePorId(alertaId)
+        .orElseThrow(ResourceNotFoundException::new);
+
+    Heladera heladera = alerta.getHeladera();
+
+    boolean puedeResolver = rolFromSession(context).isTecnico() && !alerta.getResuelta();
+
+    Map<String, Object> model = new HashMap<>();
+
+    model.put("heladera", HeladeraDTO.preview(heladera));
+    model.put("alerta", AlertaDTO.completa(alerta));
+    model.put("puedeResolver", puedeResolver);
+
+    render(context, "incidentes/alerta_detalle.hbs", model);
   }
 
 }

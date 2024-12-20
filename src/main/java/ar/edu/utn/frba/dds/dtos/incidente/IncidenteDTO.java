@@ -21,49 +21,26 @@ public class IncidenteDTO {
 
   private String tipo;
 
-  private String colaborador;
-
-  private String descripcion;
-
-  private String foto;
-
   private boolean resuelto;
+
+  private String path;
 
   public static IncidenteDTO preview(Incidente incidente) {
 
-    return IncidenteDTO
-        .builder()
-        .heladera(incidente.getHeladera().getNombre())
-        .fecha(DateTimeParser.parseFecha(incidente.getFechaHora().toLocalDate()))
-        .hora(DateTimeParser.parseHora(incidente.getFechaHora().toLocalTime()))
-        .tipo(incidente.getTipo().toString())
-        .resuelto(incidente.getResuelta())
-        .build();
-  }
-
-  public static IncidenteDTO reporte(Incidente incidente) {
+    String ruta = switch (incidente.getTipo()) {
+      case FALLA_TECNICA -> "/fallas-tecnicas/" + incidente.getId();
+      default -> "/alertas/" + incidente.getId();
+    };
 
     return IncidenteDTO
         .builder()
         .heladera(incidente.getHeladera().getNombre())
         .fecha(DateTimeParser.parseFecha(incidente.getFechaHora().toLocalDate()))
         .hora(DateTimeParser.parseHora(incidente.getFechaHora().toLocalTime()))
-        .tipo(incidente.getTipo().toString())
-        .colaborador(incidente.getColaborador().getUsuario().getNombre())
-        .descripcion(incidente.getDescripcion())
-        .foto(incidente.getFoto().getRuta())
+        .tipo(incidente.getTipo().getDescription())
         .resuelto(incidente.getResuelta())
+        .path(ruta)
         .build();
   }
 
-  public static IncidenteDTO alerta(Incidente incidente) {
-
-    return IncidenteDTO
-        .builder()
-        .heladera(incidente.getHeladera().getNombre())
-        .fecha(DateTimeParser.parseFecha(incidente.getFechaHora().toLocalDate()))
-        .hora(DateTimeParser.parseHora(incidente.getFechaHora().toLocalTime()))
-        .resuelto(incidente.getResuelta())
-        .build();
-  }
 }
