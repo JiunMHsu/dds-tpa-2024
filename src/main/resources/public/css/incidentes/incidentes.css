@@ -1,0 +1,12 @@
+.list-container {
+    width: 55%;
+}
+
+.description {
+    display: flex;
+    flex-direction: column;
+}
+
+.side-panel {
+    display: none;
+}

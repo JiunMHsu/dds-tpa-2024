@@ -10,7 +10,7 @@ public enum TipoIncidente {
     return switch (this) {
       case FALLA_TEMPERATURA -> "Falla por Temperatura";
       case FRAUDE -> "Fraude";
-      case FALLA_CONEXION -> "Falla por Conexión";
+      case FALLA_CONEXION -> "Falla de Conexión";
       case FALLA_TECNICA -> "Falla Técnica";
     };
   }
