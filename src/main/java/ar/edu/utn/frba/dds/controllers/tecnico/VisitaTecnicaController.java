@@ -120,13 +120,13 @@ public class VisitaTecnicaController extends TecnicoRequired {
       if (resuelta) this.incidenteService.resolverIncidente(incidente);
 
       operationSuccess = true;
-      redirectDTOS.add(new RedirectDTO("/fallas-tecnicas", "Registrar otra Visita"));
+      redirectDTOS.add(new RedirectDTO("/incidentes", "Registrar otra Visita"));
 
     } catch (ValidationException
              | IncicenteToFixException
              | InvalidFormParamException
              | IOException e) {
-      redirectDTOS.add(new RedirectDTO("/fallas-tecnicas", "Ver Fallas Tecnicas"));
+      redirectDTOS.add(new RedirectDTO("/incidentes", "Ver Incidentes"));
     } finally {
       model.put("success", operationSuccess);
       model.put("redirects", redirectDTOS);

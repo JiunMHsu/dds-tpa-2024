@@ -148,7 +148,8 @@ public class ServiceLocator {
     if (componentName.equals(AlertaController.class.getName())) {
       AlertaController instance = new AlertaController(
           instanceOf(UsuarioService.class),
-          instanceOf(IncidenteService.class));
+          instanceOf(IncidenteService.class),
+          instanceOf(VisitaTecnicaService.class));
       instances.put(componentName, instance);
     }
 

@@ -2,7 +2,9 @@
     {{alerta.tipo}} en {{alerta.heladera}}
 {{/partial}}
 {{#partial "links"}}
+    <link rel="stylesheet" href="/css/list.css"/>
     <link rel="stylesheet" href="/css/incidentes/alerta_detalle.css"/>
+    <link rel="stylesheet" href="/css/incidentes/visitas_previas.css"/>
     <link
             href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css"
             rel="stylesheet"
@@ -15,12 +17,34 @@
 {{#partial "main-content"}}
     <div class="container">
         <div class="header">
-            <h2 class="title"> {{alerta.tipo}} en {{alerta.heladera}}</h2>
+            <h2 class="title"> {{alerta.tipo}} </h2>
             {{#if puedeResolver}}
                 <a href="/visitas-tecnicas/new?incidente={{alerta.id}}" class="register-button">
                 Resolver </a>
             {{/if}}
         </div>
+
+        <div class="info-card card">
+            <p>
+                <span class="material-symbols-rounded card-detail-icon">kitchen</span>
+                Heladera: {{alerta.heladera}}
+            </p>
+            <p>
+                <span class="material-symbols-rounded card-detail-icon"> today </span>
+                Fecha y Hora: {{alerta.fecha}} {{alerta.hora}}
+            </p>
+            <p class="estado"
+                {{#if alerta.resuelto}}
+               style="color: #A7C957"
+                {{else}}
+               style="color: #e37f8f"
+                {{/if}}>
+                <span class="material-symbols-rounded card-detail-icon"> radio_button_checked </span>
+                Estado:
+                {{#if alerta.resuelto}} Resuelto {{else}} Pendiente {{/if}}
+            </p>
+        </div>
+        {{> templates/incidentes/visitas_previas}}
     </div>
 {{/partial}}
 {{#partial "side-panel"}}
