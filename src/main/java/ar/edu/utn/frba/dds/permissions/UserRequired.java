@@ -21,6 +21,10 @@ public abstract class UserRequired {
         .orElseThrow(() -> new UnauthenticatedException("Usuario no encontrado con ID: " + userId));
   }
 
+  protected TipoRol rolFromSession(Context context) {
+    return TipoRol.valueOf(context.sessionAttribute("userRol"));
+  }
+
   protected void render(Context context, String view, Map<String, Object> model) {
 
     TipoRol sessionRol = TipoRol.valueOf(context.sessionAttribute("userRol"));

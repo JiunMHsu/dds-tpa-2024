@@ -12,6 +12,7 @@ import ar.edu.utn.frba.dds.controllers.colaborador.ColaboradorController;
 import ar.edu.utn.frba.dds.controllers.heladera.HeladeraController;
 import ar.edu.utn.frba.dds.controllers.heladera.PuntoIdealController;
 import ar.edu.utn.frba.dds.controllers.heladera.SolicitudDeAperturaController;
+import ar.edu.utn.frba.dds.controllers.home.HomeController;
 import ar.edu.utn.frba.dds.controllers.incidente.AlertaController;
 import ar.edu.utn.frba.dds.controllers.incidente.FallaTecnicaController;
 import ar.edu.utn.frba.dds.controllers.incidente.IncidenteController;
@@ -102,6 +103,11 @@ public class ServiceLocator {
     }
 
     // ========================= CONTROLLERS =========================
+
+    if (componentName.equals(HomeController.class.getName())) {
+      HomeController instance = new HomeController(instanceOf(UsuarioService.class));
+      instances.put(componentName, instance);
+    }
 
     if (componentName.equals(SessionController.class.getName())) {
       SessionController instance = new SessionController(

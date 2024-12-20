@@ -22,4 +22,12 @@ public enum TipoColaborador {
           TipoColaboracion.HACERSE_CARGO_HELADERA);
     };
   }
+
+  public boolean esJuridico() {
+    return this == JURIDICO;
+  }
+
+  public boolean esHumano() {
+    return this == HUMANO;
+  }
 }

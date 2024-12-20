@@ -90,6 +90,9 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
 
     Map<String, Object> model = new HashMap<>();
     model.put("heladeras", heladerasDTO);
+    model.put("puedeDarDeAltaHeladera", this.rolFromSession(context).isAdmin());
+    model.put("puedeEncargarseDeHeladera", this.tipoColaboradorFromSession(context).esJuridico());
+    model.put("puedeSuscribirseAHeladera", this.rolFromSession(context).isColaborador());
 
     render(context, "heladeras/heladeras.hbs", model);
   }
