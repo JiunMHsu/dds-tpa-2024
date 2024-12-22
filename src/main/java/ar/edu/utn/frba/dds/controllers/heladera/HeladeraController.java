@@ -44,6 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 public class HeladeraController extends ColaboradorRequired implements ICrudViewsHandler, IBrokerMessageHandler {
 
@@ -253,7 +254,7 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
   }
 
   @Override
-  public void delete(Context context) {
+  public void delete(Context context) { // TODO: ver si es necesario
     Optional<Heladera> posibleHeladeraAEliminar = this.heladeraService.buscarPorId(context.formParam("id"));
     // TODO - chequeo si no existe
 
@@ -270,37 +271,53 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
   }
 
   @Override
-  public void recibirTemperatura(double temperatura, Heladera heladera) {
+  public void manejarTemperatura(double temperatura, UUID heladeraId) {
+    Heladera heladera = this.heladeraService.buscarPorId(heladeraId.toString())
+        .orElseThrow(ResourceNotFoundException::new);
+
     if (!heladera.admiteTemperatura(temperatura)) {
       Incidente incidente = Incidente.fallaTemperatura(heladera, LocalDateTime.now());
       this.incidenteService.registrarIncidente(incidente);
 
+      // TODO: testear, las suscripciones deberían ser filtradas por tópico
       List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
       suscripcionesAHeladera.forEach(this.mensajeriaService::notificacionFallaHeladera);
+    } else {
+      // TODO: actualizar la temperatura de la heladera
     }
   }
 
   @Override
-  public void recibirMovimiento(Heladera heladera) {
+  public void manejarFraude(UUID heladeraId) {
+    Heladera heladera = this.heladeraService.buscarPorId(heladeraId.toString())
+        .orElseThrow(ResourceNotFoundException::new);
+
     Incidente incidente = Incidente.fraude(heladera, LocalDateTime.now());
     this.incidenteService.registrarIncidente(incidente);
 
+    // TODO: testear, las suscripciones deberían ser filtradas por tópico
     List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
     suscripcionesAHeladera.forEach(this.mensajeriaService::notificacionFallaHeladera);
   }
 
   @Override
-  public void recibirFallaConexion(Heladera heladera) {
+  public void manejarFallaConexion(UUID heladeraId) {
+    Heladera heladera = this.heladeraService.buscarPorId(heladeraId.toString())
+        .orElseThrow(ResourceNotFoundException::new);
+
     Incidente incidente = Incidente.fallaConexion(heladera, LocalDateTime.now());
     this.incidenteService.registrarIncidente(incidente);
 
+    // TODO: testear, las suscripciones deberían ser filtradas por tópico
     List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
     suscripcionesAHeladera.forEach(this.mensajeriaService::notificacionFallaHeladera);
   }
 
-
   @Override
-  public void recibirCodigoTarjeta(String codigoTarjeta, Heladera heladera) {
+  public void manejarSolicitudDeApertura(String codigoTarjeta, UUID heladeraId) {
+    Heladera heladera = this.heladeraService.buscarPorId(heladeraId.toString())
+        .orElseThrow(ResourceNotFoundException::new);
+
     Optional<SolicitudDeApertura> solicitudDeApertura = solicitudDeAperturaService.buscarPorTarjetaHeladeraEnLasUltimas(codigoTarjeta, heladera)
         .stream()
         .filter(solicitud -> this.aperturaHeladeraService.buscarPorSolicitud(solicitud).isEmpty()) //solicitudes que no tienen aperturas
@@ -310,9 +327,11 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
       AperturaHeladera aperturaHeladera = AperturaHeladera.por(solicitudDeApertura.get().getTarjeta(), solicitudDeApertura.get().getHeladera(), LocalDateTime.now(), solicitudDeApertura.get());
       this.aperturaHeladeraService.guardar(aperturaHeladera);
       System.out.println("no permito acceso");
-      //TODO deberia registrar movimientos
+
+      //TODO debería registrar movimientos
     } else {
       Optional<TarjetaPersonaVulnerable> tarjetaPersonaVulnerable = tarjetaPersonaVulnerableService.buscarTarjetaPorCodigo(codigoTarjeta);
+
       if (tarjetaPersonaVulnerable.isPresent()) {
         RetiroDeVianda retiroDeVianda = RetiroDeVianda.por(tarjetaPersonaVulnerable.get(), heladera, LocalDateTime.now());
         this.retiroDeViandaService.guardar(retiroDeVianda);

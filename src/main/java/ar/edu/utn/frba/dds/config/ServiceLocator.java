@@ -61,6 +61,7 @@ import ar.edu.utn.frba.dds.services.heladera.AperturaHeladeraService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.heladera.RetiroDeViandaService;
 import ar.edu.utn.frba.dds.services.heladera.SolicitudDeAperturaService;
+import ar.edu.utn.frba.dds.services.heladera.SuscriptorSensorService;
 import ar.edu.utn.frba.dds.services.images.ImageService;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.mensajeria.MensajeriaService;
@@ -311,6 +312,12 @@ public class ServiceLocator {
     if (componentName.equals(AperturaHeladeraService.class.getName())) {
       AperturaHeladeraService instance = new AperturaHeladeraService(
           instanceOf(AperturaHeladeraRepository.class));
+      instances.put(componentName, instance);
+    }
+
+    if (componentName.equals(SuscriptorSensorService.class.getName())) {
+      SuscriptorSensorService instance = new SuscriptorSensorService(
+          instanceOf(HeladeraController.class));
       instances.put(componentName, instance);
     }
 
