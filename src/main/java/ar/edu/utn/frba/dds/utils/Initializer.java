@@ -118,7 +118,7 @@ public class Initializer implements WithSimplePersistenceUnit {
     Ubicacion u4 = new Ubicacion(-34.64428344483126, -58.453748279907344); // Hospital General de Agudos Parmenio Piñero
     Ubicacion u5 = new Ubicacion(-34.619033507138035, -58.44661616661939); // Ferro
     Ubicacion u6 = new Ubicacion(-34.562359819003255, -58.45626500682845); // Cabildo y Juramento (Liena D)
-    Ubicacion u7 = new Ubicacion(-34.60285799201838, -58.41122305423702); // Abasto Shopping
+    Ubicacion u7 = new Ubicacion(-34.60286430113411, -58.41129164421226); // Abasto Shopping
     Ubicacion u8 = new Ubicacion(-34.58884555335712, -58.43025865436272); // Plaza Serrano
     Ubicacion u9 = new Ubicacion(-34.59453003815602, -58.45045997071465); // Atlanta
     Ubicacion u10 = new Ubicacion(-34.60802625811091, -58.37230040014313); // Plaza de Mayo
