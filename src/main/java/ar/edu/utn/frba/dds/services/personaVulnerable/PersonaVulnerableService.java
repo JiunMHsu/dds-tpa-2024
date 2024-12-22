@@ -3,10 +3,11 @@ package ar.edu.utn.frba.dds.services.personaVulnerable;
 import ar.edu.utn.frba.dds.exceptions.PersonaVulnerableNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.personaVulnerable.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.repositories.personaVulnerable.PersonaVulnerableRepository;
-import java.util.List;
-import java.util.Optional;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Setter

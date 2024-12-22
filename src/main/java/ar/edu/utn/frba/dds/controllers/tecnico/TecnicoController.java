@@ -3,12 +3,7 @@ package ar.edu.utn.frba.dds.controllers.tecnico;
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.tecnico.TecnicoDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
-import ar.edu.utn.frba.dds.models.entities.data.Area;
-import ar.edu.utn.frba.dds.models.entities.data.Barrio;
-import ar.edu.utn.frba.dds.models.entities.data.Contacto;
-import ar.edu.utn.frba.dds.models.entities.data.Documento;
-import ar.edu.utn.frba.dds.models.entities.data.TipoDocumento;
-import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
+import ar.edu.utn.frba.dds.models.entities.data.*;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
@@ -19,11 +14,8 @@ import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.validation.ValidationException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+
+import java.util.*;
 
 
 public class TecnicoController extends TecnicoRequired implements ICrudViewsHandler {

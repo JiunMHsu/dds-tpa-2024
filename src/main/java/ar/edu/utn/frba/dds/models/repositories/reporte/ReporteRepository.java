@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.models.repositories.reporte;
 
 import ar.edu.utn.frba.dds.models.entities.reporte.Reporte;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;

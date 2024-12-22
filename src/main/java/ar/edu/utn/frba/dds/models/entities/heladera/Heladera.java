@@ -1,20 +1,20 @@
-
 package ar.edu.utn.frba.dds.models.entities.heladera;
 
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.utils.EntidadPersistente;
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -59,16 +59,16 @@ public class Heladera extends EntidadPersistente {
                              EstadoHeladera estado,
                              Integer viandas) {
     return Heladera
-            .builder()
-            .nombre(nombre)
-            .direccion(direccion)
-            .inicioFuncionamiento(inicioFuncionamiento)
-            .capacidad(capacidad)
-            .rangoTemperatura(rangoTemperatura)
-            .ultimaTemperatura(ultimaTemperatura)
-            .estado(estado)
-            .viandas(viandas)
-            .build();
+        .builder()
+        .nombre(nombre)
+        .direccion(direccion)
+        .inicioFuncionamiento(inicioFuncionamiento)
+        .capacidad(capacidad)
+        .rangoTemperatura(rangoTemperatura)
+        .ultimaTemperatura(ultimaTemperatura)
+        .estado(estado)
+        .viandas(viandas)
+        .build();
   }
 
   public static Heladera con(String nombre,

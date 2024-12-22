@@ -1,4 +1,3 @@
-
 package ar.edu.utn.frba.dds.utils;
 
 import ar.edu.utn.frba.dds.config.ServiceLocator;
@@ -30,6 +29,7 @@ import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import ar.edu.utn.frba.dds.reportes.PDFGenerator;
 import ar.edu.utn.frba.dds.services.reporte.ReporteService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -54,10 +54,10 @@ public class Initializer implements WithSimplePersistenceUnit {
 
   public void withSuperUser() {
     Usuario superUser = Usuario.con(
-            "Admin del Sistema",
-            "0000",
-            "utn.dds.g22@gmail.com",
-            TipoRol.ADMIN
+        "Admin del Sistema",
+        "0000",
+        "utn.dds.g22@gmail.com",
+        TipoRol.ADMIN
     );
 
     UsuarioRepository usuarioRepository = new UsuarioRepository();
@@ -75,10 +75,10 @@ public class Initializer implements WithSimplePersistenceUnit {
     Usuario u5 = Usuario.con("joaquingandola", "1111", "jgandola@frba.utn.edu.ar", TipoRol.COLABORADOR);
 
     Direccion direccion = new Direccion(
-            new Barrio("Almagro"),
-            new Calle("Medrano"),
-            951,
-            new Ubicacion(-34.59857981526152, -58.420110294464294)
+        new Barrio("Almagro"),
+        new Calle("Medrano"),
+        951,
+        new Ubicacion(-34.59857981526152, -58.420110294464294)
     );
 
     List<TipoColaboracion> colabHumana1 = List.of(TipoColaboracion.DISTRIBUCION_VIANDAS, TipoColaboracion.DONACION_DINERO);
@@ -86,7 +86,7 @@ public class Initializer implements WithSimplePersistenceUnit {
     List<TipoColaboracion> colabJuridica1 = List.of(TipoColaboracion.DONACION_DINERO, TipoColaboracion.HACERSE_CARGO_HELADERA);
     List<TipoColaboracion> colabJuridica2 = List.of(TipoColaboracion.HACERSE_CARGO_HELADERA, TipoColaboracion.OFERTA_DE_PRODUCTOS, TipoColaboracion.DONACION_DINERO);
 
-    Colaborador c1 = Colaborador.humana(u1, "Jiun Ming", "Hsu", null,LocalDate.of(2002, 2, 19), Contacto.vacio(), direccion, new ArrayList<>(colabHumana1), new Puntos(2039, true, null));
+    Colaborador c1 = Colaborador.humana(u1, "Jiun Ming", "Hsu", null, LocalDate.of(2002, 2, 19), Contacto.vacio(), direccion, new ArrayList<>(colabHumana1), new Puntos(2039, true, null));
     Colaborador c2 = Colaborador.humana(u2, "Abril", "Nimo Dominguez", null, LocalDate.of(2004, 1, 8), Contacto.vacio(), direccion, new ArrayList<>(colabHumana2), new Puntos(0, false, null));
     Colaborador c3 = Colaborador.humana(u3, "Matías Leonel", "Juncos Mieres", null, LocalDate.of(2003, 12, 1), Contacto.vacio(), direccion, new ArrayList<>(colabHumana1), new Puntos(0, false, null));
     Colaborador c4 = Colaborador.juridica(u4, "MELSELEP SRL", TipoRazonSocial.EMPRESA, "Música", Contacto.vacio(), direccion, new ArrayList<>(colabJuridica2), new Puntos(0, false, null));
@@ -175,21 +175,21 @@ public class Initializer implements WithSimplePersistenceUnit {
     HeladeraRepository heladeraRepository = new HeladeraRepository();
 
     beginTransaction();
-    heladeraRepository.guardar(Heladera.con("Heladera DIEZ", d10, 80, new RangoTemperatura(5.0, -5.0), EstadoHeladera.ACTIVA, 75));
-    heladeraRepository.guardar(Heladera.con("Heladera CINCO", d5, 60, new RangoTemperatura(5.0, -4.0), EstadoHeladera.INACTIVA, 52));
-    heladeraRepository.guardar(Heladera.con("Heladera NUEVE", d9, 90, new RangoTemperatura(4.0, -4.0), EstadoHeladera.ACTIVA, 67));
-    heladeraRepository.guardar(Heladera.con("Heladera UNO", d1, 80, new RangoTemperatura(3.0, -5.0), EstadoHeladera.ACTIVA, 58));
-    heladeraRepository.guardar(Heladera.con("Heladera CATORCE", d14, 65, new RangoTemperatura(5.0, -5.0), EstadoHeladera.ACTIVA, 46));
-    heladeraRepository.guardar(Heladera.con("Heladera ONCE", d11, 85, new RangoTemperatura(3.0, -4.0), EstadoHeladera.ACTIVA, 47));
-    heladeraRepository.guardar(Heladera.con("Heladera DOCE", d12, 70, new RangoTemperatura(5.0, -3.0), EstadoHeladera.INACTIVA, 61));
-    heladeraRepository.guardar(Heladera.con("Heladera QUINCE", d15, 80, new RangoTemperatura(3.0, -3.0), EstadoHeladera.ACTIVA, 80));
-    heladeraRepository.guardar(Heladera.con("Heladera TRECE", d13, 95, new RangoTemperatura(2.0, -4.0), EstadoHeladera.ACTIVA, 83));
-    heladeraRepository.guardar(Heladera.con("Heladera CUATRO", d4, 55, new RangoTemperatura(3.0, -4.0), EstadoHeladera.ACTIVA, 35));
-    heladeraRepository.guardar(Heladera.con("Heladera OCHO", d8, 70, new RangoTemperatura(3.0, -2.0), EstadoHeladera.ACTIVA, 55));
-    heladeraRepository.guardar(Heladera.con("Heladera SIETE", d7, 80, new RangoTemperatura(3.0, -4.0), EstadoHeladera.ACTIVA, 76));
-    heladeraRepository.guardar(Heladera.con("Heladera DOS", d2, 70, new RangoTemperatura(2.0, -3.0), EstadoHeladera.ACTIVA, 42));
-    heladeraRepository.guardar(Heladera.con("Heladera SEIS", d6, 60, new RangoTemperatura(4.0, -4.0), EstadoHeladera.ACTIVA, 44));
-    heladeraRepository.guardar(Heladera.con("Heladera TRES", d3, 85, new RangoTemperatura(3.0, -4.0), EstadoHeladera.ACTIVA, 66));
+    heladeraRepository.guardar(Heladera.con("Heladera DIEZ", d10, 80, new RangoTemperatura(5.0, -5.0), 75));
+    heladeraRepository.guardar(Heladera.con("Heladera CINCO", d5, 60, new RangoTemperatura(5.0, -4.0), 52));
+    heladeraRepository.guardar(Heladera.con("Heladera NUEVE", d9, 90, new RangoTemperatura(4.0, -4.0), 67));
+    heladeraRepository.guardar(Heladera.con("Heladera UNO", d1, 80, new RangoTemperatura(3.0, -5.0), 58));
+    heladeraRepository.guardar(Heladera.con("Heladera CATORCE", d14, 65, new RangoTemperatura(5.0, -5.0), 46));
+    heladeraRepository.guardar(Heladera.con("Heladera ONCE", d11, 85, new RangoTemperatura(3.0, -4.0), 47));
+    heladeraRepository.guardar(Heladera.con("Heladera DOCE", d12, 70, new RangoTemperatura(5.0, -3.0), 61));
+    heladeraRepository.guardar(Heladera.con("Heladera QUINCE", d15, 80, new RangoTemperatura(3.0, -3.0), 80));
+    heladeraRepository.guardar(Heladera.con("Heladera TRECE", d13, 95, new RangoTemperatura(2.0, -4.0), 83));
+    heladeraRepository.guardar(Heladera.con("Heladera CUATRO", d4, 55, new RangoTemperatura(3.0, -4.0), 35));
+    heladeraRepository.guardar(Heladera.con("Heladera OCHO", d8, 70, new RangoTemperatura(3.0, -2.0), 55));
+    heladeraRepository.guardar(Heladera.con("Heladera SIETE", d7, 80, new RangoTemperatura(3.0, -4.0), 76));
+    heladeraRepository.guardar(Heladera.con("Heladera DOS", d2, 70, new RangoTemperatura(2.0, -3.0), 42));
+    heladeraRepository.guardar(Heladera.con("Heladera SEIS", d6, 60, new RangoTemperatura(4.0, -4.0), 44));
+    heladeraRepository.guardar(Heladera.con("Heladera TRES", d3, 85, new RangoTemperatura(3.0, -4.0), 66));
     commitTransaction();
   }
 
@@ -197,54 +197,52 @@ public class Initializer implements WithSimplePersistenceUnit {
     HeladeraRepository heladeraRepository = new HeladeraRepository();
     ColaboradorRepository colaboradorRepository = new ColaboradorRepository();
 
-    Incidente i1 = Incidente.fallaTemperatura(
-            heladeraRepository.buscarPorNombre("Heladera DIEZ").orElseThrow(),
-            LocalDateTime.of(2024, 3, 19, 14, 3));
+    Heladera h1 = heladeraRepository.buscarPorNombre("Heladera UNO").orElseThrow();
+    Heladera h2 = heladeraRepository.buscarPorNombre("Heladera DOS").orElseThrow();
+    Heladera h5 = heladeraRepository.buscarPorNombre("Heladera CINCO").orElseThrow();
+    Heladera h6 = heladeraRepository.buscarPorNombre("Heladera SEIS").orElseThrow();
+    Heladera h8 = heladeraRepository.buscarPorNombre("Heladera OCHO").orElseThrow();
+    Heladera h10 = heladeraRepository.buscarPorNombre("Heladera DIEZ").orElseThrow();
+    Heladera h12 = heladeraRepository.buscarPorNombre("Heladera DOCE").orElseThrow();
+    Heladera h15 = heladeraRepository.buscarPorNombre("Heladera QUINCE").orElseThrow();
 
-    Incidente i2 = Incidente.fallaConexion(
-            heladeraRepository.buscarPorNombre("Heladera UNO").orElseThrow(),
-            LocalDateTime.of(2024, 1, 15, 10, 30));
+    h1.setEstado(EstadoHeladera.INACTIVA);
+    h2.setEstado(EstadoHeladera.INACTIVA);
+    h5.setEstado(EstadoHeladera.INACTIVA);
+    h6.setEstado(EstadoHeladera.INACTIVA);
+    h8.setEstado(EstadoHeladera.INACTIVA);
+    h10.setEstado(EstadoHeladera.INACTIVA);
+    h12.setEstado(EstadoHeladera.INACTIVA);
+    h15.setEstado(EstadoHeladera.INACTIVA);
 
-    Incidente i3 = Incidente.fallaTemperatura(
-            heladeraRepository.buscarPorNombre("Heladera QUINCE").orElseThrow(),
-            LocalDateTime.of(2024, 2, 29, 9, 45));
-
-    Incidente i4 = Incidente.fraude(
-            heladeraRepository.buscarPorNombre("Heladera OCHO").orElseThrow(),
-            LocalDateTime.of(2024, 4, 5, 16, 15));
-
-    Incidente i5 = Incidente.fallaTemperatura(
-            heladeraRepository.buscarPorNombre("Heladera DOS").orElseThrow(),
-            LocalDateTime.of(2024, 5, 20, 8, 0));
-
-    Incidente i6 = Incidente.fallaConexion(
-            heladeraRepository.buscarPorNombre("Heladera TRES").orElseThrow(),
-            LocalDateTime.of(2024, 6, 10, 13, 25));
-
-    Incidente i7 = Incidente.fraude(
-            heladeraRepository.buscarPorNombre("Heladera SEIS").orElseThrow(),
-            LocalDateTime.of(2024, 7, 23, 18, 50));
+    Incidente i1 = Incidente.fallaTemperatura(h10, LocalDateTime.of(2024, 3, 19, 14, 3));
+    Incidente i2 = Incidente.fallaConexion(h1, LocalDateTime.of(2024, 1, 15, 10, 30));
+    Incidente i3 = Incidente.fallaTemperatura(h15, LocalDateTime.of(2024, 2, 29, 9, 45));
+    Incidente i4 = Incidente.fraude(h8, LocalDateTime.of(2024, 4, 5, 16, 15));
+    Incidente i5 = Incidente.fallaTemperatura(h2, LocalDateTime.of(2024, 5, 20, 8, 0));
+    Incidente i6 = Incidente.fallaConexion(h5, LocalDateTime.of(2024, 6, 10, 13, 25));
+    Incidente i7 = Incidente.fraude(h6, LocalDateTime.of(2024, 7, 23, 18, 50));
 
     Incidente i8 = Incidente.fallaTecnica(
-            heladeraRepository.buscarPorNombre("Heladera CINCO").orElseThrow(),
-            LocalDateTime.of(2024, 8, 12, 14, 5),
-            colaboradorRepository.buscarPorEmail("adomingueznimo@frba.utn.edu.ar").orElseThrow(),
-            "No funca el lector por tarjeta.",
-            new Imagen(""));
+        h5,
+        LocalDateTime.of(2024, 8, 12, 14, 5),
+        colaboradorRepository.buscarPorEmail("adomingueznimo@frba.utn.edu.ar").orElseThrow(),
+        "No funca el lector por tarjeta.",
+        new Imagen("image-test.png"));
 
     Incidente i9 = Incidente.fallaTecnica(
-            heladeraRepository.buscarPorNombre("Heladera CUATRO").orElseThrow(),
-            LocalDateTime.of(2024, 9, 17, 19, 40),
-            colaboradorRepository.buscarPorEmail("adomingueznimo@frba.utn.edu.ar").orElseThrow(),
-            "La vianda no sale",
-            new Imagen(""));
+        h6,
+        LocalDateTime.of(2024, 9, 17, 19, 40),
+        colaboradorRepository.buscarPorEmail("adomingueznimo@frba.utn.edu.ar").orElseThrow(),
+        "La vianda no sale",
+        new Imagen("image-test.png"));
 
     Incidente i10 = Incidente.fallaTecnica(
-            heladeraRepository.buscarPorNombre("Heladera DOCE").orElseThrow(),
-            LocalDateTime.of(2024, 12, 1, 7, 55),
-            colaboradorRepository.buscarPorEmail("jgandola@frba.utn.edu.ar").orElseThrow(),
-            "Ni idea lo que paso",
-            new Imagen(""));
+        h12,
+        LocalDateTime.of(2024, 12, 1, 7, 55),
+        colaboradorRepository.buscarPorEmail("jgandola@frba.utn.edu.ar").orElseThrow(),
+        "Ni idea lo que paso",
+        new Imagen("image-test.png"));
 
     IncidenteRepository incidenteRepository = new IncidenteRepository();
 
@@ -259,12 +257,22 @@ public class Initializer implements WithSimplePersistenceUnit {
     incidenteRepository.guardar(i8);
     incidenteRepository.guardar(i9);
     incidenteRepository.guardar(i10);
+
+    heladeraRepository.actualizar(h1);
+    heladeraRepository.actualizar(h2);
+    heladeraRepository.actualizar(h5);
+    heladeraRepository.actualizar(h6);
+    heladeraRepository.actualizar(h8);
+    heladeraRepository.actualizar(h10);
+    heladeraRepository.actualizar(h12);
+    heladeraRepository.actualizar(h15);
+
     commitTransaction();
   }
 
   private void withVarianteDePuntos() {
     VarianteDePuntos variante = new VarianteDePuntos(
-            LocalDate.now(), 0.5, 1.0, 1.5, 2.0, 5.0);
+        LocalDate.now(), 0.5, 1.0, 1.5, 2.0, 5.0);
 
     VarianteDePuntosRepository repository = new VarianteDePuntosRepository();
     withTransaction(() -> repository.guardar(variante));

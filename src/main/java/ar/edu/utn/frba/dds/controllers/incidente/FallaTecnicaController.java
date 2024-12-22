@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.controllers.incidente;
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.heladera.HeladeraDTO;
 import ar.edu.utn.frba.dds.dtos.incidente.FallaTecnicaDTO;
+import ar.edu.utn.frba.dds.dtos.tecnico.VisitaTecnicaDTO;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
@@ -15,10 +16,12 @@ import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.images.ImageService;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
+import ar.edu.utn.frba.dds.services.tecnico.VisitaTecnicaService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import io.javalin.http.Context;
 import io.javalin.http.UploadedFile;
 import io.javalin.validation.ValidationException;
+
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -30,16 +33,19 @@ public class FallaTecnicaController extends ColaboradorRequired {
 
   private final IncidenteService incidenteService;
   private final HeladeraService heladeraService;
+  private final VisitaTecnicaService visitaTecnicaService;
   private final ImageService fileService;
 
   public FallaTecnicaController(UsuarioService usuarioService,
                                 ColaboradorService colaboradorService,
                                 IncidenteService incidenteService,
                                 HeladeraService heladeraService,
+                                VisitaTecnicaService visitaTecnicaService,
                                 ImageService fileService) {
     super(usuarioService, colaboradorService);
     this.incidenteService = incidenteService;
     this.heladeraService = heladeraService;
+    this.visitaTecnicaService = visitaTecnicaService;
     this.fileService = fileService;
   }
 
@@ -61,7 +67,7 @@ public class FallaTecnicaController extends ColaboradorRequired {
     };
 
     model.put("fallas", fallasTecnicasDTO);
-    render(context, "fallas_tecnicas/fallas_tecnicas.hbs", model);
+    render(context, "incidentes/fallas_tecnicas.hbs", model);
   }
 
   public void show(Context context) {
@@ -75,18 +81,24 @@ public class FallaTecnicaController extends ColaboradorRequired {
     Usuario usuario = usuarioFromSession(context);
     boolean puedeResolver = usuario.getRol().isTecnico() && !falla.getResuelta();
 
+    List<VisitaTecnicaDTO> visitasPreviasDTO = this.visitaTecnicaService
+        .buscarPorincidente(falla)
+        .stream().map(VisitaTecnicaDTO::preview)
+        .toList();
+
     Map<String, Object> model = new HashMap<>();
 
     model.put("heladera", HeladeraDTO.preview(heladera));
     model.put("falla", FallaTecnicaDTO.completa(falla));
     model.put("puedeResolver", puedeResolver);
 
-    render(context, "fallas_tecnicas/falla_tecnica_detalle.hbs", model);
+    model.put("visitasPrevias", visitasPreviasDTO);
+
+    render(context, "incidentes/falla_tecnica_detalle.hbs", model);
   }
 
   public void create(Context context) {
-    // colaborador
-    render(context, "falla_tecnica/falla_tecnica_crear.hbs", new HashMap<>());
+    render(context, "incidentes/falla_tecnica_crear.hbs", new HashMap<>());
   }
 
   public void save(Context context) {

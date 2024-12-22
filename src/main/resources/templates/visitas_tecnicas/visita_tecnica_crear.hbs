@@ -1,9 +1,9 @@
 {{#partial "title"}}
-    Nueva Visita en {{falla.heladera}}
+    Nueva Visita en {{incidente.heladera}}
 {{/partial}}
 {{#partial "links"}}
     <link rel="stylesheet" href="/css/form.css">
-    <link rel="stylesheet" href="/css/visitas_tecnico/visita_tecnico_crear.css"/>
+    <link rel="stylesheet" href="/css/visitas_tecnicas/visita_tecnica_crear.css"/>
     <link
             href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css"
             rel="stylesheet"
@@ -17,7 +17,7 @@
     <div class="form-container">
         <h2 class="form-title">Registrar Nueva Visita</h2>
 
-        <form action="/visitas-tecnico?fallaId={{falla.id}}" method="post" class="form"
+        <form action="/visitas-tecnicas?incidente={{incidente.id}}" method="post" class="form"
         enctype="multipart/form-data">
         <label class="field-fecha-hora">
             Fecha Hora
@@ -40,12 +40,12 @@
         <div class="checkbox-wrapper">
             <input
                     type="checkbox"
-                    id="resuelta"
-                    name="estado-falla"
+                    id="estado-incidente"
+                    name="estado-incidente"
                     value="resuelta"
             />
-            <label class="label-resuelta" for="resuelta">
-                Falla Resuelta
+            <label class="label-resuelta" for="estado-incidente">
+                Incidente Resuelta
             </label>
         </div>
 

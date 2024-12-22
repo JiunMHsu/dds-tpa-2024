@@ -1,0 +1,46 @@
+.visitas-header {
+    grid-column: 1 / -1;
+}
+
+.visitas-title {
+    flex-grow: 1;
+    display: flex;
+    width: 100%;
+    margin-top: 1rem;
+    margin-bottom: 0;
+    font-size: 1.4rem;
+}
+
+.sin-visitas {
+    grid-column: 1 / -1;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #e7d3a3;
+    font-size: 1rem;
+}
+
+.list-container {
+    grid-column: 1 / -1;
+    width: 100%;
+}
+
+.content-wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+.visita-image {
+    display: flex;
+    width: 4rem;
+    height: 4rem;
+    object-fit: cover;
+    border-radius: .3rem;
+}
+
+.description {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+}

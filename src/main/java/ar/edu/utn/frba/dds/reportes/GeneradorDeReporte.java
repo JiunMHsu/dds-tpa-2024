@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.reportes;
 
 import ar.edu.utn.frba.dds.services.reporte.ReporteService;
 import ar.edu.utn.frba.dds.utils.AppProperties;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;

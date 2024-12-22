@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.mensajeria;
 
 import jakarta.mail.MessagingException;
+
 import java.time.LocalDateTime;
 
 public class Notificador {

@@ -11,11 +11,7 @@ import ar.edu.utn.frba.dds.models.entities.data.Barrio;
 import ar.edu.utn.frba.dds.models.entities.data.Calle;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
-import ar.edu.utn.frba.dds.models.entities.heladera.AperturaHeladera;
-import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
-import ar.edu.utn.frba.dds.models.entities.heladera.RetiroDeVianda;
-import ar.edu.utn.frba.dds.models.entities.heladera.SolicitudDeApertura;
+import ar.edu.utn.frba.dds.models.entities.heladera.*;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFallaHeladera;
 import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaPersonaVulnerable;
@@ -37,13 +33,9 @@ import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.validation.ValidationException;
+
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class HeladeraController extends ColaboradorRequired implements ICrudViewsHandler, IBrokerMessageHandler {
 
@@ -88,10 +80,19 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
         .map(HeladeraDTO::preview)
         .toList();
 
+
+    boolean puedeDarDeAltaHeladera = rolFromSession(context).isAdmin();
+    boolean puedeSuscribirseAHeladera = rolFromSession(context).isColaborador();
+    boolean puedeEncargarseDeHeladera = rolFromSession(context).isColaborador()
+        && tipoColaboradorFromSession(context).esJuridico();
+
     Map<String, Object> model = new HashMap<>();
     model.put("heladeras", heladerasDTO);
+    model.put("puedeDarDeAltaHeladera", puedeDarDeAltaHeladera);
+    model.put("puedeEncargarseDeHeladera", puedeEncargarseDeHeladera);
+    model.put("puedeSuscribirseAHeladera", puedeSuscribirseAHeladera);
 
-    context.render("heladeras/heladeras.hbs", model);
+    render(context, "heladeras/heladeras.hbs", model);
   }
 
   @Override
@@ -116,6 +117,7 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
     HeladeraDTO heladeraDTO = HeladeraDTO.completa(heladera);
     model.put("heladera", heladeraDTO);
     model.put("puedeConfigurar", puedeConfigurar);
+    model.put("puedeSuscribirse", this.rolFromSession(context).isColaborador());
 
     render(context, "heladeras/heladera_detalle.hbs", model);
   }
@@ -144,6 +146,8 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
 
   @Override
   public void save(Context context) {
+    // TODO - crear e inicializar cliente del broker
+
     Map<String, Object> model = new HashMap<>();
     List<RedirectDTO> redirectDTOS = new ArrayList<>();
     boolean operationSuccess = false;
@@ -178,7 +182,7 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
     } finally {
       model.put("success", operationSuccess);
       model.put("redirects", redirectDTOS);
-      context.render("post_result.hbs", model);
+      render(context, "post_result.hbs", model);
     }
   }
 
@@ -236,7 +240,7 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
     } finally {
       model.put("success", operationSuccess);
       model.put("redirects", redirectDTOS);
-      context.render("post_result.hbs", model);
+      render(context, "post_result.hbs", model);
     }
   }
 

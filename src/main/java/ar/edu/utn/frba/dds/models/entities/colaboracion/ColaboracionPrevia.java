@@ -1,7 +1,9 @@
 package ar.edu.utn.frba.dds.models.entities.colaboracion;
 
 import ar.edu.utn.frba.dds.models.entities.data.Documento;
+
 import java.time.LocalDateTime;
+
 import lombok.Builder;
 import lombok.Getter;
 

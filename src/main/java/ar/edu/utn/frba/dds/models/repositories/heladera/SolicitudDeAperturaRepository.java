@@ -4,10 +4,11 @@ import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.SolicitudDeApertura;
 import ar.edu.utn.frba.dds.utils.ICrudRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+
+import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import javax.persistence.NoResultException;
 
 public class SolicitudDeAperturaRepository implements
     ICrudRepository<SolicitudDeApertura>,

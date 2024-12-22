@@ -9,6 +9,7 @@ import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository
 import ar.edu.utn.frba.dds.models.repositories.colaborador.IColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.suscripcion.FallaHeladeraRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+
 import java.util.List;
 
 public class FallaHeladeraService implements WithSimplePersistenceUnit {

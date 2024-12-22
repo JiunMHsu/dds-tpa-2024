@@ -5,6 +5,7 @@ import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import io.javalin.http.Context;
+
 import java.util.Map;
 
 public abstract class UserRequired {
@@ -19,6 +20,10 @@ public abstract class UserRequired {
     String userId = context.sessionAttribute("userId");
     return usuarioService.obtenerUsuarioPorID(userId)
         .orElseThrow(() -> new UnauthenticatedException("Usuario no encontrado con ID: " + userId));
+  }
+
+  protected TipoRol rolFromSession(Context context) {
+    return TipoRol.valueOf(context.sessionAttribute("userRol"));
   }
 
   protected void render(Context context, String view, Map<String, Object> model) {

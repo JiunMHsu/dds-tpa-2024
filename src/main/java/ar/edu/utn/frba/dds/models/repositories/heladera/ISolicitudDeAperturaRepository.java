@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.models.repositories.heladera;
 
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.SolicitudDeApertura;
+
 import java.util.List;
 import java.util.Optional;
 

@@ -4,25 +4,26 @@ import ar.edu.utn.frba.dds.models.entities.data.Imagen;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.utils.EntidadPersistente;
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "visita_tecnico")
-public class VisitaTecnico extends EntidadPersistente {
+@Table(name = "visita_tecnica")
+public class VisitaTecnica extends EntidadPersistente {
 
   @ManyToOne
   @JoinColumn(name = "tecnico_id", nullable = false)
@@ -42,23 +43,28 @@ public class VisitaTecnico extends EntidadPersistente {
   @Column(name = "descripcion", columnDefinition = "TEXT", nullable = false)
   private String descripcion;
 
+  @Column(name = "pudo_resolverse", nullable = false)
+  private boolean pudoResolverse;
+
   @Embedded
   private Imagen foto;
 
-  public static VisitaTecnico por(Tecnico tecnico,
+  public static VisitaTecnica por(Tecnico tecnico,
                                   Incidente incidente,
                                   Heladera heladera,
                                   LocalDateTime fechaHora,
                                   String descripcion,
+                                  boolean pudoResolverse,
                                   Imagen foto
   ) {
-    return VisitaTecnico
+    return VisitaTecnica
         .builder()
         .tecnico(tecnico)
         .incidente(incidente)
         .heladera(heladera)
         .fechaHora(fechaHora)
         .descripcion(descripcion)
+        .pudoResolverse(pudoResolverse)
         .foto(foto)
         .build();
   }

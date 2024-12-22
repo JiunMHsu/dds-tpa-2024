@@ -4,9 +4,10 @@ import ar.edu.utn.frba.dds.models.entities.data.Barrio;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+
+import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Optional;
-import javax.persistence.NoResultException;
 
 public class TecnicoRepository implements WithSimplePersistenceUnit {
 

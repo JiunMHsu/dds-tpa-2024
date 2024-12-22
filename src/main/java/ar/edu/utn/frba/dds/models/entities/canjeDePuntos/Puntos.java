@@ -1,9 +1,11 @@
 package ar.edu.utn.frba.dds.models.entities.canjeDePuntos;
 
 import ar.edu.utn.frba.dds.models.entities.colaborador.TipoColaborador;
+
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

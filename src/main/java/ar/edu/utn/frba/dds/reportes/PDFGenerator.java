@@ -1,11 +1,8 @@
 package ar.edu.utn.frba.dds.reportes;
 
 import ar.edu.utn.frba.dds.utils.IPDFGenerator;
-import com.aspose.pdf.Color;
-import com.aspose.pdf.Document;
-import com.aspose.pdf.HtmlFragment;
-import com.aspose.pdf.Page;
-import com.aspose.pdf.TextFragment;
+import com.aspose.pdf.*;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;

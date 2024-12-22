@@ -3,10 +3,11 @@ package ar.edu.utn.frba.dds.models.repositories.colaborador;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+
+import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import javax.persistence.NoResultException;
 
 public class ColaboradorRepository implements IColaboradorRepository, WithSimplePersistenceUnit {
 

@@ -1,21 +1,21 @@
 package ar.edu.utn.frba.dds.server.routers;
 
-import static io.javalin.apibuilder.ApiBuilder.get;
-import static io.javalin.apibuilder.ApiBuilder.path;
-import static io.javalin.apibuilder.ApiBuilder.post;
-
 import ar.edu.utn.frba.dds.config.ServiceLocator;
+import ar.edu.utn.frba.dds.controllers.home.HomeController;
 import ar.edu.utn.frba.dds.controllers.session.SessionController;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.utils.AppProperties;
 import io.javalin.config.RouterConfig;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Arrays;
+
+import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class Routers {
 
@@ -29,13 +29,13 @@ public class Routers {
       new CanjeDePuntosRouter(),
       new ReporteRouter(),
       new TecnicoRouter(),
-      new VisitaTecnicoRouter(),
+      new VisitaTecnicaRouter(),
   };
 
   public static void apply(RouterConfig config) {
     config.apiBuilder(() -> {
       get("/", ctx -> ctx.redirect("/home"), TipoRol.COLABORADOR, TipoRol.ADMIN, TipoRol.TECNICO);
-      get("/home", ctx -> ctx.render("home/home.hbs"), TipoRol.COLABORADOR, TipoRol.ADMIN, TipoRol.TECNICO);
+      get("/home", ServiceLocator.instanceOf(HomeController.class)::index, TipoRol.COLABORADOR, TipoRol.ADMIN, TipoRol.TECNICO);
       get("/test", ctx -> ctx.result("DDS TPA"));
 
       path("/login", () -> {

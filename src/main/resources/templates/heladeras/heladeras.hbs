@@ -15,26 +15,33 @@
 {{/partial}}
 {{#partial "main-content"}}
     <div class="feature-container">
-        <div class="colocar-heladera feature">
-            <h3 class="feature-text">Colocar Heladera</h3>
-            <div class="feature-button-container">
-                <a href="/heladeras/new" class="feature-button">ver</a>
+        {{#if puedeDarDeAltaHeladera}}
+            <div class="colocar-heladera feature">
+                <h3 class="feature-text">Colocar Heladera</h3>
+                <div class="feature-button-container">
+                    <a href="/heladeras/new" class="feature-button">ver</a>
+                </div>
             </div>
-        </div>
+        {{/if}}
 
-        <div class="encargarse-de-heladera feature">
-            <h3 class="feature-text">Encargarse de Heladera</h3>
-            <div class="feature-button-container">
-                <a href="/colaboraciones/encargarse-de-heladeras/new" class="feature-button">ver</a>
+        {{#if puedeEncargarseDeHeladera}}
+            <div class="encargarse-de-heladera feature">
+                <h3 class="feature-text">Encargarse de Heladera</h3>
+                <div class="feature-button-container">
+                    <a href="/colaboraciones/encargarse-de-heladeras/new"
+                       class="feature-button">ver</a>
+                </div>
             </div>
-        </div>
+        {{/if}}
 
-        <div class="suscribir-a-heladera feature">
-            <h3 class="feature-text">Suscribir a Heladera</h3>
-            <div class="feature-button-container">
-                <a href="" class="feature-button">ver</a>
+        {{#if puedeSuscribirseAHeladera}}
+            <div class="suscribir-a-heladera feature">
+                <h3 class="feature-text">Suscribir a Heladera</h3>
+                <div class="feature-button-container">
+                    <a href="" class="feature-button">ver</a>
+                </div>
             </div>
-        </div>
+        {{/if}}
     </div>
 
     <div class="list-container">
@@ -52,7 +59,8 @@
                     <li class="list-item">
                         <a href="/heladeras/{{this.id}}" class="item-card">
                             <h3 class="card-title">{{this.nombre}}</h3>
-                            <p>
+                            <p {{#if this.estaActiva}}
+                            style="color: #A7C957" {{else}} style="color: #e37f8f" {{/if}}>
                                 <span class="material-symbols-rounded card-detail-icon">radio_button_checked</span>
                                 Estado: {{this.estado}}
                             </p>
