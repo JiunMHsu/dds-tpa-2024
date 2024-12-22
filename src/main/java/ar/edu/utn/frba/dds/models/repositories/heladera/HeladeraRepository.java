@@ -3,11 +3,10 @@ package ar.edu.utn.frba.dds.models.repositories.heladera;
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-
-import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import javax.persistence.NoResultException;
 
 public class HeladeraRepository implements IHeladeraRepository, WithSimplePersistenceUnit {
 

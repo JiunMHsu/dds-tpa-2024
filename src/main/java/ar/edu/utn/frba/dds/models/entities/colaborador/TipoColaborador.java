@@ -1,7 +1,6 @@
 package ar.edu.utn.frba.dds.models.entities.colaborador;
 
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
-
 import java.util.List;
 
 public enum TipoColaborador {

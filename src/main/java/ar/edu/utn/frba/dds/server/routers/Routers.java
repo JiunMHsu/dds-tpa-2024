@@ -1,5 +1,9 @@
 package ar.edu.utn.frba.dds.server.routers;
 
+import static io.javalin.apibuilder.ApiBuilder.get;
+import static io.javalin.apibuilder.ApiBuilder.path;
+import static io.javalin.apibuilder.ApiBuilder.post;
+
 import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.controllers.home.HomeController;
 import ar.edu.utn.frba.dds.controllers.session.SessionController;
@@ -7,15 +11,12 @@ import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.utils.AppProperties;
 import io.javalin.config.RouterConfig;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Arrays;
-
-import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class Routers {
 

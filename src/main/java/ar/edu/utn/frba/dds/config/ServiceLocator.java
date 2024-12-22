@@ -76,7 +76,6 @@ import ar.edu.utn.frba.dds.services.tecnico.VisitaTecnicaService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.RandomString;
 import ar.edu.utn.frba.dds.utils.SafeMailSender;
-
 import java.util.HashMap;
 import java.util.Map;
 

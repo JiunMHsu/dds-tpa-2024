@@ -12,7 +12,6 @@ import com.github.jknack.handlebars.Template;
 import io.javalin.Javalin;
 import io.javalin.config.JavalinConfig;
 import io.javalin.http.HttpStatus;
-
 import java.io.IOException;
 
 public class Server {

@@ -29,7 +29,6 @@ import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import ar.edu.utn.frba.dds.reportes.PDFGenerator;
 import ar.edu.utn.frba.dds.services.reporte.ReporteService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

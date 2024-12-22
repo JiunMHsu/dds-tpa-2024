@@ -2,7 +2,6 @@ package ar.edu.utn.frba.dds.services.images;
 
 import ar.edu.utn.frba.dds.utils.AppProperties;
 import ar.edu.utn.frba.dds.utils.RandomString;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;

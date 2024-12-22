@@ -5,7 +5,6 @@ import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.models.entities.incidente.TipoIncidente;
 import ar.edu.utn.frba.dds.utils.ICrudRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;

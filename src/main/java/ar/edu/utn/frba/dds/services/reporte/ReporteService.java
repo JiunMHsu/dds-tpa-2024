@@ -13,8 +13,6 @@ import ar.edu.utn.frba.dds.models.repositories.reporte.ReporteRepository;
 import ar.edu.utn.frba.dds.utils.AppProperties;
 import ar.edu.utn.frba.dds.utils.IPDFGenerator;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-import lombok.Builder;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -24,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import lombok.Builder;
 
 @Builder
 public class ReporteService implements WithSimplePersistenceUnit {

@@ -1,13 +1,15 @@
 package ar.edu.utn.frba.dds.server.routers;
 
+import static io.javalin.apibuilder.ApiBuilder.get;
+import static io.javalin.apibuilder.ApiBuilder.path;
+import static io.javalin.apibuilder.ApiBuilder.post;
+
 import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.controllers.incidente.AlertaController;
 import ar.edu.utn.frba.dds.controllers.incidente.FallaTecnicaController;
 import ar.edu.utn.frba.dds.controllers.incidente.IncidenteController;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import io.javalin.config.RouterConfig;
-
-import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class IncidenteRouter implements IRouter {
 

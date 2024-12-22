@@ -2,10 +2,9 @@ package ar.edu.utn.frba.dds.models.repositories.tarjeta;
 
 import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaPersonaVulnerable;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-
-import javax.persistence.NoResultException;
 import java.util.Optional;
 import java.util.UUID;
+import javax.persistence.NoResultException;
 
 public class TarjetaPersonaVulnerableRepository implements WithSimplePersistenceUnit {
 

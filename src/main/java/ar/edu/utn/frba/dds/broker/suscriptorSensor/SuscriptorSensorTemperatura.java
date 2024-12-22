@@ -3,7 +3,6 @@ package ar.edu.utn.frba.dds.broker.suscriptorSensor;
 import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.controllers.heladera.HeladeraController;
 import ar.edu.utn.frba.dds.models.entities.sensor.Sensor;
-
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.Executors;

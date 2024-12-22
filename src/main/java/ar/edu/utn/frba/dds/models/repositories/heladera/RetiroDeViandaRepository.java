@@ -2,7 +2,6 @@ package ar.edu.utn.frba.dds.models.repositories.heladera;
 
 import ar.edu.utn.frba.dds.models.entities.heladera.RetiroDeVianda;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;

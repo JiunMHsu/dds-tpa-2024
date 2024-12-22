@@ -3,11 +3,10 @@ package ar.edu.utn.frba.dds.dtos.colaborador;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.colaborador.TipoColaborador;
+import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.stream.Collectors;
 
 @Getter
 @Setter

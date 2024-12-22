@@ -1,11 +1,10 @@
 package ar.edu.utn.frba.dds.models.entities.heladera;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
 
 @Getter
 @AllArgsConstructor

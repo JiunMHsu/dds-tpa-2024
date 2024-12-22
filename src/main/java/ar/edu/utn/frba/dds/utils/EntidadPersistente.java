@@ -1,14 +1,13 @@
 package ar.edu.utn.frba.dds.utils;
 
-import lombok.Getter;
-import lombok.Setter;
-
+import java.time.LocalDateTime;
+import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import java.time.LocalDateTime;
-import java.util.UUID;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @MappedSuperclass
