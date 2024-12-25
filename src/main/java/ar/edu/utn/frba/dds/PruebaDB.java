@@ -72,7 +72,8 @@ public class PruebaDB implements WithSimplePersistenceUnit {
         "UTN Medrano",
         direccion,
         20,
-        new RangoTemperatura(5.0, -10.0)
+        new RangoTemperatura(5.0, -10.0),
+        "utn-dds-g22/heladeras/utn-medrano"
     );
 
     heladera.setEstado(EstadoHeladera.INACTIVA);

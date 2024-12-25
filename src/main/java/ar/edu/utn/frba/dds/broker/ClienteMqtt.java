@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.broker;
 
+import ar.edu.utn.frba.dds.utils.AppProperties;
 import com.hivemq.client.mqtt.datatypes.MqttQos;
 import com.hivemq.client.mqtt.mqtt5.Mqtt5BlockingClient;
 import com.hivemq.client.mqtt.mqtt5.Mqtt5Client;
@@ -19,8 +20,8 @@ public class ClienteMqtt implements IClienteMqtt {
     client = Mqtt5Client
         .builder()
         .identifier(UUID.randomUUID().toString())
-        .serverHost("broker.hivemq.com")
-        .serverPort(1883)
+        .serverHost(AppProperties.getInstance().propertyFromName("BROKER_HOST"))
+        .serverPort(AppProperties.getInstance().intPropertyFromName("BROKER_PORT"))
         .buildBlocking();
 
     client.connectWith().send();
