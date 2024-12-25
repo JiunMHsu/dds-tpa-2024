@@ -49,6 +49,9 @@ public class Heladera extends EntidadPersistente {
   @Column(name = "cant_viandas", columnDefinition = "SMALLINT", nullable = false)
   private Integer viandas;
 
+  @Column(name = "broker_topic")
+  private String brokerTopic;
+
   public static Heladera con(String nombre,
                              Direccion direccion,
                              LocalDateTime inicioFuncionamiento,
@@ -56,7 +59,8 @@ public class Heladera extends EntidadPersistente {
                              RangoTemperatura rangoTemperatura,
                              Double ultimaTemperatura,
                              EstadoHeladera estado,
-                             Integer viandas) {
+                             Integer viandas,
+                             String brokerTopic) {
     return Heladera
         .builder()
         .nombre(nombre)
@@ -67,6 +71,7 @@ public class Heladera extends EntidadPersistente {
         .ultimaTemperatura(ultimaTemperatura)
         .estado(estado)
         .viandas(viandas)
+        .brokerTopic(brokerTopic)
         .build();
   }
 
@@ -74,27 +79,30 @@ public class Heladera extends EntidadPersistente {
                              Direccion direccion,
                              Integer capacidad,
                              RangoTemperatura rangoTemperatura,
-                             Integer viandas) {
-    return Heladera.con(nombre, direccion, LocalDateTime.now(), capacidad, rangoTemperatura, null, EstadoHeladera.ACTIVA, viandas);
+                             Integer viandas,
+                             String brokerTopic) {
+    return Heladera.con(nombre, direccion, LocalDateTime.now(), capacidad, rangoTemperatura, null, EstadoHeladera.ACTIVA, viandas, brokerTopic);
   }
 
   public static Heladera con(String nombre,
                              Direccion direccion,
                              Integer capacidad,
                              RangoTemperatura rangoTemperatura,
-                             EstadoHeladera estado) {
-    return Heladera.con(nombre, direccion, LocalDateTime.now(), capacidad, rangoTemperatura, null, estado, 0);
+                             EstadoHeladera estado,
+                             String brokerTopic) {
+    return Heladera.con(nombre, direccion, LocalDateTime.now(), capacidad, rangoTemperatura, null, estado, 0, brokerTopic);
   }
 
   public static Heladera con(String nombre) {
-    return Heladera.con(nombre, null, LocalDateTime.now(), null, null, null, null, 0);
+    return Heladera.con(nombre, null, LocalDateTime.now(), null, null, null, null, 0, "");
   }
 
   public static Heladera con(String nombre,
                              Direccion direccion,
                              Integer capacidad,
-                             RangoTemperatura rangoTemperatura) {
-    return Heladera.con(nombre, direccion, capacidad, rangoTemperatura, EstadoHeladera.ACTIVA);
+                             RangoTemperatura rangoTemperatura,
+                             String brokerTopic) {
+    return Heladera.con(nombre, direccion, capacidad, rangoTemperatura, EstadoHeladera.ACTIVA, brokerTopic);
   }
 
   public static Heladera con(Integer capacidad) {
@@ -102,14 +110,16 @@ public class Heladera extends EntidadPersistente {
   }
 
   public void agregarViandas(Integer cantViandas) throws ExcepcionCantidadDeViandas {
-    if (!this.puedeAgregarViandas(cantViandas))
+    if (!this.puedeAgregarViandas(cantViandas)) {
       throw new ExcepcionCantidadDeViandas();
+    }
     viandas += cantViandas;
   }
 
   public void quitarViandas(Integer cantViandas) throws ExcepcionCantidadDeViandas {
-    if (!this.puedeQuitarViandas(cantViandas))
+    if (!this.puedeQuitarViandas(cantViandas)) {
       throw new ExcepcionCantidadDeViandas();
+    }
     viandas -= cantViandas;
   }
 

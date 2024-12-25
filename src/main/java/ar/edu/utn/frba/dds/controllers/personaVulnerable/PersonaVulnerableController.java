@@ -8,11 +8,11 @@ import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.data.Documento;
 import ar.edu.utn.frba.dds.models.entities.data.TipoDocumento;
 import ar.edu.utn.frba.dds.models.entities.personaVulnerable.PersonaVulnerable;
+import ar.edu.utn.frba.dds.permissions.ColaboradorRequired;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.personaVulnerable.PersonaVulnerableService;
 import ar.edu.utn.frba.dds.services.tarjeta.TarjetaPersonaVulnerableService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
-import ar.edu.utn.frba.dds.utils.ColaboradorPorSession;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
@@ -24,9 +24,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-
-// TODO - usar ColaboradorRquired en lugar de ColaboradorPorSession
-public class PersonaVulnerableController extends ColaboradorPorSession implements ICrudViewsHandler {
+public class PersonaVulnerableController extends ColaboradorRequired implements ICrudViewsHandler {
 
   private final PersonaVulnerableService personaVulnerableService;
   private final TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService;

@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.utils;
 
+import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.Puntos;
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.VarianteDePuntos;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
@@ -28,6 +29,7 @@ import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.TecnicoRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
+import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -48,6 +50,8 @@ public class Initializer implements WithSimplePersistenceUnit {
     instance.withOfertas();
     instance.withTecnicos();
 
+    instance.initializeMqttSubscribers();
+
     // PDFGenerator pdfGenerator = new PDFGenerator(AppProperties.getInstance().propertyFromName("REPORT_DIR"));
     // ServiceLocator.instanceOf(ReporteService.class).generarReporteSemanal(pdfGenerator);
   }
@@ -62,9 +66,7 @@ public class Initializer implements WithSimplePersistenceUnit {
 
     UsuarioRepository usuarioRepository = new UsuarioRepository();
 
-    withTransaction(() -> {
-      usuarioRepository.guardar(superUser);
-    });
+    withTransaction(() -> usuarioRepository.guardar(superUser));
   }
 
   public void withColaboradores() {
@@ -168,22 +170,24 @@ public class Initializer implements WithSimplePersistenceUnit {
 
     HeladeraRepository heladeraRepository = new HeladeraRepository();
 
+    String baseTopic = AppProperties.getInstance().propertyFromName("BASE_TOPIC") + "/heladeras/";
+
     beginTransaction();
-    heladeraRepository.guardar(Heladera.con("Heladera DIEZ", d10, 80, new RangoTemperatura(5.0, -5.0), 75));
-    heladeraRepository.guardar(Heladera.con("Heladera CINCO", d5, 60, new RangoTemperatura(5.0, -4.0), 52));
-    heladeraRepository.guardar(Heladera.con("Heladera NUEVE", d9, 90, new RangoTemperatura(4.0, -4.0), 67));
-    heladeraRepository.guardar(Heladera.con("Heladera UNO", d1, 80, new RangoTemperatura(3.0, -5.0), 58));
-    heladeraRepository.guardar(Heladera.con("Heladera CATORCE", d14, 65, new RangoTemperatura(5.0, -5.0), 46));
-    heladeraRepository.guardar(Heladera.con("Heladera ONCE", d11, 85, new RangoTemperatura(3.0, -4.0), 47));
-    heladeraRepository.guardar(Heladera.con("Heladera DOCE", d12, 70, new RangoTemperatura(5.0, -3.0), 61));
-    heladeraRepository.guardar(Heladera.con("Heladera QUINCE", d15, 80, new RangoTemperatura(3.0, -3.0), 80));
-    heladeraRepository.guardar(Heladera.con("Heladera TRECE", d13, 95, new RangoTemperatura(2.0, -4.0), 83));
-    heladeraRepository.guardar(Heladera.con("Heladera CUATRO", d4, 55, new RangoTemperatura(3.0, -4.0), 35));
-    heladeraRepository.guardar(Heladera.con("Heladera OCHO", d8, 70, new RangoTemperatura(3.0, -2.0), 55));
-    heladeraRepository.guardar(Heladera.con("Heladera SIETE", d7, 80, new RangoTemperatura(3.0, -4.0), 76));
-    heladeraRepository.guardar(Heladera.con("Heladera DOS", d2, 70, new RangoTemperatura(2.0, -3.0), 42));
-    heladeraRepository.guardar(Heladera.con("Heladera SEIS", d6, 60, new RangoTemperatura(4.0, -4.0), 44));
-    heladeraRepository.guardar(Heladera.con("Heladera TRES", d3, 85, new RangoTemperatura(3.0, -4.0), 66));
+    heladeraRepository.guardar(Heladera.con("Heladera DIEZ", d10, 80, new RangoTemperatura(5.0, -5.0), 75, baseTopic + "heladera-diez"));
+    heladeraRepository.guardar(Heladera.con("Heladera CINCO", d5, 60, new RangoTemperatura(5.0, -4.0), 52, baseTopic + "heladera-cinco"));
+    heladeraRepository.guardar(Heladera.con("Heladera NUEVE", d9, 90, new RangoTemperatura(4.0, -4.0), 67, baseTopic + "heladera-nueve"));
+    heladeraRepository.guardar(Heladera.con("Heladera UNO", d1, 80, new RangoTemperatura(3.0, -5.0), 58, baseTopic + "heladera-uno"));
+    heladeraRepository.guardar(Heladera.con("Heladera CATORCE", d14, 65, new RangoTemperatura(5.0, -5.0), 46, baseTopic + "heladera-catorce"));
+    heladeraRepository.guardar(Heladera.con("Heladera ONCE", d11, 85, new RangoTemperatura(3.0, -4.0), 47, baseTopic + "heladera-once"));
+    heladeraRepository.guardar(Heladera.con("Heladera DOCE", d12, 70, new RangoTemperatura(5.0, -3.0), 61, baseTopic + "heladera-doce"));
+    heladeraRepository.guardar(Heladera.con("Heladera QUINCE", d15, 80, new RangoTemperatura(3.0, -3.0), 80, baseTopic + "heladera-quince"));
+    heladeraRepository.guardar(Heladera.con("Heladera TRECE", d13, 95, new RangoTemperatura(2.0, -4.0), 83, baseTopic + "heladera-trece"));
+    heladeraRepository.guardar(Heladera.con("Heladera CUATRO", d4, 55, new RangoTemperatura(3.0, -4.0), 35, baseTopic + "heladera-cuatro"));
+    heladeraRepository.guardar(Heladera.con("Heladera OCHO", d8, 70, new RangoTemperatura(3.0, -2.0), 55, baseTopic + "heladera-ocho"));
+    heladeraRepository.guardar(Heladera.con("Heladera SIETE", d7, 80, new RangoTemperatura(3.0, -4.0), 76, baseTopic + "heladera-siete"));
+    heladeraRepository.guardar(Heladera.con("Heladera DOS", d2, 70, new RangoTemperatura(2.0, -3.0), 42, baseTopic + "heladera-dos"));
+    heladeraRepository.guardar(Heladera.con("Heladera SEIS", d6, 60, new RangoTemperatura(4.0, -4.0), 44, baseTopic + "heladera-seis"));
+    heladeraRepository.guardar(Heladera.con("Heladera TRES", d3, 85, new RangoTemperatura(3.0, -4.0), 66, baseTopic + "heladera-tres"));
     commitTransaction();
   }
 
@@ -312,6 +316,10 @@ public class Initializer implements WithSimplePersistenceUnit {
     new UsuarioRepository().guardar(u1);
     new TecnicoRepository().guardar(t1);
     commitTransaction();
+  }
+
+  private void initializeMqttSubscribers() {
+    ServiceLocator.instanceOf(HeladeraService.class).iniciarSuscripciones();
   }
 
   private void cleanupDatabase() {
