@@ -19,6 +19,7 @@ import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.puntoIdeal.PuntoIdealService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
+import ar.edu.utn.frba.dds.utils.AppProperties;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
@@ -142,7 +143,11 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
       Double tempMinima = context.formParamAsClass("temp_minima", Double.class).get();
       RangoTemperatura rangoTemperatura = new RangoTemperatura(tempMaxima, tempMinima);
 
-      Heladera heladeraNueva = Heladera.con(nombre, direccion, capacidad, rangoTemperatura);
+      String topic = AppProperties.getInstance().propertyFromName("BASE_TOPIC")
+          + "/heladeras/"
+          + nombre.toLowerCase().replace(" ", "-");
+
+      Heladera heladeraNueva = Heladera.con(nombre, direccion, capacidad, rangoTemperatura, topic);
       this.heladeraService.guardarHeladera(heladeraNueva);
 
       operationSuccess = true;
