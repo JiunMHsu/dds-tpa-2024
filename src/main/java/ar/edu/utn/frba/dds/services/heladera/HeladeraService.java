@@ -73,10 +73,9 @@ public class HeladeraService implements WithSimplePersistenceUnit {
     return encargos.stream().anyMatch(encargo -> encargo.getHeladeraACargo().equals(heladera));
   }
 
-  // TODO: - refactorizar y agregar campo topic a la heladera
   public void suscibirPara(Heladera heladera) {
     if (!estaEnElSet(heladera)) {
-      suscriptores.add(new SuscriptorSensor(ServiceLocator.instanceOf(BrokerMessageHandler.class), clienteMqtt, heladera.getNombre(), heladera.getId()));
+      suscriptores.add(new SuscriptorSensor(ServiceLocator.instanceOf(BrokerMessageHandler.class), clienteMqtt, heladera.getBrokerTopic(), heladera.getId()));
     }
 
     suscriptores.stream()
