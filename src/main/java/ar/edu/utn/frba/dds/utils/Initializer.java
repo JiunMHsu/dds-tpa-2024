@@ -170,22 +170,24 @@ public class Initializer implements WithSimplePersistenceUnit {
 
     HeladeraRepository heladeraRepository = new HeladeraRepository();
 
+    String baseTopic = AppProperties.getInstance().propertyFromName("BASE_TOPIC") + "/heladeras/";
+
     beginTransaction();
-    heladeraRepository.guardar(Heladera.con("Heladera DIEZ", d10, 80, new RangoTemperatura(5.0, -5.0), 75, "utn-dds-g22/heladeras/heladera-diez"));
-    heladeraRepository.guardar(Heladera.con("Heladera CINCO", d5, 60, new RangoTemperatura(5.0, -4.0), 52, "utn-dds-g22/heladeras/heladera-cinco"));
-    heladeraRepository.guardar(Heladera.con("Heladera NUEVE", d9, 90, new RangoTemperatura(4.0, -4.0), 67, "utn-dds-g22/heladeras/heladera-nueve"));
-    heladeraRepository.guardar(Heladera.con("Heladera UNO", d1, 80, new RangoTemperatura(3.0, -5.0), 58, "utn-dds-g22/heladeras/heladera-uno"));
-    heladeraRepository.guardar(Heladera.con("Heladera CATORCE", d14, 65, new RangoTemperatura(5.0, -5.0), 46, "utn-dds-g22/heladeras/heladera-catorce"));
-    heladeraRepository.guardar(Heladera.con("Heladera ONCE", d11, 85, new RangoTemperatura(3.0, -4.0), 47, "utn-dds-g22/heladeras/heladera-once"));
-    heladeraRepository.guardar(Heladera.con("Heladera DOCE", d12, 70, new RangoTemperatura(5.0, -3.0), 61, "utn-dds-g22/heladeras/heladera-doce"));
-    heladeraRepository.guardar(Heladera.con("Heladera QUINCE", d15, 80, new RangoTemperatura(3.0, -3.0), 80, "utn-dds-g22/heladeras/heladera-quince"));
-    heladeraRepository.guardar(Heladera.con("Heladera TRECE", d13, 95, new RangoTemperatura(2.0, -4.0), 83, "utn-dds-g22/heladeras/heladera-trece"));
-    heladeraRepository.guardar(Heladera.con("Heladera CUATRO", d4, 55, new RangoTemperatura(3.0, -4.0), 35, "utn-dds-g22/heladeras/heladera-cuatro"));
-    heladeraRepository.guardar(Heladera.con("Heladera OCHO", d8, 70, new RangoTemperatura(3.0, -2.0), 55, "utn-dds-g22/heladeras/heladera-ocho"));
-    heladeraRepository.guardar(Heladera.con("Heladera SIETE", d7, 80, new RangoTemperatura(3.0, -4.0), 76, "utn-dds-g22/heladeras/heladera-siete"));
-    heladeraRepository.guardar(Heladera.con("Heladera DOS", d2, 70, new RangoTemperatura(2.0, -3.0), 42, "utn-dds-g22/heladeras/heladera-dos"));
-    heladeraRepository.guardar(Heladera.con("Heladera SEIS", d6, 60, new RangoTemperatura(4.0, -4.0), 44, "utn-dds-g22/heladeras/heladera-seis"));
-    heladeraRepository.guardar(Heladera.con("Heladera TRES", d3, 85, new RangoTemperatura(3.0, -4.0), 66, "utn-dds-g22/heladeras/heladera-tres"));
+    heladeraRepository.guardar(Heladera.con("Heladera DIEZ", d10, 80, new RangoTemperatura(5.0, -5.0), 75, baseTopic + "heladera-diez"));
+    heladeraRepository.guardar(Heladera.con("Heladera CINCO", d5, 60, new RangoTemperatura(5.0, -4.0), 52, baseTopic + "heladera-cinco"));
+    heladeraRepository.guardar(Heladera.con("Heladera NUEVE", d9, 90, new RangoTemperatura(4.0, -4.0), 67, baseTopic + "heladera-nueve"));
+    heladeraRepository.guardar(Heladera.con("Heladera UNO", d1, 80, new RangoTemperatura(3.0, -5.0), 58, baseTopic + "heladera-uno"));
+    heladeraRepository.guardar(Heladera.con("Heladera CATORCE", d14, 65, new RangoTemperatura(5.0, -5.0), 46, baseTopic + "heladera-catorce"));
+    heladeraRepository.guardar(Heladera.con("Heladera ONCE", d11, 85, new RangoTemperatura(3.0, -4.0), 47, baseTopic + "heladera-once"));
+    heladeraRepository.guardar(Heladera.con("Heladera DOCE", d12, 70, new RangoTemperatura(5.0, -3.0), 61, baseTopic + "heladera-doce"));
+    heladeraRepository.guardar(Heladera.con("Heladera QUINCE", d15, 80, new RangoTemperatura(3.0, -3.0), 80, baseTopic + "heladera-quince"));
+    heladeraRepository.guardar(Heladera.con("Heladera TRECE", d13, 95, new RangoTemperatura(2.0, -4.0), 83, baseTopic + "heladera-trece"));
+    heladeraRepository.guardar(Heladera.con("Heladera CUATRO", d4, 55, new RangoTemperatura(3.0, -4.0), 35, baseTopic + "heladera-cuatro"));
+    heladeraRepository.guardar(Heladera.con("Heladera OCHO", d8, 70, new RangoTemperatura(3.0, -2.0), 55, baseTopic + "heladera-ocho"));
+    heladeraRepository.guardar(Heladera.con("Heladera SIETE", d7, 80, new RangoTemperatura(3.0, -4.0), 76, baseTopic + "heladera-siete"));
+    heladeraRepository.guardar(Heladera.con("Heladera DOS", d2, 70, new RangoTemperatura(2.0, -3.0), 42, baseTopic + "heladera-dos"));
+    heladeraRepository.guardar(Heladera.con("Heladera SEIS", d6, 60, new RangoTemperatura(4.0, -4.0), 44, baseTopic + "heladera-seis"));
+    heladeraRepository.guardar(Heladera.con("Heladera TRES", d3, 85, new RangoTemperatura(3.0, -4.0), 66, baseTopic + "heladera-tres"));
     commitTransaction();
   }
 
