@@ -3,13 +3,21 @@ package ar.edu.utn.frba.dds.services.heladera;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.HacerseCargoHeladera;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
+import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class HeladeraService implements WithSimplePersistenceUnit {
 
@@ -43,13 +51,14 @@ public class HeladeraService implements WithSimplePersistenceUnit {
 
   public void guardarHeladera(Heladera heladera) {
     // TODO - validaciones??
-    withTransaction(() -> this.heladeraRepository.guardar(heladera));
-  }
+    withTransaction(() -> {
+      this.heladeraRepository.guardar(heladera);
+    });  }
 
   public void actualizarHeladera(Heladera heladeraActualizada) {
-    beginTransaction();
-    this.heladeraRepository.actualizar(heladeraActualizada);
-    commitTransaction();
+    withTransaction(() -> {
+      this.heladeraRepository.actualizar(heladeraActualizada);
+    });
   }
 
   public void eliminarHeladera(Heladera heladera) {
@@ -61,3 +70,4 @@ public class HeladeraService implements WithSimplePersistenceUnit {
     return encargos.stream().anyMatch(encargo -> encargo.getHeladeraACargo().equals(heladera));
   }
 }
+
