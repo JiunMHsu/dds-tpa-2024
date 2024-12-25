@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.utils;
 
+import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.Puntos;
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.VarianteDePuntos;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
@@ -28,6 +29,7 @@ import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.TecnicoRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
+import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -47,6 +49,8 @@ public class Initializer implements WithSimplePersistenceUnit {
     instance.withVarianteDePuntos();
     instance.withOfertas();
     instance.withTecnicos();
+
+    instance.initializeMqttSubscribers();
 
     // PDFGenerator pdfGenerator = new PDFGenerator(AppProperties.getInstance().propertyFromName("REPORT_DIR"));
     // ServiceLocator.instanceOf(ReporteService.class).generarReporteSemanal(pdfGenerator);
@@ -310,6 +314,10 @@ public class Initializer implements WithSimplePersistenceUnit {
     new UsuarioRepository().guardar(u1);
     new TecnicoRepository().guardar(t1);
     commitTransaction();
+  }
+
+  private void initializeMqttSubscribers() {
+    ServiceLocator.instanceOf(HeladeraService.class).iniciarSuscripciones();
   }
 
   private void cleanupDatabase() {

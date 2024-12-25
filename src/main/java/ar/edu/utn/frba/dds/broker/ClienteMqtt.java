@@ -24,6 +24,7 @@ public class ClienteMqtt implements IClienteMqtt {
         .buildBlocking();
 
     client.connectWith().send();
+    System.out.println("Conexión establecida con el broker MQTT.");
   }
 
   public void suscribirPara(ISuscriptorMqtt suscriptor) {
