@@ -30,18 +30,14 @@ import ar.edu.utn.frba.dds.services.tarjeta.TarjetaPersonaVulnerableService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.validation.ValidationException;
 
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
+
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
+
 
 public class HeladeraController extends ColaboradorRequired implements ICrudViewsHandler, IBrokerMessageHandler {
 
@@ -320,54 +316,4 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
       }
     }
   }
-
-  public String generarGeoJson(String filePath) {
-    List<Heladera> heladeras = heladeraService.buscarTodas();
-
-    Map<String, Object> geoJson = new HashMap<>();
-    geoJson.put("type", "FeatureCollection");
-
-    List<Map<String, Object>> features = heladeras.stream().map(heladera -> {
-      Map<String, Object> feature = new HashMap<>();
-      feature.put("type", "Feature");
-      feature.put("properties", Map.of(
-          "id", heladera.getId(),
-          "nombre", heladera.getNombre(),
-          "barrio", heladera.getDireccion().getBarrio().getNombre(),
-          "calle", heladera.getDireccion().getCalle().getNombre(),
-          "altura", heladera.getDireccion().getAltura(),
-          "isActive", heladera.getEstado() == EstadoHeladera.ACTIVA,
-          "capacidad", heladera.getCapacidad(),
-          "disponibilidad", heladera.getViandas(),
-          "temperatura_max", heladera.getRangoTemperatura().getMaxima(),
-          "temperatura_min", heladera.getRangoTemperatura().getMinima()
-      ));
-      feature.put("geometry", Map.of(
-          "type", "Point",
-          "coordinates", List.of(
-              heladera.getDireccion().getUbicacion().getLongitud(),
-              heladera.getDireccion().getUbicacion().getLatitud()
-          )
-      ));
-      return feature;
-    }).collect(Collectors.toList());
-
-    geoJson.put("features", features);
-
-    try {
-      String geoJsonString = new ObjectMapper().writeValueAsString(geoJson);
-
-      Files.writeString(Path.of(filePath), geoJsonString, StandardCharsets.UTF_8);
-      return geoJsonString;
-
-    } catch (Exception e) {
-      throw new RuntimeException("Error al generar GeoJSON", e);
-    }
-  }
-
-  @PostConstruct
-  public void inicializarGeoJson() {
-    this.generarGeoJson("");  // TODO - ver RUTA
-  }
-
 }

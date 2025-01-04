@@ -72,5 +72,4 @@ public class IncidenteService implements WithSimplePersistenceUnit {
         .filter(i -> !i.getResuelta())
         .toList().size() > 1; // mayor a 1 porque el incidente actual cuenta como pendiente
   }
-
 }

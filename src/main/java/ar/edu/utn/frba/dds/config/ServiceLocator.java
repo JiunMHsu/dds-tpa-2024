@@ -586,6 +586,7 @@ public class ServiceLocator {
       HeladeraLlenaRepository instance = new HeladeraLlenaRepository();
       instances.put(componentName, instance);
     }
+
     if (componentName.equals(VarianteDePuntosRepository.class.getName())) {
       VarianteDePuntosRepository instance = new VarianteDePuntosRepository();
       instances.put(componentName, instance);
