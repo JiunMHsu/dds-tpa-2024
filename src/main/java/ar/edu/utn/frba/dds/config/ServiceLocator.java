@@ -63,6 +63,7 @@ import ar.edu.utn.frba.dds.services.heladera.RetiroDeViandaService;
 import ar.edu.utn.frba.dds.services.heladera.SolicitudDeAperturaService;
 import ar.edu.utn.frba.dds.services.images.ImageService;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
+import ar.edu.utn.frba.dds.services.mapa.MapService;
 import ar.edu.utn.frba.dds.services.mensajeria.MensajeriaService;
 import ar.edu.utn.frba.dds.services.personaVulnerable.PersonaVulnerableService;
 import ar.edu.utn.frba.dds.services.puntoIdeal.PuntoIdealService;
@@ -323,7 +324,9 @@ public class ServiceLocator {
     if (componentName.equals(IncidenteService.class.getName())) {
       IncidenteService instance = new IncidenteService(
           instanceOf(IncidenteRepository.class),
-          instanceOf(HeladeraRepository.class));
+          instanceOf(HeladeraRepository.class),
+          instanceOf(MapService.class)
+      );
       instances.put(componentName, instance);
     }
 
@@ -477,6 +480,12 @@ public class ServiceLocator {
           instanceOf(HeladeraLlenaRepository.class),
           instanceOf(ColaboradorRepository.class)
       );
+      instances.put(componentName, instance);
+    }
+
+    if (componentName.equals(MapService.class.getName())) {
+      MapService instance = new MapService(
+          instanceOf(HeladeraRepository.class));
       instances.put(componentName, instance);
     }
 

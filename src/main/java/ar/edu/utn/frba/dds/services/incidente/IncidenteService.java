@@ -6,6 +6,7 @@ import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.models.entities.incidente.TipoIncidente;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
+import ar.edu.utn.frba.dds.services.mapa.MapService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 
 import java.util.List;
@@ -16,9 +17,14 @@ public class IncidenteService implements WithSimplePersistenceUnit {
   private final IncidenteRepository incidenteRepository;
   private final HeladeraRepository heladeraRepository;
 
-  public IncidenteService(IncidenteRepository incidenteRepository, HeladeraRepository heladeraRepository) {
+  private final MapService mapService;
+
+  public IncidenteService(IncidenteRepository incidenteRepository,
+                          HeladeraRepository heladeraRepository,
+                          MapService mapService) {
     this.incidenteRepository = incidenteRepository;
     this.heladeraRepository = heladeraRepository;
+    this.mapService = mapService;
   }
 
   public List<Incidente> buscarTodos() {
@@ -49,6 +55,8 @@ public class IncidenteService implements WithSimplePersistenceUnit {
       incidenteRepository.guardar(incidente);
     });
 
+    mapService.crearGeoJson();
+
     // TODO - avisar a técnicos, enviar respectivos mensajes
   }
 
@@ -65,6 +73,8 @@ public class IncidenteService implements WithSimplePersistenceUnit {
       heladeraRepository.actualizar(incidente.getHeladera());
       incidenteRepository.actualizar(incidente);
     });
+
+    mapService.crearGeoJson();
   }
 
   private boolean tieneOtroIncidentePendiente(Heladera heladera) {

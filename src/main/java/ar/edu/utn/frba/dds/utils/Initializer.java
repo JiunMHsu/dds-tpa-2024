@@ -27,6 +27,7 @@ import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import ar.edu.utn.frba.dds.reportes.PDFGenerator;
+import ar.edu.utn.frba.dds.services.mapa.MapService;
 import ar.edu.utn.frba.dds.services.reporte.ReporteService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDate;
@@ -46,6 +47,7 @@ public class Initializer implements WithSimplePersistenceUnit {
     instance.withIncidentes();
     instance.withVarianteDePuntos();
     instance.withOfertas();
+    instance.withMapa();
 
     PDFGenerator pdfGenerator = new PDFGenerator(AppProperties.getInstance().propertyFromName("REPORT_DIR"));
     ServiceLocator.instanceOf(ReporteService.class).generarReporteSemanal(pdfGenerator);
@@ -267,6 +269,13 @@ public class Initializer implements WithSimplePersistenceUnit {
     heladeraRepository.actualizar(h15);
 
     commitTransaction();
+  }
+
+  private void withMapa() {
+    HeladeraRepository heladeraRepository = new HeladeraRepository();
+
+    MapService mapService = new MapService(heladeraRepository);
+    mapService.crearGeoJson();
   }
 
   private void withVarianteDePuntos() {

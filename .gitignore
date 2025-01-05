@@ -35,4 +35,7 @@ target/**
 /images/
 
 src/main/resources/META-INF/persistence.xml
+src/main/resources/public/json/*.json
+
 src/test/resources/META-INF/persistence.xml
+
