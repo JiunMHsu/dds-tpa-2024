@@ -5,6 +5,7 @@ import ar.edu.utn.frba.dds.dtos.colaboraciones.TipoColaboracionDTO;
 import ar.edu.utn.frba.dds.dtos.colaborador.ColaboradorDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
+import ar.edu.utn.frba.dds.exceptions.ValidationException;
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.Puntos;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
@@ -15,12 +16,13 @@ import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.data.TipoRazonSocial;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
+import ar.edu.utn.frba.dds.models.stateless.ValidadorDeContrasenias;
+import ar.edu.utn.frba.dds.permissions.ColaboradorRequired;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
-import io.javalin.validation.ValidationException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,13 +32,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class ColaboradorController implements ICrudViewsHandler {
-  private final UsuarioService usuarioService;
-  private final ColaboradorService colaboradorService;
+public class ColaboradorController extends ColaboradorRequired implements ICrudViewsHandler {
 
   public ColaboradorController(UsuarioService usuarioService, ColaboradorService colaboradorService) {
-    this.colaboradorService = colaboradorService;
-    this.usuarioService = usuarioService;
+    super(usuarioService, colaboradorService);
   }
 
   @Override
@@ -50,11 +49,12 @@ public class ColaboradorController implements ICrudViewsHandler {
         .toList();
     model.put("colaboradores", colaboradoresDTO);
 
-    context.render("colaboradores/colaboradores.hbs", model);
+    render(context,"colaboradores/colaboradores.hbs", model);
   }
 
   @Override
   public void show(Context context) {
+    //ya esta creo (no sirve esto)
     String colaboradorId = context.pathParam("id");
     Colaborador colaborador = this.colaboradorService
         .obtenerColaboradorPorID(colaboradorId)
@@ -71,31 +71,19 @@ public class ColaboradorController implements ICrudViewsHandler {
 
   }
 
-  // TODO - REVISAR
   public void getProfile(Context context) {
-
-    String usuarioId = context.sessionAttribute("userId");
-    Optional<Usuario> usuario = this.usuarioService.obtenerUsuarioPorID(usuarioId);
-    Optional<Colaborador> posibleColaboradorBuscado = this.colaboradorService.obtenerColaboradorPorUsuario(usuario.get());
-
-    if (posibleColaboradorBuscado.isEmpty()) {
-      throw new ResourceNotFoundException("No se encontró colaborador paraColaborador usuario por id " + usuarioId);
-    }
-
+    Colaborador colaborador = colaboradorFromSession(context);
     Map<String, Object> model = new HashMap<>();
-    model.put("colaborador", posibleColaboradorBuscado.get());
-    model.put("isJuridico", false);
-        /*
-        model.put("isJuridico", posibleColaboradorBuscado.get().getTipoColaborador().getTipo() == TipoPersona.JURIDICO);
-        */
-    context.render("perfil/perfil.hbs", model);
+    ColaboradorDTO colaboradorDTO = ColaboradorDTO.completa(colaborador);
+    model.put("colaborador", colaborador);
+
+    render(context,"perfil/perfil.hbs", model);
 
   }
 
   @Override
   public void create(Context context) {
-    //sign up
-    context.render("signs/sign.hbs");
+    render(context,"signs/sign.hbs", new HashMap<>());
   }
 
 
@@ -112,13 +100,19 @@ public class ColaboradorController implements ICrudViewsHandler {
 
     try {
 
+      String contrasenia = context.formParamAsClass("contrasenia", String.class).get();
+      ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
+
+      if (!validador.esValida(contrasenia)) {
+        throw new ValidationException("La contraseña no cumple con los requisitos de seguridad.");
+      }
+
       Usuario usuario = Usuario.con(
           context.formParamAsClass("nombre_usuario", String.class).get(),
-          context.formParamAsClass("contrasenia", String.class).get(),
+          contrasenia,
           context.formParamAsClass("email", String.class).get(),
           TipoRol.COLABORADOR
       );
-
       Direccion direccion = Direccion.with(
           new Barrio(context.formParamAsClass("barrio", String.class).get()),
           new Calle(context.formParamAsClass("calle", String.class).get()),
@@ -160,7 +154,7 @@ public class ColaboradorController implements ICrudViewsHandler {
     } finally {
       model.put("success", operationSuccess);
       model.put("redirects", redirectDTOS);
-      context.render("post_result.hbs", model);
+      render(context, "post_result.hbs", model);
     }
   }
 
@@ -170,10 +164,15 @@ public class ColaboradorController implements ICrudViewsHandler {
     boolean operationSuccess = false;
 
     try {
+      String contrasenia = context.formParamAsClass("contrasenia", String.class).get();
+      ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
 
+      if (!validador.esValida(contrasenia)) {
+        throw new ValidationException("La contraseña no cumple con los requisitos de seguridad.");
+      }
       Usuario usuario = Usuario.con(
           context.formParamAsClass("nombre_usuario", String.class).get(),
-          context.formParamAsClass("contrasenia", String.class).get(),
+          contrasenia,
           context.formParamAsClass("email", String.class).get(),
           TipoRol.COLABORADOR
       );
@@ -218,7 +217,7 @@ public class ColaboradorController implements ICrudViewsHandler {
     } finally {
       model.put("success", operationSuccess);
       model.put("redirects", redirectDTOS);
-      context.render("post_result.hbs", model);
+      render(context,"post_result.hbs", model);
     }
 
   }
@@ -274,7 +273,7 @@ public class ColaboradorController implements ICrudViewsHandler {
     model.put("id", pathId);
     model.put("colaboraciones", colaboracionDTOS);
 
-    context.render("colaboradores/formas_de_colaboracion_editar.hbs", model);
+    render(context,"colaboradores/formas_de_colaboracion_editar.hbs", model);
   }
 
   public void updateFormasDeColaborar(Context context) {
@@ -292,7 +291,7 @@ public class ColaboradorController implements ICrudViewsHandler {
       System.out.println(colaboraciones);
 
       colaborador.setFormaDeColaborar(colaboraciones);
-      colaboradorService.actualizar(colaborador);
+      this.colaboradorService.actualizar(colaborador);
 
       operationSuccess = true;
       redirectDTOS.add(new RedirectDTO("/colaboraciones", "Colaborar"));
@@ -302,14 +301,14 @@ public class ColaboradorController implements ICrudViewsHandler {
     } finally {
       model.put("success", operationSuccess);
       model.put("redirects", redirectDTOS);
-      context.render("post_result.hbs", model);
+      render(context,"post_result.hbs", model);
     }
   }
 
   private Colaborador restrictByOwner(Context context, String colaboradorId) {
     String userId = context.sessionAttribute("userId");
 
-    Colaborador colaborador = colaboradorService
+    Colaborador colaborador = this.colaboradorService
         .obtenerColaboradorPorID(colaboradorId)
         .orElseThrow(ResourceNotFoundException::new);
 

@@ -2,67 +2,43 @@
     Perfil
 {{/partial}}
 {{#partial "links"}}
-    <link rel="stylesheet" href="/css/perfil/perfil.css"/>
     <link rel="stylesheet" href="/css/list.css"/>
+    <link rel="stylesheet" href="/css/form.css"/>
+    <link rel="stylesheet" href="/css/perfil/perfil.css" />
+{{/partial}}
+{{#partial "scripts"}}
 {{/partial}}
 {{#partial "main-content"}}
-    <h1>Perfil del Colaborador</h1>
-    <div class="contenedores">
-        <div class="opciones">
-            <p><span class="negrita">Nombre:</span> {{colaborador.usuario.nombre}}</p>
-            <p><span class="negrita">Email:</span> {{colaborador.contacto.email}}</p>
-            <p><span class="negrita">Teléfono:</span> {{colaborador.contacto.telefono}}</p>
-            <p><span class="negrita">WhatsApp:</span> {{colaborador.contacto.whatsapp}}</p>
-            <p><span class="negrita">Telegram:</span> {{colaborador.contacto.telegram}}</p>
-            <p><span class="negrita">Dirección:</span></p>
-            <div class="cuadrado">
-                <p><span class="negrita">Barrio:</span> {{colaborador.direccion.barrio}}</p>
-                <p><span
-                        class="negrita">Calle:</span> {{colaborador.direccion.calle}} {{colaborador.direccion.altura}}
-                </p>
-
-                <p><span class="negrita">Ubicación:</span></p>
-                <div class="dobleCuadrado">
-                    <p><span
-                            class="negrita">Latiud:</span> {{colaborador.direccion.ubicacion.latitud}}
-                    </p>
-                    <p><span
-                            class="negrita">Longitud:</span> {{colaborador.direccion.ubicacion.longitud}}
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="opciones">
-            {{#if colaborador.razonSocial}}
-                <h2>Información Jurídica</h2>
-                <p><span class="negrita">Razón Social:</span> {{colaborador.razonSocial}}</p>
-                <p><span
-                        class="negrita">Tipo de Razón Social:</span> {{colaborador.tipoRazonSocial}}
-                </p>
-                <p><span class="negrita">Rubro:</span> {{colaborador.rubro}}</p>
-            {{else}}
-                <h2>Información Personal</h2>
-                <p><span class="negrita">Apellido:</span> {{colaborador.apellido}}</p>
-                <p><span class="negrita">Fecha de Nacimiento:</span> {{colaborador.fechaNacimiento}}
-                </p>
-            {{/if}}
-            <p><span class="negrita">Colaboraciones:</span></p>
-            <div class="scrollable">
-                <ul class="list">
-                    {{#each colaborador.colaboraciones}}
-                        <li class="list-item">
-                            <a href="" class="item-card">
-                                <h3 class="card-title">{{this.nombre}}</h3>
-                                <p>
-                                    <span class="material-symbols-rounded card-detail-icon">today</span>
-                                    Fecha: {{this.fechaHora}}
-                                </p>
-                            </a>
-                        </li>
-                    {{/each}}
-                </ul>
-            </div>
-        </div>
+        <div class="list-container">
+             <h2 class="list-title">Información Personal</h2>
+             <p><span class="negrita">Dirección:</span></p>
+             <div class="direccion-container">
+                 <div class="cuadrado">
+                     <p><span class="negrita">Barrio:</span> {{colaborador.direccion.barrio}}</p>
+                     <p><span class="negrita">Calle:</span> {{colaborador.direccion.calle}} {{colaborador.direccion.altura}}</p>
+                 </div>
+                 <p><span class="negrita">Ubicación:</span></p>
+                 <div class="cuadrado">
+                     <p><span class="negrita">Latitud:</span> {{colaborador.direccion.latitud}}</p>
+                     <p><span class="negrita">Longitud:</span> {{colaborador.direccion.longitud}}</p>
+                 </div>
+             </div>
+             <p><span class="negrita">Contacto:</span> {{colaborador.contacto}}</p>
+         </div>
 {{/partial}}
-
+{{#partial "side-panel"}}
+           <div class="upper-right">
+                   <h2 class="list-title">Información {{#if colaborador.razonSocial}}Jurídica{{else}}Humana{{/if}}</h2>
+                   {{#if colaborador.razonSocial}}
+                       <p><span class="negrita">Razón Social:</span> {{colaborador.razonSocial}}</p>
+                       <p><span class="negrita">Tipo de Razón Social:</span> {{colaborador.tipoRazonSocial}}</p>
+                       <p><span class="negrita">Rubro:</span> {{colaborador.rubro}}</p>
+                   {{else}}
+                       <p><span class="negrita">Nombre:</span> {{colaborador.nombre}}</p>
+                       <p><span class="negrita">Apellido:</span> {{colaborador.apellido}}</p>
+                       <p><span class="negrita">Documento:</span> {{colaborador.documento}}</p>
+                       <p><span class="negrita">Fecha de Nacimiento:</span> {{colaborador.fechaNacimiento}}</p>
+                   {{/if}}
+           </div>
+{{/partial}}
 {{> templates/base}}

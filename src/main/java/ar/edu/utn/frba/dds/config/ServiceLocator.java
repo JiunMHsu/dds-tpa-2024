@@ -129,6 +129,7 @@ public class ServiceLocator {
       instances.put(componentName, instance);
     }
 
+
     if (componentName.equals(SessionController.class.getName())) {
       SessionController instance = new SessionController(
           instanceOf(UsuarioService.class));

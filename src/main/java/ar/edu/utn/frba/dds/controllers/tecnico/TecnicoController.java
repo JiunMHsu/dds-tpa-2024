@@ -13,6 +13,7 @@ import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.permissions.TecnicoRequired;
+import ar.edu.utn.frba.dds.permissions.UserRequired;
 import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
@@ -65,7 +66,7 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
 
   @Override
   public void create(Context context) {
-    context.result("Tecnico");
+    render(context,"tecnicos/tecnico_crear.hbs", new HashMap<>());
   }
 
   @Override
@@ -150,14 +151,14 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
 
     String userId = context.sessionAttribute("userId");
 
-    Optional<Usuario> usuarioSession = usuarioService.obtenerUsuarioPorID(userId);
+    Optional<Usuario> usuarioSession = this.usuarioService.obtenerUsuarioPorID(userId);
     if (usuarioSession.isEmpty()) {
       throw new ResourceNotFoundException("No se encontró el usuario paraColaborador id " + userId);
     }
 
     Usuario usuario = usuarioSession.get();
 
-    Optional<Tecnico> tecnicoSession = tecnicoService.obtenerTecnicoPorUsuario(usuarioSession.get());
+    Optional<Tecnico> tecnicoSession = this.tecnicoService.obtenerTecnicoPorUsuario(usuarioSession.get());
     if (tecnicoSession.isEmpty()) {
       throw new ResourceNotFoundException("No se encontró el tecnico paraColaborador usuario " + usuario.getNombre());
     }

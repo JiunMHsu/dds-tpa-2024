@@ -69,7 +69,12 @@ public class VisitaTecnicaController extends TecnicoRequired {
       model.put("incidente", IncidenteDTO.preview(incidente));
       render(context, "visitas_tecnicas/visita_tecnica_crear.hbs", model);
     } catch (ValidationException | IncicenteToFixException e) {
-      render(context, "visitas_tecnicas/incidente_invalido.hbs", model);
+      List<RedirectDTO> redirectDTOS = new ArrayList<>();
+      boolean operationSuccess = false;
+      redirectDTOS.add(new RedirectDTO("/incidentes", "Ver Incidentes"));
+      model.put("fail", operationSuccess);
+      model.put("redirects", redirectDTOS);
+      context.render("post_result.hbs", model);
     }
   }
 
