@@ -1,17 +1,14 @@
 package ar.edu.utn.frba.dds.utils;
 
-import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
+import java.util.UUID;
 
 public interface IBrokerMessageHandler {
 
-  void recibirTemperatura(double temperatura, Heladera heladera);
+  void manejarTemperatura(double temperatura, UUID heladeraId);
 
-  /**
-   * En teoría llega un mensaje, pero se usa paraColaborador nada
-   */
-  void recibirMovimiento(Heladera heladera);
+  void manejarFraude(UUID heladeraId);
 
-  void recibirFallaConexion(Heladera heladera);
+  void manejarFallaConexion(UUID heladeraId);
 
-  void recibirCodigoTarjeta(String codigoTarjeta, Heladera heladera);
+  void manejarSolicitudDeApertura(String codigoTarjeta, UUID heladeraId);
 }

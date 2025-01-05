@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.config;
 
+import ar.edu.utn.frba.dds.broker.ClienteMqtt;
 import ar.edu.utn.frba.dds.controllers.canjeDePuntos.CanjeDePuntosController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.ColaboracionController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DistribucionViandasController;
@@ -9,6 +10,7 @@ import ar.edu.utn.frba.dds.controllers.colaboraciones.HacerseCargoHeladeraContro
 import ar.edu.utn.frba.dds.controllers.colaboraciones.OfertaProductosServiciosController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.RepartoDeTarjetaController;
 import ar.edu.utn.frba.dds.controllers.colaborador.ColaboradorController;
+import ar.edu.utn.frba.dds.controllers.heladera.BrokerMessageHandler;
 import ar.edu.utn.frba.dds.controllers.heladera.HeladeraController;
 import ar.edu.utn.frba.dds.controllers.heladera.PuntoIdealController;
 import ar.edu.utn.frba.dds.controllers.heladera.SolicitudDeAperturaController;
@@ -103,7 +105,25 @@ public class ServiceLocator {
       instances.put(componentName, instance);
     }
 
+    if (componentName.equals(ClienteMqtt.class.getName())) {
+      ClienteMqtt instance = new ClienteMqtt();
+      instances.put(componentName, instance);
+    }
+
     // ========================= CONTROLLERS =========================
+
+    if (componentName.equals(BrokerMessageHandler.class.getName())) {
+      BrokerMessageHandler instance = new BrokerMessageHandler(
+          instanceOf(HeladeraService.class),
+          instanceOf(IncidenteService.class),
+          instanceOf(FallaHeladeraService.class),
+          instanceOf(MensajeriaService.class),
+          instanceOf(SolicitudDeAperturaService.class),
+          instanceOf(TarjetaPersonaVulnerableService.class),
+          instanceOf(AperturaHeladeraService.class),
+          instanceOf(RetiroDeViandaService.class));
+      instances.put(componentName, instance);
+    }
 
     if (componentName.equals(HomeController.class.getName())) {
       HomeController instance = new HomeController(instanceOf(UsuarioService.class));
@@ -121,14 +141,7 @@ public class ServiceLocator {
           instanceOf(UsuarioService.class),
           instanceOf(ColaboradorService.class),
           instanceOf(HeladeraService.class),
-          instanceOf(PuntoIdealService.class),
-          instanceOf(IncidenteService.class),
-          instanceOf(FallaHeladeraService.class),
-          instanceOf(MensajeriaService.class),
-          instanceOf(SolicitudDeAperturaService.class),
-          instanceOf(TarjetaPersonaVulnerableService.class),
-          instanceOf(AperturaHeladeraService.class),
-          instanceOf(RetiroDeViandaService.class));
+          instanceOf(PuntoIdealService.class));
       instances.put(componentName, instance);
     }
 
@@ -299,7 +312,8 @@ public class ServiceLocator {
     if (componentName.equals(HeladeraService.class.getName())) {
       HeladeraService instance = new HeladeraService(
           instanceOf(HeladeraRepository.class),
-          instanceOf(HacerseCargoHeladeraRepository.class));
+          instanceOf(HacerseCargoHeladeraRepository.class),
+          instanceOf(ClienteMqtt.class));
       instances.put(componentName, instance);
     }
 

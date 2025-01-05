@@ -58,13 +58,10 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
   }
 
   public Optional<Colaborador> obtenerColaboradorPorID(String id) {
-
     if (id == null || id.isEmpty()) {
       throw new IllegalArgumentException("El ID del colaborador no puede ser null o vacío");
     }
 
     return this.colaboradorRepository.buscarPorId(id);
   }
-
-
 }
