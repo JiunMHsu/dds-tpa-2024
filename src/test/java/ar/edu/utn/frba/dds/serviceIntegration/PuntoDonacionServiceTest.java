@@ -3,10 +3,11 @@ package ar.edu.utn.frba.dds.serviceIntegration;
 import ar.edu.utn.frba.dds.exceptions.BadAPIRequestException;
 import ar.edu.utn.frba.dds.models.entities.puntoDonacion.PuntoDonacion;
 import ar.edu.utn.frba.dds.services.puntoDonacion.PuntoDonacionService;
-import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 class PuntoDonacionServiceTest {
 

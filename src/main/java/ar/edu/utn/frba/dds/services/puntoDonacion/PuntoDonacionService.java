@@ -3,11 +3,12 @@ package ar.edu.utn.frba.dds.services.puntoDonacion;
 import ar.edu.utn.frba.dds.exceptions.BadAPIRequestException;
 import ar.edu.utn.frba.dds.models.entities.puntoDonacion.PuntoDonacion;
 import ar.edu.utn.frba.dds.utils.JSONReader;
+import org.json.simple.JSONObject;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
-import org.json.simple.JSONObject;
 
 public class PuntoDonacionService {
 
