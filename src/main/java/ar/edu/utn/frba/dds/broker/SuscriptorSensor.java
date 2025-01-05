@@ -88,7 +88,7 @@ public class SuscriptorSensor implements ISuscriptorMqtt {
   private void newScheduler() {
     killScheduler();
     scheduler = Executors.newScheduledThreadPool(1);
-    scheduler.schedule(this::manejarRetrasoMensaje, 5, TimeUnit.MINUTES);
+    scheduler.schedule(this::manejarRetrasoMensaje, 5, TimeUnit.SECONDS);
   }
 
 }
