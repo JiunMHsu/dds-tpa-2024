@@ -2,6 +2,8 @@ package ar.edu.utn.frba.dds.controllers.tecnico;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.incidente.IncidenteDTO;
+import ar.edu.utn.frba.dds.dtos.tecnico.TecnicoDTO;
+import ar.edu.utn.frba.dds.dtos.tecnico.VisitaTecnicaDTO;
 import ar.edu.utn.frba.dds.exceptions.IncicenteToFixException;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
@@ -45,7 +47,14 @@ public class VisitaTecnicaController extends TecnicoRequired {
   }
 
   public void index(Context context) {
-    // TODO - implementar
+    List<VisitaTecnica> visitasTecnicas = this.visitaTecnicaService.buscarTodas();
+    List<VisitaTecnicaDTO> visitaTecnicaDTO = visitasTecnicas.stream()
+        .map(VisitaTecnicaDTO::preview)
+        .toList();
+
+    Map<String, Object> model = new HashMap<>();
+    model.put("visitas-tecnicas", visitaTecnicaDTO);
+    render(context, "visitas_tecnicas/visitas_tecnicas.hbs", model);
   }
 
   public void show(Context context) {

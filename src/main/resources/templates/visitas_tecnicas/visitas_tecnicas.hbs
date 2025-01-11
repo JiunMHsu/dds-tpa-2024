@@ -1,0 +1,64 @@
+{{#partial "title"}}
+    Visitas Tecnicas
+{{/partial}}
+{{#partial "links"}}
+    <link rel="stylesheet" href="/css/list.css"/>
+    <link rel="stylesheet" href="/css/visitas_tecnicas/visitas_tecnicas.css"/>
+    <link
+            href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css"
+            rel="stylesheet"
+    />
+{{/partial}}
+{{#partial "scripts"}}
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+    <script src="/js/map.js"></script>
+{{/partial}}
+{{#partial "main-content"}}
+    <div class="feature-container">
+            <div class="crear-tecnico feature">
+                <h3 class="feature-text">Crear Visita Tecnica</h3>
+                <div class="feature-button-container">
+                    <a href="/visitas_tecnicas/new" class="feature-button">ver</a>
+                </div>
+            </div>
+    </div>
+
+    <div class="list-container">
+        <h2 class="list-title">Visitas Tecnicas</h2>
+
+        <div class="filter-container">
+            <div class="filter">FILTROS</div>
+            <!-- barra por búsqueda y filtros -->
+            <!-- filtro: activo, suscripto, encargado -->
+        </div>
+
+        <div class="scrollable">
+            <ul class="list">
+                {{#each visitas-tecnicas}}
+                    <li class="list-item">
+                        <a class="item-card">
+                            <h3 class="card-title">{{this.fecha}}&nbsp;&nbsp;{{this.hora}}</h3>
+                            <p>
+                                <span class="material-symbols-rounded card-detail-icon">description</span>
+                                Descripcion: {{this.decripcion}}
+                            </p>
+                            <p>
+                                {{#if this.resuelto}}
+                                style="color: #A7C957"
+                                {{else}}
+                                style="color: #e37f8f"
+                                {{/if}}>
+                                <span class="material-symbols-rounded card-detail-icon"> radio_button_checked </span>
+                                Resuelto: {{#if this.pudoResolverse}} Resuelto {{else}} Pendiente {{/if}}
+                            </p>
+                        </a>
+                    </li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+{{/partial}}
+{{#partial "side-panel"}}
+    <div id="map"></div>
+{{/partial}}
+{{> templates/base}}
