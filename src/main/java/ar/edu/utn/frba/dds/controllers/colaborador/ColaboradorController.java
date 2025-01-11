@@ -83,7 +83,7 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
 
   @Override
   public void create(Context context) {
-    render(context,"signs/sign.hbs", new HashMap<>());
+   render(context,"signs/sign.hbs", new HashMap<>());
   }
 
 

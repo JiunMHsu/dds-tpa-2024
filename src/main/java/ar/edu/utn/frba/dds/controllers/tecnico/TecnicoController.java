@@ -43,14 +43,14 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
 
     Map<String, Object> model = new HashMap<>();
     model.put("tecnicos", tecnicosDTO);
-    render(context, "tecnicos/tecnicos.hbs", model);
+    render(context, "tecnicos/tecnico.hbs", new HashMap<>());
   }
 
   @Override
-  public void show(Context context) { // TODO - Ver desp que matchee paraColaborador las vistas
+  public void show(Context context) {
 
     String cuitTecnico = context.pathParam("cuit");
-    Optional<Tecnico> tecnicoBuscado = this.tecnicoService.buscarTecnicoPorCuit(cuitTecnico); // TODO - hago que se busque por CUIT, ver si va o no
+    Optional<Tecnico> tecnicoBuscado = this.tecnicoService.buscarTecnicoPorCuit(cuitTecnico);
 
     if (tecnicoBuscado.isEmpty()) {
       throw new ResourceNotFoundException("No se encontró tecnico paraColaborador cuit " + cuitTecnico);
@@ -60,7 +60,7 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
     TecnicoDTO tecnicoDTO = TecnicoDTO.completa(tecnicoBuscado.get());
     model.put("tecnico", tecnicoDTO);
 
-    // context.render("/", model);
+    render(context, "tecnicos/tecnico_detalle.hbs", model);
   }
 
   @Override

@@ -15,7 +15,7 @@ public class ColaboradorRouter implements IRouter {
   public void apply(RouterConfig config) {
     config.apiBuilder(() -> {
 
-      path("/signup", () -> {
+      path("/signs", () -> {
         get(ServiceLocator.instanceOf(ColaboradorController.class)::create, TipoRol.GUEST);
 
         get("/humana", ctx -> ctx.render("signs/signHumana.hbs"), TipoRol.GUEST);
