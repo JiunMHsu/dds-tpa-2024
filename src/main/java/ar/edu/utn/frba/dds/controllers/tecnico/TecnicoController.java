@@ -36,13 +36,12 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
 
   @Override
   public void index(Context context) {
-    Map<String, Object> model = new HashMap<>();
-
     List<Tecnico> tecnicos = this.tecnicoService.buscarTodos();
     List<TecnicoDTO> tecnicosDTO = tecnicos.stream()
         .map(TecnicoDTO::preview)
         .toList();
 
+    Map<String, Object> model = new HashMap<>();
     model.put("tecnicos", tecnicosDTO);
     render(context, "tecnicos/tecnicos.hbs", model);
   }

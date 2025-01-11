@@ -1,0 +1,63 @@
+{{#partial "title"}}
+    Tecnicos
+{{/partial}}
+{{#partial "links"}}
+    <link rel="stylesheet" href="/css/list.css"/>
+    <link rel="stylesheet" href="/css/tecnicos/tecnicos.css"/>
+    <link
+            href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css"
+            rel="stylesheet"
+    />
+{{/partial}}
+{{#partial "scripts"}}
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+    <script src="/js/map.js"></script>
+{{/partial}}
+{{#partial "main-content"}}
+    <div class="feature-container">
+            <div class="crear-tecnico feature">
+                <h3 class="feature-text">Crear Tecnico</h3>
+                <div class="feature-button-container">
+                    <a href="/tecnicos/new" class="feature-button">ver</a>
+                </div>
+            </div>
+    </div>
+
+    <div class="list-container">
+        <h2 class="list-title">Tecnicos</h2>
+
+        <div class="filter-container">
+            <div class="filter">FILTROS</div>
+            <!-- barra por búsqueda y filtros -->
+            <!-- filtro: activo, suscripto, encargado -->
+        </div>
+
+        <div class="scrollable">
+            <ul class="list">
+                {{#each tecnicos}}
+                    <li class="list-item">
+                        <a href="/tecnicos/{{this.cuit}}" class="item-card">
+                            <h3 class="card-title">{{this.nombre}}&nbsp;&nbsp;{{this.apellido}}</h3>
+                            <p>
+                                <span class="material-symbols-rounded card-detail-icon">documento</span>
+                                Documento: {{this.documento}}
+                            </p>
+                            <p>
+                                <span class="material-symbols-rounded card-detail-icon">my_location</span>
+                                Cuit: {{this.cuit}}
+                            </p>
+                            <p>
+                                <span class="material-symbols-rounded card-detail-icon">package_2</span>
+                                Are de Cobertura: {{this.areaDeCobertura}}
+                            </p>
+                        </a>
+                    </li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+{{/partial}}
+{{#partial "side-panel"}}
+    <div id="map"></div>
+{{/partial}}
+{{> templates/base}}
