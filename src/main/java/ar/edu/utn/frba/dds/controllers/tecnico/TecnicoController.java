@@ -10,8 +10,10 @@ import ar.edu.utn.frba.dds.models.entities.data.Documento;
 import ar.edu.utn.frba.dds.models.entities.data.TipoDocumento;
 import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
+import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
+import ar.edu.utn.frba.dds.models.stateless.ValidadorDeContrasenias;
 import ar.edu.utn.frba.dds.permissions.TecnicoRequired;
 import ar.edu.utn.frba.dds.permissions.UserRequired;
 import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
@@ -69,15 +71,26 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
   }
 
   @Override
-  public void save(Context context) { // TODO - Ver desp que matchee paraColaborador las vistas
+  public void save(Context context) {
 
     Map<String, Object> model = new HashMap<>();
     List<RedirectDTO> redirectDTOS = new ArrayList<>();
     boolean operationSuccess = false;
 
     try {
+      String contrasenia = context.formParamAsClass("contrasenia", String.class).get();
+      ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
 
-      Usuario usuario = Usuario.conEmail(context.formParamAsClass("mail", String.class).get());
+      if (!validador.esValida(contrasenia)) {
+        throw new ar.edu.utn.frba.dds.exceptions.ValidationException("La contraseña no cumple con los requisitos de seguridad.");
+      }
+
+      Usuario usuario = Usuario.con(
+          context.formParamAsClass("nombre_usuario", String.class).get(),
+          contrasenia,
+          context.formParamAsClass("email", String.class).get(),
+          TipoRol.TECNICO
+      );
 
       String nombre = context.formParamAsClass("nombre", String.class).get();
       String apellido = context.formParamAsClass("apellido", String.class).get();
@@ -91,15 +104,12 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
 
       MedioDeNotificacion medioDeNotificacion = MedioDeNotificacion.valueOf(context.formParamAsClass("medio-notificacion", String.class).get());
 
-      Contacto contacto;
-
-      if (medioDeNotificacion.equals(MedioDeNotificacion.EMAIL)) {
-        contacto = Contacto.conEmail(context.formParamAsClass("contacto", String.class).get());
-      } else if (medioDeNotificacion.equals(MedioDeNotificacion.WHATSAPP)) {
-        contacto = Contacto.conWhatsApp(context.formParamAsClass("contacto", String.class).get());
-      } else {
-        contacto = Contacto.conTelegram(context.formParamAsClass("contacto", String.class).get());
-      }
+      Contacto contacto = Contacto.con(
+          context.formParamAsClass("email", String.class).get(),
+          context.formParamAsClass("telefono", String.class).get(),
+          "whatsapp:" + context.formParamAsClass("whatsapp", String.class).get(),
+          context.formParamAsClass("telegram", String.class).get()
+      );
 
       Ubicacion ubicacion = new Ubicacion(
           context.formParamAsClass("latitud", Double.class).get(),
