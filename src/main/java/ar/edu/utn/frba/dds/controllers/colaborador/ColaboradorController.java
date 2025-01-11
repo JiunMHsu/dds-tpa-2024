@@ -83,7 +83,7 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
 
   @Override
   public void create(Context context) {
-   render(context,"signs/sign.hbs", new HashMap<>());
+   context.render("signs/sign.hbs");
   }
 
 
@@ -99,7 +99,6 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
     boolean operationSuccess = false;
 
     try {
-
       String contrasenia = context.formParamAsClass("contrasenia", String.class).get();
       ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
 
