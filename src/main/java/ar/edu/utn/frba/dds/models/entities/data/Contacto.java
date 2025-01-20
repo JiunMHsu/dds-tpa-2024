@@ -2,7 +2,8 @@ package ar.edu.utn.frba.dds.models.entities.data;
 
 import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
+
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Contacto {
+public class Contacto extends EntidadPersistente {
 
   @Column(name = "medio_notificacion")
   private MedioDeNotificacion medioDeNotificacion;

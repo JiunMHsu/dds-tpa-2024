@@ -117,12 +117,11 @@ public class ColaboradorController implements ICrudViewsHandler {
           Integer.valueOf(context.formParamAsClass("altura", String.class).get())
       );
 
-      Contacto contacto = Contacto.con(
-          context.formParamAsClass("email", String.class).get(),
-          context.formParamAsClass("telefono", String.class).get(),
-          "whatsapp:" + context.formParamAsClass("whatsapp", String.class).get(),
-          context.formParamAsClass("telegram", String.class).get()
-      );
+      Contacto email = Contacto.conEmail(context.formParamAsClass("email", String.class).get());
+      Contacto whatsapp = Contacto.conWhatsApp(context.formParamAsClass("whatsapp", String.class).get());
+      Contacto telegram = Contacto.conTelegram(context.formParamAsClass("telegram", String.class).get());
+
+      List<Contacto> contactos = new ArrayList<>(Arrays.asList(email, whatsapp, telegram));
 
       List<String> colaboracionesSeleccionadas = context.formParams("colaboraciones");
       ArrayList<TipoColaboracion> formasDeColaborar = new ArrayList<>();
@@ -137,7 +136,7 @@ public class ColaboradorController implements ICrudViewsHandler {
           context.formParamAsClass("apellido", String.class).get(),
           null,
           LocalDate.parse(context.formParamAsClass("fecha_nacimiento", String.class).get()),
-          contacto,
+          contactos,
           direccion,
           formasDeColaborar,
           new Puntos(0, false, null)
@@ -176,12 +175,11 @@ public class ColaboradorController implements ICrudViewsHandler {
           Integer.valueOf(context.formParamAsClass("altura", String.class).get())
       );
 
-      Contacto contacto = Contacto.con(
-          context.formParamAsClass("email", String.class).get(),
-          context.formParamAsClass("telefono", String.class).get(),
-          "whatsapp:+" + context.formParamAsClass("whatsapp", String.class).get(),
-          context.formParamAsClass("telegram", String.class).get()
-      );
+      Contacto email = Contacto.conEmail(context.formParamAsClass("email", String.class).get());
+      Contacto whatsapp = Contacto.conWhatsApp(context.formParamAsClass("whatsapp", String.class).get());
+      Contacto telegram = Contacto.conTelegram(context.formParamAsClass("telegram", String.class).get());
+
+      List<Contacto> contactos = new ArrayList<>(Arrays.asList(email, whatsapp, telegram));
 
       List<String> colaboracionesSeleccionadas = context.formParams("colaboraciones");
       ArrayList<TipoColaboracion> formasDeColaborar = new ArrayList<>();
@@ -195,7 +193,7 @@ public class ColaboradorController implements ICrudViewsHandler {
           context.formParamAsClass("razon_social", String.class).get(),
           TipoRazonSocial.valueOf(context.formParamAsClass("tipo_razon_social", String.class).get()),
           context.formParamAsClass("rubro", String.class).get(),
-          contacto,
+          contactos,
           direccion,
           formasDeColaborar,
           new Puntos(0, false, null)

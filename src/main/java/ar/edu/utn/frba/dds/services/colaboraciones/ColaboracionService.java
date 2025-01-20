@@ -30,6 +30,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ColaboracionService implements WithSimplePersistenceUnit {
@@ -135,7 +136,7 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
   private Colaborador generarColaborador(String nombre, String apellido, Documento documento, String email) {
     Usuario usuario = GeneradorDeCredenciales.generarUsuario(nombre, email);
     Colaborador colaborador = Colaborador.humanaDocumento(usuario, nombre, apellido, documento);
-    colaborador.setContacto(Contacto.conEmail(email));
+    colaborador.setContactos(new ArrayList<>(Arrays.asList(Contacto.conEmail(email))));
 
     usuarioRepository.guardar(usuario);
     colaboradorRepository.guardar(colaborador);

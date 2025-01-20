@@ -13,16 +13,8 @@ import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,8 +38,9 @@ public class Colaborador extends EntidadPersistente {
   @JoinColumn(name = "usuario_id", nullable = false)
   private Usuario usuario;
 
-  @Embedded
-  private Contacto contacto;
+  @OneToMany
+  @JoinColumn(name="contacto_id", referencedColumnName = "id")
+  private List<Contacto> contactos;
 
   @Embedded
   private Direccion direccion;
@@ -90,7 +83,7 @@ public class Colaborador extends EntidadPersistente {
                                      String razonSocial,
                                      TipoRazonSocial tipoRazonSocial,
                                      String rubro,
-                                     Contacto contacto,
+                                     List<Contacto> contactos,
                                      Direccion direccion,
                                      ArrayList<TipoColaboracion> formaDeColaborar,
                                      Puntos puntos) {
@@ -100,7 +93,7 @@ public class Colaborador extends EntidadPersistente {
         .razonSocial(razonSocial)
         .tipoRazonSocial(tipoRazonSocial)
         .rubro(rubro)
-        .contacto(contacto)
+        .contactos(contactos)
         .direccion(direccion)
         .formaDeColaborar(formaDeColaborar)
         .puntos(puntos)
@@ -112,7 +105,7 @@ public class Colaborador extends EntidadPersistente {
                                    String apellido,
                                    Documento documento,
                                    LocalDate fechaNacimiento,
-                                   Contacto contacto,
+                                   List<Contacto> contactos,
                                    Direccion direccion,
                                    ArrayList<TipoColaboracion> formaDeColaborar,
                                    Puntos puntos) {
@@ -123,7 +116,7 @@ public class Colaborador extends EntidadPersistente {
         .apellido(apellido)
         .documento(documento)
         .fechaNacimiento(fechaNacimiento)
-        .contacto(contacto)
+        .contactos(contactos)
         .direccion(direccion)
         .formaDeColaborar(formaDeColaborar)
         .puntos(puntos)
@@ -149,12 +142,12 @@ public class Colaborador extends EntidadPersistente {
   }
 
   public static Colaborador colaborador(Usuario usuario,
-                                        Contacto contacto,
+                                        List<Contacto> contactos,
                                         Direccion direccion,
                                         ArrayList<TipoColaboracion> formaDeColaborar) {
     return Colaborador.builder()
         .usuario(usuario)
-        .contacto(contacto)
+        .contactos(contactos)
         .direccion(direccion)
         .formaDeColaborar(formaDeColaborar)
         .build();

@@ -10,9 +10,9 @@ public class Notificador {
   public Notificador(ISender sender) {
     this.sender = sender;
   }
-
+//TODO cambiar logica
   public void enviarNotificacion(Mensaje mensaje) throws MessagingException {
-    sender.enviarMensaje(mensaje.getContacto(), mensaje.getAsunto(), mensaje.getCuerpo());
+   // sender.enviarMensaje(mensaje.getContacto(), mensaje.getAsunto(), mensaje.getCuerpo());
     mensaje.setFechaEnvio(LocalDateTime.now());
   }
 }

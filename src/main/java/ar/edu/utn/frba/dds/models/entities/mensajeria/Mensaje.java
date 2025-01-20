@@ -4,6 +4,9 @@ import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -84,10 +87,10 @@ public class Mensaje {
     return Mensaje.para(null, receptor, asunto, cuerpo, null, null);
   }
 
-  public Contacto getContacto() {
+  public List<Contacto> getContacto() {
     if (colaborador != null)
-      return colaborador.getContacto();
+      return colaborador.getContactos();
     else
-      return tecnico.getContacto();
+      return new ArrayList<>(Arrays.asList(tecnico.getContacto()));
   }
 }
