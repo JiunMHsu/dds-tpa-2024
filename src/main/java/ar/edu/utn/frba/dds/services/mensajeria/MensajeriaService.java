@@ -1,10 +1,12 @@
 package ar.edu.utn.frba.dds.services.mensajeria;
 
+import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.*;
 import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFallaHeladera;
 import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFaltaVianda;
 import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionHeladeraLlena;
+import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.repositories.mensajeria.MensajeRepository;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 
@@ -31,6 +33,27 @@ public class MensajeriaService {
     this.senders = senders;
   }
 
+  public void enviarNotificacion(Mensaje mensaje, MedioDeNotificacion medioDeNotificacion){
+    enviarPorMedio(mensaje, medioDeNotificacion);
+  }
+
+  public void enviarNotificacionColaborador(String asunto, String cuerpo, Colaborador receptor, MedioDeNotificacion medioDeNotificacion){
+    Mensaje mensaje = Mensaje.paraColaborador(
+            receptor,
+            asunto,
+            cuerpo
+    );
+    enviarPorMedio(mensaje, medioDeNotificacion);
+  }
+
+  public void enviarNotificacionTecnico(String asunto, String cuerpo, Tecnico receptor, MedioDeNotificacion medioDeNotificacion){
+    Mensaje mensaje = Mensaje.paraTecnico(
+            receptor,
+            asunto,
+            cuerpo
+    );
+    enviarPorMedio(mensaje, medioDeNotificacion);
+  }
   public void notificacionFaltaVianda(SuscripcionFaltaVianda suscripcion) {
     String asunto = "Heladera con baja disponibilidad de viandas";
     String cuerpo = String.format(

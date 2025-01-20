@@ -49,7 +49,7 @@ public class TelegramSender implements ISender {
   @Override
   public void enviarMensaje(Contacto contacto, String asunto, String cuerpo) {
 
-    String receptor = contacto.getContacto(MedioDeNotificacion.TELEGRAM);
+    String receptor = contacto.getContacto();
     if (receptor == null)
       throw new IllegalArgumentException("El contacto no tiene una cuenta de Telegram asociada");
 
