@@ -37,23 +37,6 @@ public class MensajeriaService {
     enviarPorMedio(mensaje, medioDeNotificacion);
   }
 
-  public void enviarNotificacionColaborador(String asunto, String cuerpo, Colaborador receptor, MedioDeNotificacion medioDeNotificacion){
-    Mensaje mensaje = Mensaje.paraColaborador(
-            receptor,
-            asunto,
-            cuerpo
-    );
-    enviarPorMedio(mensaje, medioDeNotificacion);
-  }
-
-  public void enviarNotificacionTecnico(String asunto, String cuerpo, Tecnico receptor, MedioDeNotificacion medioDeNotificacion){
-    Mensaje mensaje = Mensaje.paraTecnico(
-            receptor,
-            asunto,
-            cuerpo
-    );
-    enviarPorMedio(mensaje, medioDeNotificacion);
-  }
   public void notificacionFaltaVianda(SuscripcionFaltaVianda suscripcion) {
     String asunto = "Heladera con baja disponibilidad de viandas";
     String cuerpo = String.format(

@@ -7,14 +7,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,12 +26,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "mensaje")
-public class Mensaje {
-
-  @Id
-  @GeneratedValue(generator = "uuid")
-  @Column(name = "id", columnDefinition = "BINARY(16)")
-  private UUID id;
+public class Mensaje extends EntidadPersistente {
 
   @Column(name = "asunto", nullable = false)
   private String asunto;
@@ -48,21 +42,23 @@ public class Mensaje {
   @Column(name = "fecha_envio", nullable = false)
   private LocalDateTime fechaEnvio;
 
-  public static Mensaje para(Colaborador colaborador,
-                             Tecnico tecnico,
+  public static Mensaje para(Contacto contacto,
                              String asunto,
                              String cuerpo,
-                             MedioDeNotificacion medio,
                              LocalDateTime fechaEnvio) {
     return Mensaje
-        .builder()
-        .asunto(asunto)
-        .cuerpo(cuerpo)
-        .colaborador(colaborador)
-        .tecnico(tecnico)
-        .medio(medio)
-        .fechaEnvio(fechaEnvio)
-        .build();
+            .builder()
+            .contacto(contacto)
+            .asunto(asunto)
+            .cuerpo(cuerpo)
+            .fechaEnvio(fechaEnvio)
+            .build();
+  }
+
+  public static Mensaje con(Contacto receptor,
+                            String asunto,
+                            String cuerpo) {
+    return Mensaje.para(receptor,  asunto, cuerpo, null);
   }
 
   public static Mensaje paraColaborador(Colaborador receptor,
@@ -77,10 +73,4 @@ public class Mensaje {
     return Mensaje.para(null, receptor, asunto, cuerpo, null, null);
   }
 
-  public List<Contacto> getContacto() {
-    if (colaborador != null)
-      return colaborador.getContactos();
-    else
-      return new ArrayList<>(Arrays.asList(tecnico.getContacto()));
-  }
 }

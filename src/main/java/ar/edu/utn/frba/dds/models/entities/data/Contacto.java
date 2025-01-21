@@ -24,14 +24,14 @@ public class Contacto extends EntidadPersistente {
   @Column(name = "medio_notificacion")
   private MedioDeNotificacion medioDeNotificacion;
 
-  @Column(name = "contacto")
-  private String contacto;
+  @Column(name = "valor")
+  private String valor;
 
-  public static Contacto con(MedioDeNotificacion medioDeNotificacion, String contacto) {
+  public static Contacto con(MedioDeNotificacion medioDeNotificacion, String valor) {
     return Contacto
         .builder()
         .medioDeNotificacion(medioDeNotificacion)
-        .contacto(contacto)
+        .valor(valor)
         .build();
   }
   public static Contacto conTelegram(String telegram) {
