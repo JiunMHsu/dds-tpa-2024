@@ -171,7 +171,7 @@ public class Colaborador extends EntidadPersistente {
   public Optional<Contacto> getContacto(MedioDeNotificacion medioDeNotificacion){
     return contactos.stream()
             .filter(contacto -> contacto.getMedioDeNotificacion() == medioDeNotificacion)
-            .findFirst();
+            .findFirst();//solo es posible un tipo de contacto de cada uno pero asi me devuelve optional
   }
 
   public void agregarContacto(Contacto contacto){

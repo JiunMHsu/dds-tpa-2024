@@ -118,7 +118,7 @@ public class ColaboradorController implements ICrudViewsHandler {
       );
 
       Contacto email = Contacto.conEmail(context.formParamAsClass("email", String.class).get());
-      Contacto whatsapp = Contacto.conWhatsApp(context.formParamAsClass("whatsapp", String.class).get());
+      Contacto whatsapp = Contacto.conWhatsApp("whatsapp:" + context.formParamAsClass("whatsapp", String.class).get());
       Contacto telegram = Contacto.conTelegram(context.formParamAsClass("telegram", String.class).get());
 
       List<Contacto> contactos = new ArrayList<>(Arrays.asList(email, whatsapp, telegram));
