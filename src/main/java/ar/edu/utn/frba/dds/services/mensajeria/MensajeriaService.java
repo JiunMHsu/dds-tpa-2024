@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.services.mensajeria;
 
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.*;
 import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFallaHeladera;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class MensajeriaService {
@@ -35,6 +37,50 @@ public class MensajeriaService {
 
   public void enviarNotificacion(Mensaje mensaje, MedioDeNotificacion medioDeNotificacion){
     enviarPorMedio(mensaje, medioDeNotificacion);
+  }
+
+
+  public void notificacionFallaHeladera(SuscripcionFallaHeladera suscripcion) {
+//    String asunto = "Falla en la heladera";
+//    String sugerencias = this.heladerasActivasMasCercanas(suscripcion.getHeladera())
+//            .stream()
+//            .map(heladera -> heladera.getNombre())
+//            .collect(Collectors.joining("\n"));
+//    String cuerpo = String.format(
+//            "Estimado/a %s,\n\n" +
+//                    "La %s ha sufrido un desperfecto.\n\n" +
+//                    "Por favor, traslade las viandas a las siguientes heladeras sugeridas:\n\n" +
+//                    "%s\n" +
+//                    "Gracias por su rápida acción.",
+//            suscripcion.getColaborador().getNombre(),
+//            suscripcion.getHeladera().getNombre(),
+//            sugerencias
+//    );
+//
+//    try {
+//      Optional<Contacto> contacto = suscripcion.getColaborador().getContacto(suscripcion.getMedioDeNotificacion());
+//      if (contacto.isPresent()) {
+//        Mensaje mensaje = Mensaje.con(
+//                contacto.get(),
+//                asunto,
+//                cuerpo);
+//      }
+//      else {
+//        System.out.println("Medio de contacto solicitado no disponible. No se puede enviar el mensaje.");
+//      }
+//    }catch (Exception e) {
+//      e.printStackTrace();
+//    }
+    //enviarPorMedio(mensaje, suscripcion.getMedioDeNotificacion());
+
+
+  }
+
+  public List<Heladera> heladerasActivasMasCercanas(Heladera heladera) {
+    return heladeraService.buscarPorBarrio(heladera.getDireccion().getBarrio())
+            .stream()
+            .filter(Heladera::estaActiva)
+            .toList();
   }
 
   public void notificacionFaltaVianda(SuscripcionFaltaVianda suscripcion) {
@@ -78,31 +124,7 @@ public class MensajeriaService {
 //    enviarPorMedio(mensaje, suscripcion.getMedioDeNotificacion());
   }
 
-  public void notificacionFallaHeladera(SuscripcionFallaHeladera suscripcion) {
-//    String asunto = "Falla en la heladera";
-//    String sugerencias = this.heladerasActivasMasCercanas(suscripcion.getHeladera())
-//        .stream()
-//        .map(heladera -> heladera.getNombre())
-//        .collect(Collectors.joining("\n"));
-//    String cuerpo = String.format(
-//        "Estimado/a %s,\n\n" +
-//            "La %s ha sufrido un desperfecto.\n\n" +
-//            "Por favor, traslade las viandas a las siguientes heladeras sugeridas:\n\n" +
-//            "%s\n" +
-//            "Gracias por su rápida acción.",
-//        suscripcion.getColaborador().getNombre(),
-//        suscripcion.getHeladera().getNombre(),
-//        sugerencias
-//    );
-//
-//    Mensaje mensaje = Mensaje.paraColaborador(
-//        suscripcion.getColaborador(),
-//        asunto,
-//        cuerpo
-//    );
-//
-//    enviarPorMedio(mensaje, suscripcion.getMedioDeNotificacion());
-  }
+
 
   public void enviarPorMedio(Mensaje mensaje, MedioDeNotificacion medio) {
     ISender sender = senders.get(medio);
@@ -119,10 +141,5 @@ public class MensajeriaService {
     }
   }
 
-  public List<Heladera> heladerasActivasMasCercanas(Heladera heladera) {
-    return heladeraService.buscarPorBarrio(heladera.getDireccion().getBarrio())
-        .stream()
-        .filter(Heladera::estaActiva)
-        .toList();
-  }
+
 }

@@ -59,4 +59,5 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
   public List<SuscripcionFallaHeladera> obtenerPorHeladera(Heladera heladera) {
     return fallaHeladeraRepository.obtenerPorHeladera(heladera);
   }
+
 }
