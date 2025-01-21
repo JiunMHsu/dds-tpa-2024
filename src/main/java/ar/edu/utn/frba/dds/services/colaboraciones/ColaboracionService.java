@@ -151,7 +151,7 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
         + " - Nombre por usuario provicional: " + usuario.getNombre()
         + " - Contrasenia por usuario provicional: " + usuario.getContrasenia();
 
-    Mensaje mensaje = Mensaje.con(colaborador.getEmail().get(), asunto, cuerpo);
+    Mensaje mensaje = Mensaje.con(colaborador.getContacto(MedioDeNotificacion.EMAIL).get(), asunto, cuerpo);
     return mensaje;
   }
 

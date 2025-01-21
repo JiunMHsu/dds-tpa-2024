@@ -38,70 +38,70 @@ public class MensajeriaService {
   }
 
   public void notificacionFaltaVianda(SuscripcionFaltaVianda suscripcion) {
-    String asunto = "Heladera con baja disponibilidad de viandas";
-    String cuerpo = String.format(
-        "Estimado/a %s,\n\n" +
-            "La %s tiene solo %d viandas restantes. Por favor, lleve más viandas para reabastecerla.\n\n" +
-            "Gracias por su colaboración.",
-        suscripcion.getColaborador().getNombre(),
-        suscripcion.getHeladera().getNombre(),
-        suscripcion.getViandasRestantes()
-    );
-
-    Mensaje mensaje = Mensaje.paraColaborador(
-        suscripcion.getColaborador(),
-        asunto,
-        cuerpo
-    );
-
-    enviarPorMedio(mensaje, suscripcion.getMedioDeNotificacion());
+//    String asunto = "Heladera con baja disponibilidad de viandas";
+//    String cuerpo = String.format(
+//        "Estimado/a %s,\n\n" +
+//            "La %s tiene solo %d viandas restantes. Por favor, lleve más viandas para reabastecerla.\n\n" +
+//            "Gracias por su colaboración.",
+//        suscripcion.getColaborador().getNombre(),
+//        suscripcion.getHeladera().getNombre(),
+//        suscripcion.getViandasRestantes()
+//    );
+//
+//    Mensaje mensaje = Mensaje.paraColaborador(
+//        suscripcion.getColaborador(),
+//        asunto,
+//        cuerpo
+//    );
+//
+//    enviarPorMedio(mensaje, suscripcion.getMedioDeNotificacion());
   }
 
   public void notificacionHeladeraLlena(SuscripcionHeladeraLlena suscripcion) {
-    String asunto = "Heladera casi llena";
-    String cuerpo = String.format(
-        "Estimado/a %s,\n\n" +
-            "La %s está a punto de llenarse, con solo espacio para %d viandas más. " +
-            "Por favor, redistribuir algunas viandas a otras heladeras.\n\n" +
-            "Gracias por su colaboración.",
-        suscripcion.getColaborador().getNombre(),
-        suscripcion.getHeladera().getNombre(),
-        suscripcion.getEspacioRestante()
-    );
-
-    Mensaje mensaje = Mensaje.paraColaborador(
-        suscripcion.getColaborador(),
-        asunto,
-        cuerpo
-    );
-
-    enviarPorMedio(mensaje, suscripcion.getMedioDeNotificacion());
+//    String asunto = "Heladera casi llena";
+//    String cuerpo = String.format(
+//        "Estimado/a %s,\n\n" +
+//            "La %s está a punto de llenarse, con solo espacio para %d viandas más. " +
+//            "Por favor, redistribuir algunas viandas a otras heladeras.\n\n" +
+//            "Gracias por su colaboración.",
+//        suscripcion.getColaborador().getNombre(),
+//        suscripcion.getHeladera().getNombre(),
+//        suscripcion.getEspacioRestante()
+//    );
+//
+//    Mensaje mensaje = Mensaje.paraColaborador(
+//        suscripcion.getColaborador(),
+//        asunto,
+//        cuerpo
+//    );
+//
+//    enviarPorMedio(mensaje, suscripcion.getMedioDeNotificacion());
   }
 
   public void notificacionFallaHeladera(SuscripcionFallaHeladera suscripcion) {
-    String asunto = "Falla en la heladera";
-    String sugerencias = this.heladerasActivasMasCercanas(suscripcion.getHeladera())
-        .stream()
-        .map(heladera -> heladera.getNombre())
-        .collect(Collectors.joining("\n"));
-    String cuerpo = String.format(
-        "Estimado/a %s,\n\n" +
-            "La %s ha sufrido un desperfecto.\n\n" +
-            "Por favor, traslade las viandas a las siguientes heladeras sugeridas:\n\n" +
-            "%s\n" +
-            "Gracias por su rápida acción.",
-        suscripcion.getColaborador().getNombre(),
-        suscripcion.getHeladera().getNombre(),
-        sugerencias
-    );
-
-    Mensaje mensaje = Mensaje.paraColaborador(
-        suscripcion.getColaborador(),
-        asunto,
-        cuerpo
-    );
-
-    enviarPorMedio(mensaje, suscripcion.getMedioDeNotificacion());
+//    String asunto = "Falla en la heladera";
+//    String sugerencias = this.heladerasActivasMasCercanas(suscripcion.getHeladera())
+//        .stream()
+//        .map(heladera -> heladera.getNombre())
+//        .collect(Collectors.joining("\n"));
+//    String cuerpo = String.format(
+//        "Estimado/a %s,\n\n" +
+//            "La %s ha sufrido un desperfecto.\n\n" +
+//            "Por favor, traslade las viandas a las siguientes heladeras sugeridas:\n\n" +
+//            "%s\n" +
+//            "Gracias por su rápida acción.",
+//        suscripcion.getColaborador().getNombre(),
+//        suscripcion.getHeladera().getNombre(),
+//        sugerencias
+//    );
+//
+//    Mensaje mensaje = Mensaje.paraColaborador(
+//        suscripcion.getColaborador(),
+//        asunto,
+//        cuerpo
+//    );
+//
+//    enviarPorMedio(mensaje, suscripcion.getMedioDeNotificacion());
   }
 
   public void enviarPorMedio(Mensaje mensaje, MedioDeNotificacion medio) {

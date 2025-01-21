@@ -7,6 +7,6 @@ import jakarta.mail.MessagingException;
 public class SafeMailSender implements ISender {
   @Override
   public void enviarMensaje(Contacto contacto, String asunto, String cuerpo) throws MessagingException {
-    System.out.println("Sending massage to " + contacto.getContacto());
+    System.out.println("Sending massage to " + contacto.getValor());
   }
 }

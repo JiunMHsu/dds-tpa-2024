@@ -39,7 +39,7 @@ public class EmailSender implements ISender {
 
   @Override
   public void enviarMensaje(Contacto contacto, String asunto, String cuerpo) throws IllegalArgumentException, MessagingException {
-    String receptor = contacto.getContacto();
+    String receptor = contacto.getValor();
     if (receptor == null)
       throw new IllegalArgumentException("El contacto no tiene un email asociado");
 
