@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -42,17 +41,8 @@ public class Mensaje {
   private String cuerpo;
 
   @ManyToOne
-  @JoinColumn(name = "colaborador_id")
-  private Colaborador colaborador;
-
-  @ManyToOne
-  @JoinColumn(name = "tecnico_id")
-  private Tecnico tecnico;
-
-  @Setter
-  @Enumerated
-  @Column(name = "medio_notificacion", nullable = false)
-  private MedioDeNotificacion medio;
+  @JoinColumn(name = "contacto_id")
+  private Contacto contacto;
 
   @Setter
   @Column(name = "fecha_envio", nullable = false)
