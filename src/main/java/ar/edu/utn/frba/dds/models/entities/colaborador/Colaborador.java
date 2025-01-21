@@ -168,10 +168,14 @@ public class Colaborador extends EntidadPersistente {
     puntos.setEsValido(false);
   }
 
-  public Optional<Contacto> getEmail(){
+  public Optional<Contacto> getContacto(MedioDeNotificacion medioDeNotificacion){
     return contactos.stream()
-            .filter(contacto -> contacto.getMedioDeNotificacion() == MedioDeNotificacion.EMAIL)
+            .filter(contacto -> contacto.getMedioDeNotificacion() == medioDeNotificacion)
             .findFirst();
+  }
+
+  public void agregarContacto(Contacto contacto){
+      this.contactos.add(contacto);
   }
 }
 

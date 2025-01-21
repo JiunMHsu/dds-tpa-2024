@@ -1,12 +1,7 @@
 package ar.edu.utn.frba.dds.models.entities.mensajeria;
 
-import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
-import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -59,18 +54,6 @@ public class Mensaje extends EntidadPersistente {
                             String asunto,
                             String cuerpo) {
     return Mensaje.para(receptor,  asunto, cuerpo, null);
-  }
-
-  public static Mensaje paraColaborador(Colaborador receptor,
-                                        String asunto,
-                                        String cuerpo) {
-    return Mensaje.para(receptor, null, asunto, cuerpo, null, null);
-  }
-
-  public static Mensaje paraTecnico(Tecnico receptor,
-                                    String asunto,
-                                    String cuerpo) {
-    return Mensaje.para(null, receptor, asunto, cuerpo, null, null);
   }
 
 }
