@@ -38,8 +38,8 @@ public class EmailSender implements ISender {
   }
 
   @Override
-  public void enviarMensaje(Contacto contacto, String asunto, String cuerpo) throws IllegalArgumentException, MessagingException {
-    String receptor = contacto.getValor();
+  public void enviarMensaje(Mensaje mensaje) throws IllegalArgumentException, MessagingException {
+    String receptor = mensaje.getContacto().getValor();
     if (receptor == null)
       throw new IllegalArgumentException("El contacto no tiene un email asociado");
 
@@ -59,8 +59,8 @@ public class EmailSender implements ISender {
     Message message = new MimeMessage(session);
     message.setFrom(new InternetAddress("your-email@example.com"));
     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receptor));
-    message.setSubject(asunto);
-    message.setText(cuerpo);
+    message.setSubject(mensaje.getAsunto());
+    message.setText(mensaje.getCuerpo());
     Transport.send(message);
 
     System.out.println("Correo enviado");

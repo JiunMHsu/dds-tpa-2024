@@ -47,9 +47,9 @@ public class TelegramSender implements ISender {
   }
 
   @Override
-  public void enviarMensaje(Contacto contacto, String asunto, String cuerpo) {
+  public void enviarMensaje(Mensaje mensaje) {
 
-    String receptor = contacto.getValor();
+    String receptor = mensaje.getContacto().getValor();
     if (receptor == null)
       throw new IllegalArgumentException("El contacto no tiene una cuenta de Telegram asociada");
 
@@ -59,8 +59,8 @@ public class TelegramSender implements ISender {
 
     try {
       if (CHAT_ID != null) {
-        String mensaje = asunto + "\n\n" + cuerpo;
-        producerTemplate.sendBody("direct:sendToTelegram", mensaje);
+        String mensaje_concatenado = mensaje.getAsunto() + "\n\n" + mensaje.getCuerpo();
+        producerTemplate.sendBody("direct:sendToTelegram", mensaje_concatenado);
       } else {
         System.out.println("Chat ID aún no disponible. No se puede enviar el mensaje.");
       }

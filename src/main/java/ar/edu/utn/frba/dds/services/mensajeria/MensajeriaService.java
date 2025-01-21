@@ -111,7 +111,7 @@ public class MensajeriaService {
     }
 
     try {
-      sender.enviarMensaje(mensaje.getContacto(), mensaje.getAsunto(), mensaje.getCuerpo());
+      sender.enviarMensaje(mensaje);
       mensaje.setFechaEnvio(LocalDateTime.now());
       mensajeRepository.guardar(mensaje);
     } catch (Exception e) {

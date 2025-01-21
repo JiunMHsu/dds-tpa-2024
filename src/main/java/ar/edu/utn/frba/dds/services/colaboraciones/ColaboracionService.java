@@ -120,7 +120,7 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
                     colaboracionPrevia.getEmail()));
 
         Mensaje mensaje = mensajeCredencial(colaborador);
-        mailSender.enviarMensaje(colaborador.getContacto(MedioDeNotificacion.EMAIL).get(), mensaje.getAsunto(), mensaje.getCuerpo());
+        mailSender.enviarMensaje(mensaje);
         mensaje.setFechaEnvio(LocalDateTime.now());
         mensajeRepository.guardar(mensaje);
 
