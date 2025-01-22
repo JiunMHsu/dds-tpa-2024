@@ -22,14 +22,12 @@ import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
-import io.javalin.http.HttpStatus;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ColaboradorController extends ColaboradorRequired implements ICrudViewsHandler {
@@ -49,51 +47,36 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
         .toList();
     model.put("colaboradores", colaboradoresDTO);
 
-    render(context,"colaboradores/colaboradores.hbs", model);
+    render(context, "colaboradores/colaboradores.hbs", model);
   }
 
   @Override
   public void show(Context context) {
-    //ya esta creo (no sirve esto)
-    String colaboradorId = context.pathParam("id");
-    Colaborador colaborador = this.colaboradorService
-        .obtenerColaboradorPorID(colaboradorId)
-        .orElseThrow(ResourceNotFoundException::new);
+    // unused
+    context.result("show");
+  }
+
+  public void getProfile(Context context) {
+    Colaborador colaborador = colaboradorFromSession(context);
 
     Map<String, Object> model = new HashMap<>();
     ColaboradorDTO colaboradorDTO = ColaboradorDTO.completa(colaborador);
     model.put("colaborador", colaboradorDTO);
 
-    context.result("PENDIENTE");
-
-    // TODO - vista detalle de colaborador
-    // context.render("colaboradores/colaborador_detalle.hbs", model);
-
-  }
-
-  public void getProfile(Context context) {
-    Colaborador colaborador = colaboradorFromSession(context);
-    Map<String, Object> model = new HashMap<>();
-    ColaboradorDTO colaboradorDTO = ColaboradorDTO.completa(colaborador);
-    model.put("colaborador", colaborador);
-
-    render(context,"perfil/perfil.hbs", model);
-
+    render(context, "perfil/perfil.hbs", model);
   }
 
   @Override
   public void create(Context context) {
-   context.render("signs/sign.hbs");
+    context.render("signs/sign.hbs");
   }
-
 
   @Override
   public void save(Context context) {
-
   }
 
-  public void saveHumana(Context context) { // TODO - Se puede hacer mejor seguramente pero x ahora anda 👌
-
+  // TODO: REFACTOR
+  public void saveHumana(Context context) {
     Map<String, Object> model = new HashMap<>();
     List<RedirectDTO> redirectDTOS = new ArrayList<>();
     boolean operationSuccess = false;
@@ -145,7 +128,6 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
       );
 
       this.colaboradorService.guardar(colaboradorNuevo);
-
       operationSuccess = true;
 
     } catch (ValidationException v) {
@@ -216,9 +198,8 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
     } finally {
       model.put("success", operationSuccess);
       model.put("redirects", redirectDTOS);
-      render(context,"post_result.hbs", model);
+      render(context, "post_result.hbs", model);
     }
-
   }
 
 
@@ -227,33 +208,11 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
   }
 
   @Override
-  public void update(Context context) { // TODO - REFACTOR
-    String colaboradorId = context.pathParam("id");
-    Optional<Colaborador> posibleColaborador = this.colaboradorService.obtenerColaboradorPorID(colaboradorId);
-
-    if (posibleColaborador.isEmpty())
-      throw new ResourceNotFoundException("No se encontró colaborador paraColaborador id " + colaboradorId);
-
-    Colaborador colaboradorActualizado = posibleColaborador.get();
-    // TODO ver agregar forma colaborar
-    //  colaboradorActualizado.agregarFormaColaborar(Colaboracion.valueOf(context.formParam("nueva_forma_colaborar")));
-    this.colaboradorService.actualizar(colaboradorActualizado);
-    context.status(HttpStatus.OK);
+  public void update(Context context) {
   }
 
   @Override
   public void delete(Context context) {
-    String colaboradorId = context.pathParam("id");
-    Optional<Colaborador> posibleColaboradorAEliminar = this.colaboradorService.obtenerColaboradorPorID(colaboradorId);
-
-    if (posibleColaboradorAEliminar.isEmpty()) {
-      throw new ResourceNotFoundException("No se encontró colaborador paraColaborador id " + colaboradorId);
-    }
-
-    this.colaboradorService.eliminarColaborador(posibleColaboradorAEliminar.get());
-    context.status(HttpStatus.OK);
-    // mostrar algo por exitoso*/
-
   }
 
   public void editFormasDeColaborar(Context context) {
@@ -262,7 +221,8 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
 
     List<TipoColaboracion> formasRegistradas = colaborador.getFormaDeColaborar();
     System.out.println(formasRegistradas);
-    List<TipoColaboracion> formasPermitidas = colaborador.getTipoColaborador().colaboracionesPermitidas();
+    List<TipoColaboracion> formasPermitidas = colaborador.getTipoColaborador()
+        .colaboracionesPermitidas();
 
     List<TipoColaboracionDTO> colaboracionDTOS = formasPermitidas.stream()
         .map(c -> TipoColaboracionDTO.configOption(c, formasRegistradas.contains(c)))
@@ -272,7 +232,7 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
     model.put("id", pathId);
     model.put("colaboraciones", colaboracionDTOS);
 
-    render(context,"colaboradores/formas_de_colaboracion_editar.hbs", model);
+    render(context, "colaboradores/formas_de_colaboracion_editar.hbs", model);
   }
 
   public void updateFormasDeColaborar(Context context) {
@@ -300,7 +260,7 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
     } finally {
       model.put("success", operationSuccess);
       model.put("redirects", redirectDTOS);
-      render(context,"post_result.hbs", model);
+      render(context, "post_result.hbs", model);
     }
   }
 
@@ -311,8 +271,9 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
         .obtenerColaboradorPorID(colaboradorId)
         .orElseThrow(ResourceNotFoundException::new);
 
-    if (!Objects.equals(colaborador.getUsuario().getId().toString(), userId))
+    if (!Objects.equals(colaborador.getUsuario().getId().toString(), userId)) {
       throw new UnauthorizedException();
+    }
 
     return colaborador;
   }

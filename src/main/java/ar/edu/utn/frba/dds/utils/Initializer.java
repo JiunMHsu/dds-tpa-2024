@@ -7,11 +7,14 @@ import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.RubroOferta;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.models.entities.data.Area;
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
 import ar.edu.utn.frba.dds.models.entities.data.Calle;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
+import ar.edu.utn.frba.dds.models.entities.data.Documento;
 import ar.edu.utn.frba.dds.models.entities.data.Imagen;
+import ar.edu.utn.frba.dds.models.entities.data.TipoDocumento;
 import ar.edu.utn.frba.dds.models.entities.data.TipoRazonSocial;
 import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
@@ -310,7 +313,13 @@ public class Initializer implements WithSimplePersistenceUnit {
 
   private void withTecnicos() {
     Usuario u1 = Usuario.con("Tecnico1", "1111", "tecnico1@gmail.com", TipoRol.TECNICO);
-    Tecnico t1 = Tecnico.con(u1, "Tecnico", "Uno", null, "20-00019283-1", Contacto.vacio(), MedioDeNotificacion.EMAIL, null);
+    Area areaDeCoberura = Area.with(
+        new Ubicacion(-34.6037, -58.3816),
+        100,
+        new Barrio("Palermo")
+    );
+    Documento unDocumento = Documento.with(TipoDocumento.DNI, "00019283");
+    Tecnico t1 = Tecnico.con(u1, "Tecnico", "Uno", unDocumento, "20-00019283-1", Contacto.vacio(), MedioDeNotificacion.EMAIL, areaDeCoberura);
 
     beginTransaction();
     new UsuarioRepository().guardar(u1);

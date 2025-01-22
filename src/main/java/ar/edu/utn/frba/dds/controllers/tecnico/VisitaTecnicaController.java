@@ -2,7 +2,6 @@ package ar.edu.utn.frba.dds.controllers.tecnico;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.incidente.IncidenteDTO;
-import ar.edu.utn.frba.dds.dtos.tecnico.TecnicoDTO;
 import ar.edu.utn.frba.dds.dtos.tecnico.VisitaTecnicaDTO;
 import ar.edu.utn.frba.dds.exceptions.IncicenteToFixException;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
@@ -78,12 +77,7 @@ public class VisitaTecnicaController extends TecnicoRequired {
       model.put("incidente", IncidenteDTO.preview(incidente));
       render(context, "visitas_tecnicas/visita_tecnica_crear.hbs", model);
     } catch (ValidationException | IncicenteToFixException e) {
-      List<RedirectDTO> redirectDTOS = new ArrayList<>();
-      boolean operationSuccess = false;
-      redirectDTOS.add(new RedirectDTO("/incidentes", "Ver Incidentes"));
-      model.put("fail", operationSuccess);
-      model.put("redirects", redirectDTOS);
-      context.render("post_result.hbs", model);
+      render(context, "visitas_tecnicas/incidente_invalido.hbs", model);
     }
   }
 
@@ -117,7 +111,9 @@ public class VisitaTecnicaController extends TecnicoRequired {
       };
 
       UploadedFile uploadedFile = context.uploadedFile("foto");
-      if (uploadedFile == null) throw new InvalidFormParamException();
+      if (uploadedFile == null) {
+        throw new InvalidFormParamException();
+      }
       String pathImagen = fileService.guardarImagen(uploadedFile.content(), uploadedFile.extension());
 
       VisitaTecnica visitaTecnica = VisitaTecnica.por(
@@ -131,7 +127,9 @@ public class VisitaTecnicaController extends TecnicoRequired {
       );
 
       this.visitaTecnicaService.registrarVisita(visitaTecnica);
-      if (resuelta) this.incidenteService.resolverIncidente(incidente);
+      if (resuelta) {
+        this.incidenteService.resolverIncidente(incidente);
+      }
 
       operationSuccess = true;
       redirectDTOS.add(new RedirectDTO("/incidentes", "Registrar otra Visita"));

@@ -15,12 +15,12 @@
 {{/partial}}
 {{#partial "main-content"}}
     <div class="feature-container">
-            <div class="crear-tecnico feature">
-                <h3 class="feature-text">Crear Tecnico</h3>
-                <div class="feature-button-container">
-                    <a href="/tecnicos/new" class="feature-button">ver</a>
-                </div>
+        <div class="crear-tecnico feature">
+            <h3 class="feature-text">Crear Tecnico</h3>
+            <div class="feature-button-container">
+                <a href="/tecnicos/new" class="feature-button">ver</a>
             </div>
+        </div>
     </div>
 
     <div class="list-container">
@@ -36,7 +36,7 @@
             <ul class="list">
                 {{#each tecnicos}}
                     <li class="list-item">
-                        <a href="/tecnicos/{{this.cuit}}" class="item-card">
+                        <a href="/tecnicos/{{this.id}}" class="item-card">
                             <h3 class="card-title">{{this.nombre}}&nbsp;&nbsp;{{this.apellido}}</h3>
                             <p>
                                 <span class="material-symbols-rounded card-detail-icon">description</span>

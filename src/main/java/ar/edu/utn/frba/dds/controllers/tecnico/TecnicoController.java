@@ -15,7 +15,6 @@ import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.stateless.ValidadorDeContrasenias;
 import ar.edu.utn.frba.dds.permissions.TecnicoRequired;
-import ar.edu.utn.frba.dds.permissions.UserRequired;
 import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
@@ -45,17 +44,16 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
 
     Map<String, Object> model = new HashMap<>();
     model.put("tecnicos", tecnicosDTO);
-    render(context, "tecnicos/tecnico.hbs", new HashMap<>());
+    render(context, "tecnicos/tecnicos.hbs", model);
   }
 
   @Override
   public void show(Context context) {
-
-    String cuitTecnico = context.pathParam("cuit");
-    Optional<Tecnico> tecnicoBuscado = this.tecnicoService.buscarTecnicoPorCuit(cuitTecnico);
+    String idTecnico = context.pathParam("id");
+    Optional<Tecnico> tecnicoBuscado = this.tecnicoService.buscarTecnicoPorId(idTecnico);
 
     if (tecnicoBuscado.isEmpty()) {
-      throw new ResourceNotFoundException("No se encontró tecnico paraColaborador cuit " + cuitTecnico);
+      throw new ResourceNotFoundException("No se encontró tecnico paraColaborador cuit " + idTecnico);
     }
 
     Map<String, Object> model = new HashMap<>();
@@ -67,12 +65,11 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
 
   @Override
   public void create(Context context) {
-    render(context,"tecnicos/tecnico_crear.hbs", new HashMap<>());
+    render(context, "tecnicos/tecnico_crear.hbs", new HashMap<>());
   }
 
   @Override
   public void save(Context context) {
-
     Map<String, Object> model = new HashMap<>();
     List<RedirectDTO> redirectDTOS = new ArrayList<>();
     boolean operationSuccess = false;
