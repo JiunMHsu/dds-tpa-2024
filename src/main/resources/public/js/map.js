@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
 
         map.on('click', 'heladeras', (e) => {
-            const { id } = e.features[0].properties;
+            const {id} = e.features[0].properties;
 
             window.location.href = `/heladeras/${id}`;
         });

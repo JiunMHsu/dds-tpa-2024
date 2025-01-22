@@ -8,7 +8,6 @@ import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
 import ar.edu.utn.frba.dds.services.mapa.MapService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-
 import java.util.List;
 import java.util.Optional;
 

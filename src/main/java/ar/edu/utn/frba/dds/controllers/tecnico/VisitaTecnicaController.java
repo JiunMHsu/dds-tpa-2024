@@ -20,7 +20,6 @@ import ar.edu.utn.frba.dds.utils.DateTimeParser;
 import io.javalin.http.Context;
 import io.javalin.http.UploadedFile;
 import io.javalin.validation.ValidationException;
-
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

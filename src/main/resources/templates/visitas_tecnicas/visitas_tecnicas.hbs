@@ -15,12 +15,12 @@
 {{/partial}}
 {{#partial "main-content"}}
     <div class="feature-container">
-            <div class="crear-tecnico feature">
-                <h3 class="feature-text">Crear Visita Tecnica</h3>
-                <div class="feature-button-container">
-                    <a href="/visitas_tecnicas/new" class="feature-button">ver</a>
-                </div>
+        <div class="crear-tecnico feature">
+            <h3 class="feature-text">Crear Visita Tecnica</h3>
+            <div class="feature-button-container">
+                <a href="/visitas_tecnicas/new" class="feature-button">ver</a>
             </div>
+        </div>
     </div>
 
     <div class="list-container">
@@ -44,12 +44,13 @@
                             </p>
                             <p>
                                 {{#if this.resuelto}}
-                                style="color: #A7C957"
+                                    style="color: #A7C957"
                                 {{else}}
-                                style="color: #e37f8f"
+                                    style="color: #e37f8f"
                                 {{/if}}>
                                 <span class="material-symbols-rounded card-detail-icon"> radio_button_checked </span>
-                                Resuelto: {{#if this.pudoResolverse}} Resuelto {{else}} Pendiente {{/if}}
+                                Resuelto: {{#if this.pudoResolverse}}
+                                Resuelto {{else}} Pendiente {{/if}}
                             </p>
                         </a>
                     </li>

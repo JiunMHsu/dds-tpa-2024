@@ -3,7 +3,6 @@ package ar.edu.utn.frba.dds.services.colaboraciones;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.HacerseCargoHeladera;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladeraRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-
 import java.util.Optional;
 
 public class HacerseCargoHeladeraService implements WithSimplePersistenceUnit {

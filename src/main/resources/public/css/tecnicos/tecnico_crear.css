@@ -1,6 +1,7 @@
 .main-section {
     border: 1px solid var(--background-3);
 }
+
 .form-container {
     max-width: 80%;
     margin: 0 auto;
@@ -16,8 +17,9 @@
     max-width: 100%;
     margin: 0 auto;
 }
-.form-title{
-    margin-top:-0.2rem;
+
+.form-title {
+    margin-top: -0.2rem;
 }
 
 
@@ -26,6 +28,7 @@ label {
     flex-direction: column;
     margin-top: 0.7rem;
 }
+
 .column {
     flex: 1;
     margin-top: -0.4rem;

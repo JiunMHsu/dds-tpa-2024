@@ -9,7 +9,11 @@ import ar.edu.utn.frba.dds.exceptions.ValidationException;
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.Puntos;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.models.entities.data.*;
+import ar.edu.utn.frba.dds.models.entities.data.Barrio;
+import ar.edu.utn.frba.dds.models.entities.data.Calle;
+import ar.edu.utn.frba.dds.models.entities.data.Contacto;
+import ar.edu.utn.frba.dds.models.entities.data.Direccion;
+import ar.edu.utn.frba.dds.models.entities.data.TipoRazonSocial;
 import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.stateless.ValidadorDeContrasenias;
@@ -18,10 +22,12 @@ import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
-import io.javalin.http.HttpStatus;
-import io.javalin.validation.ValidationException;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ColaboradorController extends ColaboradorRequired implements ICrudViewsHandler {
