@@ -101,12 +101,10 @@ public class ServiceLocator {
                     instanceOf(HeladeraService.class),
                     instanceOf(IncidenteService.class),
                     instanceOf(FallaHeladeraService.class),
-                    instanceOf(MensajeriaService.class),
                     instanceOf(SolicitudDeAperturaService.class),
                     instanceOf(TarjetaPersonaVulnerableService.class),
                     instanceOf(AperturaHeladeraService.class),
-                    instanceOf(RetiroDeViandaService.class),
-                    instanceOf(TecnicoService.class));
+                    instanceOf(RetiroDeViandaService.class));
             instances.put(componentName, instance);
         }
 

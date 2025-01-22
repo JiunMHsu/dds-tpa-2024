@@ -13,10 +13,8 @@ import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.heladera.RetiroDeViandaService;
 import ar.edu.utn.frba.dds.services.heladera.SolicitudDeAperturaService;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
-import ar.edu.utn.frba.dds.services.mensajeria.MensajeriaService;
 import ar.edu.utn.frba.dds.services.suscripcion.FallaHeladeraService;
 import ar.edu.utn.frba.dds.services.tarjeta.TarjetaPersonaVulnerableService;
-import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
 
 import java.time.LocalDateTime;
@@ -31,31 +29,25 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
     private final HeladeraService heladeraService;
     private final IncidenteService incidenteService;
     private final FallaHeladeraService fallaHeladeraService;
-    private final MensajeriaService mensajeriaService;
     private final SolicitudDeAperturaService solicitudDeAperturaService;
     private final TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService;
     private final AperturaHeladeraService aperturaHeladeraService;
     private final RetiroDeViandaService retiroDeViandaService;
-    private final TecnicoService tecnicoService;
 
     public BrokerMessageHandler(HeladeraService heladeraService,
                                 IncidenteService incidenteService,
                                 FallaHeladeraService fallaHeladeraService,
-                                MensajeriaService mensajeriaService,
                                 SolicitudDeAperturaService solicitudDeAperturaService,
                                 TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService,
                                 AperturaHeladeraService aperturaHeladeraService,
-                                RetiroDeViandaService retiroDeViandaService,
-                                TecnicoService tecnicoService) {
+                                RetiroDeViandaService retiroDeViandaService) {
         this.heladeraService = heladeraService;
         this.incidenteService = incidenteService;
         this.fallaHeladeraService = fallaHeladeraService;
-        this.mensajeriaService = mensajeriaService;
         this.solicitudDeAperturaService = solicitudDeAperturaService;
         this.tarjetaPersonaVulnerableService = tarjetaPersonaVulnerableService;
         this.aperturaHeladeraService = aperturaHeladeraService;
         this.retiroDeViandaService = retiroDeViandaService;
-        this.tecnicoService = tecnicoService;
     }
 
     @Override
