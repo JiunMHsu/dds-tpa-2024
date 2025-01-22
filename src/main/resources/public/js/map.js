@@ -90,9 +90,12 @@ document.addEventListener('DOMContentLoaded', async function () {
             map.fitBounds(bounds, {padding: 20});
         });
 
-        map.on('load', () => {
-            console.log('Capas cargadas:', map.getStyle().layers.map(layer => layer.id));
+        map.on('click', 'heladeras', (e) => {
+            const { id } = e.features[0].properties;
+
+            window.location.href = `/heladeras/${id}`;
         });
+
     } catch (error) {
         console.error('Error al cargar el mapa:', error);
         alert('Error al cargar las heladeras. Por favor, intente nuevamente.');
