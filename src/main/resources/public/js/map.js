@@ -1,85 +1,103 @@
-document.addEventListener('DOMContentLoaded', function () {
-    mapboxgl.accessToken =
-        'pk.eyJ1IjoibWVsaXNwIiwiYSI6ImNtMGZwbWg1dTEzajEyaW4zYzB2dGo5YzcifQ.67pRGcVLHmjrFSVzz3Hh9A';
-    var map = new mapboxgl.Map({
+document.addEventListener('DOMContentLoaded', async function () {
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZ3J1cG8tMjItZGRzIiwiYSI6ImNtNHVmMnNlczBsaDAya29wNW91M2gyZzQifQ.5zb0wvUU8_k9rZfgg0yxXA';
+    const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11',
         center: [-58.4370894, -34.6075682], // Coordenadas de Buenos Aires
         zoom: 13,
     });
-    var marker;
-    var polygon;
 
-    function searchLocation() {
-        var location = document.getElementById('search').value;
-        fetch(
-            `https://api.mapbox.com/geocoding/v5/mapbox.places/${location}.json?access_token=${mapboxgl.accessToken}&country=AR`
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.features.length > 0) {
-                    var feature = data.features[0];
-                    var lat = feature.center[1];
-                    var lon = feature.center[0];
-                    map.setCenter([lon, lat]);
-                    map.setZoom(14);
+    try {
+        const response = await fetch('/json/heladeras.json');
+        if (!response.ok) {
+            throw new Error(`Error al cargar las heladeras: ${response.statusText}`);
+        }
+        const geojsonData = await response.json();
 
-                    // Eliminar el marcador anterior si existe
-                    if (marker) {
-                        marker.remove();
-                    }
+        if (!geojsonData.features || !Array.isArray(geojsonData.features)) {
+            throw new Error('El archivo GeoJSON no contiene el formato esperado.');
+        }
 
-                    // Eliminar el polígono anterior si existe
-                    if (polygon) {
-                        map.removeLayer('polygon');
-                        map.removeSource('polygon');
-                    }
+        map.on('load', function () {
+            map.addSource('heladeras', {
+                type: 'geojson',
+                data: geojsonData,
+            });
 
-                    // Verificar si es una dirección específica o una ciudad
-                    if (feature.place_type.includes('address')) {
-                        // Agregar un nuevo marcador en la ubicación encontrada
-                        marker = new mapboxgl.Marker().setLngLat([lon, lat]).addTo(map);
-                    } else if (feature.place_type.includes('place')) {
-                        // Dibujar un polígono alrededor de la ciudad
-                        fetch(
-                            `https://api.mapbox.com/geocoding/v5/mapbox.places/${location}.json?access_token=${mapboxgl.accessToken}&country=AR&types=place`
-                        )
-                            .then((response) => response.json())
-                            .then((data) => {
-                                if (data.features.length > 0) {
-                                    var cityFeature = data.features[0];
-                                    if (
-                                        cityFeature.geometry.type === 'Polygon' ||
-                                        cityFeature.geometry.type === 'MultiPolygon'
-                                    ) {
-                                        map.addSource('polygon', {
-                                            type: 'geojson',
-                                            data: cityFeature.geometry,
-                                        });
-
-                                        map.addLayer({
-                                            id: 'polygon',
-                                            type: 'line',
-                                            source: 'polygon',
-                                            layout: {},
-                                            paint: {
-                                                'line-color': '#FF0000',
-                                                'line-width': 3,
-                                            },
-                                        });
-                                    } else {
-                                        alert(
-                                            'No se encontraron límites de la ciudad para dibujar el polígono.'
-                                        );
-                                    }
-                                }
-                            })
-                            .catch((error) => console.error('Error:', error));
-                    }
-                } else {
-                    alert('Ubicación no encontrada');
+            map.addLayer({
+                id: "heladeras",
+                type: "circle",
+                source: "heladeras",
+                paint: {
+                    "circle-color": [
+                        "case",
+                        ["==", ["get", "isActive"], 1], "hsl(120, 45%, 58%)", // Activa
+                        "hsl(0, 55%, 54%)" // Inactiva
+                    ],
+                    "circle-radius": 10,
+                    "circle-stroke-color": "hsl(0, 0%, 0%)",
+                    "circle-stroke-width": 1,
+                    "circle-opacity": 1,
                 }
-            })
-            .catch((error) => console.error('Error:', error));
+            });
+
+            map.addLayer({
+                id: "heladeras-hover",
+                type: "circle",
+                source: "heladeras",
+                paint: {
+                    "circle-color": "hsl(45, 85%, 65%)",
+                    "circle-radius": 12,
+                    "circle-stroke-color": "hsl(0, 0%, 0%)",
+                    "circle-stroke-width": 2,
+                    "circle-opacity": 0.7,
+                },
+                filter: ["==", ["get", "id"], ""],
+            });
+
+            const popup = new mapboxgl.Popup({
+                closeButton: false,
+                closeOnClick: false,
+            });
+
+            map.on('mouseenter', 'heladeras', (e) => {
+                map.getCanvas().style.cursor = 'pointer';
+
+                const {coordinates} = e.features[0].geometry;
+                const {name, isActive} = e.features[0].properties;
+
+                const color = isActive === 1 ? "hsl(120, 45%, 58%)" : "hsl(0, 55%, 54%)";
+
+                popup
+                    .setLngLat(coordinates)
+                    .setHTML(
+                        `<strong style="color: ${color};">${name}</strong>`
+                    )
+                    .addTo(map);
+
+                map.setFilter('heladeras-hover', ['==', ['get', 'id'], e.features[0].properties.id]);
+            });
+
+            map.on('mouseleave', 'heladeras', () => {
+                map.getCanvas().style.cursor = '';
+                popup.remove();
+                map.setFilter('heladeras-hover', ['==', ['get', 'id'], '']);
+            });
+
+            const bounds = geojsonData.features.reduce((bounds, feature) => {
+                return bounds.extend(feature.geometry.coordinates);
+            }, new mapboxgl.LngLatBounds());
+            map.fitBounds(bounds, {padding: 20});
+        });
+
+        map.on('click', 'heladeras', (e) => {
+            const { id } = e.features[0].properties;
+
+            window.location.href = `/heladeras/${id}`;
+        });
+
+    } catch (error) {
+        console.error('Error al cargar el mapa:', error);
+        alert('Error al cargar las heladeras. Por favor, intente nuevamente.');
     }
 });

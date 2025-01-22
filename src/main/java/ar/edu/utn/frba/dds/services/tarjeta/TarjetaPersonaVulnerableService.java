@@ -4,6 +4,7 @@ import ar.edu.utn.frba.dds.exceptions.PersonaVulnerableNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.personaVulnerable.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaPersonaVulnerable;
 import ar.edu.utn.frba.dds.models.repositories.tarjeta.TarjetaPersonaVulnerableRepository;
+
 import java.util.Optional;
 
 public class TarjetaPersonaVulnerableService {

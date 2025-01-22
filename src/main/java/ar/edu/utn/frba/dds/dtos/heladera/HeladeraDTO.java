@@ -17,6 +17,10 @@ public class HeladeraDTO {
 
   private String estado;
 
+  private String calle;
+
+  private String altura;
+
   private String calleYAltura;
 
   private String barrio;
@@ -24,6 +28,10 @@ public class HeladeraDTO {
   private String capacidad;
 
   private String ubicacion;
+
+  private String latitud;
+
+  private String longitud;
 
   private String cantViandas; // cambie nombre, un poco mas expresivo
 
@@ -40,7 +48,7 @@ public class HeladeraDTO {
   public static HeladeraDTO completa(Heladera heladera) {
 
     String direccionString = heladera.getDireccion().getCalle().getNombre() + " " + heladera.getDireccion().getAltura().toString();
-    String latitudLongitudString = heladera.getDireccion().getUbicacion().getLatitud() + ", " + heladera.getDireccion().getUbicacion().getLongitud();
+    String latitudLongitudString = String.valueOf(heladera.getDireccion().getUbicacion().getLatitud()) + ", " + String.valueOf(heladera.getDireccion().getUbicacion().getLongitud());
 
     String ultimaTempString = heladera.getUltimaTemperatura() != null
         ? heladera.getUltimaTemperatura().toString()
@@ -66,18 +74,17 @@ public class HeladeraDTO {
 
   public static HeladeraDTO preview(Heladera heladera) {
 
-    String direccionString = heladera.getDireccion().getCalle().getNombre() + " " + heladera.getDireccion().getAltura().toString();
-    String latitudLongitudString = heladera.getDireccion().getUbicacion().getLatitud() + ", " + heladera.getDireccion().getUbicacion().getLongitud();
-
     return HeladeraDTO
         .builder()
         .id(heladera.getId().toString())
         .nombre(heladera.getNombre())
         .estado(heladera.getEstado().toString())
-        .calleYAltura(direccionString)
-        .ubicacion(latitudLongitudString)
+        .calle(heladera.getDireccion().getCalle().getNombre())
+        .altura(heladera.getDireccion().getAltura().toString())
+        .latitud(String.valueOf(heladera.getDireccion().getUbicacion().getLatitud()))
+        .longitud(String.valueOf(heladera.getDireccion().getUbicacion().getLongitud()))
         .cantViandas(heladera.getViandas().toString())
-        .estaActiva(heladera.getEstado().equals(EstadoHeladera.ACTIVA))
         .build();
+
   }
 }

@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.services.puntoIdeal;
 
 import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
+
 import java.util.ArrayList;
 import java.util.List;
 

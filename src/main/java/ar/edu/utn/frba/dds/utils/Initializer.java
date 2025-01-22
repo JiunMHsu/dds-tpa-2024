@@ -33,6 +33,7 @@ import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.TecnicoRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
+import ar.edu.utn.frba.dds.services.mapa.MapService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -52,8 +53,8 @@ public class Initializer implements WithSimplePersistenceUnit {
     instance.withVarianteDePuntos();
     instance.withOfertas();
     instance.withTecnicos();
-
     instance.initializeMqttSubscribers();
+    instance.withMapa();
 
     // PDFGenerator pdfGenerator = new PDFGenerator(AppProperties.getInstance().propertyFromName("REPORT_DIR"));
     // ServiceLocator.instanceOf(ReporteService.class).generarReporteSemanal(pdfGenerator);
@@ -117,59 +118,65 @@ public class Initializer implements WithSimplePersistenceUnit {
 
   public void withHeladeras() {
 
-    Ubicacion u1 = new Ubicacion(-34.6037, -58.3816);
-    Ubicacion u2 = new Ubicacion(-34.6040, -58.3800);
-    Ubicacion u3 = new Ubicacion(-34.6050, -58.3825);
-    Ubicacion u4 = new Ubicacion(-34.6035, -58.3830);
-    Ubicacion u5 = new Ubicacion(-34.6028, -58.3810);
-    Ubicacion u6 = new Ubicacion(-34.6060, -58.3845);
-    Ubicacion u7 = new Ubicacion(-34.6045, -58.3790);
-    Ubicacion u8 = new Ubicacion(-34.6058, -58.3805);
-    Ubicacion u9 = new Ubicacion(-34.6032, -58.3820);
-    Ubicacion u10 = new Ubicacion(-34.6070, -58.3850);
-    Ubicacion u11 = new Ubicacion(-34.6025, -58.3795);
-    Ubicacion u12 = new Ubicacion(-34.6080, -58.3835);
-    Ubicacion u13 = new Ubicacion(-34.6090, -58.3860);
-    Ubicacion u14 = new Ubicacion(-34.6010, -58.3785);
-    Ubicacion u15 = new Ubicacion(-34.6075, -58.3800);
+    Ubicacion u1 = new Ubicacion(-34.65980101272007, -58.46812313140898); // UTN Lugano
+    Ubicacion u2 = new Ubicacion(-34.60400600198791, -58.38577280188418); // Guerrin
+    Ubicacion u3 = new Ubicacion(-34.59861794351904, -58.420114964305405); // UTN Medrano
+    Ubicacion u4 = new Ubicacion(-34.64428344483126, -58.453748279907344); // Hospital General de Agudos Parmenio Piñero
+    Ubicacion u5 = new Ubicacion(-34.619033507138035, -58.44661616661939); // Ferro
+    Ubicacion u6 = new Ubicacion(-34.562359819003255, -58.45626500682845); // Cabildo y Juramento (Liena D)
+    Ubicacion u7 = new Ubicacion(-34.60286430113411, -58.41129164421226); // Abasto Shopping
+    Ubicacion u8 = new Ubicacion(-34.58884555335712, -58.43025865436272); // Plaza Serrano
+    Ubicacion u9 = new Ubicacion(-34.59453003815602, -58.45045997071465); // Atlanta
+    Ubicacion u10 = new Ubicacion(-34.60802625811091, -58.37230040014313); // Plaza de Mayo
+    Ubicacion u11 = new Ubicacion(-34.6393172975206, -58.36271557071799); // Caminito de la Boca
+    Ubicacion u12 = new Ubicacion(-34.58138694779834, -58.42103364660331); // Plaza Italia
+    Ubicacion u13 = new Ubicacion(-34.58329462979221, -58.39133076001772); // Facultad de Derecho
+    Ubicacion u14 = new Ubicacion(-34.60385381907532, -58.382421802790795); // Obelisco (por Av. Corrientes)
+    Ubicacion u15 = new Ubicacion(-34.556405019747, -58.451607904832194); // Barrio Chino (Arribeños)
 
-    Barrio b1 = new Barrio("Palermo");
-    Barrio b2 = new Barrio("Recoleta");
-    Barrio b3 = new Barrio("San Telmo");
-    Barrio b4 = new Barrio("Belgrano");
-    Barrio b5 = new Barrio("La Boca");
-    Barrio b6 = new Barrio("Almagro");
-    Barrio b7 = new Barrio("Villa Urquiza");
-    Barrio b8 = new Barrio("Caballito");
-    Barrio b9 = new Barrio("Nuñez");
-    Barrio b10 = new Barrio("Puerto Madero");
+    Barrio b1 = new Barrio("Villa Lugano");
+    Barrio b2 = new Barrio("San Nicolás");
+    Barrio b3 = new Barrio("Almagro");
+    Barrio b4 = new Barrio("Flores");
+    Barrio b5 = new Barrio("Caballito");
+    Barrio b6 = new Barrio("Balvanera");
+    Barrio b7 = new Barrio("Palermo");
+    Barrio b8 = new Barrio("Villa Crespo");
+    Barrio b9 = new Barrio("Monserrat");
+    Barrio b10 = new Barrio("La Boca");
+    Barrio b11 = new Barrio("Recoleta");
+    Barrio b12 = new Barrio("Belgrano");
 
-    Calle c1 = new Calle("Avenida Corrientes");
-    Calle c2 = new Calle("Florida");
-    Calle c3 = new Calle("Avenida 9 por Julio");
-    Calle c4 = new Calle("Avenida Santa Fe");
+    Calle c1 = new Calle("Agüero");
+    Calle c2 = new Calle("Avenida Rivadavia");
+    Calle c3 = new Calle("Mozart");
+    Calle c4 = new Calle("Avenida Varela");
     Calle c5 = new Calle("Avenida Medrano");
-    Calle c6 = new Calle("Avenida por Mayo");
-    Calle c7 = new Calle("Avenida Libertador");
-    Calle c8 = new Calle("Lavalle");
-    Calle c9 = new Calle("Avenida Pueyrredón");
-    Calle c10 = new Calle("Avenida Alvear");
+    Calle c6 = new Calle("Caminito");
+    Calle c7 = new Calle("Avenida Cabildo");
+    Calle c8 = new Calle("Serrano");
+    Calle c9 = new Calle("Gral. Marin de Gainza");
+    Calle c10 = new Calle("Arribeños");
+    Calle c11 = new Calle("Avenida Dorrego");
+    Calle c12 = new Calle("Avenida Santa Fe");
+    Calle c13 = new Calle("Julio Victor González");
+    Calle c14 = new Calle("Avenida Corrientes");
 
-    Direccion d1 = new Direccion(b6, c2, 1765, u1);
-    Direccion d2 = new Direccion(b7, c3, 1933, u2);
-    Direccion d3 = new Direccion(b6, c5, 734, u3);
-    Direccion d4 = new Direccion(b6, c2, 871, u4);
-    Direccion d5 = new Direccion(b5, c9, 178, u5);
-    Direccion d6 = new Direccion(b3, c1, 2330, u6);
-    Direccion d7 = new Direccion(b1, c4, 1251, u7);
-    Direccion d8 = new Direccion(b4, c6, 1765, u8);
-    Direccion d9 = new Direccion(b2, c7, 1123, u9);
-    Direccion d10 = new Direccion(b6, c8, 2915, u10);
-    Direccion d11 = new Direccion(b10, c10, 3644, u11);
-    Direccion d12 = new Direccion(b9, c2, 1131, u12);
-    Direccion d13 = new Direccion(b8, c3, 3331, u13);
-    Direccion d14 = new Direccion(b10, c4, 3242, u14);
-    Direccion d15 = new Direccion(b10, c5, 3633, u15);
+    Direccion d1 = new Direccion(b1, c3, 2300, u1);  // UTN Lugano
+    Direccion d2 = new Direccion(b2, c14, 1368, u2);  // Guerrin
+    Direccion d3 = new Direccion(b3, c5, 951, u3);   // UTN Medrano
+    Direccion d4 = new Direccion(b4, c4, 1301, u4);  // Hospital General de Agudos Parmenio Piñero
+    Direccion d5 = new Direccion(b5, c9, 260, u5);   // Ferro
+    Direccion d6 = new Direccion(b12, c7, 2061, u6);  // Cabildo y Juramento
+    Direccion d7 = new Direccion(b6, c1, 611, u7);  // Abasto Shopping
+    Direccion d8 = new Direccion(b7, c8, 1595, u8);  // Plaza Serrano
+    Direccion d9 = new Direccion(b8, c11, 457, u9);  // Atlanta
+    Direccion d10 = new Direccion(b9, c2, 360, u10); // Plaza de Mayo
+    Direccion d11 = new Direccion(b10, c6, 2005, u11); // Caminito de la Boca
+    Direccion d12 = new Direccion(b7, c12, 4138, u12); // Plaza Italia
+    Direccion d13 = new Direccion(b11, c13, 52, u13);  // Facultad de Derecho
+    Direccion d14 = new Direccion(b2, c14, 1113, u14);  // Obelisco
+    Direccion d15 = new Direccion(b12, c10, 2290, u15); // Barrio Chino
 
     HeladeraRepository heladeraRepository = new HeladeraRepository();
 
@@ -269,6 +276,13 @@ public class Initializer implements WithSimplePersistenceUnit {
     heladeraRepository.actualizar(h15);
 
     commitTransaction();
+  }
+
+  private void withMapa() {
+    HeladeraRepository heladeraRepository = new HeladeraRepository();
+
+    MapService mapService = new MapService(heladeraRepository);
+    mapService.crearGeoJson();
   }
 
   private void withVarianteDePuntos() {

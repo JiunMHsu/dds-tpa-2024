@@ -30,7 +30,7 @@ public class Routers {
       new CanjeDePuntosRouter(),
       new ReporteRouter(),
       new TecnicoRouter(),
-      new VisitaTecnicaRouter(),
+      new VisitaTecnicaRouter()
   };
 
   public static void apply(RouterConfig config) {
