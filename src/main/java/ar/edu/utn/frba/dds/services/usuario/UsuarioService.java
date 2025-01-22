@@ -16,10 +16,10 @@ public class UsuarioService {
     if (id == null || id.isEmpty()) {
       throw new IllegalArgumentException("El ID del Usuario no puede ser null o vacío");
     }
-    return usuarioRepository.buscarPorId(id);
+    return this.usuarioRepository.buscarPorId(id);
   }
 
   public Optional<Usuario> obtenerUsuarioPorEmail(String email) {
-    return usuarioRepository.obtenerPorEmail(email);
+    return this.usuarioRepository.obtenerPorEmail(email);
   }
 }

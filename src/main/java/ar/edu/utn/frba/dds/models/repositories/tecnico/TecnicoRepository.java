@@ -6,6 +6,7 @@ import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import javax.persistence.NoResultException;
 
 public class TecnicoRepository implements WithSimplePersistenceUnit {
@@ -30,6 +31,16 @@ public class TecnicoRepository implements WithSimplePersistenceUnit {
         .createQuery("from Tecnico t where t.alta = :alta", Tecnico.class)
         .setParameter("alta", true)
         .getResultList();
+  }
+
+  public Optional<Tecnico> obtenerPorId(String id) {
+    try {
+      UUID uuid = UUID.fromString(id);
+      return Optional.ofNullable(entityManager().find(Tecnico.class, uuid))
+          .filter(Tecnico::getAlta);
+    } catch (IllegalArgumentException e) {
+      return Optional.empty();
+    }
   }
 
   public Optional<Tecnico> obtenerPorCuit(String cuit) {

@@ -27,6 +27,13 @@ public class TecnicoService implements WithSimplePersistenceUnit {
     return this.tecnicoRepository.obtenerPorCuit(cuit);
   }
 
+  public Optional<Tecnico> buscarTecnicoPorId(String id) {
+    if (id == null) {
+      throw new IllegalArgumentException("El ID por un Tecnico no puede ser null");
+    }
+    return this.tecnicoRepository.obtenerPorId(id);
+  }
+
   public void guardarTecnico(Tecnico tecnico) {
     // TODO - validaciones
     withTransaction(() -> this.tecnicoRepository.guardar(tecnico));
