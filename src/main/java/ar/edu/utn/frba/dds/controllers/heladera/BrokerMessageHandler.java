@@ -69,7 +69,7 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
 
       // TODO: testear, las suscripciones deberían ser filtradas por tópico (usar una mensajería segura para el test)
        List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
-       suscripcionesAHeladera.forEach(this::notificacionFallaHeladera);
+       suscripcionesAHeladera.forEach(suscripcion->this.notificacionFallaHeladera(suscripcion, "falla def temperatura"));
     } else {
       heladera.setUltimaTemperatura(temperatura);
       this.heladeraService.actualizarHeladera(heladera);
@@ -86,7 +86,7 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
 
     // TODO: testear, las suscripciones deberían ser filtradas por tópico (usar una mensajería segura para el test)
      List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
-     suscripcionesAHeladera.forEach(this::notificacionFallaHeladera);
+     suscripcionesAHeladera.forEach(suscripcion->this.notificacionFallaHeladera(suscripcion, "fraude"));
   }
 
   @Override
@@ -99,7 +99,7 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
 
     // TODO: testear, las suscripciones deberían ser filtradas por tópico (usar una mensajería segura para el test)
      List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
-     suscripcionesAHeladera.forEach(this::notificacionFallaHeladera);
+     suscripcionesAHeladera.forEach(suscripcion->this.notificacionFallaHeladera(suscripcion, "falla de conexion"));
   }
 
   @Override
@@ -132,7 +132,7 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
     }
   }
 
-  public void notificacionFallaHeladera(SuscripcionFallaHeladera suscripcion) {
+  public void notificacionFallaHeladera(SuscripcionFallaHeladera suscripcion, String falla) {
     String asunto = "Falla en la heladera";
     String sugerencias = this.heladerasActivasMasCercanas(suscripcion.getHeladera())
             .stream()
@@ -140,12 +140,14 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
             .collect(Collectors.joining("\n"));
     String cuerpo = String.format(
             "Estimado/a %s,\n\n" +
-                    "La %s ha sufrido un desperfecto.\n\n" +
+                    "La %s ha sufrido un desperfecto.\n" +
+                    "Ocurrio un/a %s\n\n" +
                     "Por favor, traslade las viandas a las siguientes heladeras sugeridas:\n\n" +
                     "%s\n" +
                     "Gracias por su rápida acción.",
             suscripcion.getColaborador().getNombre(),
             suscripcion.getHeladera().getNombre(),
+            falla,
             sugerencias
     );
 
