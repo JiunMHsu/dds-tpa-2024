@@ -9,6 +9,8 @@ import ar.edu.utn.frba.dds.models.entities.heladera.SolicitudDeApertura;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.Mensaje;
 import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFallaHeladera;
+import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFaltaVianda;
+import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionHeladeraLlena;
 import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaPersonaVulnerable;
 import ar.edu.utn.frba.dds.services.heladera.AperturaHeladeraService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
@@ -66,8 +68,8 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
       this.incidenteService.registrarIncidente(incidente);
 
       // TODO: testear, las suscripciones deberían ser filtradas por tópico (usar una mensajería segura para el test)
-       //List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
-       //suscripcionesAHeladera.forEach(this.mensajeriaService::notificacionFallaHeladera);
+       List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
+       suscripcionesAHeladera.forEach(this::notificacionFallaHeladera);
     } else {
       heladera.setUltimaTemperatura(temperatura);
       this.heladeraService.actualizarHeladera(heladera);
@@ -83,8 +85,8 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
     this.incidenteService.registrarIncidente(incidente);
 
     // TODO: testear, las suscripciones deberían ser filtradas por tópico (usar una mensajería segura para el test)
-    // List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
-    // suscripcionesAHeladera.forEach(this.mensajeriaService::notificacionFallaHeladera);
+     List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
+     suscripcionesAHeladera.forEach(this::notificacionFallaHeladera);
   }
 
   @Override
@@ -96,8 +98,8 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
     this.incidenteService.registrarIncidente(incidente);
 
     // TODO: testear, las suscripciones deberían ser filtradas por tópico (usar una mensajería segura para el test)
-    // List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
-    // suscripcionesAHeladera.forEach(this.mensajeriaService::notificacionFallaHeladera);
+     List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
+     suscripcionesAHeladera.forEach(this::notificacionFallaHeladera);
   }
 
   @Override
@@ -129,5 +131,104 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
       }
     }
   }
+
+  public void notificacionFallaHeladera(SuscripcionFallaHeladera suscripcion) {
+    String asunto = "Falla en la heladera";
+    String sugerencias = this.heladerasActivasMasCercanas(suscripcion.getHeladera())
+            .stream()
+            .map(heladera -> heladera.getNombre())
+            .collect(Collectors.joining("\n"));
+    String cuerpo = String.format(
+            "Estimado/a %s,\n\n" +
+                    "La %s ha sufrido un desperfecto.\n\n" +
+                    "Por favor, traslade las viandas a las siguientes heladeras sugeridas:\n\n" +
+                    "%s\n" +
+                    "Gracias por su rápida acción.",
+            suscripcion.getColaborador().getNombre(),
+            suscripcion.getHeladera().getNombre(),
+            sugerencias
+    );
+
+    try {
+      Optional<Contacto> contacto = suscripcion.getColaborador().getContacto(suscripcion.getMedioDeNotificacion());
+      if (contacto.isPresent()) {
+        Mensaje mensaje = Mensaje.con(
+                contacto.get(),
+                asunto,
+                cuerpo);
+        mensajeriaService.enviarMensaje(mensaje);
+      }
+      else {
+        System.out.println("Medio de contacto solicitado no disponible. No se puede enviar el mensaje.");
+      }
+    }catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void notificacionFaltaVianda(SuscripcionFaltaVianda suscripcion) {
+    String asunto = "Heladera con baja disponibilidad de viandas";
+    String cuerpo = String.format(
+        "Estimado/a %s,\n\n" +
+            "La %s tiene solo %d viandas restantes. Por favor, lleve más viandas para reabastecerla.\n\n" +
+            "Gracias por su colaboración.",
+        suscripcion.getColaborador().getNombre(),
+        suscripcion.getHeladera().getNombre(),
+        suscripcion.getViandasRestantes()
+    );
+
+    try {
+      Optional<Contacto> contacto = suscripcion.getColaborador().getContacto(suscripcion.getMedioDeNotificacion());
+      if (contacto.isPresent()) {
+        Mensaje mensaje = Mensaje.con(
+                contacto.get(),
+                asunto,
+                cuerpo);
+        mensajeriaService.enviarMensaje(mensaje);
+      }
+      else {
+        System.out.println("Medio de contacto solicitado no disponible. No se puede enviar el mensaje.");
+      }
+    }catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void notificacionHeladeraLlena(SuscripcionHeladeraLlena suscripcion) {
+    String asunto = "Heladera casi llena";
+    String cuerpo = String.format(
+        "Estimado/a %s,\n\n" +
+            "La %s está a punto de llenarse, con solo espacio para %d viandas más. " +
+            "Por favor, redistribuir algunas viandas a otras heladeras.\n\n" +
+            "Gracias por su colaboración.",
+        suscripcion.getColaborador().getNombre(),
+        suscripcion.getHeladera().getNombre(),
+        suscripcion.getEspacioRestante()
+    );
+
+    try {
+      Optional<Contacto> contacto = suscripcion.getColaborador().getContacto(suscripcion.getMedioDeNotificacion());
+      if (contacto.isPresent()) {
+        Mensaje mensaje = Mensaje.con(
+                contacto.get(),
+                asunto,
+                cuerpo);
+        mensajeriaService.enviarMensaje(mensaje);
+      }
+      else {
+        System.out.println("Medio de contacto solicitado no disponible. No se puede enviar el mensaje.");
+      }
+    }catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+  //TODO medio raro que este aca pero...
+  public List<Heladera> heladerasActivasMasCercanas(Heladera heladera) {
+    return heladeraService.buscarPorBarrio(heladera.getDireccion().getBarrio())
+            .stream()
+            .filter(Heladera::estaActiva)
+            .toList();
+  }
+
 
 }
