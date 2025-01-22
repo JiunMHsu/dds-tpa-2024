@@ -1,7 +1,9 @@
 package ar.edu.utn.frba.dds.controllers.heladera;
 
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
+import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
+import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.heladera.AperturaHeladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.RetiroDeVianda;
@@ -12,6 +14,7 @@ import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFallaHeladera;
 import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFaltaVianda;
 import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionHeladeraLlena;
 import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaPersonaVulnerable;
+import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.services.heladera.AperturaHeladeraService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.heladera.RetiroDeViandaService;
@@ -20,12 +23,10 @@ import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.mensajeria.MensajeriaService;
 import ar.edu.utn.frba.dds.services.suscripcion.FallaHeladeraService;
 import ar.edu.utn.frba.dds.services.tarjeta.TarjetaPersonaVulnerableService;
+import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -39,6 +40,7 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
   private final TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService;
   private final AperturaHeladeraService aperturaHeladeraService;
   private final RetiroDeViandaService retiroDeViandaService;
+  private final TecnicoService tecnicoService;
 
   public BrokerMessageHandler(HeladeraService heladeraService,
                               IncidenteService incidenteService,
@@ -47,7 +49,8 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
                               SolicitudDeAperturaService solicitudDeAperturaService,
                               TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService,
                               AperturaHeladeraService aperturaHeladeraService,
-                              RetiroDeViandaService retiroDeViandaService) {
+                              RetiroDeViandaService retiroDeViandaService,
+                              TecnicoService tecnicoService) {
     this.heladeraService = heladeraService;
     this.incidenteService = incidenteService;
     this.fallaHeladeraService = fallaHeladeraService;
@@ -56,6 +59,7 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
     this.tarjetaPersonaVulnerableService = tarjetaPersonaVulnerableService;
     this.aperturaHeladeraService = aperturaHeladeraService;
     this.retiroDeViandaService = retiroDeViandaService;
+    this.tecnicoService = tecnicoService;
   }
 
   @Override
@@ -132,11 +136,47 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
     }
   }
 
-  public void notificacionFallaHeladera(SuscripcionFallaHeladera suscripcion, String falla) {
+  public void notificacionFallaHeladera(SuscripcionFallaHeladera suscripcion, String falla){
+    this.notificacionColaboradorFallaHeladera(suscripcion, falla);
+    this.notificacionTecnicoFallaHeladera(suscripcion.getHeladera(), falla);
+  }
+  public void notificacionTecnicoFallaHeladera(Heladera heladera, String falla){
+    Tecnico tecnico = this.tecnicoMasCercano(heladera.getDireccion());
+
+    String asunto = "Falla en la heladera";
+    String cuerpo = String.format(
+            "Estimado/a %s,\n\n" +
+                    "La %s ha sufrido un desperfecto.\n" +
+                    "Ocurrio un/a %s\n\n" +
+                    "Por favor, dirigirse a la heladera situada en: %s lo antes posible. \n\n"+
+                    "Gracias por su rápida acción.",
+            tecnico.getNombre(),
+            heladera.getNombre(),
+            falla,
+            heladera.getDireccion().obtenerDireccion()
+    );
+
+    try {
+      if (tecnico.getContacto()!=null) {
+        Mensaje mensaje = Mensaje.con(
+                tecnico.getContacto(),
+                asunto,
+                cuerpo);
+        mensajeriaService.enviarMensaje(mensaje);
+      }
+      else {
+        System.out.println("Medio de contacto solicitado no disponible. No se puede enviar el mensaje.");
+      }
+    }catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void notificacionColaboradorFallaHeladera(SuscripcionFallaHeladera suscripcion, String falla) {
     String asunto = "Falla en la heladera";
     String sugerencias = this.heladerasActivasMasCercanas(suscripcion.getHeladera())
             .stream()
-            .map(heladera -> heladera.getNombre())
+            .map(Heladera::getNombre)
             .collect(Collectors.joining("\n"));
     String cuerpo = String.format(
             "Estimado/a %s,\n\n" +
@@ -231,6 +271,11 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
             .filter(Heladera::estaActiva)
             .toList();
   }
-
+  public Tecnico tecnicoMasCercano(Direccion direccion) {
+    List<Tecnico> tecnicosCercanos = tecnicoService.obtenerPorBarrio(direccion.getBarrio());
+    Random random = new Random();
+    int indiceAleatorio = random.nextInt(tecnicosCercanos.size());
+    return tecnicosCercanos.get(indiceAleatorio);
+  }
 
 }

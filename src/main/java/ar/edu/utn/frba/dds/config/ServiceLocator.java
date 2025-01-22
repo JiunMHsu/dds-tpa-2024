@@ -121,7 +121,8 @@ public class ServiceLocator {
           instanceOf(SolicitudDeAperturaService.class),
           instanceOf(TarjetaPersonaVulnerableService.class),
           instanceOf(AperturaHeladeraService.class),
-          instanceOf(RetiroDeViandaService.class));
+          instanceOf(RetiroDeViandaService.class),
+              instanceOf(TecnicoService.class));
       instances.put(componentName, instance);
     }
 
