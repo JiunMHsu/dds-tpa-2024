@@ -2,7 +2,11 @@ package ar.edu.utn.frba.dds.controllers.suscripcion;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.heladera.HeladeraDTO;
-import ar.edu.utn.frba.dds.exceptions.*;
+import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
+import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
+import ar.edu.utn.frba.dds.exceptions.SuscripcionFaltaViandaException;
+import ar.edu.utn.frba.dds.exceptions.SuscripcionHeladeraLlenaException;
+import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
@@ -15,7 +19,6 @@ import ar.edu.utn.frba.dds.services.suscripcion.HeladeraLlenaService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import io.javalin.http.Context;
 import io.javalin.validation.ValidationException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,7 +59,7 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
     HeladeraDTO heladeraDTO = HeladeraDTO.completa(heladera);
     model.put("heladera", heladeraDTO);
 
-    render(context, "suscripcion/suscripciones.hbs", model);
+    render(context, "suscripciones/suscripciones.hbs", model);
   }
 
   public void createFallaHeladera(Context context) {
@@ -72,7 +75,7 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
     HeladeraDTO heladeraDTO = HeladeraDTO.completa(heladera);
     model.put("heladera", heladeraDTO);
 
-    render(context, "suscripcion/suscripcion_falla_heladera.hbs", model);
+    render(context, "suscripciones/suscripcion_falla_heladera.hbs", model);
   }
 
   public void createFaltaVianda(Context context) {
@@ -88,7 +91,7 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
     HeladeraDTO heladeraDTO = HeladeraDTO.completa(heladera);
     model.put("heladera", heladeraDTO);
 
-    render(context, "suscripcion/suscripcion_falta_viandas.hbs", model);
+    render(context, "suscripciones/suscripcion_falta_viandas.hbs", model);
   }
 
   public void createHeladeraLlena(Context context) {
@@ -104,9 +107,9 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
     HeladeraDTO heladeraDTO = HeladeraDTO.completa(heladera);
     model.put("heladera", heladeraDTO);
 
-    render(context, "suscripcion/suscripcion_heladera_llena.hbs", model);
+    render(context, "suscripciones/suscripcion_heladera_llena.hbs", model);
   }
-
+  
   public void saveFallaHeladera(Context context) {
 
     Map<String, Object> model = new HashMap<>();

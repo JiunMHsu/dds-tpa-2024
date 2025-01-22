@@ -1,7 +1,6 @@
 package ar.edu.utn.frba.dds.controllers.heladera;
 
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
-import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.heladera.AperturaHeladera;
@@ -26,7 +25,11 @@ import ar.edu.utn.frba.dds.services.tarjeta.TarjetaPersonaVulnerableService;
 import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -72,8 +75,8 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
       this.incidenteService.registrarIncidente(incidente);
 
       // TODO: testear, las suscripciones deberían ser filtradas por tópico (usar una mensajería segura para el test)
-       List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
-       suscripcionesAHeladera.forEach(suscripcion->this.notificacionFallaHeladera(suscripcion, "falla def temperatura"));
+      List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
+      suscripcionesAHeladera.forEach(suscripcion -> this.notificacionFallaHeladera(suscripcion, "falla def temperatura"));
     } else {
       heladera.setUltimaTemperatura(temperatura);
       this.heladeraService.actualizarHeladera(heladera);
@@ -89,8 +92,8 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
     this.incidenteService.registrarIncidente(incidente);
 
     // TODO: testear, las suscripciones deberían ser filtradas por tópico (usar una mensajería segura para el test)
-     List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
-     suscripcionesAHeladera.forEach(suscripcion->this.notificacionFallaHeladera(suscripcion, "fraude"));
+    List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
+    suscripcionesAHeladera.forEach(suscripcion -> this.notificacionFallaHeladera(suscripcion, "fraude"));
   }
 
   @Override
@@ -102,8 +105,8 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
     this.incidenteService.registrarIncidente(incidente);
 
     // TODO: testear, las suscripciones deberían ser filtradas por tópico (usar una mensajería segura para el test)
-     List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
-     suscripcionesAHeladera.forEach(suscripcion->this.notificacionFallaHeladera(suscripcion, "falla de conexion"));
+    List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
+    suscripcionesAHeladera.forEach(suscripcion -> this.notificacionFallaHeladera(suscripcion, "falla de conexion"));
   }
 
   @Override
@@ -136,38 +139,38 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
     }
   }
 
-  public void notificacionFallaHeladera(SuscripcionFallaHeladera suscripcion, String falla){
+  public void notificacionFallaHeladera(SuscripcionFallaHeladera suscripcion, String falla) {
     this.notificacionColaboradorFallaHeladera(suscripcion, falla);
     this.notificacionTecnicoFallaHeladera(suscripcion.getHeladera(), falla);
   }
-  public void notificacionTecnicoFallaHeladera(Heladera heladera, String falla){
+
+  public void notificacionTecnicoFallaHeladera(Heladera heladera, String falla) {
     Tecnico tecnico = this.tecnicoMasCercano(heladera.getDireccion());
 
     String asunto = "Falla en la heladera";
     String cuerpo = String.format(
-            "Estimado/a %s,\n\n" +
-                    "La %s ha sufrido un desperfecto.\n" +
-                    "Ocurrio un/a %s\n\n" +
-                    "Por favor, dirigirse a la heladera situada en: %s lo antes posible. \n\n"+
-                    "Gracias por su rápida acción.",
-            tecnico.getNombre(),
-            heladera.getNombre(),
-            falla,
-            heladera.getDireccion().obtenerDireccion()
+        "Estimado/a %s,\n\n" +
+            "La %s ha sufrido un desperfecto.\n" +
+            "Ocurrio un/a %s\n\n" +
+            "Por favor, dirigirse a la heladera situada en: %s lo antes posible. \n\n" +
+            "Gracias por su rápida acción.",
+        tecnico.getNombre(),
+        heladera.getNombre(),
+        falla,
+        heladera.getDireccion().obtenerDireccion()
     );
 
     try {
-      if (tecnico.getContacto()!=null) {
+      if (tecnico.getContacto() != null) {
         Mensaje mensaje = Mensaje.con(
-                tecnico.getContacto(),
-                asunto,
-                cuerpo);
+            tecnico.getContacto(),
+            asunto,
+            cuerpo);
         mensajeriaService.enviarMensaje(mensaje);
-      }
-      else {
+      } else {
         System.out.println("Medio de contacto solicitado no disponible. No se puede enviar el mensaje.");
       }
-    }catch (Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }
@@ -175,35 +178,34 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
   public void notificacionColaboradorFallaHeladera(SuscripcionFallaHeladera suscripcion, String falla) {
     String asunto = "Falla en la heladera";
     String sugerencias = this.heladerasActivasMasCercanas(suscripcion.getHeladera())
-            .stream()
-            .map(Heladera::getNombre)
-            .collect(Collectors.joining("\n"));
+        .stream()
+        .map(Heladera::getNombre)
+        .collect(Collectors.joining("\n"));
     String cuerpo = String.format(
-            "Estimado/a %s,\n\n" +
-                    "La %s ha sufrido un desperfecto.\n" +
-                    "Ocurrio un/a %s\n\n" +
-                    "Por favor, traslade las viandas a las siguientes heladeras sugeridas:\n\n" +
-                    "%s\n" +
-                    "Gracias por su rápida acción.",
-            suscripcion.getColaborador().getNombre(),
-            suscripcion.getHeladera().getNombre(),
-            falla,
-            sugerencias
+        "Estimado/a %s,\n\n" +
+            "La %s ha sufrido un desperfecto.\n" +
+            "Ocurrio un/a %s\n\n" +
+            "Por favor, traslade las viandas a las siguientes heladeras sugeridas:\n\n" +
+            "%s\n" +
+            "Gracias por su rápida acción.",
+        suscripcion.getColaborador().getNombre(),
+        suscripcion.getHeladera().getNombre(),
+        falla,
+        sugerencias
     );
 
     try {
       Optional<Contacto> contacto = suscripcion.getColaborador().getContacto(suscripcion.getMedioDeNotificacion());
       if (contacto.isPresent()) {
         Mensaje mensaje = Mensaje.con(
-                contacto.get(),
-                asunto,
-                cuerpo);
+            contacto.get(),
+            asunto,
+            cuerpo);
         mensajeriaService.enviarMensaje(mensaje);
-      }
-      else {
+      } else {
         System.out.println("Medio de contacto solicitado no disponible. No se puede enviar el mensaje.");
       }
-    }catch (Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }
@@ -223,15 +225,14 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
       Optional<Contacto> contacto = suscripcion.getColaborador().getContacto(suscripcion.getMedioDeNotificacion());
       if (contacto.isPresent()) {
         Mensaje mensaje = Mensaje.con(
-                contacto.get(),
-                asunto,
-                cuerpo);
+            contacto.get(),
+            asunto,
+            cuerpo);
         mensajeriaService.enviarMensaje(mensaje);
-      }
-      else {
+      } else {
         System.out.println("Medio de contacto solicitado no disponible. No se puede enviar el mensaje.");
       }
-    }catch (Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }
@@ -252,25 +253,26 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
       Optional<Contacto> contacto = suscripcion.getColaborador().getContacto(suscripcion.getMedioDeNotificacion());
       if (contacto.isPresent()) {
         Mensaje mensaje = Mensaje.con(
-                contacto.get(),
-                asunto,
-                cuerpo);
+            contacto.get(),
+            asunto,
+            cuerpo);
         mensajeriaService.enviarMensaje(mensaje);
-      }
-      else {
+      } else {
         System.out.println("Medio de contacto solicitado no disponible. No se puede enviar el mensaje.");
       }
-    }catch (Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }
+
   //TODO medio raro que este aca pero...
   public List<Heladera> heladerasActivasMasCercanas(Heladera heladera) {
     return heladeraService.buscarPorBarrio(heladera.getDireccion().getBarrio())
-            .stream()
-            .filter(Heladera::estaActiva)
-            .toList();
+        .stream()
+        .filter(Heladera::estaActiva)
+        .toList();
   }
+
   public Tecnico tecnicoMasCercano(Direccion direccion) {
     List<Tecnico> tecnicosCercanos = tecnicoService.obtenerPorBarrio(direccion.getBarrio());
     Random random = new Random();
