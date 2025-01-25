@@ -180,8 +180,11 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
         break;
 
       case "REDISTRIBUCION_VIANDAS":
-        DistribucionViandas distribucionViandas = DistribucionViandas
-            .por(colaborador, colaboracionPrevia.getFechaHora(), colaboracionPrevia.getCantidad());
+        DistribucionViandas distribucionViandas = DistribucionViandas.builder()
+            .colaborador(colaborador)
+            .fechaHora(colaboracionPrevia.getFechaHora())
+            .viandas(colaboracionPrevia.getCantidad())
+            .build();
         distribucionViandasRepository.guardar(distribucionViandas);
         break;
 

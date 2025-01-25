@@ -43,33 +43,4 @@ public class DistribucionViandas extends EntidadPersistente {
   @Column(name = "motivo", columnDefinition = "TEXT")
   private String motivo;
 
-  public static DistribucionViandas por(Colaborador colaboradorHumano,
-                                        LocalDateTime fechaDistribucion,
-                                        Heladera origen,
-                                        Heladera destino,
-                                        Integer viandas,
-                                        String motivo) {
-    return DistribucionViandas
-        .builder()
-        .colaborador(colaboradorHumano)
-        .fechaHora(fechaDistribucion)
-        .origen(origen)
-        .destino(destino)
-        .viandas(viandas)
-        .motivo(motivo)
-        .build();
-  }
-
-  public static DistribucionViandas por(Colaborador colaboradorHumano,
-                                        LocalDateTime fechaDistribucion,
-                                        Integer viandas) {
-    return DistribucionViandas.por(
-        colaboradorHumano,
-        fechaDistribucion,
-        null,
-        null,
-        viandas,
-        "");
-  }
-
 }
