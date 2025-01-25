@@ -27,7 +27,6 @@ public class TecnicoDTO {
   private String areaDeCobertura;
 
   public static TecnicoDTO completa(Tecnico tecnico) {
-
     return TecnicoDTO
         .builder()
         .id(tecnico.getId().toString())
@@ -35,19 +34,19 @@ public class TecnicoDTO {
         .apellido(tecnico.getApellido())
         .documento(tecnico.getDocumento().getNumero())
         .cuit(tecnico.getCuit())
-//                .contacto(tecnico.getContacto()) // TODO - ver como hacer
         .medioDeNotificacion(tecnico.getMedioDeNotificacion().toString())
         .areaDeCobertura(tecnico.getAreaDeCobertura().getBarrio().getNombre())
         .build();
   }
 
   public static TecnicoDTO preview(Tecnico tecnico) {
-
     return TecnicoDTO
         .builder()
         .id(tecnico.getId().toString())
         .nombre(tecnico.getNombre())
         .apellido(tecnico.getApellido())
+        .documento(tecnico.getDocumento().getNumero())
+        .cuit(tecnico.getCuit())
         .areaDeCobertura(tecnico.getAreaDeCobertura().getBarrio().getNombre())
         .build();
   }

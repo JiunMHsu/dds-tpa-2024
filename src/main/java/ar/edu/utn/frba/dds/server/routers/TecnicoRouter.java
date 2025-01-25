@@ -14,17 +14,16 @@ public class TecnicoRouter implements IRouter {
   public void apply(RouterConfig config) {
     config.apiBuilder(() ->
         path("/tecnicos", () -> {
+          get(ServiceLocator.instanceOf(TecnicoController.class)::index, TipoRol.ADMIN);
           post(ServiceLocator.instanceOf(TecnicoController.class)::save, TipoRol.ADMIN);
 
-          get(ServiceLocator.instanceOf(TecnicoController.class)::index, TipoRol.ADMIN);
-          get("/new", ServiceLocator.instanceOf(TecnicoController.class)::save, TipoRol.ADMIN);
+          get("/new", ServiceLocator.instanceOf(TecnicoController.class)::create, TipoRol.ADMIN);
 
           path("/{id}", () -> {
             post(ServiceLocator.instanceOf(TecnicoController.class)::update, TipoRol.ADMIN, TipoRol.TECNICO);
             get(ServiceLocator.instanceOf(TecnicoController.class)::show, TipoRol.ADMIN);
             get("/edit", ServiceLocator.instanceOf(TecnicoController.class)::edit, TipoRol.ADMIN);
           });
-
         })
     );
   }

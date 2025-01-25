@@ -1,9 +1,9 @@
 {{#partial "title"}}
-    Tecnicos
+    Visitas Tecnicas
 {{/partial}}
 {{#partial "links"}}
     <link rel="stylesheet" href="/css/list.css"/>
-    <link rel="stylesheet" href="/css/tecnicos/tecnicos.css"/>
+    <link rel="stylesheet" href="/css/visitas_tecnicas/visitas_tecnicas.css"/>
     <link
             href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css"
             rel="stylesheet"
@@ -16,15 +16,15 @@
 {{#partial "main-content"}}
     <div class="feature-container">
         <div class="crear-tecnico feature">
-            <h3 class="feature-text">Crear Tecnico</h3>
+            <h3 class="feature-text">Crear Visita Tecnica</h3>
             <div class="feature-button-container">
-                <a href="/tecnicos/new" class="feature-button">ver</a>
+                <a href="/visitas_tecnicas/new" class="feature-button">ver</a>
             </div>
         </div>
     </div>
 
     <div class="list-container">
-        <h2 class="list-title">Tecnicos</h2>
+        <h2 class="list-title">Visitas Tecnicas</h2>
 
         <div class="filter-container">
             <div class="filter">FILTROS</div>
@@ -34,21 +34,23 @@
 
         <div class="scrollable">
             <ul class="list">
-                {{#each tecnicos}}
+                {{#each visitas-tecnicas}}
                     <li class="list-item">
-                        <a href="/tecnicos/{{this.id}}" class="item-card">
-                            <h3 class="card-title">{{this.nombre}}&nbsp;&nbsp;{{this.apellido}}</h3>
+                        <a class="item-card">
+                            <h3 class="card-title">{{this.fecha}}&nbsp;&nbsp;{{this.hora}}</h3>
                             <p>
                                 <span class="material-symbols-rounded card-detail-icon">description</span>
-                                Documento: {{this.documento}}
+                                Descripcion: {{this.decripcion}}
                             </p>
                             <p>
-                                <span class="material-symbols-rounded card-detail-icon">assignment_ind</span>
-                                Cuit: {{this.cuit}}
-                            </p>
-                            <p>
-                                <span class="material-symbols-rounded card-detail-icon">rebase</span>
-                                Area de Cobertura: {{this.areaDeCobertura}}
+                                {{#if this.resuelto}}
+                                    style="color: #A7C957"
+                                {{else}}
+                                    style="color: #e37f8f"
+                                {{/if}}>
+                                <span class="material-symbols-rounded card-detail-icon"> radio_button_checked </span>
+                                Resuelto: {{#if this.pudoResolverse}}
+                                Resuelto {{else}} Pendiente {{/if}}
                             </p>
                         </a>
                     </li>

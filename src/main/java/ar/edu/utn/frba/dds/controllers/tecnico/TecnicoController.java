@@ -10,8 +10,10 @@ import ar.edu.utn.frba.dds.models.entities.data.Documento;
 import ar.edu.utn.frba.dds.models.entities.data.TipoDocumento;
 import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
+import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
+import ar.edu.utn.frba.dds.models.stateless.ValidadorDeContrasenias;
 import ar.edu.utn.frba.dds.permissions.TecnicoRequired;
 import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
@@ -35,49 +37,57 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
 
   @Override
   public void index(Context context) {
-    Map<String, Object> model = new HashMap<>();
-
     List<Tecnico> tecnicos = this.tecnicoService.buscarTodos();
     List<TecnicoDTO> tecnicosDTO = tecnicos.stream()
         .map(TecnicoDTO::preview)
         .toList();
 
+    Map<String, Object> model = new HashMap<>();
     model.put("tecnicos", tecnicosDTO);
     render(context, "tecnicos/tecnicos.hbs", model);
   }
 
   @Override
-  public void show(Context context) { // TODO - Ver desp que matchee paraColaborador las vistas
-
-    String cuitTecnico = context.pathParam("cuit");
-    Optional<Tecnico> tecnicoBuscado = this.tecnicoService.buscarTecnicoPorCuit(cuitTecnico); // TODO - hago que se busque por CUIT, ver si va o no
+  public void show(Context context) {
+    String idTecnico = context.pathParam("id");
+    Optional<Tecnico> tecnicoBuscado = this.tecnicoService.buscarTecnicoPorId(idTecnico);
 
     if (tecnicoBuscado.isEmpty()) {
-      throw new ResourceNotFoundException("No se encontró tecnico paraColaborador cuit " + cuitTecnico);
+      throw new ResourceNotFoundException("No se encontró tecnico paraColaborador cuit " + idTecnico);
     }
 
     Map<String, Object> model = new HashMap<>();
     TecnicoDTO tecnicoDTO = TecnicoDTO.completa(tecnicoBuscado.get());
     model.put("tecnico", tecnicoDTO);
 
-    // context.render("/", model);
+    render(context, "tecnicos/tecnico_detalle.hbs", model);
   }
 
   @Override
   public void create(Context context) {
-    context.result("Tecnico");
+    render(context, "tecnicos/tecnico_crear.hbs", new HashMap<>());
   }
 
   @Override
-  public void save(Context context) { // TODO - Ver desp que matchee paraColaborador las vistas
-
+  public void save(Context context) {
     Map<String, Object> model = new HashMap<>();
     List<RedirectDTO> redirectDTOS = new ArrayList<>();
     boolean operationSuccess = false;
 
     try {
+      String contrasenia = context.formParamAsClass("contrasenia", String.class).get();
+      ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
 
-      Usuario usuario = Usuario.conEmail(context.formParamAsClass("mail", String.class).get());
+      if (!validador.esValida(contrasenia)) {
+        throw new ar.edu.utn.frba.dds.exceptions.ValidationException("La contraseña no cumple con los requisitos de seguridad.");
+      }
+
+      Usuario usuario = Usuario.con(
+          context.formParamAsClass("nombre_usuario", String.class).get(),
+          contrasenia,
+          context.formParamAsClass("email", String.class).get(),
+          TipoRol.TECNICO
+      );
 
       String nombre = context.formParamAsClass("nombre", String.class).get();
       String apellido = context.formParamAsClass("apellido", String.class).get();
@@ -91,15 +101,12 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
 
       MedioDeNotificacion medioDeNotificacion = MedioDeNotificacion.valueOf(context.formParamAsClass("medio-notificacion", String.class).get());
 
-      Contacto contacto;
-
-      if (medioDeNotificacion.equals(MedioDeNotificacion.EMAIL)) {
-        contacto = Contacto.conEmail(context.formParamAsClass("contacto", String.class).get());
-      } else if (medioDeNotificacion.equals(MedioDeNotificacion.WHATSAPP)) {
-        contacto = Contacto.conWhatsApp(context.formParamAsClass("contacto", String.class).get());
-      } else {
-        contacto = Contacto.conTelegram(context.formParamAsClass("contacto", String.class).get());
-      }
+      Contacto contacto = Contacto.con(
+          context.formParamAsClass("email", String.class).get(),
+          context.formParamAsClass("telefono", String.class).get(),
+          "whatsapp:" + context.formParamAsClass("whatsapp", String.class).get(),
+          context.formParamAsClass("telegram", String.class).get()
+      );
 
       Ubicacion ubicacion = new Ubicacion(
           context.formParamAsClass("latitud", Double.class).get(),
@@ -150,14 +157,14 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
 
     String userId = context.sessionAttribute("userId");
 
-    Optional<Usuario> usuarioSession = usuarioService.obtenerUsuarioPorID(userId);
+    Optional<Usuario> usuarioSession = this.usuarioService.obtenerUsuarioPorID(userId);
     if (usuarioSession.isEmpty()) {
       throw new ResourceNotFoundException("No se encontró el usuario paraColaborador id " + userId);
     }
 
     Usuario usuario = usuarioSession.get();
 
-    Optional<Tecnico> tecnicoSession = tecnicoService.obtenerTecnicoPorUsuario(usuarioSession.get());
+    Optional<Tecnico> tecnicoSession = this.tecnicoService.obtenerTecnicoPorUsuario(usuarioSession.get());
     if (tecnicoSession.isEmpty()) {
       throw new ResourceNotFoundException("No se encontró el tecnico paraColaborador usuario " + usuario.getNombre());
     }

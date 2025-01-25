@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.controllers.tecnico;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.incidente.IncidenteDTO;
+import ar.edu.utn.frba.dds.dtos.tecnico.VisitaTecnicaDTO;
 import ar.edu.utn.frba.dds.exceptions.IncicenteToFixException;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
@@ -45,7 +46,14 @@ public class VisitaTecnicaController extends TecnicoRequired {
   }
 
   public void index(Context context) {
-    // TODO - implementar
+    List<VisitaTecnica> visitasTecnicas = this.visitaTecnicaService.buscarTodas();
+    List<VisitaTecnicaDTO> visitaTecnicaDTO = visitasTecnicas.stream()
+        .map(VisitaTecnicaDTO::preview)
+        .toList();
+
+    Map<String, Object> model = new HashMap<>();
+    model.put("visitas-tecnicas", visitaTecnicaDTO);
+    render(context, "visitas_tecnicas/visitas_tecnicas.hbs", model);
   }
 
   public void show(Context context) {
@@ -103,7 +111,9 @@ public class VisitaTecnicaController extends TecnicoRequired {
       };
 
       UploadedFile uploadedFile = context.uploadedFile("foto");
-      if (uploadedFile == null) throw new InvalidFormParamException();
+      if (uploadedFile == null) {
+        throw new InvalidFormParamException();
+      }
       String pathImagen = fileService.guardarImagen(uploadedFile.content(), uploadedFile.extension());
 
       VisitaTecnica visitaTecnica = VisitaTecnica.por(
@@ -117,7 +127,9 @@ public class VisitaTecnicaController extends TecnicoRequired {
       );
 
       this.visitaTecnicaService.registrarVisita(visitaTecnica);
-      if (resuelta) this.incidenteService.resolverIncidente(incidente);
+      if (resuelta) {
+        this.incidenteService.resolverIncidente(incidente);
+      }
 
       operationSuccess = true;
       redirectDTOS.add(new RedirectDTO("/incidentes", "Registrar otra Visita"));
