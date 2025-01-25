@@ -2,7 +2,10 @@ package ar.edu.utn.frba.dds.models.entities.data;
 
 import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,52 +17,35 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Embeddable
-public class Contacto {
+@Entity
+@Table(name="contacto")
+public class Contacto extends EntidadPersistente {
 
-  @Column(name = "email")
-  private String email;
+  @Column(name = "medio_notificacion")
+  private MedioDeNotificacion medioDeNotificacion;
 
-  @Column(name = "telefono")
-  private String telefono;
+  @Column(name = "valor")
+  private String valor;
 
-  @Column(name = "whatsapp")
-  private String whatsApp; // Chat ID
-
-  @Column(name = "telegram")
-  private String telegram; // Chat ID
-
-  public static Contacto con(String email, String telefono, String whatsApp, String telegram) {
+  public static Contacto con(MedioDeNotificacion medioDeNotificacion, String valor) {
     return Contacto
         .builder()
-        .email(email)
-        .telefono(telefono)
-        .whatsApp(whatsApp)
-        .telegram(telegram)
+        .medioDeNotificacion(medioDeNotificacion)
+        .valor(valor)
         .build();
   }
-
   public static Contacto conTelegram(String telegram) {
-    return Contacto.con(null, null, null, telegram);
+    return Contacto.con( MedioDeNotificacion.TELEGRAM,  telegram);
   }
 
   public static Contacto conWhatsApp(String whatsApp) {
-    return Contacto.con(null, null, whatsApp, null);
+    return Contacto.con(MedioDeNotificacion.WHATSAPP, whatsApp);
   }
 
   public static Contacto conEmail(String email) {
-    return Contacto.con(email, null, null, null);
+    return Contacto.con(MedioDeNotificacion.EMAIL,email);
   }
-
   public static Contacto vacio() {
-    return Contacto.con(null, null, null, null);
-  }
-
-  public String getContacto(MedioDeNotificacion medioDeNotificacion) {
-    return switch (medioDeNotificacion) {
-      case WHATSAPP -> this.getWhatsApp();
-      case TELEGRAM -> this.getTelegram();
-      case EMAIL -> this.getEmail();
-    };
+    return Contacto.con(null, null);
   }
 }
