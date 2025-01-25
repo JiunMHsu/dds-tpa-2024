@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 geojsonData.features.forEach((feature) => {
                     bounds.extend(feature.geometry.coordinates);
                 });
-                map.fitBounds(bounds, { padding: 20 });
+                map.fitBounds(bounds, {padding: 20});
             });
         })
         .catch((error) => {

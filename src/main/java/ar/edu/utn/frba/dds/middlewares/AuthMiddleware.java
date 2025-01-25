@@ -6,7 +6,6 @@ import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import io.javalin.config.RouterConfig;
 import io.javalin.http.Context;
 import io.javalin.security.RouteRole;
-
 import java.util.Set;
 
 public class AuthMiddleware {

@@ -2,7 +2,6 @@ package ar.edu.utn.frba.dds.services.usuario;
 
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.usuario.IUsuarioRepository;
-
 import java.util.Optional;
 
 public class UsuarioService {
