@@ -6,7 +6,9 @@ import java.util.List;
 
 public class ContactoRepository implements WithSimplePersistenceUnit {
 
-  public void guardar(Contacto contacto) { entityManager().persist(contacto); }
+  public void guardar(Contacto contacto) {
+    entityManager().persist(contacto);
+  }
 
   public void guardar(List<Contacto> contactos) {
     withTransaction(() -> {
@@ -16,7 +18,9 @@ public class ContactoRepository implements WithSimplePersistenceUnit {
     });
   }
 
-  public void actualizar(Contacto contacto) { entityManager().merge(contacto); }
+  public void actualizar(Contacto contacto) {
+    entityManager().merge(contacto);
+  }
 
   public void eliminar(Contacto contacto) {
     withTransaction(() -> {

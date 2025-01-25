@@ -43,9 +43,10 @@ public class TecnicoService implements WithSimplePersistenceUnit {
     return tecnicoRepository.buscarPorUsuario(usuario);
   }
 
-  public List<Tecnico> obtenerPorBarrio(Barrio barrio){
+  public List<Tecnico> obtenerPorBarrio(Barrio barrio) {
     return tecnicoRepository.obtenerPorBarrio(barrio);
   }
+
   public void actualizar(Tecnico tecnico) {
     withTransaction(() -> tecnicoRepository.actualizar(tecnico));
   }

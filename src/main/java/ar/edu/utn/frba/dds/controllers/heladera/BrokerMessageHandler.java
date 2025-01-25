@@ -16,7 +16,6 @@ import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.suscripcion.FallaHeladeraService;
 import ar.edu.utn.frba.dds.services.tarjeta.TarjetaPersonaVulnerableService;
 import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
-
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -26,102 +25,102 @@ import java.util.UUID;
 
 public class BrokerMessageHandler implements IBrokerMessageHandler {
 
-    private final HeladeraService heladeraService;
-    private final IncidenteService incidenteService;
-    private final FallaHeladeraService fallaHeladeraService;
-    private final SolicitudDeAperturaService solicitudDeAperturaService;
-    private final TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService;
-    private final AperturaHeladeraService aperturaHeladeraService;
-    private final RetiroDeViandaService retiroDeViandaService;
+  private final HeladeraService heladeraService;
+  private final IncidenteService incidenteService;
+  private final FallaHeladeraService fallaHeladeraService;
+  private final SolicitudDeAperturaService solicitudDeAperturaService;
+  private final TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService;
+  private final AperturaHeladeraService aperturaHeladeraService;
+  private final RetiroDeViandaService retiroDeViandaService;
 
-    public BrokerMessageHandler(HeladeraService heladeraService,
-                                IncidenteService incidenteService,
-                                FallaHeladeraService fallaHeladeraService,
-                                SolicitudDeAperturaService solicitudDeAperturaService,
-                                TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService,
-                                AperturaHeladeraService aperturaHeladeraService,
-                                RetiroDeViandaService retiroDeViandaService) {
-        this.heladeraService = heladeraService;
-        this.incidenteService = incidenteService;
-        this.fallaHeladeraService = fallaHeladeraService;
-        this.solicitudDeAperturaService = solicitudDeAperturaService;
-        this.tarjetaPersonaVulnerableService = tarjetaPersonaVulnerableService;
-        this.aperturaHeladeraService = aperturaHeladeraService;
-        this.retiroDeViandaService = retiroDeViandaService;
+  public BrokerMessageHandler(HeladeraService heladeraService,
+                              IncidenteService incidenteService,
+                              FallaHeladeraService fallaHeladeraService,
+                              SolicitudDeAperturaService solicitudDeAperturaService,
+                              TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService,
+                              AperturaHeladeraService aperturaHeladeraService,
+                              RetiroDeViandaService retiroDeViandaService) {
+    this.heladeraService = heladeraService;
+    this.incidenteService = incidenteService;
+    this.fallaHeladeraService = fallaHeladeraService;
+    this.solicitudDeAperturaService = solicitudDeAperturaService;
+    this.tarjetaPersonaVulnerableService = tarjetaPersonaVulnerableService;
+    this.aperturaHeladeraService = aperturaHeladeraService;
+    this.retiroDeViandaService = retiroDeViandaService;
+  }
+
+  @Override
+  public void manejarTemperatura(double temperatura, UUID heladeraId) {
+    Heladera heladera = this.heladeraService.buscarPorId(heladeraId.toString())
+        .orElseThrow(ResourceNotFoundException::new);
+
+    if (!heladera.admiteTemperatura(temperatura)) {
+      Incidente incidente = Incidente.fallaTemperatura(heladera, LocalDateTime.now());
+      this.incidenteService.registrarIncidente(incidente);
+
+      // TODO: testear, las suscripciones deberían ser filtradas por tópico (usar una mensajería segura para el test)
+      List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
+      suscripcionesAHeladera.forEach(suscripcion -> this.fallaHeladeraService.notificacionFallaHeladera(suscripcion, "falla def temperatura"));
+    } else {
+      heladera.setUltimaTemperatura(temperatura);
+      this.heladeraService.actualizarHeladera(heladera);
     }
+  }
 
-    @Override
-    public void manejarTemperatura(double temperatura, UUID heladeraId) {
-        Heladera heladera = this.heladeraService.buscarPorId(heladeraId.toString())
-                .orElseThrow(ResourceNotFoundException::new);
+  @Override
+  public void manejarFraude(UUID heladeraId) {
+    Heladera heladera = this.heladeraService.buscarPorId(heladeraId.toString())
+        .orElseThrow(ResourceNotFoundException::new);
 
-        if (!heladera.admiteTemperatura(temperatura)) {
-            Incidente incidente = Incidente.fallaTemperatura(heladera, LocalDateTime.now());
-            this.incidenteService.registrarIncidente(incidente);
+    Incidente incidente = Incidente.fraude(heladera, LocalDateTime.now());
+    this.incidenteService.registrarIncidente(incidente);
 
-            // TODO: testear, las suscripciones deberían ser filtradas por tópico (usar una mensajería segura para el test)
-            List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
-            suscripcionesAHeladera.forEach(suscripcion -> this.fallaHeladeraService.notificacionFallaHeladera(suscripcion, "falla def temperatura"));
-        } else {
-            heladera.setUltimaTemperatura(temperatura);
-            this.heladeraService.actualizarHeladera(heladera);
-        }
+    // TODO: testear, las suscripciones deberían ser filtradas por tópico (usar una mensajería segura para el test)
+    List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
+    suscripcionesAHeladera.forEach(suscripcion -> this.fallaHeladeraService.notificacionFallaHeladera(suscripcion, "fraude"));
+  }
+
+  @Override
+  public void manejarFallaConexion(UUID heladeraId) {
+    Heladera heladera = this.heladeraService.buscarPorId(heladeraId.toString())
+        .orElseThrow(ResourceNotFoundException::new);
+
+    Incidente incidente = Incidente.fallaConexion(heladera, LocalDateTime.now());
+    this.incidenteService.registrarIncidente(incidente);
+
+    // TODO: testear, las suscripciones deberían ser filtradas por tópico (usar una mensajería segura para el test)
+    List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
+    suscripcionesAHeladera.forEach(suscripcion -> this.fallaHeladeraService.notificacionFallaHeladera(suscripcion, "falla de conexion"));
+  }
+
+  @Override
+  public void manejarSolicitudDeApertura(String codigoTarjeta, UUID heladeraId) {
+    Heladera heladera = this.heladeraService.buscarPorId(heladeraId.toString())
+        .orElseThrow(ResourceNotFoundException::new);
+
+    Optional<SolicitudDeApertura> solicitudDeApertura = solicitudDeAperturaService.buscarPorTarjetaHeladeraEnLasUltimas(codigoTarjeta, heladera)
+        .stream()
+        .filter(solicitud -> this.aperturaHeladeraService.buscarPorSolicitud(solicitud).isEmpty()) //solicitudes que no tienen aperturas
+        .min(Comparator.comparing(SolicitudDeApertura::getFechaHora)); // obtengo la más vieja
+
+    if (solicitudDeApertura.isPresent()) {
+      AperturaHeladera aperturaHeladera = AperturaHeladera.por(solicitudDeApertura.get().getTarjeta(), solicitudDeApertura.get().getHeladera(), LocalDateTime.now(), solicitudDeApertura.get());
+      this.aperturaHeladeraService.guardar(aperturaHeladera);
+      System.out.println("no permito acceso");
+
+      //TODO debería registrar movimientos
+    } else {
+      Optional<TarjetaPersonaVulnerable> tarjetaPersonaVulnerable = tarjetaPersonaVulnerableService.buscarTarjetaPorCodigo(codigoTarjeta);
+
+      if (tarjetaPersonaVulnerable.isPresent()) {
+        RetiroDeVianda retiroDeVianda = RetiroDeVianda.por(tarjetaPersonaVulnerable.get(), heladera, LocalDateTime.now());
+        this.retiroDeViandaService.guardar(retiroDeVianda);
+        System.out.println("no permito acceso");
+      } else {
+        //TODO no se le da acceso para que abra la heladera
+        System.out.println("no permito acceso");
+      }
     }
-
-    @Override
-    public void manejarFraude(UUID heladeraId) {
-        Heladera heladera = this.heladeraService.buscarPorId(heladeraId.toString())
-                .orElseThrow(ResourceNotFoundException::new);
-
-        Incidente incidente = Incidente.fraude(heladera, LocalDateTime.now());
-        this.incidenteService.registrarIncidente(incidente);
-
-        // TODO: testear, las suscripciones deberían ser filtradas por tópico (usar una mensajería segura para el test)
-        List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
-        suscripcionesAHeladera.forEach(suscripcion -> this.fallaHeladeraService.notificacionFallaHeladera(suscripcion, "fraude"));
-    }
-
-    @Override
-    public void manejarFallaConexion(UUID heladeraId) {
-        Heladera heladera = this.heladeraService.buscarPorId(heladeraId.toString())
-                .orElseThrow(ResourceNotFoundException::new);
-
-        Incidente incidente = Incidente.fallaConexion(heladera, LocalDateTime.now());
-        this.incidenteService.registrarIncidente(incidente);
-
-        // TODO: testear, las suscripciones deberían ser filtradas por tópico (usar una mensajería segura para el test)
-        List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
-        suscripcionesAHeladera.forEach(suscripcion -> this.fallaHeladeraService.notificacionFallaHeladera(suscripcion, "falla de conexion"));
-    }
-
-    @Override
-    public void manejarSolicitudDeApertura(String codigoTarjeta, UUID heladeraId) {
-        Heladera heladera = this.heladeraService.buscarPorId(heladeraId.toString())
-                .orElseThrow(ResourceNotFoundException::new);
-
-        Optional<SolicitudDeApertura> solicitudDeApertura = solicitudDeAperturaService.buscarPorTarjetaHeladeraEnLasUltimas(codigoTarjeta, heladera)
-                .stream()
-                .filter(solicitud -> this.aperturaHeladeraService.buscarPorSolicitud(solicitud).isEmpty()) //solicitudes que no tienen aperturas
-                .min(Comparator.comparing(SolicitudDeApertura::getFechaHora)); // obtengo la más vieja
-
-        if (solicitudDeApertura.isPresent()) {
-            AperturaHeladera aperturaHeladera = AperturaHeladera.por(solicitudDeApertura.get().getTarjeta(), solicitudDeApertura.get().getHeladera(), LocalDateTime.now(), solicitudDeApertura.get());
-            this.aperturaHeladeraService.guardar(aperturaHeladera);
-            System.out.println("no permito acceso");
-
-            //TODO debería registrar movimientos
-        } else {
-            Optional<TarjetaPersonaVulnerable> tarjetaPersonaVulnerable = tarjetaPersonaVulnerableService.buscarTarjetaPorCodigo(codigoTarjeta);
-
-            if (tarjetaPersonaVulnerable.isPresent()) {
-                RetiroDeVianda retiroDeVianda = RetiroDeVianda.por(tarjetaPersonaVulnerable.get(), heladera, LocalDateTime.now());
-                this.retiroDeViandaService.guardar(retiroDeVianda);
-                System.out.println("no permito acceso");
-            } else {
-                //TODO no se le da acceso para que abra la heladera
-                System.out.println("no permito acceso");
-            }
-        }
-    }
+  }
 
 }

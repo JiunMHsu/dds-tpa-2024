@@ -109,7 +109,7 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
 
     render(context, "suscripciones/suscripcion_heladera_llena.hbs", model);
   }
-  
+
   public void saveFallaHeladera(Context context) {
 
     Map<String, Object> model = new HashMap<>();

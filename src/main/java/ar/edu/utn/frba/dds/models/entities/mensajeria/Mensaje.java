@@ -1,14 +1,13 @@
 package ar.edu.utn.frba.dds.models.entities.mensajeria;
 
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,18 +41,18 @@ public class Mensaje extends EntidadPersistente {
                              String cuerpo,
                              LocalDateTime fechaEnvio) {
     return Mensaje
-            .builder()
-            .contacto(contacto)
-            .asunto(asunto)
-            .cuerpo(cuerpo)
-            .fechaEnvio(fechaEnvio)
-            .build();
+        .builder()
+        .contacto(contacto)
+        .asunto(asunto)
+        .cuerpo(cuerpo)
+        .fechaEnvio(fechaEnvio)
+        .build();
   }
 
   public static Mensaje con(Contacto receptor,
                             String asunto,
                             String cuerpo) {
-    return Mensaje.para(receptor,  asunto, cuerpo, null);
+    return Mensaje.para(receptor, asunto, cuerpo, null);
   }
 
 }

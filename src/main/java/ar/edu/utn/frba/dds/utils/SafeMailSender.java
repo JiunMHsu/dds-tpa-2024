@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.utils;
 
-import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.ISender;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.Mensaje;
 import jakarta.mail.MessagingException;

@@ -39,7 +39,7 @@ public class Direccion {
     return Direccion.builder().barrio(barrio).calle(calle).altura(altura).build();
   }
 
-  public String obtenerDireccion(){
+  public String obtenerDireccion() {
     return this.calle + " " + this.altura + ", " + this.barrio;
   }
 }

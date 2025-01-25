@@ -15,8 +15,17 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import javax.persistence.*;
-
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,7 +50,7 @@ public class Colaborador extends EntidadPersistente {
   private Usuario usuario;
 
   @OneToMany
-  @JoinColumn(name="contacto_id", referencedColumnName = "id")
+  @JoinColumn(name = "contacto_id", referencedColumnName = "id")
   private List<Contacto> contactos;
 
   @Embedded
@@ -168,14 +177,14 @@ public class Colaborador extends EntidadPersistente {
     puntos.setEsValido(false);
   }
 
-  public Optional<Contacto> getContacto(MedioDeNotificacion medioDeNotificacion){
+  public Optional<Contacto> getContacto(MedioDeNotificacion medioDeNotificacion) {
     return contactos.stream()
-            .filter(contacto -> contacto.getMedioDeNotificacion() == medioDeNotificacion)
-            .findFirst();//solo es posible un tipo de contacto de cada uno pero asi me devuelve optional
+        .filter(contacto -> contacto.getMedioDeNotificacion() == medioDeNotificacion)
+        .findFirst();//solo es posible un tipo de contacto de cada uno pero asi me devuelve optional
   }
 
-  public void agregarContacto(Contacto contacto){
-      this.contactos.add(contacto);
+  public void agregarContacto(Contacto contacto) {
+    this.contactos.add(contacto);
   }
 }
 

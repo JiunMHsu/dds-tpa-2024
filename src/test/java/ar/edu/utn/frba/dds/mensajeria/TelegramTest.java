@@ -11,7 +11,7 @@ public class TelegramTest {
   public void enviarTelegram() {
     TelegramSender telegramSender = new TelegramSender();
 
-    Mensaje mensaje = Mensaje.con(Contacto.conTelegram(""),"**** TEST DE TELEGRAM ****",  "Si te llego este mensaje significa que el test funciono =D" );
+    Mensaje mensaje = Mensaje.con(Contacto.conTelegram(""), "**** TEST DE TELEGRAM ****", "Si te llego este mensaje significa que el test funciono =D");
     telegramSender.enviarMensaje(mensaje);
   }
 }

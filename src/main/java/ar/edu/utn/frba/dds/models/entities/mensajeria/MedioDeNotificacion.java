@@ -4,4 +4,5 @@ public enum MedioDeNotificacion {
   WHATSAPP,
   TELEGRAM,
   EMAIL,
+  TELEFONO
 }

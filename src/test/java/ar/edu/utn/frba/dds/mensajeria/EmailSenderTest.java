@@ -12,7 +12,7 @@ public class EmailSenderTest {
   @Test
   public void testEmailSender() {
     EmailSender mailSender = new EmailSender();
-    Mensaje mensaje = Mensaje.con(Contacto.conEmail("jhsu@frba.utn.edu.ar"),"TEST DDS EMAIL SENDER","test");
+    Mensaje mensaje = Mensaje.con(Contacto.conEmail("jhsu@frba.utn.edu.ar"), "TEST DDS EMAIL SENDER", "test");
     try {
       mailSender.enviarMensaje(mensaje);
     } catch (MessagingException e) {

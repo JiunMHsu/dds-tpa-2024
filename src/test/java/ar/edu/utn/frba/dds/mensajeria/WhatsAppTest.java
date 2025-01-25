@@ -12,7 +12,7 @@ public class WhatsAppTest {
   public void enviarWhatsApp() {
     WhatsAppSender whatsAppSender = new WhatsAppSender();
     Mensaje mensaje = Mensaje.con(Contacto.conWhatsApp("whatsapp:+5491132420699"), "TEST DDS WHATSAPP SENDER",
-            "test");
+        "test");
     try {
       whatsAppSender.enviarMensaje(mensaje);
     } catch (MessagingException e) {

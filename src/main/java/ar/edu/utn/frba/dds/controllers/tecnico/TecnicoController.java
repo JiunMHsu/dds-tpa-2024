@@ -101,12 +101,14 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
 
       MedioDeNotificacion medioDeNotificacion = MedioDeNotificacion.valueOf(context.formParamAsClass("medio-notificacion", String.class).get());
 
-      Contacto contacto = Contacto.con(
-          context.formParamAsClass("email", String.class).get(),
-          context.formParamAsClass("telefono", String.class).get(),
-          "whatsapp:" + context.formParamAsClass("whatsapp", String.class).get(),
-          context.formParamAsClass("telegram", String.class).get()
-      );
+      String key = switch (medioDeNotificacion) {
+        case EMAIL -> context.formParamAsClass("email", String.class).get();
+        case WHATSAPP -> "whatsapp:" + context.formParamAsClass("whatsapp", String.class).get();
+        case TELEGRAM -> context.formParamAsClass("telegram", String.class).get();
+        case TELEFONO -> context.formParamAsClass("telefono", String.class).get();
+      };
+
+      Contacto contacto = Contacto.con(medioDeNotificacion, key);
 
       Ubicacion ubicacion = new Ubicacion(
           context.formParamAsClass("latitud", Double.class).get(),

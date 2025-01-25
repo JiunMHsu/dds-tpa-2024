@@ -125,7 +125,7 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
             .orElse(generarColaborador(colaboracionPrevia.getNombre(),
                 colaboracionPrevia.getApellido(),
                 colaboracionPrevia.getDocumento(),
-                    colaboracionPrevia.getEmail()));
+                colaboracionPrevia.getEmail()));
 
         Mensaje mensaje = mensajeCredencial(colaborador);
         mailSender.enviarMensaje(mensaje);

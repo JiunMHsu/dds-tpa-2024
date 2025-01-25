@@ -42,9 +42,11 @@ public class SuscriptorSensor implements ISuscriptorMqtt {
     String[] vectorMensaje = mensaje.split(" ");
 
     switch (parseOperation(vectorMensaje[0])) {
-      case TEMPERATURA -> brokerMessageHandler.manejarTemperatura(Double.parseDouble(vectorMensaje[1]), heladeraId);
+      case TEMPERATURA ->
+          brokerMessageHandler.manejarTemperatura(Double.parseDouble(vectorMensaje[1]), heladeraId);
       case FRAUDE -> brokerMessageHandler.manejarFraude(heladeraId);
-      case LECTOR_TARJETA -> brokerMessageHandler.manejarSolicitudDeApertura(vectorMensaje[1], heladeraId);
+      case LECTOR_TARJETA ->
+          brokerMessageHandler.manejarSolicitudDeApertura(vectorMensaje[1], heladeraId);
     }
 
     newScheduler();

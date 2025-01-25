@@ -1,11 +1,10 @@
 package ar.edu.utn.frba.dds.models.entities.data;
 
 import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
-import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +17,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="contacto")
+@Table(name = "contacto")
 public class Contacto extends EntidadPersistente {
 
   @Column(name = "medio_notificacion")
@@ -34,8 +33,9 @@ public class Contacto extends EntidadPersistente {
         .valor(valor)
         .build();
   }
+
   public static Contacto conTelegram(String telegram) {
-    return Contacto.con( MedioDeNotificacion.TELEGRAM,  telegram);
+    return Contacto.con(MedioDeNotificacion.TELEGRAM, telegram);
   }
 
   public static Contacto conWhatsApp(String whatsApp) {
@@ -43,8 +43,9 @@ public class Contacto extends EntidadPersistente {
   }
 
   public static Contacto conEmail(String email) {
-    return Contacto.con(MedioDeNotificacion.EMAIL,email);
+    return Contacto.con(MedioDeNotificacion.EMAIL, email);
   }
+
   public static Contacto vacio() {
     return Contacto.con(null, null);
   }
