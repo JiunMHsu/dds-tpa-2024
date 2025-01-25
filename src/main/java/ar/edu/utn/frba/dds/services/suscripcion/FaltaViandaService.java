@@ -5,76 +5,94 @@ import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
+import ar.edu.utn.frba.dds.models.entities.mensajeria.Mensaje;
 import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFaltaVianda;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.IColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.suscripcion.FaltaViandaRepository;
+import ar.edu.utn.frba.dds.services.mensajeria.MensajeriaService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 public class FaltaViandaService implements WithSimplePersistenceUnit {
 
-  private final FaltaViandaRepository faltaViandaRepository;
-  private final IColaboradorRepository colaboradorRepository;
+    private final FaltaViandaRepository faltaViandaRepository;
+    private final IColaboradorRepository colaboradorRepository;
 
+    private final MensajeriaService mensajeriaService;
 
-  public FaltaViandaService(FaltaViandaRepository faltaViandaRepository,
-                            ColaboradorRepository colaboradorRepository) {
-    this.faltaViandaRepository = faltaViandaRepository;
-    this.colaboradorRepository = colaboradorRepository;
-  }
-
-  public void registrar(Colaborador colaborador, Heladera heladera, Integer viandasRestantes, MedioDeNotificacion medioDeNotificacion, String infoContacto) throws SuscripcionFaltaViandaException {
-
-    Contacto contacto = colaborador.getContacto();
-
-    if (contacto == null) {
-      contacto = Contacto.vacio();
-      colaborador.setContacto(contacto);
+    public FaltaViandaService(FaltaViandaRepository faltaViandaRepository,
+                              ColaboradorRepository colaboradorRepository, MensajeriaService mensajeriaService) {
+        this.faltaViandaRepository = faltaViandaRepository;
+        this.colaboradorRepository = colaboradorRepository;
+        this.mensajeriaService = mensajeriaService;
     }
 
-    boolean contactoActualizado = false;
+    public void registrar(Colaborador colaborador, Heladera heladera, Integer viandasRestantes, MedioDeNotificacion medioDeNotificacion, String infoContacto) throws SuscripcionFaltaViandaException {
 
-    switch (medioDeNotificacion) {
-      case WHATSAPP:
-        if (contacto.getWhatsApp() == null) {
-          contacto.setWhatsApp(infoContacto);
-          contactoActualizado = true;
+        if (colaborador.getContactos().isEmpty()) {
+            List<Contacto> contactos = new ArrayList<>(Arrays.asList(Contacto.vacio()));
+            colaborador.setContactos(contactos);
         }
-        break;
-      case TELEGRAM:
-        if (contacto.getTelegram() == null) {
-          contacto.setTelegram(infoContacto);
-          contactoActualizado = true;
+
+        boolean contactoActualizado = false;
+
+        if (colaborador.getContacto(medioDeNotificacion).isEmpty()) {
+            colaborador.agregarContacto(Contacto.con(medioDeNotificacion, infoContacto));
+            contactoActualizado = true;
         }
-        break;
-      case EMAIL:
-        if (contacto.getEmail() == null) {
-          contacto.setEmail(infoContacto);
-          contactoActualizado = true;
+
+        if (viandasRestantes <= 0 || viandasRestantes > heladera.getCapacidad()) {
+            throw new SuscripcionFaltaViandaException("La cantidad por viandas restantes debe ser mayor a 0 y menor o igual a la capacidad máxima por la heladera");
         }
-        break;
+
+        SuscripcionFaltaVianda nuevaSuscripcion = SuscripcionFaltaVianda.de(
+                colaborador,
+                heladera,
+                medioDeNotificacion,
+                viandasRestantes);
+
+        if (contactoActualizado) {
+            beginTransaction();
+            colaboradorRepository.actualizar(colaborador);
+            faltaViandaRepository.guardar(nuevaSuscripcion);
+            commitTransaction();
+        } else {
+            beginTransaction();
+            faltaViandaRepository.guardar(nuevaSuscripcion);
+            commitTransaction();
+        }
     }
 
-    if (viandasRestantes <= 0 || viandasRestantes > heladera.getCapacidad()) {
-      throw new SuscripcionFaltaViandaException("La cantidad por viandas restantes debe ser mayor a 0 y menor o igual a la capacidad máxima por la heladera");
-    }
+    public void notificacionFaltaVianda(SuscripcionFaltaVianda suscripcion) {
+        String asunto = "Heladera con baja disponibilidad de viandas";
+        String cuerpo = String.format(
+                "Estimado/a %s,\n\n" +
+                        "La %s tiene solo %d viandas restantes. Por favor, lleve más viandas para reabastecerla.\n\n" +
+                        "Gracias por su colaboración.",
+                suscripcion.getColaborador().getNombre(),
+                suscripcion.getHeladera().getNombre(),
+                suscripcion.getViandasRestantes()
+        );
 
-    SuscripcionFaltaVianda nuevaSuscripcion = SuscripcionFaltaVianda.de(
-        colaborador,
-        heladera,
-        medioDeNotificacion,
-        viandasRestantes);
-
-    if (contactoActualizado) {
-      beginTransaction();
-      colaboradorRepository.actualizar(colaborador);
-      faltaViandaRepository.guardar(nuevaSuscripcion);
-      commitTransaction();
-    } else {
-      beginTransaction();
-      faltaViandaRepository.guardar(nuevaSuscripcion);
-      commitTransaction();
+        try {
+            Optional<Contacto> contacto = suscripcion.getColaborador().getContacto(suscripcion.getMedioDeNotificacion());
+            if (contacto.isPresent()) {
+                Mensaje mensaje = Mensaje.con(
+                        contacto.get(),
+                        asunto,
+                        cuerpo);
+                mensajeriaService.enviarMensaje(mensaje);
+            } else {
+                System.out.println("Medio de contacto solicitado no disponible. No se puede enviar el mensaje.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-  }
 
 }

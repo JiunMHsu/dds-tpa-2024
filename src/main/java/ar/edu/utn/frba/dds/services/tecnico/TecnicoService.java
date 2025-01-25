@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.services.tecnico;
 
+import ar.edu.utn.frba.dds.models.entities.data.Barrio;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.TecnicoRepository;
@@ -42,6 +43,9 @@ public class TecnicoService implements WithSimplePersistenceUnit {
     return tecnicoRepository.buscarPorUsuario(usuario);
   }
 
+  public List<Tecnico> obtenerPorBarrio(Barrio barrio){
+    return tecnicoRepository.obtenerPorBarrio(barrio);
+  }
   public void actualizar(Tecnico tecnico) {
     withTransaction(() -> tecnicoRepository.actualizar(tecnico));
   }

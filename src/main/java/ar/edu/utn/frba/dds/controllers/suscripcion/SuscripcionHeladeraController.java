@@ -59,7 +59,7 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
     HeladeraDTO heladeraDTO = HeladeraDTO.completa(heladera);
     model.put("heladera", heladeraDTO);
 
-    render(context, "suscripcion/suscripciones.hbs", model);
+    render(context, "suscripciones/suscripciones.hbs", model);
   }
 
   public void createFallaHeladera(Context context) {
@@ -75,7 +75,7 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
     HeladeraDTO heladeraDTO = HeladeraDTO.completa(heladera);
     model.put("heladera", heladeraDTO);
 
-    render(context, "suscripcion/suscripcion_falla_heladera.hbs", model);
+    render(context, "suscripciones/suscripcion_falla_heladera.hbs", model);
   }
 
   public void createFaltaVianda(Context context) {
@@ -91,7 +91,7 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
     HeladeraDTO heladeraDTO = HeladeraDTO.completa(heladera);
     model.put("heladera", heladeraDTO);
 
-    render(context, "suscripcion/suscripcion_falta_viandas.hbs", model);
+    render(context, "suscripciones/suscripcion_falta_viandas.hbs", model);
   }
 
   public void createHeladeraLlena(Context context) {
@@ -107,9 +107,9 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
     HeladeraDTO heladeraDTO = HeladeraDTO.completa(heladera);
     model.put("heladera", heladeraDTO);
 
-    render(context, "suscripcion/suscripcion_heladera_llena.hbs", model);
+    render(context, "suscripciones/suscripcion_heladera_llena.hbs", model);
   }
-
+  
   public void saveFallaHeladera(Context context) {
 
     Map<String, Object> model = new HashMap<>();

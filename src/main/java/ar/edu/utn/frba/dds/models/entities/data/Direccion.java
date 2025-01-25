@@ -38,4 +38,8 @@ public class Direccion {
   public static Direccion with(Barrio barrio, Calle calle, Integer altura) {
     return Direccion.builder().barrio(barrio).calle(calle).altura(altura).build();
   }
+
+  public String obtenerDireccion(){
+    return this.calle + " " + this.altura + ", " + this.barrio;
+  }
 }

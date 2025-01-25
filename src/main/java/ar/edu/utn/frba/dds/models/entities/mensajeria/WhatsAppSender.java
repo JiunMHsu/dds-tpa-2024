@@ -11,9 +11,9 @@ public class WhatsAppSender implements ISender {
   public static final String AUTH_TOKEN = "8314490451d9bcb1d0b0f0163c244555";
 
   @Override
-  public void enviarMensaje(Contacto contacto, String asunto, String cuerpo) throws IllegalArgumentException, MessagingException {
+  public void enviarMensaje(Mensaje mensaje) throws IllegalArgumentException, MessagingException {
 
-    String receptor = contacto.getContacto(MedioDeNotificacion.WHATSAPP);
+    String receptor = mensaje.getContacto().getValor();
     if (receptor == null)
       throw new IllegalArgumentException("El contacto no tiene una cuenta de WhatsApp asociado");
 
@@ -22,7 +22,7 @@ public class WhatsAppSender implements ISender {
         .creator(
             new PhoneNumber(receptor),
             new PhoneNumber("whatsapp:+14155238886"),
-            asunto + "\n\n" + cuerpo
+            mensaje.getAsunto() + "\n\n" + mensaje.getCuerpo()
         )
         .create();
 

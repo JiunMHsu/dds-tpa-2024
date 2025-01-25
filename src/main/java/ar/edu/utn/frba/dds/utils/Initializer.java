@@ -28,6 +28,7 @@ import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.VarianteDePuntosRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
+import ar.edu.utn.frba.dds.models.repositories.contacto.ContactoRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.TecnicoRepository;
@@ -92,14 +93,23 @@ public class Initializer implements WithSimplePersistenceUnit {
     List<TipoColaboracion> colabJuridica1 = List.of(TipoColaboracion.DONACION_DINERO, TipoColaboracion.HACERSE_CARGO_HELADERA);
     List<TipoColaboracion> colabJuridica2 = List.of(TipoColaboracion.HACERSE_CARGO_HELADERA, TipoColaboracion.OFERTA_DE_PRODUCTOS, TipoColaboracion.DONACION_DINERO);
 
-    Colaborador c1 = Colaborador.humana(u1, "Jiun Ming", "Hsu", null, LocalDate.of(2002, 2, 19), Contacto.vacio(), direccion, new ArrayList<>(colabHumana1), new Puntos(2039, true, null));
-    Colaborador c2 = Colaborador.humana(u2, "Abril", "Nimo Dominguez", null, LocalDate.of(2004, 1, 8), Contacto.vacio(), direccion, new ArrayList<>(colabHumana2), new Puntos(0, false, null));
-    Colaborador c3 = Colaborador.humana(u3, "Matías Leonel", "Juncos Mieres", null, LocalDate.of(2003, 12, 1), Contacto.vacio(), direccion, new ArrayList<>(colabHumana1), new Puntos(0, false, null));
-    Colaborador c4 = Colaborador.juridica(u4, "MELSELEP SRL", TipoRazonSocial.EMPRESA, "Música", Contacto.vacio(), direccion, new ArrayList<>(colabJuridica2), new Puntos(0, false, null));
-    Colaborador c5 = Colaborador.juridica(u5, "JOACO SA", TipoRazonSocial.EMPRESA, "Tecnología", Contacto.vacio(), direccion, new ArrayList<>(colabJuridica1), new Puntos(0, false, null));
+    // Los dejo x separado x si pinta tenerlos diferentes
+
+    List<Contacto> contactos1 = List.of(Contacto.vacio());
+    List<Contacto> contactos2 = List.of(Contacto.vacio());
+    List<Contacto> contactos3 = List.of(Contacto.conWhatsApp("whatsapp:+5491132420699"));
+    List<Contacto> contactos4 = List.of(Contacto.vacio());
+    List<Contacto> contactos5 = List.of(Contacto.vacio());
+
+    Colaborador c1 = Colaborador.humana(u1, "Jiun Ming", "Hsu", null, LocalDate.of(2002, 2, 19), contactos1, direccion, new ArrayList<>(colabHumana1), new Puntos(2039, true, null));
+    Colaborador c2 = Colaborador.humana(u2, "Abril", "Nimo Dominguez", null, LocalDate.of(2004, 1, 8), contactos2, direccion, new ArrayList<>(colabHumana2), new Puntos(0, false, null));
+    Colaborador c3 = Colaborador.humana(u3, "Matías Leonel", "Juncos Mieres", null, LocalDate.of(2003, 12, 1), contactos3, direccion, new ArrayList<>(colabHumana1), new Puntos(0, false, null));
+    Colaborador c4 = Colaborador.juridica(u4, "MELSELEP SRL", TipoRazonSocial.EMPRESA, "Música", contactos4, direccion, new ArrayList<>(colabJuridica2), new Puntos(0, false, null));
+    Colaborador c5 = Colaborador.juridica(u5, "JOACO SA", TipoRazonSocial.EMPRESA, "Tecnología", contactos5, direccion, new ArrayList<>(colabJuridica1), new Puntos(0, false, null));
 
     UsuarioRepository usuarioRepository = new UsuarioRepository();
     ColaboradorRepository colaboradorRepository = new ColaboradorRepository();
+    ContactoRepository contactoRepository = new ContactoRepository();
 
     withTransaction(() -> {
       usuarioRepository.guardar(u1);
@@ -107,6 +117,12 @@ public class Initializer implements WithSimplePersistenceUnit {
       usuarioRepository.guardar(u3);
       usuarioRepository.guardar(u4);
       usuarioRepository.guardar(u5);
+
+      contactoRepository.guardar(contactos1);
+      contactoRepository.guardar(contactos2);
+      contactoRepository.guardar(contactos3);
+      contactoRepository.guardar(contactos4);
+      contactoRepository.guardar(contactos5);
 
       colaboradorRepository.guardar(c1);
       colaboradorRepository.guardar(c2);
@@ -326,6 +342,9 @@ public class Initializer implements WithSimplePersistenceUnit {
   }
 
   private void withTecnicos() {
+
+    Contacto contacto = Contacto.conTelegram("+5491132420699");
+
     Usuario u1 = Usuario.con("Tecnico1", "1111", "tecnico1@gmail.com", TipoRol.TECNICO);
     Area areaDeCoberura = Area.with(
         new Ubicacion(-34.6037, -58.3816),
@@ -336,6 +355,7 @@ public class Initializer implements WithSimplePersistenceUnit {
     Tecnico t1 = Tecnico.con(u1, "Tecnico", "Uno", unDocumento, "20-00019283-1", Contacto.vacio(), MedioDeNotificacion.EMAIL, areaDeCoberura);
 
     beginTransaction();
+    new ContactoRepository().guardar(contacto);
     new UsuarioRepository().guardar(u1);
     new TecnicoRepository().guardar(t1);
     commitTransaction();
