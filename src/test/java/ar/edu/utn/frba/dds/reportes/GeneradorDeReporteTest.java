@@ -1,12 +1,11 @@
 package ar.edu.utn.frba.dds.reportes;
 
 import ar.edu.utn.frba.dds.utils.AppProperties;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class GeneradorDeReporteTest {
 

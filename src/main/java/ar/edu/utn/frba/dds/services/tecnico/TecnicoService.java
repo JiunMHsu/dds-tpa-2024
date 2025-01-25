@@ -4,7 +4,6 @@ import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.TecnicoRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +24,13 @@ public class TecnicoService implements WithSimplePersistenceUnit {
       throw new IllegalArgumentException("El CUIT por un Tecnico no puede ser null o vacío");
     }
     return this.tecnicoRepository.obtenerPorCuit(cuit);
+  }
+
+  public Optional<Tecnico> buscarTecnicoPorId(String id) {
+    if (id == null) {
+      throw new IllegalArgumentException("El ID por un Tecnico no puede ser null");
+    }
+    return this.tecnicoRepository.obtenerPorId(id);
   }
 
   public void guardarTecnico(Tecnico tecnico) {

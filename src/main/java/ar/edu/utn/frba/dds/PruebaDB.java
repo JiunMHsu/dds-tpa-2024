@@ -1,7 +1,14 @@
 package ar.edu.utn.frba.dds;
 
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.models.entities.data.*;
+import ar.edu.utn.frba.dds.models.entities.data.Area;
+import ar.edu.utn.frba.dds.models.entities.data.Barrio;
+import ar.edu.utn.frba.dds.models.entities.data.Calle;
+import ar.edu.utn.frba.dds.models.entities.data.Contacto;
+import ar.edu.utn.frba.dds.models.entities.data.Direccion;
+import ar.edu.utn.frba.dds.models.entities.data.Documento;
+import ar.edu.utn.frba.dds.models.entities.data.TipoDocumento;
+import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
@@ -17,7 +24,6 @@ import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.TecnicoRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;

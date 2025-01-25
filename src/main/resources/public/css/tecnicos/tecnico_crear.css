@@ -2,61 +2,43 @@
     border: 1px solid var(--background-3);
 }
 
+.form-container {
+    max-width: 80%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
 .form {
-    grid-template-columns: 2fr 1fr;
+    display: grid;
+    grid-template-columns: 30rem 30rem;
+    gap: 3rem;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
 }
 
 .form-title {
-    font-size: 2rem;
-    color: var(--foreground-1);
+    margin-top: -0.2rem;
 }
 
-.field-nombre {
-    grid-column: 1 / -1;
+
+label {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.7rem;
 }
 
-.field-apellido {
-    grid-column: 1 / -1;
+.column {
+    flex: 1;
+    margin-top: -0.4rem;
+    min-width: 30rem;
 }
 
-.field-documento {
-    grid-column: 1 / -1;
-}
-
-.field-tipodocumento {
-    grid-column: 1 / -1;
-}
-
-.field-fecha-nacimiento {
-    grid-column: 1 / -1;
-}
-
-.field-cuit {
-    grid-column: 1 / -1;
-}
-
-.field-medio-notificacion {
-    grid-column: 1 / -1;
-}
-
-.field-contacto {
-    grid-column: 1 / -1;
-}
-
-.field-latitud {
-    grid-column: 1 / -1;
-}
-
-.field-longitud {
-    grid-column: 1 / -1;
-}
-
-.field-radio {
-    grid-column: 1 / -1;
-}
-
-.field-barrio {
-    grid-column: 1 / -1;
+.form-button-container {
+    grid-column: span 1;
+    margin-top: 2rem;
+    justify-self: center;
 }
 
 .side-panel {

@@ -5,7 +5,6 @@ import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.reporte.Reporte;
 import ar.edu.utn.frba.dds.services.reporte.ReporteService;
 import io.javalin.http.Context;
-
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.HashMap;

@@ -1,44 +1,88 @@
 .main-section {
-    align-items: flex-start;
+    padding: 0 .5rem;
+    overflow-y: hidden;
+    margin-top: 3rem;
+}
+
+.list-container {
+    width: 50%;
+}
+
+.cuadrado {
+    margin-left: 1.75rem;
+}
+
+.side-panel {
+    border: none;
+    width: 50%;
+    margin-top: 3rem;
+}
+
+
+.upper-right {
+    flex: 1;
+    margin-bottom: 1rem;
+}
+
+.lower-right {
+    flex: 1;
+    overflow-y: auto;
+}
+
+h2.section-title, h2.list-title {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .negrita {
     font-weight: bold;
 }
 
-.main-section p {
-    margin-left: 5rem;
-    font-size: 1.2rem;
-    margin-bottom: 0.3rem;
-}
 
-.main-section h1 {
-    text-align: center;
-    width: 100%;
-    font-size: 1.8rem;
-}
-
-.main-section h2 {
-    text-align: center;
-    width: 100%;
-    font-size: 1.5rem;
-}
-
-.cuadrado {
-    margin-left: 1.5rem;
-}
-
-.dobleCuadrado {
-    margin-left: 3rem;
-}
-
-.contenedores {
-    display: flex;
-    gap: 5rem;
-    justify-content: center;
-}
-
-.opciones {
+.left-column {
+    flex: 1;
     display: flex;
     flex-direction: column;
+    gap: 10px;
+}
+
+.right-column {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.right-top {
+    flex: 1;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.right-bottom {
+    flex: 2;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 10px;
+    overflow-y: auto;
+}
+
+.info-card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+/* Ajustes generales */
+.no-data-message {
+    font-style: italic;
+    color: #666;
+}
+
+.scrollable {
+    max-height: 200px;
+    overflow-y: auto;
 }

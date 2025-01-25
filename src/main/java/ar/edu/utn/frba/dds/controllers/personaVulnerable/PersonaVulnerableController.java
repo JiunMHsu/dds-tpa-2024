@@ -2,7 +2,11 @@ package ar.edu.utn.frba.dds.controllers.personaVulnerable;
 
 import ar.edu.utn.frba.dds.dtos.personaVulnerable.PersonaVulnerableDTO;
 import ar.edu.utn.frba.dds.exceptions.PersonaVulnerableNotFoundException;
-import ar.edu.utn.frba.dds.models.entities.data.*;
+import ar.edu.utn.frba.dds.models.entities.data.Barrio;
+import ar.edu.utn.frba.dds.models.entities.data.Calle;
+import ar.edu.utn.frba.dds.models.entities.data.Direccion;
+import ar.edu.utn.frba.dds.models.entities.data.Documento;
+import ar.edu.utn.frba.dds.models.entities.data.TipoDocumento;
 import ar.edu.utn.frba.dds.models.entities.personaVulnerable.PersonaVulnerable;
 import ar.edu.utn.frba.dds.permissions.ColaboradorRequired;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
@@ -13,7 +17,6 @@ import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.validation.ValidationException;
-
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
