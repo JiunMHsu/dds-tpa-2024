@@ -433,7 +433,8 @@ public class ServiceLocator {
 
     if (componentName.equals(MensajeriaService.class.getName())) {
       MensajeriaService instance = new MensajeriaService(
-          instanceOf(MensajeRepository.class));
+          instanceOf(MensajeRepository.class),
+          instanceOf(HeladeraService.class));
       instances.put(componentName, instance);
     }
 

@@ -4,5 +4,5 @@ import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import jakarta.mail.MessagingException;
 
 public interface ISender {
-  void enviarMensaje(Mensaje mensaje) throws MessagingException;
+  void enviarMensaje(Contacto contacto, String asunto, String cuerpo) throws MessagingException;
 }

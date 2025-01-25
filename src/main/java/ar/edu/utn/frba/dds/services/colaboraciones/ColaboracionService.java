@@ -35,7 +35,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -125,12 +124,12 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
             .orElse(generarColaborador(colaboracionPrevia.getNombre(),
                 colaboracionPrevia.getApellido(),
                 colaboracionPrevia.getDocumento(),
-                    colaboracionPrevia.getEmail()));
+                colaboracionPrevia.getEmail()));
 
-        Mensaje mensaje = mensajeCredencial(colaborador);
-        mailSender.enviarMensaje(mensaje);
-        mensaje.setFechaEnvio(LocalDateTime.now());
-        mensajeRepository.guardar(mensaje);
+        Mensaje mail = generarMensajePara(colaborador);
+        mailSender.enviarMensaje(mail.getContacto(), mail.getAsunto(), mail.getCuerpo());
+        mail.setFechaEnvio(LocalDateTime.now());
+        mensajeRepository.guardar(mail);
 
         this.registrarColaboracion(colaboracionPrevia, colaborador);
       }
@@ -144,14 +143,14 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
   private Colaborador generarColaborador(String nombre, String apellido, Documento documento, String email) {
     Usuario usuario = GeneradorDeCredenciales.generarUsuario(nombre, email);
     Colaborador colaborador = Colaborador.humanaDocumento(usuario, nombre, apellido, documento);
-    colaborador.setContactos(new ArrayList<>(Arrays.asList(Contacto.conEmail(email))));
+    colaborador.setContacto(Contacto.conEmail(email));
 
     usuarioRepository.guardar(usuario);
     colaboradorRepository.guardar(colaborador);
     return colaborador;
   }
 
-  private Mensaje mensajeCredencial(Colaborador colaborador) {
+  private Mensaje generarMensajePara(Colaborador colaborador) {
     Usuario usuario = colaborador.getUsuario();
 
     String asunto = "Credencial por usuario";
@@ -159,7 +158,9 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
         + " - Nombre por usuario provicional: " + usuario.getNombre()
         + " - Contrasenia por usuario provicional: " + usuario.getContrasenia();
 
-    Mensaje mensaje = Mensaje.con(colaborador.getContacto(MedioDeNotificacion.EMAIL).get(), asunto, cuerpo);
+    Mensaje mensaje = Mensaje.paraColaborador(colaborador, asunto, cuerpo);
+    mensaje.setMedio(MedioDeNotificacion.EMAIL);
+
     return mensaje;
   }
 

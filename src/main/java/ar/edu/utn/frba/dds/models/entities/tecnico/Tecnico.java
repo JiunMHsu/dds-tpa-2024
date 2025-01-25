@@ -45,8 +45,7 @@ public class Tecnico extends EntidadPersistente {
   @Column(name = "cuit", unique = true, nullable = false)
   private String cuit;
 
-  @OneToOne
-  @JoinColumn(name = "contacto_id", nullable = false)
+  @Embedded
   private Contacto contacto;
 
   @Enumerated(EnumType.STRING)

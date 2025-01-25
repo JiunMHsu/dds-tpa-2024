@@ -1,14 +1,18 @@
 package ar.edu.utn.frba.dds.models.entities.mensajeria;
 
+import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
+import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,7 +25,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "mensaje")
-public class Mensaje extends EntidadPersistente {
+public class Mensaje {
+
+  @Id
+  @GeneratedValue(generator = "uuid")
+  @Column(name = "id", columnDefinition = "BINARY(16)")
+  private UUID id;
 
   @Column(name = "asunto", nullable = false)
   private String asunto;
@@ -30,30 +39,55 @@ public class Mensaje extends EntidadPersistente {
   private String cuerpo;
 
   @ManyToOne
-  @JoinColumn(name = "contacto_id")
-  private Contacto contacto;
+  @JoinColumn(name = "colaborador_id")
+  private Colaborador colaborador;
+
+  @ManyToOne
+  @JoinColumn(name = "tecnico_id")
+  private Tecnico tecnico;
+
+  @Setter
+  @Enumerated
+  @Column(name = "medio_notificacion", nullable = false)
+  private MedioDeNotificacion medio;
 
   @Setter
   @Column(name = "fecha_envio", nullable = false)
   private LocalDateTime fechaEnvio;
 
-  public static Mensaje para(Contacto contacto,
+  public static Mensaje para(Colaborador colaborador,
+                             Tecnico tecnico,
                              String asunto,
                              String cuerpo,
+                             MedioDeNotificacion medio,
                              LocalDateTime fechaEnvio) {
     return Mensaje
-            .builder()
-            .contacto(contacto)
-            .asunto(asunto)
-            .cuerpo(cuerpo)
-            .fechaEnvio(fechaEnvio)
-            .build();
+        .builder()
+        .asunto(asunto)
+        .cuerpo(cuerpo)
+        .colaborador(colaborador)
+        .tecnico(tecnico)
+        .medio(medio)
+        .fechaEnvio(fechaEnvio)
+        .build();
   }
 
-  public static Mensaje con(Contacto receptor,
-                            String asunto,
-                            String cuerpo) {
-    return Mensaje.para(receptor,  asunto, cuerpo, null);
+  public static Mensaje paraColaborador(Colaborador receptor,
+                                        String asunto,
+                                        String cuerpo) {
+    return Mensaje.para(receptor, null, asunto, cuerpo, null, null);
   }
 
+  public static Mensaje paraTecnico(Tecnico receptor,
+                                    String asunto,
+                                    String cuerpo) {
+    return Mensaje.para(null, receptor, asunto, cuerpo, null, null);
+  }
+
+  public Contacto getContacto() {
+    if (colaborador != null)
+      return colaborador.getContacto();
+    else
+      return tecnico.getContacto();
+  }
 }
