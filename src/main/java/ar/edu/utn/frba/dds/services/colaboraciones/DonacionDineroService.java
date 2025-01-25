@@ -3,7 +3,6 @@ package ar.edu.utn.frba.dds.services.colaboraciones;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDinero;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-
 import java.util.Optional;
 
 public class DonacionDineroService implements WithSimplePersistenceUnit {

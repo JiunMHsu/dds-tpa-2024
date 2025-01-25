@@ -6,7 +6,6 @@ import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.validation.ValidationException;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;

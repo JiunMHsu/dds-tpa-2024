@@ -5,7 +5,6 @@ import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.entities.tecnico.VisitaTecnica;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.VisitaTecnicaRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-
 import java.util.List;
 import java.util.Optional;
 

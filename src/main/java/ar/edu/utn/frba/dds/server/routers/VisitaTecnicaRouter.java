@@ -14,7 +14,7 @@ public class VisitaTecnicaRouter implements IRouter {
   public void apply(RouterConfig config) {
     config.apiBuilder(() ->
         path("/visitas-tecnicas", () -> {
-          get(ServiceLocator.instanceOf(VisitaTecnicaController.class)::index, TipoRol.TECNICO);
+          get(ServiceLocator.instanceOf(VisitaTecnicaController.class)::index, TipoRol.ADMIN);
           post(ServiceLocator.instanceOf(VisitaTecnicaController.class)::save, TipoRol.TECNICO);
 
           get("/new", ServiceLocator.instanceOf(VisitaTecnicaController.class)::create, TipoRol.TECNICO);

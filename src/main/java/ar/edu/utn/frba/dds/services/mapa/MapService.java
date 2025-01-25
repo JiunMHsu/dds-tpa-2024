@@ -3,20 +3,19 @@ package ar.edu.utn.frba.dds.services.mapa;
 import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class MapService {
 
   private final HeladeraRepository heladeraRepository;
 
-  public MapService (HeladeraRepository heladeraRepository) {
+  public MapService(HeladeraRepository heladeraRepository) {
     this.heladeraRepository = heladeraRepository;
   }
 
