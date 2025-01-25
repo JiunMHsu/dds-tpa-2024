@@ -4,7 +4,6 @@ public enum TipoColaboracion {
   DONACION_VIANDAS,
   DONACION_DINERO,
   DISTRIBUCION_VIANDAS,
-  ENTREGA_VIANDA,
   HACERSE_CARGO_HELADERA,
   OFERTA_DE_PRODUCTOS,
   REPARTO_DE_TARJETAS;
@@ -14,7 +13,6 @@ public enum TipoColaboracion {
       case DONACION_VIANDAS -> "Donacion de Viandas";
       case DONACION_DINERO -> "Donacion de Dinero";
       case DISTRIBUCION_VIANDAS -> "Distribucion de Viandas";
-      case ENTREGA_VIANDA -> "Entrega de Viandas";
       case HACERSE_CARGO_HELADERA -> "Encargarse de Heladeras";
       case OFERTA_DE_PRODUCTOS -> "Oferta de Productos / Servicios";
       case REPARTO_DE_TARJETAS -> "Reparto de Tarjetas";

@@ -32,12 +32,13 @@ public class TipoColaboracionDTO {
         .build();
   }
 
+  // TODO: Refactor
+
   protected static String getAction(TipoColaboracion colaboracion) {
     return switch (colaboracion) {
       case DONACION_VIANDAS -> "Donar Vianda";
       case DONACION_DINERO -> "Donar Dinero";
       case DISTRIBUCION_VIANDAS -> "Distribuir Viandas";
-      case ENTREGA_VIANDA -> "Entregar Viandas";
       case HACERSE_CARGO_HELADERA -> "Encargarse por Heladeras";
       case OFERTA_DE_PRODUCTOS -> "Ofrecer Producto / Servicio";
       case REPARTO_DE_TARJETAS -> "Registrar Persona Vulnerable";
@@ -49,7 +50,6 @@ public class TipoColaboracionDTO {
       case DONACION_VIANDAS -> "donacion-vianda";
       case DONACION_DINERO -> "donacion-dinero";
       case DISTRIBUCION_VIANDAS -> "distribucion-viandas";
-      case ENTREGA_VIANDA -> "entrega-viandas";
       case HACERSE_CARGO_HELADERA -> "encargarse-de-heladeras";
       case OFERTA_DE_PRODUCTOS -> "oferta-producto-servicio";
       case REPARTO_DE_TARJETAS -> "registro-persona-vulnerable";
