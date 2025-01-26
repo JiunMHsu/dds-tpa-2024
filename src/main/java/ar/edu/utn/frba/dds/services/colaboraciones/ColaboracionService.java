@@ -143,7 +143,7 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
 
   private Colaborador generarColaborador(String nombre, String apellido, Documento documento, String email) {
     Usuario usuario = GeneradorDeCredenciales.generarUsuario(nombre, email);
-    Colaborador colaborador = Colaborador.humanaDocumento(usuario, nombre, apellido, documento);
+    Colaborador colaborador = Colaborador.humanaConDocumento(usuario, nombre, apellido, documento);
     colaborador.setContactos(new ArrayList<>(Arrays.asList(Contacto.conEmail(email))));
 
     usuarioRepository.guardar(usuario);

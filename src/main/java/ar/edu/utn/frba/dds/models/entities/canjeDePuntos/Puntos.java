@@ -9,6 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Clase que representa los puntos de un colaborador.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
@@ -25,6 +28,12 @@ public class Puntos {
   @Column(name = "valido_hasta", columnDefinition = "DATE")
   private LocalDate validoHasta;
 
+  /**
+   * Constructor de la clase Puntos.
+   *
+   * @param tipoColaborador {@link TipoColaborador} del colaborador.
+   * @return Puntos.
+   */
   public boolean esValido(TipoColaborador tipoColaborador) {
     return switch (tipoColaborador) {
       case HUMANO -> esValido;

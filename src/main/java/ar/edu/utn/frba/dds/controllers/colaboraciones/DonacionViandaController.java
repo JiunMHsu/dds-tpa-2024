@@ -86,8 +86,9 @@ public class DonacionViandaController extends ColaboradorRequired implements ICr
           LocalDate.parse(context.formParamAsClass("caducidad", String.class).get()),
           context.formParamAsClass("peso", Integer.class).get());
 
+      // TODO: OJO
       DonacionVianda donacionVianda = DonacionVianda.por(
-          colaborador, LocalDateTime.now(), vianda);
+          colaborador, LocalDateTime.now(), vianda, null);
 
       this.donacionViandaService.registrar(donacionVianda);
 

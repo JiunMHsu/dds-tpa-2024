@@ -24,6 +24,8 @@ public class ColaboracionDTO {
 
   protected String path;
 
+  private String colaborador;
+
   protected static String getPath(TipoColaboracion colaboracion) {
     return switch (colaboracion) {
       case DONACION_VIANDAS -> "donacion-vianda";

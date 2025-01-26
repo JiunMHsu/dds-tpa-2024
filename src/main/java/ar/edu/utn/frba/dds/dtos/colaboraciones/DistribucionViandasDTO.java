@@ -12,7 +12,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class DistribucionViandasDTO extends ColaboracionDTO {
 
-  private String colaborador;
 
   private String heladeraOrigen;
 
@@ -30,7 +29,7 @@ public class DistribucionViandasDTO extends ColaboracionDTO {
         .fechaHora(DateTimeParser.parseFechaHora(distribucionViandas.getFechaHora()))
         .path(getPath(TipoColaboracion.DISTRIBUCION_VIANDAS))
         .colaborador(distribucionViandas.getColaborador().getUsuario().getNombre())
-        .heladeraOrigen(distribucionViandas.getOrigen().getNombre())
+        .colaborador(distribucionViandas.getOrigen().getNombre())
         .heladeraDestino(distribucionViandas.getDestino().getNombre())
         .cantViandas(distribucionViandas.getViandas().toString())
         .motivo(distribucionViandas.getMotivo())

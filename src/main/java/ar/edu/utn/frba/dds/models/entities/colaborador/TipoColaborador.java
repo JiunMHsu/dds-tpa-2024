@@ -3,10 +3,18 @@ package ar.edu.utn.frba.dds.models.entities.colaborador;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import java.util.List;
 
+/**
+ * Tipo de colaborador.
+ */
 public enum TipoColaborador {
   HUMANO,
   JURIDICO;
 
+  /**
+   * Obtiene las colaboraciones permitidas para el tipo de colaborador.
+   *
+   * @return lista de colaboraciones permitidas
+   */
   public List<TipoColaboracion> colaboracionesPermitidas() {
     return switch (this) {
       case HUMANO -> List.of(

@@ -16,6 +16,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Clase que representa un Canje de Puntos en el sistema.
+ */
 @Getter
 @Builder
 @AllArgsConstructor
@@ -46,10 +49,16 @@ public class CanjeDePuntos {
   @Column(name = "puntos_restates", nullable = false)
   private double puntosRestantes;
 
-  // @ManyToOne
-  // @JoinColumn(name = "variante_usado", nullable = false)
-  // private VarianteDePuntos varianteUsado;
-
+  /**
+   * Constructor de la clase CanjeDePuntos.
+   *
+   * @param colaborador     Colaborador que realiza el canje.
+   * @param oferta          Oferta de productos que se canjea.
+   * @param fechaCanjeo     Fecha y hora en la que se realiza el canje.
+   * @param puntosCanjeados Puntos canjeados en el canje.
+   * @param puntosRestantes Puntos restantes del colaborador luego del canje.
+   * @return CanjeDePuntos.
+   */
   public static CanjeDePuntos por(Colaborador colaborador,
                                   OfertaDeProductos oferta,
                                   LocalDateTime fechaCanjeo,
