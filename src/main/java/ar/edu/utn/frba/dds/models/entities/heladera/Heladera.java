@@ -15,6 +15,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Modelo heladera.
+ */
 @Getter
 @Setter
 @Builder
