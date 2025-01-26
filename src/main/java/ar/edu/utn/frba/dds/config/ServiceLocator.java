@@ -24,6 +24,8 @@ import ar.edu.utn.frba.dds.controllers.session.SessionController;
 import ar.edu.utn.frba.dds.controllers.suscripcion.SuscripcionHeladeraController;
 import ar.edu.utn.frba.dds.controllers.tecnico.TecnicoController;
 import ar.edu.utn.frba.dds.controllers.tecnico.VisitaTecnicaController;
+import ar.edu.utn.frba.dds.models.entities.mensajeria.SafeMailSender;
+import ar.edu.utn.frba.dds.models.entities.mensajeria.SenderFactory;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.CanjeDePuntosRepository;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.VarianteDePuntosRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
@@ -78,7 +80,6 @@ import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import ar.edu.utn.frba.dds.services.tecnico.VisitaTecnicaService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.RandomString;
-import ar.edu.utn.frba.dds.utils.SafeMailSender;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -432,7 +433,8 @@ public class ServiceLocator {
 
     if (componentName.equals(MensajeriaService.class.getName())) {
       MensajeriaService instance = new MensajeriaService(
-          instanceOf(MensajeRepository.class));
+          instanceOf(MensajeRepository.class),
+          new SenderFactory());
       instances.put(componentName, instance);
     }
 
