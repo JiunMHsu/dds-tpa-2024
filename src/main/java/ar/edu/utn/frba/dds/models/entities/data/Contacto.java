@@ -11,6 +11,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Modelo Contacto.
+ */
 @Getter
 @Setter
 @Builder
@@ -26,6 +29,13 @@ public class Contacto extends EntidadPersistente {
   @Column(name = "valor")
   private String valor;
 
+  /**
+   * Crea un contacto con un medio de notificación y un valor.
+   *
+   * @param medioDeNotificacion Medio de notificación.
+   * @param valor               Valor.
+   * @return Contacto.
+   */
   public static Contacto con(MedioDeNotificacion medioDeNotificacion, String valor) {
     return Contacto
         .builder()

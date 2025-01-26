@@ -14,6 +14,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Modelo Mensaje.
+ */
 @Builder
 @Getter
 @AllArgsConstructor
@@ -36,6 +39,15 @@ public class Mensaje extends EntidadPersistente {
   @Column(name = "fecha_envio", nullable = false)
   private LocalDateTime fechaEnvio;
 
+  /**
+   * Crea un mensaje.
+   *
+   * @param contacto   Contacto.
+   * @param asunto     Asunto.
+   * @param cuerpo     Cuerpo.
+   * @param fechaEnvio Fecha de envío.
+   * @return Mensaje.
+   */
   public static Mensaje para(Contacto contacto,
                              String asunto,
                              String cuerpo,
@@ -49,6 +61,14 @@ public class Mensaje extends EntidadPersistente {
         .build();
   }
 
+  /**
+   * Crea un mensaje.
+   *
+   * @param receptor Receptor.
+   * @param asunto   Asunto.
+   * @param cuerpo   Cuerpo.
+   * @return Mensaje.
+   */
   public static Mensaje con(Contacto receptor,
                             String asunto,
                             String cuerpo) {

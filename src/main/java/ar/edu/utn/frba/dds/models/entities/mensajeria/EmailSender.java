@@ -13,6 +13,9 @@ import java.util.Properties;
 import lombok.Builder;
 import lombok.Getter;
 
+/**
+ * Email sender class.
+ */
 @Getter
 @Builder
 public class EmailSender implements ISender {
@@ -20,27 +23,39 @@ public class EmailSender implements ISender {
   private final String host;
   private final String port;
   private final String usuario;
-  private final String contrasenia;
+  private final String clave;
 
-  public EmailSender(String host, String port, String nombreUsuario, String contrasenia) {
+  /**
+   * Constructor.
+   *
+   * @param host          Email host.
+   * @param port          Email port.
+   * @param nombreUsuario Email user.
+   * @param clave         Email password.
+   */
+  public EmailSender(String host, String port, String nombreUsuario, String clave) {
     this.host = host;
     this.port = port;
     this.usuario = nombreUsuario;
-    this.contrasenia = contrasenia;
+    this.clave = clave;
   }
 
+  /**
+   * Default constructor.
+   */
   public EmailSender() {
     this.host = AppProperties.getInstance().propertyFromName("EMAIL_HOST");
     this.port = AppProperties.getInstance().propertyFromName("EMAIL_PORT");
     this.usuario = AppProperties.getInstance().propertyFromName("EMAIL_USER");
-    this.contrasenia = AppProperties.getInstance().propertyFromName("EMAIL_PASSWORD");
+    this.clave = AppProperties.getInstance().propertyFromName("EMAIL_PASSWORD");
   }
 
   @Override
   public void enviarMensaje(Mensaje mensaje) throws IllegalArgumentException, MessagingException {
     String receptor = mensaje.getContacto().getValor();
-    if (receptor == null)
+    if (receptor == null) {
       throw new IllegalArgumentException("El contacto no tiene un email asociado");
+    }
 
     Properties props = new Properties();
     props.put("mail.smtp.auth", "true");
@@ -51,12 +66,12 @@ public class EmailSender implements ISender {
 
     Session session = Session.getInstance(props, new Authenticator() {
       protected PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication(usuario, contrasenia);
+        return new PasswordAuthentication(usuario, clave);
       }
     });
 
     Message message = new MimeMessage(session);
-    message.setFrom(new InternetAddress("your-email@example.com"));
+    message.setFrom(new InternetAddress(usuario));
     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receptor));
     message.setSubject(mensaje.getAsunto());
     message.setText(mensaje.getCuerpo());
