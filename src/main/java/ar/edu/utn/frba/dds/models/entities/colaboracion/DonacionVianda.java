@@ -14,8 +14,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+/**
+ * Colaboración de un {@link Colaborador} que dona una {@link Vianda}.
+ */
 @Getter
 @Builder
 @AllArgsConstructor
@@ -32,29 +34,39 @@ public class DonacionVianda extends EntidadPersistente {
   private LocalDateTime fechaHora;
 
   @OneToOne
-  @JoinColumn(name = "vianda_id") // nullable por compatibilidad
+  @JoinColumn(name = "vianda_id") // nullable nueva compatibilidad
   private Vianda vianda;
 
-  @Setter
-  @Column(name = "es_entregada", nullable = false)
-  private Boolean esEntregada;
-
+  /**
+   * Crea una donación de vianda.
+   *
+   * @param colaborador {@link Colaborador} que dona la vianda
+   * @param fechaHora   fecha y hora de la donación
+   * @param vianda      {@link Vianda} donada
+   * @return donación de vianda
+   */
   public static DonacionVianda por(Colaborador colaborador,
-                                   LocalDateTime fechaDonacion,
-                                   Vianda vianda,
-                                   Boolean esEntregada) {
-    return DonacionVianda
-        .builder()
+                                   LocalDateTime fechaHora,
+                                   Vianda vianda) {
+    return DonacionVianda.builder()
         .colaborador(colaborador)
-        .fechaHora(fechaDonacion)
+        .fechaHora(fechaHora)
         .vianda(vianda)
-        .esEntregada(esEntregada)
         .build();
   }
 
+  /**
+   * Crea una donación de vianda sin especificar la vianda donada.
+   *
+   * @param colaborador {@link Colaborador} que dona la vianda
+   * @param fechaHora   fecha y hora de la donación
+   * @return donación de vianda
+   */
   public static DonacionVianda por(Colaborador colaborador,
-                                   LocalDateTime fechaDonacion) {
-    return DonacionVianda.por(colaborador, fechaDonacion, null, true);
+                                   LocalDateTime fechaHora) {
+    return DonacionVianda.builder()
+        .colaborador(colaborador)
+        .fechaHora(fechaHora)
+        .build();
   }
-
 }

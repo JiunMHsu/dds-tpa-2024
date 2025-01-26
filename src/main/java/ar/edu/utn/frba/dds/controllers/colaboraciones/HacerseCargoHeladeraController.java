@@ -51,7 +51,7 @@ public class HacerseCargoHeladeraController extends ColaboradorRequired implemen
     Optional<HacerseCargoHeladera> hacerseCargoHeladera = hacerseCargoHeladeraService.buscarPorId(hacerseCargoHeladeraId);
 
     if (hacerseCargoHeladera.isEmpty())
-      throw new ResourceNotFoundException("No se encontró un cargo por heladera paraColaborador id " + hacerseCargoHeladeraId);
+      throw new ResourceNotFoundException("No se encontró un cargo nueva heladera paraColaborador id " + hacerseCargoHeladeraId);
 
     Map<String, Object> model = new HashMap<>();
 

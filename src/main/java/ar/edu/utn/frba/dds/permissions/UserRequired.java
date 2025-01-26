@@ -18,7 +18,7 @@ public abstract class UserRequired {
   protected Usuario usuarioFromSession(Context context) throws UnauthenticatedException {
     String userId = context.sessionAttribute("userId");
     return usuarioService.obtenerUsuarioPorID(userId)
-        .orElseThrow(() -> new UnauthenticatedException("Usuario no encontrado con ID: " + userId));
+        .orElseThrow(() -> new UnauthenticatedException("Usuario no encontrado por ID: " + userId));
   }
 
   protected TipoRol rolFromSession(Context context) {

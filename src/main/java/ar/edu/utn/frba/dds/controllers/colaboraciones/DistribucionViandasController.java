@@ -18,7 +18,6 @@ import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.validation.ValidationException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,8 +49,9 @@ public class DistribucionViandasController extends ColaboradorRequired implement
     String distribucionViandasId = context.pathParam("id");
     Optional<DistribucionViandas> distribucionViandas = distribucionViandasService.buscarPorId(distribucionViandasId);
 
-    if (distribucionViandas.isEmpty())
-      throw new ResourceNotFoundException("No se encontró distribucion por viandas paraColaborador id " + distribucionViandasId);
+    if (distribucionViandas.isEmpty()) {
+      throw new ResourceNotFoundException("No se encontró distribucion nueva viandas paraColaborador id " + distribucionViandasId);
+    }
 
     Map<String, Object> model = new HashMap<>();
 
@@ -65,8 +65,9 @@ public class DistribucionViandasController extends ColaboradorRequired implement
   public void create(Context context) {
     Colaborador colaborador = colaboradorFromSession(context);
 
-    if (!colaborador.puedeColaborar(TipoColaboracion.DISTRIBUCION_VIANDAS))
+    if (!colaborador.puedeColaborar(TipoColaboracion.DISTRIBUCION_VIANDAS)) {
       throw new UnauthorizedException("No tiene permiso");
+    }
 
     render(context, "colaboraciones/distribucion_viandas_crear.hbs", new HashMap<>());
   }
@@ -92,14 +93,8 @@ public class DistribucionViandasController extends ColaboradorRequired implement
       Integer viandas = context.formParamAsClass("cantidad", Integer.class).get();
       String motivo = context.formParamAsClass("motivo", String.class).get();
 
-      DistribucionViandas distribucionViandas = DistribucionViandas.builder()
-          .colaborador(colaborador)
-          .fechaHora(LocalDateTime.now())
-          .origen(heladeraOrigen)
-          .destino(heladeraDestino)
-          .viandas(viandas)
-          .motivo(motivo)
-          .build();
+      DistribucionViandas distribucionViandas = DistribucionViandas.por(
+          colaborador, heladeraOrigen, heladeraDestino, viandas, motivo);
 
       this.distribucionViandasService.registrar(distribucionViandas);
 

@@ -13,16 +13,16 @@ public class HeladerasMasCercanasTest {
 //    Heladera heladera6 = Heladera.paraColaborador("6", Direccion.with(new Barrio(""), new Calle(""), 0, new Ubicacion(-34.615810, -58.433280)), 50);
 //
 //    @Test
-//    @DisplayName("El tecnico mas cercano a una heladera es el que tenga menor distancia entre las dos ubicaciones restando el radio por su area por cobertura")
+//    @DisplayName("El tecnico mas cercano a una heladera es el que tenga menor distancia entre las dos ubicaciones restando el radio nueva su area nueva cobertura")
 //    public void heladerasMasCercanas() {
 //
-//        //orden por la lista ordenada por cercania: 6, 1,4,2,3,5
+//        //orden nueva la lista ordenada nueva cercania: 6, 1,4,2,3,5
 //        // pero 4 esta llena => 6,1, 2,3,5
-//        //cantidad por viandas a meter: 40
+//        //cantidad nueva viandas a meter: 40
 //        //heladera6 tiene espacio paraColaborador: 5
-//        //cantidad por viandas a meter: 35
+//        //cantidad nueva viandas a meter: 35
 //        //heladera1 tiene espacio paraColaborador: 40
-//        //cantidad por viandas a meter: 0
+//        //cantidad nueva viandas a meter: 0
 //        //heladera1 tiene 45 viandas
 //        //heladeras seleccionadas : 6,1
 //        heladeraFallada.setEstado(EstadoHeladera.INACTIVA);
@@ -52,7 +52,7 @@ public class HeladerasMasCercanasTest {
 //        heladerasSeleccionadas.add(heladera1);
 //        heladerasSeleccionadas.add(heladera6);
 //
-////    Incidente incidente = Incidente.por(TipoIncidente.FRAUDE,heladeraFallada, LocalDateTime.now());
+////    Incidente incidente = Incidente.nueva(TipoIncidente.FRAUDE,heladeraFallada, LocalDateTime.now());
 ////
 ////    Assertions.assertTrue(incidente.heladerasRecomendadasPorFalla().containsAll(heladerasSeleccionadas));
 //

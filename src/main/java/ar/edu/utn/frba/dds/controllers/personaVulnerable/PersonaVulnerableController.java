@@ -50,7 +50,7 @@ public class PersonaVulnerableController extends ColaboradorRequired implements 
 
     Map<String, Object> model = new HashMap<>();
     model.put("personasVulnerables", personasVulnerablesDTO);
-    model.put("titulo", "Listado por Personas en Situacion Vulnerable");
+    model.put("titulo", "Listado nueva Personas en Situacion Vulnerable");
 
     // context.render("/colaboraciones/", model);
   }
@@ -122,7 +122,7 @@ public class PersonaVulnerableController extends ColaboradorRequired implements 
 
       context.status(HttpStatus.OK).result("Persona vulnerable actualizada exitosamente");
     } catch (ValidationException e) {
-      context.status(HttpStatus.BAD_REQUEST).result("Error en la validación por los datos");
+      context.status(HttpStatus.BAD_REQUEST).result("Error en la validación nueva los datos");
     }
   }
 

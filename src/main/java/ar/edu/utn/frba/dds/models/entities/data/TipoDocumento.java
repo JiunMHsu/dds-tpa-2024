@@ -1,9 +1,9 @@
 package ar.edu.utn.frba.dds.models.entities.data;
 
 /**
- * DNI: Documento Nacional por Identidad.
+ * DNI: Documento Nacional nueva Identidad.
  * LC: Libreta Cívica.
- * LE: Libreta por Enrolamiento.
+ * LE: Libreta nueva Enrolamiento.
  */
 public enum TipoDocumento {
   DNI,

@@ -48,22 +48,22 @@ public class TarjetasTest {
     String nuevoCodigo = ValidadorDeCodigosTarjeta.generar();
 
     Assertions.assertFalse(tarjetasExistentes.stream().anyMatch(tarjeta -> tarjeta.getCodigo().equals(nuevoCodigo)),
-        "El código generado ya existe en la lista por tarjetas existentes.");
+        "El código generado ya existe en la lista nueva tarjetas existentes.");
 
   }
 
   @Test
-  @DisplayName("Autorizado por uso por Personas Vulnerables")
+  @DisplayName("Autorizado nueva uso nueva Personas Vulnerables")
   public void personaVulnerablePuedeUsar() {
 
     Assertions.assertEquals(6, tarjeta1.usosPorDia(),
-        "La tarjeta1 pertenece a una persona paraColaborador 1 menor a cargo, por lo que tiene 6 usos diarios.");
+        "La tarjeta1 pertenece a una persona paraColaborador 1 menor a cargo, nueva lo que tiene 6 usos diarios.");
 
     Assertions.assertEquals(8, tarjeta2.usosPorDia(),
-        "La tarjeta2 pertenece a una persona paraColaborador 2 menor a cargo, por lo que tiene 8 usos diarios.");
+        "La tarjeta2 pertenece a una persona paraColaborador 2 menor a cargo, nueva lo que tiene 8 usos diarios.");
 
     Assertions.assertEquals(4, tarjeta3.usosPorDia(),
-        "La tarjeta3 pertenece a una persona sin menor a cargo, por lo que tiene 4 usos diarios.");
+        "La tarjeta3 pertenece a una persona sin menor a cargo, nueva lo que tiene 4 usos diarios.");
 
     tarjeta3.sumarUso();
     tarjeta3.sumarUso();
@@ -74,10 +74,10 @@ public class TarjetasTest {
   }
 
   @Test
-  @DisplayName("Autorizado por uso por Colaboradores")
+  @DisplayName("Autorizado nueva uso nueva Colaboradores")
   public void colaboradoresPuedeUsar() {
     // TODO
-    // Entiendo que esto es por medio por broker
+    // Entiendo que esto es nueva medio nueva broker
     // Igualmente agrego una funcion
   }
 }

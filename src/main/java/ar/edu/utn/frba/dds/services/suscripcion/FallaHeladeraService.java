@@ -88,7 +88,7 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
             "La %s ha sufrido un desperfecto.\n" +
             "Ocurrio un/a %s\n\n" +
             "Por favor, dirigirse a la heladera situada en: %s lo antes posible. \n\n" +
-            "Gracias por su rápida acción.",
+            "Gracias nueva su rápida acción.",
         tecnico.getNombre(),
         heladera.getNombre(),
         falla,
@@ -122,7 +122,7 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
             "Ocurrio un/a %s\n\n" +
             "Por favor, traslade las viandas a las siguientes heladeras sugeridas:\n\n" +
             "%s\n" +
-            "Gracias por su rápida acción.",
+            "Gracias nueva su rápida acción.",
         suscripcion.getColaborador().getNombre(),
         suscripcion.getHeladera().getNombre(),
         falla,

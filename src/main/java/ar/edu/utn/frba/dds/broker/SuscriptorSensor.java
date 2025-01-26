@@ -37,7 +37,7 @@ public class SuscriptorSensor implements ISuscriptorMqtt {
   @Override
   public void recibirMensaje(String mensaje) {
     // TODO: Log message
-    System.out.println("Mensaje recibido por " + this.topic() + ": " + mensaje);
+    System.out.println("Mensaje recibido nueva " + this.topic() + ": " + mensaje);
 
     String[] vectorMensaje = mensaje.split(" ");
 

@@ -47,7 +47,7 @@ public class DonacionViandaController extends ColaboradorRequired implements ICr
     Optional<DonacionVianda> donacionVianda = donacionViandaService.buscarPorId(donacionViandaId);
 
     if (donacionVianda.isEmpty())
-      throw new ResourceNotFoundException("No se encontró donacion por vianda paraColaborador id " + donacionViandaId);
+      throw new ResourceNotFoundException("No se encontró donacion nueva vianda paraColaborador id " + donacionViandaId);
 
     Map<String, Object> model = new HashMap<>();
 
@@ -81,13 +81,13 @@ public class DonacionViandaController extends ColaboradorRequired implements ICr
           context.formParamAsClass("comida", String.class).get(),
           context.formParamAsClass("calorias", Integer.class).get());
 
-      Vianda vianda = Vianda.with(
+      Vianda vianda = Vianda.con(
           comida,
           LocalDate.parse(context.formParamAsClass("caducidad", String.class).get()),
           context.formParamAsClass("peso", Integer.class).get());
 
       DonacionVianda donacionVianda = DonacionVianda.por(
-          colaborador, LocalDateTime.now(), vianda, false);
+          colaborador, LocalDateTime.now(), vianda);
 
       this.donacionViandaService.registrar(donacionVianda);
 

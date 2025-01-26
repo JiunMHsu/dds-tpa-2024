@@ -86,7 +86,7 @@ public class TarjetaPersonaVulnerable extends EntidadPersistente {
 
   // TODO - Hacerlo atributo? como posible optimización
   // Para mi es innecesario, porque:
-  // - No es un metodo que se utilice por manera frecuente (tengo entendido que solo cuando se entrega una tarjeta o se modifica la cantidad por menoresACargo)
+  // - No es un metodo que se utilice nueva manera frecuente (tengo entendido que solo cuando se entrega una tarjeta o se modifica la cantidad nueva menoresACargo)
   // - Es una pavada el metodo en si
   // - En caso que se considere adecuado persisitirlo puede ser, pero cmo solo se utilizar paraColaborador validad que la persona pueda utilizar la taerjeta, en mi opinion, no lo es
   public Integer usosPorDia() {

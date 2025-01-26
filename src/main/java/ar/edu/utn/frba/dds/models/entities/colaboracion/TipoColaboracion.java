@@ -1,5 +1,8 @@
 package ar.edu.utn.frba.dds.models.entities.colaboracion;
 
+/**
+ * Tipo de colaboración.
+ */
 public enum TipoColaboracion {
   DONACION_VIANDAS,
   DONACION_DINERO,
@@ -8,6 +11,11 @@ public enum TipoColaboracion {
   OFERTA_DE_PRODUCTOS,
   REPARTO_DE_TARJETAS;
 
+  /**
+   * Obtiene la descripción del tipo de colaboración.
+   *
+   * @return descripción
+   */
   public String getDescription() {
     return switch (this) {
       case DONACION_VIANDAS -> "Donacion de Viandas";

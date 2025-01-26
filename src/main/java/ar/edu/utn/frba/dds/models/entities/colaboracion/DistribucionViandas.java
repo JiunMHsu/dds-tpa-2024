@@ -6,6 +6,8 @@ import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -13,7 +15,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+/**
+ * Distribución de viandas de una {@link Heladera} a otra.
+ */
 @Getter
 @Builder
 @AllArgsConstructor
@@ -30,11 +36,11 @@ public class DistribucionViandas extends EntidadPersistente {
   private LocalDateTime fechaHora;
 
   @ManyToOne
-  @JoinColumn(name = "heladera_origen_id") // nullable por compatibilidad
+  @JoinColumn(name = "heladera_origen_id") // nullable nueva compatibilidad
   private Heladera origen;
 
   @ManyToOne
-  @JoinColumn(name = "heladera_destino_id") // nullable por compatibilidad
+  @JoinColumn(name = "heladera_destino_id") // nullable nueva compatibilidad
   private Heladera destino;
 
   @Column(name = "cant_viandas", columnDefinition = "SMALLINT", nullable = false)
@@ -43,4 +49,53 @@ public class DistribucionViandas extends EntidadPersistente {
   @Column(name = "motivo", columnDefinition = "TEXT")
   private String motivo;
 
+  @Setter
+  @Enumerated(EnumType.STRING)
+  @Column(name = "estado", nullable = false)
+  private EstadoDistribucion estado;
+
+  /**
+   * Crea una distribución de viandas nueva, pendiente a ser realizada.
+   *
+   * @param colaborador {@link Colaborador} que realiza la distribución
+   * @param origen      {@link Heladera} de origen de las viandas
+   * @param destino     {@link Heladera} de destino de las viandas
+   * @param viandas     cantidad de viandas a distribuir
+   * @param motivo      motivo de la distribución
+   * @return distribución de viandas
+   */
+  public static DistribucionViandas por(Colaborador colaborador,
+                                        Heladera origen,
+                                        Heladera destino,
+                                        Integer viandas,
+                                        String motivo) {
+    return DistribucionViandas.builder()
+        .colaborador(colaborador)
+        .fechaHora(LocalDateTime.now())
+        .origen(origen)
+        .destino(destino)
+        .viandas(viandas)
+        .motivo(motivo)
+        .estado(EstadoDistribucion.PENDIENTE)
+        .build();
+  }
+
+  /**
+   * Crea una distribución de viandas completada.
+   *
+   * @param colaborador {@link Colaborador} que realizó la distribución
+   * @param fechaHora   fecha y hora de la distribución
+   * @param viandas     cantidad de viandas distribuidas
+   * @return distribución de viandas
+   */
+  public static DistribucionViandas por(Colaborador colaborador,
+                                        LocalDateTime fechaHora,
+                                        Integer viandas) {
+    return DistribucionViandas.builder()
+        .colaborador(colaborador)
+        .fechaHora(fechaHora)
+        .viandas(viandas)
+        .estado(EstadoDistribucion.COMPLETADA)
+        .build();
+  }
 }

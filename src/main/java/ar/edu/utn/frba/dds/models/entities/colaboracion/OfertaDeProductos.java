@@ -17,6 +17,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Oferta de productos por un {@link Colaborador}.
+ */
 @Getter
 @Builder
 @AllArgsConstructor
@@ -45,6 +48,17 @@ public class OfertaDeProductos extends EntidadPersistente {
   @Embedded
   private Imagen imagen;
 
+  /**
+   * Crea una oferta de productos por un {@link Colaborador}.
+   *
+   * @param colaborador      {@link Colaborador} que ofrece los productos
+   * @param fechaOferta      fecha y hora de la oferta
+   * @param nombre           nombre de la oferta
+   * @param puntosNecesarios puntos necesarios para adquirir la oferta
+   * @param rubro            rubro de la oferta
+   * @param imagen           imagen de la oferta
+   * @return oferta de productos por un {@link Colaborador}
+   */
   public static OfertaDeProductos por(Colaborador colaborador,
                                       LocalDateTime fechaOferta,
                                       String nombre,

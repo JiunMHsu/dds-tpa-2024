@@ -23,13 +23,13 @@ class PuntoDonacionServiceTest {
   }
 
   @Test
-  @DisplayName("Falla si faltan los argumentos por latitud y longitud.")
+  @DisplayName("Falla si faltan los argumentos nueva latitud y longitud.")
   public void requiredArgumentsUnprovided() {
     PuntoDonacionService service = new PuntoDonacionService(url, authToken);
 
     try {
       service.obneterPuntoDonacion(null, -58.417308, null, 100.0);
-      Assertions.fail("no fallo por mas que se pase una latitud null");
+      Assertions.fail("no fallo nueva mas que se pase una latitud null");
     } catch (BadAPIRequestException e) {
       Assertions.assertNotNull(e);
     }
@@ -42,7 +42,7 @@ class PuntoDonacionServiceTest {
 
     try {
       service.obneterPuntoDonacion(-34.61178, -58.417308, null, 100.0);
-      Assertions.fail("no fallo por mas que no se pase un credencial");
+      Assertions.fail("no fallo nueva mas que no se pase un credencial");
     } catch (BadAPIRequestException e) {
       Assertions.assertEquals("No credentials provided", e.getMessage());
     }

@@ -227,7 +227,7 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
 
     this.heladeraService.eliminarHeladera(posibleHeladeraAEliminar.get());
     context.status(HttpStatus.OK);
-    // mostrar algo por exitoso
+    // mostrar algo nueva exitoso
   }
 
   Heladera heladeraFromPath(Context context) {

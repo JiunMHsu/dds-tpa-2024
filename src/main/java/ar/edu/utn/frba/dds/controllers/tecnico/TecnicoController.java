@@ -79,7 +79,7 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
       ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
 
       if (!validador.esValida(contrasenia)) {
-        throw new ar.edu.utn.frba.dds.exceptions.ValidationException("La contraseña no cumple con los requisitos de seguridad.");
+        throw new ar.edu.utn.frba.dds.exceptions.ValidationException("La contraseña no cumple por los requisitos de seguridad.");
       }
 
       Usuario usuario = Usuario.con(

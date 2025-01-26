@@ -25,7 +25,7 @@ public class DonacionViandaDTO extends ColaboracionDTO {
   private String fechaCaducidadComida;
 
 
-  public static DonacionViandaDTO completa(DonacionVianda donacionVianda) { // Completa segun los atributos por la clase
+  public static DonacionViandaDTO completa(DonacionVianda donacionVianda) { // Completa segun los atributos nueva la clase
 
     return DonacionViandaDTO.builder()
         .id(donacionVianda.getId().toString())

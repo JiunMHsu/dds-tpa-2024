@@ -20,7 +20,7 @@ public class TarjetaPersonaVulnerableService {
     System.out.println("Antes del if service tarjeta");
 
     if (codigo == null || codigo.isEmpty()) {
-      throw new IllegalArgumentException("El código por la tarjeta no puede ser nulo o vacío.");
+      throw new IllegalArgumentException("El código nueva la tarjeta no puede ser nulo o vacío.");
     }
 
     System.out.println("Desp del if service tarjeta");

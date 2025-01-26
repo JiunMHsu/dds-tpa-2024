@@ -2,7 +2,7 @@ package ar.edu.utn.frba.dds.models.entities.colaboracion;
 
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.utils.EntidadPersistente;
-import java.time.LocalDateTime;
+import java.time.Period;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -12,43 +12,45 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
- * Colaboración de un {@link Colaborador} que dona dinero.
+ * Registro de la periociadad de una donación de dinero. Configurada por un {@link Colaborador}.
  */
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "donacion_dinero")
-public class DonacionDinero extends EntidadPersistente {
+@Table(name = "donacion_dinero_periodica")
+public class DonacionDineroPeriodica extends EntidadPersistente {
 
   @ManyToOne
   @JoinColumn(name = "colaborador_id", nullable = false)
   private Colaborador colaborador;
 
-  @Column(name = "fecha_hora", columnDefinition = "DATETIME", nullable = false)
-  private LocalDateTime fechaHora;
-
   @Column(name = "monto", nullable = false)
   private Integer monto;
 
+  @Setter
+  @Column(name = "frecuencia", columnDefinition = "VARCHAR(50)")
+  private Period frecuencia;
+
   /**
-   * Crea una donación de dinero.
+   * Crea una donación de dinero periódica.
    *
    * @param colaborador {@link Colaborador} que dona el dinero
-   * @param fechaHora   fecha y hora de la donación
    * @param monto       monto donado
-   * @return donación de dinero
+   * @param frecuencia  frecuencia de la donación
+   * @return donación de dinero periódica
    */
-  public static DonacionDinero por(Colaborador colaborador,
-                                   LocalDateTime fechaHora,
-                                   Integer monto) {
-    return DonacionDinero.builder()
+  public static DonacionDineroPeriodica por(Colaborador colaborador,
+                                            Integer monto,
+                                            Period frecuencia) {
+    return DonacionDineroPeriodica.builder()
         .colaborador(colaborador)
-        .fechaHora(fechaHora)
         .monto(monto)
+        .frecuencia(frecuencia)
         .build();
   }
 }

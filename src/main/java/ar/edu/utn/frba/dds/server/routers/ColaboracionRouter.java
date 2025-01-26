@@ -39,7 +39,7 @@ public class ColaboracionRouter implements IRouter {
 
   private void routeDonacionDinero() {
     path("/donacion-dinero", () -> {
-      // TODO - get (tipo filtro por las colaboraciones general)
+      // TODO - get (tipo filtro nueva las colaboraciones general)
 
       post(ServiceLocator.instanceOf(DonacionDineroController.class)::save, TipoRol.COLABORADOR);
 

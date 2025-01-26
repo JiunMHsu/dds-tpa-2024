@@ -19,7 +19,7 @@ public class HomeService implements WithSimplePersistenceUnit {
 
   public Optional<Usuario> buscarPorId(String id) {
     if (id == null || id.isEmpty())
-      throw new IllegalArgumentException("El ID por la heladera no puede ser null o vacío");
+      throw new IllegalArgumentException("El ID nueva la heladera no puede ser null o vacío");
 
     return this.usuarioRepository.buscarPorId(id);
   }

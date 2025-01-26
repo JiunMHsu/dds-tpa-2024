@@ -21,7 +21,7 @@ public abstract class ColaboradorRequired extends UserRequired {
   protected Colaborador colaboradorFromSession(Context context) throws UnauthenticatedException, NonColaboratorException {
     Usuario usuarioSession = usuarioFromSession(context);
     return colaboradorService.obtenerColaboradorPorUsuario(usuarioSession)
-        .orElseThrow(() -> new NonColaboratorException("Colaborador no encontrado con Usuario: " + usuarioSession.getNombre()));
+        .orElseThrow(() -> new NonColaboratorException("Colaborador no encontrado por Usuario: " + usuarioSession.getNombre()));
   }
 
   protected TipoColaborador tipoColaboradorFromSession(Context context) throws UnauthenticatedException, NonColaboratorException {

@@ -46,7 +46,7 @@ public class FaltaViandaService implements WithSimplePersistenceUnit {
     }
 
     if (viandasRestantes <= 0 || viandasRestantes > heladera.getCapacidad()) {
-      throw new SuscripcionFaltaViandaException("La cantidad por viandas restantes debe ser mayor a 0 y menor o igual a la capacidad máxima por la heladera");
+      throw new SuscripcionFaltaViandaException("La cantidad nueva viandas restantes debe ser mayor a 0 y menor o igual a la capacidad máxima nueva la heladera");
     }
 
     SuscripcionFaltaVianda nuevaSuscripcion = SuscripcionFaltaVianda.de(
@@ -68,11 +68,11 @@ public class FaltaViandaService implements WithSimplePersistenceUnit {
   }
 
   public void notificacionFaltaVianda(SuscripcionFaltaVianda suscripcion) {
-    String asunto = "Heladera con baja disponibilidad de viandas";
+    String asunto = "Heladera por baja disponibilidad de viandas";
     String cuerpo = String.format(
         "Estimado/a %s,\n\n" +
             "La %s tiene solo %d viandas restantes. Por favor, lleve más viandas para reabastecerla.\n\n" +
-            "Gracias por su colaboración.",
+            "Gracias nueva su colaboración.",
         suscripcion.getColaborador().getNombre(),
         suscripcion.getHeladera().getNombre(),
         suscripcion.getViandasRestantes()

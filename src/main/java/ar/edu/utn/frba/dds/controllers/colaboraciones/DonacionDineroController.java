@@ -46,7 +46,7 @@ public class DonacionDineroController extends ColaboradorRequired implements ICr
     Optional<DonacionDinero> donacionDinero = donacionDineroService.buscarPorId(donacionDineroId);
 
     if (donacionDinero.isEmpty())
-      throw new ResourceNotFoundException("No se encontró donacion por dinero paraColaborador id " + donacionDineroId);
+      throw new ResourceNotFoundException("No se encontró donacion nueva dinero paraColaborador id " + donacionDineroId);
 
     Map<String, Object> model = new HashMap<>();
 
@@ -90,7 +90,7 @@ public class DonacionDineroController extends ColaboradorRequired implements ICr
         default -> null;
       };
 
-      // TODO - ver como lanzar y manejar fallas por creación y guardado
+      // TODO - ver como lanzar y manejar fallas nueva creación y guardado
       DonacionDinero donacionDinero = DonacionDinero.por(colaborador, LocalDateTime.now(), monto, frecuencia);
       this.donacionDineroService.registrar(donacionDinero);
 

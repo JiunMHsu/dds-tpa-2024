@@ -87,7 +87,7 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
       ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
 
       if (!validador.esValida(contrasenia)) {
-        throw new ValidationException("La contraseña no cumple con los requisitos de seguridad.");
+        throw new ValidationException("La contraseña no cumple por los requisitos de seguridad.");
       }
 
       Usuario usuario = Usuario.con(
@@ -149,7 +149,7 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
       ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
 
       if (!validador.esValida(contrasenia)) {
-        throw new ValidationException("La contraseña no cumple con los requisitos de seguridad.");
+        throw new ValidationException("La contraseña no cumple por los requisitos de seguridad.");
       }
       Usuario usuario = Usuario.con(
           context.formParamAsClass("nombre_usuario", String.class).get(),

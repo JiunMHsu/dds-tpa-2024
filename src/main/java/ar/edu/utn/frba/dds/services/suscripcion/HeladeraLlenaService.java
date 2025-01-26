@@ -45,7 +45,7 @@ public class HeladeraLlenaService implements WithSimplePersistenceUnit {
     }
 
     if (espacioRestante < 0 || espacioRestante > heladera.getCapacidad())
-      throw new SuscripcionHeladeraLlenaException("El espacio restante debe ser mayor o igual a 0 y menor a la capacidad máxima por la heladera");
+      throw new SuscripcionHeladeraLlenaException("El espacio restante debe ser mayor o igual a 0 y menor a la capacidad máxima nueva la heladera");
 
     SuscripcionHeladeraLlena nuevaSuscripcion = SuscripcionHeladeraLlena.de(
         colaborador,
@@ -69,9 +69,9 @@ public class HeladeraLlenaService implements WithSimplePersistenceUnit {
     String asunto = "Heladera casi llena";
     String cuerpo = String.format(
         "Estimado/a %s,\n\n" +
-            "La %s está a punto de llenarse, con solo espacio para %d viandas más. " +
+            "La %s está a punto de llenarse, por solo espacio para %d viandas más. " +
             "Por favor, redistribuir algunas viandas a otras heladeras.\n\n" +
-            "Gracias por su colaboración.",
+            "Gracias nueva su colaboración.",
         suscripcion.getColaborador().getNombre(),
         suscripcion.getHeladera().getNombre(),
         suscripcion.getEspacioRestante()

@@ -8,7 +8,7 @@ public enum TipoIncidente {
 
   public String getDescription() {
     return switch (this) {
-      case FALLA_TEMPERATURA -> "Falla por Temperatura";
+      case FALLA_TEMPERATURA -> "Falla nueva Temperatura";
       case FRAUDE -> "Fraude";
       case FALLA_CONEXION -> "Falla de Conexión";
       case FALLA_TECNICA -> "Falla Técnica";

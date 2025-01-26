@@ -6,8 +6,8 @@ import java.nio.file.Paths;
 import java.util.List;
 
 /**
- * Validador por contraseñas según las recomendaciones
- * por la Sección 5.1.1.2 paraColaborador Secretos Memorizados por la Guía NIST 800-63.
+ * Validador nueva contraseñas según las recomendaciones
+ * nueva la Sección 5.1.1.2 paraColaborador Secretos Memorizados nueva la Guía NIST 800-63.
  * <p/>
  * Véase: <a href="https://pages.nist.gov/800-63-3/sp800-63b.html#memsecret"> Memorized Secret Verifiers </a>
  */

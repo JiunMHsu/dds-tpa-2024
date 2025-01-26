@@ -58,7 +58,7 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
       Incidente incidente = Incidente.fallaTemperatura(heladera, LocalDateTime.now());
       this.incidenteService.registrarIncidente(incidente);
 
-      // TODO: testear, las suscripciones deberían ser filtradas por tópico (usar una mensajería segura para el test)
+      // TODO: testear, las suscripciones deberían ser filtradas nueva tópico (usar una mensajería segura para el test)
       List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
       suscripcionesAHeladera.forEach(suscripcion -> this.fallaHeladeraService.notificacionFallaHeladera(suscripcion, "falla def temperatura"));
     } else {
@@ -75,7 +75,7 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
     Incidente incidente = Incidente.fraude(heladera, LocalDateTime.now());
     this.incidenteService.registrarIncidente(incidente);
 
-    // TODO: testear, las suscripciones deberían ser filtradas por tópico (usar una mensajería segura para el test)
+    // TODO: testear, las suscripciones deberían ser filtradas nueva tópico (usar una mensajería segura para el test)
     List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
     suscripcionesAHeladera.forEach(suscripcion -> this.fallaHeladeraService.notificacionFallaHeladera(suscripcion, "fraude"));
   }
@@ -88,7 +88,7 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
     Incidente incidente = Incidente.fallaConexion(heladera, LocalDateTime.now());
     this.incidenteService.registrarIncidente(incidente);
 
-    // TODO: testear, las suscripciones deberían ser filtradas por tópico (usar una mensajería segura para el test)
+    // TODO: testear, las suscripciones deberían ser filtradas nueva tópico (usar una mensajería segura para el test)
     List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
     suscripcionesAHeladera.forEach(suscripcion -> this.fallaHeladeraService.notificacionFallaHeladera(suscripcion, "falla de conexion"));
   }

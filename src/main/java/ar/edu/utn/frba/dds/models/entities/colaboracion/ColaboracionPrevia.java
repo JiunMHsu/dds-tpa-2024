@@ -5,6 +5,10 @@ import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
+/**
+ * Colaboración previa de un
+ * {@link ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador} no registrado.
+ */
 @Getter
 @Builder
 public class ColaboracionPrevia {
@@ -17,6 +21,18 @@ public class ColaboracionPrevia {
   private String formaDeColaboracion;
   private Integer cantidad;
 
+  /**
+   * Crea una colaboración previa.
+   *
+   * @param documento           {@link Documento} del colaborador no registrado
+   * @param nombre              nombre del colaborador no registrado
+   * @param apellido            apellido del colaborador no registrado
+   * @param email               email del colaborador no registrado
+   * @param fechaHora           fecha y hora de la colaboración
+   * @param formaDeColaboracion forma de colaboración
+   * @param cantidad            cantidad de colaboración
+   * @return colaboración previa
+   */
   public static ColaboracionPrevia por(Documento documento,
                                        String nombre,
                                        String apellido,

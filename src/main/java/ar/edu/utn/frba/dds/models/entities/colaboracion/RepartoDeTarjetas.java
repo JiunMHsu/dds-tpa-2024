@@ -16,6 +16,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Colaboración de un {@link Colaborador}
+ * que reparte una {@link TarjetaPersonaVulnerable} a una {@link PersonaVulnerable}.
+ */
 @Getter
 @Builder
 @AllArgsConstructor
@@ -32,29 +36,45 @@ public class RepartoDeTarjetas extends EntidadPersistente {
   private LocalDateTime fechaHora;
 
   @OneToOne
-  @JoinColumn(name = "tarjeta_vulnerable_id") // nullable por compatibilidad
+  @JoinColumn(name = "tarjeta_vulnerable_id") // nullable nueva compatibilidad
   private TarjetaPersonaVulnerable tarjeta;
 
   @OneToOne
-  @JoinColumn(name = "persona_vulnerable_id") // nullable por compatibilidad
+  @JoinColumn(name = "persona_vulnerable_id") // nullable nueva compatibilidad
   private PersonaVulnerable personaVulnerable;
 
+  /**
+   * Crea un reparto de tarjetas.
+   *
+   * @param colaborador       {@link Colaborador} que reparte la tarjeta
+   * @param fechaHora         fecha y hora del reparto
+   * @param tarjeta           {@link TarjetaPersonaVulnerable} repartida
+   * @param personaVulnerable {@link PersonaVulnerable} a la que se le reparte la tarjeta
+   * @return un reparto de tarjetas
+   */
   public static RepartoDeTarjetas por(Colaborador colaborador,
-                                      LocalDateTime fechaHoraReparto,
+                                      LocalDateTime fechaHora,
                                       TarjetaPersonaVulnerable tarjeta,
                                       PersonaVulnerable personaVulnerable) {
     return RepartoDeTarjetas
         .builder()
         .colaborador(colaborador)
-        .fechaHora(fechaHoraReparto)
+        .fechaHora(fechaHora)
         .tarjeta(tarjeta)
         .personaVulnerable(personaVulnerable)
         .build();
   }
 
+  /**
+   * Crea un reparto de tarjetas sin especificar la tarjeta repartida ni la persona vulnerable.
+   *
+   * @param colaborador {@link Colaborador} que reparte la tarjeta
+   * @param fechaHora   fecha y hora del reparto
+   * @return un reparto de tarjetas
+   */
   public static RepartoDeTarjetas por(Colaborador colaborador,
-                                      LocalDateTime fechaHoraReparto) {
-    return RepartoDeTarjetas.por(colaborador, fechaHoraReparto, null, null);
+                                      LocalDateTime fechaHora) {
+    return RepartoDeTarjetas.por(colaborador, fechaHora, null, null);
   }
 
 }

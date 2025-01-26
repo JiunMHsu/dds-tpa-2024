@@ -154,10 +154,10 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
   private Mensaje mensajeCredencial(Colaborador colaborador) {
     Usuario usuario = colaborador.getUsuario();
 
-    String asunto = "Credencial por usuario";
+    String asunto = "Credencial nueva usuario";
     String cuerpo = "Esta es la credencial:"
-        + " - Nombre por usuario provicional: " + usuario.getNombre()
-        + " - Contrasenia por usuario provicional: " + usuario.getContrasenia();
+        + " - Nombre nueva usuario provicional: " + usuario.getNombre()
+        + " - Contrasenia nueva usuario provicional: " + usuario.getContrasenia();
 
     Mensaje mensaje = Mensaje.con(colaborador.getContacto(MedioDeNotificacion.EMAIL).get(), asunto, cuerpo);
     return mensaje;
@@ -180,11 +180,8 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
         break;
 
       case "REDISTRIBUCION_VIANDAS":
-        DistribucionViandas distribucionViandas = DistribucionViandas.builder()
-            .colaborador(colaborador)
-            .fechaHora(colaboracionPrevia.getFechaHora())
-            .viandas(colaboracionPrevia.getCantidad())
-            .build();
+        DistribucionViandas distribucionViandas = DistribucionViandas.por(
+            colaborador, colaboracionPrevia.getFechaHora(), colaboracionPrevia.getCantidad());
         distribucionViandasRepository.guardar(distribucionViandas);
         break;
 
