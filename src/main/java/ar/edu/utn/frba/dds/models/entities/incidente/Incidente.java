@@ -19,6 +19,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Clase que representa un incidente en el sistema.
+ */
 @Getter
 @Setter
 @Builder
@@ -49,8 +52,8 @@ public class Incidente extends EntidadPersistente {
   @Embedded
   private Imagen foto;
 
-  @Column(name = "fue_resuelta", nullable = false)
-  private Boolean resuelta;
+  @Column(name = "es_resuelta", nullable = false)
+  private Boolean esResuelta;
 
   private static Incidente con(Heladera heladera,
                                LocalDateTime fechaHora,
@@ -66,10 +69,20 @@ public class Incidente extends EntidadPersistente {
         .colaborador(colaborador)
         .descripcion(descripcion)
         .foto(foto)
-        .resuelta(false)
+        .esResuelta(false)
         .build();
   }
 
+  /**
+   * Crea un incidente de falla técnica.
+   *
+   * @param heladera    {@link Heladera} en la que se produjo la falla técnica
+   * @param fechaHora   fecha y hora del incidente
+   * @param colaborador {@link Colaborador} que reporta el incidente
+   * @param descripcion descripción del incidente
+   * @param foto        foto del incidente
+   * @return Incidente
+   */
   public static Incidente fallaTecnica(Heladera heladera,
                                        LocalDateTime fechaHora,
                                        Colaborador colaborador,
@@ -78,16 +91,37 @@ public class Incidente extends EntidadPersistente {
     return con(heladera, fechaHora, TipoIncidente.FALLA_TECNICA, colaborador, descripcion, foto);
   }
 
+  /**
+   * Crea un incidente de falla de temperatura.
+   *
+   * @param heladera  {@link Heladera} en la que se produjo la falla de temperatura
+   * @param fechaHora fecha y hora del incidente
+   * @return Incidente
+   */
   public static Incidente fallaTemperatura(Heladera heladera,
                                            LocalDateTime fechaHora) {
     return con(heladera, fechaHora, TipoIncidente.FALLA_TEMPERATURA, null, null, null);
   }
 
+  /**
+   * Crea un incidente de falla de conexión.
+   *
+   * @param heladera  {@link Heladera} en la que se produjo la falla de conexión
+   * @param fechaHora fecha y hora del incidente
+   * @return Incidente
+   */
   public static Incidente fallaConexion(Heladera heladera,
                                         LocalDateTime fechaHora) {
     return con(heladera, fechaHora, TipoIncidente.FALLA_CONEXION, null, null, null);
   }
 
+  /**
+   * Crea un incidente de fraude.
+   *
+   * @param heladera  {@link Heladera} en la que se produjo el fraude
+   * @param fechaHora fecha y hora del incidente
+   * @return Incidente
+   */
   public static Incidente fraude(Heladera heladera,
                                  LocalDateTime fechaHora) {
     return con(heladera, fechaHora, TipoIncidente.FRAUDE, null, null, null);

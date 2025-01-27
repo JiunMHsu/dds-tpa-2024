@@ -14,6 +14,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Clase que representa a una persona vulnerable.
+ */
 @Getter
 @Setter
 @Builder
