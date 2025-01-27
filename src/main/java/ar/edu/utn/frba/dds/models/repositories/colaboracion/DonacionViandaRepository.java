@@ -1,19 +1,34 @@
 package ar.edu.utn.frba.dds.models.repositories.colaboracion;
 
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
-import java.util.List;
+import ar.edu.utn.frba.dds.models.entities.heladera.SolicitudDeApertura;
+import java.util.Optional;
 
+/**
+ * Repositorio de donaciones de viandas.
+ */
 public class DonacionViandaRepository extends ColaboracionRepository<DonacionVianda> {
 
   public DonacionViandaRepository() {
     super(DonacionVianda.class);
   }
 
-  public List<DonacionVianda> buscarNoEntregadas() {
+  /**
+   * Busca una donación de viandas por solicitud de apertura.
+   *
+   * @param solicitud la {@link SolicitudDeApertura} asociada
+   * @return la donación, si existe
+   */
+  public Optional<DonacionVianda> buscarPorSolicitudDeApertura(SolicitudDeApertura solicitud) {
+    String query = "from DonacionVianda d"
+        + " where d.solicitudDeApertura = :solicitud and d.alta = :alta";
+
     return entityManager()
-        .createQuery("from DonacionVianda d where d.alta = :alta and d.esEntregada = :entregada", DonacionVianda.class)
-        .setParameter("entregada", false)
+        .createQuery(query, DonacionVianda.class)
+        .setParameter("solicitud", solicitud)
         .setParameter("alta", true)
-        .getResultList();
+        .getResultList()
+        .stream()
+        .findFirst();
   }
 }

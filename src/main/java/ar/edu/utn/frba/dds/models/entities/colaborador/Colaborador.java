@@ -174,15 +174,17 @@ public class Colaborador extends EntidadPersistente {
                                                String nombre,
                                                String apellido,
                                                Documento documento) {
-    return Colaborador.builder()
-        .tipoColaborador(TipoColaborador.HUMANO)
-        .usuario(usuario)
-        .nombre(nombre)
-        .apellido(apellido)
-        .documento(documento)
-        .formasDeColaborar(new ArrayList<>())
-        .puntos(new Puntos(0, false, null))
-        .build();
+    return Colaborador.humana(
+        usuario,
+        nombre,
+        apellido,
+        documento,
+        null,
+        new ArrayList<>(),
+        null,
+        new ArrayList<>(),
+        new Puntos(0, false, null)
+    );
   }
 
   public static Colaborador conUsuario(Usuario usuario) {

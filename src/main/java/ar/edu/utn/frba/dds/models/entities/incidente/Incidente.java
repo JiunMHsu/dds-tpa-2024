@@ -58,7 +58,6 @@ public class Incidente extends EntidadPersistente {
                                Colaborador colaborador,
                                String descripcion,
                                Imagen foto) {
-
     return Incidente
         .builder()
         .heladera(heladera)

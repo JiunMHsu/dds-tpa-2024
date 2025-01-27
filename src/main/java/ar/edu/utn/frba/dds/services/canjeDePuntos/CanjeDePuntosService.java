@@ -119,28 +119,28 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
 
   private double pesosDonados(Colaborador colaborador, LocalDateTime fechaUltimoCanje) {
     List<DonacionDinero> colaboraciones = this.donacionDineroRepository
-        .buscarPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
+        .buscarPorColaboradorDesde(colaborador, fechaUltimoCanje);
 
     return colaboraciones.stream().mapToDouble(DonacionDinero::getMonto).sum();
   }
 
   private double viandasDistribuidas(Colaborador colaborador, LocalDateTime fechaUltimoCanje) {
     List<DistribucionViandas> colaboraciones = this.distribucionViandasRepository
-        .buscarPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
+        .buscarPorColaboradorDesde(colaborador, fechaUltimoCanje);
 
     return colaboraciones.stream().mapToDouble(DistribucionViandas::getViandas).sum();
   }
 
   private double viandasDonadas(Colaborador colaborador, LocalDateTime fechaUltimoCanje) {
     List<DonacionVianda> colaboraciones = this.donacionViandaRepository
-        .buscarPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
+        .buscarPorColaboradorDesde(colaborador, fechaUltimoCanje);
 
     return colaboraciones.size();
   }
 
   private double tarjetasRepartidas(Colaborador colaborador, LocalDateTime fechaUltimoCanje) {
     List<RepartoDeTarjetas> colaboraciones = this.repartoDeTarjetasRepository
-        .buscarPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
+        .buscarPorColaboradorDesde(colaborador, fechaUltimoCanje);
 
     return colaboraciones.size();
   }

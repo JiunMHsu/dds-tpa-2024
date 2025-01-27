@@ -35,12 +35,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
+/**
+ * Servicio de colaboraciones.
+ */
 public class ColaboracionService implements WithSimplePersistenceUnit {
 
   private final UsuarioRepository usuarioRepository;
@@ -56,6 +58,20 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
   private final ISender mailSender;
   private final MensajeRepository mensajeRepository;
 
+  /**
+   * Constructor.
+   *
+   * @param usuarioRepository              el repositorio de usuarios
+   * @param colaboradorRepository          el repositorio de colaboradores
+   * @param donacionViandaRepository       el repositorio de donaciones de viandas
+   * @param donacionDineroRepository       el repositorio de donaciones de dinero
+   * @param distribucionViandasRepository  el repositorio de distribuciones de viandas
+   * @param hacerseCargoHeladeraRepository el repositorio de heladeras activas
+   * @param ofertaDeProductosRepository    el repositorio de ofertas de productos
+   * @param repartoDeTarjetasRepository    el repositorio de repartos de tarjetas
+   * @param mailSender                     el servicio de envío de mensajes
+   * @param mensajeRepository              el repositorio de mensajes
+   */
   public ColaboracionService(UsuarioRepository usuarioRepository,
                              ColaboradorRepository colaboradorRepository,
                              DonacionViandaRepository donacionViandaRepository,
@@ -78,6 +94,11 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
     this.mensajeRepository = mensajeRepository;
   }
 
+  /**
+   * Obtiene todas las colaboraciones.
+   *
+   * @return todas las colaboraciones
+   */
   public List<Object> buscarTodas() {
     List<Object> colaboraciones = new ArrayList<>();
     colaboraciones.addAll(donacionViandaRepository.buscarTodos());
@@ -89,6 +110,14 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
     return colaboraciones;
   }
 
+  // TODO: Mapear a DTO
+
+  /**
+   * Obtiene todas las colaboraciones de un colaborador.
+   *
+   * @param colaborador el colaborador
+   * @return todas las colaboraciones del colaborador
+   */
   public List<Object> buscarTodasPorColaborador(Colaborador colaborador) {
     List<Object> colaboraciones = new ArrayList<>();
     colaboraciones.addAll(donacionViandaRepository.buscarPorColaborador(colaborador));
@@ -100,15 +129,28 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
     return colaboraciones;
   }
 
+  // TODO: Revisar carga masiva
+
+  /**
+   * Carga masiva de colaboraciones.
+   *
+   * @param csv el archivo CSV
+   * @throws CargaMasivaException en caso de error al cargar las colaboraciones
+   */
   public void cargarColaboraciones(InputStream csv) throws CargaMasivaException {
     try {
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-      BufferedReader reader = new BufferedReader(new InputStreamReader(csv, StandardCharsets.UTF_8));
+      BufferedReader reader = new BufferedReader(
+          new InputStreamReader(csv, StandardCharsets.UTF_8)
+      );
       CSVParser csvParser = new CSVParser(reader, CSVFormat.Builder.create().setHeader().build());
 
       beginTransaction();
       for (CSVRecord csvRecord : csvParser) {
-        Documento documento = new Documento(TipoDocumento.valueOf(csvRecord.get("Tipo Doc")), csvRecord.get("Documento"));
+        Documento documento = new Documento(
+            TipoDocumento.valueOf(csvRecord.get("Tipo Doc")),
+            csvRecord.get("Documento")
+        );
 
         ColaboracionPrevia colaboracionPrevia = ColaboracionPrevia.por(
             documento,
@@ -137,15 +179,22 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
       commitTransaction();
     } catch (IOException | IllegalArgumentException | MessagingException e) {
       rollbackTransaction();
-      throw new CargaMasivaException("Error al cargar las colaboraciones. Error: " + e.getMessage());
+      throw new CargaMasivaException(
+          "Error al cargar las colaboraciones. Error: " + e.getMessage()
+      );
     }
   }
 
-  private Colaborador generarColaborador(String nombre, String apellido, Documento documento, String email) {
+  private Colaborador generarColaborador(String nombre,
+                                         String apellido,
+                                         Documento documento,
+                                         String email) {
     Usuario usuario = GeneradorDeCredenciales.generarUsuario(nombre, email);
     Colaborador colaborador = Colaborador.humanaConDocumento(usuario, nombre, apellido, documento);
-    colaborador.setContactos(new ArrayList<>(Arrays.asList(Contacto.conEmail(email))));
+    Contacto contacto = Contacto.conEmail(email);
+    colaborador.agregarContacto(contacto);
 
+    // TODO: guardar contacto
     usuarioRepository.guardar(usuario);
     colaboradorRepository.guardar(colaborador);
     return colaborador;
