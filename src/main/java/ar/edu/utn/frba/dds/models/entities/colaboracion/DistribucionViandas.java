@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.models.entities.colaboracion;
 
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
+import ar.edu.utn.frba.dds.models.entities.heladera.SolicitudDeApertura;
 import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -10,6 +11,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,11 +38,11 @@ public class DistribucionViandas extends EntidadPersistente {
   private LocalDateTime fechaHora;
 
   @ManyToOne
-  @JoinColumn(name = "heladera_origen_id") // nullable nueva compatibilidad
+  @JoinColumn(name = "heladera_origen_id") // nullable por compatibilidad
   private Heladera origen;
 
   @ManyToOne
-  @JoinColumn(name = "heladera_destino_id") // nullable nueva compatibilidad
+  @JoinColumn(name = "heladera_destino_id") // nullable por compatibilidad
   private Heladera destino;
 
   @Column(name = "cant_viandas", columnDefinition = "SMALLINT", nullable = false)
@@ -54,21 +56,27 @@ public class DistribucionViandas extends EntidadPersistente {
   @Column(name = "estado", nullable = false)
   private EstadoDistribucion estado;
 
+  @OneToOne
+  @JoinColumn(name = "solicitud_apertura_id") // nullable por compatibilidad
+  private SolicitudDeApertura solicitudDeApertura;
+
   /**
    * Crea una distribución de viandas nueva, pendiente a ser realizada.
    *
-   * @param colaborador {@link Colaborador} que realiza la distribución
-   * @param origen      {@link Heladera} de origen de las viandas
-   * @param destino     {@link Heladera} de destino de las viandas
-   * @param viandas     cantidad de viandas a distribuir
-   * @param motivo      motivo de la distribución
+   * @param colaborador         {@link Colaborador} que realiza la distribución
+   * @param origen              {@link Heladera} de origen de las viandas
+   * @param destino             {@link Heladera} de destino de las viandas
+   * @param viandas             cantidad de viandas a distribuir
+   * @param motivo              motivo de la distribución
+   * @param solicitudDeApertura {@link SolicitudDeApertura} asociada a la distribución
    * @return distribución de viandas
    */
   public static DistribucionViandas por(Colaborador colaborador,
                                         Heladera origen,
                                         Heladera destino,
                                         Integer viandas,
-                                        String motivo) {
+                                        String motivo,
+                                        SolicitudDeApertura solicitudDeApertura) {
     return DistribucionViandas.builder()
         .colaborador(colaborador)
         .fechaHora(LocalDateTime.now())
@@ -77,6 +85,7 @@ public class DistribucionViandas extends EntidadPersistente {
         .viandas(viandas)
         .motivo(motivo)
         .estado(EstadoDistribucion.PENDIENTE)
+        .solicitudDeApertura(solicitudDeApertura)
         .build();
   }
 

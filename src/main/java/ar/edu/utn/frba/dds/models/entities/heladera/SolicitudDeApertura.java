@@ -7,6 +7,8 @@ import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -37,9 +39,9 @@ public class SolicitudDeApertura extends EntidadPersistente {
   @Column(name = "fecha_hora")
   private LocalDateTime fechaHora;
 
-  // TODO: Cambiar a una distribución o una donación.
-  @Column(name = "motivo", columnDefinition = "TEXT")
-  private String motivo;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "motivo")
+  private MotivoApertura motivo;
 
   /**
    * Crea una solicitud de apertura.
@@ -53,7 +55,7 @@ public class SolicitudDeApertura extends EntidadPersistente {
   public static SolicitudDeApertura por(TarjetaColaborador tarjeta,
                                         Heladera heladera,
                                         LocalDateTime fechaHora,
-                                        String motivo) {
+                                        MotivoApertura motivo) {
     return SolicitudDeApertura
         .builder()
         .tarjeta(tarjeta)
@@ -64,19 +66,36 @@ public class SolicitudDeApertura extends EntidadPersistente {
   }
 
   /**
-   * Crea una solicitud de apertura.
+   * Crea una solicitud de apertura por donación de viandas.
    *
    * @param tarjeta  Tarjeta del colaborador que solicita la apertura.
    * @param heladera Heladera que se solicita abrir.
    * @return Solicitud de apertura creada.
    */
-  public static SolicitudDeApertura por(TarjetaColaborador tarjeta,
-                                        Heladera heladera) {
+  public static SolicitudDeApertura paraDonacionViandas(TarjetaColaborador tarjeta,
+                                                        Heladera heladera) {
     return SolicitudDeApertura.por(
         tarjeta,
         heladera,
         LocalDateTime.now(),
-        ""
+        MotivoApertura.DONACION_VIANDA
+    );
+  }
+
+  /**
+   * Crea una solicitud de apertura por distribución de viandas.
+   *
+   * @param tarjeta  Tarjeta del colaborador que solicita la apertura.
+   * @param heladera Heladera que se solicita abrir.
+   * @return Solicitud de apertura creada.
+   */
+  public static SolicitudDeApertura paraDistribucionDeViandas(TarjetaColaborador tarjeta,
+                                                              Heladera heladera) {
+    return SolicitudDeApertura.por(
+        tarjeta,
+        heladera,
+        LocalDateTime.now(),
+        MotivoApertura.DISTRIBUCION_VIANDA
     );
   }
 

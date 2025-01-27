@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.models.entities.colaboracion;
 
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
+import ar.edu.utn.frba.dds.models.entities.heladera.SolicitudDeApertura;
 import ar.edu.utn.frba.dds.models.entities.vianda.Vianda;
 import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import java.time.LocalDateTime;
@@ -48,25 +49,32 @@ public class DonacionVianda extends EntidadPersistente {
   @JoinColumn(name = "heladera_id")
   private Heladera heladera; // nullable por compatibilidad
 
+  @OneToOne
+  @JoinColumn(name = "solicitud_apertura_id") // nullable por compatibilidad
+  private SolicitudDeApertura solicitudDeApertura;
+
   /**
    * Crea una donación de vianda.
    *
-   * @param colaborador {@link Colaborador} que dona la vianda
-   * @param fechaHora   fecha y hora de la donación
-   * @param vianda      {@link Vianda} donada
-   * @param heladera    {@link Heladera} la cual se donará la vianda
+   * @param colaborador         {@link Colaborador} que dona la vianda
+   * @param fechaHora           fecha y hora de la donación
+   * @param vianda              {@link Vianda} donada
+   * @param heladera            {@link Heladera} la cual se donará la vianda
+   * @param solicitudDeApertura {@link SolicitudDeApertura} asociada a la donación
    * @return donación de vianda
    */
   public static DonacionVianda por(Colaborador colaborador,
                                    LocalDateTime fechaHora,
                                    Vianda vianda,
-                                   Heladera heladera) {
+                                   Heladera heladera,
+                                   SolicitudDeApertura solicitudDeApertura) {
     return DonacionVianda.builder()
         .colaborador(colaborador)
         .fechaHora(fechaHora)
         .vianda(vianda)
         .esEntregada(false)
         .heladera(heladera)
+        .solicitudDeApertura(solicitudDeApertura)
         .build();
   }
 
