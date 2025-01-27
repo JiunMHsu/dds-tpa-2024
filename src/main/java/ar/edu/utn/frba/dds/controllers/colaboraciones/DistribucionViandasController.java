@@ -8,7 +8,7 @@ import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.models.entities.heladera.ExcepcionCantidadDeViandas;
+import ar.edu.utn.frba.dds.models.entities.heladera.CantidadDeViandasException;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.permissions.ColaboradorRequired;
 import ar.edu.utn.frba.dds.services.colaboraciones.DistribucionViandasService;
@@ -107,7 +107,7 @@ public class DistribucionViandasController extends ColaboradorRequired implement
 
     } catch (NonColaboratorException e) {
       throw new UnauthorizedException(e.getMessage());
-    } catch (ValidationException | ResourceNotFoundException | ExcepcionCantidadDeViandas e) {
+    } catch (ValidationException | ResourceNotFoundException | CantidadDeViandasException e) {
       redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
     } finally {
       model.put("success", operationSuccess);

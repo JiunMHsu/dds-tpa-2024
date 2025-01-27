@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Rango de temperatura que puede tener una heladera.
+ */
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,6 +21,12 @@ public class RangoTemperatura {
   @Column(name = "temperatura_minima", nullable = false)
   private Double minima;
 
+  /**
+   * Indica si la temperatura dada está dentro del rango.
+   *
+   * @param temperatura Temperatura a evaluar.
+   * @return {@code true} si la temperatura está dentro del rango, {@code false} en caso contrario.
+   */
   public Boolean incluye(Double temperatura) {
     return (maxima != null)
         && (minima != null)

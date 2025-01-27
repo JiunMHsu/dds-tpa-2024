@@ -3,6 +3,8 @@ package ar.edu.utn.frba.dds.models.entities.heladera;
 import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaColaborador;
 import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -13,6 +15,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Representa una solicitud de apertura de una {@link Heladera}.
+ */
 @Getter
 @Builder
 @AllArgsConstructor
@@ -32,9 +37,19 @@ public class SolicitudDeApertura extends EntidadPersistente {
   @Column(name = "fecha_hora")
   private LocalDateTime fechaHora;
 
+  // TODO: Cambiar a una distribución o una donación.
   @Column(name = "motivo", columnDefinition = "TEXT")
   private String motivo;
 
+  /**
+   * Crea una solicitud de apertura.
+   *
+   * @param tarjeta   Tarjeta del colaborador que solicita la apertura.
+   * @param heladera  Heladera que se solicita abrir.
+   * @param fechaHora Fecha y hora en la que se realizó la solicitud.
+   * @param motivo    Motivo de la solicitud.
+   * @return Solicitud de apertura creada.
+   */
   public static SolicitudDeApertura por(TarjetaColaborador tarjeta,
                                         Heladera heladera,
                                         LocalDateTime fechaHora,
@@ -48,6 +63,13 @@ public class SolicitudDeApertura extends EntidadPersistente {
         .build();
   }
 
+  /**
+   * Crea una solicitud de apertura.
+   *
+   * @param tarjeta  Tarjeta del colaborador que solicita la apertura.
+   * @param heladera Heladera que se solicita abrir.
+   * @return Solicitud de apertura creada.
+   */
   public static SolicitudDeApertura por(TarjetaColaborador tarjeta,
                                         Heladera heladera) {
     return SolicitudDeApertura.por(
@@ -56,6 +78,17 @@ public class SolicitudDeApertura extends EntidadPersistente {
         LocalDateTime.now(),
         ""
     );
+  }
+
+  /**
+   * Indica si la solicitud de apertura está vigente.
+   *
+   * @param cantTiempo Cantidad de tiempo.
+   * @param unidad     Unidad de tiempo. (usar {@link ChronoUnit})
+   * @return {@code true} si la solicitud de apertura está vigente, {@code false} en caso contrario.
+   */
+  public boolean estaVigente(long cantTiempo, TemporalUnit unidad) {
+    return this.fechaHora.plus(cantTiempo, unidad).isAfter(LocalDateTime.now());
   }
 
 }

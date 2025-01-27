@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.services.colaboraciones;
 
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
-import ar.edu.utn.frba.dds.models.entities.heladera.ExcepcionCantidadDeViandas;
+import ar.edu.utn.frba.dds.models.entities.heladera.CantidadDeViandasException;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.IHeladeraRepository;
@@ -18,7 +18,7 @@ public class DistribucionViandasService implements WithSimplePersistenceUnit {
     this.heladeraRepository = heladeraRepository;
   }
 
-  public void registrar(DistribucionViandas distribucionViandas) throws ExcepcionCantidadDeViandas {
+  public void registrar(DistribucionViandas distribucionViandas) throws CantidadDeViandasException {
 
     Heladera heladeraOrigen = distribucionViandas.getOrigen();
     Heladera heladeraDestino = distribucionViandas.getDestino();

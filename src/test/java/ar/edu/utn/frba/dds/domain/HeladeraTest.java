@@ -2,8 +2,8 @@ package ar.edu.utn.frba.dds.domain;
 
 import ar.edu.utn.frba.dds.models.entities.data.Calle;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
+import ar.edu.utn.frba.dds.models.entities.heladera.CantidadDeViandasException;
 import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
-import ar.edu.utn.frba.dds.models.entities.heladera.ExcepcionCantidadDeViandas;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
 import org.junit.jupiter.api.Assertions;
@@ -18,7 +18,7 @@ public class HeladeraTest {
   private Heladera unaHeladera;
 
   @BeforeEach
-  public void setup() throws ExcepcionCantidadDeViandas {
+  public void setup() throws CantidadDeViandasException {
     unaDireccion = Direccion.with(new Calle("Medrano"), 951);
     rangoAEstablecer = new RangoTemperatura(5.0, -5.0);
     unaHeladera = Heladera.con("Medrano UTN", unaDireccion, 2, rangoAEstablecer, "");
@@ -42,7 +42,7 @@ public class HeladeraTest {
       unaHeladera.quitarViandas(1);
       Assertions.assertEquals(0, unaHeladera.getViandas(),
           "Al retirar la única vianda que quedaba nueva la Heladera, no quedan más viandas.");
-    } catch (ExcepcionCantidadDeViandas e) {
+    } catch (CantidadDeViandasException e) {
       Assertions.fail("No se pudo quitar vianda.");
     }
   }
@@ -56,7 +56,7 @@ public class HeladeraTest {
       unaHeladera.agregarViandas(1);
       Assertions.assertEquals(2, unaHeladera.getViandas(),
           "Al registrar una vianda a la Heladera que ya tenía una, ahora tiene dos.");
-    } catch (ExcepcionCantidadDeViandas e) {
+    } catch (CantidadDeViandasException e) {
       System.out.println(e.getMessage());
       Assertions.fail("No se pudo registrar la vianda.");
     }
@@ -71,7 +71,7 @@ public class HeladeraTest {
     try {
       unaHeladera.agregarViandas(2);
       Assertions.fail("No hubo excepción.");
-    } catch (ExcepcionCantidadDeViandas e) {
+    } catch (CantidadDeViandasException e) {
       Assertions.assertNotNull(e);
     }
   }
