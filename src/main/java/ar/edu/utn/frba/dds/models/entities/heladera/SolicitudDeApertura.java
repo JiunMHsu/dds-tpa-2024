@@ -43,6 +43,10 @@ public class SolicitudDeApertura extends EntidadPersistente {
   @Column(name = "motivo")
   private MotivoApertura motivo;
 
+  @Enumerated(EnumType.STRING)
+  @Column(name = "operacion")
+  private OperacionApertura operacion;
+
   /**
    * Crea una solicitud de apertura.
    *
@@ -50,18 +54,21 @@ public class SolicitudDeApertura extends EntidadPersistente {
    * @param heladera  Heladera que se solicita abrir.
    * @param fechaHora Fecha y hora en la que se realizó la solicitud.
    * @param motivo    Motivo de la solicitud.
+   * @param operacion Operación de la solicitud.
    * @return Solicitud de apertura creada.
    */
   public static SolicitudDeApertura por(TarjetaColaborador tarjeta,
                                         Heladera heladera,
                                         LocalDateTime fechaHora,
-                                        MotivoApertura motivo) {
+                                        MotivoApertura motivo,
+                                        OperacionApertura operacion) {
     return SolicitudDeApertura
         .builder()
         .tarjeta(tarjeta)
         .heladera(heladera)
         .fechaHora(fechaHora)
         .motivo(motivo)
+        .operacion(operacion)
         .build();
   }
 
@@ -78,24 +85,28 @@ public class SolicitudDeApertura extends EntidadPersistente {
         tarjeta,
         heladera,
         LocalDateTime.now(),
-        MotivoApertura.DONACION_VIANDA
+        MotivoApertura.DONACION_VIANDA,
+        OperacionApertura.INGRESO_VIANDAS
     );
   }
 
   /**
    * Crea una solicitud de apertura por distribución de viandas.
    *
-   * @param tarjeta  Tarjeta del colaborador que solicita la apertura.
-   * @param heladera Heladera que se solicita abrir.
+   * @param tarjeta   Tarjeta del colaborador que solicita la apertura.
+   * @param heladera  Heladera que se solicita abrir.
+   * @param operacion Operación de la solicitud.
    * @return Solicitud de apertura creada.
    */
   public static SolicitudDeApertura paraDistribucionDeViandas(TarjetaColaborador tarjeta,
-                                                              Heladera heladera) {
+                                                              Heladera heladera,
+                                                              OperacionApertura operacion) {
     return SolicitudDeApertura.por(
         tarjeta,
         heladera,
         LocalDateTime.now(),
-        MotivoApertura.DISTRIBUCION_VIANDA
+        MotivoApertura.DISTRIBUCION_VIANDA,
+        operacion
     );
   }
 

@@ -20,13 +20,17 @@ public class DistribucionViandasRepository extends ColaboracionRepository<Distri
    * @return la distribución, si existe
    */
   public Optional<DistribucionViandas> buscarPorSolicitudDeApertura(SolicitudDeApertura solicitud) {
-    String query = "from DistribucionViandas d"
-        + " where d.solicitudDeApertura = :solicitud and d.alta = :alta";
-
+    String query = switch (solicitud.getOperacion()) {
+      case RETIRO_VIANDAS ->
+          "from DistribucionViandas d where d.solicitudAperturaOrigen = :s and d.alta = :a";
+      case INGRESO_VIANDAS ->
+          "from DistribucionViandas d where d.solicitudAperturaDestino = :s and d.alta = :a";
+    };
+    
     return entityManager()
         .createQuery(query, DistribucionViandas.class)
-        .setParameter("solicitud", solicitud)
-        .setParameter("alta", true)
+        .setParameter("s", solicitud)
+        .setParameter("a", true)
         .getResultList()
         .stream()
         .findFirst();

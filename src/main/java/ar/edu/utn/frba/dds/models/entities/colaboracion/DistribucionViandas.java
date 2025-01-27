@@ -56,19 +56,24 @@ public class DistribucionViandas extends EntidadPersistente {
   @Column(name = "estado", nullable = false)
   private EstadoDistribucion estado;
 
+  @ManyToOne
+  @JoinColumn(name = "solicitud_apertura_origen_id") // nullable por compatibilidad
+  private SolicitudDeApertura solicitudAperturaOrigen;
+
   @OneToOne
-  @JoinColumn(name = "solicitud_apertura_id") // nullable por compatibilidad
-  private SolicitudDeApertura solicitudDeApertura;
+  @JoinColumn(name = "solicitud_apertura_destino_id") // nullable por compatibilidad
+  private SolicitudDeApertura solicitudAperturaDestino;
 
   /**
    * Crea una distribución de viandas nueva, pendiente a ser realizada.
    *
-   * @param colaborador         {@link Colaborador} que realiza la distribución
-   * @param origen              {@link Heladera} de origen de las viandas
-   * @param destino             {@link Heladera} de destino de las viandas
-   * @param viandas             cantidad de viandas a distribuir
-   * @param motivo              motivo de la distribución
-   * @param solicitudDeApertura {@link SolicitudDeApertura} asociada a la distribución
+   * @param colaborador                {@link Colaborador} que realiza la distribución
+   * @param origen                     {@link Heladera} de origen de las viandas
+   * @param destino                    {@link Heladera} de destino de las viandas
+   * @param viandas                    cantidad de viandas a distribuir
+   * @param motivo                     motivo de la distribución
+   * @param solicitudDeAperturaOrigen  {@link SolicitudDeApertura} de la heladera de origen
+   * @param solicitudDeAperturaDestino {@link SolicitudDeApertura} de la heladera de destino
    * @return distribución de viandas
    */
   public static DistribucionViandas por(Colaborador colaborador,
@@ -76,7 +81,8 @@ public class DistribucionViandas extends EntidadPersistente {
                                         Heladera destino,
                                         Integer viandas,
                                         String motivo,
-                                        SolicitudDeApertura solicitudDeApertura) {
+                                        SolicitudDeApertura solicitudDeAperturaOrigen,
+                                        SolicitudDeApertura solicitudDeAperturaDestino) {
     return DistribucionViandas.builder()
         .colaborador(colaborador)
         .fechaHora(LocalDateTime.now())
@@ -85,7 +91,8 @@ public class DistribucionViandas extends EntidadPersistente {
         .viandas(viandas)
         .motivo(motivo)
         .estado(EstadoDistribucion.PENDIENTE)
-        .solicitudDeApertura(solicitudDeApertura)
+        .solicitudAperturaOrigen(solicitudDeAperturaOrigen)
+        .solicitudAperturaDestino(solicitudDeAperturaDestino)
         .build();
   }
 
