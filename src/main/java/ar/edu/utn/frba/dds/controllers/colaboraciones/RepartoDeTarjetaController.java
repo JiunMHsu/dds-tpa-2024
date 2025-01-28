@@ -1,9 +1,9 @@
 package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
-import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
+import ar.edu.utn.frba.dds.exceptions.NotColaboratorException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.RepartoDeTarjetas;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.RepartoDeTarjeta;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
@@ -85,7 +85,7 @@ public class RepartoDeTarjetaController extends ColaboradorRequired implements I
       TarjetaPersonaVulnerable tarjetaPV = TarjetaPersonaVulnerable.de(
           context.formParamAsClass("tarjeta", String.class).get(), nuevaPV);
 
-      RepartoDeTarjetas repartoDeTarjetas = RepartoDeTarjetas.por(colaborador, LocalDateTime.now(), tarjetaPV, nuevaPV);
+      RepartoDeTarjeta repartoDeTarjetas = RepartoDeTarjeta.por(colaborador, LocalDateTime.now(), tarjetaPV, nuevaPV);
 
       this.repartoDeTarjetaService.registrar(repartoDeTarjetas);
 
@@ -96,7 +96,7 @@ public class RepartoDeTarjetaController extends ColaboradorRequired implements I
       operationSuccess = true;
       redirectDTOS.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));
 
-    } catch (NonColaboratorException e) {
+    } catch (NotColaboratorException e) {
       throw new UnauthorizedException();
     } catch (ValidationException v) {
       redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));

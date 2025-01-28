@@ -1,5 +1,6 @@
-package ar.edu.utn.frba.dds.dtos.colaboraciones;
+package ar.edu.utn.frba.dds.dtos.colaboraciones.distribucionViandas;
 
+import ar.edu.utn.frba.dds.dtos.colaboraciones.ColaboracionDTO;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.utils.DateTimeParser;

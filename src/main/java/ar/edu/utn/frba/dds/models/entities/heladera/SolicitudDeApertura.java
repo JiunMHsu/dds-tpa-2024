@@ -105,7 +105,7 @@ public class SolicitudDeApertura extends EntidadPersistente {
         tarjeta,
         heladera,
         LocalDateTime.now(),
-        MotivoApertura.DISTRIBUCION_VIANDA,
+        MotivoApertura.DISTRIBUCION_VIANDAS,
         operacion
     );
   }

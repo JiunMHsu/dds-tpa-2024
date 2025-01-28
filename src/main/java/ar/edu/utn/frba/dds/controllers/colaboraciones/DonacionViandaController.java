@@ -1,8 +1,8 @@
 package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
-import ar.edu.utn.frba.dds.dtos.colaboraciones.DonacionViandaDTO;
-import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.donacionVianda.DonacionViandaDTO;
+import ar.edu.utn.frba.dds.exceptions.NotColaboratorException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
@@ -101,7 +101,7 @@ public class DonacionViandaController extends ColaboradorRequired implements ICr
       operationSuccess = true;
       redirectDTOS.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));
 
-    } catch (NonColaboratorException e) {
+    } catch (NotColaboratorException e) {
       throw new UnauthorizedException();
     } catch (ValidationException v) {
       redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));

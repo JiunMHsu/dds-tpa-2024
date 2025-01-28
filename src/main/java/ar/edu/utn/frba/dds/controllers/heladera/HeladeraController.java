@@ -3,7 +3,7 @@ package ar.edu.utn.frba.dds.controllers.heladera;
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.UbicacionDTO;
 import ar.edu.utn.frba.dds.dtos.heladera.HeladeraDTO;
-import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
+import ar.edu.utn.frba.dds.exceptions.NotColaboratorException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
@@ -79,7 +79,7 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
     try {
       Colaborador colaborador = colaboradorFromSession(context);
       puedeConfigurar = heladeraService.puedeConfigurar(colaborador, heladera);
-    } catch (NonColaboratorException e) {
+    } catch (NotColaboratorException e) {
       Usuario usuario = usuarioFromSession(context);
       puedeConfigurar = usuario.getRol().isAdmin();
     }
@@ -170,7 +170,7 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
       Colaborador colaborador = colaboradorFromSession(context);
       if (!heladeraService.puedeConfigurar(colaborador, heladera))
         throw new UnauthorizedException("no es encargado de la heladera");
-    } catch (NonColaboratorException e) {
+    } catch (NotColaboratorException e) {
       Usuario usuario = usuarioFromSession(context);
       if (!usuario.getRol().isAdmin())
         throw new UnauthorizedException("no es administrador");
@@ -191,7 +191,7 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
       Colaborador colaborador = colaboradorFromSession(context);
       if (!heladeraService.puedeConfigurar(colaborador, heladera))
         throw new UnauthorizedException("no es encargado de la heladera");
-    } catch (NonColaboratorException e) {
+    } catch (NotColaboratorException e) {
       Usuario usuario = usuarioFromSession(context);
       if (!usuario.getRol().isAdmin())
         throw new UnauthorizedException("no es administrador");

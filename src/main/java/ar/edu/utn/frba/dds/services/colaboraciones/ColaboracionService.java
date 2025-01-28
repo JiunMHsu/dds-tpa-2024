@@ -6,7 +6,7 @@ import ar.edu.utn.frba.dds.models.entities.colaboracion.ColaboracionPrevia;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDinero;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.RepartoDeTarjetas;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.RepartoDeTarjeta;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.data.Documento;
@@ -19,7 +19,7 @@ import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroReposi
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRepository;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetasRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetaRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.mensajeria.MensajeRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
@@ -54,7 +54,7 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
   private final DonacionViandaRepository donacionViandaRepository;
   private final DonacionDineroRepository donacionDineroRepository;
   private final DistribucionViandasRepository distribucionViandasRepository;
-  private final RepartoDeTarjetasRepository repartoDeTarjetasRepository;
+  private final RepartoDeTarjetaRepository repartoDeTarjetasRepository;
 
   private final ISender mailSender;
   private final MensajeRepository mensajeRepository;
@@ -83,7 +83,7 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
                              DistribucionViandasRepository distribucionViandasRepository,
                              HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository,
                              OfertaDeProductosRepository ofertaDeProductosRepository,
-                             RepartoDeTarjetasRepository repartoDeTarjetasRepository,
+                             RepartoDeTarjetaRepository repartoDeTarjetasRepository,
                              ISender mailSender,
                              MensajeRepository mensajeRepository) {
     this.usuarioRepository = usuarioRepository;
@@ -103,7 +103,7 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
         DistribucionViandasRepository.class.getName(), distribucionViandasRepository,
         HacerseCargoHeladeraRepository.class.getName(), hacerseCargoHeladeraRepository,
         OfertaDeProductosRepository.class.getName(), ofertaDeProductosRepository,
-        RepartoDeTarjetasRepository.class.getName(), repartoDeTarjetasRepository
+        RepartoDeTarjetaRepository.class.getName(), repartoDeTarjetasRepository
     );
   }
 
@@ -143,7 +143,7 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
 
   /**
    * Carga masiva de colaboraciones.
-   * TODO: Revisar
+   * TODO: Revisar ColaboracionService.cargarColaboraciones
    *
    * @param csv el archivo CSV
    * @throws CargaMasivaException en caso de error al cargar las colaboraciones
@@ -247,7 +247,7 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
 
       case "ENTREGA_TARJETAS":
         for (int i = 0; i < colaboracionPrevia.getCantidad(); i++) {
-          RepartoDeTarjetas repartoDeTarjetas = RepartoDeTarjetas
+          RepartoDeTarjeta repartoDeTarjetas = RepartoDeTarjeta
               .por(colaborador, colaboracionPrevia.getFechaHora());
           repartoDeTarjetasRepository.guardar(repartoDeTarjetas);
         }

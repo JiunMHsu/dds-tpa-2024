@@ -1,67 +1,67 @@
 package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
-import ar.edu.utn.frba.dds.dtos.colaboraciones.DistribucionViandasDTO;
-import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.distribucionViandas.CreateDistribucionViandasDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.distribucionViandas.DistribucionViandasDTO;
+import ar.edu.utn.frba.dds.exceptions.NotColaboratorException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.CantidadDeViandasException;
-import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.permissions.ColaboradorRequired;
 import ar.edu.utn.frba.dds.services.colaboraciones.DistribucionViandasService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
-import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
-import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-public class DistribucionViandasController extends ColaboradorRequired implements ICrudViewsHandler {
+/**
+ * Controlador de Distribucion de Viandas.
+ */
+public class DistribucionViandasController extends ColaboradorRequired {
 
   private final DistribucionViandasService distribucionViandasService;
-  private final HeladeraService heladeraService;
 
+  /**
+   * Constructor de DistribucionViandasController.
+   *
+   * @param usuarioService             Servicio de Usuario
+   * @param colaboradorService         Servicio de Colaborador
+   * @param distribucionViandasService Servicio de Distribucion de Viandas
+   */
   public DistribucionViandasController(UsuarioService usuarioService,
                                        ColaboradorService colaboradorService,
-                                       DistribucionViandasService distribucionViandasService,
-                                       HeladeraService heladeraService) {
-
+                                       DistribucionViandasService distribucionViandasService) {
     super(usuarioService, colaboradorService);
     this.distribucionViandasService = distribucionViandasService;
-    this.heladeraService = heladeraService;
   }
 
-  @Override
-  public void index(Context context) {
-    // TODO - Implementar
-  }
-
-  @Override
-  public void show(Context context) { // TODO - Revisar
-    String distribucionViandasId = context.pathParam("id");
-    Optional<DistribucionViandas> distribucionViandas = distribucionViandasService.buscarPorId(distribucionViandasId);
-
-    if (distribucionViandas.isEmpty()) {
-      throw new ResourceNotFoundException("No se encontró distribucion nueva viandas paraColaborador id " + distribucionViandasId);
-    }
+  /**
+   * Recibe de path param el ID de un recurso y
+   * devuelve una vista con el detalle de una distribucion de viandas.
+   * TODO: Implementar la vista (template).
+   *
+   * @param context Objeto Context de io.javalin.http
+   */
+  public void show(Context context) {
+    String id = context.pathParam("id");
+    DistribucionViandasDTO dto = distribucionViandasService.buscarPorId(id);
 
     Map<String, Object> model = new HashMap<>();
-
-    DistribucionViandasDTO distribucionViandasDTO = DistribucionViandasDTO.fromColaboracion(distribucionViandas.get());
-    model.put("distribucion_viandas", distribucionViandasDTO);
-
-    context.render("colaboraciones/colaboracion_detalle.hbs", model);
+    model.put("distribucion_viandas", dto);
+    render(context, "colaboraciones/colaboracion_detalle.hbs", model);
   }
 
-  @Override
+  /**
+   * Devuelve un formulario para dar de alta una nueva distribucion de viandas.
+   *
+   * @param context Objeto Context de io.javalin.http
+   */
   public void create(Context context) {
     Colaborador colaborador = colaboradorFromSession(context);
 
@@ -69,64 +69,43 @@ public class DistribucionViandasController extends ColaboradorRequired implement
       throw new UnauthorizedException("No tiene permiso");
     }
 
-    render(context, "colaboraciones/distribucion_viandas_crear.hbs", new HashMap<>());
+    render(context, "colaboraciones/distribucion_viandas_crear.hbs");
   }
 
-  @Override
+  /**
+   * Registra una nueva distribucion de viandas.
+   *
+   * @param context Objeto Context de io.javalin.http
+   */
   public void save(Context context) {
-
     Map<String, Object> model = new HashMap<>();
-    List<RedirectDTO> redirectDTOS = new ArrayList<>();
+    List<RedirectDTO> redirects = new ArrayList<>();
     boolean operationSuccess = false;
 
     try {
       Colaborador colaborador = colaboradorFromSession(context);
 
-      Heladera heladeraOrigen = heladeraService
-          .buscarPorNombre(context.formParamAsClass("origen", String.class).get())
-          .orElseThrow(ResourceNotFoundException::new);
+      CreateDistribucionViandasDTO input = new CreateDistribucionViandasDTO(
+          context.formParamAsClass("origen", String.class).get(),
+          context.formParamAsClass("destino", String.class).get(),
+          context.formParamAsClass("cantidad", Integer.class).get(),
+          context.formParamAsClass("motivo", String.class).get()
+      );
 
-      Heladera heladeraDestino = heladeraService
-          .buscarPorNombre(context.formParamAsClass("destino", String.class).get())
-          .orElseThrow(ResourceNotFoundException::new);
-
-      Integer viandas = context.formParamAsClass("cantidad", Integer.class).get();
-      String motivo = context.formParamAsClass("motivo", String.class).get();
-
-      // TODO: Construir DistribucionViandas
-      // DistribucionViandas distribucionViandas = DistribucionViandas.por(colaborador, heladeraOrigen, heladeraDestino, viandas, motivo);
-      DistribucionViandas distribucionViandas = new DistribucionViandas();
-
-      this.distribucionViandasService.registrar(distribucionViandas);
-
-      // TODO - Delegar a Service??
-      colaborador.invalidarPuntos();
-      this.colaboradorService.actualizar(colaborador);
+      this.distribucionViandasService.registrarNuevaDistribucion(colaborador, input);
 
       operationSuccess = true;
-      redirectDTOS.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));
+      redirects.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));
 
-    } catch (NonColaboratorException e) {
+    } catch (NotColaboratorException e) {
       throw new UnauthorizedException(e.getMessage());
     } catch (ValidationException | ResourceNotFoundException | CantidadDeViandasException e) {
-      redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
+      redirects.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
     } finally {
       model.put("success", operationSuccess);
-      model.put("redirects", redirectDTOS);
-      context.render("post_result.hbs", model);
+      model.put("redirects", redirects);
+      render(context, "post_result.hbs", model);
     }
-  }
-
-  @Override
-  public void edit(Context context) {
-  }
-
-  @Override
-  public void update(Context context) {
-  }
-
-  @Override
-  public void delete(Context context) {
   }
 }
 

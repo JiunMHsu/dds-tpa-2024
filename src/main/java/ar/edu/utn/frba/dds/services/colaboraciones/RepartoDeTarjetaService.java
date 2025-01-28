@@ -1,18 +1,18 @@
 package ar.edu.utn.frba.dds.services.colaboraciones;
 
-import ar.edu.utn.frba.dds.models.entities.colaboracion.RepartoDeTarjetas;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetasRepository;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.RepartoDeTarjeta;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetaRepository;
 import ar.edu.utn.frba.dds.models.repositories.personaVulnerable.PersonaVulnerableRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjeta.TarjetaPersonaVulnerableRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 
 public class RepartoDeTarjetaService implements WithSimplePersistenceUnit {
 
-  private final RepartoDeTarjetasRepository repartoDeTarjetasRepository;
+  private final RepartoDeTarjetaRepository repartoDeTarjetasRepository;
   private final PersonaVulnerableRepository personaVulnerableRepository;
   private final TarjetaPersonaVulnerableRepository tarjetaPersonaVulnerableRepository;
 
-  public RepartoDeTarjetaService(RepartoDeTarjetasRepository repartoDeTarjetasRepository,
+  public RepartoDeTarjetaService(RepartoDeTarjetaRepository repartoDeTarjetasRepository,
                                  PersonaVulnerableRepository personaVulnerableRepository,
                                  TarjetaPersonaVulnerableRepository tarjetaPersonaVulnerableRepository) {
 
@@ -21,7 +21,7 @@ public class RepartoDeTarjetaService implements WithSimplePersistenceUnit {
     this.tarjetaPersonaVulnerableRepository = tarjetaPersonaVulnerableRepository;
   }
 
-  public void registrar(RepartoDeTarjetas reparto) {
+  public void registrar(RepartoDeTarjeta reparto) {
     beginTransaction();
     personaVulnerableRepository.guardar(reparto.getPersonaVulnerable());
     tarjetaPersonaVulnerableRepository.guardar(reparto.getTarjeta());

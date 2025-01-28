@@ -1,9 +1,9 @@
 package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
-import ar.edu.utn.frba.dds.dtos.colaboraciones.OfertaDeProductosDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.ofertaDeProductos.OfertaDeProductosDTO;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
-import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
+import ar.edu.utn.frba.dds.exceptions.NotColaboratorException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
@@ -120,7 +120,7 @@ public class OfertaProductosServiciosController extends ColaboradorRequired impl
       operationSuccess = true;
       redirectDTOS.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));
 
-    } catch (NonColaboratorException e) {
+    } catch (NotColaboratorException e) {
       throw new UnauthorizedException();
     } catch (ValidationException | InvalidFormParamException | IOException e) {
       redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));

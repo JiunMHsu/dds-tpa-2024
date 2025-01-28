@@ -2,7 +2,7 @@ package ar.edu.utn.frba.dds.controllers.suscripcion;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.heladera.HeladeraDTO;
-import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
+import ar.edu.utn.frba.dds.exceptions.NotColaboratorException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.SuscripcionFaltaViandaException;
 import ar.edu.utn.frba.dds.exceptions.SuscripcionHeladeraLlenaException;
@@ -135,7 +135,7 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
       operationSuccess = true;
       redirectDTOS.add(new RedirectDTO("/heladeras", "Ir a Heladeras"));
 
-    } catch (NonColaboratorException e) {
+    } catch (NotColaboratorException e) {
       throw new UnauthorizedException(e.getMessage());
     } finally {
       model.put("success", operationSuccess);
@@ -172,7 +172,7 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
       operationSuccess = true;
       redirectDTOS.add(new RedirectDTO("/heladeras", "Ir a Heladeras"));
 
-    } catch (NonColaboratorException e) {
+    } catch (NotColaboratorException e) {
       throw new UnauthorizedException(e.getMessage());
     } catch (ValidationException | ResourceNotFoundException |
              SuscripcionFaltaViandaException e) {
@@ -211,7 +211,7 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
       operationSuccess = true;
       redirectDTOS.add(new RedirectDTO("/heladeras", "Ir a Heladeras"));
 
-    } catch (NonColaboratorException e) {
+    } catch (NotColaboratorException e) {
       throw new UnauthorizedException(e.getMessage());
     } catch (ValidationException | ResourceNotFoundException |
              SuscripcionHeladeraLlenaException e) {

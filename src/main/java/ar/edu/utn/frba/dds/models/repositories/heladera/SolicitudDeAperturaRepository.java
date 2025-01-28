@@ -9,9 +9,11 @@ import java.util.Optional;
 import java.util.UUID;
 import javax.persistence.NoResultException;
 
+/**
+ * Repositorio de solicitudes de apertura.
+ */
 public class SolicitudDeAperturaRepository implements
     ICrudRepository<SolicitudDeApertura>,
-    ISolicitudDeAperturaRepository,
     WithSimplePersistenceUnit {
 
   @Override
@@ -22,7 +24,6 @@ public class SolicitudDeAperturaRepository implements
   @Override
   public void actualizar(SolicitudDeApertura solicitud) {
     withTransaction(() -> entityManager().merge(solicitud));
-
   }
 
   @Override
@@ -51,7 +52,6 @@ public class SolicitudDeAperturaRepository implements
         .getResultList();
   }
 
-  @Override
   public List<SolicitudDeApertura> buscarPorTarjeta(String tarjeta) {
     return entityManager()
         .createQuery("from SolicitudDeApertura s " +
@@ -61,7 +61,6 @@ public class SolicitudDeAperturaRepository implements
         .getResultList();
   }
 
-  @Override
   public List<SolicitudDeApertura> buscarPorTarjetaHeladeraEnLasUltimas(String tarjeta, Heladera heladera) {
     return entityManager()
         .createQuery("SELECT s FROM SolicitudDeApertura s " +
@@ -76,7 +75,6 @@ public class SolicitudDeAperturaRepository implements
 //3 horas
 
 
-  @Override
   public Optional<SolicitudDeApertura> buscarUltimoPorTarjeta(String tarjeta) {
     try {
       return Optional.of(entityManager()

@@ -24,8 +24,6 @@ import ar.edu.utn.frba.dds.controllers.session.SessionController;
 import ar.edu.utn.frba.dds.controllers.suscripcion.SuscripcionHeladeraController;
 import ar.edu.utn.frba.dds.controllers.tecnico.TecnicoController;
 import ar.edu.utn.frba.dds.controllers.tecnico.VisitaTecnicaController;
-import ar.edu.utn.frba.dds.models.stateless.mensajeria.SafeMailSender;
-import ar.edu.utn.frba.dds.models.stateless.mensajeria.SenderFactory;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.CanjeDePuntosRepository;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.VarianteDePuntosRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
@@ -33,7 +31,7 @@ import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroReposi
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRepository;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetasRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetaRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.AperturaHeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
@@ -46,11 +44,14 @@ import ar.edu.utn.frba.dds.models.repositories.reporte.ReporteRepository;
 import ar.edu.utn.frba.dds.models.repositories.suscripcion.FallaHeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.suscripcion.FaltaViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.suscripcion.HeladeraLlenaRepository;
+import ar.edu.utn.frba.dds.models.repositories.tarjeta.TarjetaColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjeta.TarjetaPersonaVulnerableRepository;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.TecnicoRepository;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.VisitaTecnicaRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import ar.edu.utn.frba.dds.models.repositories.vianda.ViandaRepository;
+import ar.edu.utn.frba.dds.models.stateless.mensajeria.SafeMailSender;
+import ar.edu.utn.frba.dds.models.stateless.mensajeria.SenderFactory;
 import ar.edu.utn.frba.dds.reportes.RegistroMovimiento;
 import ar.edu.utn.frba.dds.services.canjeDePuntos.CanjeDePuntosService;
 import ar.edu.utn.frba.dds.services.colaboraciones.ColaboracionService;
@@ -75,6 +76,7 @@ import ar.edu.utn.frba.dds.services.reporte.ReporteService;
 import ar.edu.utn.frba.dds.services.suscripcion.FallaHeladeraService;
 import ar.edu.utn.frba.dds.services.suscripcion.FaltaViandaService;
 import ar.edu.utn.frba.dds.services.suscripcion.HeladeraLlenaService;
+import ar.edu.utn.frba.dds.services.tarjeta.TarjetaColaboradorService;
 import ar.edu.utn.frba.dds.services.tarjeta.TarjetaPersonaVulnerableService;
 import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import ar.edu.utn.frba.dds.services.tecnico.VisitaTecnicaService;
@@ -211,8 +213,7 @@ public class ServiceLocator {
       DistribucionViandasController instance = new DistribucionViandasController(
           instanceOf(UsuarioService.class),
           instanceOf(ColaboradorService.class),
-          instanceOf(DistribucionViandasService.class),
-          instanceOf(HeladeraService.class));
+          instanceOf(DistribucionViandasService.class));
       instances.put(componentName, instance);
     }
 
@@ -378,7 +379,7 @@ public class ServiceLocator {
           instanceOf(DistribucionViandasRepository.class),
           instanceOf(HacerseCargoHeladeraRepository.class),
           instanceOf(OfertaDeProductosRepository.class),
-          instanceOf(RepartoDeTarjetasRepository.class),
+          instanceOf(RepartoDeTarjetaRepository.class),
           new SafeMailSender(),
           instanceOf(MensajeRepository.class));
       instances.put(componentName, instance);
@@ -386,7 +387,7 @@ public class ServiceLocator {
 
     if (componentName.equals(RepartoDeTarjetaService.class.getName())) {
       RepartoDeTarjetaService instance = new RepartoDeTarjetaService(
-          instanceOf(RepartoDeTarjetasRepository.class),
+          instanceOf(RepartoDeTarjetaRepository.class),
           instanceOf(PersonaVulnerableRepository.class),
           instanceOf(TarjetaPersonaVulnerableRepository.class));
       instances.put(componentName, instance);
@@ -395,7 +396,9 @@ public class ServiceLocator {
     if (componentName.equals(DistribucionViandasService.class.getName())) {
       DistribucionViandasService instance = new DistribucionViandasService(
           instanceOf(DistribucionViandasRepository.class),
-          instanceOf(HeladeraRepository.class));
+          instanceOf(HeladeraRepository.class),
+          instanceOf(TarjetaColaboradorService.class),
+          instanceOf(SolicitudDeAperturaService.class));
       instances.put(componentName, instance);
     }
 
@@ -422,6 +425,12 @@ public class ServiceLocator {
       OfertaProductosServiciosService instance = new OfertaProductosServiciosService(
           instanceOf(OfertaDeProductosRepository.class)
       );
+      instances.put(componentName, instance);
+    }
+
+    if (componentName.equals(TarjetaColaboradorService.class.getName())) {
+      TarjetaColaboradorService instance = new TarjetaColaboradorService(
+          instanceOf(TarjetaColaboradorRepository.class));
       instances.put(componentName, instance);
     }
 
@@ -466,7 +475,7 @@ public class ServiceLocator {
           instanceOf(DonacionDineroRepository.class),
           instanceOf(DistribucionViandasRepository.class),
           instanceOf(DonacionViandaRepository.class),
-          instanceOf(RepartoDeTarjetasRepository.class),
+          instanceOf(RepartoDeTarjetaRepository.class),
           instanceOf(HacerseCargoHeladeraRepository.class),
           instanceOf(ColaboradorRepository.class),
           instanceOf(VarianteDePuntosRepository.class));
@@ -535,8 +544,13 @@ public class ServiceLocator {
       instances.put(componentName, instance);
     }
 
-    if (componentName.equals(RepartoDeTarjetasRepository.class.getName())) {
-      RepartoDeTarjetasRepository instance = new RepartoDeTarjetasRepository();
+    if (componentName.equals(RepartoDeTarjetaRepository.class.getName())) {
+      RepartoDeTarjetaRepository instance = new RepartoDeTarjetaRepository();
+      instances.put(componentName, instance);
+    }
+
+    if (componentName.equals(TarjetaColaboradorRepository.class.getName())) {
+      TarjetaColaboradorRepository instance = new TarjetaColaboradorRepository();
       instances.put(componentName, instance);
     }
 

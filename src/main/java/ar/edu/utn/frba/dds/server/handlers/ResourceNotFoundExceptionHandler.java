@@ -3,6 +3,9 @@ package ar.edu.utn.frba.dds.server.handlers;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import io.javalin.Javalin;
 
+/**
+ * Resource Not Found Exception Handler.
+ */
 public class ResourceNotFoundExceptionHandler implements IHandler {
   @Override
   public void setHandler(Javalin app) {

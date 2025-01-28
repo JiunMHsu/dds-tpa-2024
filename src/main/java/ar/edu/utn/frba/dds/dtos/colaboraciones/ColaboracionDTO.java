@@ -1,11 +1,17 @@
 package ar.edu.utn.frba.dds.dtos.colaboraciones;
 
+import ar.edu.utn.frba.dds.dtos.colaboraciones.RepartoDeTarjeta.RepartoDeTarjetaDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.distribucionViandas.DistribucionViandasDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.donacionDinero.DonacionDineroDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.donacionVianda.DonacionViandaDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.hacerseCargoHeladera.HacerseCargoHeladeraDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.ofertaDeProductos.OfertaDeProductosDTO;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDinero;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.HacerseCargoHeladera;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.RepartoDeTarjetas;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.RepartoDeTarjeta;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -53,8 +59,8 @@ public class ColaboracionDTO {
       return HacerseCargoHeladeraDTO.fromColaboracion((HacerseCargoHeladera) colaboracion);
     } else if (colaboracion instanceof OfertaDeProductos) {
       return OfertaDeProductosDTO.fromColaboracion((OfertaDeProductos) colaboracion);
-    } else if (colaboracion instanceof RepartoDeTarjetas) {
-      return RepartoDeTarjetasDTO.fromColaboracion((RepartoDeTarjetas) colaboracion);
+    } else if (colaboracion instanceof RepartoDeTarjeta) {
+      return RepartoDeTarjetaDTO.fromColaboracion((RepartoDeTarjeta) colaboracion);
     } else {
       throw new IllegalArgumentException(colaboracion.getClass().getName() + " es inválido");
     }

@@ -5,5 +5,5 @@ package ar.edu.utn.frba.dds.models.entities.heladera;
  */
 public enum MotivoApertura {
   DONACION_VIANDA,
-  DISTRIBUCION_VIANDA,
+  DISTRIBUCION_VIANDAS,
 }

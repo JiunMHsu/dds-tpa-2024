@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "reparto_tarjetas")
-public class RepartoDeTarjetas extends EntidadPersistente {
+public class RepartoDeTarjeta extends EntidadPersistente {
 
   @ManyToOne
   @JoinColumn(name = "colaborador_id", nullable = false)
@@ -52,11 +52,11 @@ public class RepartoDeTarjetas extends EntidadPersistente {
    * @param personaVulnerable {@link PersonaVulnerable} a la que se le reparte la tarjeta
    * @return un reparto de tarjetas
    */
-  public static RepartoDeTarjetas por(Colaborador colaborador,
-                                      LocalDateTime fechaHora,
-                                      TarjetaPersonaVulnerable tarjeta,
-                                      PersonaVulnerable personaVulnerable) {
-    return RepartoDeTarjetas
+  public static RepartoDeTarjeta por(Colaborador colaborador,
+                                     LocalDateTime fechaHora,
+                                     TarjetaPersonaVulnerable tarjeta,
+                                     PersonaVulnerable personaVulnerable) {
+    return RepartoDeTarjeta
         .builder()
         .colaborador(colaborador)
         .fechaHora(fechaHora)
@@ -72,9 +72,9 @@ public class RepartoDeTarjetas extends EntidadPersistente {
    * @param fechaHora   fecha y hora del reparto
    * @return un reparto de tarjetas
    */
-  public static RepartoDeTarjetas por(Colaborador colaborador,
-                                      LocalDateTime fechaHora) {
-    return RepartoDeTarjetas.por(colaborador, fechaHora, null, null);
+  public static RepartoDeTarjeta por(Colaborador colaborador,
+                                     LocalDateTime fechaHora) {
+    return RepartoDeTarjeta.por(colaborador, fechaHora, null, null);
   }
 
 }

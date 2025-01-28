@@ -8,7 +8,7 @@ import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDinero;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.HacerseCargoHeladera;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.RepartoDeTarjetas;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.RepartoDeTarjeta;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.CanjeDePuntosRepository;
@@ -17,7 +17,7 @@ import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasR
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladeraRepository;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetasRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetaRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDate;
@@ -35,7 +35,7 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
   private final DonacionDineroRepository donacionDineroRepository;
   private final DistribucionViandasRepository distribucionViandasRepository;
   private final DonacionViandaRepository donacionViandaRepository;
-  private final RepartoDeTarjetasRepository repartoDeTarjetasRepository;
+  private final RepartoDeTarjetaRepository repartoDeTarjetasRepository;
   private final HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository;
   private final ColaboradorRepository colaboradorRepository;
   private final VarianteDePuntosRepository varianteDePuntosRepository;
@@ -56,7 +56,7 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
                               DonacionDineroRepository donacionDineroRepository,
                               DistribucionViandasRepository distribucionViandasRepository,
                               DonacionViandaRepository donacionViandaRepository,
-                              RepartoDeTarjetasRepository repartoDeTarjetasRepository,
+                              RepartoDeTarjetaRepository repartoDeTarjetasRepository,
                               HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository,
                               ColaboradorRepository colaboradorRepository,
                               VarianteDePuntosRepository varianteDePuntosRepository) {
@@ -139,7 +139,7 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
   }
 
   private double tarjetasRepartidas(Colaborador colaborador, LocalDateTime fechaUltimoCanje) {
-    List<RepartoDeTarjetas> colaboraciones = this.repartoDeTarjetasRepository
+    List<RepartoDeTarjeta> colaboraciones = this.repartoDeTarjetasRepository
         .buscarPorColaboradorDesde(colaborador, fechaUltimoCanje);
 
     return colaboraciones.size();
