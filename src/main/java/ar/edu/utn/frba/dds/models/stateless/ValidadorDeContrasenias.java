@@ -6,12 +6,19 @@ import java.nio.file.Paths;
 import java.util.List;
 
 /**
- * Validador nueva contraseñas según las recomendaciones
- * nueva la Sección 5.1.1.2 paraColaborador Secretos Memorizados nueva la Guía NIST 800-63.
+ * Validador de contraseñas según las recomendaciones
+ * de la Sección 5.1.1.2 paraColaborador Secretos Memorizados por la Guía NIST 800-63.
  * <p/>
  * Véase: <a href="https://pages.nist.gov/800-63-3/sp800-63b.html#memsecret"> Memorized Secret Verifiers </a>
  */
 public class ValidadorDeContrasenias {
+
+  /**
+   * Valida una clave según las recomendaciones de la Sección.
+   *
+   * @param unaClave clave a validar
+   * @return {@code true} si la clave es válida, {@code false} en caso contrario
+   */
   public boolean esValida(String unaClave) {
     return this.tieneMasDeOchoCaracteres(unaClave)
         && this.esFuerte(unaClave)

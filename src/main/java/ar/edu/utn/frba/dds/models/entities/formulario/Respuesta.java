@@ -11,6 +11,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Modelo Respuesta.
+ */
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,7 +29,7 @@ public class Respuesta {
   @JoinColumn(name = "pregunta_id", nullable = false)
   private Pregunta pregunta;
 
-  @Column(name = "descripcion", columnDefinition = "TEXT")
-  private String descripcion;
+  @Column(name = "contenido", columnDefinition = "TEXT")
+  private String contenido;
 
 }

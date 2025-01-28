@@ -29,15 +29,15 @@ public class Puntos {
   private LocalDate validoHasta;
 
   /**
-   * Constructor de la clase Puntos.
+   * Verifica si los puntos son válidos según el tipo de colaborador.
    *
    * @param tipoColaborador {@link TipoColaborador} del colaborador.
    * @return Puntos.
    */
-  public boolean esValido(TipoColaborador tipoColaborador) {
+  public boolean esValidoSegun(TipoColaborador tipoColaborador) {
     return switch (tipoColaborador) {
-      case HUMANO -> esValido;
-      case JURIDICO -> esValido && validoHasta.isAfter(LocalDate.now());
+      case HUMANO -> this.esValido;
+      case JURIDICO -> this.esValido && this.validoHasta.isAfter(LocalDate.now());
     };
   }
 }

@@ -4,21 +4,24 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+/**
+ * Clase Punto de Donación.
+ * TODO: Refactor??
+ */
 @Getter
 @AllArgsConstructor
 @Builder
 public class PuntoDeDonacion {
 
   private long id;
-
   private String nombre;
-
   private double latitud;
-
   private double longitud;
-
   private double distanciaEnKm;
 
+  /**
+   * Imprime los datos del punto de donación.
+   */
   public void print() {
     System.out.println("lugar: " + nombre);
     System.out.println("id: " + id);

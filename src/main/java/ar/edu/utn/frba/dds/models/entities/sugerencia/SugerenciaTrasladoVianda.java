@@ -18,7 +18,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  * Modelo SugerenciaTrasladoVianda.
@@ -39,12 +38,10 @@ public class SugerenciaTrasladoVianda extends EntidadPersistente {
   @JoinColumn(name = "sugerencia_traslado_id")
   private List<Heladera> heladerasDestino;
 
-  @Setter
   @ManyToOne
   @JoinColumn(name = "colaborador_id") // se setea una vez que se acepta la sugerencia
   private Colaborador colaborador;
 
-  @Setter
   @Enumerated(EnumType.STRING)
   @Column(name = "estado", nullable = false)
   private EstadoSugerencia estado;
@@ -81,5 +78,15 @@ public class SugerenciaTrasladoVianda extends EntidadPersistente {
    */
   public boolean siguePendiente() {
     return this.estado.equals(EstadoSugerencia.PENDIENTE) && this.colaborador == null;
+  }
+
+  /**
+   * Acepta la sugerencia.
+   *
+   * @param colaborador Colaborador.
+   */
+  public void aceptadoPor(Colaborador colaborador) {
+    this.colaborador = colaborador;
+    this.estado = EstadoSugerencia.ACEPTADA;
   }
 }

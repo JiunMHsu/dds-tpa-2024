@@ -8,8 +8,8 @@ import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.data.Documento;
 import ar.edu.utn.frba.dds.models.entities.data.TipoRazonSocial;
 import ar.edu.utn.frba.dds.models.entities.formulario.FormularioRespondido;
-import ar.edu.utn.frba.dds.models.stateless.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
+import ar.edu.utn.frba.dds.models.stateless.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -228,7 +228,7 @@ public class Colaborador extends EntidadPersistente {
    * @return puntos
    */
   public double puntos() throws PuntosInvalidosException {
-    if (!puntos.esValido(tipoColaborador)) {
+    if (!puntos.esValidoSegun(tipoColaborador)) {
       throw new PuntosInvalidosException();
     }
     return puntos.getPuntos();

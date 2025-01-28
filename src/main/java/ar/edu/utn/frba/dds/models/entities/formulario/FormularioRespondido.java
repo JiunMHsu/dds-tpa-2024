@@ -12,6 +12,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Modelo Formulario Respondido.
+ */
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
