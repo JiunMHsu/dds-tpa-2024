@@ -16,6 +16,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Modelo VisitaTecnica.
+ */
 @Getter
 @Builder
 @AllArgsConstructor
@@ -48,6 +51,18 @@ public class VisitaTecnica extends EntidadPersistente {
   @Embedded
   private Imagen foto;
 
+  /**
+   * Crea una visita técnica.
+   *
+   * @param tecnico        {@link Tecnico} que realizó la visita.
+   * @param incidente      {@link Incidente} que motivó la visita.
+   * @param heladera       {@link Heladera} que fue inspeccionada.
+   * @param fechaHora      Fecha y hora de la visita.
+   * @param descripcion    Descripción de la visita.
+   * @param pudoResolverse Indica si el incidente pudo resolverse.
+   * @param foto           {@link Imagen} de la visita.
+   * @return Visita técnica.
+   */
   public static VisitaTecnica por(Tecnico tecnico,
                                   Incidente incidente,
                                   Heladera heladera,

@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.models.entities.mensajeria;
+package ar.edu.utn.frba.dds.models.stateless.mensajeria;
 
 /**
  * Factory class for creating ISender objects.

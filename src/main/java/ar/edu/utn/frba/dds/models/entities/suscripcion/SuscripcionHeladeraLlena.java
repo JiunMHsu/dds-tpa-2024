@@ -1,9 +1,11 @@
 package ar.edu.utn.frba.dds.models.entities.suscripcion;
 
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
+import ar.edu.utn.frba.dds.models.stateless.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.utils.EntidadPersistente;
+import java.util.Optional;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,7 +17,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+/**
+ * Modelo Suscripción por heladera llena.
+ */
 @Getter
 @Builder
 @AllArgsConstructor
@@ -36,9 +42,19 @@ public class SuscripcionHeladeraLlena extends EntidadPersistente {
   @Column(name = "medio_notificacion", nullable = false)
   private MedioDeNotificacion medioDeNotificacion;
 
-  @Column(name = "espacio_restante", nullable = false)
-  private Integer espacioRestante;
+  @Setter
+  @Column(name = "umbral_espacio", nullable = false)
+  private Integer umbralEspacio;
 
+  /**
+   * Crea una suscripción por heladera llena.
+   *
+   * @param colaborador         Colaborador.
+   * @param heladera            Heladera.
+   * @param medioDeNotificacion Medio de notificación.
+   * @param espacioRestante     Espacio restante.
+   * @return Suscripción por heladera llena.
+   */
   public static SuscripcionHeladeraLlena de(Colaborador colaborador,
                                             Heladera heladera,
                                             MedioDeNotificacion medioDeNotificacion,
@@ -48,8 +64,26 @@ public class SuscripcionHeladeraLlena extends EntidadPersistente {
         .colaborador(colaborador)
         .heladera(heladera)
         .medioDeNotificacion(medioDeNotificacion)
-        .espacioRestante(espacioRestante)
+        .umbralEspacio(espacioRestante)
         .build();
   }
 
+  /**
+   * Devuelve el contacto a notificar.
+   *
+   * @return contacto a notificar
+   */
+  public Optional<Contacto> contactoANotificar() {
+    return colaborador.getContacto(this.medioDeNotificacion);
+  }
+
+  /**
+   * Indica si se debe notificar.
+   *
+   * @param espacioRestante Espacio restante.
+   * @return true si se debe notificar, false en caso contrario.
+   */
+  public boolean debeSerNotificado(int espacioRestante) {
+    return espacioRestante <= this.umbralEspacio;
+  }
 }

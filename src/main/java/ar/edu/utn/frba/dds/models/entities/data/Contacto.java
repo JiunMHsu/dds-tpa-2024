@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.models.entities.data;
 
-import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
+import ar.edu.utn.frba.dds.models.stateless.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import javax.persistence.Column;
 import javax.persistence.Entity;

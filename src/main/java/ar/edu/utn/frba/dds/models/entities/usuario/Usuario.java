@@ -13,6 +13,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Modelo Usuario.
+ */
 @Getter
 @Setter
 @Builder
@@ -35,6 +38,15 @@ public class Usuario extends EntidadPersistente {
   @Column(name = "tipo_rol")
   private TipoRol rol;
 
+  /**
+   * Crea un usuario.
+   *
+   * @param nombreUsuario Nombre de usuario.
+   * @param contrasenia   Contraseña.
+   * @param email         Email.
+   * @param rol           Rol.
+   * @return Usuario.
+   */
   public static Usuario con(String nombreUsuario, String contrasenia, String email, TipoRol rol) {
     return Usuario
         .builder()
@@ -44,9 +56,4 @@ public class Usuario extends EntidadPersistente {
         .rol(rol)
         .build();
   }
-
-  public static Usuario conEmail(String email) {
-    return Usuario.con("", "", email, null);
-  }
-
 }

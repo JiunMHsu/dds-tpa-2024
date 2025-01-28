@@ -26,24 +26,35 @@ import lombok.Setter;
 @Table(name = "persona_vulnerable")
 public class PersonaVulnerable extends EntidadPersistente {
 
-  @Column(name = "nombre")
+  @Column(name = "nombre", nullable = false)
   private String nombre;
 
   @Embedded
   private Documento documento;
 
-  @Column(name = "fecha_nacimiento", columnDefinition = "DATE")
+  @Column(name = "fecha_nacimiento", columnDefinition = "DATE", nullable = false)
   private LocalDate fechaNacimiento;
 
-  @Column(name = "fecha_registro")
+  @Column(name = "fecha_registro", columnDefinition = "DATE", nullable = false)
   private LocalDate fechaRegistro;
 
   @Embedded
   private Direccion domicilio;
 
-  @Column(name = "menores_a_cargo")
+  @Column(name = "menores_a_cargo", nullable = false)
   private Integer menoresACargo;
 
+  /**
+   * Crea una persona vulnerable con los datos mínimos.
+   *
+   * @param nombre          Nombre de la persona.
+   * @param documento       Documento de la persona.
+   * @param fechaNacimiento Fecha de nacimiento de la persona.
+   * @param fechaRegistro   Fecha de registro de la persona.
+   * @param domicilio       Domicilio de la persona.
+   * @param menoresACargo   Cantidad de menores a cargo.
+   * @return Persona vulnerable creada.
+   */
   public static PersonaVulnerable con(String nombre,
                                       Documento documento,
                                       LocalDate fechaNacimiento,
@@ -61,8 +72,22 @@ public class PersonaVulnerable extends EntidadPersistente {
         .build();
   }
 
+  /**
+   * Crea una persona vulnerable con los datos mínimos.
+   *
+   * @param nombre        Nombre de la persona.
+   * @param menoresACargo Cantidad
+   * @return Persona vulnerable creada.
+   */
   public static PersonaVulnerable con(String nombre, Integer menoresACargo) {
-    return PersonaVulnerable.con(nombre, null, null, null, null, menoresACargo);
+    return PersonaVulnerable.con(
+        nombre,
+        null,
+        LocalDate.now(),
+        LocalDate.now(),
+        null,
+        menoresACargo
+    );
   }
 
 }

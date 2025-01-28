@@ -1,5 +1,6 @@
-package ar.edu.utn.frba.dds.models.entities.mensajeria;
+package ar.edu.utn.frba.dds.models.stateless.mensajeria;
 
+import ar.edu.utn.frba.dds.models.entities.mensaje.Mensaje;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
