@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.models.stateless;
 
-import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
+import ar.edu.utn.frba.dds.models.entities.usuario.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import java.util.concurrent.ThreadLocalRandom;
 

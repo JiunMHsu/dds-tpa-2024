@@ -5,7 +5,7 @@ import static io.javalin.apibuilder.ApiBuilder.path;
 
 import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.controllers.reporte.ReporteController;
-import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
+import ar.edu.utn.frba.dds.models.entities.usuario.TipoRol;
 import io.javalin.config.RouterConfig;
 
 public class ReporteRouter implements IRouter {

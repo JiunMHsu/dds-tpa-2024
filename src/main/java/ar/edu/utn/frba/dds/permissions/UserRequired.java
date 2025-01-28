@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.permissions;
 
 import ar.edu.utn.frba.dds.exceptions.UnauthenticatedException;
-import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
+import ar.edu.utn.frba.dds.models.entities.usuario.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import io.javalin.http.Context;

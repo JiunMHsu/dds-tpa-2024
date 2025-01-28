@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.models.entities.usuario;
 
-import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import javax.persistence.Column;
 import javax.persistence.Entity;

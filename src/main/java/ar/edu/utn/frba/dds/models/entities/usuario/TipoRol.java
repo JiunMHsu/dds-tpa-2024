@@ -1,7 +1,10 @@
-package ar.edu.utn.frba.dds.models.entities.rol;
+package ar.edu.utn.frba.dds.models.entities.usuario;
 
 import io.javalin.security.RouteRole;
 
+/**
+ * Enumerado Tipo Rol.
+ */
 public enum TipoRol implements RouteRole {
   GUEST,
   ADMIN,

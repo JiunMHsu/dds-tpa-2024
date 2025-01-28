@@ -8,7 +8,7 @@ import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.controllers.incidente.AlertaController;
 import ar.edu.utn.frba.dds.controllers.incidente.FallaTecnicaController;
 import ar.edu.utn.frba.dds.controllers.incidente.IncidenteController;
-import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
+import ar.edu.utn.frba.dds.models.entities.usuario.TipoRol;
 import io.javalin.config.RouterConfig;
 
 public class IncidenteRouter implements IRouter {
