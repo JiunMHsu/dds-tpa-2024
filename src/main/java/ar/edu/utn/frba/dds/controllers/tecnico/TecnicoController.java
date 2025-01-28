@@ -131,7 +131,6 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
           documento,
           cuit,
           contacto,
-          medioDeNotificacion,
           area
       );
 

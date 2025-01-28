@@ -32,7 +32,7 @@ public class AlertaDTO {
         .fecha(DateTimeParser.parseFecha(incidente.getFechaHora().toLocalDate()))
         .hora(DateTimeParser.parseHora(incidente.getFechaHora().toLocalTime()))
         .tipo(incidente.getTipo().getDescription())
-        .resuelto(incidente.getResuelta())
+        .resuelto(incidente.getEsResuelta())
         .build();
   }
 
@@ -43,7 +43,7 @@ public class AlertaDTO {
         .fecha(DateTimeParser.parseFecha(incidente.getFechaHora().toLocalDate()))
         .hora(DateTimeParser.parseHora(incidente.getFechaHora().toLocalTime()))
         .tipo(incidente.getTipo().getDescription())
-        .resuelto(incidente.getResuelta())
+        .resuelto(incidente.getEsResuelta())
         .build();
   }
 }

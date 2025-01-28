@@ -53,7 +53,7 @@ public class ColaboradorDTO {
 
   public static ColaboradorDTO completaHumano(Colaborador colaborador) {
 
-    String formasDeColaborar = colaborador.getFormaDeColaborar()
+    String formasDeColaborar = colaborador.getFormasDeColaborar()
         .stream()
         .map(TipoColaboracion::getDescription)
         .collect(Collectors.joining(", "));
@@ -75,7 +75,7 @@ public class ColaboradorDTO {
 
   public static ColaboradorDTO completaJuridico(Colaborador colaborador) {
 
-    String formasDeColaborar = colaborador.getFormaDeColaborar()
+    String formasDeColaborar = colaborador.getFormasDeColaborar()
         .stream()
         .map(TipoColaboracion::getDescription)
         .collect(Collectors.joining(", "));

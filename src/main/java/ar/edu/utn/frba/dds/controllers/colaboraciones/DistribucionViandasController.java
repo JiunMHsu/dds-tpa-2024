@@ -93,8 +93,9 @@ public class DistribucionViandasController extends ColaboradorRequired implement
       Integer viandas = context.formParamAsClass("cantidad", Integer.class).get();
       String motivo = context.formParamAsClass("motivo", String.class).get();
 
-      DistribucionViandas distribucionViandas = DistribucionViandas.por(
-          colaborador, heladeraOrigen, heladeraDestino, viandas, motivo);
+      // TODO: Construir DistribucionViandas
+      // DistribucionViandas distribucionViandas = DistribucionViandas.por(colaborador, heladeraOrigen, heladeraDestino, viandas, motivo);
+      DistribucionViandas distribucionViandas = new DistribucionViandas();
 
       this.distribucionViandasService.registrar(distribucionViandas);
 

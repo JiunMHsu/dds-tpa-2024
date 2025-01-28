@@ -32,7 +32,6 @@ import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.TecnicoRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
-import ar.edu.utn.frba.dds.models.stateless.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.mapa.MapService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
@@ -352,7 +351,7 @@ public class Initializer implements WithSimplePersistenceUnit {
         new Barrio("Palermo")
     );
     Documento unDocumento = Documento.con(TipoDocumento.DNI, "00019283");
-    Tecnico t1 = Tecnico.con(u1, "Tecnico", "Uno", unDocumento, "20-00019283-1", Contacto.vacio(), MedioDeNotificacion.EMAIL, areaDeCoberura);
+    Tecnico t1 = Tecnico.con(u1, "Tecnico", "Uno", unDocumento, "20-00019283-1", Contacto.vacio(), areaDeCoberura);
 
     beginTransaction();
     new ContactoRepository().guardar(contacto);

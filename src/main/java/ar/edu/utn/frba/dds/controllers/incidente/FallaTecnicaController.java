@@ -56,10 +56,10 @@ public class FallaTecnicaController extends ColaboradorRequired {
     List<Incidente> fallasTecnicas = this.incidenteService.buscarTodasFallasTecnicas();
     List<FallaTecnicaDTO> fallasTecnicasDTO = switch (filtro) {
       case "resueltas" -> fallasTecnicas.stream()
-          .filter(Incidente::getResuelta)
+          .filter(Incidente::getEsResuelta)
           .map(FallaTecnicaDTO::preview).toList();
       case "pendientes" -> fallasTecnicas.stream()
-          .filter(falla -> !falla.getResuelta())
+          .filter(falla -> !falla.getEsResuelta())
           .map(FallaTecnicaDTO::preview).toList();
       default -> fallasTecnicas.stream()
           .map(FallaTecnicaDTO::preview).toList();
@@ -78,7 +78,7 @@ public class FallaTecnicaController extends ColaboradorRequired {
     Heladera heladera = falla.getHeladera();
 
     Usuario usuario = usuarioFromSession(context);
-    boolean puedeResolver = usuario.getRol().isTecnico() && !falla.getResuelta();
+    boolean puedeResolver = usuario.getRol().isTecnico() && !falla.getEsResuelta();
 
     List<VisitaTecnicaDTO> visitasPreviasDTO = this.visitaTecnicaService
         .buscarPorincidente(falla)

@@ -70,7 +70,7 @@ public class VisitaTecnicaController extends TecnicoRequired {
       Incidente incidente = this.incidenteService.buscarIncidentePorId(incidenteId)
           .orElseThrow(ResourceNotFoundException::new);
 
-      if (incidente.getResuelta()) {
+      if (incidente.getEsResuelta()) {
         throw new IncicenteToFixException("El incidente ya está resuelto");
       }
 
@@ -95,7 +95,7 @@ public class VisitaTecnicaController extends TecnicoRequired {
       Incidente incidente = this.incidenteService.buscarIncidentePorId(incidenteId)
           .orElseThrow(ResourceNotFoundException::new);
 
-      if (incidente.getResuelta()) {
+      if (incidente.getEsResuelta()) {
         throw new IncicenteToFixException("El incidente ya está resuelto");
       }
 

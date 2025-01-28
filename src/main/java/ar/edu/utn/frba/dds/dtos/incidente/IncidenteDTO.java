@@ -39,7 +39,7 @@ public class IncidenteDTO {
         .fecha(DateTimeParser.parseFecha(incidente.getFechaHora().toLocalDate()))
         .hora(DateTimeParser.parseHora(incidente.getFechaHora().toLocalTime()))
         .tipo(incidente.getTipo().getDescription())
-        .resuelto(incidente.getResuelta())
+        .resuelto(incidente.getEsResuelta())
         .path(ruta + incidente.getId().toString())
         .build();
   }

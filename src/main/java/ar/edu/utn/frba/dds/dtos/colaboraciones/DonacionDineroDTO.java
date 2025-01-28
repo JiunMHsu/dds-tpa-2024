@@ -27,7 +27,6 @@ public class DonacionDineroDTO extends ColaboracionDTO {
         .path(getPath(TipoColaboracion.DONACION_DINERO))
         .colaborador(donacionDinero.getColaborador().getUsuario().getNombre())
         .monto(donacionDinero.getMonto().toString())
-        .frecuencia(donacionDinero.getFrecuencia().toString()) // TODO - Ver que onda el toString paraColaborador el Period
         .build();
   }
 

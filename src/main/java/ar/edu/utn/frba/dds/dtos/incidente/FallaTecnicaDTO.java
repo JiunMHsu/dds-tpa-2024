@@ -36,7 +36,7 @@ public class FallaTecnicaDTO {
         .colaborador(incidente.getColaborador().getNombre())
         .descripcion(incidente.getDescripcion())
         .foto(incidente.getFoto().getRuta())
-        .resuelto(incidente.getResuelta())
+        .resuelto(incidente.getEsResuelta())
         .build();
   }
 
@@ -47,7 +47,7 @@ public class FallaTecnicaDTO {
         .fecha(DateTimeParser.parseFecha(incidente.getFechaHora().toLocalDate()))
         .hora(DateTimeParser.parseHora(incidente.getFechaHora().toLocalTime()))
         .foto(incidente.getFoto().getRuta())
-        .resuelto(incidente.getResuelta())
+        .resuelto(incidente.getEsResuelta())
         .build();
   }
 
