@@ -5,7 +5,6 @@ import ar.edu.utn.frba.dds.dtos.incidente.IncidenteDTO;
 import ar.edu.utn.frba.dds.dtos.tecnico.VisitaTecnicaDTO;
 import ar.edu.utn.frba.dds.exceptions.IncicenteToFixException;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
-import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.data.Imagen;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
@@ -67,8 +66,7 @@ public class VisitaTecnicaController extends TecnicoRequired {
       String incidenteId = context.queryParamAsClass("incidente", String.class)
           .getOrThrow(ValidationException::new);
 
-      Incidente incidente = this.incidenteService.buscarIncidentePorId(incidenteId)
-          .orElseThrow(ResourceNotFoundException::new);
+      Incidente incidente = this.incidenteService.buscarIncidentePorId(incidenteId);
 
       if (incidente.getEsResuelta()) {
         throw new IncicenteToFixException("El incidente ya está resuelto");
@@ -92,8 +90,7 @@ public class VisitaTecnicaController extends TecnicoRequired {
       String incidenteId = context.queryParamAsClass("incidente", String.class)
           .getOrThrow(ValidationException::new);
 
-      Incidente incidente = this.incidenteService.buscarIncidentePorId(incidenteId)
-          .orElseThrow(ResourceNotFoundException::new);
+      Incidente incidente = this.incidenteService.buscarIncidentePorId(incidenteId);
 
       if (incidente.getEsResuelta()) {
         throw new IncicenteToFixException("El incidente ya está resuelto");

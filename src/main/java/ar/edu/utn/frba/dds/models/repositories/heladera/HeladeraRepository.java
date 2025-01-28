@@ -2,13 +2,14 @@ package ar.edu.utn.frba.dds.models.repositories.heladera;
 
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
+import ar.edu.utn.frba.dds.utils.ICrudRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import javax.persistence.NoResultException;
 
-public class HeladeraRepository implements IHeladeraRepository, WithSimplePersistenceUnit {
+public class HeladeraRepository implements ICrudRepository<Heladera>, WithSimplePersistenceUnit {
 
   @Override
   public void guardar(Heladera heladera) {
@@ -47,7 +48,6 @@ public class HeladeraRepository implements IHeladeraRepository, WithSimplePersis
         .getResultList();
   }
 
-  @Override
   public Optional<Heladera> buscarPorNombre(String nombre) {
     try {
       return Optional.of(entityManager()
@@ -60,7 +60,6 @@ public class HeladeraRepository implements IHeladeraRepository, WithSimplePersis
     }
   }
 
-  @Override
   public List<Heladera> buscarPorBarrio(Barrio barrio) {
     return entityManager()
         .createQuery("from Heladera h where h.alta = :alta and h.direccion.barrio = :barrio", Heladera.class)

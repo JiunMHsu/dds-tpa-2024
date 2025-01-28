@@ -50,9 +50,7 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
 
     String heladeraId = context.queryParamAsClass("heladera", String.class).get();
 
-    Heladera heladera = this.heladeraService
-        .buscarPorId(heladeraId)
-        .orElseThrow(ResourceNotFoundException::new);
+    Heladera heladera = this.heladeraService.buscarPorId(heladeraId);
 
     Map<String, Object> model = new HashMap<>();
 
@@ -66,9 +64,7 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
 
     String heladeraId = context.queryParamAsClass("heladera", String.class).get();
 
-    Heladera heladera = this.heladeraService
-        .buscarPorId(heladeraId)
-        .orElseThrow(ResourceNotFoundException::new);
+    Heladera heladera = this.heladeraService.buscarPorId(heladeraId);
 
     Map<String, Object> model = new HashMap<>();
 
@@ -82,9 +78,7 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
 
     String heladeraId = context.queryParamAsClass("heladera", String.class).get();
 
-    Heladera heladera = this.heladeraService
-        .buscarPorId(heladeraId)
-        .orElseThrow(ResourceNotFoundException::new);
+    Heladera heladera = this.heladeraService.buscarPorId(heladeraId);
 
     Map<String, Object> model = new HashMap<>();
 
@@ -98,9 +92,7 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
 
     String heladeraId = context.queryParamAsClass("heladera", String.class).get();
 
-    Heladera heladera = this.heladeraService
-        .buscarPorId(heladeraId)
-        .orElseThrow(ResourceNotFoundException::new);
+    Heladera heladera = this.heladeraService.buscarPorId(heladeraId);
 
     Map<String, Object> model = new HashMap<>();
 
@@ -122,9 +114,7 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
 
       String heladeraId = context.queryParamAsClass("heladera", String.class).get();
 
-      Heladera heladera = this.heladeraService
-          .buscarPorId(heladeraId)
-          .orElseThrow(ResourceNotFoundException::new);
+      Heladera heladera = this.heladeraService.buscarPorId(heladeraId);
 
       MedioDeNotificacion medioDeNotificacion = MedioDeNotificacion.valueOf(context.formParamAsClass("medio-notificacion", String.class).get());
 
@@ -157,9 +147,7 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
 
       String heladeraId = context.queryParamAsClass("heladera", String.class).get();
 
-      Heladera heladera = this.heladeraService
-          .buscarPorId(heladeraId)
-          .orElseThrow(ResourceNotFoundException::new);
+      Heladera heladera = this.heladeraService.buscarPorId(heladeraId);
 
       Integer viandasRestantes = context.formParamAsClass("cantidad-viandas", Integer.class).get();
 
@@ -196,9 +184,7 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
 
       String heladeraId = context.queryParamAsClass("heladera", String.class).get();
 
-      Heladera heladera = this.heladeraService
-          .buscarPorId(heladeraId)
-          .orElseThrow(ResourceNotFoundException::new);
+      Heladera heladera = this.heladeraService.buscarPorId(heladeraId);
 
       Integer espacioRestante = context.formParamAsClass("viandas-restantes", Integer.class).get();
 

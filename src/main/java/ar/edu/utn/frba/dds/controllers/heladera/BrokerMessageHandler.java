@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.controllers.heladera;
 
-import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.heladera.AperturaHeladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.RetiroDeVianda;
@@ -22,7 +21,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-
+/**
+ * Manejador de mensajes del broker.
+ */
 public class BrokerMessageHandler implements IBrokerMessageHandler {
 
   private final HeladeraService heladeraService;
@@ -33,6 +34,17 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
   private final AperturaHeladeraService aperturaHeladeraService;
   private final RetiroDeViandaService retiroDeViandaService;
 
+  /**
+   * Constructor.
+   *
+   * @param heladeraService                 Servicio de heladera
+   * @param incidenteService                Servicio de incidente
+   * @param fallaHeladeraService            Servicio de falla de heladera
+   * @param solicitudDeAperturaService      Servicio de solicitud de apertura
+   * @param tarjetaPersonaVulnerableService Servicio de tarjeta de persona vulnerable
+   * @param aperturaHeladeraService         Servicio de apertura de heladera
+   * @param retiroDeViandaService           Servicio de retiro de vianda
+   */
   public BrokerMessageHandler(HeladeraService heladeraService,
                               IncidenteService incidenteService,
                               FallaHeladeraService fallaHeladeraService,
@@ -51,16 +63,13 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
 
   @Override
   public void manejarTemperatura(double temperatura, UUID heladeraId) {
-    Heladera heladera = this.heladeraService.buscarPorId(heladeraId.toString())
-        .orElseThrow(ResourceNotFoundException::new);
+    Heladera heladera = this.heladeraService.buscarPorId(heladeraId.toString());
 
     if (!heladera.admiteTemperatura(temperatura)) {
       Incidente incidente = Incidente.fallaTemperatura(heladera, LocalDateTime.now());
       this.incidenteService.registrarIncidente(incidente);
 
-      // TODO: testear, las suscripciones deberían ser filtradas por tópico (usar una mensajería segura para el test)
-      List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
-      suscripcionesAHeladera.forEach(suscripcion -> this.fallaHeladeraService.notificacionFallaHeladera(suscripcion, "falla def temperatura"));
+      this.notificarPorFalla(heladera, incidente);
     } else {
       heladera.setUltimaTemperatura(temperatura);
       this.heladeraService.actualizarHeladera(heladera);
@@ -69,34 +78,35 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
 
   @Override
   public void manejarFraude(UUID heladeraId) {
-    Heladera heladera = this.heladeraService.buscarPorId(heladeraId.toString())
-        .orElseThrow(ResourceNotFoundException::new);
+    Heladera heladera = this.heladeraService.buscarPorId(heladeraId.toString());
 
     Incidente incidente = Incidente.fraude(heladera, LocalDateTime.now());
     this.incidenteService.registrarIncidente(incidente);
 
-    // TODO: testear, las suscripciones deberían ser filtradas por tópico (usar una mensajería segura para el test)
-    List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
-    suscripcionesAHeladera.forEach(suscripcion -> this.fallaHeladeraService.notificacionFallaHeladera(suscripcion, "fraude"));
+    this.notificarPorFalla(heladera, incidente);
   }
 
   @Override
   public void manejarFallaConexion(UUID heladeraId) {
-    Heladera heladera = this.heladeraService.buscarPorId(heladeraId.toString())
-        .orElseThrow(ResourceNotFoundException::new);
+    Heladera heladera = this.heladeraService.buscarPorId(heladeraId.toString());
 
     Incidente incidente = Incidente.fallaConexion(heladera, LocalDateTime.now());
     this.incidenteService.registrarIncidente(incidente);
 
-    // TODO: testear, las suscripciones deberían ser filtradas por tópico (usar una mensajería segura para el test)
-    List<SuscripcionFallaHeladera> suscripcionesAHeladera = this.fallaHeladeraService.obtenerPorHeladera(heladera);
-    suscripcionesAHeladera.forEach(suscripcion -> this.fallaHeladeraService.notificacionFallaHeladera(suscripcion, "falla de conexion"));
+    this.notificarPorFalla(heladera, incidente);
+  }
+
+  private void notificarPorFalla(Heladera heladera, Incidente incidente) {
+    List<SuscripcionFallaHeladera> suscripciones =
+        this.fallaHeladeraService.obtenerPorHeladera(heladera);
+
+    suscripciones.parallelStream()
+        .forEach(s -> fallaHeladeraService.notificacionFallaHeladera(s, incidente));
   }
 
   @Override
   public void manejarSolicitudDeApertura(String codigoTarjeta, UUID heladeraId) {
-    Heladera heladera = this.heladeraService.buscarPorId(heladeraId.toString())
-        .orElseThrow(ResourceNotFoundException::new);
+    Heladera heladera = this.heladeraService.buscarPorId(heladeraId.toString());
 
     Optional<SolicitudDeApertura> solicitudDeApertura = solicitudDeAperturaService.buscarPorTarjetaHeladeraEnLasUltimas(codigoTarjeta, heladera)
         .stream()

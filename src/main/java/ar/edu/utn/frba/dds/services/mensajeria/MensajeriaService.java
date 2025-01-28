@@ -1,10 +1,10 @@
 package ar.edu.utn.frba.dds.services.mensajeria;
 
+import ar.edu.utn.frba.dds.models.entities.mensaje.Mensaje;
+import ar.edu.utn.frba.dds.models.repositories.mensajeria.MensajeRepository;
 import ar.edu.utn.frba.dds.models.stateless.mensajeria.ISender;
 import ar.edu.utn.frba.dds.models.stateless.mensajeria.ISenderFactory;
 import ar.edu.utn.frba.dds.models.stateless.mensajeria.MedioDeNotificacion;
-import ar.edu.utn.frba.dds.models.entities.mensaje.Mensaje;
-import ar.edu.utn.frba.dds.models.repositories.mensajeria.MensajeRepository;
 import java.time.LocalDateTime;
 
 /**

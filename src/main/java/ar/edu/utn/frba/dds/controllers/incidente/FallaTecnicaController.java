@@ -5,7 +5,6 @@ import ar.edu.utn.frba.dds.dtos.heladera.HeladeraDTO;
 import ar.edu.utn.frba.dds.dtos.incidente.FallaTecnicaDTO;
 import ar.edu.utn.frba.dds.dtos.tecnico.VisitaTecnicaDTO;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
-import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Imagen;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
@@ -72,8 +71,7 @@ public class FallaTecnicaController extends ColaboradorRequired {
   public void show(Context context) {
     String fallaId = context.pathParam("id");
 
-    Incidente falla = this.incidenteService.buscarIncidentePorId(fallaId)
-        .orElseThrow(ResourceNotFoundException::new);
+    Incidente falla = this.incidenteService.buscarIncidentePorId(fallaId);
 
     Heladera heladera = falla.getHeladera();
 

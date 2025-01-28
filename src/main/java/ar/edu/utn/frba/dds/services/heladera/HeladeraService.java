@@ -4,6 +4,7 @@ import ar.edu.utn.frba.dds.broker.IClienteMqtt;
 import ar.edu.utn.frba.dds.broker.SuscriptorSensor;
 import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.controllers.heladera.BrokerMessageHandler;
+import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.HacerseCargoHeladera;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
@@ -15,7 +16,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import org.jetbrains.annotations.NotNull;
 
+/**
+ * Servicio de heladera.
+ */
 public class HeladeraService implements WithSimplePersistenceUnit {
 
   private final HeladeraRepository heladeraRepository;
@@ -24,6 +29,13 @@ public class HeladeraService implements WithSimplePersistenceUnit {
   private final IClienteMqtt clienteMqtt;
   private final Set<SuscriptorSensor> suscriptores;
 
+  /**
+   * Constructor.
+   *
+   * @param heladeraRepository             Repositorio de heladera
+   * @param hacerseCargoHeladeraRepository Repositorio de hacerse cargo de heladera
+   * @param clienteMqtt                    Cliente MQTT
+   */
   public HeladeraService(HeladeraRepository heladeraRepository,
                          HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository,
                          IClienteMqtt clienteMqtt) {
@@ -34,15 +46,23 @@ public class HeladeraService implements WithSimplePersistenceUnit {
     this.suscriptores = new HashSet<>();
   }
 
+  /**
+   * Busca todas las heladeras.
+   *
+   * @return Lista de heladeras
+   */
   public List<Heladera> buscarTodas() {
     return this.heladeraRepository.buscarTodos();
   }
 
-  public Optional<Heladera> buscarPorId(String id) {
-    if (id == null || id.isEmpty())
-      throw new IllegalArgumentException("El ID de la heladera no puede ser null o vacío");
-
-    return this.heladeraRepository.buscarPorId(id);
+  /**
+   * Busca una heladera por su ID.
+   *
+   * @param id ID de la heladera
+   * @return Heladera
+   */
+  public Heladera buscarPorId(@NotNull String id) {
+    return this.heladeraRepository.buscarPorId(id).orElseThrow(ResourceNotFoundException::new);
   }
 
   public Optional<Heladera> buscarPorNombre(String nombre) {
@@ -54,16 +74,11 @@ public class HeladeraService implements WithSimplePersistenceUnit {
   }
 
   public void guardarHeladera(Heladera heladera) {
-    // TODO - validaciones??
-    withTransaction(() -> {
-      this.heladeraRepository.guardar(heladera);
-    });
+    withTransaction(() -> this.heladeraRepository.guardar(heladera));
   }
 
   public void actualizarHeladera(Heladera heladeraActualizada) {
-    withTransaction(() -> {
-      this.heladeraRepository.actualizar(heladeraActualizada);
-    });
+    withTransaction(() -> this.heladeraRepository.actualizar(heladeraActualizada));
   }
 
   public void eliminarHeladera(Heladera heladera) {

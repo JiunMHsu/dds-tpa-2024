@@ -4,7 +4,6 @@ import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.UbicacionDTO;
 import ar.edu.utn.frba.dds.dtos.heladera.HeladeraDTO;
 import ar.edu.utn.frba.dds.exceptions.NotColaboratorException;
-import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
@@ -22,13 +21,11 @@ import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.AppProperties;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
-import io.javalin.http.HttpStatus;
 import io.javalin.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class HeladeraController extends ColaboradorRequired implements ICrudViewsHandler {
 
@@ -69,11 +66,7 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
 
   @Override
   public void show(Context context) {
-    String heladeraId = context.pathParam("id");
-
-    Heladera heladera = this.heladeraService
-        .buscarPorId(heladeraId)
-        .orElseThrow(ResourceNotFoundException::new);
+    Heladera heladera = heladeraFromPath(context);
 
     boolean puedeConfigurar;
     try {
@@ -221,19 +214,11 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
   }
 
   @Override
-  public void delete(Context context) { // TODO: ver si es necesario
-    Optional<Heladera> posibleHeladeraAEliminar = this.heladeraService.buscarPorId(context.formParam("id"));
-    // TODO - chequeo si no existe
-
-    this.heladeraService.eliminarHeladera(posibleHeladeraAEliminar.get());
-    context.status(HttpStatus.OK);
-    // mostrar algo por exitoso
+  public void delete(Context context) {
   }
 
-  Heladera heladeraFromPath(Context context) {
+  private Heladera heladeraFromPath(Context context) {
     String heladeraId = context.pathParam("id");
-    return this.heladeraService
-        .buscarPorId(heladeraId)
-        .orElseThrow(ResourceNotFoundException::new);
+    return this.heladeraService.buscarPorId(heladeraId);
   }
 }

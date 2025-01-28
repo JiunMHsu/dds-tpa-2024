@@ -1,7 +1,6 @@
 package ar.edu.utn.frba.dds.controllers.incidente;
 
 import ar.edu.utn.frba.dds.dtos.incidente.IncidenteDTO;
-import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.models.entities.incidente.TipoIncidente;
 import ar.edu.utn.frba.dds.permissions.UserRequired;
@@ -38,8 +37,7 @@ public class IncidenteController extends UserRequired {
   public void show(Context context) {
     String incidenteId = context.pathParam("id");
 
-    Incidente incidente = incidenteService
-        .buscarIncidentePorId(incidenteId).orElseThrow(ResourceNotFoundException::new);
+    Incidente incidente = incidenteService.buscarIncidentePorId(incidenteId);
 
     if (Objects.requireNonNull(incidente.getTipo()).equals(TipoIncidente.FALLA_TECNICA)) {
       context.redirect("/fallas-tecnicas/" + incidenteId);
