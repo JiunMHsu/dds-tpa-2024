@@ -169,7 +169,7 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
   }
 
   /**
-   * Supone que desde la 'fechaInicio' hasta la fecha nueva llamada
+   * Supone que desde la 'fechaInicio' hasta la fecha de llamada
    * siempre estuvo activa.
    */
   private int mesesEntre(LocalDateTime fechaInicio, LocalDateTime fechaFinal) {

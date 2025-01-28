@@ -10,8 +10,6 @@ import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.data.Documento;
 import ar.edu.utn.frba.dds.models.entities.data.TipoDocumento;
-import ar.edu.utn.frba.dds.models.stateless.mensajeria.ISender;
-import ar.edu.utn.frba.dds.models.stateless.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.models.entities.mensaje.Mensaje;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
@@ -24,6 +22,8 @@ import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository
 import ar.edu.utn.frba.dds.models.repositories.mensajeria.MensajeRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import ar.edu.utn.frba.dds.models.stateless.GeneradorDeCredenciales;
+import ar.edu.utn.frba.dds.models.stateless.mensajeria.ISender;
+import ar.edu.utn.frba.dds.models.stateless.mensajeria.MedioDeNotificacion;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import jakarta.mail.MessagingException;
 import java.io.BufferedReader;
@@ -203,10 +203,10 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
   private Mensaje mensajeCredencial(Colaborador colaborador) {
     Usuario usuario = colaborador.getUsuario();
 
-    String asunto = "Credencial nueva usuario";
+    String asunto = "Credencial de usuario";
     String cuerpo = "Esta es la credencial:"
-        + " - Nombre nueva usuario provicional: " + usuario.getNombre()
-        + " - Contrasenia nueva usuario provicional: " + usuario.getContrasenia();
+        + " - Nombre de usuario provicional: " + usuario.getNombre()
+        + " - Contrasenia de usuario provicional: " + usuario.getContrasenia();
 
     Mensaje mensaje = Mensaje.con(colaborador.getContacto(MedioDeNotificacion.EMAIL).get(), asunto, cuerpo);
     return mensaje;
