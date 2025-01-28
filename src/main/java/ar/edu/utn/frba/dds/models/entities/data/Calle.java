@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Representa una calle.
+ */
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor

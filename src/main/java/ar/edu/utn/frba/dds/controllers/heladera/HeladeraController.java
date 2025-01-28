@@ -132,7 +132,7 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
       Double latitud = context.formParamAsClass("latitud", Double.class).get();
       Double longitud = context.formParamAsClass("longitud", Double.class).get();
 
-      Direccion direccion = Direccion.with(
+      Direccion direccion = Direccion.con(
           new Barrio(context.formParamAsClass("barrio", String.class).get()),
           new Calle(context.formParamAsClass("calle", String.class).get()),
           context.formParamAsClass("altura", Integer.class).get(),

@@ -98,12 +98,12 @@ public class PersonaVulnerableController extends ColaboradorRequired implements 
   @Override
   public void update(Context context) {
     try {
-      Documento documento = Documento.with(
+      Documento documento = Documento.con(
           TipoDocumento.valueOf(context.formParamAsClass("tipo_documento", String.class).get()),
           context.formParamAsClass("nro_documento", String.class).get()
       );
 
-      Direccion direccion = Direccion.with(
+      Direccion direccion = Direccion.con(
           new Barrio(context.formParamAsClass("barrio", String.class).get()),
           new Calle(context.formParamAsClass("calle", String.class).get()),
           context.formParamAsClass("altura", Integer.class).get()

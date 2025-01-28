@@ -77,7 +77,7 @@ public class DonacionViandaController extends ColaboradorRequired implements ICr
     try {
       Colaborador colaborador = colaboradorFromSession(context);
 
-      Comida comida = Comida.with(
+      Comida comida = Comida.con(
           context.formParamAsClass("comida", String.class).get(),
           context.formParamAsClass("calorias", Integer.class).get());
 

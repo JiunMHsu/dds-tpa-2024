@@ -92,7 +92,7 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
         tecnico.getNombre(),
         heladera.getNombre(),
         falla,
-        heladera.getDireccion().obtenerDireccion()
+        heladera.getDireccion().toString()
     );
 
     try {

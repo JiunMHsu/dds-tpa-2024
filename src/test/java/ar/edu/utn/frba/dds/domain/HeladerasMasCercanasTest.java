@@ -4,13 +4,13 @@ public class HeladerasMasCercanasTest {
 //
 //    HeladeraRepository heladeraRepository = new HeladeraRepository();
 //
-//    Heladera heladeraFallada = Heladera.paraColaborador("fallada", Direccion.with(new Barrio(""), new Calle(""), 0, new Ubicacion(-34.603722, -58.381592)), 50);
-//    Heladera heladera1 = Heladera.paraColaborador("1", Direccion.with(new Barrio(""), new Calle(""), 0, new Ubicacion(-34.615803, -58.433298)), 50);
-//    Heladera heladera2 = Heladera.paraColaborador("2", Direccion.with(new Barrio(""), new Calle(""), 0, new Ubicacion(-31.420083, -64.188776)), 50);
-//    Heladera heladera3 = Heladera.paraColaborador("3", Direccion.with(new Barrio(""), new Calle(""), 0, new Ubicacion(-24.782932, -65.423197)), 50);
-//    Heladera heladera4 = Heladera.paraColaborador("4", Direccion.with(new Barrio(""), new Calle(""), 0, new Ubicacion(-34.615800, -58.433290)), 50);
-//    Heladera heladera5 = Heladera.paraColaborador("5", Direccion.with(new Barrio(""), new Calle(""), 0, new Ubicacion(-54.801912, -68.302951)), 50);
-//    Heladera heladera6 = Heladera.paraColaborador("6", Direccion.with(new Barrio(""), new Calle(""), 0, new Ubicacion(-34.615810, -58.433280)), 50);
+//    Heladera heladeraFallada = Heladera.paraColaborador("fallada", Direccion.con(new Barrio(""), new Calle(""), 0, new Ubicacion(-34.603722, -58.381592)), 50);
+//    Heladera heladera1 = Heladera.paraColaborador("1", Direccion.con(new Barrio(""), new Calle(""), 0, new Ubicacion(-34.615803, -58.433298)), 50);
+//    Heladera heladera2 = Heladera.paraColaborador("2", Direccion.con(new Barrio(""), new Calle(""), 0, new Ubicacion(-31.420083, -64.188776)), 50);
+//    Heladera heladera3 = Heladera.paraColaborador("3", Direccion.con(new Barrio(""), new Calle(""), 0, new Ubicacion(-24.782932, -65.423197)), 50);
+//    Heladera heladera4 = Heladera.paraColaborador("4", Direccion.con(new Barrio(""), new Calle(""), 0, new Ubicacion(-34.615800, -58.433290)), 50);
+//    Heladera heladera5 = Heladera.paraColaborador("5", Direccion.con(new Barrio(""), new Calle(""), 0, new Ubicacion(-54.801912, -68.302951)), 50);
+//    Heladera heladera6 = Heladera.paraColaborador("6", Direccion.con(new Barrio(""), new Calle(""), 0, new Ubicacion(-34.615810, -58.433280)), 50);
 //
 //    @Test
 //    @DisplayName("El tecnico mas cercano a una heladera es el que tenga menor distancia entre las dos ubicaciones restando el radio nueva su area nueva cobertura")

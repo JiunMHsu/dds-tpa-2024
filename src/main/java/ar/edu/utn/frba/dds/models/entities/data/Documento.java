@@ -10,6 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Representa un documento.
+ */
 @Getter
 @Setter
 @Builder
@@ -25,7 +28,14 @@ public class Documento {
   @Column(name = "numero")
   private String numero;
 
-  public static Documento with(TipoDocumento tipoDocumento, String nroDocumento) {
+  /**
+   * Constructor de un documento.
+   *
+   * @param tipoDocumento Tipo de documento.
+   * @param nroDocumento  Número de documento.
+   * @return Documento creado.
+   */
+  public static Documento con(TipoDocumento tipoDocumento, String nroDocumento) {
 
     return Documento
         .builder()

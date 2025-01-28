@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Representa una comida.
+ */
 @Getter
 @Builder
 @AllArgsConstructor
@@ -20,8 +23,15 @@ public class Comida {
   @Column(name = "comida_calorias", nullable = false)
   private Integer calorias;
 
-  public static Comida with(String nombre,
-                            Integer calorias) {
+  /**
+   * Constructor de una comida.
+   *
+   * @param nombre   Nombre de la comida.
+   * @param calorias Calorías de la comida.
+   * @return Comida creada.
+   */
+  public static Comida con(String nombre,
+                           Integer calorias) {
     return Comida
         .builder()
         .nombre(nombre)

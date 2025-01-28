@@ -96,7 +96,7 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
           context.formParamAsClass("email", String.class).get(),
           TipoRol.COLABORADOR
       );
-      Direccion direccion = Direccion.with(
+      Direccion direccion = Direccion.con(
           new Barrio(context.formParamAsClass("barrio", String.class).get()),
           new Calle(context.formParamAsClass("calle", String.class).get()),
           Integer.valueOf(context.formParamAsClass("altura", String.class).get())
@@ -158,7 +158,7 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
           TipoRol.COLABORADOR
       );
 
-      Direccion direccion = Direccion.with(
+      Direccion direccion = Direccion.con(
           new Barrio(context.formParamAsClass("barrio", String.class).get()),
           new Calle(context.formParamAsClass("calle", String.class).get()),
           Integer.valueOf(context.formParamAsClass("altura", String.class).get())

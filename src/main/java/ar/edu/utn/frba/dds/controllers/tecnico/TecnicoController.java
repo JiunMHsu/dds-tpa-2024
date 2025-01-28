@@ -92,7 +92,7 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
       String nombre = context.formParamAsClass("nombre", String.class).get();
       String apellido = context.formParamAsClass("apellido", String.class).get();
 
-      Documento documento = Documento.with(
+      Documento documento = Documento.con(
           TipoDocumento.valueOf(context.formParamAsClass("tipo_documento", String.class).get()),
           context.formParamAsClass("nro_documento", String.class).get()
       );
@@ -118,7 +118,7 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
       Integer radio = context.queryParamAsClass("radio", Integer.class)
           .check(rad -> rad >= 0.0, "el radio debe ser positivo").get();
 
-      Area area = Area.with(
+      Area area = Area.con(
           ubicacion,
           radio,
           new Barrio(context.formParamAsClass("barrio", String.class).get())

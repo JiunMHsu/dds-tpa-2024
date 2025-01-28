@@ -346,12 +346,12 @@ public class Initializer implements WithSimplePersistenceUnit {
     Contacto contacto = Contacto.conTelegram("+5491132420699");
 
     Usuario u1 = Usuario.con("Tecnico1", "1111", "tecnico1@gmail.com", TipoRol.TECNICO);
-    Area areaDeCoberura = Area.with(
+    Area areaDeCoberura = Area.con(
         new Ubicacion(-34.6037, -58.3816),
         100,
         new Barrio("Palermo")
     );
-    Documento unDocumento = Documento.with(TipoDocumento.DNI, "00019283");
+    Documento unDocumento = Documento.con(TipoDocumento.DNI, "00019283");
     Tecnico t1 = Tecnico.con(u1, "Tecnico", "Uno", unDocumento, "20-00019283-1", Contacto.vacio(), MedioDeNotificacion.EMAIL, areaDeCoberura);
 
     beginTransaction();
