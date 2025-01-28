@@ -51,7 +51,7 @@ public class HacerseCargoHeladeraController extends ColaboradorRequired implemen
     Optional<HacerseCargoHeladera> hacerseCargoHeladera = hacerseCargoHeladeraService.buscarPorId(hacerseCargoHeladeraId);
 
     if (hacerseCargoHeladera.isEmpty())
-      throw new ResourceNotFoundException("No se encontró un cargo por heladera paraColaborador id " + hacerseCargoHeladeraId);
+      throw new ResourceNotFoundException("No se encontró un encargo de heladera para el colaborador con id " + hacerseCargoHeladeraId);
 
     Map<String, Object> model = new HashMap<>();
 
@@ -65,7 +65,7 @@ public class HacerseCargoHeladeraController extends ColaboradorRequired implemen
   public void create(Context context) {
     Colaborador colaborador = colaboradorFromSession(context);
 
-    System.out.println(colaborador.getFormaDeColaborar());
+    System.out.println(colaborador.getFormasDeColaborar());
 
     if (!colaborador.puedeColaborar(TipoColaboracion.HACERSE_CARGO_HELADERA))
       throw new UnauthorizedException("No tienes permiso");

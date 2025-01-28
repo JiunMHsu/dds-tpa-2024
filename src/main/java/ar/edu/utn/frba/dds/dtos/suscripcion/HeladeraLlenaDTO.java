@@ -25,7 +25,7 @@ public class HeladeraLlenaDTO {
         .colaborador(suscripcionHeladeraLlena.getColaborador().getUsuario().getNombre())
         .heladera(suscripcionHeladeraLlena.getHeladera().getNombre())
         .medioDeNotificacion(suscripcionHeladeraLlena.getMedioDeNotificacion().toString())
-        .espacioRestante(suscripcionHeladeraLlena.getEspacioRestante().toString())
+        .espacioRestante(suscripcionHeladeraLlena.getUmbralEspacio().toString())
         .build();
   }
 }

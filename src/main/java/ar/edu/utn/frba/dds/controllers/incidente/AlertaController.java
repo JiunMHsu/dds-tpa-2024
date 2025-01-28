@@ -54,7 +54,7 @@ public class AlertaController extends UserRequired {
 
     Heladera heladera = alerta.getHeladera();
 
-    boolean puedeResolver = rolFromSession(context).isTecnico() && !alerta.getResuelta();
+    boolean puedeResolver = rolFromSession(context).isTecnico() && !alerta.getEsResuelta();
 
     Map<String, Object> model = new HashMap<>();
 

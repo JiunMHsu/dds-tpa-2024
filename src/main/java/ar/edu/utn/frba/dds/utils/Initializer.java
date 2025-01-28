@@ -21,9 +21,8 @@ import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
-import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
-import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
+import ar.edu.utn.frba.dds.models.entities.usuario.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.VarianteDePuntosRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRepository;
@@ -251,7 +250,7 @@ public class Initializer implements WithSimplePersistenceUnit {
         h5,
         LocalDateTime.of(2024, 8, 12, 14, 5),
         colaboradorRepository.buscarPorEmail("adomingueznimo@frba.utn.edu.ar").orElseThrow(),
-        "No funca el lector por tarjeta.",
+        "No funca el lector de tarjeta.",
         new Imagen("image-test.png"));
 
     Incidente i9 = Incidente.fallaTecnica(
@@ -346,13 +345,13 @@ public class Initializer implements WithSimplePersistenceUnit {
     Contacto contacto = Contacto.conTelegram("+5491132420699");
 
     Usuario u1 = Usuario.con("Tecnico1", "1111", "tecnico1@gmail.com", TipoRol.TECNICO);
-    Area areaDeCoberura = Area.with(
+    Area areaDeCoberura = Area.con(
         new Ubicacion(-34.6037, -58.3816),
         100,
         new Barrio("Palermo")
     );
-    Documento unDocumento = Documento.with(TipoDocumento.DNI, "00019283");
-    Tecnico t1 = Tecnico.con(u1, "Tecnico", "Uno", unDocumento, "20-00019283-1", Contacto.vacio(), MedioDeNotificacion.EMAIL, areaDeCoberura);
+    Documento unDocumento = Documento.con(TipoDocumento.DNI, "00019283");
+    Tecnico t1 = Tecnico.con(u1, "Tecnico", "Uno", unDocumento, "20-00019283-1", contacto, areaDeCoberura);
 
     beginTransaction();
     new ContactoRepository().guardar(contacto);

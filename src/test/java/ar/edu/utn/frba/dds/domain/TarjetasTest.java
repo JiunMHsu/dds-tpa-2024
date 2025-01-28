@@ -4,7 +4,7 @@ import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.personaVulnerable.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaPersonaVulnerable;
-import ar.edu.utn.frba.dds.models.stateless.ValidadorDeCodigosTarjeta;
+import ar.edu.utn.frba.dds.utils.RandomString;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -45,22 +45,22 @@ public class TarjetasTest {
     tarjetasExistentes.add(tarjeta2);
     tarjetasExistentes.add(tarjeta3);
 
-    String nuevoCodigo = ValidadorDeCodigosTarjeta.generar();
+    String nuevoCodigo = new RandomString(11).nextString();
 
     Assertions.assertFalse(tarjetasExistentes.stream().anyMatch(tarjeta -> tarjeta.getCodigo().equals(nuevoCodigo)),
-        "El código generado ya existe en la lista por tarjetas existentes.");
+        "El código generado ya existe en la lista de tarjetas existentes.");
 
   }
 
   @Test
-  @DisplayName("Autorizado por uso por Personas Vulnerables")
+  @DisplayName("Autorizado nueva uso nueva Personas Vulnerables")
   public void personaVulnerablePuedeUsar() {
 
     Assertions.assertEquals(6, tarjeta1.usosPorDia(),
-        "La tarjeta1 pertenece a una persona paraColaborador 1 menor a cargo, por lo que tiene 6 usos diarios.");
+        "La tarjeta1 pertenece a una persona con 1 menor a cargo, por lo que tiene 6 usos diarios.");
 
     Assertions.assertEquals(8, tarjeta2.usosPorDia(),
-        "La tarjeta2 pertenece a una persona paraColaborador 2 menor a cargo, por lo que tiene 8 usos diarios.");
+        "La tarjeta2 pertenece a una persona con 2 menor a cargo, por lo que tiene 8 usos diarios.");
 
     Assertions.assertEquals(4, tarjeta3.usosPorDia(),
         "La tarjeta3 pertenece a una persona sin menor a cargo, por lo que tiene 4 usos diarios.");
@@ -74,10 +74,10 @@ public class TarjetasTest {
   }
 
   @Test
-  @DisplayName("Autorizado por uso por Colaboradores")
+  @DisplayName("Autorizado de uso para Colaboradores")
   public void colaboradoresPuedeUsar() {
     // TODO
-    // Entiendo que esto es por medio por broker
+    // Entiendo que esto es por medio de broker
     // Igualmente agrego una funcion
   }
 }

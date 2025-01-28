@@ -27,6 +27,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Servicio de canje de puntos.
+ */
 public class CanjeDePuntosService implements WithSimplePersistenceUnit {
   private final CanjeDePuntosRepository canjeDePuntosRepository;
   private final DonacionDineroRepository donacionDineroRepository;
@@ -37,6 +40,18 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
   private final ColaboradorRepository colaboradorRepository;
   private final VarianteDePuntosRepository varianteDePuntosRepository;
 
+  /**
+   * Constructor.
+   *
+   * @param canjeDePuntosRepository        el repositorio de canjes de puntos
+   * @param donacionDineroRepository       el repositorio de donaciones de dinero
+   * @param distribucionViandasRepository  el repositorio de distribuciones de viandas
+   * @param donacionViandaRepository       el repositorio de donaciones de viandas
+   * @param repartoDeTarjetasRepository    el repositorio de repartos de tarjetas
+   * @param hacerseCargoHeladeraRepository el repositorio de heladeras activas
+   * @param colaboradorRepository          el repositorio de colaboradores
+   * @param varianteDePuntosRepository     el repositorio de variantes de puntos
+   */
   public CanjeDePuntosService(CanjeDePuntosRepository canjeDePuntosRepository,
                               DonacionDineroRepository donacionDineroRepository,
                               DistribucionViandasRepository distribucionViandasRepository,
@@ -55,6 +70,13 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
     this.varianteDePuntosRepository = varianteDePuntosRepository;
   }
 
+  /**
+   * Obtiene los puntos de un colaborador.
+   * Si el colaborador no tiene puntos o están vencidos, se recalculan.
+   *
+   * @param colaborador el colaborador
+   * @return los puntos del colaborador
+   */
   public double getPuntosDeColaborador(Colaborador colaborador) {
     try {
       double puntos = colaborador.puntos();
@@ -65,9 +87,12 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
           .orElseThrow(() -> new IllegalStateException("No hay variante de puntos configurada"));
 
       double puntos = this.calcularPuntos(colaborador, variante);
-      colaborador.setPuntos(new Puntos(puntos, true, LocalDate.now().plusMonths(1).withDayOfMonth(1)));
+      colaborador.setPuntos(new Puntos(
+          puntos,
+          true,
+          LocalDate.now().plusMonths(1).withDayOfMonth(1)
+      ));
       withTransaction(() -> this.colaboradorRepository.actualizar(colaborador));
-      System.out.println("se recalcularon los puntos de " + colaborador.getNombre() + " a " + puntos);
       return puntos;
     }
   }
@@ -84,52 +109,56 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
       puntosRestantes = ultimoCanje.get().getPuntosRestantes();
     }
 
-    return this.pesosDonados(colaborador, fechaUltimoCanje) * variante.getDonacionDinero()
-        + this.viandasDistribuidas(colaborador, fechaUltimoCanje) * variante.getDistribucionViandas()
-        + this.viandasDonadas(colaborador, fechaUltimoCanje) * variante.getDonacionVianda()
-        + this.tarjetasRepartidas(colaborador, fechaUltimoCanje) * variante.getRepartoTarjeta()
-        + this.heladerasPorMesesActivas(colaborador, fechaUltimoCanje) * variante.getHeladerasActivas()
+    return pesosDonados(colaborador, fechaUltimoCanje) * variante.getDonacionDinero()
+        + viandasDistribuidas(colaborador, fechaUltimoCanje) * variante.getDistribucionViandas()
+        + viandasDonadas(colaborador, fechaUltimoCanje) * variante.getDonacionVianda()
+        + tarjetasRepartidas(colaborador, fechaUltimoCanje) * variante.getRepartoTarjeta()
+        + heladerasPorMesesActivas(colaborador, fechaUltimoCanje) * variante.getHeladerasActivas()
         + puntosRestantes;
   }
 
   private double pesosDonados(Colaborador colaborador, LocalDateTime fechaUltimoCanje) {
     List<DonacionDinero> colaboraciones = this.donacionDineroRepository
-        .buscarPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
+        .buscarPorColaboradorDesde(colaborador, fechaUltimoCanje);
 
     return colaboraciones.stream().mapToDouble(DonacionDinero::getMonto).sum();
   }
 
   private double viandasDistribuidas(Colaborador colaborador, LocalDateTime fechaUltimoCanje) {
     List<DistribucionViandas> colaboraciones = this.distribucionViandasRepository
-        .buscarPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
+        .buscarPorColaboradorDesde(colaborador, fechaUltimoCanje);
 
     return colaboraciones.stream().mapToDouble(DistribucionViandas::getViandas).sum();
   }
 
   private double viandasDonadas(Colaborador colaborador, LocalDateTime fechaUltimoCanje) {
     List<DonacionVianda> colaboraciones = this.donacionViandaRepository
-        .buscarPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
+        .buscarPorColaboradorDesde(colaborador, fechaUltimoCanje);
 
     return colaboraciones.size();
   }
 
   private double tarjetasRepartidas(Colaborador colaborador, LocalDateTime fechaUltimoCanje) {
     List<RepartoDeTarjetas> colaboraciones = this.repartoDeTarjetasRepository
-        .buscarPorColaboradorAPartirDe(colaborador, fechaUltimoCanje);
+        .buscarPorColaboradorDesde(colaborador, fechaUltimoCanje);
 
     return colaboraciones.size();
   }
 
   private double heladerasPorMesesActivas(Colaborador colaborador, LocalDateTime fechaUltimoCanje) {
-    List<Heladera> heladerasActivasACargo = this.hacerseCargoHeladeraRepository
+    List<Heladera> heladerasActivasEncargadas = this.hacerseCargoHeladeraRepository
         .buscarPorColaborador(colaborador).stream()
-        .map(HacerseCargoHeladera::getHeladeraACargo)
+        .map(HacerseCargoHeladera::getHeladera)
         .filter(Heladera::estaActiva).toList();
 
-    int heladerasActivas = heladerasActivasACargo.size();
-    int mesesActivas = heladerasActivasACargo.stream()
+    int heladerasActivas = heladerasActivasEncargadas.size();
+    int mesesActivas = heladerasActivasEncargadas.stream()
         .mapToInt(heladera -> {
-          LocalDateTime fechaPartida = fechaUltimoCanje == null || fechaUltimoCanje.isBefore(heladera.getInicioFuncionamiento())
+          boolean esPrimerCanje = fechaUltimoCanje == null;
+          boolean esMasRecienteQueUltimoCanje =
+              !esPrimerCanje && fechaUltimoCanje.isBefore(heladera.getInicioFuncionamiento());
+
+          LocalDateTime fechaPartida = esPrimerCanje || esMasRecienteQueUltimoCanje
               ? heladera.getInicioFuncionamiento()
               : fechaUltimoCanje;
 
@@ -140,13 +169,19 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
   }
 
   /**
-   * Supone que desde la 'fechaInicio' hasta la fecha por llamada
+   * Supone que desde la 'fechaInicio' hasta la fecha de llamada
    * siempre estuvo activa.
    */
   private int mesesEntre(LocalDateTime fechaInicio, LocalDateTime fechaFinal) {
     return (int) ChronoUnit.MONTHS.between(YearMonth.from(fechaInicio), YearMonth.from(fechaFinal));
   }
 
+  /**
+   * Registra un canje de puntos para un colaborador.
+   * Invalida los puntos del colaborador y guarda el canje.
+   *
+   * @param canjeDePuntos el canje a registrar
+   */
   public void registrar(CanjeDePuntos canjeDePuntos) {
     canjeDePuntos.getColaborador().invalidarPuntos();
 

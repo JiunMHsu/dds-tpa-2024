@@ -9,11 +9,11 @@ import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.data.Documento;
 import ar.edu.utn.frba.dds.models.entities.data.TipoDocumento;
 import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
-import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
-import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
+import ar.edu.utn.frba.dds.models.entities.usuario.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.stateless.ValidadorDeContrasenias;
+import ar.edu.utn.frba.dds.models.stateless.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.permissions.TecnicoRequired;
 import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
@@ -79,7 +79,7 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
       ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
 
       if (!validador.esValida(contrasenia)) {
-        throw new ar.edu.utn.frba.dds.exceptions.ValidationException("La contraseña no cumple con los requisitos de seguridad.");
+        throw new ar.edu.utn.frba.dds.exceptions.ValidationException("La contraseña no cumple por los requisitos de seguridad.");
       }
 
       Usuario usuario = Usuario.con(
@@ -92,7 +92,7 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
       String nombre = context.formParamAsClass("nombre", String.class).get();
       String apellido = context.formParamAsClass("apellido", String.class).get();
 
-      Documento documento = Documento.with(
+      Documento documento = Documento.con(
           TipoDocumento.valueOf(context.formParamAsClass("tipo_documento", String.class).get()),
           context.formParamAsClass("nro_documento", String.class).get()
       );
@@ -118,7 +118,7 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
       Integer radio = context.queryParamAsClass("radio", Integer.class)
           .check(rad -> rad >= 0.0, "el radio debe ser positivo").get();
 
-      Area area = Area.with(
+      Area area = Area.con(
           ubicacion,
           radio,
           new Barrio(context.formParamAsClass("barrio", String.class).get())
@@ -131,7 +131,6 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
           documento,
           cuit,
           contacto,
-          medioDeNotificacion,
           area
       );
 

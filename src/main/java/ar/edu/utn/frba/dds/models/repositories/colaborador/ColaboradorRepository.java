@@ -8,6 +8,9 @@ import java.util.Optional;
 import java.util.UUID;
 import javax.persistence.NoResultException;
 
+/**
+ * Repository de colaboradores.
+ */
 public class ColaboradorRepository implements IColaboradorRepository, WithSimplePersistenceUnit {
 
   @Override
@@ -39,6 +42,20 @@ public class ColaboradorRepository implements IColaboradorRepository, WithSimple
     }
   }
 
+  @Override
+  public List<Colaborador> buscarTodos() {
+    return entityManager()
+        .createQuery("from Colaborador c where c.alta = :alta", Colaborador.class)
+        .setParameter("alta", true)
+        .getResultList();
+  }
+
+  /**
+   * Busca un colaborador por su email.
+   *
+   * @param email email del colaborador
+   * @return el colaborador si existe
+   */
   public Optional<Colaborador> buscarPorEmail(String email) {
     try {
       return Optional.of(entityManager()
@@ -51,6 +68,12 @@ public class ColaboradorRepository implements IColaboradorRepository, WithSimple
     }
   }
 
+  /**
+   * Busca un colaborador por su usuario.
+   *
+   * @param usuario usuario del colaborador
+   * @return el colaborador si existe
+   */
   public Optional<Colaborador> buscarPorUsuario(Usuario usuario) {
     try {
       return Optional.of(entityManager()
@@ -63,10 +86,5 @@ public class ColaboradorRepository implements IColaboradorRepository, WithSimple
     }
   }
 
-  public List<Colaborador> buscarTodos() {
-    return entityManager()
-        .createQuery("from Colaborador c where c.alta = :alta", Colaborador.class)
-        .setParameter("alta", true)
-        .getResultList();
-  }
+
 }

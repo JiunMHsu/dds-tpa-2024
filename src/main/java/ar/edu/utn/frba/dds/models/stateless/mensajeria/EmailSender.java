@@ -1,5 +1,6 @@
-package ar.edu.utn.frba.dds.models.entities.mensajeria;
+package ar.edu.utn.frba.dds.models.stateless.mensajeria;
 
+import ar.edu.utn.frba.dds.models.entities.mensaje.Mensaje;
 import ar.edu.utn.frba.dds.utils.AppProperties;
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;
@@ -13,6 +14,9 @@ import java.util.Properties;
 import lombok.Builder;
 import lombok.Getter;
 
+/**
+ * Email sender class.
+ */
 @Getter
 @Builder
 public class EmailSender implements ISender {
@@ -22,6 +26,14 @@ public class EmailSender implements ISender {
   private final String usuario;
   private final String contrasenia;
 
+  /**
+   * Constructor.
+   *
+   * @param host          Email host.
+   * @param port          Email port.
+   * @param nombreUsuario Email user.
+   * @param contrasenia   Email password.
+   */
   public EmailSender(String host, String port, String nombreUsuario, String contrasenia) {
     this.host = host;
     this.port = port;
@@ -29,6 +41,9 @@ public class EmailSender implements ISender {
     this.contrasenia = contrasenia;
   }
 
+  /**
+   * Default constructor.
+   */
   public EmailSender() {
     this.host = AppProperties.getInstance().propertyFromName("EMAIL_HOST");
     this.port = AppProperties.getInstance().propertyFromName("EMAIL_PORT");
@@ -39,8 +54,9 @@ public class EmailSender implements ISender {
   @Override
   public void enviarMensaje(Mensaje mensaje) throws IllegalArgumentException, MessagingException {
     String receptor = mensaje.getContacto().getValor();
-    if (receptor == null)
+    if (receptor == null) {
       throw new IllegalArgumentException("El contacto no tiene un email asociado");
+    }
 
     Properties props = new Properties();
     props.put("mail.smtp.auth", "true");
@@ -56,7 +72,7 @@ public class EmailSender implements ISender {
     });
 
     Message message = new MimeMessage(session);
-    message.setFrom(new InternetAddress("your-email@example.com"));
+    message.setFrom(new InternetAddress(usuario));
     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receptor));
     message.setSubject(mensaje.getAsunto());
     message.setText(mensaje.getCuerpo());

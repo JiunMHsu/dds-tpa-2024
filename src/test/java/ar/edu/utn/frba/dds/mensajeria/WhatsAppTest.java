@@ -1,8 +1,8 @@
 package ar.edu.utn.frba.dds.mensajeria;
 
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
-import ar.edu.utn.frba.dds.models.entities.mensajeria.Mensaje;
-import ar.edu.utn.frba.dds.models.entities.mensajeria.WhatsAppSender;
+import ar.edu.utn.frba.dds.models.entities.mensaje.Mensaje;
+import ar.edu.utn.frba.dds.models.stateless.mensajeria.WhatsAppSender;
 import jakarta.mail.MessagingException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

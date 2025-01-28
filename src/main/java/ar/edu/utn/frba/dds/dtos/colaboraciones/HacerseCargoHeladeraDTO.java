@@ -24,7 +24,7 @@ public class HacerseCargoHeladeraDTO extends ColaboracionDTO {
         .fechaHora(DateTimeParser.parseFechaHora(hacerseCargoHeladera.getFechaHora()))
         .path(getPath(TipoColaboracion.HACERSE_CARGO_HELADERA))
         .colaborador(hacerseCargoHeladera.getColaborador().getUsuario().getNombre())
-        .heladeraACargo(hacerseCargoHeladera.getHeladeraACargo().getNombre())
+        .heladeraACargo(hacerseCargoHeladera.getHeladera().getNombre())
         .build();
   }
 

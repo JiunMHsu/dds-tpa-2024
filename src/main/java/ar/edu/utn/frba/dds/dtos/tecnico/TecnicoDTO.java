@@ -34,7 +34,7 @@ public class TecnicoDTO {
         .apellido(tecnico.getApellido())
         .documento(tecnico.getDocumento().getNumero())
         .cuit(tecnico.getCuit())
-        .medioDeNotificacion(tecnico.getMedioDeNotificacion().toString())
+        .medioDeNotificacion(tecnico.getContacto().getMedioDeNotificacion().toString())
         .areaDeCobertura(tecnico.getAreaDeCobertura().getBarrio().getNombre())
         .build();
   }

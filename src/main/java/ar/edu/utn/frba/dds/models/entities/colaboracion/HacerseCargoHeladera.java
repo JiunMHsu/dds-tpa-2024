@@ -14,6 +14,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Colaboración de un {@link Colaborador} que se hace cargo de una {@link Heladera}.
+ */
 @Getter
 @Builder
 @AllArgsConstructor
@@ -22,7 +25,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "hacerse_cargo_heladera")
 public class HacerseCargoHeladera extends EntidadPersistente {
 
-  // Un colaborador puede ser encargado por multiples heladeras
+  // Un colaborador puede ser encargado de multiples heladeras
   @ManyToOne
   @JoinColumn(name = "colaborador_id", nullable = false)
   private Colaborador colaborador;
@@ -30,19 +33,27 @@ public class HacerseCargoHeladera extends EntidadPersistente {
   @Column(name = "fecha_hora", columnDefinition = "DATETIME", nullable = false)
   private LocalDateTime fechaHora;
 
-  // Las heladeras pueden pasar por dueño en dueño
+  // Las heladeras pueden pasar de dueño en dueño
   @ManyToOne
   @JoinColumn(name = "heladera_a_cargo_id", nullable = false)
-  private Heladera heladeraACargo;
+  private Heladera heladera;
 
+  /**
+   * Crea una colaboración de un {@link Colaborador} que se hace cargo de una {@link Heladera}.
+   *
+   * @param colaborador {@link Colaborador} que se hace cargo de la heladera
+   * @param fechaHora   fecha y hora en la que se hace cargo
+   * @param heladera    {@link Heladera} de la que se hace cargo
+   * @return colaboración de un {@link Colaborador} que se hace cargo de una {@link Heladera}
+   */
   public static HacerseCargoHeladera por(Colaborador colaborador,
                                          LocalDateTime fechaHora,
-                                         Heladera heladeraACargo) {
+                                         Heladera heladera) {
     return HacerseCargoHeladera
         .builder()
         .colaborador(colaborador)
         .fechaHora(fechaHora)
-        .heladeraACargo(heladeraACargo)
+        .heladera(heladera)
         .build();
   }
 

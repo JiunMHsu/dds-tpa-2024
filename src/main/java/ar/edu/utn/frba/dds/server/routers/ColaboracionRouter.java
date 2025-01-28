@@ -12,7 +12,7 @@ import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionViandaController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.HacerseCargoHeladeraController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.OfertaProductosServiciosController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.RepartoDeTarjetaController;
-import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
+import ar.edu.utn.frba.dds.models.entities.usuario.TipoRol;
 import io.javalin.config.RouterConfig;
 
 public class ColaboracionRouter implements IRouter {

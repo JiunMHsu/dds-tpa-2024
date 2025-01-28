@@ -11,6 +11,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Modelo Formulario.
+ */
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,10 +29,20 @@ public class Formulario {
   @JoinColumn(name = "formulario_id")
   private List<Pregunta> preguntas;
 
+  /**
+   * Agrega un campo al formulario.
+   *
+   * @param pregunta una {@link Pregunta}.
+   */
   public void agregarCampo(Pregunta pregunta) {
     preguntas.add(pregunta);
   }
 
+  /**
+   * Quita un campo del formulario.
+   *
+   * @param pregunta una {@link Pregunta}.
+   */
   public void quitarCampo(Pregunta pregunta) {
     preguntas.remove(pregunta);
   }

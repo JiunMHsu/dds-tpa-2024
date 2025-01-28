@@ -8,7 +8,7 @@ import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.controllers.home.HomeController;
 import ar.edu.utn.frba.dds.controllers.session.SessionController;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
-import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
+import ar.edu.utn.frba.dds.models.entities.usuario.TipoRol;
 import ar.edu.utn.frba.dds.utils.AppProperties;
 import io.javalin.config.RouterConfig;
 import java.io.File;

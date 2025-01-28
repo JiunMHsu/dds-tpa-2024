@@ -11,6 +11,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Clase que representa una variante de puntos en el sistema.
+ */
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -40,6 +43,16 @@ public class VarianteDePuntos {
   @Column(name = "heladeras_activas", nullable = false)
   private double heladerasActivas;
 
+  /**
+   * Constructor de la clase VarianteDePuntos.
+   *
+   * @param fechaConfiguracion  Fecha de configuración de la variante.
+   * @param donacionDinero      Porcentaje de donaciones de dinero.
+   * @param distribucionViandas Porcentaje de distribución de viandas.
+   * @param donacionVianda      Porcentaje de donaciones de viandas.
+   * @param repartoTarjeta      Porcentaje de reparto de tarjeta.
+   * @param heladerasActivas    Porcentaje de heladeras activas.
+   */
   public VarianteDePuntos(LocalDate fechaConfiguracion,
                           double donacionDinero,
                           double distribucionViandas,

@@ -8,8 +8,8 @@ import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.data.Documento;
 import ar.edu.utn.frba.dds.models.entities.data.TipoRazonSocial;
 import ar.edu.utn.frba.dds.models.entities.formulario.FormularioRespondido;
-import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
+import ar.edu.utn.frba.dds.models.stateless.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -32,6 +32,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Modelo Colaborador.
+ */
 @Getter
 @Setter
 @Builder
@@ -63,7 +66,7 @@ public class Colaborador extends EntidadPersistente {
   @ElementCollection
   @CollectionTable(name = "formas_de_colaborar", joinColumns = @JoinColumn(name = "colaborador_id"))
   @Column(name = "colaboracion")
-  private List<TipoColaboracion> formaDeColaborar;
+  private List<TipoColaboracion> formasDeColaborar;
 
   @Column(name = "razon_social")
   private String razonSocial;
@@ -90,13 +93,25 @@ public class Colaborador extends EntidadPersistente {
   @Embedded
   private Puntos puntos;
 
+  /**
+   * Constructor de un colaborador jurídico.
+   *
+   * @param usuario           usuario
+   * @param razonSocial       razón social
+   * @param tipoRazonSocial   tipo de razón social
+   * @param rubro             rubro
+   * @param contactos         lista de contactos
+   * @param direccion         dirección
+   * @param formasDeColaborar formas de colaborar
+   * @param puntos            puntos
+   */
   public static Colaborador juridica(Usuario usuario,
                                      String razonSocial,
                                      TipoRazonSocial tipoRazonSocial,
                                      String rubro,
                                      List<Contacto> contactos,
                                      Direccion direccion,
-                                     ArrayList<TipoColaboracion> formaDeColaborar,
+                                     ArrayList<TipoColaboracion> formasDeColaborar,
                                      Puntos puntos) {
     return Colaborador.builder()
         .tipoColaborador(TipoColaborador.JURIDICO)
@@ -106,11 +121,24 @@ public class Colaborador extends EntidadPersistente {
         .rubro(rubro)
         .contactos(contactos)
         .direccion(direccion)
-        .formaDeColaborar(formaDeColaborar)
+        .formasDeColaborar(formasDeColaborar)
         .puntos(puntos)
         .build();
   }
 
+  /**
+   * Constructor de un colaborador humano.
+   *
+   * @param usuario           usuario
+   * @param nombre            nombre
+   * @param apellido          apellido
+   * @param documento         documento
+   * @param fechaNacimiento   fecha de nacimiento
+   * @param contactos         lista de contactos
+   * @param direccion         dirección
+   * @param formasDeColaborar formas de colaborar
+   * @param puntos            puntos
+   */
   public static Colaborador humana(Usuario usuario,
                                    String nombre,
                                    String apellido,
@@ -118,7 +146,7 @@ public class Colaborador extends EntidadPersistente {
                                    LocalDate fechaNacimiento,
                                    List<Contacto> contactos,
                                    Direccion direccion,
-                                   ArrayList<TipoColaboracion> formaDeColaborar,
+                                   ArrayList<TipoColaboracion> formasDeColaborar,
                                    Puntos puntos) {
     return Colaborador.builder()
         .tipoColaborador(TipoColaborador.HUMANO)
@@ -129,47 +157,80 @@ public class Colaborador extends EntidadPersistente {
         .fechaNacimiento(fechaNacimiento)
         .contactos(contactos)
         .direccion(direccion)
-        .formaDeColaborar(formaDeColaborar)
+        .formasDeColaborar(formasDeColaborar)
         .puntos(puntos)
         .build();
   }
 
-  public static Colaborador humana(Usuario usuario,
-                                   String nombre,
-                                   String apellido,
-                                   LocalDate fechaNacimiento) {
-    return Colaborador.humana(usuario, nombre, apellido, null, fechaNacimiento, null, null, new ArrayList<>(), new Puntos(0, false, null));
+  /**
+   * Constructor de un colaborador humano con documento.
+   *
+   * @param usuario   usuario
+   * @param nombre    nombre
+   * @param apellido  apellido
+   * @param documento documento
+   */
+  public static Colaborador humanaConDocumento(Usuario usuario,
+                                               String nombre,
+                                               String apellido,
+                                               Documento documento) {
+    return Colaborador.humana(
+        usuario,
+        nombre,
+        apellido,
+        documento,
+        null,
+        new ArrayList<>(),
+        null,
+        new ArrayList<>(),
+        new Puntos(0, false, null)
+    );
   }
 
-  public static Colaborador humanaDocumento(Usuario usuario,
-                                            String nombre,
-                                            String apellido,
-                                            Documento documento) {
-    return Colaborador.humana(usuario, nombre, apellido, documento, null, null, null, new ArrayList<>(), new Puntos(0, false, null));
-  }
-
-  public static Colaborador colaborador(Usuario usuario) {
+  public static Colaborador conUsuario(Usuario usuario) {
     return Colaborador.builder().usuario(usuario).build();
   }
 
+  /**
+   * Constructor de un colaborador.
+   *
+   * @param usuario           usuario
+   * @param contactos         lista de contactos
+   * @param direccion         dirección
+   * @param formasDeColaborar formas de colaborar
+   */
   public static Colaborador colaborador(Usuario usuario,
                                         List<Contacto> contactos,
                                         Direccion direccion,
-                                        ArrayList<TipoColaboracion> formaDeColaborar) {
+                                        ArrayList<TipoColaboracion> formasDeColaborar) {
     return Colaborador.builder()
         .usuario(usuario)
         .contactos(contactos)
         .direccion(direccion)
-        .formaDeColaborar(formaDeColaborar)
+        .formasDeColaborar(formasDeColaborar)
         .build();
   }
 
+  /**
+   * Verifica si el colaborador puede colaborar con un tipo de colaboración.
+   *
+   * @param tipoColaboracion tipo de colaboración
+   * @return true si puede colaborar, false en caso contrario
+   */
   public boolean puedeColaborar(TipoColaboracion tipoColaboracion) {
-    return this.formaDeColaborar.contains(tipoColaboracion);
+    return this.formasDeColaborar.contains(tipoColaboracion);
   }
 
+  /**
+   * Retorna los puntos del colaborador.
+   * En caso de que los puntos no sean válidos, lanza una excepción.
+   *
+   * @return puntos
+   */
   public double puntos() throws PuntosInvalidosException {
-    if (!puntos.esValido(tipoColaborador)) throw new PuntosInvalidosException();
+    if (!puntos.esValidoSegun(tipoColaborador)) {
+      throw new PuntosInvalidosException();
+    }
     return puntos.getPuntos();
   }
 
@@ -177,10 +238,16 @@ public class Colaborador extends EntidadPersistente {
     puntos.setEsValido(false);
   }
 
+  /**
+   * Retorna el contacto de un medio de notificación.
+   *
+   * @param medioDeNotificacion medio de notificación
+   * @return contacto
+   */
   public Optional<Contacto> getContacto(MedioDeNotificacion medioDeNotificacion) {
     return contactos.stream()
         .filter(contacto -> contacto.getMedioDeNotificacion() == medioDeNotificacion)
-        .findFirst();//solo es posible un tipo de contacto de cada uno pero asi me devuelve optional
+        .findFirst();
   }
 
   public void agregarContacto(Contacto contacto) {

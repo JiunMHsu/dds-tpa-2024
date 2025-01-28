@@ -57,7 +57,7 @@ public class OfertaProductosServiciosController extends ColaboradorRequired impl
 
     Map<String, Object> model = new HashMap<>();
     model.put("colaboraciones", ofertaDeProductosDTOS);
-    model.put("titulo", "Listado por productos/servicios");
+    model.put("titulo", "Listado de productos/servicios");
 
     context.render("colaboraciones/colaboraciones.hbs", model);
   }
@@ -68,7 +68,7 @@ public class OfertaProductosServiciosController extends ColaboradorRequired impl
     Optional<OfertaDeProductos> ofertaDeProductos = this.ofertaProductosServiciosService.buscarPorId(ofertaProductoId);
 
     if (ofertaDeProductos.isEmpty())
-      throw new ResourceNotFoundException("No se encontró ninguna oferta por producto/servicio paraColaborador id " + ofertaProductoId);
+      throw new ResourceNotFoundException("No se encontró ninguna oferta de producto/servicio para el colaborador con id " + ofertaProductoId);
 
 
     Map<String, Object> model = new HashMap<>();
@@ -152,7 +152,7 @@ public class OfertaProductosServiciosController extends ColaboradorRequired impl
     Optional<OfertaDeProductos> posibleOfertaAEliminar = this.ofertaProductosServiciosService.buscarPorId(ofertaProductoId);
 
     if (posibleOfertaAEliminar.isEmpty())
-      throw new ResourceNotFoundException("No se encontró ninguna oferta por producto/servicio paraColaborador id " + ofertaProductoId);
+      throw new ResourceNotFoundException("No se encontró ninguna oferta de producto/servicio para el colaborador con id " + ofertaProductoId);
 
     Colaborador colaboradorOfertante = posibleOfertaAEliminar.get().getColaborador();
 

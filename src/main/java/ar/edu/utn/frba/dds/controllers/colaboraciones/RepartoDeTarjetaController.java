@@ -65,11 +65,11 @@ public class RepartoDeTarjetaController extends ColaboradorRequired implements I
     try {
       Colaborador colaborador = colaboradorFromSession(context);
 
-      Documento documento = Documento.with(
+      Documento documento = Documento.con(
           TipoDocumento.valueOf(context.formParamAsClass("tipo_documento", String.class).getOrDefault(null)),
           context.formParamAsClass("nro_documento", String.class).getOrDefault(null));
 
-      Direccion direccion = Direccion.with(
+      Direccion direccion = Direccion.con(
           new Barrio(context.formParamAsClass("barrio", String.class).get()),
           new Calle(context.formParamAsClass("calle", String.class).get()),
           context.formParamAsClass("altura", Integer.class).get());

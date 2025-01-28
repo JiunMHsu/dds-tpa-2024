@@ -2,12 +2,10 @@ package ar.edu.utn.frba.dds.models.entities.canjeDePuntos;
 
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import java.time.LocalDateTime;
-import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -16,18 +14,16 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Clase que representa un Canje de Puntos en el sistema.
+ */
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "canje_puntos")
-public class CanjeDePuntos {
-
-  @Id
-  @GeneratedValue(generator = "uuid")
-  @Column(name = "id", columnDefinition = "BINARY(16)")
-  private UUID id;
+public class CanjeDePuntos extends EntidadPersistente {
 
   @ManyToOne
   @JoinColumn(name = "colaborador_id", nullable = false)
@@ -46,10 +42,16 @@ public class CanjeDePuntos {
   @Column(name = "puntos_restates", nullable = false)
   private double puntosRestantes;
 
-  // @ManyToOne
-  // @JoinColumn(name = "variante_usado", nullable = false)
-  // private VarianteDePuntos varianteUsado;
-
+  /**
+   * Constructor de la clase CanjeDePuntos.
+   *
+   * @param colaborador     Colaborador que realiza el canje.
+   * @param oferta          Oferta de productos que se canjea.
+   * @param fechaCanjeo     Fecha y hora en la que se realiza el canje.
+   * @param puntosCanjeados Puntos canjeados en el canje.
+   * @param puntosRestantes Puntos restantes del colaborador luego del canje.
+   * @return CanjeDePuntos.
+   */
   public static CanjeDePuntos por(Colaborador colaborador,
                                   OfertaDeProductos oferta,
                                   LocalDateTime fechaCanjeo,

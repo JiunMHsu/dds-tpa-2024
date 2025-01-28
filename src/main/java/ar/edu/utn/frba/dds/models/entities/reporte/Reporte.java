@@ -11,6 +11,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Modelo Reporte.
+ */
 @Setter
 @Getter
 @AllArgsConstructor
@@ -29,10 +32,25 @@ public class Reporte extends EntidadPersistente {
   @Column(name = "path", nullable = false)
   private String nombreArchivo;
 
+  /**
+   * Crea un reporte.
+   *
+   * @param titulo        Título.
+   * @param fecha         Fecha.
+   * @param nombreArchivo Nombre del archivo.
+   * @return Reporte.
+   */
   public static Reporte de(String titulo, LocalDate fecha, String nombreArchivo) {
     return Reporte.builder().titulo(titulo).fecha(fecha).nombreArchivo(nombreArchivo).build();
   }
 
+  /**
+   * Crea un reporte.
+   *
+   * @param titulo        Título.
+   * @param nombreArchivo Nombre del archivo.
+   * @return Reporte.
+   */
   public static Reporte de(String titulo, String nombreArchivo) {
     return Reporte.de(titulo, LocalDate.now(), nombreArchivo);
   }

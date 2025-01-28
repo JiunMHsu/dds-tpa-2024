@@ -14,6 +14,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Clase que representa una tarjeta de colaborador en el sistema.
+ */
 @Getter
 @Builder
 @AllArgsConstructor
@@ -31,19 +34,33 @@ public class TarjetaColaborador extends EntidadPersistente {
 
   @Setter
   @Column(name = "esta_activa")
-  private Boolean esActiva;
+  private Boolean estaActiva;
 
+  /**
+   * Crea una tarjeta de colaborador.
+   *
+   * @param codigo     Código de la tarjeta.
+   * @param duenio     Dueño de la tarjeta.
+   * @param estaActiva Indica si la tarjeta está activa.
+   * @return Tarjeta de colaborador.
+   */
   public static TarjetaColaborador de(String codigo,
                                       Colaborador duenio,
-                                      Boolean esActiva) {
+                                      Boolean estaActiva) {
     return TarjetaColaborador
         .builder()
         .codigo(codigo)
         .duenio(duenio)
-        .esActiva(esActiva)
+        .estaActiva(estaActiva)
         .build();
   }
 
+  /**
+   * Crea una tarjeta de colaborador.
+   *
+   * @param duenio Dueño de la tarjeta.
+   * @return Tarjeta de colaborador.
+   */
   public static TarjetaColaborador de(Colaborador duenio) {
     return TarjetaColaborador.de(new RandomString(11).nextString(), duenio, true);
   }

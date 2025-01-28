@@ -40,7 +40,7 @@ public class GeneradorDeReporteTest {
   }
 
   @Test
-  @DisplayName("Se puden generar los pdf a partir por diccionarios")
+  @DisplayName("Se puden generar los pdf a partir nueva diccionarios")
   public void testGeneracionDeReporte() {
     pdfGenerator.generateDocument("Donacion Viandas Por Colaborador", viandasPorColaborador);
   }

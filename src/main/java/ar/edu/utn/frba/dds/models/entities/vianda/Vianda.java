@@ -12,6 +12,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Modelo Vianda.
+ */
 @Getter
 @Builder
 @AllArgsConstructor
@@ -29,16 +32,19 @@ public class Vianda extends EntidadPersistente {
   @Column(name = "peso", nullable = false)
   private Integer peso;
 
-  public static Vianda with(Comida comida,
-                            LocalDate fechaCaducidad,
-                            Integer peso) {
-
-    return Vianda
-        .builder()
+  /**
+   * Crea una vianda.
+   *
+   * @param comida         {@link Comida} de la vianda
+   * @param fechaCaducidad fecha de caducidad de la vianda
+   * @param peso           peso de la vianda
+   * @return vianda
+   */
+  public static Vianda con(Comida comida, LocalDate fechaCaducidad, Integer peso) {
+    return Vianda.builder()
         .comida(comida)
         .fechaCaducidad(fechaCaducidad)
         .peso(peso)
         .build();
   }
-
 }

@@ -28,11 +28,11 @@ public class AppProperties {
       InputStream input = new FileInputStream("src/main/resources/config.properties");
       this.props.load(input);
     } catch (FileNotFoundException e) {
-      System.out.println("No se encontró el archivo por configuración");
+      System.out.println("No se encontró el archivo de configuración");
       e.printStackTrace();
       System.exit(1);
     } catch (IOException e) {
-      System.out.println("Error por entrada salida");
+      System.out.println("Error de entrada salida");
       e.printStackTrace();
       System.exit(1);
     }

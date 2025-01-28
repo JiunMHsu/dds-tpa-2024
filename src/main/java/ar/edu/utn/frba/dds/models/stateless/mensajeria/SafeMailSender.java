@@ -1,9 +1,11 @@
-package ar.edu.utn.frba.dds.utils;
+package ar.edu.utn.frba.dds.models.stateless.mensajeria;
 
-import ar.edu.utn.frba.dds.models.entities.mensajeria.ISender;
-import ar.edu.utn.frba.dds.models.entities.mensajeria.Mensaje;
+import ar.edu.utn.frba.dds.models.entities.mensaje.Mensaje;
 import jakarta.mail.MessagingException;
 
+/**
+ * SafeMailSender class that implements ISender.
+ */
 public class SafeMailSender implements ISender {
   @Override
   public void enviarMensaje(Mensaje mensaje) throws MessagingException {

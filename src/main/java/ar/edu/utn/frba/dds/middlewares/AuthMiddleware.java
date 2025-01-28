@@ -2,7 +2,7 @@ package ar.edu.utn.frba.dds.middlewares;
 
 import ar.edu.utn.frba.dds.exceptions.UnauthenticatedException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
-import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
+import ar.edu.utn.frba.dds.models.entities.usuario.TipoRol;
 import io.javalin.config.RouterConfig;
 import io.javalin.http.Context;
 import io.javalin.security.RouteRole;

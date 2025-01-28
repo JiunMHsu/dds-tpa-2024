@@ -25,7 +25,7 @@ public class FaltaViandaDTO {
         .colaborador(suscripcionFaltaVianda.getColaborador().getUsuario().getNombre())
         .heladera(suscripcionFaltaVianda.getHeladera().getNombre())
         .medioDeNotificacion(suscripcionFaltaVianda.getMedioDeNotificacion().toString())
-        .viandasRestantes(suscripcionFaltaVianda.getViandasRestantes().toString())
+        .viandasRestantes(suscripcionFaltaVianda.getUmbralViandas().toString())
         .build();
   }
 }

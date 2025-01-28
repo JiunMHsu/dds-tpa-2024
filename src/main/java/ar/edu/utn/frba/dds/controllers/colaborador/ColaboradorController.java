@@ -14,7 +14,7 @@ import ar.edu.utn.frba.dds.models.entities.data.Calle;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.data.TipoRazonSocial;
-import ar.edu.utn.frba.dds.models.entities.rol.TipoRol;
+import ar.edu.utn.frba.dds.models.entities.usuario.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.stateless.ValidadorDeContrasenias;
 import ar.edu.utn.frba.dds.permissions.ColaboradorRequired;
@@ -96,7 +96,7 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
           context.formParamAsClass("email", String.class).get(),
           TipoRol.COLABORADOR
       );
-      Direccion direccion = Direccion.with(
+      Direccion direccion = Direccion.con(
           new Barrio(context.formParamAsClass("barrio", String.class).get()),
           new Calle(context.formParamAsClass("calle", String.class).get()),
           Integer.valueOf(context.formParamAsClass("altura", String.class).get())
@@ -158,7 +158,7 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
           TipoRol.COLABORADOR
       );
 
-      Direccion direccion = Direccion.with(
+      Direccion direccion = Direccion.con(
           new Barrio(context.formParamAsClass("barrio", String.class).get()),
           new Calle(context.formParamAsClass("calle", String.class).get()),
           Integer.valueOf(context.formParamAsClass("altura", String.class).get())
@@ -218,7 +218,7 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
     String pathId = context.pathParam("id");
     Colaborador colaborador = restrictByOwner(context, pathId);
 
-    List<TipoColaboracion> formasRegistradas = colaborador.getFormaDeColaborar();
+    List<TipoColaboracion> formasRegistradas = colaborador.getFormasDeColaborar();
     System.out.println(formasRegistradas);
     List<TipoColaboracion> formasPermitidas = colaborador.getTipoColaborador()
         .colaboracionesPermitidas();
@@ -248,7 +248,7 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
 
       System.out.println(colaboraciones);
 
-      colaborador.setFormaDeColaborar(colaboraciones);
+      colaborador.setFormasDeColaborar(colaboraciones);
       this.colaboradorService.actualizar(colaborador);
 
       operationSuccess = true;

@@ -2,8 +2,8 @@ package ar.edu.utn.frba.dds.domain;
 
 import ar.edu.utn.frba.dds.models.entities.data.Calle;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
+import ar.edu.utn.frba.dds.models.entities.heladera.CantidadDeViandasException;
 import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
-import ar.edu.utn.frba.dds.models.entities.heladera.ExcepcionCantidadDeViandas;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
 import org.junit.jupiter.api.Assertions;
@@ -18,8 +18,8 @@ public class HeladeraTest {
   private Heladera unaHeladera;
 
   @BeforeEach
-  public void setup() throws ExcepcionCantidadDeViandas {
-    unaDireccion = Direccion.with(new Calle("Medrano"), 951);
+  public void setup() throws CantidadDeViandasException {
+    unaDireccion = Direccion.con(new Calle("Medrano"), 951);
     rangoAEstablecer = new RangoTemperatura(5.0, -5.0);
     unaHeladera = Heladera.con("Medrano UTN", unaDireccion, 2, rangoAEstablecer, "");
     unaHeladera.setEstado(EstadoHeladera.ACTIVA);
@@ -28,7 +28,7 @@ public class HeladeraTest {
   }
 
   @Test
-  @DisplayName("Se permite dar por alta una heladera")
+  @DisplayName("Se permite dar de alta una heladera")
   public void crearHeladera() {
     Assertions.assertEquals("Medrano UTN", unaHeladera.getNombre());
     Assertions.assertEquals(unaDireccion, unaHeladera.getDireccion());
@@ -36,13 +36,13 @@ public class HeladeraTest {
   }
 
   @Test
-  @DisplayName("Se puede retirar una vianda por la heladera")
+  @DisplayName("Se puede retirar una vianda de la heladera")
   public void canjeVianda() {
     try {
       unaHeladera.quitarViandas(1);
       Assertions.assertEquals(0, unaHeladera.getViandas(),
-          "Al retirar la única vianda que quedaba por la Heladera, no quedan más viandas.");
-    } catch (ExcepcionCantidadDeViandas e) {
+          "Al retirar la única vianda que quedaba nueva la Heladera, no quedan más viandas.");
+    } catch (CantidadDeViandasException e) {
       Assertions.fail("No se pudo quitar vianda.");
     }
   }
@@ -56,7 +56,7 @@ public class HeladeraTest {
       unaHeladera.agregarViandas(1);
       Assertions.assertEquals(2, unaHeladera.getViandas(),
           "Al registrar una vianda a la Heladera que ya tenía una, ahora tiene dos.");
-    } catch (ExcepcionCantidadDeViandas e) {
+    } catch (CantidadDeViandasException e) {
       System.out.println(e.getMessage());
       Assertions.fail("No se pudo registrar la vianda.");
     }
@@ -71,7 +71,7 @@ public class HeladeraTest {
     try {
       unaHeladera.agregarViandas(2);
       Assertions.fail("No hubo excepción.");
-    } catch (ExcepcionCantidadDeViandas e) {
+    } catch (CantidadDeViandasException e) {
       Assertions.assertNotNull(e);
     }
   }
@@ -87,7 +87,7 @@ public class HeladeraTest {
   }
 
   @Test
-  @DisplayName("Se puede configurar el Rango por Temperatura")
+  @DisplayName("Se puede configurar el Rango de Temperatura")
   public void configurarRangoTemperatura() {
     Double temperaturaActual = 9.0;
     RangoTemperatura nuevoRango = new RangoTemperatura(10.0, -10.0);

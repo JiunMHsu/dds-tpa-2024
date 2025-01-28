@@ -4,13 +4,13 @@ import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
-import ar.edu.utn.frba.dds.models.entities.mensajeria.Mensaje;
+import ar.edu.utn.frba.dds.models.entities.mensaje.Mensaje;
 import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFallaHeladera;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.IColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.suscripcion.FallaHeladeraRepository;
+import ar.edu.utn.frba.dds.models.stateless.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.mensajeria.MensajeriaService;
 import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
@@ -92,7 +92,7 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
         tecnico.getNombre(),
         heladera.getNombre(),
         falla,
-        heladera.getDireccion().obtenerDireccion()
+        heladera.getDireccion().toString()
     );
 
     try {

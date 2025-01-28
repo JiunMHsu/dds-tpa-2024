@@ -9,7 +9,7 @@ public class TecnicoMasCercanoTest {
 //  Heladera heladera = Heladera.paraColaborador("", Direccion.paraColaborador(new Calle(""), 0, new Ubicacion(-34.603722, -58.381592)), 70);
 //
 //  @Test
-//  @DisplayName("El tecnico mas cercano a una heladera es el que tenga menor distancia entre las dos ubicaciones restando el radio por su area por cobertura")
+//  @DisplayName("El tecnico más cercano a una heladera es el que tenga menor distancia entre las dos ubicaciones restando el radio de su área de cobertura")
 //  public void tecnicoMasCercano() {
 //    List<Tecnico> listaTecnicos = new ArrayList<>();
 //    listaTecnicos.add(tecnico1);

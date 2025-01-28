@@ -8,6 +8,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Representa un área geográfica.
+ */
 @Getter
 @Builder
 @AllArgsConstructor
@@ -24,9 +27,17 @@ public class Area {
   @Column(name = "barrio")
   private Barrio barrio;
 
-  public static Area with(Ubicacion ubicacion,
-                          Integer radio,
-                          Barrio barrio) {
+  /**
+   * Constructor de la clase.
+   *
+   * @param ubicacion Ubicación del área.
+   * @param radio     Radio del área.
+   * @param barrio    Barrio del área.
+   * @return Área creada.
+   */
+  public static Area con(Ubicacion ubicacion,
+                         Integer radio,
+                         Barrio barrio) {
     return Area
         .builder()
         .ubicacion(ubicacion)
@@ -35,6 +46,13 @@ public class Area {
         .build();
   }
 
+  /**
+   * Calcula la distancia entre dos ubicaciones.
+   * TODO: Revisar si hace falta.
+   *
+   * @param unaUbicacion Ubicación a la que se le quiere calcular la distancia.
+   * @return Distancia entre las ubicaciones.
+   */
   public double distanciaA(Ubicacion unaUbicacion) {
     double distanciaEntreUbicaciones = this.ubicacion.distanciaA(unaUbicacion);
     return distanciaEntreUbicaciones - radio;

@@ -9,6 +9,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Modelo Pregunta.
+ */
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor

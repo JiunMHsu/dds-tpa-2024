@@ -8,18 +8,44 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public abstract class ColaboracionRepository<T extends EntidadPersistente> implements WithSimplePersistenceUnit {
+/**
+ * Repositorio de colaboraciones.
+ *
+ * @param <T> el tipo de colaboración
+ */
+public abstract class ColaboracionRepository<T extends EntidadPersistente>
+    implements WithSimplePersistenceUnit {
 
   private final Class<T> type;
 
+  /**
+   * Constructor.
+   *
+   * @param type el tipo de colaboración
+   */
   public ColaboracionRepository(Class<T> type) {
     this.type = type;
   }
 
+  /**
+   * Guarda una colaboración.
+   *
+   * @param colaboracion la colaboración a guardar
+   */
   public void guardar(T colaboracion) {
     entityManager().persist(colaboracion);
   }
 
+  public void actualizar(T colaboracion) {
+    entityManager().merge(colaboracion);
+  }
+
+  /**
+   * Busca colaboraciones por colaborador.
+   *
+   * @param colaborador un {@link Colaborador}
+   * @return las colaboraciones, si existen
+   */
   public List<T> buscarPorColaborador(Colaborador colaborador) {
     return entityManager()
         .createQuery("from " + type.getName() + " c where c.alta = :alta and c.colaborador = :colaborador", type)
@@ -28,27 +54,51 @@ public abstract class ColaboracionRepository<T extends EntidadPersistente> imple
         .getResultList();
   }
 
-  public List<T> buscarPorColaboradorAPartirDe(Colaborador colaborador, LocalDateTime fechaHora) {
+  /**
+   * Busca colaboraciones por colaborador y fecha.
+   *
+   * @param colaborador un {@link Colaborador}
+   * @param fechaHora   la fecha y hora a partir de la cual buscar
+   * @return las colaboraciones, si existen
+   */
+  public List<T> buscarPorColaboradorDesde(Colaborador colaborador, LocalDateTime fechaHora) {
+    String query = "from "
+        + type.getName()
+        + " c where c.alta = :alta and c.colaborador = :colaborador and c.fechaHora >= :fecha";
+
     return fechaHora == null
         ? buscarPorColaborador(colaborador)
         : entityManager()
-        .createQuery("from " + type.getName() + " c where c.alta = :alta and c.colaborador = :colaborador and c.fechaHora >= :fecha", type)
+        .createQuery(query, type)
         .setParameter("colaborador", colaborador)
         .setParameter("fecha", fechaHora)
         .setParameter("alta", true)
         .getResultList();
   }
 
-  public List<T> buscarAPartirDe(LocalDateTime fechaHora) {
+  /**
+   * Busca colaboraciones a partir de una fecha y hora.
+   *
+   * @param fechaHora la fecha y hora a partir de la cual buscar
+   * @return las colaboraciones, si existen
+   */
+  public List<T> buscarDesde(LocalDateTime fechaHora) {
+    String query = "from " + type.getName() + " c where c.alta = :alta and c.fechaHora >= :fecha";
+
     return fechaHora == null
         ? buscarTodos()
         : entityManager()
-        .createQuery("from " + type.getName() + " c where c.alta = :alta and c.fechaHora >= :fecha", type)
+        .createQuery(query, type)
         .setParameter("fecha", fechaHora)
         .setParameter("alta", true)
         .getResultList();
   }
 
+  /**
+   * Busca todas las colaboraciones.
+   *
+   * @return todas las colaboraciones
+   */
   public List<T> buscarTodos() {
     return entityManager()
         .createQuery("from " + type.getName() + " c where c.alta = :alta", type)
@@ -56,6 +106,12 @@ public abstract class ColaboracionRepository<T extends EntidadPersistente> imple
         .getResultList();
   }
 
+  /**
+   * Busca una colaboración por ID.
+   *
+   * @param id ID de la colaboración
+   * @return la colaboración, si existe
+   */
   public Optional<T> buscarPorId(String id) {
     try {
       UUID uuid = UUID.fromString(id);

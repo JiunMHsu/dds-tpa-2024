@@ -61,7 +61,7 @@ public class ReporteService implements WithSimplePersistenceUnit {
 
   private Map<String, Integer> donacionesPorColaborador() {
     LocalDateTime haceUnaSemana = LocalDateTime.now().minusWeeks(1);
-    List<DonacionVianda> donaciones = donacionViandaRepository.buscarAPartirDe(haceUnaSemana);
+    List<DonacionVianda> donaciones = donacionViandaRepository.buscarDesde(haceUnaSemana);
 
     Map<String, Integer> viandasPorColaborador = new HashMap<>();
     for (DonacionVianda donacion : donaciones) {
@@ -79,7 +79,7 @@ public class ReporteService implements WithSimplePersistenceUnit {
 
   private Map<String, Map<String, Integer>> movimientosPorHeladera() {
     LocalDateTime haceUnaSemana = LocalDateTime.now().minusWeeks(1);
-    List<DistribucionViandas> distribuciones = distribucionViandasRepository.buscarAPartirDe(haceUnaSemana);
+    List<DistribucionViandas> distribuciones = distribucionViandasRepository.buscarDesde(haceUnaSemana);
     List<RetiroDeVianda> retiros = retiroDeViandaRepository.buscarAPartirDe(haceUnaSemana);
 
     Map<String, Map<String, Integer>> movimientos = new HashMap<>();
@@ -111,12 +111,12 @@ public class ReporteService implements WithSimplePersistenceUnit {
     Map<String, Integer> donacionPorColaborador = this.donacionesPorColaborador();
     Map<String, Map<String, Integer>> movimientos = movimientosPorHeladera();
 
-    String pathReporteFalla = pdfGenerator.generateDocument("Fallas por Heladera", incidentesPorHeladera);
+    String pathReporteFalla = pdfGenerator.generateDocument("Fallas de Heladera", incidentesPorHeladera);
     String reporteDonaciones = pdfGenerator.generateDocument("Viandas Donadas por Colaborador", donacionPorColaborador);
     String reporteMovimientos = pdfGenerator.generateDocumentWithSections("Movimiento de Viandas", movimientos);
 
     beginTransaction();
-    reporteRepository.guardar(Reporte.de("Fallas por Heladera", pathReporteFalla));
+    reporteRepository.guardar(Reporte.de("Fallas de Heladera", pathReporteFalla));
     reporteRepository.guardar(Reporte.de("Viandas Donadas por Colaborador", reporteDonaciones));
     reporteRepository.guardar(Reporte.de("Movimiento de Viandas", reporteMovimientos));
     commitTransaction();
@@ -130,7 +130,7 @@ public class ReporteService implements WithSimplePersistenceUnit {
 
   public Optional<Reporte> buscarPorId(String id) {
     if (id == null || id.isEmpty())
-      throw new IllegalArgumentException("El ID por la heladera no puede ser null o vacío");
+      throw new IllegalArgumentException("El ID de la heladera no puede ser null o vacío");
 
     return this.reporteRepository.buscarPorId(id);
   }

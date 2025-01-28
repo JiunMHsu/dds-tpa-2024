@@ -3,7 +3,6 @@ package ar.edu.utn.frba.dds.models.entities.colaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import java.time.LocalDateTime;
-import java.time.Period;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -13,8 +12,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+/**
+ * Colaboración de un {@link Colaborador} que dona dinero.
+ */
 @Getter
 @Builder
 @AllArgsConstructor
@@ -33,27 +34,21 @@ public class DonacionDinero extends EntidadPersistente {
   @Column(name = "monto", nullable = false)
   private Integer monto;
 
-  @Setter
-  @Column(name = "frecuencia", columnDefinition = "VARCHAR(50)")
-  private Period frecuencia;
-
+  /**
+   * Crea una donación de dinero.
+   *
+   * @param colaborador {@link Colaborador} que dona el dinero
+   * @param fechaHora   fecha y hora de la donación
+   * @param monto       monto donado
+   * @return donación de dinero
+   */
   public static DonacionDinero por(Colaborador colaborador,
-                                   LocalDateTime fechaDonacion,
-                                   Integer monto,
-                                   Period frecuencia) {
-    return DonacionDinero
-        .builder()
+                                   LocalDateTime fechaHora,
+                                   Integer monto) {
+    return DonacionDinero.builder()
         .colaborador(colaborador)
-        .fechaHora(fechaDonacion)
+        .fechaHora(fechaHora)
         .monto(monto)
-        .frecuencia(frecuencia)
         .build();
   }
-
-  public static DonacionDinero por(Colaborador colaborador,
-                                   LocalDateTime fechaDonacion,
-                                   Integer monto) {
-    return DonacionDinero.por(colaborador, fechaDonacion, monto, null);
-  }
-
 }

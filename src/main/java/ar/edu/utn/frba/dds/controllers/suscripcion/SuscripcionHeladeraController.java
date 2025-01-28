@@ -9,7 +9,7 @@ import ar.edu.utn.frba.dds.exceptions.SuscripcionHeladeraLlenaException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.entities.mensajeria.MedioDeNotificacion;
+import ar.edu.utn.frba.dds.models.stateless.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.permissions.ColaboradorRequired;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;

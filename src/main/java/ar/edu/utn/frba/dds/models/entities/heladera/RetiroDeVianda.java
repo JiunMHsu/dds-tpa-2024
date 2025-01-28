@@ -13,6 +13,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Representa el retiro de una vianda de una heladera por parte de una persona vulnerable.
+ */
 @Getter
 @Builder
 @AllArgsConstructor
@@ -32,6 +35,14 @@ public class RetiroDeVianda extends EntidadPersistente {
   @Column(name = "fecha_hora", columnDefinition = "DATETIME")
   private LocalDateTime fechaHora;
 
+  /**
+   * Crea un retiro de vianda.
+   *
+   * @param tarjetaPersonaVulnerable Tarjeta de la persona que retira la vianda.
+   * @param heladera                 Heladera de la que se retira la vianda.
+   * @param fechaHora                Fecha y hora en la que se realizó el retiro.
+   * @return Retiro de vianda creado.
+   */
   public static RetiroDeVianda por(TarjetaPersonaVulnerable tarjetaPersonaVulnerable,
                                    Heladera heladera,
                                    LocalDateTime fechaHora) {

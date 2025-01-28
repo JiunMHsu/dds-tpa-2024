@@ -20,6 +20,6 @@ public abstract class TecnicoRequired extends UserRequired {
   protected Tecnico tecnicoFromSession(Context context) throws UnauthenticatedException, NonTecnicoException {
     Usuario usuarioSession = usuarioFromSession(context);
     return tecnicoService.obtenerTecnicoPorUsuario(usuarioSession)
-        .orElseThrow(() -> new NonTecnicoException("Tecnico no encontrado con Usuario: " + usuarioSession.getNombre()));
+        .orElseThrow(() -> new NonTecnicoException("Tecnico no encontrado por Usuario: " + usuarioSession.getNombre()));
   }
 }

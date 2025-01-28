@@ -25,7 +25,7 @@ public class PersonaVulnerableService {
   public Optional<PersonaVulnerable> buscarPVPorId(String id) {
 
     if (id == null || id.isEmpty()) {
-      throw new IllegalArgumentException("El ID por la persona en situacion vulnerable no puede ser null o vacío");
+      throw new IllegalArgumentException("El ID de la persona en situacion vulnerable no puede ser null o vacío");
     }
 
     return this.personaVulnerableRepository.buscarPorId(id);
@@ -36,7 +36,7 @@ public class PersonaVulnerableService {
     System.out.println("Antes del if documento service pv");
 
     if (personaVulnerable.getDocumento() == null || personaVulnerable.getDomicilio() == null) {
-      throw new IllegalArgumentException("Datos incompletos por la persona vulnerable");
+      throw new IllegalArgumentException("Datos incompletos de la persona vulnerable");
     }
 
     System.out.println("Desp del if documento service pv");
@@ -58,7 +58,7 @@ public class PersonaVulnerableService {
   public void eliminarPV(String id) {
 
     if (id == null || id.isEmpty()) {
-      throw new IllegalArgumentException("El ID por la persona en situación vulnerable no puede ser null o vacío");
+      throw new IllegalArgumentException("El ID de la persona en situación vulnerable no puede ser null o vacío");
     }
 
     Optional<PersonaVulnerable> posiblePersonaVulnerable = this.personaVulnerableRepository.buscarPorId(id);
@@ -75,7 +75,7 @@ public class PersonaVulnerableService {
     Optional<PersonaVulnerable> personaExistente = this.personaVulnerableRepository.buscarPorId(id);
 
     if (personaExistente.isEmpty()) {
-      throw new PersonaVulnerableNotFoundException("Persona vulnerable paraColaborador ID " + id + " no encontrada");
+      throw new PersonaVulnerableNotFoundException("Persona vulnerable con ID " + id + " no encontrada");
     }
 
     PersonaVulnerable persona = personaExistente.get();

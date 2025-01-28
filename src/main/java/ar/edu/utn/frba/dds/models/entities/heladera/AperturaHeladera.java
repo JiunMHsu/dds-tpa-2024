@@ -14,6 +14,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Representa la apertura fehaciente de una {@link Heladera}.
+ */
 @Getter
 @Builder
 @AllArgsConstructor
@@ -37,6 +40,15 @@ public class AperturaHeladera extends EntidadPersistente {
   @JoinColumn(name = "solicitud_apertura_id", referencedColumnName = "id")
   private SolicitudDeApertura solicitudDeApertura;
 
+  /**
+   * Crea una apertura de heladera.
+   *
+   * @param tarjetaColaborador  Tarjeta del colaborador que abrió la heladera.
+   * @param heladera            Heladera que se abrió.
+   * @param fechaHora           Fecha y hora en la que se realizó la apertura.
+   * @param solicitudDeApertura Solicitud de apertura asociada.
+   * @return Apertura de heladera creada.
+   */
   public static AperturaHeladera por(TarjetaColaborador tarjetaColaborador,
                                      Heladera heladera,
                                      LocalDateTime fechaHora,

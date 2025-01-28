@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Representa un barrio.
+ */
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,4 +16,5 @@ import lombok.NoArgsConstructor;
 public class Barrio {
   @Column(name = "barrio_nombre")
   private String nombre;
+  
 }

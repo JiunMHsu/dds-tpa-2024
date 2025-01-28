@@ -8,7 +8,7 @@ import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.models.entities.heladera.ExcepcionCantidadDeViandas;
+import ar.edu.utn.frba.dds.models.entities.heladera.CantidadDeViandasException;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.permissions.ColaboradorRequired;
 import ar.edu.utn.frba.dds.services.colaboraciones.DistribucionViandasService;
@@ -18,7 +18,6 @@ import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.validation.ValidationException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,8 +49,9 @@ public class DistribucionViandasController extends ColaboradorRequired implement
     String distribucionViandasId = context.pathParam("id");
     Optional<DistribucionViandas> distribucionViandas = distribucionViandasService.buscarPorId(distribucionViandasId);
 
-    if (distribucionViandas.isEmpty())
-      throw new ResourceNotFoundException("No se encontró distribucion por viandas paraColaborador id " + distribucionViandasId);
+    if (distribucionViandas.isEmpty()) {
+      throw new ResourceNotFoundException("No se encontró distribucion nueva viandas paraColaborador id " + distribucionViandasId);
+    }
 
     Map<String, Object> model = new HashMap<>();
 
@@ -65,8 +65,9 @@ public class DistribucionViandasController extends ColaboradorRequired implement
   public void create(Context context) {
     Colaborador colaborador = colaboradorFromSession(context);
 
-    if (!colaborador.puedeColaborar(TipoColaboracion.DISTRIBUCION_VIANDAS))
+    if (!colaborador.puedeColaborar(TipoColaboracion.DISTRIBUCION_VIANDAS)) {
       throw new UnauthorizedException("No tiene permiso");
+    }
 
     render(context, "colaboraciones/distribucion_viandas_crear.hbs", new HashMap<>());
   }
@@ -92,9 +93,9 @@ public class DistribucionViandasController extends ColaboradorRequired implement
       Integer viandas = context.formParamAsClass("cantidad", Integer.class).get();
       String motivo = context.formParamAsClass("motivo", String.class).get();
 
-      DistribucionViandas distribucionViandas = DistribucionViandas.por(
-          colaborador, LocalDateTime.now(), heladeraOrigen, heladeraDestino, viandas, motivo
-      );
+      // TODO: Construir DistribucionViandas
+      // DistribucionViandas distribucionViandas = DistribucionViandas.por(colaborador, heladeraOrigen, heladeraDestino, viandas, motivo);
+      DistribucionViandas distribucionViandas = new DistribucionViandas();
 
       this.distribucionViandasService.registrar(distribucionViandas);
 
@@ -107,7 +108,7 @@ public class DistribucionViandasController extends ColaboradorRequired implement
 
     } catch (NonColaboratorException e) {
       throw new UnauthorizedException(e.getMessage());
-    } catch (ValidationException | ResourceNotFoundException | ExcepcionCantidadDeViandas e) {
+    } catch (ValidationException | ResourceNotFoundException | CantidadDeViandasException e) {
       redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
     } finally {
       model.put("success", operationSuccess);

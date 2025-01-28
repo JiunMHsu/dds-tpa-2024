@@ -60,7 +60,7 @@ public class IncidenteService implements WithSimplePersistenceUnit {
   }
 
   public void resolverIncidente(Incidente incidente) {
-    incidente.setResuelta(true);
+    incidente.setEsResuelta(true);
 
     if (!this.tieneOtroIncidentePendiente(incidente.getHeladera())) {
       incidente.getHeladera().setEstado(EstadoHeladera.ACTIVA);
@@ -78,7 +78,7 @@ public class IncidenteService implements WithSimplePersistenceUnit {
 
   private boolean tieneOtroIncidentePendiente(Heladera heladera) {
     return incidenteRepository.buscarPorHeladera(heladera).stream()
-        .filter(i -> !i.getResuelta())
+        .filter(i -> !i.getEsResuelta())
         .toList().size() > 1; // mayor a 1 porque el incidente actual cuenta como pendiente
   }
 }
