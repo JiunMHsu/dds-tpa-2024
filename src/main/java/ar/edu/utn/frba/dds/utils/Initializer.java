@@ -351,7 +351,7 @@ public class Initializer implements WithSimplePersistenceUnit {
         new Barrio("Palermo")
     );
     Documento unDocumento = Documento.con(TipoDocumento.DNI, "00019283");
-    Tecnico t1 = Tecnico.con(u1, "Tecnico", "Uno", unDocumento, "20-00019283-1", Contacto.vacio(), areaDeCoberura);
+    Tecnico t1 = Tecnico.con(u1, "Tecnico", "Uno", unDocumento, "20-00019283-1", contacto, areaDeCoberura);
 
     beginTransaction();
     new ContactoRepository().guardar(contacto);
