@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.services.puntoDonacion;
 
 import ar.edu.utn.frba.dds.exceptions.BadAPIRequestException;
-import ar.edu.utn.frba.dds.models.entities.puntoDonacion.PuntoDonacion;
+import ar.edu.utn.frba.dds.models.entities.puntoDeDonacion.PuntoDeDonacion;
 import ar.edu.utn.frba.dds.utils.JSONReader;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -19,7 +19,7 @@ public class PuntoDonacionService {
     this.apiAuthToken = authToken;
   }
 
-  public List<PuntoDonacion> obneterPuntoDonacion(Double latitude, Double longitud, Integer limite, Double distanciaMaxEnKM) {
+  public List<PuntoDeDonacion> obneterPuntoDonacion(Double latitude, Double longitud, Integer limite, Double distanciaMaxEnKM) {
 
     String coordinatesQueryParam;
     String limiteQueryParam = "";
@@ -56,7 +56,7 @@ public class PuntoDonacionService {
 
       return lugares
           .stream()
-          .map(objectLugar -> PuntoDonacion
+          .map(objectLugar -> PuntoDeDonacion
               .builder()
               .id((Long) objectLugar.get("id"))
               .nombre((String) objectLugar.get("nombre"))

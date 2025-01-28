@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.models.entities.puntoDonacion;
+package ar.edu.utn.frba.dds.models.entities.puntoDeDonacion;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 @Builder
-public class PuntoDonacion {
+public class PuntoDeDonacion {
 
   private long id;
 
