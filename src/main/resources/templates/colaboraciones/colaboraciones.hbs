@@ -11,13 +11,13 @@
 {{#partial "main-content"}}
     <div class="list-container">
         <h2 class="list-title">Colaboraciones Realizadas</h2>
-        
+
         <div class="scrollable">
             {{#if colaboracionesRealizadas.length}}
                 <ul class="list">
                     {{#each colaboracionesRealizadas}}
                         <li class="list-item">
-                            <a href="{{this.path}}" class="item-card">
+                            <a href="{{this.path}}/{{this.id}}" class="item-card">
                                 <h3 class="card-title">{{this.nombre}}</h3>
                                 <p>
                                     <span class="material-symbols-rounded card-detail-icon">today</span>

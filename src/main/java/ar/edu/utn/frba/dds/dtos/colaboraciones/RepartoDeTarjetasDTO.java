@@ -4,41 +4,29 @@ import ar.edu.utn.frba.dds.models.entities.colaboracion.RepartoDeTarjetas;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.utils.DateTimeParser;
 import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 
+/**
+ * Reparto de tarjetas DTO.
+ */
 @Getter
-@Setter
-@SuperBuilder
 public class RepartoDeTarjetasDTO extends ColaboracionDTO {
 
-  private String colaborador;
+  private final String tarjeta;
+  private final String personaVulnerable;
 
-  private String tarjeta;
-
-  private String personaVulnerable;
-
-  public static RepartoDeTarjetasDTO completa(RepartoDeTarjetas repartoDeTarjetas) {
-
-    return RepartoDeTarjetasDTO.builder()
-        .id(repartoDeTarjetas.getId().toString())
-        .nombre(TipoColaboracion.REPARTO_DE_TARJETAS.getDescription())
-        .fechaHora(DateTimeParser.parseFechaHora(repartoDeTarjetas.getFechaHora()))
-        .path(getPath(TipoColaboracion.REPARTO_DE_TARJETAS))
-        .colaborador(repartoDeTarjetas.getColaborador().getUsuario().getNombre())
-        .tarjeta(repartoDeTarjetas.getTarjeta().getCodigo())
-        .personaVulnerable(repartoDeTarjetas.getPersonaVulnerable().getNombre())
-        .build();
+  private RepartoDeTarjetasDTO(RepartoDeTarjetas repartoDeTarjetas) {
+    super(repartoDeTarjetas.getId().toString(),
+        TipoColaboracion.REPARTO_DE_TARJETAS.getDescription(),
+        DateTimeParser.parseFechaHora(repartoDeTarjetas.getFechaHora()),
+        getPath(TipoColaboracion.REPARTO_DE_TARJETAS),
+        repartoDeTarjetas.getColaborador().getUsuario().getNombre()
+    );
+    this.tarjeta = repartoDeTarjetas.getTarjeta().getCodigo();
+    this.personaVulnerable = repartoDeTarjetas.getPersonaVulnerable().getNombre();
   }
 
-  public static ColaboracionDTO preview(RepartoDeTarjetas repartoDeTarjetas) {
-
-    return ColaboracionDTO.builder()
-        .id(repartoDeTarjetas.getId().toString())
-        .nombre(TipoColaboracion.REPARTO_DE_TARJETAS.getDescription())
-        .fechaHora(DateTimeParser.parseFechaHora(repartoDeTarjetas.getFechaHora()))
-        .path(getPath(TipoColaboracion.REPARTO_DE_TARJETAS))
-        .build();
+  public static RepartoDeTarjetasDTO fromColaboracion(RepartoDeTarjetas repartoDeTarjetas) {
+    return new RepartoDeTarjetasDTO(repartoDeTarjetas);
   }
 }
 

@@ -50,7 +50,7 @@ public class DonacionDineroController extends ColaboradorRequired implements ICr
 
     Map<String, Object> model = new HashMap<>();
 
-    DonacionDineroDTO donacionDineroDTO = DonacionDineroDTO.completa(donacionDinero.get());
+    DonacionDineroDTO donacionDineroDTO = DonacionDineroDTO.fromColaboracion(donacionDinero.get());
     model.put("donacion_dinero", donacionDineroDTO);
 
     context.render("colaboraciones/colaboracion_detalle.hbs", model);

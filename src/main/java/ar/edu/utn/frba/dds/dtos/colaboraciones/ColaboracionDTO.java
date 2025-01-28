@@ -7,52 +7,55 @@ import ar.edu.utn.frba.dds.models.entities.colaboracion.HacerseCargoHeladera;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.RepartoDeTarjetas;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.experimental.SuperBuilder;
+import lombok.NoArgsConstructor;
 
+/**
+ * Colaboración DTO.
+ */
 @Getter
-@SuperBuilder
-@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ColaboracionDTO {
 
   protected String id;
-
   protected String nombre;
-
   protected String fechaHora;
-
   protected String path;
-
-  private String colaborador;
+  protected String colaborador;
 
   protected static String getPath(TipoColaboracion colaboracion) {
     return switch (colaboracion) {
-      case DONACION_VIANDAS -> "donacion-vianda";
-      case DONACION_DINERO -> "donacion-dinero";
-      case DISTRIBUCION_VIANDAS -> "distribucion-viandas";
-      case HACERSE_CARGO_HELADERA -> "encargarse-de-heladeras";
-      case OFERTA_DE_PRODUCTOS -> "oferta-producto-servicio";
-      case REPARTO_DE_TARJETAS -> "registro-persona-vulnerable";
+      case DONACION_VIANDAS -> "/donacion-vianda";
+      case DONACION_DINERO -> "/donacion-dinero";
+      case DISTRIBUCION_VIANDAS -> "/distribucion-viandas";
+      case HACERSE_CARGO_HELADERA -> "/encargarse-de-heladeras";
+      case OFERTA_DE_PRODUCTOS -> "/oferta-producto-servicio";
+      case REPARTO_DE_TARJETAS -> "/registro-persona-vulnerable";
     };
   }
 
-  public static ColaboracionDTO toDTO(Object colaboracion) {
-
-    if (colaboracion instanceof DonacionVianda) {
-      return DonacionViandaDTO.preview((DonacionVianda) colaboracion);
-    } else if (colaboracion instanceof DonacionDinero) {
-      return DonacionDineroDTO.preview((DonacionDinero) colaboracion);
-    } else if (colaboracion instanceof DistribucionViandas) {
-      return DistribucionViandasDTO.preview((DistribucionViandas) colaboracion);
-    } else if (colaboracion instanceof HacerseCargoHeladera) {
-      return HacerseCargoHeladeraDTO.preview((HacerseCargoHeladera) colaboracion);
-    } else if (colaboracion instanceof OfertaDeProductos) {
-      return OfertaDeProductosDTO.preview((OfertaDeProductos) colaboracion);
-    } else if (colaboracion instanceof RepartoDeTarjetas) {
-      return RepartoDeTarjetasDTO.preview((RepartoDeTarjetas) colaboracion);
-    } else {
-      throw new IllegalArgumentException("Tipo de colaboración desconocido: " + colaboracion.getClass());
-    }
+  /**
+   * Obtiene una vista previa de la colaboración.
+   *
+   * @param colaboracion     colaboración
+   * @param tipoColaboracion tipo de colaboración
+   * @return DTO
+   */
+  public static ColaboracionDTO fromColaboracion(Object colaboracion,
+                                                 TipoColaboracion tipoColaboracion) {
+    return switch (tipoColaboracion) {
+      case DONACION_VIANDAS -> DonacionViandaDTO.fromColaboracion((DonacionVianda) colaboracion);
+      case DONACION_DINERO -> DonacionDineroDTO.fromColaboracion((DonacionDinero) colaboracion);
+      case DISTRIBUCION_VIANDAS ->
+          DistribucionViandasDTO.fromColaboracion((DistribucionViandas) colaboracion);
+      case HACERSE_CARGO_HELADERA ->
+          HacerseCargoHeladeraDTO.fromColaboracion((HacerseCargoHeladera) colaboracion);
+      case OFERTA_DE_PRODUCTOS ->
+          OfertaDeProductosDTO.fromColaboracion((OfertaDeProductos) colaboracion);
+      case REPARTO_DE_TARJETAS ->
+          RepartoDeTarjetasDTO.fromColaboracion((RepartoDeTarjetas) colaboracion);
+    };
   }
 }

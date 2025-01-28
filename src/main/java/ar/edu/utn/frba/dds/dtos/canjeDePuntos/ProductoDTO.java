@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.dtos.colaboraciones;
+package ar.edu.utn.frba.dds.dtos.canjeDePuntos;
 
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import lombok.Getter;

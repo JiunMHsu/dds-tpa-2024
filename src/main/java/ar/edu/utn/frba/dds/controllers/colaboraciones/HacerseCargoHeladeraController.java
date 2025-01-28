@@ -55,7 +55,7 @@ public class HacerseCargoHeladeraController extends ColaboradorRequired implemen
 
     Map<String, Object> model = new HashMap<>();
 
-    HacerseCargoHeladeraDTO hacerseCargoHeladeraDTO = HacerseCargoHeladeraDTO.completa(hacerseCargoHeladera.get());
+    HacerseCargoHeladeraDTO hacerseCargoHeladeraDTO = HacerseCargoHeladeraDTO.fromColaboracion(hacerseCargoHeladera.get());
     model.put("hacerse_cargo_heladera", hacerseCargoHeladeraDTO);
 
     context.render("colaboraciones/colaboracion_detalle.hbs", model);

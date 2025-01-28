@@ -55,7 +55,7 @@ public class DistribucionViandasController extends ColaboradorRequired implement
 
     Map<String, Object> model = new HashMap<>();
 
-    DistribucionViandasDTO distribucionViandasDTO = DistribucionViandasDTO.completa(distribucionViandas.get());
+    DistribucionViandasDTO distribucionViandasDTO = DistribucionViandasDTO.fromColaboracion(distribucionViandas.get());
     model.put("distribucion_viandas", distribucionViandasDTO);
 
     context.render("colaboraciones/colaboracion_detalle.hbs", model);

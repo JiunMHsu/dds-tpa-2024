@@ -35,32 +35,23 @@ public class ColaboracionController extends ColaboradorRequired {
   public void index(Context context) {
     Map<String, Object> model = new HashMap<>();
     Usuario usuario = usuarioFromSession(context);
+    List<ColaboracionDTO> colaboracionesRealizadas = new ArrayList<>();
 
     if (Objects.equals(usuario.getRol(), TipoRol.COLABORADOR)) {
-
       Colaborador colaborador = colaboradorFromSession(context);
-      List<Object> colaboracionesRealizadas = colaboracionService.buscarTodasPorColaborador(colaborador);
-
-      List<ColaboracionDTO> colaboracionesRealizadasDTO = colaboracionesRealizadas.stream()
-          .map(ColaboracionDTO::toDTO)
-          .toList();
+      colaboracionesRealizadas = colaboracionService.buscarTodasPorColaborador(colaborador);
 
       List<TipoColaboracionDTO> formasDeColaborar = colaborador.getFormasDeColaborar()
           .stream().map(TipoColaboracionDTO::redirectable)
           .toList();
 
-      model.put("colaboracionesRealizadas", colaboracionesRealizadasDTO);
       model.put("formasDeColaborar", formasDeColaborar);
       model.put("colaboradorId", colaborador.getId().toString());
     } else if (Objects.equals(usuario.getRol(), TipoRol.ADMIN)) {
-
-      List<Object> colaboraciones = this.colaboracionService.buscarTodas();
-      List<ColaboracionDTO> colaboracionDTOS = colaboraciones.stream()
-          .map(ColaboracionDTO::toDTO)
-          .toList();
-      model.put("colaboracionesRealizadas", colaboracionDTOS);
+      colaboracionesRealizadas = this.colaboracionService.buscarTodas();
     }
 
+    model.put("colaboracionesRealizadas", colaboracionesRealizadas);
     render(context, "colaboraciones/colaboraciones.hbs", model);
   }
 

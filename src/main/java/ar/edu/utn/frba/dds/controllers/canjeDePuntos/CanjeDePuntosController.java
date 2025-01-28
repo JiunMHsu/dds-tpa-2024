@@ -2,7 +2,7 @@ package ar.edu.utn.frba.dds.controllers.canjeDePuntos;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.canjeDePuntos.CanjeDePuntosDTO;
-import ar.edu.utn.frba.dds.dtos.colaboraciones.ProductoDTO;
+import ar.edu.utn.frba.dds.dtos.canjeDePuntos.ProductoDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.CanjeDePuntos;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;

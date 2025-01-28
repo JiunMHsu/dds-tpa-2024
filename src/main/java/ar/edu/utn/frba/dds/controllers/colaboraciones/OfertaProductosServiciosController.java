@@ -1,7 +1,6 @@
 package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
-import ar.edu.utn.frba.dds.dtos.colaboraciones.ColaboracionDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.OfertaDeProductosDTO;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
 import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
@@ -51,8 +50,8 @@ public class OfertaProductosServiciosController extends ColaboradorRequired impl
   public void index(Context context) { // TODO - Revisar
     List<OfertaDeProductos> productos = this.ofertaProductosServiciosService.buscarTodos();
 
-    List<ColaboracionDTO> ofertaDeProductosDTOS = productos.stream()
-        .map(OfertaDeProductosDTO::preview)
+    List<OfertaDeProductosDTO> ofertaDeProductosDTOS = productos.stream()
+        .map(OfertaDeProductosDTO::fromColaboracion)
         .toList();
 
     Map<String, Object> model = new HashMap<>();
@@ -63,21 +62,18 @@ public class OfertaProductosServiciosController extends ColaboradorRequired impl
   }
 
   @Override
-  public void show(Context context) { // TODO - Revisar
+  public void show(Context context) {
     String ofertaProductoId = context.pathParam("id");
-    Optional<OfertaDeProductos> ofertaDeProductos = this.ofertaProductosServiciosService.buscarPorId(ofertaProductoId);
 
-    if (ofertaDeProductos.isEmpty())
-      throw new ResourceNotFoundException("No se encontró ninguna oferta de producto/servicio para el colaborador con id " + ofertaProductoId);
+    OfertaDeProductos ofertaDeProductos = this.ofertaProductosServiciosService
+        .buscarPorId(ofertaProductoId)
+        .orElseThrow(ResourceNotFoundException::new);
 
+    OfertaDeProductosDTO ofertaDeProducto = OfertaDeProductosDTO.fromColaboracion(ofertaDeProductos);
 
     Map<String, Object> model = new HashMap<>();
-    OfertaDeProductosDTO ofertaDeProductosDTO = OfertaDeProductosDTO.completa(ofertaDeProductos.get());
-
-    model.put("oferta_producto_servicio", ofertaDeProductosDTO);
-
-    context.render("canje_de_puntos/producto_detalle.hbs", model);
-
+    model.put("oferta_producto_servicio", ofertaDeProducto);
+    render(context, "colaboraciones/oferta_prod_serv_detalle.hbs", model);
   }
 
   @Override

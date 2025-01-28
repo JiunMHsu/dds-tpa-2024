@@ -4,40 +4,27 @@ import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDinero;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.utils.DateTimeParser;
 import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 
+/**
+ * Donación de dinero DTO.
+ */
 @Getter
-@Setter
-@SuperBuilder
 public class DonacionDineroDTO extends ColaboracionDTO {
 
-  private String colaborador;
+  private final String monto;
 
-  private String monto;
-
-  private String frecuencia;
-
-  public static DonacionDineroDTO completa(DonacionDinero donacionDinero) {
-
-    return DonacionDineroDTO.builder()
-        .id(donacionDinero.getId().toString())
-        .nombre(TipoColaboracion.DONACION_DINERO.getDescription())
-        .fechaHora(DateTimeParser.parseFechaHora(donacionDinero.getFechaHora()))
-        .path(getPath(TipoColaboracion.DONACION_DINERO))
-        .colaborador(donacionDinero.getColaborador().getUsuario().getNombre())
-        .monto(donacionDinero.getMonto().toString())
-        .build();
+  private DonacionDineroDTO(DonacionDinero donacionDinero) {
+    super(donacionDinero.getId().toString(),
+        TipoColaboracion.DONACION_DINERO.getDescription(),
+        DateTimeParser.parseFechaHora(donacionDinero.getFechaHora()),
+        getPath(TipoColaboracion.DONACION_DINERO),
+        donacionDinero.getColaborador().getUsuario().getNombre()
+    );
+    this.monto = donacionDinero.getMonto().toString();
   }
 
-  public static ColaboracionDTO preview(DonacionDinero donacionDinero) {
-
-    return ColaboracionDTO.builder()
-        .id(donacionDinero.getId().toString())
-        .nombre(TipoColaboracion.DONACION_DINERO.getDescription())
-        .fechaHora(DateTimeParser.parseFechaHora(donacionDinero.getFechaHora()))
-        .path(getPath(TipoColaboracion.DONACION_DINERO))
-        .build();
+  public static DonacionDineroDTO fromColaboracion(DonacionDinero donacionDinero) {
+    return new DonacionDineroDTO(donacionDinero);
   }
 }
 
