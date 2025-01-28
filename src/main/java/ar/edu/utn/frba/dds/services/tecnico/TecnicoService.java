@@ -22,14 +22,14 @@ public class TecnicoService implements WithSimplePersistenceUnit {
 
   public Optional<Tecnico> buscarTecnicoPorCuit(String cuit) {
     if (cuit == null || cuit.isEmpty()) {
-      throw new IllegalArgumentException("El CUIT nueva un Tecnico no puede ser null o vacío");
+      throw new IllegalArgumentException("El CUIT de un Tecnico no puede ser null o vacío");
     }
     return this.tecnicoRepository.obtenerPorCuit(cuit);
   }
 
   public Optional<Tecnico> buscarTecnicoPorId(String id) {
     if (id == null) {
-      throw new IllegalArgumentException("El ID nueva un Tecnico no puede ser null");
+      throw new IllegalArgumentException("El ID de un Tecnico no puede ser null");
     }
     return this.tecnicoRepository.obtenerPorId(id);
   }

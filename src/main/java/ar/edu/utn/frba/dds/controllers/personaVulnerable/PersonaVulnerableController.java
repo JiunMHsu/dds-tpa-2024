@@ -50,7 +50,7 @@ public class PersonaVulnerableController extends ColaboradorRequired implements 
 
     Map<String, Object> model = new HashMap<>();
     model.put("personasVulnerables", personasVulnerablesDTO);
-    model.put("titulo", "Listado nueva Personas en Situacion Vulnerable");
+    model.put("titulo", "Listado de Personas en Situacion Vulnerable");
 
     // context.render("/colaboraciones/", model);
   }

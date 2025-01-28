@@ -4,13 +4,13 @@ import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.stateless.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.models.entities.mensaje.Mensaje;
 import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFallaHeladera;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.IColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.suscripcion.FallaHeladeraRepository;
+import ar.edu.utn.frba.dds.models.stateless.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.mensajeria.MensajeriaService;
 import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
@@ -88,7 +88,7 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
             "La %s ha sufrido un desperfecto.\n" +
             "Ocurrio un/a %s\n\n" +
             "Por favor, dirigirse a la heladera situada en: %s lo antes posible. \n\n" +
-            "Gracias nueva su rápida acción.",
+            "Gracias por su rápida acción.",
         tecnico.getNombre(),
         heladera.getNombre(),
         falla,
@@ -122,7 +122,7 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
             "Ocurrio un/a %s\n\n" +
             "Por favor, traslade las viandas a las siguientes heladeras sugeridas:\n\n" +
             "%s\n" +
-            "Gracias nueva su rápida acción.",
+            "Gracias por su rápida acción.",
         suscripcion.getColaborador().getNombre(),
         suscripcion.getHeladera().getNombre(),
         falla,

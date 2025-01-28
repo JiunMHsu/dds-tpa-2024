@@ -39,7 +39,7 @@ public class TipoColaboracionDTO {
       case DONACION_VIANDAS -> "Donar Vianda";
       case DONACION_DINERO -> "Donar Dinero";
       case DISTRIBUCION_VIANDAS -> "Distribuir Viandas";
-      case HACERSE_CARGO_HELADERA -> "Encargarse nueva Heladeras";
+      case HACERSE_CARGO_HELADERA -> "Encargarse de Heladeras";
       case OFERTA_DE_PRODUCTOS -> "Ofrecer Producto / Servicio";
       case REPARTO_DE_TARJETAS -> "Registrar Persona Vulnerable";
     };

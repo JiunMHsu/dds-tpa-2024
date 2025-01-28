@@ -14,10 +14,10 @@ import java.util.List;
 public class ValidadorDeContrasenias {
 
   /**
-   * Valida una clave según las recomendaciones de la Sección.
+   * Valida una contrasenia según las recomendaciones de la Sección.
    *
-   * @param unaClave clave a validar
-   * @return {@code true} si la clave es válida, {@code false} en caso contrario
+   * @param unaClave contrasenia a validar
+   * @return {@code true} si la contrasenia es válida, {@code false} en caso contrario
    */
   public boolean esValida(String unaClave) {
     return this.tieneMasDeOchoCaracteres(unaClave)

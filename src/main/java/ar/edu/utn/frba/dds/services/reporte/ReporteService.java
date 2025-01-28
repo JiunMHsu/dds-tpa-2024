@@ -65,7 +65,7 @@ public class ReporteService implements WithSimplePersistenceUnit {
 
     Map<String, Integer> viandasPorColaborador = new HashMap<>();
     for (DonacionVianda donacion : donaciones) {
-      // Tampoco es la forma más segura, habría que hacer nueva email o algo así
+      // Tampoco es la forma más segura, habría que hacer por email o algo así
       String key = donacion.getColaborador().getNombre() + " "
           + donacion.getColaborador().getApellido() + " "
           + donacion.getColaborador().getUsuario().getEmail();
@@ -111,13 +111,13 @@ public class ReporteService implements WithSimplePersistenceUnit {
     Map<String, Integer> donacionPorColaborador = this.donacionesPorColaborador();
     Map<String, Map<String, Integer>> movimientos = movimientosPorHeladera();
 
-    String pathReporteFalla = pdfGenerator.generateDocument("Fallas nueva Heladera", incidentesPorHeladera);
-    String reporteDonaciones = pdfGenerator.generateDocument("Viandas Donadas nueva Colaborador", donacionPorColaborador);
+    String pathReporteFalla = pdfGenerator.generateDocument("Fallas de Heladera", incidentesPorHeladera);
+    String reporteDonaciones = pdfGenerator.generateDocument("Viandas Donadas por Colaborador", donacionPorColaborador);
     String reporteMovimientos = pdfGenerator.generateDocumentWithSections("Movimiento de Viandas", movimientos);
 
     beginTransaction();
-    reporteRepository.guardar(Reporte.de("Fallas nueva Heladera", pathReporteFalla));
-    reporteRepository.guardar(Reporte.de("Viandas Donadas nueva Colaborador", reporteDonaciones));
+    reporteRepository.guardar(Reporte.de("Fallas de Heladera", pathReporteFalla));
+    reporteRepository.guardar(Reporte.de("Viandas Donadas por Colaborador", reporteDonaciones));
     reporteRepository.guardar(Reporte.de("Movimiento de Viandas", reporteMovimientos));
     commitTransaction();
 
@@ -130,7 +130,7 @@ public class ReporteService implements WithSimplePersistenceUnit {
 
   public Optional<Reporte> buscarPorId(String id) {
     if (id == null || id.isEmpty())
-      throw new IllegalArgumentException("El ID nueva la heladera no puede ser null o vacío");
+      throw new IllegalArgumentException("El ID de la heladera no puede ser null o vacío");
 
     return this.reporteRepository.buscarPorId(id);
   }

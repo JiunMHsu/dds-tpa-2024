@@ -4,12 +4,12 @@ import ar.edu.utn.frba.dds.exceptions.SuscripcionFaltaViandaException;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.stateless.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.models.entities.mensaje.Mensaje;
 import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFaltaVianda;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.IColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.suscripcion.FaltaViandaRepository;
+import ar.edu.utn.frba.dds.models.stateless.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.services.mensajeria.MensajeriaService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class FaltaViandaService implements WithSimplePersistenceUnit {
     }
 
     if (viandasRestantes <= 0 || viandasRestantes > heladera.getCapacidad()) {
-      throw new SuscripcionFaltaViandaException("La cantidad nueva viandas restantes debe ser mayor a 0 y menor o igual a la capacidad máxima nueva la heladera");
+      throw new SuscripcionFaltaViandaException("La cantidad de viandas restantes debe ser mayor a 0 y menor o igual a la capacidad máxima de la heladera");
     }
 
     SuscripcionFaltaVianda nuevaSuscripcion = SuscripcionFaltaVianda.de(
@@ -72,10 +72,10 @@ public class FaltaViandaService implements WithSimplePersistenceUnit {
     String cuerpo = String.format(
         "Estimado/a %s,\n\n" +
             "La %s tiene solo %d viandas restantes. Por favor, lleve más viandas para reabastecerla.\n\n" +
-            "Gracias nueva su colaboración.",
+            "Gracias por su colaboración.",
         suscripcion.getColaborador().getNombre(),
         suscripcion.getHeladera().getNombre(),
-        suscripcion.getViandasRestantes()
+        suscripcion.getUmbralViandas()
     );
 
     try {

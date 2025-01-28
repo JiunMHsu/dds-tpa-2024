@@ -75,7 +75,7 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
     boolean operationSuccess = false;
 
     try {
-      String contrasenia = context.formParamAsClass("clave", String.class).get();
+      String contrasenia = context.formParamAsClass("contrasenia", String.class).get();
       ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
 
       if (!validador.esValida(contrasenia)) {

@@ -40,7 +40,7 @@ public class HeladeraService implements WithSimplePersistenceUnit {
 
   public Optional<Heladera> buscarPorId(String id) {
     if (id == null || id.isEmpty())
-      throw new IllegalArgumentException("El ID nueva la heladera no puede ser null o vacío");
+      throw new IllegalArgumentException("El ID de la heladera no puede ser null o vacío");
 
     return this.heladeraRepository.buscarPorId(id);
   }
@@ -72,7 +72,7 @@ public class HeladeraService implements WithSimplePersistenceUnit {
 
   public boolean puedeConfigurar(Colaborador colaborador, Heladera heladera) {
     List<HacerseCargoHeladera> encargos = hacerseCargoHeladeraRepository.buscarPorColaborador(colaborador);
-    return encargos.stream().anyMatch(encargo -> encargo.getHeladeraACargo().equals(heladera));
+    return encargos.stream().anyMatch(encargo -> encargo.getHeladera().equals(heladera));
   }
 
   public void suscibirPara(Heladera heladera) {

@@ -27,7 +27,7 @@ public class Usuario extends EntidadPersistente {
   @Column(name = "nombre", nullable = false)
   private String nombre;
 
-  @Column(name = "clave", nullable = false)
+  @Column(name = "contrasenia", nullable = false)
   private String contrasenia;
 
   @Column(name = "email", unique = true, nullable = false)

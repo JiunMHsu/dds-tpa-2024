@@ -24,7 +24,7 @@ public class EmailSender implements ISender {
   private final String host;
   private final String port;
   private final String usuario;
-  private final String clave;
+  private final String contrasenia;
 
   /**
    * Constructor.
@@ -32,13 +32,13 @@ public class EmailSender implements ISender {
    * @param host          Email host.
    * @param port          Email port.
    * @param nombreUsuario Email user.
-   * @param clave         Email password.
+   * @param contrasenia   Email password.
    */
-  public EmailSender(String host, String port, String nombreUsuario, String clave) {
+  public EmailSender(String host, String port, String nombreUsuario, String contrasenia) {
     this.host = host;
     this.port = port;
     this.usuario = nombreUsuario;
-    this.clave = clave;
+    this.contrasenia = contrasenia;
   }
 
   /**
@@ -48,7 +48,7 @@ public class EmailSender implements ISender {
     this.host = AppProperties.getInstance().propertyFromName("EMAIL_HOST");
     this.port = AppProperties.getInstance().propertyFromName("EMAIL_PORT");
     this.usuario = AppProperties.getInstance().propertyFromName("EMAIL_USER");
-    this.clave = AppProperties.getInstance().propertyFromName("EMAIL_PASSWORD");
+    this.contrasenia = AppProperties.getInstance().propertyFromName("EMAIL_PASSWORD");
   }
 
   @Override
@@ -67,7 +67,7 @@ public class EmailSender implements ISender {
 
     Session session = Session.getInstance(props, new Authenticator() {
       protected PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication(usuario, clave);
+        return new PasswordAuthentication(usuario, contrasenia);
       }
     });
 

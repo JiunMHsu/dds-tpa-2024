@@ -83,11 +83,11 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
     boolean operationSuccess = false;
 
     try {
-      String contrasenia = context.formParamAsClass("clave", String.class).get();
+      String contrasenia = context.formParamAsClass("contrasenia", String.class).get();
       ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
 
       if (!validador.esValida(contrasenia)) {
-        throw new ValidationException("La contraseña no cumple por los requisitos de seguridad.");
+        throw new ValidationException("La contraseña no cumple con los requisitos de seguridad.");
       }
 
       Usuario usuario = Usuario.con(
@@ -145,11 +145,11 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
     boolean operationSuccess = false;
 
     try {
-      String contrasenia = context.formParamAsClass("clave", String.class).get();
+      String contrasenia = context.formParamAsClass("contrasenia", String.class).get();
       ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
 
       if (!validador.esValida(contrasenia)) {
-        throw new ValidationException("La contraseña no cumple por los requisitos de seguridad.");
+        throw new ValidationException("La contraseña no cumple con los requisitos de seguridad.");
       }
       Usuario usuario = Usuario.con(
           context.formParamAsClass("nombre_usuario", String.class).get(),
@@ -218,7 +218,7 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
     String pathId = context.pathParam("id");
     Colaborador colaborador = restrictByOwner(context, pathId);
 
-    List<TipoColaboracion> formasRegistradas = colaborador.getFormaDeColaborar();
+    List<TipoColaboracion> formasRegistradas = colaborador.getFormasDeColaborar();
     System.out.println(formasRegistradas);
     List<TipoColaboracion> formasPermitidas = colaborador.getTipoColaborador()
         .colaboracionesPermitidas();
@@ -248,7 +248,7 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
 
       System.out.println(colaboraciones);
 
-      colaborador.setFormaDeColaborar(colaboraciones);
+      colaborador.setFormasDeColaborar(colaboraciones);
       this.colaboradorService.actualizar(colaborador);
 
       operationSuccess = true;

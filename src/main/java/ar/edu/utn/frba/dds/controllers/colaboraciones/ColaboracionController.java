@@ -45,7 +45,7 @@ public class ColaboracionController extends ColaboradorRequired {
           .map(ColaboracionDTO::toDTO)
           .toList();
 
-      List<TipoColaboracionDTO> formasDeColaborar = colaborador.getFormaDeColaborar()
+      List<TipoColaboracionDTO> formasDeColaborar = colaborador.getFormasDeColaborar()
           .stream().map(TipoColaboracionDTO::redirectable)
           .toList();
 

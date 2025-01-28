@@ -36,7 +36,7 @@ public class SessionController {
 
     try {
       String email = context.formParamAsClass("email", String.class).get();
-      String claveIngresada = context.formParamAsClass("clave", String.class).get();
+      String claveIngresada = context.formParamAsClass("contrasenia", String.class).get();
 
       Usuario usuario = usuarioService.obtenerUsuarioPorEmail(email)
           .orElseThrow(InvalidFormParamException::new);

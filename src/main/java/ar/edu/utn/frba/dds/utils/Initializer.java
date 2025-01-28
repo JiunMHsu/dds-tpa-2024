@@ -147,7 +147,7 @@ public class Initializer implements WithSimplePersistenceUnit {
     Ubicacion u11 = new Ubicacion(-34.6393172975206, -58.36271557071799); // Caminito de la Boca
     Ubicacion u12 = new Ubicacion(-34.58138694779834, -58.42103364660331); // Plaza Italia
     Ubicacion u13 = new Ubicacion(-34.58329462979221, -58.39133076001772); // Facultad de Derecho
-    Ubicacion u14 = new Ubicacion(-34.60385381907532, -58.382421802790795); // Obelisco (nueva Av. Corrientes)
+    Ubicacion u14 = new Ubicacion(-34.60385381907532, -58.382421802790795); // Obelisco (por Av. Corrientes)
     Ubicacion u15 = new Ubicacion(-34.556405019747, -58.451607904832194); // Barrio Chino (Arribeños)
 
     Barrio b1 = new Barrio("Villa Lugano");
@@ -251,7 +251,7 @@ public class Initializer implements WithSimplePersistenceUnit {
         h5,
         LocalDateTime.of(2024, 8, 12, 14, 5),
         colaboradorRepository.buscarPorEmail("adomingueznimo@frba.utn.edu.ar").orElseThrow(),
-        "No funca el lector nueva tarjeta.",
+        "No funca el lector de tarjeta.",
         new Imagen("image-test.png"));
 
     Incidente i9 = Incidente.fallaTecnica(

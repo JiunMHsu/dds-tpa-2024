@@ -4,12 +4,12 @@ import ar.edu.utn.frba.dds.exceptions.SuscripcionHeladeraLlenaException;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.stateless.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.models.entities.mensaje.Mensaje;
 import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionHeladeraLlena;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.IColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.suscripcion.HeladeraLlenaRepository;
+import ar.edu.utn.frba.dds.models.stateless.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.services.mensajeria.MensajeriaService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.ArrayList;
@@ -65,16 +65,17 @@ public class HeladeraLlenaService implements WithSimplePersistenceUnit {
     }
   }
 
+  // TODO: Revisar
   public void notificacionHeladeraLlena(SuscripcionHeladeraLlena suscripcion) {
     String asunto = "Heladera casi llena";
     String cuerpo = String.format(
         "Estimado/a %s,\n\n" +
-            "La %s está a punto de llenarse, por solo espacio para %d viandas más. " +
+            "La %s está a punto de llenarse, queda solo espacio para %d viandas más. " +
             "Por favor, redistribuir algunas viandas a otras heladeras.\n\n" +
-            "Gracias nueva su colaboración.",
+            "Gracias por su colaboración.",
         suscripcion.getColaborador().getNombre(),
         suscripcion.getHeladera().getNombre(),
-        suscripcion.getEspacioRestante()
+        suscripcion.getUmbralEspacio()
     );
 
     try {
