@@ -1,19 +1,11 @@
 package ar.edu.utn.frba.dds.services.colaboraciones;
 
 import ar.edu.utn.frba.dds.dtos.colaboraciones.ColaboracionDTO;
-import ar.edu.utn.frba.dds.dtos.colaboraciones.DistribucionViandasDTO;
-import ar.edu.utn.frba.dds.dtos.colaboraciones.DonacionDineroDTO;
-import ar.edu.utn.frba.dds.dtos.colaboraciones.DonacionViandaDTO;
-import ar.edu.utn.frba.dds.dtos.colaboraciones.HacerseCargoHeladeraDTO;
-import ar.edu.utn.frba.dds.dtos.colaboraciones.OfertaDeProductosDTO;
-import ar.edu.utn.frba.dds.dtos.colaboraciones.RepartoDeTarjetasDTO;
 import ar.edu.utn.frba.dds.exceptions.CargaMasivaException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.ColaboracionPrevia;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDinero;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.HacerseCargoHeladera;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.RepartoDeTarjetas;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
@@ -50,7 +42,6 @@ import java.util.Map;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Servicio de colaboraciones.
@@ -63,8 +54,6 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
   private final DonacionViandaRepository donacionViandaRepository;
   private final DonacionDineroRepository donacionDineroRepository;
   private final DistribucionViandasRepository distribucionViandasRepository;
-  private final HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository;
-  private final OfertaDeProductosRepository ofertaDeProductosRepository;
   private final RepartoDeTarjetasRepository repartoDeTarjetasRepository;
 
   private final ISender mailSender;
@@ -102,8 +91,6 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
     this.donacionViandaRepository = donacionViandaRepository;
     this.donacionDineroRepository = donacionDineroRepository;
     this.distribucionViandasRepository = distribucionViandasRepository;
-    this.hacerseCargoHeladeraRepository = hacerseCargoHeladeraRepository;
-    this.ofertaDeProductosRepository = ofertaDeProductosRepository;
     this.repartoDeTarjetasRepository = repartoDeTarjetasRepository;
 
     this.mailSender = mailSender;
@@ -131,7 +118,7 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
 
     colaboracionRepositories.forEach((key, value) ->
         colaboraciones.addAll(value.buscarTodos()
-            .stream().map(c -> parseToDTO(key, c)).toList())
+            .stream().map(ColaboracionDTO::fromColaboracion).toList())
     );
 
     return colaboraciones;
@@ -149,43 +136,14 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
 
     colaboracionRepositories.forEach((key, value) ->
         colaboraciones.addAll(value.buscarPorColaborador(colaborador)
-            .stream().map(c -> parseToDTO(key, c)).toList()));
+            .stream().map(ColaboracionDTO::fromColaboracion).toList()));
 
     return colaboraciones;
   }
 
-  private ColaboracionDTO parseToDTO(@NotNull String repoKey, Object colaboracion) {
-    if (repoKey.equals(DonacionViandaRepository.class.getName())) {
-      return DonacionViandaDTO.fromColaboracion((DonacionVianda) colaboracion);
-    }
-
-    if (repoKey.equals(DonacionDineroRepository.class.getName())) {
-      return DonacionDineroDTO.fromColaboracion((DonacionDinero) colaboracion);
-    }
-
-    if (repoKey.equals(DistribucionViandasRepository.class.getName())) {
-      return DistribucionViandasDTO.fromColaboracion((DistribucionViandas) colaboracion);
-    }
-
-    if (repoKey.equals(HacerseCargoHeladeraRepository.class.getName())) {
-      return HacerseCargoHeladeraDTO.fromColaboracion((HacerseCargoHeladera) colaboracion);
-    }
-
-    if (repoKey.equals(OfertaDeProductosRepository.class.getName())) {
-      return OfertaDeProductosDTO.fromColaboracion((OfertaDeProductos) colaboracion);
-    }
-
-    if (repoKey.equals(RepartoDeTarjetasRepository.class.getName())) {
-      return RepartoDeTarjetasDTO.fromColaboracion((RepartoDeTarjetas) colaboracion);
-    }
-
-    return null;
-  }
-
-  // TODO: Revisar carga masiva
-
   /**
    * Carga masiva de colaboraciones.
+   * TODO: Revisar
    *
    * @param csv el archivo CSV
    * @throws CargaMasivaException en caso de error al cargar las colaboraciones

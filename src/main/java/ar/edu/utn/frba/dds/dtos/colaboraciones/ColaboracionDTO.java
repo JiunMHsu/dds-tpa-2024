@@ -39,23 +39,24 @@ public class ColaboracionDTO {
   /**
    * Obtiene una vista previa de la colaboración.
    *
-   * @param colaboracion     colaboración
-   * @param tipoColaboracion tipo de colaboración
+   * @param colaboracion colaboración
    * @return DTO
    */
-  public static ColaboracionDTO fromColaboracion(Object colaboracion,
-                                                 TipoColaboracion tipoColaboracion) {
-    return switch (tipoColaboracion) {
-      case DONACION_VIANDAS -> DonacionViandaDTO.fromColaboracion((DonacionVianda) colaboracion);
-      case DONACION_DINERO -> DonacionDineroDTO.fromColaboracion((DonacionDinero) colaboracion);
-      case DISTRIBUCION_VIANDAS ->
-          DistribucionViandasDTO.fromColaboracion((DistribucionViandas) colaboracion);
-      case HACERSE_CARGO_HELADERA ->
-          HacerseCargoHeladeraDTO.fromColaboracion((HacerseCargoHeladera) colaboracion);
-      case OFERTA_DE_PRODUCTOS ->
-          OfertaDeProductosDTO.fromColaboracion((OfertaDeProductos) colaboracion);
-      case REPARTO_DE_TARJETAS ->
-          RepartoDeTarjetasDTO.fromColaboracion((RepartoDeTarjetas) colaboracion);
-    };
+  public static ColaboracionDTO fromColaboracion(Object colaboracion) {
+    if (colaboracion instanceof DonacionVianda) {
+      return DonacionViandaDTO.fromColaboracion((DonacionVianda) colaboracion);
+    } else if (colaboracion instanceof DonacionDinero) {
+      return DonacionDineroDTO.fromColaboracion((DonacionDinero) colaboracion);
+    } else if (colaboracion instanceof DistribucionViandas) {
+      return DistribucionViandasDTO.fromColaboracion((DistribucionViandas) colaboracion);
+    } else if (colaboracion instanceof HacerseCargoHeladera) {
+      return HacerseCargoHeladeraDTO.fromColaboracion((HacerseCargoHeladera) colaboracion);
+    } else if (colaboracion instanceof OfertaDeProductos) {
+      return OfertaDeProductosDTO.fromColaboracion((OfertaDeProductos) colaboracion);
+    } else if (colaboracion instanceof RepartoDeTarjetas) {
+      return RepartoDeTarjetasDTO.fromColaboracion((RepartoDeTarjetas) colaboracion);
+    } else {
+      throw new IllegalArgumentException(colaboracion.getClass().getName() + " es inválido");
+    }
   }
 }
