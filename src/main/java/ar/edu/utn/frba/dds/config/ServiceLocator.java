@@ -66,6 +66,7 @@ import ar.edu.utn.frba.dds.services.heladera.AperturaHeladeraService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.heladera.RetiroDeViandaService;
 import ar.edu.utn.frba.dds.services.heladera.SolicitudDeAperturaService;
+import ar.edu.utn.frba.dds.services.heladera.SuscriptorSensorService;
 import ar.edu.utn.frba.dds.services.images.ImageService;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.mapa.MapService;
@@ -85,6 +86,9 @@ import ar.edu.utn.frba.dds.utils.RandomString;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Service locator.
+ */
 public class ServiceLocator {
 
   private static final Map<String, Object> instances = new HashMap<>();
@@ -93,8 +97,9 @@ public class ServiceLocator {
   public static <T> T instanceOf(Class<T> componentClass) {
     String componentName = componentClass.getName();
 
-    if (instances.containsKey(componentName))
+    if (instances.containsKey(componentName)) {
       return (T) instances.get(componentName);
+    }
 
     // =========================  UTILS =========================
 
@@ -305,6 +310,14 @@ public class ServiceLocator {
 
     // ========================= SERVICES =========================
 
+    if (componentName.equals(SuscriptorSensorService.class.getName())) {
+      SuscriptorSensorService instance = new SuscriptorSensorService(
+          instanceOf(HeladeraService.class),
+          instanceOf(BrokerMessageHandler.class),
+          instanceOf(ClienteMqtt.class));
+      instances.put(componentName, instance);
+    }
+
     if (componentName.equals(ImageService.class.getName())) {
       ImageService instance = new ImageService(instanceOf(RandomString.class));
       instances.put(componentName, instance);
@@ -313,8 +326,7 @@ public class ServiceLocator {
     if (componentName.equals(HeladeraService.class.getName())) {
       HeladeraService instance = new HeladeraService(
           instanceOf(HeladeraRepository.class),
-          instanceOf(HacerseCargoHeladeraRepository.class),
-          instanceOf(ClienteMqtt.class));
+          instanceOf(HacerseCargoHeladeraRepository.class));
       instances.put(componentName, instance);
     }
 

@@ -32,7 +32,7 @@ import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.TecnicoRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
-import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
+import ar.edu.utn.frba.dds.services.heladera.SuscriptorSensorService;
 import ar.edu.utn.frba.dds.services.mapa.MapService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDate;
@@ -361,7 +361,7 @@ public class Initializer implements WithSimplePersistenceUnit {
   }
 
   private void initializeMqttSubscribers() {
-    ServiceLocator.instanceOf(HeladeraService.class).iniciarSuscripciones();
+    ServiceLocator.instanceOf(SuscriptorSensorService.class).initialize();
   }
 
   private void cleanupDatabase() {
