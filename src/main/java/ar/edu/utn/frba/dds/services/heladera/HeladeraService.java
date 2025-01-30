@@ -109,8 +109,8 @@ public class HeladeraService implements WithSimplePersistenceUnit {
   }
 
   public void iniciarSuscripciones() {
-    buscarTodas()
-        .stream().filter(Heladera::estaActiva)
+    buscarTodas().parallelStream()
+        .filter(Heladera::estaActiva)
         .forEach(this::suscibirPara);
   }
 

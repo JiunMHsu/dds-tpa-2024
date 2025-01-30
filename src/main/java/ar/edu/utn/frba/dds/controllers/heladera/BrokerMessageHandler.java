@@ -1,8 +1,7 @@
 package ar.edu.utn.frba.dds.controllers.heladera;
 
-import ar.edu.utn.frba.dds.models.entities.heladera.AperturaHeladera;
+import ar.edu.utn.frba.dds.exceptions.AperturaDeHeladeraDenied;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.entities.heladera.RetiroDeVianda;
 import ar.edu.utn.frba.dds.models.entities.heladera.SolicitudDeApertura;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFallaHeladera;
@@ -18,7 +17,6 @@ import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -108,29 +106,31 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
   public void manejarSolicitudDeApertura(String codigoTarjeta, UUID heladeraId) {
     Heladera heladera = this.heladeraService.buscarPorId(heladeraId.toString());
 
-    Optional<SolicitudDeApertura> solicitudDeApertura = solicitudDeAperturaService.buscarPorTarjetaHeladeraEnLasUltimas(codigoTarjeta, heladera)
-        .stream()
-        .filter(solicitud -> this.aperturaHeladeraService.buscarPorSolicitud(solicitud).isEmpty()) //solicitudes que no tienen aperturas
-        .min(Comparator.comparing(SolicitudDeApertura::getFechaHora)); // obtengo la más vieja
-
-    if (solicitudDeApertura.isPresent()) {
-      AperturaHeladera aperturaHeladera = AperturaHeladera.por(solicitudDeApertura.get().getTarjeta(), solicitudDeApertura.get().getHeladera(), LocalDateTime.now(), solicitudDeApertura.get());
-      this.aperturaHeladeraService.guardar(aperturaHeladera);
-      System.out.println("no permito acceso");
-
-      //TODO debería registrar movimientos
-    } else {
-      Optional<TarjetaPersonaVulnerable> tarjetaPersonaVulnerable = tarjetaPersonaVulnerableService.buscarTarjetaPorCodigo(codigoTarjeta);
-
-      if (tarjetaPersonaVulnerable.isPresent()) {
-        RetiroDeVianda retiroDeVianda = RetiroDeVianda.por(tarjetaPersonaVulnerable.get(), heladera, LocalDateTime.now());
-        this.retiroDeViandaService.guardar(retiroDeVianda);
-        System.out.println("no permito acceso");
-      } else {
-        //TODO no se le da acceso para que abra la heladera
-        System.out.println("no permito acceso");
-      }
+    try {
+      tarjetaPersonaVulnerableService.buscarTarjetaPorCodigo(codigoTarjeta).ifPresentOrElse(
+          tarjeta -> manejarSolicitudPersonaVulnerable(tarjeta, heladera),
+          () -> manejarSolicitudColaborador(codigoTarjeta, heladera)
+      );
+    } catch (AperturaDeHeladeraDenied e) {
+      System.out.println("no se permite acceso");
     }
   }
 
+  private void manejarSolicitudPersonaVulnerable(TarjetaPersonaVulnerable tarjeta,
+                                                 Heladera healdera)
+      throws AperturaDeHeladeraDenied {
+    // TODO: Implementar
+  }
+
+  private void manejarSolicitudColaborador(String codigoTarjeta, Heladera heladera)
+      throws AperturaDeHeladeraDenied {
+
+    SolicitudDeApertura solicitudDeApertura = solicitudDeAperturaService.buscarPorTarjetaHeladeraEnLasUltimas(codigoTarjeta, heladera)
+        .stream()
+        .filter(solicitud -> this.aperturaHeladeraService.buscarPorSolicitud(solicitud).isEmpty()) //solicitudes que no tienen aperturas
+        .min(Comparator.comparing(SolicitudDeApertura::getFechaHora))
+        .orElseThrow(AperturaDeHeladeraDenied::new);
+
+    // TODO: Implementar
+  }
 }
