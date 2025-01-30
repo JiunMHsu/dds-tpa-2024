@@ -1,7 +1,6 @@
 package ar.edu.utn.frba.dds.controllers.personaVulnerable;
 
 import ar.edu.utn.frba.dds.dtos.personaVulnerable.PersonaVulnerableDTO;
-import ar.edu.utn.frba.dds.exceptions.PersonaVulnerableNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
 import ar.edu.utn.frba.dds.models.entities.data.Calle;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
@@ -118,7 +117,7 @@ public class PersonaVulnerableController extends ColaboradorRequired implements 
           context.formParamAsClass("menores_a_cargo", Integer.class).get()
       );
 
-      this.personaVulnerableService.actualizarPV(context.pathParam("id"), personaVulnerableActualizada);
+      this.personaVulnerableService.actualizarPersonaVulnerable(context.pathParam("id"), personaVulnerableActualizada);
 
       context.status(HttpStatus.OK).result("Persona vulnerable actualizada exitosamente");
     } catch (ValidationException e) {
@@ -126,16 +125,7 @@ public class PersonaVulnerableController extends ColaboradorRequired implements 
     }
   }
 
-
   @Override
   public void delete(Context context) {
-    String id = context.pathParam("id");
-    try {
-      this.tarjetaPersonaVulnerableService.eliminarTarjetaPorPersonaId(id);
-      this.personaVulnerableService.eliminarPV(context.pathParam("id"));
-      context.status(HttpStatus.OK).result("Persona vulnerable y su tarjeta asociada eliminadas exitosamente");
-    } catch (PersonaVulnerableNotFoundException e) {
-      context.status(HttpStatus.NOT_FOUND).result(e.getMessage());
-    }
   }
 }

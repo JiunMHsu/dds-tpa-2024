@@ -1,22 +1,34 @@
 package ar.edu.utn.frba.dds.services.heladera;
 
-import ar.edu.utn.frba.dds.models.entities.heladera.AperturaHeladera;
-import ar.edu.utn.frba.dds.models.entities.heladera.SolicitudDeApertura;
+import ar.edu.utn.frba.dds.models.entities.aperturaHeladera.AperturaHeladera;
+import ar.edu.utn.frba.dds.models.entities.aperturaHeladera.SolicitudDeApertura;
 import ar.edu.utn.frba.dds.models.repositories.heladera.AperturaHeladeraRepository;
-import java.util.Optional;
+import java.time.LocalDateTime;
 
+/**
+ * Servicio de apertura de heladera.
+ */
 public class AperturaHeladeraService {
+
   private final AperturaHeladeraRepository aperturaHeladeraRepository;
 
   public AperturaHeladeraService(AperturaHeladeraRepository aperturaHeladeraRepository) {
     this.aperturaHeladeraRepository = aperturaHeladeraRepository;
   }
 
-  public void guardar(AperturaHeladera apertura) {
+  /**
+   * Registra la apertura de una heladera.
+   *
+   * @param solicitudDeApertura Solicitud de apertura.
+   */
+  public void registrarApertura(SolicitudDeApertura solicitudDeApertura) {
+    AperturaHeladera apertura = AperturaHeladera.por(
+        solicitudDeApertura.getTarjeta(),
+        solicitudDeApertura.getHeladera(),
+        LocalDateTime.now(),
+        solicitudDeApertura
+    );
     this.aperturaHeladeraRepository.guardar(apertura);
   }
 
-  public Optional<AperturaHeladera> buscarPorSolicitud(SolicitudDeApertura solicitudDeApertura) {
-    return this.aperturaHeladeraRepository.buscarPorSolicitud(solicitudDeApertura);
-  }
 }

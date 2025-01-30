@@ -1,12 +1,15 @@
 package ar.edu.utn.frba.dds.controllers.heladera;
 
-import ar.edu.utn.frba.dds.exceptions.AperturaDeHeladeraDenied;
+import ar.edu.utn.frba.dds.exceptions.AperturaDeniedException;
+import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
+import ar.edu.utn.frba.dds.models.entities.aperturaHeladera.SolicitudDeApertura;
+import ar.edu.utn.frba.dds.models.entities.heladera.CantidadDeViandasException;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.entities.heladera.SolicitudDeApertura;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFallaHeladera;
 import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaPersonaVulnerable;
-import ar.edu.utn.frba.dds.services.heladera.AperturaHeladeraService;
+import ar.edu.utn.frba.dds.services.colaboraciones.DistribucionViandasService;
+import ar.edu.utn.frba.dds.services.colaboraciones.DonacionViandaService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.heladera.RetiroDeViandaService;
 import ar.edu.utn.frba.dds.services.heladera.SolicitudDeAperturaService;
@@ -15,7 +18,7 @@ import ar.edu.utn.frba.dds.services.suscripcion.FallaHeladeraService;
 import ar.edu.utn.frba.dds.services.tarjeta.TarjetaPersonaVulnerableService;
 import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
 import java.time.LocalDateTime;
-import java.util.Comparator;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,9 +30,10 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
   private final HeladeraService heladeraService;
   private final IncidenteService incidenteService;
   private final FallaHeladeraService fallaHeladeraService;
-  private final SolicitudDeAperturaService solicitudDeAperturaService;
   private final TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService;
-  private final AperturaHeladeraService aperturaHeladeraService;
+  private final SolicitudDeAperturaService solicitudDeAperturaService;
+  private final DistribucionViandasService distribucionViandasService;
+  private final DonacionViandaService donacionViandaService;
   private final RetiroDeViandaService retiroDeViandaService;
 
   /**
@@ -40,7 +44,6 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
    * @param fallaHeladeraService            Servicio de falla de heladera
    * @param solicitudDeAperturaService      Servicio de solicitud de apertura
    * @param tarjetaPersonaVulnerableService Servicio de tarjeta de persona vulnerable
-   * @param aperturaHeladeraService         Servicio de apertura de heladera
    * @param retiroDeViandaService           Servicio de retiro de vianda
    */
   public BrokerMessageHandler(HeladeraService heladeraService,
@@ -48,14 +51,16 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
                               FallaHeladeraService fallaHeladeraService,
                               SolicitudDeAperturaService solicitudDeAperturaService,
                               TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService,
-                              AperturaHeladeraService aperturaHeladeraService,
+                              DistribucionViandasService distribucionViandasService,
+                              DonacionViandaService donacionViandaService,
                               RetiroDeViandaService retiroDeViandaService) {
     this.heladeraService = heladeraService;
     this.incidenteService = incidenteService;
     this.fallaHeladeraService = fallaHeladeraService;
     this.solicitudDeAperturaService = solicitudDeAperturaService;
     this.tarjetaPersonaVulnerableService = tarjetaPersonaVulnerableService;
-    this.aperturaHeladeraService = aperturaHeladeraService;
+    this.distribucionViandasService = distribucionViandasService;
+    this.donacionViandaService = donacionViandaService;
     this.retiroDeViandaService = retiroDeViandaService;
   }
 
@@ -111,26 +116,40 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
           tarjeta -> manejarSolicitudPersonaVulnerable(tarjeta, heladera),
           () -> manejarSolicitudColaborador(codigoTarjeta, heladera)
       );
-    } catch (AperturaDeHeladeraDenied e) {
+    } catch (AperturaDeniedException e) {
       System.out.println("no se permite acceso");
     }
   }
 
   private void manejarSolicitudPersonaVulnerable(TarjetaPersonaVulnerable tarjeta,
                                                  Heladera healdera)
-      throws AperturaDeHeladeraDenied {
-    // TODO: Implementar
+      throws AperturaDeniedException {
+    try {
+      retiroDeViandaService.registrarRetiro(tarjeta, healdera);
+    } catch (Exception | CantidadDeViandasException e) {
+      throw new AperturaDeniedException();
+    }
   }
 
   private void manejarSolicitudColaborador(String codigoTarjeta, Heladera heladera)
-      throws AperturaDeHeladeraDenied {
+      throws AperturaDeniedException {
+    // TODO: estaVigente(3, ChronoUnit.HOURS) puede consumir de AppProperties
 
-    SolicitudDeApertura solicitudDeApertura = solicitudDeAperturaService.buscarPorTarjetaHeladeraEnLasUltimas(codigoTarjeta, heladera)
-        .stream()
-        .filter(solicitud -> this.aperturaHeladeraService.buscarPorSolicitud(solicitud).isEmpty()) //solicitudes que no tienen aperturas
-        .min(Comparator.comparing(SolicitudDeApertura::getFechaHora))
-        .orElseThrow(AperturaDeHeladeraDenied::new);
+    SolicitudDeApertura solicitudDeApertura = solicitudDeAperturaService
+        .buscarPorTarjetaHeladera(codigoTarjeta, heladera).stream()
+        .filter(s -> s.estaVigente(3, ChronoUnit.HOURS))
+        .findFirst()
+        .orElseThrow(AperturaDeniedException::new);
 
-    // TODO: Implementar
+    try {
+      switch (solicitudDeApertura.getMotivo()) {
+        case DISTRIBUCION_VIANDAS ->
+            distribucionViandasService.efectuarAperturaPara(solicitudDeApertura);
+        case DONACION_VIANDA -> donacionViandaService.efectuarAperturaPara(solicitudDeApertura);
+        default -> throw new IllegalStateException();
+      }
+    } catch (ResourceNotFoundException | CantidadDeViandasException e) {
+      throw new AperturaDeniedException();
+    }
   }
 }

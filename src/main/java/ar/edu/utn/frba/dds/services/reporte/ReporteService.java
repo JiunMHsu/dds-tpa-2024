@@ -1,8 +1,8 @@
 package ar.edu.utn.frba.dds.services.reporte;
 
+import ar.edu.utn.frba.dds.models.entities.aperturaHeladera.RetiroDeVianda;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
-import ar.edu.utn.frba.dds.models.entities.heladera.RetiroDeVianda;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.models.entities.reporte.Reporte;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;

@@ -9,6 +9,9 @@ import java.util.Optional;
 import java.util.UUID;
 import javax.persistence.NoResultException;
 
+/**
+ * Repositorio de Heladera.
+ */
 public class HeladeraRepository implements ICrudRepository<Heladera>, WithSimplePersistenceUnit {
 
   @Override
@@ -48,6 +51,12 @@ public class HeladeraRepository implements ICrudRepository<Heladera>, WithSimple
         .getResultList();
   }
 
+  /**
+   * Busca una heladera por su nombre.
+   *
+   * @param nombre Nombre de la heladera
+   * @return Heladera
+   */
   public Optional<Heladera> buscarPorNombre(String nombre) {
     try {
       return Optional.of(entityManager()
@@ -60,9 +69,17 @@ public class HeladeraRepository implements ICrudRepository<Heladera>, WithSimple
     }
   }
 
+  /**
+   * Busca las heladeras por barrio.
+   *
+   * @param barrio Barrio
+   * @return Lista de heladeras
+   */
   public List<Heladera> buscarPorBarrio(Barrio barrio) {
+    String query = "from Heladera h where h.alta = :alta and h.direccion.barrio = :barrio";
+
     return entityManager()
-        .createQuery("from Heladera h where h.alta = :alta and h.direccion.barrio = :barrio", Heladera.class)
+        .createQuery(query, Heladera.class)
         .setParameter("barrio", barrio)
         .setParameter("alta", true)
         .getResultList();

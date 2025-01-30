@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.services.personaVulnerable;
 
-import ar.edu.utn.frba.dds.exceptions.PersonaVulnerableNotFoundException;
+import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.personaVulnerable.PersonaVulnerable;
 import ar.edu.utn.frba.dds.models.repositories.personaVulnerable.PersonaVulnerableRepository;
 import java.util.List;
@@ -71,21 +71,17 @@ public class PersonaVulnerableService {
     // Deberia haber aplicar alguna logica sobre las tarjetas vinculadas a la PV?
   }
 
-  public void actualizarPV(String id, PersonaVulnerable personaVulnerableActualizada) {
-    Optional<PersonaVulnerable> personaExistente = this.personaVulnerableRepository.buscarPorId(id);
+  public void actualizarPersonaVulnerable(String id, PersonaVulnerable input) {
+    PersonaVulnerable personaVulnerable = personaVulnerableRepository
+        .buscarPorId(id).orElseThrow(ResourceNotFoundException::new);
 
-    if (personaExistente.isEmpty()) {
-      throw new PersonaVulnerableNotFoundException("Persona vulnerable con ID " + id + " no encontrada");
-    }
+    personaVulnerable.setNombre(input.getNombre());
+    personaVulnerable.setDocumento(input.getDocumento());
+    personaVulnerable.setFechaNacimiento(input.getFechaNacimiento());
+    personaVulnerable.setDomicilio(input.getDomicilio());
+    personaVulnerable.setMenoresACargo(input.getMenoresACargo());
 
-    PersonaVulnerable persona = personaExistente.get();
-    persona.setNombre(personaVulnerableActualizada.getNombre());
-    persona.setDocumento(personaVulnerableActualizada.getDocumento());
-    persona.setFechaNacimiento(personaVulnerableActualizada.getFechaNacimiento());
-    persona.setDomicilio(personaVulnerableActualizada.getDomicilio());
-    persona.setMenoresACargo(personaVulnerableActualizada.getMenoresACargo());
-
-    this.personaVulnerableRepository.guardar(persona);
+    this.personaVulnerableRepository.actualizar(personaVulnerable);
   }
 
 

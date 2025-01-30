@@ -1,5 +1,6 @@
-package ar.edu.utn.frba.dds.models.entities.heladera;
+package ar.edu.utn.frba.dds.models.entities.aperturaHeladera;
 
+import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaColaborador;
 import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import java.time.LocalDateTime;
@@ -47,6 +48,10 @@ public class SolicitudDeApertura extends EntidadPersistente {
   @Column(name = "operacion")
   private OperacionApertura operacion;
 
+  @Enumerated(EnumType.STRING)
+  @Column(name = "estado")
+  private EstadoSolicitud estado;
+
   /**
    * Crea una solicitud de apertura.
    *
@@ -61,7 +66,8 @@ public class SolicitudDeApertura extends EntidadPersistente {
                                         Heladera heladera,
                                         LocalDateTime fechaHora,
                                         MotivoApertura motivo,
-                                        OperacionApertura operacion) {
+                                        OperacionApertura operacion,
+                                        EstadoSolicitud estado) {
     return SolicitudDeApertura
         .builder()
         .tarjeta(tarjeta)
@@ -69,6 +75,7 @@ public class SolicitudDeApertura extends EntidadPersistente {
         .fechaHora(fechaHora)
         .motivo(motivo)
         .operacion(operacion)
+        .estado(estado)
         .build();
   }
 
@@ -86,7 +93,8 @@ public class SolicitudDeApertura extends EntidadPersistente {
         heladera,
         LocalDateTime.now(),
         MotivoApertura.DONACION_VIANDA,
-        OperacionApertura.INGRESO_VIANDAS
+        OperacionApertura.INGRESO_VIANDAS,
+        EstadoSolicitud.PENDIENTE
     );
   }
 
@@ -106,7 +114,8 @@ public class SolicitudDeApertura extends EntidadPersistente {
         heladera,
         LocalDateTime.now(),
         MotivoApertura.DISTRIBUCION_VIANDAS,
-        operacion
+        operacion,
+        EstadoSolicitud.PENDIENTE
     );
   }
 
@@ -118,6 +127,10 @@ public class SolicitudDeApertura extends EntidadPersistente {
    * @return {@code true} si la solicitud de apertura está vigente, {@code false} en caso contrario.
    */
   public boolean estaVigente(long cantTiempo, TemporalUnit unidad) {
+    if (this.estado.equals(EstadoSolicitud.COMPLETADA)) {
+      return false;
+    }
+
     return this.fechaHora.plus(cantTiempo, unidad).isAfter(LocalDateTime.now());
   }
 

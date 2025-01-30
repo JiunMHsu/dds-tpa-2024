@@ -1,5 +1,6 @@
-package ar.edu.utn.frba.dds.models.entities.heladera;
+package ar.edu.utn.frba.dds.models.entities.aperturaHeladera;
 
+import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaPersonaVulnerable;
 import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import java.time.LocalDateTime;
@@ -40,17 +41,15 @@ public class RetiroDeVianda extends EntidadPersistente {
    *
    * @param tarjetaPersonaVulnerable Tarjeta de la persona que retira la vianda.
    * @param heladera                 Heladera de la que se retira la vianda.
-   * @param fechaHora                Fecha y hora en la que se realizó el retiro.
    * @return Retiro de vianda creado.
    */
   public static RetiroDeVianda por(TarjetaPersonaVulnerable tarjetaPersonaVulnerable,
-                                   Heladera heladera,
-                                   LocalDateTime fechaHora) {
+                                   Heladera heladera) {
     return RetiroDeVianda
         .builder()
         .tarjetaPersonaVulnerable(tarjetaPersonaVulnerable)
         .heladera(heladera)
-        .fechaHora(fechaHora)
+        .fechaHora(LocalDateTime.now())
         .build();
   }
 }

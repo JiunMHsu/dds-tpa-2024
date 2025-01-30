@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.models.repositories.colaboracion;
 
+import ar.edu.utn.frba.dds.models.entities.aperturaHeladera.SolicitudDeApertura;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
-import ar.edu.utn.frba.dds.models.entities.heladera.SolicitudDeApertura;
 import java.util.Optional;
 
 /**

@@ -25,7 +25,6 @@ public class HeladeraService implements WithSimplePersistenceUnit {
    *
    * @param heladeraRepository             Repositorio de heladera
    * @param hacerseCargoHeladeraRepository Repositorio de hacerse cargo de heladera
-   * @param clienteMqtt                    Cliente MQTT
    */
   public HeladeraService(HeladeraRepository heladeraRepository,
                          HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository) {

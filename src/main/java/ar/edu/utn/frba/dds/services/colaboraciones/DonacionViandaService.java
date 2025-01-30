@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.services.colaboraciones;
 
+import ar.edu.utn.frba.dds.models.entities.aperturaHeladera.SolicitudDeApertura;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.vianda.ViandaRepository;
@@ -24,5 +25,9 @@ public class DonacionViandaService implements WithSimplePersistenceUnit {
 
   public Optional<DonacionVianda> buscarPorId(String id) {
     return donacionViandaRepository.buscarPorId(id);
+  }
+
+  // TODO: implementar
+  public void efectuarAperturaPara(SolicitudDeApertura solicitud) {
   }
 }

@@ -1,5 +1,6 @@
-package ar.edu.utn.frba.dds.models.entities.heladera;
+package ar.edu.utn.frba.dds.models.entities.aperturaHeladera;
 
+import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaColaborador;
 import ar.edu.utn.frba.dds.utils.EntidadPersistente;
 import java.time.LocalDateTime;
