@@ -3,7 +3,6 @@ package ar.edu.utn.frba.dds.controllers.colaborador;
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.TipoColaboracionDTO;
 import ar.edu.utn.frba.dds.dtos.colaborador.ColaboradorDTO;
-import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.exceptions.ValidationException;
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.Puntos;
@@ -266,9 +265,8 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
   private Colaborador restrictByOwner(Context context, String colaboradorId) {
     String userId = context.sessionAttribute("userId");
 
-    Colaborador colaborador = this.colaboradorService
-        .obtenerColaboradorPorID(colaboradorId)
-        .orElseThrow(ResourceNotFoundException::new);
+    Colaborador colaborador = this.colaboradorService.buscarPorId(colaboradorId)
+        .orElseThrow(UnauthorizedException::new);
 
     if (!Objects.equals(colaborador.getUsuario().getId().toString(), userId)) {
       throw new UnauthorizedException();

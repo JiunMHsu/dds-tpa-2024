@@ -6,7 +6,6 @@ import ar.edu.utn.frba.dds.models.entities.aperturaHeladera.SolicitudDeApertura;
 import ar.edu.utn.frba.dds.models.entities.heladera.CantidadDeViandasException;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
-import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFallaHeladera;
 import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaPersonaVulnerable;
 import ar.edu.utn.frba.dds.services.colaboraciones.DistribucionViandasService;
 import ar.edu.utn.frba.dds.services.colaboraciones.DonacionViandaService;
@@ -19,7 +18,6 @@ import ar.edu.utn.frba.dds.services.tarjeta.TarjetaPersonaVulnerableService;
 import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -100,10 +98,9 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
   }
 
   private void notificarPorFalla(Heladera heladera, Incidente incidente) {
-    List<SuscripcionFallaHeladera> suscripciones =
-        this.fallaHeladeraService.obtenerPorHeladera(heladera);
-
-    suscripciones.parallelStream()
+    fallaHeladeraService
+        .obtenerPorHeladera(heladera)
+        .parallelStream()
         .forEach(s -> fallaHeladeraService.notificacionFallaHeladera(s, incidente));
   }
 

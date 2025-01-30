@@ -410,6 +410,7 @@ public class ServiceLocator {
     if (componentName.equals(DistribucionViandasService.class.getName())) {
       DistribucionViandasService instance = new DistribucionViandasService(
           instanceOf(DistribucionViandasRepository.class),
+          instanceOf(ColaboradorRepository.class),
           instanceOf(HeladeraRepository.class),
           instanceOf(TarjetaColaboradorService.class),
           instanceOf(SolicitudDeAperturaService.class),
@@ -420,7 +421,12 @@ public class ServiceLocator {
     if (componentName.equals(DonacionViandaService.class.getName())) {
       DonacionViandaService instance = new DonacionViandaService(
           instanceOf(DonacionViandaRepository.class),
-          instanceOf(ViandaRepository.class));
+          instanceOf(ViandaRepository.class),
+          instanceOf(ColaboradorRepository.class),
+          instanceOf(HeladeraRepository.class),
+          instanceOf(TarjetaColaboradorService.class),
+          instanceOf(SolicitudDeAperturaService.class),
+          instanceOf(AperturaHeladeraService.class));
       instances.put(componentName, instance);
     }
 

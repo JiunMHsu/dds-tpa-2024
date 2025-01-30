@@ -85,14 +85,14 @@ public class DistribucionViandasController extends ColaboradorRequired {
     try {
       Colaborador colaborador = colaboradorFromSession(context);
 
-      CreateDistribucionViandasDTO input = new CreateDistribucionViandasDTO(
+      CreateDistribucionViandasDTO nuevaDistribucion = new CreateDistribucionViandasDTO(
           context.formParamAsClass("origen", String.class).get(),
           context.formParamAsClass("destino", String.class).get(),
           context.formParamAsClass("cantidad", Integer.class).get(),
           context.formParamAsClass("motivo", String.class).get()
       );
 
-      this.distribucionViandasService.registrarNuevaDistribucion(colaborador, input);
+      this.distribucionViandasService.registrarNuevaDistribucion(colaborador, nuevaDistribucion);
 
       operationSuccess = true;
       redirects.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));

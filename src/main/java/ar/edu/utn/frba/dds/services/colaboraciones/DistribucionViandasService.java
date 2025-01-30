@@ -12,6 +12,7 @@ import ar.edu.utn.frba.dds.models.entities.heladera.CantidadDeViandasException;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaColaborador;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.services.heladera.AperturaHeladeraService;
 import ar.edu.utn.frba.dds.services.heladera.SolicitudDeAperturaService;
@@ -24,6 +25,7 @@ import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 public class DistribucionViandasService implements WithSimplePersistenceUnit {
 
   private final DistribucionViandasRepository distribucionViandasRepository;
+  private final ColaboradorRepository colaboradorRepository;
   private final HeladeraRepository heladeraRepository;
   private final TarjetaColaboradorService tarjetaColaboradorService;
   private final SolicitudDeAperturaService solicitudDeAperturaService;
@@ -33,15 +35,20 @@ public class DistribucionViandasService implements WithSimplePersistenceUnit {
    * Constructor de DistribucionViandasService.
    *
    * @param distribucionViandasRepository Repositorio de Distribucion de Viandas
+   * @param colaboradorRepository         Repositorio de Colaborador
    * @param heladeraRepository            Repositorio de Heladera
+   * @param tarjetaColaboradorService     Servicio de Tarjeta de Colaborador
    * @param solicitudDeAperturaService    Servicio de Solicitud de Apertura
+   * @param aperturaHeladeraService       Servicio de Apertura de Heladera
    */
   public DistribucionViandasService(DistribucionViandasRepository distribucionViandasRepository,
+                                    ColaboradorRepository colaboradorRepository,
                                     HeladeraRepository heladeraRepository,
                                     TarjetaColaboradorService tarjetaColaboradorService,
                                     SolicitudDeAperturaService solicitudDeAperturaService,
                                     AperturaHeladeraService aperturaHeladeraService) {
     this.distribucionViandasRepository = distribucionViandasRepository;
+    this.colaboradorRepository = colaboradorRepository;
     this.heladeraRepository = heladeraRepository;
     this.tarjetaColaboradorService = tarjetaColaboradorService;
     this.solicitudDeAperturaService = solicitudDeAperturaService;
@@ -51,24 +58,24 @@ public class DistribucionViandasService implements WithSimplePersistenceUnit {
   /**
    * Registra una nueva distribución de viandas.
    *
-   * @param colaborador Colaborador
-   * @param input       DTO de la distribución de viandas
+   * @param colaborador       Colaborador
+   * @param nuevaDistribucion DTO de la distribución de viandas
    * @throws CantidadDeViandasException Excepción de cantidad de viandas
    * @throws ResourceNotFoundException  Excepción de recurso no encontrado
    */
   public void registrarNuevaDistribucion(Colaborador colaborador,
-                                         CreateDistribucionViandasDTO input)
+                                         CreateDistribucionViandasDTO nuevaDistribucion)
       throws CantidadDeViandasException, ResourceNotFoundException {
 
     Heladera heladeraOrigen = heladeraRepository
-        .buscarPorNombre(input.getHeladeraOrigen())
+        .buscarPorNombre(nuevaDistribucion.getHeladeraOrigen())
         .orElseThrow(ResourceNotFoundException::new);
 
     Heladera heladeraDestino = heladeraRepository
-        .buscarPorNombre(input.getHeladeraDestino())
+        .buscarPorNombre(nuevaDistribucion.getHeladeraDestino())
         .orElseThrow(ResourceNotFoundException::new);
 
-    Integer viandas = input.getCantViandas();
+    Integer viandas = nuevaDistribucion.getCantViandas();
 
     if (!heladeraDestino.puedeAgregarViandas(viandas)) {
       throw new CantidadDeViandasException();
@@ -88,18 +95,19 @@ public class DistribucionViandasService implements WithSimplePersistenceUnit {
         heladeraOrigen,
         heladeraDestino,
         viandas,
-        input.getMotivo(),
+        nuevaDistribucion.getMotivo(),
         solicitudHeladeraOrigen,
         solicitudHeladeraDestino
     );
 
     beginTransaction();
-    this.distribucionViandasRepository.guardar(distribucionViandas);
+    distribucionViandasRepository.guardar(distribucionViandas);
     commitTransaction();
   }
 
   /**
    * Busca una distribución de viandas por ID.
+   * Sirve para el show, borrar si no se va a implementar.
    *
    * @param id Id de la distribución de viandas
    * @return DTO de la distribución de viandas
@@ -112,10 +120,11 @@ public class DistribucionViandasService implements WithSimplePersistenceUnit {
   }
 
   /**
-   * Busca una distribución de viandas por solicitud de apeertura.
+   * Efectúa la apertura de una heladera para una distribución de viandas.
    *
    * @param solicitud la {@link SolicitudDeApertura} asociada
-   * @throws ResourceNotFoundException Excepción de recurso no encontrado
+   * @throws CantidadDeViandasException Excepción de cantidad de viandas
+   * @throws ResourceNotFoundException  Excepción de recurso no encontrado
    */
   public void efectuarAperturaPara(SolicitudDeApertura solicitud)
       throws CantidadDeViandasException, ResourceNotFoundException {
@@ -181,10 +190,12 @@ public class DistribucionViandasService implements WithSimplePersistenceUnit {
     heladera.agregarViandas(distribucionViandas.getViandas());
 
     distribucionViandas.setEstado(EstadoDistribucion.COMPLETADA);
+    distribucionViandas.getColaborador().invalidarPuntos();
 
     beginTransaction();
     heladeraRepository.actualizar(heladera);
     distribucionViandasRepository.actualizar(distribucionViandas);
+    colaboradorRepository.actualizar(distribucionViandas.getColaborador());
     solicitudDeAperturaService.completarSolicitud(solicitud);
     aperturaHeladeraService.registrarApertura(solicitud);
     commitTransaction();

@@ -29,7 +29,6 @@ public class HacerseCargoHeladeraController extends ColaboradorRequired implemen
   private final HacerseCargoHeladeraService hacerseCargoHeladeraService;
   private final HeladeraService heladeraService;
 
-
   public HacerseCargoHeladeraController(UsuarioService usuarioService,
                                         ColaboradorService colaboradorService,
                                         HacerseCargoHeladeraService hacerseCargoHeladeraService,
