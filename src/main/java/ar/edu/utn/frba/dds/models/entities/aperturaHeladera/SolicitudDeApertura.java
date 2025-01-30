@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Representa una solicitud de apertura de una {@link Heladera}.
@@ -48,6 +49,7 @@ public class SolicitudDeApertura extends EntidadPersistente {
   @Column(name = "operacion")
   private OperacionApertura operacion;
 
+  @Setter
   @Enumerated(EnumType.STRING)
   @Column(name = "estado")
   private EstadoSolicitud estado;

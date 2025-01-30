@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.services.heladera;
 
+import ar.edu.utn.frba.dds.models.entities.aperturaHeladera.EstadoSolicitud;
 import ar.edu.utn.frba.dds.models.entities.aperturaHeladera.MotivoApertura;
 import ar.edu.utn.frba.dds.models.entities.aperturaHeladera.OperacionApertura;
 import ar.edu.utn.frba.dds.models.entities.aperturaHeladera.SolicitudDeApertura;
@@ -69,6 +70,11 @@ public class SolicitudDeAperturaService {
 
     solicitudDeAperturaRepository.guardar(solicitud);
     return solicitud;
+  }
+  
+  public void completarSolicitud(SolicitudDeApertura solicitud) {
+    solicitud.setEstado(EstadoSolicitud.COMPLETADA);
+    solicitudDeAperturaRepository.actualizar(solicitud);
   }
 
 }

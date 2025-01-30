@@ -6,6 +6,7 @@ import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.aperturaHeladera.MotivoApertura;
 import ar.edu.utn.frba.dds.models.entities.aperturaHeladera.SolicitudDeApertura;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.EstadoDistribucion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.CantidadDeViandasException;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
@@ -100,7 +101,7 @@ public class DistribucionViandasService implements WithSimplePersistenceUnit {
   /**
    * Busca una distribución de viandas por ID.
    *
-   * @param id ID de la distribución de viandas
+   * @param id Id de la distribución de viandas
    * @return DTO de la distribución de viandas
    * @throws ResourceNotFoundException Excepción de recurso no encontrado
    */
@@ -139,19 +140,52 @@ public class DistribucionViandasService implements WithSimplePersistenceUnit {
     }
   }
 
-  // TODO
+  /**
+   * Maneja el retiro de viandas.
+   * Retirar viandas en una distribución de viandas implica que se abrió la heladera origen,
+   * y la distribución entra en proceso.
+   *
+   * @param solicitud           la {@link SolicitudDeApertura} asociada
+   * @param distribucionViandas la {@link DistribucionViandas} asociada
+   * @throws CantidadDeViandasException Excepción de cantidad de viandas
+   */
   private void manejarRetiroDeViandas(SolicitudDeApertura solicitud,
-                                      DistribucionViandas distribucionViandas) {
+                                      DistribucionViandas distribucionViandas)
+      throws CantidadDeViandasException {
+    Heladera heladera = distribucionViandas.getOrigen();
+    heladera.quitarViandas(distribucionViandas.getViandas());
+
+    distribucionViandas.setEstado(EstadoDistribucion.INICIADA);
+
     beginTransaction();
+    heladeraRepository.actualizar(heladera);
+    distribucionViandasRepository.actualizar(distribucionViandas);
+    solicitudDeAperturaService.completarSolicitud(solicitud);
     aperturaHeladeraService.registrarApertura(solicitud);
     commitTransaction();
   }
 
-  // TODO
-
+  /**
+   * Maneja el ingreso de viandas.
+   * Ingresar viandas en una distribución de viandas implica que se abrió la heladera destino,
+   * y la distribución se completa.
+   *
+   * @param solicitud           la {@link SolicitudDeApertura} asociada
+   * @param distribucionViandas la {@link DistribucionViandas} asociada
+   * @throws CantidadDeViandasException Excepción de cantidad de viandas
+   */
   private void manejarIngresoDeViandas(SolicitudDeApertura solicitud,
-                                       DistribucionViandas distribucionViandas) {
+                                       DistribucionViandas distribucionViandas)
+      throws CantidadDeViandasException {
+    Heladera heladera = distribucionViandas.getDestino();
+    heladera.agregarViandas(distribucionViandas.getViandas());
+
+    distribucionViandas.setEstado(EstadoDistribucion.COMPLETADA);
+
     beginTransaction();
+    heladeraRepository.actualizar(heladera);
+    distribucionViandasRepository.actualizar(distribucionViandas);
+    solicitudDeAperturaService.completarSolicitud(solicitud);
     aperturaHeladeraService.registrarApertura(solicitud);
     commitTransaction();
   }
