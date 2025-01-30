@@ -1,5 +1,8 @@
 package ar.edu.utn.frba.dds.broker;
 
+/**
+ * Interfaz de Cliente MQTT.
+ */
 public interface IClienteMqtt {
 
   void suscribirPara(ISuscriptorMqtt suscriptor);

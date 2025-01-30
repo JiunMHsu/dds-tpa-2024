@@ -32,7 +32,7 @@ public class SuscriptorSensor implements ISuscriptorMqtt {
    * @param brokerMessageHandler Handler de mensajes del broker
    * @param clienteMqtt          Cliente MQTT
    * @param topic                Tópico
-   * @param heladeraId           ID de la heladera
+   * @param heladeraId           Id de la heladera
    */
   public SuscriptorSensor(IBrokerMessageHandler brokerMessageHandler,
                           IClienteMqtt clienteMqtt,
