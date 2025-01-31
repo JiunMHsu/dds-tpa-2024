@@ -1,5 +1,10 @@
 package ar.edu.utn.frba.dds.models.stateless.mensajeria;
 
+import ar.edu.utn.frba.dds.models.stateless.mensajeria.mail.EmailSender;
+import ar.edu.utn.frba.dds.models.stateless.mensajeria.mail.SafeMailSender;
+import ar.edu.utn.frba.dds.models.stateless.mensajeria.telegram.TelegramSender;
+import ar.edu.utn.frba.dds.models.stateless.mensajeria.whatsApp.WhatsAppSender;
+
 /**
  * Factory class for creating ISender objects.
  */

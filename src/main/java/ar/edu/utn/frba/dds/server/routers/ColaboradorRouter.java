@@ -44,6 +44,10 @@ public class ColaboradorRouter implements IRouter {
 
         });
       });
+
+      path("/api", () -> {
+        post("/vincular-telegram", ServiceLocator.instanceOf(ColaboradorController.class)::registrarChatId, TipoRol.COLABORADOR);
+      });
     });
   }
 }

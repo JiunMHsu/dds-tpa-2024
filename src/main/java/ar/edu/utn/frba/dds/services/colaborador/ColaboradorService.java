@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.services.colaborador;
 
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.IColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.IUsuarioRepository;
@@ -62,5 +63,14 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
     }
 
     return this.colaboradorRepository.buscarPorId(id);
+  }
+
+  public void registrarChatId(Colaborador colaborador, String chatId) {
+    if (colaborador == null) {
+      throw new IllegalArgumentException("El colaborador no puede ser null");
+    }
+
+    colaborador.agregarContacto(Contacto.conTelegram(chatId));
+    this.colaboradorRepository.guardar(colaborador);
   }
 }
