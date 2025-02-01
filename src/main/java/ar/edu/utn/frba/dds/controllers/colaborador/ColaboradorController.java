@@ -282,5 +282,4 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
     // TODO: Implementar
 
   }
-
 }

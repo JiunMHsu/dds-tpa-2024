@@ -8,6 +8,7 @@ import ar.edu.utn.frba.dds.models.repositories.usuario.IUsuarioRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 public class ColaboradorService implements WithSimplePersistenceUnit {
 
@@ -65,10 +66,13 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
     return this.colaboradorRepository.buscarPorId(id);
   }
 
-  public void registrarChatId(Colaborador colaborador, String chatId) {
-    if (colaborador == null) {
-      throw new IllegalArgumentException("El colaborador no puede ser null");
-    }
+  /**
+   * Registra chatID correspondiente
+   *
+   * @param colaborador
+   * @param chatId
+   */
+  public void registrarChatId(@NotNull Colaborador colaborador, String chatId) {
 
     colaborador.agregarContacto(Contacto.conTelegram(chatId));
     this.colaboradorRepository.guardar(colaborador);
