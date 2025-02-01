@@ -54,7 +54,6 @@ import ar.edu.utn.frba.dds.models.repositories.vianda.ViandaRepository;
 import ar.edu.utn.frba.dds.models.stateless.mensajeria.SafeMailSender;
 import ar.edu.utn.frba.dds.models.stateless.mensajeria.SenderFactory;
 import ar.edu.utn.frba.dds.models.stateless.puntoDeColocacion.mock.PuntoDeColocacionAPIMock;
-import ar.edu.utn.frba.dds.reportes.RegistroMovimiento;
 import ar.edu.utn.frba.dds.services.canjeDePuntos.CanjeDePuntosService;
 import ar.edu.utn.frba.dds.services.colaboraciones.ColaboracionService;
 import ar.edu.utn.frba.dds.services.colaboraciones.DistribucionViandasService;
@@ -114,11 +113,6 @@ public class ServiceLocator {
 
     if (componentName.equals(RandomString.class.getName())) {
       RandomString instance = new RandomString();
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(RegistroMovimiento.class.getName())) {
-      RegistroMovimiento instance = RegistroMovimiento.getInstancia();
       instances.put(componentName, instance);
     }
 
@@ -293,6 +287,7 @@ public class ServiceLocator {
 
     if (componentName.equals(ReporteController.class.getName())) {
       ReporteController instance = new ReporteController(
+          instanceOf(UsuarioService.class),
           instanceOf(ReporteService.class));
       instances.put(componentName, instance);
     }

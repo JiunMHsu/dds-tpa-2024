@@ -13,6 +13,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
+/**
+ * PDF Generator implementation.
+ */
 public class PDFGenerator implements IPDFGenerator {
 
   private final String dir;

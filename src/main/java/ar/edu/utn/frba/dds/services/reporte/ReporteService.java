@@ -1,8 +1,10 @@
 package ar.edu.utn.frba.dds.services.reporte;
 
+import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.aperturaHeladera.RetiroDeVianda;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.EstadoDistribucion;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.models.entities.reporte.Reporte;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
@@ -21,10 +23,11 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import lombok.Builder;
+import org.jetbrains.annotations.NotNull;
 
-@Builder
+/**
+ * Servicio de reportes.
+ */
 public class ReporteService implements WithSimplePersistenceUnit {
 
   private final ReporteRepository reporteRepository;
@@ -33,6 +36,15 @@ public class ReporteService implements WithSimplePersistenceUnit {
   private final DistribucionViandasRepository distribucionViandasRepository;
   private final RetiroDeViandaRepository retiroDeViandaRepository;
 
+  /**
+   * Crea un servicio de reportes.
+   *
+   * @param reporteRepository             Repositorio de reportes.
+   * @param donacionViandaRepository      Repositorio de donaciones de viandas.
+   * @param incidenteRepository           Repositorio de incidentes.
+   * @param distribucionViandasRepository Repositorio de distribuciones de viandas.
+   * @param retiroDeViandaRepository      Repositorio de retiros de viandas.
+   */
   public ReporteService(ReporteRepository reporteRepository,
                         DonacionViandaRepository donacionViandaRepository,
                         IncidenteRepository incidenteRepository,
@@ -52,7 +64,9 @@ public class ReporteService implements WithSimplePersistenceUnit {
     Map<String, Integer> incidentesPorHeladera = new HashMap<>();
 
     for (Incidente incidente : incidentes) {
-      int cantidad = incidentesPorHeladera.getOrDefault(incidente.getHeladera().getNombre(), 0) + 1;
+      int cantidad = incidentesPorHeladera
+          .getOrDefault(incidente.getHeladera().getNombre(), 0) + 1;
+
       incidentesPorHeladera.put(incidente.getHeladera().getNombre(), cantidad);
     }
 
@@ -79,19 +93,41 @@ public class ReporteService implements WithSimplePersistenceUnit {
 
   private Map<String, Map<String, Integer>> movimientosPorHeladera() {
     LocalDateTime haceUnaSemana = LocalDateTime.now().minusWeeks(1);
-    List<DistribucionViandas> distribuciones = distribucionViandasRepository.buscarDesde(haceUnaSemana);
-    List<RetiroDeVianda> retiros = retiroDeViandaRepository.buscarAPartirDe(haceUnaSemana);
 
-    Map<String, Map<String, Integer>> movimientos = new HashMap<>();
+    List<DonacionVianda> donaciones = donacionViandaRepository
+        .buscarDesde(haceUnaSemana)
+        .stream().filter(DonacionVianda::getEsEntregada).toList();
+
+    List<DistribucionViandas> distribuciones = distribucionViandasRepository
+        .buscarDesde(haceUnaSemana)
+        .stream().filter(d -> d.getEstado().equals(EstadoDistribucion.COMPLETADA))
+        .toList();
+
+    List<RetiroDeVianda> retiros = retiroDeViandaRepository.buscarDesde(haceUnaSemana);
+
+    return getMovimientos(donaciones, distribuciones, retiros);
+  }
+
+  private static @NotNull Map<String, Map<String, Integer>> getMovimientos(
+      List<DonacionVianda> donaciones,
+      List<DistribucionViandas> distribuciones,
+      List<RetiroDeVianda> retiros) {
+
     Map<String, Integer> viandasAgregadas = new HashMap<>();
     Map<String, Integer> viandasQuitadas = new HashMap<>();
+
+    for (DonacionVianda donacion : donaciones) {
+      String key = donacion.getHeladera().getId().toString();
+      int entradas = viandasAgregadas.getOrDefault(key, 0) + 1;
+      viandasAgregadas.put(key, entradas);
+    }
 
     for (DistribucionViandas distribucion : distribuciones) {
       String key = distribucion.getOrigen().getId().toString();
 
-      int entradas = viandasAgregadas.getOrDefault(key, 0) + 1;
+      int entradas = viandasAgregadas.getOrDefault(key, 0) + distribucion.getViandas();
       viandasAgregadas.put(key, entradas);
-      int salidas = viandasQuitadas.getOrDefault(key, 0) + 1;
+      int salidas = viandasQuitadas.getOrDefault(key, 0) + distribucion.getViandas();
       viandasQuitadas.put(key, salidas);
     }
 
@@ -101,19 +137,37 @@ public class ReporteService implements WithSimplePersistenceUnit {
       viandasQuitadas.put(key, salidas);
     }
 
+    Map<String, Map<String, Integer>> movimientos = new HashMap<>();
+
     movimientos.put("Viandas Agregadas", viandasAgregadas);
     movimientos.put("Viandas Quitadas", viandasQuitadas);
     return movimientos;
   }
 
+  /**
+   * Genera un reporte semanal.
+   *
+   * @param pdfGenerator Generador de PDF.
+   */
   public void generarReporteSemanal(IPDFGenerator pdfGenerator) {
     Map<String, Integer> incidentesPorHeladera = this.incidentesPorHeladera();
     Map<String, Integer> donacionPorColaborador = this.donacionesPorColaborador();
     Map<String, Map<String, Integer>> movimientos = movimientosPorHeladera();
 
-    String pathReporteFalla = pdfGenerator.generateDocument("Fallas de Heladera", incidentesPorHeladera);
-    String reporteDonaciones = pdfGenerator.generateDocument("Viandas Donadas por Colaborador", donacionPorColaborador);
-    String reporteMovimientos = pdfGenerator.generateDocumentWithSections("Movimiento de Viandas", movimientos);
+    final String pathReporteFalla = pdfGenerator.generateDocument(
+        "Fallas de Heladera",
+        incidentesPorHeladera
+    );
+
+    final String reporteDonaciones = pdfGenerator.generateDocument(
+        "Viandas Donadas por Colaborador",
+        donacionPorColaborador
+    );
+
+    final String reporteMovimientos = pdfGenerator.generateDocumentWithSections(
+        "Movimiento de Viandas",
+        movimientos
+    );
 
     beginTransaction();
     reporteRepository.guardar(Reporte.de("Fallas de Heladera", pathReporteFalla));
@@ -124,17 +178,32 @@ public class ReporteService implements WithSimplePersistenceUnit {
     System.out.println("Reportes generados correctamente.");
   }
 
+  /**
+   * Busca todos los reportes.
+   *
+   * @return Lista de reportes.
+   */
   public List<Reporte> buscarTodas() {
     return this.reporteRepository.buscarTodos();
   }
 
-  public Optional<Reporte> buscarPorId(String id) {
-    if (id == null || id.isEmpty())
-      throw new IllegalArgumentException("El ID de la heladera no puede ser null o vacío");
-
-    return this.reporteRepository.buscarPorId(id);
+  /**
+   * Busca un reporte por ID.
+   *
+   * @param id Id del reporte.
+   * @return Reporte encontrado.
+   */
+  public Reporte buscarPorId(@NotNull String id) {
+    return this.reporteRepository.buscarPorId(id).orElseThrow(ResourceNotFoundException::new);
   }
 
+  /**
+   * Busca un reporte.
+   *
+   * @param reporte Reporte a buscar.
+   * @return InputStream del reporte.
+   * @throws FileNotFoundException Si no se encuentra el archivo.
+   */
   public InputStream buscarReporte(Reporte reporte) throws FileNotFoundException {
     Path path = Path.of(
         AppProperties.getInstance().propertyFromName("REPORT_DIR"),

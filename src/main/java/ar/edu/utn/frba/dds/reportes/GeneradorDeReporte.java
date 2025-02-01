@@ -6,6 +6,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Generador de reportes.
+ */
 public class GeneradorDeReporte {
 
   private final ReporteService reporteService;
@@ -16,6 +19,12 @@ public class GeneradorDeReporte {
     this.planificador = Executors.newScheduledThreadPool(1);
   }
 
+  /**
+   * Planifica la generación de reportes.
+   *
+   * @param frecuencia         Frecuencia de generación.
+   * @param unidadDeFrecuencia Unidad de frecuencia.
+   */
   public void planificar(int frecuencia, TimeUnit unidadDeFrecuencia) {
     String dir = AppProperties.getInstance().propertyFromName("REPORT_DIR");
     PDFGenerator generator = new PDFGenerator(dir);
