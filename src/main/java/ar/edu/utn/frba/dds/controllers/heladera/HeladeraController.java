@@ -88,7 +88,7 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
     try {
       Colaborador colaborador = colaboradorFromSession(context);
       puedeConfigurar = heladeraService.puedeConfigurar(colaborador, heladera);
-    } catch (NotColaboratorException e) {
+    } catch (UnauthorizedException e) {
       Usuario usuario = usuarioFromSession(context);
       puedeConfigurar = usuario.getRol().isAdmin();
     }

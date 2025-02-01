@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.dtos.heladera;
 
-import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.utils.DateTimeParser;
 import lombok.Builder;
@@ -48,7 +47,7 @@ public class HeladeraDTO {
   public static HeladeraDTO completa(Heladera heladera) {
 
     String direccionString = heladera.getDireccion().getCalle().getNombre() + " " + heladera.getDireccion().getAltura().toString();
-    String latitudLongitudString = String.valueOf(heladera.getDireccion().getUbicacion().getLatitud()) + ", " + String.valueOf(heladera.getDireccion().getUbicacion().getLongitud());
+    String latitudLongitudString = heladera.getDireccion().getUbicacion().getLatitud() + ", " + heladera.getDireccion().getUbicacion().getLongitud();
 
     String ultimaTempString = heladera.getUltimaTemperatura() != null
         ? heladera.getUltimaTemperatura().toString()
@@ -68,7 +67,7 @@ public class HeladeraDTO {
         .ultimaTemp(ultimaTempString)
         .temperaturaMaxima(heladera.getRangoTemperatura().getMaxima().toString())
         .temperaturaMinima(heladera.getRangoTemperatura().getMinima().toString())
-        .estaActiva(heladera.getEstado().equals(EstadoHeladera.ACTIVA))
+        .estaActiva(heladera.estaActiva())
         .build();
   }
 
@@ -84,6 +83,7 @@ public class HeladeraDTO {
         .latitud(String.valueOf(heladera.getDireccion().getUbicacion().getLatitud()))
         .longitud(String.valueOf(heladera.getDireccion().getUbicacion().getLongitud()))
         .cantViandas(heladera.getViandas().toString())
+        .estaActiva(heladera.estaActiva())
         .build();
 
   }

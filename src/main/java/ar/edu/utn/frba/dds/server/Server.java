@@ -37,6 +37,11 @@ public class Server {
           AuthMiddleware.apply(config.router);
           Routers.apply(config.router);
         })
+        .before(ctx -> {
+          ctx.res().setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+          ctx.res().setHeader("Pragma", "no-cache");
+          ctx.res().setHeader("Expires", "0");
+        })
         .error(HttpStatus.NOT_FOUND, context -> {
           throw new ResourceNotFoundException("Resource not found for endpoint " + context.path());
         })
