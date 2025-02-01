@@ -414,7 +414,8 @@ public class ServiceLocator {
       RepartoDeTarjetaService instance = new RepartoDeTarjetaService(
           instanceOf(RepartoDeTarjetaRepository.class),
           instanceOf(PersonaVulnerableRepository.class),
-          instanceOf(TarjetaPersonaVulnerableRepository.class));
+          instanceOf(TarjetaPersonaVulnerableRepository.class),
+          instanceOf(ColaboradorRepository.class));
       instances.put(componentName, instance);
     }
 

@@ -1,7 +1,6 @@
 package ar.edu.utn.frba.dds.services.colaboraciones;
 
 import ar.edu.utn.frba.dds.dtos.colaboraciones.ofertaDeProductos.CreateOfertaDeProductosDTO;
-import ar.edu.utn.frba.dds.dtos.colaboraciones.ofertaDeProductos.OfertaDeProductosDTO;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
@@ -83,23 +82,20 @@ public class OfertaProductosServiciosService implements WithSimplePersistenceUni
    * Busca una oferta de productos por su id.
    *
    * @param id Id de la oferta de productos.
-   * @return Devuelve la oferta de productos en DTO.
+   * @return Devuelve la oferta de productos.
    * @throws ResourceNotFoundException Si no se encuentra la oferta de productos.
    */
-  public OfertaDeProductosDTO buscarPorId(String id) {
-    return OfertaDeProductosDTO.fromColaboracion(
-        this.ofertaDeProductosRepository.buscarPorId(id).orElseThrow(ResourceNotFoundException::new)
-    );
+  public OfertaDeProductos buscarPorId(String id) {
+    return this.ofertaDeProductosRepository.buscarPorId(id)
+        .orElseThrow(ResourceNotFoundException::new);
   }
 
   /**
    * Busca todas las ofertas de productos.
-   * TODO: Revisar si hace falta (unused)
    *
-   * @return Devuelve una lista de ofertas de productos en DTO.
+   * @return Devuelve una lista de ofertas de productos
    */
-  public List<OfertaDeProductosDTO> buscarTodos() {
-    return this.ofertaDeProductosRepository.buscarTodos()
-        .stream().map(OfertaDeProductosDTO::fromColaboracion).toList();
+  public List<OfertaDeProductos> buscarTodos() {
+    return this.ofertaDeProductosRepository.buscarTodos();
   }
 }

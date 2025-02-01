@@ -52,8 +52,9 @@ public class OfertaProductosServiciosController extends ColaboradorRequired {
   public void show(Context context) {
     String ofertaProductoId = context.pathParam("id");
 
-    OfertaDeProductosDTO ofertaDeProducto = this.ofertaProductosServiciosService
-        .buscarPorId(ofertaProductoId);
+    OfertaDeProductosDTO ofertaDeProducto = OfertaDeProductosDTO.fromColaboracion(
+        this.ofertaProductosServiciosService.buscarPorId(ofertaProductoId)
+    );
 
     Map<String, Object> model = new HashMap<>();
     model.put("oferta_producto_servicio", ofertaDeProducto);

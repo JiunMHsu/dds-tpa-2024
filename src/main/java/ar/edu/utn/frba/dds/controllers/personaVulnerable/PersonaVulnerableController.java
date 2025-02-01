@@ -44,7 +44,7 @@ public class PersonaVulnerableController extends ColaboradorRequired implements 
     List<PersonaVulnerable> personasVulnerables = this.personaVulnerableService.buscarTodosPV();
 
     List<PersonaVulnerableDTO> personasVulnerablesDTO = personasVulnerables.stream()
-        .map(PersonaVulnerableDTO::completa)
+        .map(PersonaVulnerableDTO::fromPersonaVulnerable)
         .collect(Collectors.toList());
 
     Map<String, Object> model = new HashMap<>();

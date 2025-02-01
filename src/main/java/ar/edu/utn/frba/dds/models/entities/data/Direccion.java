@@ -78,6 +78,12 @@ public class Direccion {
    */
   @Override
   public String toString() {
-    return this.calle.getNombre() + " " + this.altura.toString() + ", " + this.barrio.getNombre();
+    String shortAddress = this.calle.getNombre() + " " + this.altura.toString();
+
+    if (this.barrio == null) {
+      return shortAddress;
+    }
+
+    return shortAddress + ", " + this.barrio.getNombre();
   }
 }

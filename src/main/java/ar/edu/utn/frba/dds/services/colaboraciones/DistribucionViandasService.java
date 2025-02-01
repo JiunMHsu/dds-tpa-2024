@@ -177,7 +177,7 @@ public class DistribucionViandasService implements WithSimplePersistenceUnit {
   /**
    * Maneja el ingreso de viandas.
    * Ingresar viandas en una distribución de viandas implica que se abrió la heladera destino,
-   * y la distribución se completa.
+   * y la distribución se fromPersonaVulnerable.
    *
    * @param solicitud           la {@link SolicitudDeApertura} asociada
    * @param distribucionViandas la {@link DistribucionViandas} asociada

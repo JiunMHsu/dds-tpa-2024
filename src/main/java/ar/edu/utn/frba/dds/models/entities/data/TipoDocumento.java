@@ -11,5 +11,14 @@ package ar.edu.utn.frba.dds.models.entities.data;
 public enum TipoDocumento {
   DNI,
   LC,
-  LE
+  LE;
+
+  @Override
+  public String toString() {
+    return switch (this) {
+      case DNI -> "Documento Nacional de Identidad";
+      case LC -> "Libreta Cívica";
+      case LE -> "Libreta de Enrolamiento";
+    };
+  }
 }

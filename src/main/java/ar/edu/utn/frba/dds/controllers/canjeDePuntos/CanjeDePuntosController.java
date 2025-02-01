@@ -3,7 +3,6 @@ package ar.edu.utn.frba.dds.controllers.canjeDePuntos;
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.canjeDePuntos.CanjeDePuntosDTO;
 import ar.edu.utn.frba.dds.dtos.canjeDePuntos.ProductoDTO;
-import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.CanjeDePuntos;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
@@ -45,20 +44,17 @@ public class CanjeDePuntosController extends ColaboradorRequired {
   }
 
   public void show(Context context) {
-
   }
 
   public void create(Context context) {
     Colaborador colaborador = colaboradorFromSession(context);
     double puntaje = this.canjeDePuntosService.getPuntosDeColaborador(colaborador);
 
-    List<OfertaDeProductos> productos = this.ofertaProductosServiciosService.buscarTodos();
-    List<ProductoDTO> productosDTOS = productos.stream()
-        .map(ProductoDTO::preview)
-        .toList();
+    List<ProductoDTO> productos = this.ofertaProductosServiciosService.buscarTodos()
+        .stream().map(ProductoDTO::preview).toList();
 
     Map<String, Object> model = new HashMap<>();
-    model.put("productos", productosDTOS);
+    model.put("productos", productos);
     model.put("puntaje", puntaje);
 
     render(context, "canje_de_puntos/canje_puntos_crear.hbs", model);
@@ -74,9 +70,7 @@ public class CanjeDePuntosController extends ColaboradorRequired {
       double puntaje = this.canjeDePuntosService.getPuntosDeColaborador(colaborador);
 
       String ofertaId = context.queryParam("oferta");
-      OfertaDeProductos oferta = ofertaProductosServiciosService.buscarPorId(ofertaId)
-          .orElseThrow(ResourceNotFoundException::new);
-
+      OfertaDeProductos oferta = ofertaProductosServiciosService.buscarPorId(ofertaId);
 
       double puntosRestantes = puntaje - oferta.getPuntosNecesarios();
       if (puntosRestantes < 0) {
