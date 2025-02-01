@@ -152,7 +152,8 @@ public class ServiceLocator {
           instanceOf(UsuarioService.class),
           instanceOf(ColaboradorService.class),
           instanceOf(HeladeraService.class),
-          instanceOf(PuntoColocacionService.class));
+          instanceOf(PuntoColocacionService.class),
+          instanceOf(MapService.class));
       instances.put(componentName, instance);
     }
 
@@ -545,8 +546,7 @@ public class ServiceLocator {
     }
 
     if (componentName.equals(MapService.class.getName())) {
-      MapService instance = new MapService(
-          instanceOf(HeladeraRepository.class));
+      MapService instance = new MapService();
       instances.put(componentName, instance);
     }
 

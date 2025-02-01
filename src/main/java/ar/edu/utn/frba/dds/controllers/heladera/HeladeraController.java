@@ -16,6 +16,7 @@ import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.permissions.ColaboradorRequired;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
+import ar.edu.utn.frba.dds.services.mapa.MapService;
 import ar.edu.utn.frba.dds.services.puntoColocacion.PuntoColocacionService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.AppProperties;
@@ -34,14 +35,26 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
 
   private final HeladeraService heladeraService;
   private final PuntoColocacionService puntoColocacionService;
+  private final MapService mapService;
 
+  /**
+   * Constructor.
+   *
+   * @param usuarioService         servicio de usuario
+   * @param colaboradorService     servicio de colaborador
+   * @param heladeraService        servicio de heladera
+   * @param puntoColocacionService servicio de punto de colocacion
+   * @param mapService             servicio de mapas
+   */
   public HeladeraController(UsuarioService usuarioService,
                             ColaboradorService colaboradorService,
                             HeladeraService heladeraService,
-                            PuntoColocacionService puntoColocacionService) {
+                            PuntoColocacionService puntoColocacionService,
+                            MapService mapService) {
     super(usuarioService, colaboradorService);
     this.heladeraService = heladeraService;
     this.puntoColocacionService = puntoColocacionService;
+    this.mapService = mapService;
   }
 
   @Override
@@ -217,6 +230,33 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
 
   @Override
   public void delete(Context context) {
+  }
+
+  /**
+   * Obtiene el GeoJSON de las heladeras.
+   *
+   * @param context contexto de la aplicacion
+   */
+  public void getGeoJson(Context context) {
+    List<String> ids = context.queryParams("id");
+    List<Heladera> heladeras = new ArrayList<>();
+
+    if (ids.isEmpty()) {
+      heladeras = this.heladeraService.buscarTodas();
+    } else {
+      for (String id : ids) {
+        try {
+          Heladera heladera = this.heladeraService.buscarPorId(id);
+          heladeras.add(heladera);
+        } catch (Exception e) {
+          // No se hace nada
+        }
+      }
+    }
+
+    String geoJson = this.mapService.generarGeoJson(heladeras);
+    context.contentType("application/json");
+    context.result(geoJson);
   }
 
   private Heladera heladeraFromPath(Context context) {

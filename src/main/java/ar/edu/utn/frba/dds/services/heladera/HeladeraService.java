@@ -44,7 +44,7 @@ public class HeladeraService implements WithSimplePersistenceUnit {
   /**
    * Busca una heladera por su ID.
    *
-   * @param id ID de la heladera
+   * @param id Id de la heladera
    * @return Heladera
    */
   public Heladera buscarPorId(@NotNull String id) {
