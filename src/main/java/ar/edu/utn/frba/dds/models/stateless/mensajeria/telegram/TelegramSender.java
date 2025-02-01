@@ -42,10 +42,15 @@ public class TelegramSender implements ISender {
       this.camelContext = new DefaultCamelContext();
       camelContext.addRoutes(new RouteBuilder() {
         @Override
-        public void configure() throws Exception {
-          from("telegram:bots?authorizationToken=" + authorizationToken)
+        public void configure() {
+          from("direct:sendToTelegram")
+              .setHeader("CamelTelegramChatId", simple("${header.chatId}"))
+              .toD("telegram:bots/?authorizationToken=" + authorizationToken);
+
+          from("telegram:bots/?authorizationToken=" + authorizationToken)
+              .log("Mensaje enviado a Telegram")
               .process(exchange -> {
-                String receivedChatId = ((Map<String, Object>) body.get("chat")).get("id").toString();
+                String receivedChatId = exchange.getIn().getHeader("CamelTelegramChatId", String.class);
 
                 if (receivedChatId != null) {
                   String backendUrl = "http://localhost:8081/api/vincular-telegram?chatId=" + receivedChatId;
@@ -56,12 +61,12 @@ public class TelegramSender implements ISender {
                   exchange.setProperty(Exchange.ROUTE_STOP, Boolean.TRUE);
                 }
               })
-              .to("http://localhost:8081/api/vincular-telegram?bridgeEndpoint=true");  // Línea restaurada
+              .to("http://localhost:8081/api/vincular-telegram?bridgeEndpoint=true");
         }
       });
+
       camelContext.start();
       this.producerTemplate = camelContext.createProducerTemplate();
-
     } catch (Exception e) {
       e.printStackTrace();
     }
