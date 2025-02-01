@@ -1,7 +1,9 @@
 package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
+import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.donacionDinero.DonacionDineroDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.donacionDinero.DonacionPeriodicaDTO;
+import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
@@ -10,7 +12,9 @@ import ar.edu.utn.frba.dds.services.colaboraciones.DonacionDineroService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import io.javalin.http.Context;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,27 +52,47 @@ public class DonacionDineroController extends ColaboradorRequired {
    * @param context Contexto de Javalin
    */
   public void create(Context context) {
+    Map<String, Object> model = new HashMap<>();
     Colaborador colaborador = colaboradorFromSession(context);
 
     if (!colaborador.puedeColaborar(TipoColaboracion.DONACION_DINERO)) {
       throw new UnauthorizedException("No tiene permiso");
     }
 
-    DonacionPeriodicaDTO donacionPeriodica = donacionDineroService
-        .buscarDonacionPeriodicaPorColaborador(colaborador);
-
-    Map<String, Object> model = new HashMap<>();
-    model.put("donacionPeriodica", donacionPeriodica);
-    render(context, "colaboraciones/donacion_dinero/donacion_dinero_crear.hbs", model);
+    try {
+      DonacionPeriodicaDTO donacionPeriodica = donacionDineroService
+          .buscarDonacionPeriodica(colaborador);
+      model.put("donacionPeriodica", donacionPeriodica);
+    } catch (ResourceNotFoundException e) {
+      model.put("donacionPeriodica", null);
+    } finally {
+      render(context, "colaboraciones/donacion_dinero/donacion_dinero_crear.hbs", model);
+    }
   }
 
   /**
    * Guarda una donación de dinero.
-   * TODO: Implementar
    *
    * @param context Contexto de Javalin
    */
   public void save(Context context) {
+    Colaborador colaborador = colaboradorFromSession(context);
 
+    if (!colaborador.puedeColaborar(TipoColaboracion.DONACION_DINERO)) {
+      throw new UnauthorizedException("No tiene permiso");
+    }
+
+    donacionDineroService.registrarDonacion(
+        colaborador,
+        context.formParamAsClass("monto", Integer.class).get()
+    );
+
+    List<RedirectDTO> redirects = new ArrayList<>();
+    redirects.add(new RedirectDTO("/colaboraciones", "Colaboraciones"));
+
+    Map<String, Object> model = new HashMap<>();
+    model.put("success", true);
+    model.put("redirects", redirects);
+    render(context, "post_result.hbs", model);
   }
 }

@@ -46,6 +46,7 @@ public class DonacionViandaController extends ColaboradorRequired {
    * @param context Contexto de Javalin
    */
   public void show(Context context) {
+    // model.put("donacionVianda", null);
     // render(context, "colaboraciones/donacion_vianda/donacion_vianda_detalle.hbs", model);
   }
 

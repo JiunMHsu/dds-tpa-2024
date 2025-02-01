@@ -3,7 +3,7 @@
 }
 
 .form {
-    grid-template-columns: 20rem 15rem;
+    grid-template-columns: 30rem;
 }
 
 .form-title {
@@ -16,5 +16,79 @@
 }
 
 .side-panel {
-    display: none;
+    width: 25%;
+    padding: 1rem;
+    border: none;
+}
+
+.card-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-container h3 {
+    width: 100%;
+    font-size: 1.5rem;
+    margin: 1rem 0;
+}
+
+.card {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    border-radius: .5rem;
+    color: var(--foreground-1);
+    background-color: var(--background-2);
+    border: 1px solid var(--background-3);
+
+    transition-property: all;
+    transition-duration: 300ms;
+}
+
+.card:hover {
+    color: var(--main-light-0);
+    background-color: var(--background-1);
+}
+
+.card p {
+    display: flex;
+    align-items: center;
+    margin: .1rem;
+    font-size: 1rem;
+}
+
+.card-detail-icon {
+    font-size: 1rem;
+    margin-right: .5rem;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: .3rem 1rem;
+    border-radius: .5rem;
+    background-color: var(--background-2);
+    border: 1px solid var(--background-3);
+
+    font-weight: 400;
+    color: var(--foreground-1);
+    text-decoration: none;
+
+    transition-property: all;
+    transition-duration: 300ms;
+}
+
+.button:hover {
+    color: var(--main-light-0);
+    text-shadow: 0 0 .1rem var(--main-light-0);
+    box-shadow: 0 0 1rem var(--background-3);
 }

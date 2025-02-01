@@ -71,7 +71,7 @@ public class SolicitudDeAperturaService {
     solicitudDeAperturaRepository.guardar(solicitud);
     return solicitud;
   }
-  
+
   public void completarSolicitud(SolicitudDeApertura solicitud) {
     solicitud.setEstado(EstadoSolicitud.COMPLETADA);
     solicitudDeAperturaRepository.actualizar(solicitud);

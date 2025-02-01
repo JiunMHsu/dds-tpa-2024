@@ -48,7 +48,9 @@ public abstract class ColaboracionRepository<T extends EntidadPersistente>
    */
   public List<T> buscarPorColaborador(Colaborador colaborador) {
     return entityManager()
-        .createQuery("from " + type.getName() + " c where c.alta = :alta and c.colaborador = :colaborador", type)
+        .createQuery("from "
+            + type.getName()
+            + " c where c.alta = :alta and c.colaborador = :colaborador", type)
         .setParameter("colaborador", colaborador)
         .setParameter("alta", true)
         .getResultList();
@@ -109,7 +111,7 @@ public abstract class ColaboracionRepository<T extends EntidadPersistente>
   /**
    * Busca una colaboración por ID.
    *
-   * @param id ID de la colaboración
+   * @param id Id de la colaboración
    * @return la colaboración, si existe
    */
   public Optional<T> buscarPorId(String id) {

@@ -16,5 +16,5 @@ import lombok.NoArgsConstructor;
 public class Barrio {
   @Column(name = "barrio_nombre")
   private String nombre;
-  
+
 }

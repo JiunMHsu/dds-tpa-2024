@@ -6,7 +6,7 @@ import java.time.Period;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,8 +25,8 @@ import lombok.Setter;
 @Table(name = "donacion_dinero_periodica")
 public class DonacionDineroPeriodica extends EntidadPersistente {
 
-  @ManyToOne
-  @JoinColumn(name = "colaborador_id", nullable = false)
+  @OneToOne
+  @JoinColumn(name = "colaborador_id", nullable = false, unique = true)
   private Colaborador colaborador;
 
   @Column(name = "monto", nullable = false)

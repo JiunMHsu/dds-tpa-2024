@@ -65,10 +65,6 @@ public class ColaboracionRouter implements IRouter {
             TipoRol.COLABORADOR);
 
         path("/{id}", () -> {
-          get(ServiceLocator.instanceOf(DonacionDineroPeriodicaController.class)::show,
-              TipoRol.COLABORADOR,
-              TipoRol.ADMIN);
-
           post(ServiceLocator.instanceOf(DonacionDineroPeriodicaController.class)::update,
               TipoRol.COLABORADOR);
 
@@ -131,7 +127,8 @@ public class ColaboracionRouter implements IRouter {
 
   private void routeOfertaProductoServicio() {
     path("/oferta-producto-servicio", () -> {
-      post(ServiceLocator.instanceOf(OfertaProductosServiciosController.class)::save, TipoRol.COLABORADOR);
+      post(ServiceLocator.instanceOf(OfertaProductosServiciosController.class)::save,
+          TipoRol.COLABORADOR);
 
       get("/new",
           ServiceLocator.instanceOf(OfertaProductosServiciosController.class)::create,

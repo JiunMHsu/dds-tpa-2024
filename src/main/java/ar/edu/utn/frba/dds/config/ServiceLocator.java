@@ -27,6 +27,7 @@ import ar.edu.utn.frba.dds.controllers.tecnico.VisitaTecnicaController;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.CanjeDePuntosRepository;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.VarianteDePuntosRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroPeriodicaRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladeraRepository;
@@ -94,6 +95,13 @@ public class ServiceLocator {
 
   private static final Map<String, Object> instances = new HashMap<>();
 
+  /**
+   * Get an instance of a component.
+   *
+   * @param componentClass Component class
+   * @param <T>            Component type
+   * @return Component instance
+   */
   @SuppressWarnings("unchecked")
   public static <T> T instanceOf(Class<T> componentClass) {
     String componentName = componentClass.getName();
@@ -438,6 +446,7 @@ public class ServiceLocator {
     if (componentName.equals(DonacionDineroService.class.getName())) {
       DonacionDineroService instance = new DonacionDineroService(
           instanceOf(DonacionDineroRepository.class),
+          instanceOf(DonacionDineroPeriodicaRepository.class),
           instanceOf(ColaboradorRepository.class));
       instances.put(componentName, instance);
     }
@@ -598,6 +607,11 @@ public class ServiceLocator {
 
     if (componentName.equals(DonacionDineroRepository.class.getName())) {
       DonacionDineroRepository instance = new DonacionDineroRepository();
+      instances.put(componentName, instance);
+    }
+
+    if (componentName.equals(DonacionDineroPeriodicaRepository.class.getName())) {
+      DonacionDineroPeriodicaRepository instance = new DonacionDineroPeriodicaRepository();
       instances.put(componentName, instance);
     }
 

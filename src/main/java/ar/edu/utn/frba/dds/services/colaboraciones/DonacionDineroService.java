@@ -6,13 +6,18 @@ import ar.edu.utn.frba.dds.dtos.colaboraciones.donacionDinero.DonacionPeriodicaD
 import ar.edu.utn.frba.dds.dtos.colaboraciones.donacionDinero.UpdateDonacionPeriodicaDTO;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
+import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDinero;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDineroPeriodica;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroPeriodicaRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.IColaboradorRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+import io.reactivex.annotations.Nullable;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.UUID;
 
 /**
  * Servicio de Donación de Dinero.
@@ -20,6 +25,7 @@ import java.time.Period;
 public class DonacionDineroService implements WithSimplePersistenceUnit {
 
   private final DonacionDineroRepository donacionDineroRepository;
+  private final DonacionDineroPeriodicaRepository donacionDineroPeriodicaRepository;
   private final IColaboradorRepository colaboradorRepository;
 
   /**
@@ -28,8 +34,11 @@ public class DonacionDineroService implements WithSimplePersistenceUnit {
    * @param repository            Repositorio de Donación de Dinero
    * @param colaboradorRepository Repositorio de Colaborador
    */
-  public DonacionDineroService(DonacionDineroRepository repository, IColaboradorRepository colaboradorRepository) {
+  public DonacionDineroService(DonacionDineroRepository repository,
+                               DonacionDineroPeriodicaRepository donacionDineroPeriodicaRepository,
+                               IColaboradorRepository colaboradorRepository) {
     this.donacionDineroRepository = repository;
+    this.donacionDineroPeriodicaRepository = donacionDineroPeriodicaRepository;
     this.colaboradorRepository = colaboradorRepository;
   }
 
@@ -69,7 +78,6 @@ public class DonacionDineroService implements WithSimplePersistenceUnit {
 
   /**
    * Registra una donación periódica.
-   * TODO: Implementar
    *
    * @param colaborador       Colaborador que realiza la donación
    * @param donacionPeriodica Datos de la donación periódica
@@ -84,6 +92,16 @@ public class DonacionDineroService implements WithSimplePersistenceUnit {
       case "YEAR" -> Period.ofYears(donacionPeriodica.getPeriodicidad());
       default -> throw new InvalidFormParamException();
     };
+
+    DonacionDineroPeriodica donacion = DonacionDineroPeriodica.por(
+        colaborador,
+        donacionPeriodica.getMonto(),
+        frecuencia
+    );
+
+    beginTransaction();
+    donacionDineroPeriodicaRepository.guardar(donacion);
+    commitTransaction();
   }
 
   /**
@@ -92,20 +110,50 @@ public class DonacionDineroService implements WithSimplePersistenceUnit {
    *
    * @param colaborador       Colaborador que realiza la donación
    * @param donacionPeriodica Datos de la donación periódica
+   * @throws UnauthorizedException si la donación a actualizar no corresponde al colaborador
    */
   public void actualizarDonacionPeriodica(Colaborador colaborador,
-                                          UpdateDonacionPeriodicaDTO donacionPeriodica) {
+                                          UpdateDonacionPeriodicaDTO donacionPeriodica)
+      throws UnauthorizedException {
+    DonacionDineroPeriodica donacion = donacionDineroPeriodicaRepository
+        .buscarPorId(donacionPeriodica.getId())
+        .orElseThrow(ResourceNotFoundException::new);
+
+    if (!donacion.getColaborador().equals(colaborador)) {
+      throw new UnauthorizedException();
+    }
   }
 
   /**
-   * Busca una donación periódica por el colaborador.
-   * TODO: Implementar
+   * Busca una donación periódica por colaborador.
    *
    * @param colaborador Colaborador
-   * @return Donación periódica en formato DTO, null si no existe
+   * @return Donación periódica en formato DTO
    */
-  public DonacionPeriodicaDTO buscarDonacionPeriodicaPorColaborador(Colaborador colaborador) {
-    return null;
+  public DonacionPeriodicaDTO buscarDonacionPeriodica(Colaborador colaborador)
+      throws ResourceNotFoundException {
+    return this.buscarDonacionPeriodica(colaborador, null);
+  }
+
+  /**
+   * Busca una donación periódica.
+   *
+   * @param colaborador Colaborador
+   * @param id          Id de la donación periódica
+   * @return Donación periódica en formato DTO
+   */
+  public DonacionPeriodicaDTO buscarDonacionPeriodica(Colaborador colaborador, @Nullable String id)
+      throws UnauthorizedException, ResourceNotFoundException {
+
+    DonacionDineroPeriodica donacion = donacionDineroPeriodicaRepository
+        .buscarPorColaborador(colaborador)
+        .orElseThrow(ResourceNotFoundException::new);
+
+    if (id != null && !UUID.fromString(id).equals(donacion.getId())) {
+      throw new UnauthorizedException();
+    }
+
+    return DonacionPeriodicaDTO.fromDonacionPeriodica(donacion);
   }
 
 }
