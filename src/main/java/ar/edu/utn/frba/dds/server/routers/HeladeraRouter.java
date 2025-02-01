@@ -9,22 +9,43 @@ import ar.edu.utn.frba.dds.controllers.heladera.HeladeraController;
 import ar.edu.utn.frba.dds.models.entities.usuario.TipoRol;
 import io.javalin.config.RouterConfig;
 
+/**
+ * Router de heladeras.
+ */
 public class HeladeraRouter implements IRouter {
-
   @Override
   public void apply(RouterConfig config) {
     config.apiBuilder(() -> {
       path("/heladeras", () -> {
-        get(ServiceLocator.instanceOf(HeladeraController.class)::index, TipoRol.COLABORADOR, TipoRol.ADMIN, TipoRol.TECNICO);
-        post(ServiceLocator.instanceOf(HeladeraController.class)::save, TipoRol.ADMIN);
+        get(ServiceLocator.instanceOf(HeladeraController.class)::index,
+            TipoRol.COLABORADOR,
+            TipoRol.ADMIN,
+            TipoRol.TECNICO);
 
-        get("/new", ServiceLocator.instanceOf(HeladeraController.class)::create, TipoRol.ADMIN);
+        post(ServiceLocator.instanceOf(HeladeraController.class)::save,
+            TipoRol.ADMIN);
+
+        get("/new", ServiceLocator.instanceOf(HeladeraController.class)::create,
+            TipoRol.ADMIN);
+
+        get("/locations", ServiceLocator.instanceOf(HeladeraController.class)::getGeoJson,
+            TipoRol.COLABORADOR,
+            TipoRol.ADMIN,
+            TipoRol.TECNICO);
 
         path("/{id}", () -> {
-          get(ServiceLocator.instanceOf(HeladeraController.class)::show, TipoRol.ADMIN, TipoRol.COLABORADOR, TipoRol.TECNICO);
-          post(ServiceLocator.instanceOf(HeladeraController.class)::update, TipoRol.ADMIN, TipoRol.COLABORADOR);
+          get(ServiceLocator.instanceOf(HeladeraController.class)::show,
+              TipoRol.ADMIN,
+              TipoRol.COLABORADOR,
+              TipoRol.TECNICO);
 
-          get("/edit", ServiceLocator.instanceOf(HeladeraController.class)::edit, TipoRol.ADMIN, TipoRol.COLABORADOR);
+          post(ServiceLocator.instanceOf(HeladeraController.class)::update,
+              TipoRol.ADMIN,
+              TipoRol.COLABORADOR);
+
+          get("/edit", ServiceLocator.instanceOf(HeladeraController.class)::edit,
+              TipoRol.ADMIN,
+              TipoRol.COLABORADOR);
         });
       });
     });

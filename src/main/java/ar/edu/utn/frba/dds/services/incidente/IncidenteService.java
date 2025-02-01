@@ -98,8 +98,6 @@ public class IncidenteService implements WithSimplePersistenceUnit {
       heladeraRepository.actualizar(incidente.getHeladera());
       incidenteRepository.guardar(incidente);
     });
-
-    mapService.crearGeoJson();
   }
 
   /**
@@ -123,8 +121,6 @@ public class IncidenteService implements WithSimplePersistenceUnit {
       heladeraRepository.actualizar(incidente.getHeladera());
       incidenteRepository.actualizar(incidente);
     });
-
-    mapService.crearGeoJson();
   }
 
   private boolean tieneOtroIncidentePendiente(Heladera heladera) {
