@@ -263,8 +263,7 @@ public class ServiceLocator {
       HacerseCargoHeladeraController instance = new HacerseCargoHeladeraController(
           instanceOf(UsuarioService.class),
           instanceOf(ColaboradorService.class),
-          instanceOf(HacerseCargoHeladeraService.class),
-          instanceOf(HeladeraService.class));
+          instanceOf(HacerseCargoHeladeraService.class));
       instances.put(componentName, instance);
     }
 
@@ -453,7 +452,9 @@ public class ServiceLocator {
 
     if (componentName.equals(HacerseCargoHeladeraService.class.getName())) {
       HacerseCargoHeladeraService instance = new HacerseCargoHeladeraService(
-          instanceOf(HacerseCargoHeladeraRepository.class));
+          instanceOf(HacerseCargoHeladeraRepository.class),
+          instanceOf(ColaboradorRepository.class),
+          instanceOf(HeladeraRepository.class));
       instances.put(componentName, instance);
     }
 

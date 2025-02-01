@@ -12,7 +12,7 @@ import lombok.Getter;
 @Getter
 public class HacerseCargoHeladeraDTO extends ColaboracionDTO {
 
-  private final String heladeraACargo;
+  private final String heladera;
 
   private HacerseCargoHeladeraDTO(HacerseCargoHeladera hacerseCargoHeladera) {
     super(hacerseCargoHeladera.getId().toString(),
@@ -21,10 +21,16 @@ public class HacerseCargoHeladeraDTO extends ColaboracionDTO {
         getPath(TipoColaboracion.HACERSE_CARGO_HELADERA),
         hacerseCargoHeladera.getColaborador().getUsuario().getNombre()
     );
-    this.heladeraACargo = hacerseCargoHeladera.getHeladera().getNombre();
+    this.heladera = hacerseCargoHeladera.getHeladera().getNombre();
   }
 
-  public static HacerseCargoHeladeraDTO fromColaboracion(HacerseCargoHeladera hacerseCargoHeladera) {
-    return new HacerseCargoHeladeraDTO(hacerseCargoHeladera);
+  /**
+   * Crea un DTO a partir de una colaboración de tipo HacerseCargoHeladera.
+   *
+   * @param colaboracion Colaboración de tipo HacerseCargoHeladera
+   * @return DTO
+   */
+  public static HacerseCargoHeladeraDTO fromColaboracion(HacerseCargoHeladera colaboracion) {
+    return new HacerseCargoHeladeraDTO(colaboracion);
   }
 }
