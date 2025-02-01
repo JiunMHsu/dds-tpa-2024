@@ -50,11 +50,11 @@ public class DistribucionViandasController extends ColaboradorRequired {
    */
   public void show(Context context) {
     String id = context.pathParam("id");
-    DistribucionViandasDTO dto = distribucionViandasService.buscarPorId(id);
+    DistribucionViandasDTO distribucion = distribucionViandasService.buscarPorId(id);
 
     Map<String, Object> model = new HashMap<>();
-    model.put("distribucion_viandas", dto);
-    render(context, "colaboraciones/colaboracion_detalle.hbs", model);
+    model.put("distribucion", distribucion);
+    render(context, "colaboraciones/distribucion_viandas/distribucion_viandas_detalle.hbs", model);
   }
 
   /**
@@ -69,7 +69,7 @@ public class DistribucionViandasController extends ColaboradorRequired {
       throw new UnauthorizedException("No tiene permiso");
     }
 
-    render(context, "colaboraciones/distribucion_viandas_crear.hbs");
+    render(context, "colaboraciones/distribucion_viandas/distribucion_viandas_crear.hbs");
   }
 
   /**

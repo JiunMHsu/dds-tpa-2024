@@ -5,6 +5,7 @@ import ar.edu.utn.frba.dds.controllers.canjeDePuntos.CanjeDePuntosController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.ColaboracionController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DistribucionViandasController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionDineroController;
+import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionDineroPeriodicaController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionViandaController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.HacerseCargoHeladeraController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.OfertaProductosServiciosController;
@@ -13,7 +14,6 @@ import ar.edu.utn.frba.dds.controllers.colaborador.ColaboradorController;
 import ar.edu.utn.frba.dds.controllers.heladera.BrokerMessageHandler;
 import ar.edu.utn.frba.dds.controllers.heladera.HeladeraController;
 import ar.edu.utn.frba.dds.controllers.heladera.PuntoDeColocacionController;
-import ar.edu.utn.frba.dds.controllers.heladera.SolicitudDeAperturaController;
 import ar.edu.utn.frba.dds.controllers.home.HomeController;
 import ar.edu.utn.frba.dds.controllers.incidente.AlertaController;
 import ar.edu.utn.frba.dds.controllers.incidente.FallaTecnicaController;
@@ -154,13 +154,6 @@ public class ServiceLocator {
       instances.put(componentName, instance);
     }
 
-    if (componentName.equals(SolicitudDeAperturaController.class.getName())) {
-      SolicitudDeAperturaController instance = new SolicitudDeAperturaController(
-          instanceOf(HeladeraService.class),
-          instanceOf(SolicitudDeAperturaService.class));
-      instances.put(componentName, instance);
-    }
-
     if (componentName.equals(IncidenteController.class.getName())) {
       IncidenteController instance = new IncidenteController(
           instanceOf(UsuarioService.class),
@@ -226,9 +219,18 @@ public class ServiceLocator {
 
     if (componentName.equals(DonacionDineroController.class.getName())) {
       DonacionDineroController instance = new DonacionDineroController(
-          instanceOf(DonacionDineroService.class),
           instanceOf(UsuarioService.class),
-          instanceOf(ColaboradorService.class));
+          instanceOf(ColaboradorService.class),
+          instanceOf(DonacionDineroService.class)
+      );
+      instances.put(componentName, instance);
+    }
+
+    if (componentName.equals(DonacionDineroPeriodicaController.class.getName())) {
+      DonacionDineroPeriodicaController instance = new DonacionDineroPeriodicaController(
+          instanceOf(UsuarioService.class),
+          instanceOf(ColaboradorService.class),
+          instanceOf(DonacionDineroService.class));
       instances.put(componentName, instance);
     }
 
@@ -435,7 +437,8 @@ public class ServiceLocator {
 
     if (componentName.equals(DonacionDineroService.class.getName())) {
       DonacionDineroService instance = new DonacionDineroService(
-          instanceOf(DonacionDineroRepository.class));
+          instanceOf(DonacionDineroRepository.class),
+          instanceOf(ColaboradorRepository.class));
       instances.put(componentName, instance);
     }
 

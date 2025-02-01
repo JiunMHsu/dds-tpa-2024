@@ -25,6 +25,13 @@ public class DonacionViandaController extends ColaboradorRequired {
 
   private final DonacionViandaService donacionViandaService;
 
+  /**
+   * Constructor de DonacionViandaController.
+   *
+   * @param usuarioService        Servicio de Usuario
+   * @param colaboradorService    Servicio de Colaborador
+   * @param donacionViandaService Servicio de Donación de Viandas
+   */
   public DonacionViandaController(UsuarioService usuarioService,
                                   ColaboradorService colaboradorService,
                                   DonacionViandaService donacionViandaService) {
@@ -32,8 +39,14 @@ public class DonacionViandaController extends ColaboradorRequired {
     this.donacionViandaService = donacionViandaService;
   }
 
-  // TODO: Implementar?
+  /**
+   * Muestra el detalle de una donación de vianda.
+   * TODO: Implementar
+   *
+   * @param context Contexto de Javalin
+   */
   public void show(Context context) {
+    // render(context, "colaboraciones/donacion_vianda/donacion_vianda_detalle.hbs", model);
   }
 
   /**
@@ -49,7 +62,7 @@ public class DonacionViandaController extends ColaboradorRequired {
       throw new UnauthorizedException();
     }
 
-    render(context, "colaboraciones/donacion_vianda_crear.hbs");
+    render(context, "colaboraciones/donacion_vianda/donacion_vianda_crear.hbs");
   }
 
   /**

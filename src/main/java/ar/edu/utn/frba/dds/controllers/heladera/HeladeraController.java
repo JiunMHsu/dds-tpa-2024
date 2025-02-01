@@ -27,18 +27,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Controlador para las operaciones sobre heladeras.
+ */
 public class HeladeraController extends ColaboradorRequired implements ICrudViewsHandler {
 
   private final HeladeraService heladeraService;
-  private final PuntoColocacionService puntoIdealService;
+  private final PuntoColocacionService puntoColocacionService;
 
   public HeladeraController(UsuarioService usuarioService,
                             ColaboradorService colaboradorService,
                             HeladeraService heladeraService,
-                            PuntoColocacionService puntoIdealService) {
+                            PuntoColocacionService puntoColocacionService) {
     super(usuarioService, colaboradorService);
     this.heladeraService = heladeraService;
-    this.puntoIdealService = puntoIdealService;
+    this.puntoColocacionService = puntoColocacionService;
   }
 
   @Override
@@ -95,7 +98,7 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
       Integer radio = context.queryParamAsClass("radio", Integer.class)
           .check(rad -> rad >= 0.0, "el radio debe ser positivo").get();
 
-      List<UbicacionDTO> ubicaciones = puntoIdealService
+      List<UbicacionDTO> ubicaciones = puntoColocacionService
           .obtenerPuntosDeColocacion(latitud, longitud, radio);
 
       Map<String, Object> model = new HashMap<>();

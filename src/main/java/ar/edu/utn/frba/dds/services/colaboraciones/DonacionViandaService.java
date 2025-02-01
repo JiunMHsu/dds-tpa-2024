@@ -12,7 +12,7 @@ import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaColaborador;
 import ar.edu.utn.frba.dds.models.entities.vianda.Vianda;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaRepository;
-import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaborador.IColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.vianda.ViandaRepository;
 import ar.edu.utn.frba.dds.services.heladera.AperturaHeladeraService;
@@ -28,7 +28,7 @@ public class DonacionViandaService implements WithSimplePersistenceUnit {
 
   private final DonacionViandaRepository donacionViandaRepository;
   private final ViandaRepository viandaRepository;
-  private final ColaboradorRepository colaboradorRepository;
+  private final IColaboradorRepository colaboradorRepository;
   private final HeladeraRepository heladeraRepository;
   private final TarjetaColaboradorService tarjetaColaboradorService;
   private final SolicitudDeAperturaService solicitudDeAperturaService;
@@ -47,7 +47,7 @@ public class DonacionViandaService implements WithSimplePersistenceUnit {
    */
   public DonacionViandaService(DonacionViandaRepository donacionViandaRepository,
                                ViandaRepository viandaRepository,
-                               ColaboradorRepository colaboradorRepository,
+                               IColaboradorRepository colaboradorRepository,
                                HeladeraRepository heladeraRepository,
                                TarjetaColaboradorService tarjetaColaboradorService,
                                SolicitudDeAperturaService solicitudDeAperturaService,

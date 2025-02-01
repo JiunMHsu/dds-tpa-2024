@@ -8,6 +8,7 @@ import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.ColaboracionController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DistribucionViandasController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionDineroController;
+import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionDineroPeriodicaController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionViandaController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.HacerseCargoHeladeraController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.OfertaProductosServiciosController;
@@ -54,6 +55,29 @@ public class ColaboracionRouter implements IRouter {
           ServiceLocator.instanceOf(DonacionDineroController.class)::show,
           TipoRol.COLABORADOR,
           TipoRol.ADMIN);
+
+      path("/periodica", () -> {
+        post(ServiceLocator.instanceOf(DonacionDineroPeriodicaController.class)::save,
+            TipoRol.COLABORADOR);
+
+        get("/new",
+            ServiceLocator.instanceOf(DonacionDineroPeriodicaController.class)::create,
+            TipoRol.COLABORADOR);
+
+        path("/{id}", () -> {
+          get(ServiceLocator.instanceOf(DonacionDineroPeriodicaController.class)::show,
+              TipoRol.COLABORADOR,
+              TipoRol.ADMIN);
+
+          post(ServiceLocator.instanceOf(DonacionDineroPeriodicaController.class)::update,
+              TipoRol.COLABORADOR);
+
+          get("/edit",
+              ServiceLocator.instanceOf(DonacionDineroPeriodicaController.class)::edit,
+              TipoRol.COLABORADOR);
+        });
+
+      });
     });
   }
 
