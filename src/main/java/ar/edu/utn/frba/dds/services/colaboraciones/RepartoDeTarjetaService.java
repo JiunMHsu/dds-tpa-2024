@@ -81,7 +81,7 @@ public class RepartoDeTarjetaService implements WithSimplePersistenceUnit {
 
     final RepartoDeTarjeta reparto = RepartoDeTarjeta
         .por(colaborador, LocalDateTime.now(), tarjeta, personaVulnerable);
-    
+
     colaborador.invalidarPuntos();
 
     beginTransaction();
