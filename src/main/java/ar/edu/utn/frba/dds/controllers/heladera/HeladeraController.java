@@ -16,7 +16,7 @@ import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.permissions.ColaboradorRequired;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
-import ar.edu.utn.frba.dds.services.puntoIdeal.PuntoIdealService;
+import ar.edu.utn.frba.dds.services.puntoColocacion.PuntoColocacionService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.AppProperties;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
@@ -30,12 +30,12 @@ import java.util.Map;
 public class HeladeraController extends ColaboradorRequired implements ICrudViewsHandler {
 
   private final HeladeraService heladeraService;
-  private final PuntoIdealService puntoIdealService;
+  private final PuntoColocacionService puntoIdealService;
 
   public HeladeraController(UsuarioService usuarioService,
                             ColaboradorService colaboradorService,
                             HeladeraService heladeraService,
-                            PuntoIdealService puntoIdealService) {
+                            PuntoColocacionService puntoIdealService) {
     super(usuarioService, colaboradorService);
     this.heladeraService = heladeraService;
     this.puntoIdealService = puntoIdealService;
@@ -96,8 +96,7 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
           .check(rad -> rad >= 0.0, "el radio debe ser positivo").get();
 
       List<UbicacionDTO> ubicaciones = puntoIdealService
-          .obtenerPuntosIdeales(latitud, longitud, radio)
-          .stream().map(UbicacionDTO::fromUbicacion).toList();
+          .obtenerPuntosDeColocacion(latitud, longitud, radio);
 
       Map<String, Object> model = new HashMap<>();
       model.put("puntosRecomendados", ubicaciones);

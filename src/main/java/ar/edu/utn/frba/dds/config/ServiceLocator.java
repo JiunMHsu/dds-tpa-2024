@@ -12,7 +12,7 @@ import ar.edu.utn.frba.dds.controllers.colaboraciones.RepartoDeTarjetaController
 import ar.edu.utn.frba.dds.controllers.colaborador.ColaboradorController;
 import ar.edu.utn.frba.dds.controllers.heladera.BrokerMessageHandler;
 import ar.edu.utn.frba.dds.controllers.heladera.HeladeraController;
-import ar.edu.utn.frba.dds.controllers.heladera.PuntoIdealController;
+import ar.edu.utn.frba.dds.controllers.heladera.PuntoDeColocacionController;
 import ar.edu.utn.frba.dds.controllers.heladera.SolicitudDeAperturaController;
 import ar.edu.utn.frba.dds.controllers.home.HomeController;
 import ar.edu.utn.frba.dds.controllers.incidente.AlertaController;
@@ -52,6 +52,7 @@ import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import ar.edu.utn.frba.dds.models.repositories.vianda.ViandaRepository;
 import ar.edu.utn.frba.dds.models.stateless.mensajeria.SafeMailSender;
 import ar.edu.utn.frba.dds.models.stateless.mensajeria.SenderFactory;
+import ar.edu.utn.frba.dds.models.stateless.puntoDeColocacion.mock.PuntoDeColocacionAPIMock;
 import ar.edu.utn.frba.dds.reportes.RegistroMovimiento;
 import ar.edu.utn.frba.dds.services.canjeDePuntos.CanjeDePuntosService;
 import ar.edu.utn.frba.dds.services.colaboraciones.ColaboracionService;
@@ -72,7 +73,7 @@ import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.mapa.MapService;
 import ar.edu.utn.frba.dds.services.mensajeria.MensajeriaService;
 import ar.edu.utn.frba.dds.services.personaVulnerable.PersonaVulnerableService;
-import ar.edu.utn.frba.dds.services.puntoIdeal.PuntoIdealService;
+import ar.edu.utn.frba.dds.services.puntoColocacion.PuntoColocacionService;
 import ar.edu.utn.frba.dds.services.reporte.ReporteService;
 import ar.edu.utn.frba.dds.services.suscripcion.FallaHeladeraService;
 import ar.edu.utn.frba.dds.services.suscripcion.FaltaViandaService;
@@ -149,7 +150,7 @@ public class ServiceLocator {
           instanceOf(UsuarioService.class),
           instanceOf(ColaboradorService.class),
           instanceOf(HeladeraService.class),
-          instanceOf(PuntoIdealService.class));
+          instanceOf(PuntoColocacionService.class));
       instances.put(componentName, instance);
     }
 
@@ -202,8 +203,8 @@ public class ServiceLocator {
       instances.put(componentName, instance);
     }
 
-    if (componentName.equals(PuntoIdealController.class.getName())) {
-      PuntoIdealController instance = new PuntoIdealController();
+    if (componentName.equals(PuntoDeColocacionController.class.getName())) {
+      PuntoDeColocacionController instance = new PuntoDeColocacionController();
       instances.put(componentName, instance);
     }
 
@@ -367,8 +368,10 @@ public class ServiceLocator {
       instances.put(componentName, instance);
     }
 
-    if (componentName.equals(PuntoIdealService.class.getName())) {
-      PuntoIdealService instance = new PuntoIdealService();
+    if (componentName.equals(PuntoColocacionService.class.getName())) {
+      PuntoColocacionService instance = new PuntoColocacionService(
+          new PuntoDeColocacionAPIMock()
+      );
       instances.put(componentName, instance);
     }
 

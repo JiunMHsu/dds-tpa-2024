@@ -3,7 +3,7 @@ package ar.edu.utn.frba.dds.controllers.heladera;
 import io.javalin.http.Context;
 import io.javalin.validation.ValidationException;
 
-public class PuntoIdealController {
+public class PuntoDeColocacionController {
 
   public void create(Context context) {
     try {
