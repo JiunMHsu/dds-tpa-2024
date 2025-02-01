@@ -254,8 +254,7 @@ public class ServiceLocator {
       OfertaProductosServiciosController instance = new OfertaProductosServiciosController(
           instanceOf(UsuarioService.class),
           instanceOf(ColaboradorService.class),
-          instanceOf(OfertaProductosServiciosService.class),
-          instanceOf(ImageService.class));
+          instanceOf(OfertaProductosServiciosService.class));
       instances.put(componentName, instance);
     }
 
@@ -460,8 +459,9 @@ public class ServiceLocator {
 
     if (componentName.equals(OfertaProductosServiciosService.class.getName())) {
       OfertaProductosServiciosService instance = new OfertaProductosServiciosService(
-          instanceOf(OfertaDeProductosRepository.class)
-      );
+          instanceOf(OfertaDeProductosRepository.class),
+          instanceOf(ColaboradorRepository.class),
+          instanceOf(ImageService.class));
       instances.put(componentName, instance);
     }
 

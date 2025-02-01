@@ -2,7 +2,6 @@ package ar.edu.utn.frba.dds.services.images;
 
 import ar.edu.utn.frba.dds.utils.AppProperties;
 import ar.edu.utn.frba.dds.utils.RandomString;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -16,6 +15,11 @@ public class ImageService {
 
   private final RandomString randomString;
 
+  /**
+   * Constructor.
+   *
+   * @param randomString Servicio para generar strings aleatorios.
+   */
   public ImageService(RandomString randomString) {
     this.randomString = randomString;
   }
@@ -41,10 +45,6 @@ public class ImageService {
 
     Files.copy(imagen, path, StandardCopyOption.REPLACE_EXISTING);
     return fileName;
-  }
-
-  public File obtenerImagen(String nombre) {
-    return null;
   }
 
 }
