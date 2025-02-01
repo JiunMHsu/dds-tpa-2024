@@ -1,0 +1,335 @@
+{
+    "features": [
+        {
+            "geometry": {
+                "coordinates": [
+                    -58.45626500682845,
+                    -34.562359819003255
+                ],
+                "type": "Point"
+            },
+            "type": "Feature",
+            "properties": {
+                "barrio": "Belgrano",
+                "disponibilidad": 44,
+                "altura": 2061,
+                "calle": "Avenida Cabildo",
+                "name": "Heladera SEIS",
+                "temperatura_min": -4,
+                "id": "02384768-a945-4306-98f1-10b5aa41c46b",
+                "isActive": 0,
+                "temperatura_max": 4,
+                "capacidad": 60
+            }
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    -58.38577280188418,
+                    -34.60400600198791
+                ],
+                "type": "Point"
+            },
+            "type": "Feature",
+            "properties": {
+                "barrio": "San Nicolás",
+                "disponibilidad": 42,
+                "altura": 1368,
+                "calle": "Avenida Corrientes",
+                "name": "Heladera DOS",
+                "temperatura_min": -3,
+                "id": "0513c681-6ffd-4cef-9958-f9ada035a962",
+                "isActive": 0,
+                "temperatura_max": 2,
+                "capacidad": 70
+            }
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    -58.44661616661939,
+                    -34.619033507138035
+                ],
+                "type": "Point"
+            },
+            "type": "Feature",
+            "properties": {
+                "barrio": "Caballito",
+                "disponibilidad": 52,
+                "altura": 260,
+                "calle": "Gral. Marin de Gainza",
+                "name": "Heladera CINCO",
+                "temperatura_min": -4,
+                "id": "1018a2fd-dc99-4b7d-95c2-42547c37ebb9",
+                "isActive": 0,
+                "temperatura_max": 5,
+                "capacidad": 60
+            }
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    -58.451607904832194,
+                    -34.556405019747
+                ],
+                "type": "Point"
+            },
+            "type": "Feature",
+            "properties": {
+                "barrio": "Belgrano",
+                "disponibilidad": 80,
+                "altura": 2290,
+                "calle": "Arribeños",
+                "name": "Heladera QUINCE",
+                "temperatura_min": -3,
+                "id": "10c57428-5f67-40cb-97fd-b17774ced2ae",
+                "isActive": 0,
+                "temperatura_max": 3,
+                "capacidad": 80
+            }
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    -58.453748279907344,
+                    -34.64428344483126
+                ],
+                "type": "Point"
+            },
+            "type": "Feature",
+            "properties": {
+                "barrio": "Flores",
+                "disponibilidad": 35,
+                "altura": 1301,
+                "calle": "Avenida Varela",
+                "name": "Heladera CUATRO",
+                "temperatura_min": -4,
+                "id": "13db6325-0672-4289-ab57-d6a290884fe5",
+                "isActive": 0,
+                "temperatura_max": 3,
+                "capacidad": 55
+            }
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    -58.45045997071465,
+                    -34.59453003815602
+                ],
+                "type": "Point"
+            },
+            "type": "Feature",
+            "properties": {
+                "barrio": "Villa Crespo",
+                "disponibilidad": 67,
+                "altura": 457,
+                "calle": "Avenida Dorrego",
+                "name": "Heladera NUEVE",
+                "temperatura_min": -4,
+                "id": "2cd51d86-e226-4c28-8a91-7b0acf1e82ef",
+                "isActive": 0,
+                "temperatura_max": 4,
+                "capacidad": 90
+            }
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    -58.39133076001772,
+                    -34.58329462979221
+                ],
+                "type": "Point"
+            },
+            "type": "Feature",
+            "properties": {
+                "barrio": "Recoleta",
+                "disponibilidad": 83,
+                "altura": 52,
+                "calle": "Julio Victor González",
+                "name": "Heladera TRECE",
+                "temperatura_min": -4,
+                "id": "30e44eb2-4479-497d-857d-39d6193035c8",
+                "isActive": 0,
+                "temperatura_max": 2,
+                "capacidad": 95
+            }
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    -58.382421802790795,
+                    -34.60385381907532
+                ],
+                "type": "Point"
+            },
+            "type": "Feature",
+            "properties": {
+                "barrio": "San Nicolás",
+                "disponibilidad": 46,
+                "altura": 1113,
+                "calle": "Avenida Corrientes",
+                "name": "Heladera CATORCE",
+                "temperatura_min": -5,
+                "id": "5c3cd96f-e4ac-434d-bffc-ad08335c97fb",
+                "isActive": 0,
+                "temperatura_max": 5,
+                "capacidad": 65
+            }
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    -58.42103364660331,
+                    -34.58138694779834
+                ],
+                "type": "Point"
+            },
+            "type": "Feature",
+            "properties": {
+                "barrio": "Palermo",
+                "disponibilidad": 61,
+                "altura": 4138,
+                "calle": "Avenida Santa Fe",
+                "name": "Heladera DOCE",
+                "temperatura_min": -3,
+                "id": "6448f4f1-9dca-415f-90ad-fb3b1cb42c82",
+                "isActive": 0,
+                "temperatura_max": 5,
+                "capacidad": 70
+            }
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    -58.37230040014313,
+                    -34.60802625811091
+                ],
+                "type": "Point"
+            },
+            "type": "Feature",
+            "properties": {
+                "barrio": "Monserrat",
+                "disponibilidad": 75,
+                "altura": 360,
+                "calle": "Avenida Rivadavia",
+                "name": "Heladera DIEZ",
+                "temperatura_min": -5,
+                "id": "a4acd760-6cd7-4418-9551-1d10c1c5d285",
+                "isActive": 0,
+                "temperatura_max": 5,
+                "capacidad": 80
+            }
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    -58.41129164421226,
+                    -34.60286430113411
+                ],
+                "type": "Point"
+            },
+            "type": "Feature",
+            "properties": {
+                "barrio": "Balvanera",
+                "disponibilidad": 76,
+                "altura": 611,
+                "calle": "Agüero",
+                "name": "Heladera SIETE",
+                "temperatura_min": -4,
+                "id": "b208f713-bc5a-40a2-8295-88bc48bd9c90",
+                "isActive": 0,
+                "temperatura_max": 3,
+                "capacidad": 80
+            }
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    -58.46812313140898,
+                    -34.65980101272007
+                ],
+                "type": "Point"
+            },
+            "type": "Feature",
+            "properties": {
+                "barrio": "Villa Lugano",
+                "disponibilidad": 58,
+                "altura": 2300,
+                "calle": "Mozart",
+                "name": "Heladera UNO",
+                "temperatura_min": -5,
+                "id": "b582c26a-e1b5-4eca-bd1a-bd69227889d6",
+                "isActive": 0,
+                "temperatura_max": 3,
+                "capacidad": 80
+            }
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    -58.43025865436272,
+                    -34.58884555335712
+                ],
+                "type": "Point"
+            },
+            "type": "Feature",
+            "properties": {
+                "barrio": "Palermo",
+                "disponibilidad": 55,
+                "altura": 1595,
+                "calle": "Serrano",
+                "name": "Heladera OCHO",
+                "temperatura_min": -2,
+                "id": "b61286f8-d9b9-4acc-af3d-4941d1c279e8",
+                "isActive": 0,
+                "temperatura_max": 3,
+                "capacidad": 70
+            }
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    -58.420114964305405,
+                    -34.59861794351904
+                ],
+                "type": "Point"
+            },
+            "type": "Feature",
+            "properties": {
+                "barrio": "Almagro",
+                "disponibilidad": 66,
+                "altura": 951,
+                "calle": "Avenida Medrano",
+                "name": "Heladera TRES",
+                "temperatura_min": -4,
+                "id": "c25b0dac-3df8-4c82-9d1a-24a3e632f1c7",
+                "isActive": 0,
+                "temperatura_max": 3,
+                "capacidad": 85
+            }
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    -58.36271557071799,
+                    -34.6393172975206
+                ],
+                "type": "Point"
+            },
+            "type": "Feature",
+            "properties": {
+                "barrio": "La Boca",
+                "disponibilidad": 47,
+                "altura": 2005,
+                "calle": "Caminito",
+                "name": "Heladera ONCE",
+                "temperatura_min": -4,
+                "id": "e482613f-c30c-43fd-9eb3-a73741fa24af",
+                "isActive": 0,
+                "temperatura_max": 3,
+                "capacidad": 85
+            }
+        }
+    ],
+    "type": "FeatureCollection"
+}
