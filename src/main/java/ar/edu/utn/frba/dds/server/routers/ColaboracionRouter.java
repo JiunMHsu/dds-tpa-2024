@@ -8,6 +8,7 @@ import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.ColaboracionController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DistribucionViandasController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionDineroController;
+import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionDineroPeriodicaController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionViandaController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.HacerseCargoHeladeraController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.OfertaProductosServiciosController;
@@ -15,14 +16,22 @@ import ar.edu.utn.frba.dds.controllers.colaboraciones.RepartoDeTarjetaController
 import ar.edu.utn.frba.dds.models.entities.usuario.TipoRol;
 import io.javalin.config.RouterConfig;
 
+/**
+ * Router de colaboraciones.
+ */
 public class ColaboracionRouter implements IRouter {
 
   @Override
   public void apply(RouterConfig config) {
     config.apiBuilder(() ->
         path("/colaboraciones", () -> {
-          get(ServiceLocator.instanceOf(ColaboracionController.class)::index, TipoRol.COLABORADOR, TipoRol.ADMIN);
-          post("/migrate", ServiceLocator.instanceOf(ColaboracionController.class)::cargarColaboraciones, TipoRol.ADMIN);
+          get(ServiceLocator.instanceOf(ColaboracionController.class)::index,
+              TipoRol.COLABORADOR,
+              TipoRol.ADMIN);
+
+          post("/migrate",
+              ServiceLocator.instanceOf(ColaboracionController.class)::cargarColaboraciones,
+              TipoRol.ADMIN);
 
           this.routeDonacionDinero();
           this.routeDonacionVianda();
@@ -30,66 +39,121 @@ public class ColaboracionRouter implements IRouter {
           this.routeDistribucionViandas();
           this.routeOfertaProductoServicio();
           this.routeEncargarseDeHeladeras();
-
-          path("/entrega-viandas", () -> {
-            // TODO - ver que hacer paraColaborador este
-          });
         }));
   }
 
   private void routeDonacionDinero() {
     path("/donacion-dinero", () -> {
-      // TODO - get (tipo filtro por las colaboraciones general)
+      post(ServiceLocator.instanceOf(DonacionDineroController.class)::save,
+          TipoRol.COLABORADOR);
 
-      post(ServiceLocator.instanceOf(DonacionDineroController.class)::save, TipoRol.COLABORADOR);
+      get("/new",
+          ServiceLocator.instanceOf(DonacionDineroController.class)::create,
+          TipoRol.COLABORADOR);
 
-      get("/new", ServiceLocator.instanceOf(DonacionDineroController.class)::create, TipoRol.COLABORADOR);
-      get("/{id}", ServiceLocator.instanceOf(DonacionDineroController.class)::show, TipoRol.COLABORADOR, TipoRol.ADMIN);
+      get("/{id}",
+          ServiceLocator.instanceOf(DonacionDineroController.class)::show,
+          TipoRol.COLABORADOR,
+          TipoRol.ADMIN);
+
+      path("/periodica", () -> {
+        post(ServiceLocator.instanceOf(DonacionDineroPeriodicaController.class)::save,
+            TipoRol.COLABORADOR);
+
+        get("/new",
+            ServiceLocator.instanceOf(DonacionDineroPeriodicaController.class)::create,
+            TipoRol.COLABORADOR);
+
+        path("/{id}", () -> {
+          post(ServiceLocator.instanceOf(DonacionDineroPeriodicaController.class)::update,
+              TipoRol.COLABORADOR);
+
+          get("/edit",
+              ServiceLocator.instanceOf(DonacionDineroPeriodicaController.class)::edit,
+              TipoRol.COLABORADOR);
+        });
+
+      });
     });
   }
 
   private void routeDonacionVianda() {
     path("/donacion-vianda", () -> {
-      post(ServiceLocator.instanceOf(DonacionViandaController.class)::save, TipoRol.COLABORADOR);
+      post(ServiceLocator.instanceOf(DonacionViandaController.class)::save,
+          TipoRol.COLABORADOR);
 
-      get("/new", ServiceLocator.instanceOf(DonacionViandaController.class)::create, TipoRol.COLABORADOR);
-      get("/{id}", ServiceLocator.instanceOf(DonacionViandaController.class)::show, TipoRol.COLABORADOR, TipoRol.ADMIN);
+      get("/new",
+          ServiceLocator.instanceOf(DonacionViandaController.class)::create,
+          TipoRol.COLABORADOR);
+
+      get("/{id}",
+          ServiceLocator.instanceOf(DonacionViandaController.class)::show,
+          TipoRol.COLABORADOR,
+          TipoRol.ADMIN);
     });
   }
 
   private void routeRegistroPersonaVulnerable() {
     path("/registro-persona-vulnerable", () -> {
-      post(ServiceLocator.instanceOf(RepartoDeTarjetaController.class)::save, TipoRol.COLABORADOR);
+      post(ServiceLocator.instanceOf(RepartoDeTarjetaController.class)::save,
+          TipoRol.COLABORADOR);
 
-      get("/new", ServiceLocator.instanceOf(RepartoDeTarjetaController.class)::create, TipoRol.COLABORADOR);
-      get("/{id}", ServiceLocator.instanceOf(RepartoDeTarjetaController.class)::show, TipoRol.COLABORADOR, TipoRol.ADMIN);
+      get("/new",
+          ServiceLocator.instanceOf(RepartoDeTarjetaController.class)::create,
+          TipoRol.COLABORADOR);
+
+      get("/{id}",
+          ServiceLocator.instanceOf(RepartoDeTarjetaController.class)::show,
+          TipoRol.COLABORADOR,
+          TipoRol.ADMIN);
     });
   }
 
   private void routeDistribucionViandas() {
     path("/distribucion-viandas", () -> {
-      post(ServiceLocator.instanceOf(DistribucionViandasController.class)::save, TipoRol.COLABORADOR);
+      post(ServiceLocator.instanceOf(DistribucionViandasController.class)::save,
+          TipoRol.COLABORADOR);
 
-      get("/new", ServiceLocator.instanceOf(DistribucionViandasController.class)::create, TipoRol.COLABORADOR);
-      get("/{id}", ServiceLocator.instanceOf(DistribucionViandasController.class)::show, TipoRol.COLABORADOR, TipoRol.ADMIN);
+      get("/new",
+          ServiceLocator.instanceOf(DistribucionViandasController.class)::create,
+          TipoRol.COLABORADOR);
+
+      get("/{id}",
+          ServiceLocator.instanceOf(DistribucionViandasController.class)::show,
+          TipoRol.COLABORADOR,
+          TipoRol.ADMIN);
     });
   }
 
   private void routeOfertaProductoServicio() {
     path("/oferta-producto-servicio", () -> {
-      post(ServiceLocator.instanceOf(OfertaProductosServiciosController.class)::save, TipoRol.COLABORADOR);
+      post(ServiceLocator.instanceOf(OfertaProductosServiciosController.class)::save,
+          TipoRol.COLABORADOR);
 
-      get("/new", ServiceLocator.instanceOf(OfertaProductosServiciosController.class)::create, TipoRol.COLABORADOR);
-      get("/{id}", ServiceLocator.instanceOf(OfertaProductosServiciosController.class)::show, TipoRol.COLABORADOR, TipoRol.ADMIN);
+      get("/new",
+          ServiceLocator.instanceOf(OfertaProductosServiciosController.class)::create,
+          TipoRol.COLABORADOR);
+
+      get("/{id}",
+          ServiceLocator.instanceOf(OfertaProductosServiciosController.class)::show,
+          TipoRol.COLABORADOR,
+          TipoRol.ADMIN);
     });
   }
 
   private void routeEncargarseDeHeladeras() {
     path("/encargarse-de-heladeras", () -> {
-      post(ServiceLocator.instanceOf(HacerseCargoHeladeraController.class)::save, TipoRol.COLABORADOR);
+      post(ServiceLocator.instanceOf(HacerseCargoHeladeraController.class)::save,
+          TipoRol.COLABORADOR);
 
-      get("/new", ServiceLocator.instanceOf(HacerseCargoHeladeraController.class)::create, TipoRol.COLABORADOR);
-      get("/{id}", ServiceLocator.instanceOf(HacerseCargoHeladeraController.class)::show, TipoRol.COLABORADOR, TipoRol.ADMIN);
+      get("/new",
+          ServiceLocator.instanceOf(HacerseCargoHeladeraController.class)::create,
+          TipoRol.COLABORADOR);
+
+      get("/{id}",
+          ServiceLocator.instanceOf(HacerseCargoHeladeraController.class)::show,
+          TipoRol.COLABORADOR,
+          TipoRol.ADMIN);
     });
   }
 

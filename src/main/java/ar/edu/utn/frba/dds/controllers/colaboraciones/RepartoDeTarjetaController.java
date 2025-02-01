@@ -1,33 +1,26 @@
 package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
-import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
+import ar.edu.utn.frba.dds.dtos.personaVulnerable.CreatePersonaVulnerableDTO;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.RepartoDeTarjetas;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.models.entities.data.Barrio;
-import ar.edu.utn.frba.dds.models.entities.data.Calle;
-import ar.edu.utn.frba.dds.models.entities.data.Direccion;
-import ar.edu.utn.frba.dds.models.entities.data.Documento;
-import ar.edu.utn.frba.dds.models.entities.data.TipoDocumento;
-import ar.edu.utn.frba.dds.models.entities.personaVulnerable.PersonaVulnerable;
-import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaPersonaVulnerable;
 import ar.edu.utn.frba.dds.permissions.ColaboradorRequired;
 import ar.edu.utn.frba.dds.services.colaboraciones.RepartoDeTarjetaService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
-import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.validation.ValidationException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RepartoDeTarjetaController extends ColaboradorRequired implements ICrudViewsHandler {
+/**
+ * Controlador de colaboraciones de reparto de tarjetas.
+ */
+public class RepartoDeTarjetaController extends ColaboradorRequired {
 
   private final RepartoDeTarjetaService repartoDeTarjetaService;
 
@@ -38,84 +31,70 @@ public class RepartoDeTarjetaController extends ColaboradorRequired implements I
     this.repartoDeTarjetaService = repartoDeTarjetaService;
   }
 
-  @Override
-  public void index(Context context) {
-  }
-
-  @Override
+  /**
+   * Muestra el detalle de una colaboración de reparto de tarjetas.
+   * TODO: Implementar
+   *
+   * @param context Contexto de Javalin
+   */
   public void show(Context context) {
   }
 
-  @Override
+  /**
+   * Muestra el formulario de creación de una colaboración de reparto de tarjetas.
+   *
+   * @param context Contexto de Javalin
+   */
   public void create(Context context) {
     Colaborador colaborador = colaboradorFromSession(context);
 
-    if (!colaborador.puedeColaborar(TipoColaboracion.REPARTO_DE_TARJETAS))
-      throw new UnauthorizedException("No tiene permiso");
+    if (!colaborador.puedeColaborar(TipoColaboracion.REPARTO_DE_TARJETAS)) {
+      throw new UnauthorizedException("No tenes permiso");
+    }
 
-    render(context, "colaboraciones/registro_pv_crear.hbs", new HashMap<>());
+    render(context, "colaboraciones/registro_pv/registro_pv_crear.hbs");
   }
 
-  @Override
+  /**
+   * Guarda una colaboración de reparto de tarjetas.
+   *
+   * @param context Contexto de Javalin
+   */
   public void save(Context context) {
     Map<String, Object> model = new HashMap<>();
-    List<RedirectDTO> redirectDTOS = new ArrayList<>();
+    List<RedirectDTO> redirects = new ArrayList<>();
     boolean operationSuccess = false;
 
+    Colaborador colaborador = colaboradorFromSession(context);
+    if (!colaborador.puedeColaborar(TipoColaboracion.REPARTO_DE_TARJETAS)) {
+      throw new UnauthorizedException("No tenes permiso");
+    }
+
     try {
-      Colaborador colaborador = colaboradorFromSession(context);
-
-      Documento documento = Documento.con(
-          TipoDocumento.valueOf(context.formParamAsClass("tipo_documento", String.class).getOrDefault(null)),
-          context.formParamAsClass("nro_documento", String.class).getOrDefault(null));
-
-      Direccion direccion = Direccion.con(
-          new Barrio(context.formParamAsClass("barrio", String.class).get()),
-          new Calle(context.formParamAsClass("calle", String.class).get()),
-          context.formParamAsClass("altura", Integer.class).get());
-
-      PersonaVulnerable nuevaPV = new PersonaVulnerable(
+      CreatePersonaVulnerableDTO nuevaPersonaVulnerable = new CreatePersonaVulnerableDTO(
           context.formParamAsClass("nombre", String.class).get(),
-          documento,
+          context.formParamAsClass("tipo_documento", String.class).getOrDefault(null),
+          context.formParamAsClass("nro_documento", String.class).getOrDefault(null),
           LocalDate.parse(context.formParamAsClass("fecha_nacimiento", String.class).get()),
-          LocalDate.now(),
-          direccion,
-          context.formParamAsClass("menores_a_cargo", Integer.class).get());
+          context.formParamAsClass("barrio", String.class).get(),
+          context.formParamAsClass("calle", String.class).get(),
+          context.formParamAsClass("altura", Integer.class).get(),
+          context.formParamAsClass("menores_a_cargo", Integer.class).getOrDefault(0),
+          context.formParamAsClass("tarjeta", String.class).get()
+      );
 
-      TarjetaPersonaVulnerable tarjetaPV = TarjetaPersonaVulnerable.de(
-          context.formParamAsClass("tarjeta", String.class).get(), nuevaPV);
-
-      RepartoDeTarjetas repartoDeTarjetas = RepartoDeTarjetas.por(colaborador, LocalDateTime.now(), tarjetaPV, nuevaPV);
-
-      this.repartoDeTarjetaService.registrar(repartoDeTarjetas);
-
-      // TODO - Delegar a Service??
-      colaborador.invalidarPuntos();
-      this.colaboradorService.actualizar(colaborador);
+      this.repartoDeTarjetaService.registrarRepartoTarjeta(colaborador, nuevaPersonaVulnerable);
 
       operationSuccess = true;
-      redirectDTOS.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));
+      redirects.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));
 
-    } catch (NonColaboratorException e) {
-      throw new UnauthorizedException();
     } catch (ValidationException v) {
-      redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
+      redirects.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
     } finally {
       model.put("success", operationSuccess);
-      model.put("redirects", redirectDTOS);
-      context.render("post_result.hbs", model);
+      model.put("redirects", redirects);
+      render(context, "post_result.hbs", model);
     }
   }
 
-  @Override
-  public void edit(Context context) {
-  }
-
-  @Override
-  public void update(Context context) {
-  }
-
-  @Override
-  public void delete(Context context) {
-  }
 }

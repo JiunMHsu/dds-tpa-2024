@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.services.incidente;
 
+import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
@@ -9,8 +10,10 @@ import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
 import ar.edu.utn.frba.dds.services.mapa.MapService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
-import java.util.Optional;
 
+/**
+ * Servicio de incidente.
+ */
 public class IncidenteService implements WithSimplePersistenceUnit {
 
   private final IncidenteRepository incidenteRepository;
@@ -18,6 +21,13 @@ public class IncidenteService implements WithSimplePersistenceUnit {
 
   private final MapService mapService;
 
+  /**
+   * Constructor.
+   *
+   * @param incidenteRepository Repositorio de incidente
+   * @param heladeraRepository  Repositorio de heladera
+   * @param mapService          Servicio de mapa
+   */
   public IncidenteService(IncidenteRepository incidenteRepository,
                           HeladeraRepository heladeraRepository,
                           MapService mapService) {
@@ -26,24 +36,59 @@ public class IncidenteService implements WithSimplePersistenceUnit {
     this.mapService = mapService;
   }
 
+  /**
+   * Buscar todos los incidentes.
+   * TODO: Mapear a DTO
+   *
+   * @return Lista de incidentes
+   */
   public List<Incidente> buscarTodos() {
     return this.incidenteRepository.buscarTodos();
   }
 
+  /**
+   * Buscar todas las alertas.
+   * TODO: Mapear a DTO
+   *
+   * @return Lista de incidentes
+   */
   public List<Incidente> buscarTodasAlertas() {
     return this.incidenteRepository.buscarAlertas();
   }
 
+  /**
+   * Buscar todas las fallas técnicas.
+   * TODO: Mapear a DTO
+   *
+   * @return Lista de incidentes
+   */
   public List<Incidente> buscarTodasFallasTecnicas() {
     return this.incidenteRepository.buscarPorTipo(TipoIncidente.FALLA_TECNICA);
   }
 
-  public Optional<Incidente> buscarIncidentePorId(String id) {
-    return this.incidenteRepository.buscarPorId(id);
+  /**
+   * Buscar todas las fallas de temperatura.
+   * TODO: Mapear a DTO
+   *
+   * @return Lista de incidentes
+   */
+  public Incidente buscarIncidentePorId(String id) {
+    return this.incidenteRepository
+        .buscarPorId(id)
+        .orElseThrow(ResourceNotFoundException::new);
   }
 
+  /**
+   * Registrar un incidente.
+   * TODO: Recibir un DTO
+   *
+   * @param incidente Incidente
+   */
   public void registrarIncidente(Incidente incidente) {
-    if (incidente.getTipo().equals(TipoIncidente.FALLA_TECNICA) && incidente.getColaborador() == null) {
+    boolean esFallaTecnica = incidente.getTipo().equals(TipoIncidente.FALLA_TECNICA);
+    boolean noTieneColaborador = incidente.getColaborador() == null;
+
+    if (esFallaTecnica && noTieneColaborador) {
       throw new IllegalArgumentException("Las Fallas Tecnicas deben tener asociado un Colaborador");
     }
 
@@ -55,17 +100,23 @@ public class IncidenteService implements WithSimplePersistenceUnit {
     });
 
     mapService.crearGeoJson();
-
-    // TODO - avisar a técnicos, enviar respectivos mensajes
   }
 
+  /**
+   * Resolver un incidente.
+   * TODO: Recibir un DTO
+   * TODO: Reanudar los brokers
+   *
+   * @param incidente Incidente
+   */
   public void resolverIncidente(Incidente incidente) {
     incidente.setEsResuelta(true);
 
     if (!this.tieneOtroIncidentePendiente(incidente.getHeladera())) {
       incidente.getHeladera().setEstado(EstadoHeladera.ACTIVA);
 
-      // TODO - reanudar los brokers
+      // Reanudar brokers
+      // Esta en HeladeraService, ver si moverlo a otro lado
     }
 
     withTransaction(() -> {

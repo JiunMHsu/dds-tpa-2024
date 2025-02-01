@@ -2,13 +2,17 @@ package ar.edu.utn.frba.dds.models.repositories.heladera;
 
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
+import ar.edu.utn.frba.dds.utils.ICrudRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import javax.persistence.NoResultException;
 
-public class HeladeraRepository implements IHeladeraRepository, WithSimplePersistenceUnit {
+/**
+ * Repositorio de Heladera.
+ */
+public class HeladeraRepository implements ICrudRepository<Heladera>, WithSimplePersistenceUnit {
 
   @Override
   public void guardar(Heladera heladera) {
@@ -47,7 +51,12 @@ public class HeladeraRepository implements IHeladeraRepository, WithSimplePersis
         .getResultList();
   }
 
-  @Override
+  /**
+   * Busca una heladera por su nombre.
+   *
+   * @param nombre Nombre de la heladera
+   * @return Heladera
+   */
   public Optional<Heladera> buscarPorNombre(String nombre) {
     try {
       return Optional.of(entityManager()
@@ -60,10 +69,17 @@ public class HeladeraRepository implements IHeladeraRepository, WithSimplePersis
     }
   }
 
-  @Override
+  /**
+   * Busca las heladeras por barrio.
+   *
+   * @param barrio Barrio
+   * @return Lista de heladeras
+   */
   public List<Heladera> buscarPorBarrio(Barrio barrio) {
+    String query = "from Heladera h where h.alta = :alta and h.direccion.barrio = :barrio";
+
     return entityManager()
-        .createQuery("from Heladera h where h.alta = :alta and h.direccion.barrio = :barrio", Heladera.class)
+        .createQuery(query, Heladera.class)
         .setParameter("barrio", barrio)
         .setParameter("alta", true)
         .getResultList();

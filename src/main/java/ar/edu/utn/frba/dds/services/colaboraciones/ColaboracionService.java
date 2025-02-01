@@ -1,23 +1,25 @@
 package ar.edu.utn.frba.dds.services.colaboraciones;
 
+import ar.edu.utn.frba.dds.dtos.colaboraciones.ColaboracionDTO;
 import ar.edu.utn.frba.dds.exceptions.CargaMasivaException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.ColaboracionPrevia;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDinero;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.RepartoDeTarjetas;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.RepartoDeTarjeta;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.data.Documento;
 import ar.edu.utn.frba.dds.models.entities.data.TipoDocumento;
 import ar.edu.utn.frba.dds.models.entities.mensaje.Mensaje;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.ColaboracionRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRepository;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetasRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetaRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.mensajeria.MensajeRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
@@ -36,6 +38,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -51,12 +54,13 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
   private final DonacionViandaRepository donacionViandaRepository;
   private final DonacionDineroRepository donacionDineroRepository;
   private final DistribucionViandasRepository distribucionViandasRepository;
-  private final HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository;
-  private final OfertaDeProductosRepository ofertaDeProductosRepository;
-  private final RepartoDeTarjetasRepository repartoDeTarjetasRepository;
+  private final RepartoDeTarjetaRepository repartoDeTarjetasRepository;
 
   private final ISender mailSender;
   private final MensajeRepository mensajeRepository;
+  // private final MensajeriaService mensajeriaService;
+
+  private final Map<String, ColaboracionRepository> colaboracionRepositories;
 
   /**
    * Constructor.
@@ -69,7 +73,7 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
    * @param hacerseCargoHeladeraRepository el repositorio de heladeras activas
    * @param ofertaDeProductosRepository    el repositorio de ofertas de productos
    * @param repartoDeTarjetasRepository    el repositorio de repartos de tarjetas
-   * @param mailSender                     el servicio de envío de mensajes
+   * @param mailSender                     el servicio de envío de correos
    * @param mensajeRepository              el repositorio de mensajes
    */
   public ColaboracionService(UsuarioRepository usuarioRepository,
@@ -79,7 +83,7 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
                              DistribucionViandasRepository distribucionViandasRepository,
                              HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository,
                              OfertaDeProductosRepository ofertaDeProductosRepository,
-                             RepartoDeTarjetasRepository repartoDeTarjetasRepository,
+                             RepartoDeTarjetaRepository repartoDeTarjetasRepository,
                              ISender mailSender,
                              MensajeRepository mensajeRepository) {
     this.usuarioRepository = usuarioRepository;
@@ -87,11 +91,20 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
     this.donacionViandaRepository = donacionViandaRepository;
     this.donacionDineroRepository = donacionDineroRepository;
     this.distribucionViandasRepository = distribucionViandasRepository;
-    this.hacerseCargoHeladeraRepository = hacerseCargoHeladeraRepository;
-    this.ofertaDeProductosRepository = ofertaDeProductosRepository;
     this.repartoDeTarjetasRepository = repartoDeTarjetasRepository;
+
     this.mailSender = mailSender;
     this.mensajeRepository = mensajeRepository;
+    // this.mensajeriaService = mensajeriaService;
+
+    this.colaboracionRepositories = Map.of(
+        DonacionViandaRepository.class.getName(), donacionViandaRepository,
+        DonacionDineroRepository.class.getName(), donacionDineroRepository,
+        DistribucionViandasRepository.class.getName(), distribucionViandasRepository,
+        HacerseCargoHeladeraRepository.class.getName(), hacerseCargoHeladeraRepository,
+        OfertaDeProductosRepository.class.getName(), ofertaDeProductosRepository,
+        RepartoDeTarjetaRepository.class.getName(), repartoDeTarjetasRepository
+    );
   }
 
   /**
@@ -99,18 +112,17 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
    *
    * @return todas las colaboraciones
    */
-  public List<Object> buscarTodas() {
-    List<Object> colaboraciones = new ArrayList<>();
-    colaboraciones.addAll(donacionViandaRepository.buscarTodos());
-    colaboraciones.addAll(donacionDineroRepository.buscarTodos());
-    colaboraciones.addAll(distribucionViandasRepository.buscarTodos());
-    colaboraciones.addAll(hacerseCargoHeladeraRepository.buscarTodos());
-    colaboraciones.addAll(ofertaDeProductosRepository.buscarTodos());
-    colaboraciones.addAll(repartoDeTarjetasRepository.buscarTodos());
+  @SuppressWarnings("unchecked")
+  public List<ColaboracionDTO> buscarTodas() {
+    List<ColaboracionDTO> colaboraciones = new ArrayList<>();
+
+    colaboracionRepositories.forEach((key, value) ->
+        colaboraciones.addAll(value.buscarTodos()
+            .stream().map(ColaboracionDTO::fromColaboracion).toList())
+    );
+
     return colaboraciones;
   }
-
-  // TODO: Mapear a DTO
 
   /**
    * Obtiene todas las colaboraciones de un colaborador.
@@ -118,21 +130,20 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
    * @param colaborador el colaborador
    * @return todas las colaboraciones del colaborador
    */
-  public List<Object> buscarTodasPorColaborador(Colaborador colaborador) {
-    List<Object> colaboraciones = new ArrayList<>();
-    colaboraciones.addAll(donacionViandaRepository.buscarPorColaborador(colaborador));
-    colaboraciones.addAll(donacionDineroRepository.buscarPorColaborador(colaborador));
-    colaboraciones.addAll(distribucionViandasRepository.buscarPorColaborador(colaborador));
-    colaboraciones.addAll(hacerseCargoHeladeraRepository.buscarPorColaborador(colaborador));
-    colaboraciones.addAll(ofertaDeProductosRepository.buscarPorColaborador(colaborador));
-    colaboraciones.addAll(repartoDeTarjetasRepository.buscarPorColaborador(colaborador));
+  @SuppressWarnings("unchecked")
+  public List<ColaboracionDTO> buscarTodasPorColaborador(Colaborador colaborador) {
+    List<ColaboracionDTO> colaboraciones = new ArrayList<>();
+
+    colaboracionRepositories.forEach((key, value) ->
+        colaboraciones.addAll(value.buscarPorColaborador(colaborador)
+            .stream().map(ColaboracionDTO::fromColaboracion).toList()));
+
     return colaboraciones;
   }
 
-  // TODO: Revisar carga masiva
-
   /**
    * Carga masiva de colaboraciones.
+   * TODO: Revisar ColaboracionService.cargarColaboraciones
    *
    * @param csv el archivo CSV
    * @throws CargaMasivaException en caso de error al cargar las colaboraciones
@@ -236,7 +247,7 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
 
       case "ENTREGA_TARJETAS":
         for (int i = 0; i < colaboracionPrevia.getCantidad(); i++) {
-          RepartoDeTarjetas repartoDeTarjetas = RepartoDeTarjetas
+          RepartoDeTarjeta repartoDeTarjetas = RepartoDeTarjeta
               .por(colaborador, colaboracionPrevia.getFechaHora());
           repartoDeTarjetasRepository.guardar(repartoDeTarjetas);
         }

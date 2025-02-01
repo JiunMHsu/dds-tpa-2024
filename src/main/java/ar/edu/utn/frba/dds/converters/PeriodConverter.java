@@ -4,6 +4,9 @@ import java.time.Period;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
+/**
+ * Conversor de Period a String.
+ */
 @Converter(autoApply = true)
 public class PeriodConverter implements AttributeConverter<Period, String> {
   @Override

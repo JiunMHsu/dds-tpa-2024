@@ -1,0 +1,50 @@
+{{#partial "title"}}
+    Donar Dinero Periodicamente
+{{/partial}}
+{{#partial "links"}}
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/colaboraciones/donacion_periodica_crear.css"/>
+{{/partial}}
+{{#partial "scripts"}}
+{{/partial}}
+{{#partial "main-content"}}
+    <div class="form-container">
+        <h2 class="form-title">Donar Dinero Periodicamente</h2>
+
+        <form action="/colaboraciones/donacion-dinero/periodica" method="post" class="form">
+            <label class="field-monto">
+                Monto
+                <input type="number" min="1" step="1" name="monto" required/>
+            </label>
+
+            <label class="field-periocidad">
+                Periocidad
+                <input
+                        type="number"
+                        min="1"
+                        step="1"
+                        name="periocidad"
+                        placeholder="46"
+                />
+            </label>
+
+            <label class="field-unidad-tiempo">
+                Unidad de Tiempo
+                <select name="unidad_tiempo">
+                    <option value="NONE">None</option>
+                    <option value="DAY">Días</option>
+                    <option value="WEEK">Semanas</option>
+                    <option value="MONTH">Meses</option>
+                    <option value="YEAR">Años</option>
+                </select>
+            </label>
+
+            <div class="form-button-container">
+                <button type="submit">Aceptar</button>
+            </div>
+        </form>
+    </div>
+{{/partial}}
+{{#partial "side-panel"}}
+{{/partial}}
+{{> templates/base}}

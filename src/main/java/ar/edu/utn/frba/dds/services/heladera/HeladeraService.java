@@ -1,9 +1,6 @@
 package ar.edu.utn.frba.dds.services.heladera;
 
-import ar.edu.utn.frba.dds.broker.IClienteMqtt;
-import ar.edu.utn.frba.dds.broker.SuscriptorSensor;
-import ar.edu.utn.frba.dds.config.ServiceLocator;
-import ar.edu.utn.frba.dds.controllers.heladera.BrokerMessageHandler;
+import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.HacerseCargoHeladera;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
@@ -11,38 +8,47 @@ import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+import org.jetbrains.annotations.NotNull;
 
+/**
+ * Servicio de heladera.
+ */
 public class HeladeraService implements WithSimplePersistenceUnit {
 
   private final HeladeraRepository heladeraRepository;
   private final HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository;
 
-  private final IClienteMqtt clienteMqtt;
-  private final Set<SuscriptorSensor> suscriptores;
-
+  /**
+   * Constructor.
+   *
+   * @param heladeraRepository             Repositorio de heladera
+   * @param hacerseCargoHeladeraRepository Repositorio de hacerse cargo de heladera
+   */
   public HeladeraService(HeladeraRepository heladeraRepository,
-                         HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository,
-                         IClienteMqtt clienteMqtt) {
+                         HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository) {
     this.heladeraRepository = heladeraRepository;
     this.hacerseCargoHeladeraRepository = hacerseCargoHeladeraRepository;
-
-    this.clienteMqtt = clienteMqtt;
-    this.suscriptores = new HashSet<>();
   }
 
+  /**
+   * Busca todas las heladeras.
+   *
+   * @return Lista de heladeras
+   */
   public List<Heladera> buscarTodas() {
     return this.heladeraRepository.buscarTodos();
   }
 
-  public Optional<Heladera> buscarPorId(String id) {
-    if (id == null || id.isEmpty())
-      throw new IllegalArgumentException("El ID de la heladera no puede ser null o vacío");
-
-    return this.heladeraRepository.buscarPorId(id);
+  /**
+   * Busca una heladera por su ID.
+   *
+   * @param id ID de la heladera
+   * @return Heladera
+   */
+  public Heladera buscarPorId(@NotNull String id) {
+    return this.heladeraRepository.buscarPorId(id).orElseThrow(ResourceNotFoundException::new);
   }
 
   public Optional<Heladera> buscarPorNombre(String nombre) {
@@ -54,16 +60,11 @@ public class HeladeraService implements WithSimplePersistenceUnit {
   }
 
   public void guardarHeladera(Heladera heladera) {
-    // TODO - validaciones??
-    withTransaction(() -> {
-      this.heladeraRepository.guardar(heladera);
-    });
+    withTransaction(() -> this.heladeraRepository.guardar(heladera));
   }
 
   public void actualizarHeladera(Heladera heladeraActualizada) {
-    withTransaction(() -> {
-      this.heladeraRepository.actualizar(heladeraActualizada);
-    });
+    withTransaction(() -> this.heladeraRepository.actualizar(heladeraActualizada));
   }
 
   public void eliminarHeladera(Heladera heladera) {
@@ -73,35 +74,6 @@ public class HeladeraService implements WithSimplePersistenceUnit {
   public boolean puedeConfigurar(Colaborador colaborador, Heladera heladera) {
     List<HacerseCargoHeladera> encargos = hacerseCargoHeladeraRepository.buscarPorColaborador(colaborador);
     return encargos.stream().anyMatch(encargo -> encargo.getHeladera().equals(heladera));
-  }
-
-  public void suscibirPara(Heladera heladera) {
-    if (!estaEnElSet(heladera)) {
-      suscriptores.add(new SuscriptorSensor(ServiceLocator.instanceOf(BrokerMessageHandler.class), clienteMqtt, heladera.getBrokerTopic(), heladera.getId()));
-    }
-
-    suscriptores.stream()
-        .filter(suscriptor -> suscriptor.getHeladeraId().equals(heladera.getId()))
-        .forEach(SuscriptorSensor::suscribir);
-  }
-
-  public void desuscribirPara(Heladera heladera) {
-    suscriptores.stream()
-        .filter(suscriptor -> suscriptor.getHeladeraId().equals(heladera.getId()))
-        .forEach(SuscriptorSensor::desuscribir);
-
-    suscriptores.removeIf(suscriptor -> suscriptor.getHeladeraId().equals(heladera.getId()));
-  }
-
-  public void iniciarSuscripciones() {
-    buscarTodas()
-        .stream().filter(Heladera::estaActiva)
-        .forEach(this::suscibirPara);
-  }
-
-  private boolean estaEnElSet(Heladera heladera) {
-    return suscriptores.stream()
-        .anyMatch(suscriptor -> suscriptor.getHeladeraId().equals(heladera.getId()));
   }
 }
 

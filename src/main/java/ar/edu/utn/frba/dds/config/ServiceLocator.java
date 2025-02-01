@@ -5,6 +5,7 @@ import ar.edu.utn.frba.dds.controllers.canjeDePuntos.CanjeDePuntosController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.ColaboracionController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DistribucionViandasController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionDineroController;
+import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionDineroPeriodicaController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionViandaController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.HacerseCargoHeladeraController;
 import ar.edu.utn.frba.dds.controllers.colaboraciones.OfertaProductosServiciosController;
@@ -12,8 +13,7 @@ import ar.edu.utn.frba.dds.controllers.colaboraciones.RepartoDeTarjetaController
 import ar.edu.utn.frba.dds.controllers.colaborador.ColaboradorController;
 import ar.edu.utn.frba.dds.controllers.heladera.BrokerMessageHandler;
 import ar.edu.utn.frba.dds.controllers.heladera.HeladeraController;
-import ar.edu.utn.frba.dds.controllers.heladera.PuntoIdealController;
-import ar.edu.utn.frba.dds.controllers.heladera.SolicitudDeAperturaController;
+import ar.edu.utn.frba.dds.controllers.heladera.PuntoDeColocacionController;
 import ar.edu.utn.frba.dds.controllers.home.HomeController;
 import ar.edu.utn.frba.dds.controllers.incidente.AlertaController;
 import ar.edu.utn.frba.dds.controllers.incidente.FallaTecnicaController;
@@ -24,16 +24,15 @@ import ar.edu.utn.frba.dds.controllers.session.SessionController;
 import ar.edu.utn.frba.dds.controllers.suscripcion.SuscripcionHeladeraController;
 import ar.edu.utn.frba.dds.controllers.tecnico.TecnicoController;
 import ar.edu.utn.frba.dds.controllers.tecnico.VisitaTecnicaController;
-import ar.edu.utn.frba.dds.models.stateless.mensajeria.SafeMailSender;
-import ar.edu.utn.frba.dds.models.stateless.mensajeria.SenderFactory;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.CanjeDePuntosRepository;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.VarianteDePuntosRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroPeriodicaRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRepository;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetasRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetaRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.AperturaHeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
@@ -46,11 +45,15 @@ import ar.edu.utn.frba.dds.models.repositories.reporte.ReporteRepository;
 import ar.edu.utn.frba.dds.models.repositories.suscripcion.FallaHeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.suscripcion.FaltaViandaRepository;
 import ar.edu.utn.frba.dds.models.repositories.suscripcion.HeladeraLlenaRepository;
+import ar.edu.utn.frba.dds.models.repositories.tarjeta.TarjetaColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.tarjeta.TarjetaPersonaVulnerableRepository;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.TecnicoRepository;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.VisitaTecnicaRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import ar.edu.utn.frba.dds.models.repositories.vianda.ViandaRepository;
+import ar.edu.utn.frba.dds.models.stateless.mensajeria.SafeMailSender;
+import ar.edu.utn.frba.dds.models.stateless.mensajeria.SenderFactory;
+import ar.edu.utn.frba.dds.models.stateless.puntoDeColocacion.mock.PuntoDeColocacionAPIMock;
 import ar.edu.utn.frba.dds.reportes.RegistroMovimiento;
 import ar.edu.utn.frba.dds.services.canjeDePuntos.CanjeDePuntosService;
 import ar.edu.utn.frba.dds.services.colaboraciones.ColaboracionService;
@@ -65,16 +68,18 @@ import ar.edu.utn.frba.dds.services.heladera.AperturaHeladeraService;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.heladera.RetiroDeViandaService;
 import ar.edu.utn.frba.dds.services.heladera.SolicitudDeAperturaService;
+import ar.edu.utn.frba.dds.services.heladera.SuscriptorSensorService;
 import ar.edu.utn.frba.dds.services.images.ImageService;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.mapa.MapService;
 import ar.edu.utn.frba.dds.services.mensajeria.MensajeriaService;
 import ar.edu.utn.frba.dds.services.personaVulnerable.PersonaVulnerableService;
-import ar.edu.utn.frba.dds.services.puntoIdeal.PuntoIdealService;
+import ar.edu.utn.frba.dds.services.puntoColocacion.PuntoColocacionService;
 import ar.edu.utn.frba.dds.services.reporte.ReporteService;
 import ar.edu.utn.frba.dds.services.suscripcion.FallaHeladeraService;
 import ar.edu.utn.frba.dds.services.suscripcion.FaltaViandaService;
 import ar.edu.utn.frba.dds.services.suscripcion.HeladeraLlenaService;
+import ar.edu.utn.frba.dds.services.tarjeta.TarjetaColaboradorService;
 import ar.edu.utn.frba.dds.services.tarjeta.TarjetaPersonaVulnerableService;
 import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import ar.edu.utn.frba.dds.services.tecnico.VisitaTecnicaService;
@@ -83,16 +88,27 @@ import ar.edu.utn.frba.dds.utils.RandomString;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Service locator.
+ */
 public class ServiceLocator {
 
   private static final Map<String, Object> instances = new HashMap<>();
 
+  /**
+   * Get an instance of a component.
+   *
+   * @param componentClass Component class
+   * @param <T>            Component type
+   * @return Component instance
+   */
   @SuppressWarnings("unchecked")
   public static <T> T instanceOf(Class<T> componentClass) {
     String componentName = componentClass.getName();
 
-    if (instances.containsKey(componentName))
+    if (instances.containsKey(componentName)) {
       return (T) instances.get(componentName);
+    }
 
     // =========================  UTILS =========================
 
@@ -120,7 +136,8 @@ public class ServiceLocator {
           instanceOf(FallaHeladeraService.class),
           instanceOf(SolicitudDeAperturaService.class),
           instanceOf(TarjetaPersonaVulnerableService.class),
-          instanceOf(AperturaHeladeraService.class),
+          instanceOf(DistribucionViandasService.class),
+          instanceOf(DonacionViandaService.class),
           instanceOf(RetiroDeViandaService.class));
       instances.put(componentName, instance);
     }
@@ -141,14 +158,7 @@ public class ServiceLocator {
           instanceOf(UsuarioService.class),
           instanceOf(ColaboradorService.class),
           instanceOf(HeladeraService.class),
-          instanceOf(PuntoIdealService.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(SolicitudDeAperturaController.class.getName())) {
-      SolicitudDeAperturaController instance = new SolicitudDeAperturaController(
-          instanceOf(HeladeraService.class),
-          instanceOf(SolicitudDeAperturaService.class));
+          instanceOf(PuntoColocacionService.class));
       instances.put(componentName, instance);
     }
 
@@ -194,8 +204,8 @@ public class ServiceLocator {
       instances.put(componentName, instance);
     }
 
-    if (componentName.equals(PuntoIdealController.class.getName())) {
-      PuntoIdealController instance = new PuntoIdealController();
+    if (componentName.equals(PuntoDeColocacionController.class.getName())) {
+      PuntoDeColocacionController instance = new PuntoDeColocacionController();
       instances.put(componentName, instance);
     }
 
@@ -211,16 +221,24 @@ public class ServiceLocator {
       DistribucionViandasController instance = new DistribucionViandasController(
           instanceOf(UsuarioService.class),
           instanceOf(ColaboradorService.class),
-          instanceOf(DistribucionViandasService.class),
-          instanceOf(HeladeraService.class));
+          instanceOf(DistribucionViandasService.class));
       instances.put(componentName, instance);
     }
 
     if (componentName.equals(DonacionDineroController.class.getName())) {
       DonacionDineroController instance = new DonacionDineroController(
-          instanceOf(DonacionDineroService.class),
           instanceOf(UsuarioService.class),
-          instanceOf(ColaboradorService.class));
+          instanceOf(ColaboradorService.class),
+          instanceOf(DonacionDineroService.class)
+      );
+      instances.put(componentName, instance);
+    }
+
+    if (componentName.equals(DonacionDineroPeriodicaController.class.getName())) {
+      DonacionDineroPeriodicaController instance = new DonacionDineroPeriodicaController(
+          instanceOf(UsuarioService.class),
+          instanceOf(ColaboradorService.class),
+          instanceOf(DonacionDineroService.class));
       instances.put(componentName, instance);
     }
 
@@ -236,8 +254,7 @@ public class ServiceLocator {
       OfertaProductosServiciosController instance = new OfertaProductosServiciosController(
           instanceOf(UsuarioService.class),
           instanceOf(ColaboradorService.class),
-          instanceOf(OfertaProductosServiciosService.class),
-          instanceOf(ImageService.class));
+          instanceOf(OfertaProductosServiciosService.class));
       instances.put(componentName, instance);
     }
 
@@ -245,8 +262,7 @@ public class ServiceLocator {
       HacerseCargoHeladeraController instance = new HacerseCargoHeladeraController(
           instanceOf(UsuarioService.class),
           instanceOf(ColaboradorService.class),
-          instanceOf(HacerseCargoHeladeraService.class),
-          instanceOf(HeladeraService.class));
+          instanceOf(HacerseCargoHeladeraService.class));
       instances.put(componentName, instance);
     }
 
@@ -304,6 +320,14 @@ public class ServiceLocator {
 
     // ========================= SERVICES =========================
 
+    if (componentName.equals(SuscriptorSensorService.class.getName())) {
+      SuscriptorSensorService instance = new SuscriptorSensorService(
+          instanceOf(HeladeraService.class),
+          instanceOf(BrokerMessageHandler.class),
+          instanceOf(ClienteMqtt.class));
+      instances.put(componentName, instance);
+    }
+
     if (componentName.equals(ImageService.class.getName())) {
       ImageService instance = new ImageService(instanceOf(RandomString.class));
       instances.put(componentName, instance);
@@ -312,8 +336,7 @@ public class ServiceLocator {
     if (componentName.equals(HeladeraService.class.getName())) {
       HeladeraService instance = new HeladeraService(
           instanceOf(HeladeraRepository.class),
-          instanceOf(HacerseCargoHeladeraRepository.class),
-          instanceOf(ClienteMqtt.class));
+          instanceOf(HacerseCargoHeladeraRepository.class));
       instances.put(componentName, instance);
     }
 
@@ -331,7 +354,8 @@ public class ServiceLocator {
 
     if (componentName.equals(RetiroDeViandaService.class.getName())) {
       RetiroDeViandaService instance = new RetiroDeViandaService(
-          instanceOf(RetiroDeViandaRepository.class));
+          instanceOf(RetiroDeViandaRepository.class),
+          instanceOf(HeladeraRepository.class));
       instances.put(componentName, instance);
     }
 
@@ -352,8 +376,10 @@ public class ServiceLocator {
       instances.put(componentName, instance);
     }
 
-    if (componentName.equals(PuntoIdealService.class.getName())) {
-      PuntoIdealService instance = new PuntoIdealService();
+    if (componentName.equals(PuntoColocacionService.class.getName())) {
+      PuntoColocacionService instance = new PuntoColocacionService(
+          new PuntoDeColocacionAPIMock()
+      );
       instances.put(componentName, instance);
     }
 
@@ -378,7 +404,7 @@ public class ServiceLocator {
           instanceOf(DistribucionViandasRepository.class),
           instanceOf(HacerseCargoHeladeraRepository.class),
           instanceOf(OfertaDeProductosRepository.class),
-          instanceOf(RepartoDeTarjetasRepository.class),
+          instanceOf(RepartoDeTarjetaRepository.class),
           new SafeMailSender(),
           instanceOf(MensajeRepository.class));
       instances.put(componentName, instance);
@@ -386,42 +412,63 @@ public class ServiceLocator {
 
     if (componentName.equals(RepartoDeTarjetaService.class.getName())) {
       RepartoDeTarjetaService instance = new RepartoDeTarjetaService(
-          instanceOf(RepartoDeTarjetasRepository.class),
+          instanceOf(RepartoDeTarjetaRepository.class),
           instanceOf(PersonaVulnerableRepository.class),
-          instanceOf(TarjetaPersonaVulnerableRepository.class));
+          instanceOf(TarjetaPersonaVulnerableRepository.class),
+          instanceOf(ColaboradorRepository.class));
       instances.put(componentName, instance);
     }
 
     if (componentName.equals(DistribucionViandasService.class.getName())) {
       DistribucionViandasService instance = new DistribucionViandasService(
           instanceOf(DistribucionViandasRepository.class),
-          instanceOf(HeladeraRepository.class));
+          instanceOf(ColaboradorRepository.class),
+          instanceOf(HeladeraRepository.class),
+          instanceOf(TarjetaColaboradorService.class),
+          instanceOf(SolicitudDeAperturaService.class),
+          instanceOf(AperturaHeladeraService.class));
       instances.put(componentName, instance);
     }
 
     if (componentName.equals(DonacionViandaService.class.getName())) {
       DonacionViandaService instance = new DonacionViandaService(
           instanceOf(DonacionViandaRepository.class),
-          instanceOf(ViandaRepository.class));
+          instanceOf(ViandaRepository.class),
+          instanceOf(ColaboradorRepository.class),
+          instanceOf(HeladeraRepository.class),
+          instanceOf(TarjetaColaboradorService.class),
+          instanceOf(SolicitudDeAperturaService.class),
+          instanceOf(AperturaHeladeraService.class));
       instances.put(componentName, instance);
     }
 
     if (componentName.equals(DonacionDineroService.class.getName())) {
       DonacionDineroService instance = new DonacionDineroService(
-          instanceOf(DonacionDineroRepository.class));
+          instanceOf(DonacionDineroRepository.class),
+          instanceOf(DonacionDineroPeriodicaRepository.class),
+          instanceOf(ColaboradorRepository.class));
       instances.put(componentName, instance);
     }
 
     if (componentName.equals(HacerseCargoHeladeraService.class.getName())) {
       HacerseCargoHeladeraService instance = new HacerseCargoHeladeraService(
-          instanceOf(HacerseCargoHeladeraRepository.class));
+          instanceOf(HacerseCargoHeladeraRepository.class),
+          instanceOf(ColaboradorRepository.class),
+          instanceOf(HeladeraRepository.class));
       instances.put(componentName, instance);
     }
 
     if (componentName.equals(OfertaProductosServiciosService.class.getName())) {
       OfertaProductosServiciosService instance = new OfertaProductosServiciosService(
-          instanceOf(OfertaDeProductosRepository.class)
-      );
+          instanceOf(OfertaDeProductosRepository.class),
+          instanceOf(ColaboradorRepository.class),
+          instanceOf(ImageService.class));
+      instances.put(componentName, instance);
+    }
+
+    if (componentName.equals(TarjetaColaboradorService.class.getName())) {
+      TarjetaColaboradorService instance = new TarjetaColaboradorService(
+          instanceOf(TarjetaColaboradorRepository.class));
       instances.put(componentName, instance);
     }
 
@@ -466,7 +513,7 @@ public class ServiceLocator {
           instanceOf(DonacionDineroRepository.class),
           instanceOf(DistribucionViandasRepository.class),
           instanceOf(DonacionViandaRepository.class),
-          instanceOf(RepartoDeTarjetasRepository.class),
+          instanceOf(RepartoDeTarjetaRepository.class),
           instanceOf(HacerseCargoHeladeraRepository.class),
           instanceOf(ColaboradorRepository.class),
           instanceOf(VarianteDePuntosRepository.class));
@@ -535,8 +582,13 @@ public class ServiceLocator {
       instances.put(componentName, instance);
     }
 
-    if (componentName.equals(RepartoDeTarjetasRepository.class.getName())) {
-      RepartoDeTarjetasRepository instance = new RepartoDeTarjetasRepository();
+    if (componentName.equals(RepartoDeTarjetaRepository.class.getName())) {
+      RepartoDeTarjetaRepository instance = new RepartoDeTarjetaRepository();
+      instances.put(componentName, instance);
+    }
+
+    if (componentName.equals(TarjetaColaboradorRepository.class.getName())) {
+      TarjetaColaboradorRepository instance = new TarjetaColaboradorRepository();
       instances.put(componentName, instance);
     }
 
@@ -557,6 +609,11 @@ public class ServiceLocator {
 
     if (componentName.equals(DonacionDineroRepository.class.getName())) {
       DonacionDineroRepository instance = new DonacionDineroRepository();
+      instances.put(componentName, instance);
+    }
+
+    if (componentName.equals(DonacionDineroPeriodicaRepository.class.getName())) {
+      DonacionDineroPeriodicaRepository instance = new DonacionDineroPeriodicaRepository();
       instances.put(componentName, instance);
     }
 

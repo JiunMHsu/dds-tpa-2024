@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.models.repositories.colaboracion;
 
+import ar.edu.utn.frba.dds.models.entities.aperturaHeladera.SolicitudDeApertura;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
-import ar.edu.utn.frba.dds.models.entities.heladera.SolicitudDeApertura;
 import java.util.Optional;
 
 /**
@@ -14,19 +14,34 @@ public class DistribucionViandasRepository extends ColaboracionRepository<Distri
   }
 
   /**
-   * Busca una distribución de viandas por solicitud de apertura.
+   * Busca una distribución de viandas por solicitud de ingreso.
    *
    * @param solicitud la {@link SolicitudDeApertura} asociada
    * @return la distribución, si existe
    */
-  public Optional<DistribucionViandas> buscarPorSolicitudDeApertura(SolicitudDeApertura solicitud) {
-    String query = switch (solicitud.getOperacion()) {
-      case RETIRO_VIANDAS ->
-          "from DistribucionViandas d where d.solicitudAperturaOrigen = :s and d.alta = :a";
-      case INGRESO_VIANDAS ->
-          "from DistribucionViandas d where d.solicitudAperturaDestino = :s and d.alta = :a";
-    };
-    
+  public Optional<DistribucionViandas> buscarPorSolicitudDeIngreso(SolicitudDeApertura solicitud) {
+    String query = "from DistribucionViandas d"
+        + " where d.solicitudAperturaDestino = :s and d.alta = :a";
+
+    return entityManager()
+        .createQuery(query, DistribucionViandas.class)
+        .setParameter("s", solicitud)
+        .setParameter("a", true)
+        .getResultList()
+        .stream()
+        .findFirst();
+  }
+
+  /**
+   * Busca una distribución de viandas por solicitud de retiro.
+   *
+   * @param solicitud la {@link SolicitudDeApertura} asociada
+   * @return la distribución, si existe
+   */
+  public Optional<DistribucionViandas> buscarPorSolicitudDeRetiro(SolicitudDeApertura solicitud) {
+    String query = "from DistribucionViandas d"
+        + " where d.solicitudAperturaOrigen = :s and d.alta = :a";
+
     return entityManager()
         .createQuery(query, DistribucionViandas.class)
         .setParameter("s", solicitud)

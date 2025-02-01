@@ -6,17 +6,19 @@ import com.hivemq.client.mqtt.mqtt5.Mqtt5BlockingClient;
 import com.hivemq.client.mqtt.mqtt5.Mqtt5Client;
 import com.hivemq.client.mqtt.mqtt5.message.unsubscribe.Mqtt5Unsubscribe;
 import java.nio.charset.StandardCharsets;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
+/**
+ * Cliente MQTT.
+ */
 public class ClienteMqtt implements IClienteMqtt {
 
   private final Mqtt5BlockingClient client;
-  private final Set<String> topicsSuscritos;
 
+  /**
+   * Constructor.
+   */
   public ClienteMqtt() {
-    topicsSuscritos = new HashSet<>();
     client = Mqtt5Client
         .builder()
         .identifier(UUID.randomUUID().toString())
@@ -28,12 +30,15 @@ public class ClienteMqtt implements IClienteMqtt {
     System.out.println("Conexión establecida con el broker MQTT.");
   }
 
+  /**
+   * Registra un suscriptor al cliente MQTT.
+   *
+   * @param suscriptor Suscriptor a suscribir
+   */
+  @Override
   public void suscribirPara(ISuscriptorMqtt suscriptor) {
-    if (topicsSuscritos.contains(suscriptor.topic())) {
-      return;
-    }
-
-    client.toAsync().subscribeWith()
+    client.toAsync()
+        .subscribeWith()
         .topicFilter(suscriptor.topic())
         .qos(MqttQos.AT_MOST_ONCE)
         .callback(mqtt5Publish -> {
@@ -50,17 +55,20 @@ public class ClienteMqtt implements IClienteMqtt {
             System.out.printf("La suscripción a %s falló. \n", suscriptor.topic());
           } else {
             System.out.printf("La suscripción a %s completada. \n", suscriptor.topic());
-            topicsSuscritos.add(suscriptor.topic());
           }
         });
   }
 
+  /**
+   * Desuscribe un suscriptor del cliente MQTT.
+   *
+   * @param suscriptor Suscriptor a desuscribir
+   */
+  @Override
   public void desuscribirPara(ISuscriptorMqtt suscriptor) {
-    if (!topicsSuscritos.contains(suscriptor.topic())) {
-      return;
-    }
+    Mqtt5Unsubscribe unsubscribe = Mqtt5Unsubscribe.builder()
+        .topicFilter(suscriptor.topic()).build();
 
-    Mqtt5Unsubscribe unsubscribe = Mqtt5Unsubscribe.builder().topicFilter(suscriptor.topic()).build();
     client.toAsync().unsubscribe(unsubscribe)
         .whenComplete((mqtt5UnsubAck, throwable) -> {
           if (throwable != null) {
@@ -68,11 +76,16 @@ public class ClienteMqtt implements IClienteMqtt {
             System.out.printf("La desuscripción de %s falló. \n", suscriptor.topic());
           } else {
             System.out.printf("La desuscripción de %s completada. \n", suscriptor.topic());
-            topicsSuscritos.remove(suscriptor.topic());
           }
         });
   }
 
+  /**
+   * Publica un mensaje en un tópico.
+   *
+   * @param topic   Tópico
+   * @param payload Mensaje
+   */
   public void publicarMensaje(String topic, String payload) {
     client.publishWith()
         .topic(topic)

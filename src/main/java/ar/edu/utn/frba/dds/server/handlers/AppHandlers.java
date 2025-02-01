@@ -3,6 +3,9 @@ package ar.edu.utn.frba.dds.server.handlers;
 import io.javalin.Javalin;
 import java.util.Arrays;
 
+/**
+ * App Handlers.
+ */
 public class AppHandlers {
 
   private final IHandler[] handlers = new IHandler[]{

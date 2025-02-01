@@ -21,7 +21,7 @@ public class AlertaDTO {
 
   private boolean resuelto;
 
-  // En la vista completa podría mapearse más info del colaborador y la heladera
+  // En la vista fromPersonaVulnerable podría mapearse más info del colaborador y la heladera
   // puede servir paraColaborador redirecciones
   public static AlertaDTO completa(Incidente incidente) {
 

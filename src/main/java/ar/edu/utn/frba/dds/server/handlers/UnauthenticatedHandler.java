@@ -3,6 +3,9 @@ package ar.edu.utn.frba.dds.server.handlers;
 import ar.edu.utn.frba.dds.exceptions.UnauthenticatedException;
 import io.javalin.Javalin;
 
+/**
+ * Unauthenticated Handler.
+ */
 public class UnauthenticatedHandler implements IHandler {
   @Override
   public void setHandler(Javalin app) {

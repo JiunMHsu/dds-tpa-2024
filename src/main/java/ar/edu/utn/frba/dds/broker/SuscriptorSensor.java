@@ -8,11 +8,14 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import lombok.Getter;
 
+/**
+ * Suscriptor de sensor.
+ */
 public class SuscriptorSensor implements ISuscriptorMqtt {
 
   private final IClienteMqtt clienteMqtt;
 
-  private final String _topic;
+  private final String topic;
 
   @Getter
   private final UUID heladeraId;
@@ -21,22 +24,36 @@ public class SuscriptorSensor implements ISuscriptorMqtt {
 
   private ScheduledExecutorService scheduler;
 
-  public SuscriptorSensor(IBrokerMessageHandler brokerMessageHandler, IClienteMqtt clienteMqtt, String topic, UUID heladeraId) {
+  private boolean isSubscribed;
+
+  /**
+   * Constructor.
+   *
+   * @param brokerMessageHandler Handler de mensajes del broker
+   * @param clienteMqtt          Cliente MQTT
+   * @param topic                Tópico
+   * @param heladeraId           Id de la heladera
+   */
+  public SuscriptorSensor(IBrokerMessageHandler brokerMessageHandler,
+                          IClienteMqtt clienteMqtt,
+                          String topic,
+                          UUID heladeraId) {
+
     this.clienteMqtt = clienteMqtt;
-    this._topic = topic;
+    this.topic = topic;
     this.heladeraId = heladeraId;
     this.scheduler = null;
     this.brokerMessageHandler = brokerMessageHandler;
+    this.isSubscribed = false;
   }
 
   @Override
   public String topic() {
-    return _topic;
+    return this.topic;
   }
 
   @Override
   public void recibirMensaje(String mensaje) {
-    // TODO: Log message
     System.out.println("Mensaje recibido por " + this.topic() + ": " + mensaje);
 
     String[] vectorMensaje = mensaje.split(" ");
@@ -47,24 +64,40 @@ public class SuscriptorSensor implements ISuscriptorMqtt {
       case FRAUDE -> brokerMessageHandler.manejarFraude(heladeraId);
       case LECTOR_TARJETA ->
           brokerMessageHandler.manejarSolicitudDeApertura(vectorMensaje[1], heladeraId);
+      default ->
+          throw new IllegalStateException("Unexpected value: " + parseOperation(vectorMensaje[0]));
     }
 
     newScheduler();
   }
 
+  /**
+   * Suscribe al broker.
+   */
   public void suscribir() {
+    if (isSubscribed) {
+      return;
+    }
+
     clienteMqtt.suscribirPara(this);
+    isSubscribed = true;
     newScheduler();
   }
 
+  /**
+   * Desuscribe del broker.
+   */
   public void desuscribir() {
+    if (!isSubscribed) {
+      return;
+    }
+
     killScheduler();
+    isSubscribed = false;
     clienteMqtt.desuscribirPara(this);
   }
 
   private void manejarRetrasoMensaje() {
-    // TODO: Log message
-
     desuscribir();
     brokerMessageHandler.manejarFallaConexion(heladeraId);
   }
@@ -80,7 +113,7 @@ public class SuscriptorSensor implements ISuscriptorMqtt {
 
   private void killScheduler() {
     if (scheduler != null && !scheduler.isShutdown()) {
-      scheduler.shutdown();
+      scheduler.shutdownNow();
       scheduler = null;
     }
   }
@@ -88,7 +121,7 @@ public class SuscriptorSensor implements ISuscriptorMqtt {
   private void newScheduler() {
     killScheduler();
     scheduler = Executors.newScheduledThreadPool(1);
-    scheduler.schedule(this::manejarRetrasoMensaje, 10, TimeUnit.SECONDS);
+    scheduler.schedule(this::manejarRetrasoMensaje, 30, TimeUnit.SECONDS);
   }
 
 }

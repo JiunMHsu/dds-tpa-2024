@@ -1,126 +1,98 @@
 package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
-import ar.edu.utn.frba.dds.dtos.colaboraciones.DonacionDineroDTO;
-import ar.edu.utn.frba.dds.exceptions.NonColaboratorException;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.donacionDinero.DonacionDineroDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.donacionDinero.DonacionPeriodicaDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDinero;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.permissions.ColaboradorRequired;
 import ar.edu.utn.frba.dds.services.colaboraciones.DonacionDineroService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
-import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
-import io.javalin.validation.ValidationException;
-import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-public class DonacionDineroController extends ColaboradorRequired implements ICrudViewsHandler {
+/**
+ * Controlador de las operaciones de donación de dinero.
+ */
+public class DonacionDineroController extends ColaboradorRequired {
 
   private final DonacionDineroService donacionDineroService;
 
-  public DonacionDineroController(DonacionDineroService donacionDineroService,
-                                  UsuarioService usuarioService,
-                                  ColaboradorService colaboradorService) {
-
+  public DonacionDineroController(UsuarioService usuarioService,
+                                  ColaboradorService colaboradorService,
+                                  DonacionDineroService donacionDineroService) {
     super(usuarioService, colaboradorService);
     this.donacionDineroService = donacionDineroService;
   }
 
-  @Override
-  public void index(Context context) {
-    // TODO - Implementar
-  }
-
-  @Override
-  public void show(Context context) { // TODO - Revisar
+  /**
+   * Muestra el detalle de una donación de dinero.
+   * TODO: Implementar Vista
+   *
+   * @param context Contexto de Javalin
+   */
+  public void show(Context context) {
     String donacionDineroId = context.pathParam("id");
-    Optional<DonacionDinero> donacionDinero = donacionDineroService.buscarPorId(donacionDineroId);
-
-    if (donacionDinero.isEmpty())
-      throw new ResourceNotFoundException("No se encontró donacion de dinero con id de colaborador " + donacionDineroId);
+    DonacionDineroDTO donacion = donacionDineroService.buscarPorId(donacionDineroId);
 
     Map<String, Object> model = new HashMap<>();
-
-    DonacionDineroDTO donacionDineroDTO = DonacionDineroDTO.completa(donacionDinero.get());
-    model.put("donacion_dinero", donacionDineroDTO);
-
-    context.render("colaboraciones/colaboracion_detalle.hbs", model);
+    model.put("donacionDinero", donacion);
+    render(context, "colaboraciones/donacion_dinero/donacion_dinero_detalle.hbs", model);
   }
 
-  @Override
+  /**
+   * Muestra el formulario para crear una donación de dinero.
+   *
+   * @param context Contexto de Javalin
+   */
   public void create(Context context) {
+    Map<String, Object> model = new HashMap<>();
     Colaborador colaborador = colaboradorFromSession(context);
 
-    if (!colaborador.puedeColaborar(TipoColaboracion.DONACION_DINERO))
+    if (!colaborador.puedeColaborar(TipoColaboracion.DONACION_DINERO)) {
       throw new UnauthorizedException("No tiene permiso");
-
-    render(context, "colaboraciones/donacion_dinero_crear.hbs", new HashMap<>());
-  }
-
-  @Override
-  public void save(Context context) {
-    Map<String, Object> model = new HashMap<>();
-    List<RedirectDTO> redirectDTOS = new ArrayList<>();
-    boolean operationSuccess = false;
+    }
 
     try {
-      Colaborador colaborador = colaboradorFromSession(context);
-
-      Integer monto = context.formParamAsClass("monto", Integer.class).get();
-
-      String unidadTiempo = context.formParamAsClass("unidad_tiempo", String.class).getOrDefault("NONE");
-      Integer periocidad = context.formParamAsClass("periocidad", Integer.class)
-          .check(p -> p >= 0, "el periodo debe ser positivo")
-          .getOrDefault(0);
-
-      Period frecuencia = switch (unidadTiempo) {
-        case "DAY" -> Period.ofDays(periocidad);
-        case "WEEK" -> Period.ofWeeks(periocidad);
-        case "MONTH" -> Period.ofMonths(periocidad);
-        case "YEAR" -> Period.ofYears(periocidad);
-        default -> null;
-      };
-
-      // TODO - ver como lanzar y manejar fallas por creación y guardado
-      DonacionDinero donacionDinero = DonacionDinero.por(colaborador, LocalDateTime.now(), monto);
-      this.donacionDineroService.registrar(donacionDinero);
-
-      // TODO - Delegar a Service??
-      colaborador.invalidarPuntos();
-      this.colaboradorService.actualizar(colaborador);
-
-      operationSuccess = true;
-      redirectDTOS.add(new RedirectDTO("/colaboraciones", "Colaboraciones"));
-
-    } catch (NonColaboratorException e) {
-      throw new UnauthorizedException(e.getMessage());
-    } catch (ValidationException v) {
-      redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
+      DonacionPeriodicaDTO donacionPeriodica = donacionDineroService
+          .buscarDonacionPeriodica(colaborador);
+      model.put("donacionPeriodica", donacionPeriodica);
+    } catch (ResourceNotFoundException e) {
+      model.put("donacionPeriodica", null);
     } finally {
-      model.put("success", operationSuccess);
-      model.put("redirects", redirectDTOS);
-      context.render("post_result.hbs", model);
+      render(context, "colaboraciones/donacion_dinero/donacion_dinero_crear.hbs", model);
     }
   }
 
-  @Override
-  public void edit(Context context) {
-  }
+  /**
+   * Guarda una donación de dinero.
+   *
+   * @param context Contexto de Javalin
+   */
+  public void save(Context context) {
+    Colaborador colaborador = colaboradorFromSession(context);
 
-  @Override
-  public void update(Context context) {
-  }
+    if (!colaborador.puedeColaborar(TipoColaboracion.DONACION_DINERO)) {
+      throw new UnauthorizedException("No tiene permiso");
+    }
 
-  @Override
-  public void delete(Context context) {
+    donacionDineroService.registrarDonacion(
+        colaborador,
+        context.formParamAsClass("monto", Integer.class).get()
+    );
+
+    List<RedirectDTO> redirects = new ArrayList<>();
+    redirects.add(new RedirectDTO("/colaboraciones", "Colaboraciones"));
+
+    Map<String, Object> model = new HashMap<>();
+    model.put("success", true);
+    model.put("redirects", redirects);
+    render(context, "post_result.hbs", model);
   }
 }

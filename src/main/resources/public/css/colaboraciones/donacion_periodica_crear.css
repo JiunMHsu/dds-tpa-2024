@@ -1,0 +1,20 @@
+.main-section {
+    border: 1px solid var(--background-3);
+}
+
+.form {
+    grid-template-columns: 20rem 15rem;
+}
+
+.form-title {
+    font-size: 2rem;
+    color: var(--foreground-1);
+}
+
+.field-monto {
+    grid-column: 1 / -1;
+}
+
+.side-panel {
+    display: none;
+}

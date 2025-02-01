@@ -21,10 +21,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Controller de colaboraciones.
+ */
 public class ColaboracionController extends ColaboradorRequired {
 
   private final ColaboracionService colaboracionService;
 
+  /**
+   * Constructor de ColaboracionController.
+   *
+   * @param usuarioService      Servicio de Usuario
+   * @param colaboradorService  Servicio de Colaborador
+   * @param colaboracionService Servicio de Colaboracion
+   */
   public ColaboracionController(UsuarioService usuarioService,
                                 ColaboradorService colaboradorService,
                                 ColaboracionService colaboracionService) {
@@ -32,60 +42,64 @@ public class ColaboracionController extends ColaboradorRequired {
     this.colaboracionService = colaboracionService;
   }
 
+  /**
+   * Devuelve la vista de todas las colaboraciones.
+   * Si el usuario es un colaborador, se le muestran únicamente las colaboraciones que realizó.
+   *
+   * @param context Objeto Context de io.javalin.http
+   */
   public void index(Context context) {
     Map<String, Object> model = new HashMap<>();
     Usuario usuario = usuarioFromSession(context);
+    List<ColaboracionDTO> colaboracionesRealizadas = new ArrayList<>();
 
     if (Objects.equals(usuario.getRol(), TipoRol.COLABORADOR)) {
-
       Colaborador colaborador = colaboradorFromSession(context);
-      List<Object> colaboracionesRealizadas = colaboracionService.buscarTodasPorColaborador(colaborador);
-
-      List<ColaboracionDTO> colaboracionesRealizadasDTO = colaboracionesRealizadas.stream()
-          .map(ColaboracionDTO::toDTO)
-          .toList();
+      colaboracionesRealizadas = colaboracionService.buscarTodasPorColaborador(colaborador);
 
       List<TipoColaboracionDTO> formasDeColaborar = colaborador.getFormasDeColaborar()
           .stream().map(TipoColaboracionDTO::redirectable)
           .toList();
 
-      model.put("colaboracionesRealizadas", colaboracionesRealizadasDTO);
       model.put("formasDeColaborar", formasDeColaborar);
       model.put("colaboradorId", colaborador.getId().toString());
     } else if (Objects.equals(usuario.getRol(), TipoRol.ADMIN)) {
-
-      List<Object> colaboraciones = this.colaboracionService.buscarTodas();
-      List<ColaboracionDTO> colaboracionDTOS = colaboraciones.stream()
-          .map(ColaboracionDTO::toDTO)
-          .toList();
-      model.put("colaboracionesRealizadas", colaboracionDTOS);
+      colaboracionesRealizadas = this.colaboracionService.buscarTodas();
     }
 
+    model.put("colaboracionesRealizadas", colaboracionesRealizadas);
     render(context, "colaboraciones/colaboraciones.hbs", model);
   }
 
+  /**
+   * Handler para cargar colaboraciones desde un archivo CSV.
+   *
+   * @param context Objeto Context de io.javalin.http
+   */
   public void cargarColaboraciones(Context context) {
     Map<String, Object> model = new HashMap<>();
-    List<RedirectDTO> redirectDTOS = new ArrayList<>();
+    List<RedirectDTO> redirects = new ArrayList<>();
     boolean operationSuccess = false;
 
     try {
       UploadedFile uploadedFile = context.uploadedFile("csv");
-      if (uploadedFile == null) throw new InvalidFormParamException();
+      if (uploadedFile == null) {
+        throw new InvalidFormParamException();
+      }
 
       colaboracionService.cargarColaboraciones(uploadedFile.content());
 
       operationSuccess = true;
-      redirectDTOS.add(new RedirectDTO("/colaboraciones", "Ver Colaboraciones"));
+      redirects.add(new RedirectDTO("/colaboraciones", "Ver Colaboraciones"));
 
     } catch (ValidationException | CargaMasivaException e) {
       System.out.println(e.getMessage());
-      redirectDTOS.add(new RedirectDTO("/colaboraciones", "Reintentar"));
+      redirects.add(new RedirectDTO("/colaboraciones", "Reintentar"));
     } finally {
       model.put("success", operationSuccess);
-      model.put("redirects", redirectDTOS);
+      model.put("redirects", redirects);
 
-      context.render("post_result.hbs", model);
+      render(context, "post_result.hbs", model);
     }
   }
 }

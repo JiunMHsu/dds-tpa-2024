@@ -5,8 +5,12 @@ import ar.edu.utn.frba.dds.models.entities.usuario.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import io.javalin.http.Context;
+import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * User Required.
+ */
 public abstract class UserRequired {
 
   protected final UsuarioService usuarioService;
@@ -43,6 +47,10 @@ public abstract class UserRequired {
     }
 
     context.render(view, model);
+  }
+
+  protected void render(Context context, String view) {
+    render(context, view, new HashMap<>());
   }
 
 }

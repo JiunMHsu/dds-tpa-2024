@@ -4,7 +4,7 @@ import static io.javalin.apibuilder.ApiBuilder.path;
 import static io.javalin.apibuilder.ApiBuilder.post;
 
 import ar.edu.utn.frba.dds.config.ServiceLocator;
-import ar.edu.utn.frba.dds.controllers.heladera.PuntoIdealController;
+import ar.edu.utn.frba.dds.controllers.heladera.PuntoDeColocacionController;
 import ar.edu.utn.frba.dds.models.entities.usuario.TipoRol;
 import io.javalin.config.RouterConfig;
 
@@ -13,7 +13,7 @@ public class PuntoIdealRouter implements IRouter {
   @Override
   public void apply(RouterConfig config) {
     config.apiBuilder(() -> path("/punto-ideal", () ->
-        post(ServiceLocator.instanceOf(PuntoIdealController.class)::create, TipoRol.ADMIN))
+        post(ServiceLocator.instanceOf(PuntoDeColocacionController.class)::create, TipoRol.ADMIN))
     );
   }
 }
