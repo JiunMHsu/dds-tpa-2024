@@ -1,6 +1,7 @@
-package ar.edu.utn.frba.dds.models.stateless.mensajeria;
+package ar.edu.utn.frba.dds.models.stateless.mensajeria.mail;
 
 import ar.edu.utn.frba.dds.models.entities.mensaje.Mensaje;
+import ar.edu.utn.frba.dds.models.stateless.mensajeria.ISender;
 import ar.edu.utn.frba.dds.utils.AppProperties;
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;

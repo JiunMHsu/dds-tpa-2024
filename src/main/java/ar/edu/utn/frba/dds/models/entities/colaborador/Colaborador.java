@@ -92,7 +92,7 @@ public class Colaborador extends EntidadPersistente {
 
   @Embedded
   private Puntos puntos;
-
+  
   /**
    * Constructor de un colaborador jurídico.
    *
@@ -251,7 +251,20 @@ public class Colaborador extends EntidadPersistente {
   }
 
   public void agregarContacto(Contacto contacto) {
-    this.contactos.add(contacto);
+    if (contactos == null) {
+      contactos = new ArrayList<>();
+    }
+
+    Contacto contactoExistente = contactos.stream()
+        .filter(c -> c.getMedioDeNotificacion() == contacto.getMedioDeNotificacion())
+        .findFirst()
+        .orElse(null);
+
+    if (contactoExistente != null) {
+      contactoExistente.setValor(contacto.getValor());
+    } else {
+      contactos.add(contacto);
+    }
   }
 }
 

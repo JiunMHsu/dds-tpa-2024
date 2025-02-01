@@ -275,4 +275,9 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
     return colaborador;
   }
 
+  public void registrarChatId(Context context) {
+
+    // TODO: Implementar
+
+  }
 }

@@ -1,12 +1,14 @@
 package ar.edu.utn.frba.dds.services.colaborador;
 
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.IColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.IUsuarioRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 public class ColaboradorService implements WithSimplePersistenceUnit {
 
@@ -50,5 +52,17 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
 
   public List<Colaborador> buscarTodosColaboradores() {
     return this.colaboradorRepository.buscarTodos();
+  }
+
+  /**
+   * Registra chatID correspondiente. 
+   *
+   * @param colaborador
+   * @param chatId
+   */
+  public void registrarChatId(@NotNull Colaborador colaborador, String chatId) {
+
+    colaborador.agregarContacto(Contacto.conTelegram(chatId));
+    this.colaboradorRepository.guardar(colaborador);
   }
 }
