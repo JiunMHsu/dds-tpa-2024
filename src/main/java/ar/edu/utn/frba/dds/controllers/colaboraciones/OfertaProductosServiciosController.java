@@ -58,7 +58,7 @@ public class OfertaProductosServiciosController extends ColaboradorRequired {
 
     Map<String, Object> model = new HashMap<>();
     model.put("oferta_producto_servicio", ofertaDeProducto);
-    render(context, "colaboraciones/oferta_prod_serv_detalle.hbs", model);
+    render(context, "colaboraciones/oferta_prod_serv/oferta_prod_serv_detalle.hbs", model);
   }
 
   /**
@@ -77,7 +77,7 @@ public class OfertaProductosServiciosController extends ColaboradorRequired {
 
     Map<String, Object> model = new HashMap<>();
     model.put("rubros", rubros);
-    render(context, "colaboraciones/oferta_prod_serv_crear.hbs", model);
+    render(context, "colaboraciones/oferta_prod_serv/oferta_prod_serv_crear.hbs", model);
   }
 
   /**

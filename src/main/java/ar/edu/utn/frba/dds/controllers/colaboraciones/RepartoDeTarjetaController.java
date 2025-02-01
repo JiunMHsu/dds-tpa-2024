@@ -52,7 +52,7 @@ public class RepartoDeTarjetaController extends ColaboradorRequired {
       throw new UnauthorizedException("No tenes permiso");
     }
 
-    render(context, "colaboraciones/registro_pv_crear.hbs");
+    render(context, "colaboraciones/registro_pv/registro_pv_crear.hbs");
   }
 
   /**
