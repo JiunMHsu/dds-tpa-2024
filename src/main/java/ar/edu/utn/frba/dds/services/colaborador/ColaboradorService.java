@@ -10,11 +10,20 @@ import java.util.List;
 import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Servicio de Colaborador.
+ */
 public class ColaboradorService implements WithSimplePersistenceUnit {
 
   private final IColaboradorRepository colaboradorRepository;
   private final IUsuarioRepository usuarioRepository;
 
+  /**
+   * Constructor de ColaboradorService.
+   *
+   * @param colaboradorRepository Repositorio de Colaborador
+   * @param usuarioRepository     Repositorio de Usuario
+   */
   public ColaboradorService(IColaboradorRepository colaboradorRepository,
                             IUsuarioRepository usuarioRepository) {
     this.colaboradorRepository = colaboradorRepository;
@@ -55,12 +64,12 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
   }
 
   /**
-   * Registra chatID correspondiente. 
+   * Registrar un chatId a un Colaborador.
    *
-   * @param colaborador
-   * @param chatId
+   * @param colaborador colaborador
+   * @param chatId      chatId a registrar
    */
-  public void registrarChatId(@NotNull Colaborador colaborador, String chatId) {
+  public void registrarChatId(@NotNull Colaborador colaborador, @NotNull String chatId) {
 
     colaborador.agregarContacto(Contacto.conTelegram(chatId));
     this.colaboradorRepository.guardar(colaborador);

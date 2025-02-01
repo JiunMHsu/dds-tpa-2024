@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.controllers.colaborador;
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.TipoColaboracionDTO;
 import ar.edu.utn.frba.dds.dtos.colaborador.ColaboradorDTO;
+import ar.edu.utn.frba.dds.exceptions.NotColaboratorException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.exceptions.ValidationException;
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.Puntos;
@@ -19,7 +20,6 @@ import ar.edu.utn.frba.dds.models.stateless.ValidadorDeContrasenias;
 import ar.edu.utn.frba.dds.permissions.ColaboradorRequired;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
-import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -30,13 +30,26 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class ColaboradorController extends ColaboradorRequired implements ICrudViewsHandler {
+/**
+ * Controller de Colaborador.
+ */
+public class ColaboradorController extends ColaboradorRequired {
 
+  /**
+   * Constructor de ColaboradorController.
+   *
+   * @param usuarioService     Servicio de Usuario
+   * @param colaboradorService Servicio de Colaborador
+   */
   public ColaboradorController(UsuarioService usuarioService, ColaboradorService colaboradorService) {
     super(usuarioService, colaboradorService);
   }
 
-  @Override
+  /**
+   * Devuelve la vista de todos los colaboradores.
+   *
+   * @param context Objeto Context de io.javalin.http
+   */
   public void index(Context context) {
     Map<String, Object> model = new HashMap<>();
 
@@ -50,12 +63,6 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
     render(context, "colaboradores/colaboradores.hbs", model);
   }
 
-  @Override
-  public void show(Context context) {
-    // unused
-    context.result("show");
-  }
-
   public void getProfile(Context context) {
     Colaborador colaborador = colaboradorFromSession(context);
 
@@ -66,16 +73,17 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
     render(context, "perfil/perfil.hbs", model);
   }
 
-  @Override
+  /**
+   * Devuelve un formulario para dar de alta a un colaborador.
+   *
+   * @param context Objeto Context de io.javalin.http
+   */
   public void create(Context context) {
     context.render("signs/sign.hbs");
   }
 
-  @Override
-  public void save(Context context) {
-  }
-
   // TODO: REFACTOR
+  // Simplificar ambos métodos en uno solo
   public void saveHumana(Context context) {
     Map<String, Object> model = new HashMap<>();
     List<RedirectDTO> redirectDTOS = new ArrayList<>();
@@ -138,6 +146,7 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
     }
   }
 
+  // TODO: REFACTOR
   public void saveJuridica(Context context) {
     Map<String, Object> model = new HashMap<>();
     List<RedirectDTO> redirectDTOS = new ArrayList<>();
@@ -200,19 +209,11 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
     }
   }
 
-
-  @Override
-  public void edit(Context context) {
-  }
-
-  @Override
-  public void update(Context context) {
-  }
-
-  @Override
-  public void delete(Context context) {
-  }
-
+  /**
+   * Devuelve un formulario para editar las formas de colaborar.
+   *
+   * @param context Objeto Context de io.javalin.http
+   */
   public void editFormasDeColaborar(Context context) {
     String pathId = context.pathParam("id");
     Colaborador colaborador = restrictByOwner(context, pathId);
@@ -233,6 +234,11 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
     render(context, "colaboradores/formas_de_colaboracion_editar.hbs", model);
   }
 
+  /**
+   * Actualiza las formas de colaborar de un colaborador.
+   *
+   * @param context Objeto Context de io.javalin.http
+   */
   public void updateFormasDeColaborar(Context context) {
     Colaborador colaborador = restrictByOwner(context, context.pathParam("id"));
 
@@ -275,9 +281,21 @@ public class ColaboradorController extends ColaboradorRequired implements ICrudV
     return colaborador;
   }
 
+  /**
+   * Registra el chatID de Telegram al colaborador.
+   *
+   * @param context Objeto Context de io.javalin.http
+   */
   public void registrarChatId(Context context) {
 
-    // TODO: Implementar
+    try {
+      Colaborador colaborador = colaboradorFromSession(context);
+      String chatId = context.queryParamAsClass("chatId", String.class).get();
 
+      this.colaboradorService.registrarChatId(colaborador, chatId);
+      
+    } catch (NotColaboratorException e) {
+      throw new UnauthorizedException(e.getMessage());
+    }
   }
 }

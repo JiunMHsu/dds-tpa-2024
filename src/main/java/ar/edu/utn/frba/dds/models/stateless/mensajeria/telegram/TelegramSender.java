@@ -16,7 +16,6 @@ import org.apache.camel.impl.DefaultCamelContext;
 /**
  * Telegram sender class.
  */
-
 @Getter
 @Setter
 public class TelegramSender implements ISender {
@@ -26,7 +25,7 @@ public class TelegramSender implements ISender {
   private ProducerTemplate producerTemplate;
 
   /**
-   * Constructor.
+   * Constructor de TelegramSender.
    */
   public TelegramSender() {
     this.authorizationToken = AppProperties.getInstance().propertyFromName("TELEGRAM_AUTHORIZATION_TOKEN");
@@ -34,7 +33,7 @@ public class TelegramSender implements ISender {
     configurarCamelContext();
   }
 
-  public void configurarCamelContext() {
+  private void configurarCamelContext() {
     if (camelContext != null) {
       return;
     }
@@ -43,16 +42,10 @@ public class TelegramSender implements ISender {
       this.camelContext = new DefaultCamelContext();
       camelContext.addRoutes(new RouteBuilder() {
         @Override
-        public void configure() {
-          from("direct:sendToTelegram")
-              .setHeader("CamelTelegramChatId", simple("${header.chatId}"))
-              .to("mock:direct:sendToTelegram")
-              .toD("telegram:bots/?authorizationToken=" + authorizationToken);
-
-          from("telegram:bots/?authorizationToken=" + authorizationToken)
-              .log("Mensaje enviado a Telegram")
+        public void configure() throws Exception {
+          from("telegram:bots?authorizationToken=" + authorizationToken)
               .process(exchange -> {
-                String receivedChatId = exchange.getIn().getHeader("CamelTelegramChatId", String.class);
+                String receivedChatId = ((Map<String, Object>) body.get("chat")).get("id").toString();
 
                 if (receivedChatId != null) {
                   String backendUrl = "http://localhost:8081/api/vincular-telegram?chatId=" + receivedChatId;
@@ -63,12 +56,12 @@ public class TelegramSender implements ISender {
                   exchange.setProperty(Exchange.ROUTE_STOP, Boolean.TRUE);
                 }
               })
-              .to("http://localhost:8081/api/vincular-telegram?bridgeEndpoint=true");
+              .to("http://localhost:8081/api/vincular-telegram?bridgeEndpoint=true");  // Línea restaurada
         }
       });
-
       camelContext.start();
       this.producerTemplate = camelContext.createProducerTemplate();
+
     } catch (Exception e) {
       e.printStackTrace();
     }
