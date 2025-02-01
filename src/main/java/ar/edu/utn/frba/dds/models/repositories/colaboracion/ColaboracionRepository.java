@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Repositorio de colaboraciones.
@@ -84,12 +85,10 @@ public abstract class ColaboracionRepository<T extends EntidadPersistente>
    * @param fechaHora la fecha y hora a partir de la cual buscar
    * @return las colaboraciones, si existen
    */
-  public List<T> buscarDesde(LocalDateTime fechaHora) {
+  public List<T> buscarDesde(@NotNull LocalDateTime fechaHora) {
     String query = "from " + type.getName() + " c where c.alta = :alta and c.fechaHora >= :fecha";
 
-    return fechaHora == null
-        ? buscarTodos()
-        : entityManager()
+    return entityManager()
         .createQuery(query, type)
         .setParameter("fecha", fechaHora)
         .setParameter("alta", true)
