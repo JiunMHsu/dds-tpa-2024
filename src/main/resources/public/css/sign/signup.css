@@ -1,10 +1,5 @@
-.contenedores {
-    display: flex;
-    align-items: flex-start;
-    gap: 5rem;
-}
-
 .main-section {
+    background: url("/img/Map.png");
     border: 1px solid var(--background-3);
     margin: 0 1.5vh;
     overflow-y: hidden;
@@ -19,7 +14,7 @@
 }
 
 .form-container {
-    padding: 4rem;
+    padding: 2rem;
     border-radius: 1rem;
     box-shadow: 0 0 10px rgb(34, 34, 34);
     position: absolute;
@@ -34,32 +29,7 @@
     align-items: center;
     gap: 2rem;
     width: 100%;
-    margin: 0 0 1rem;
-}
-
-.form-button-container {
-    margin: 0.5rem 0 0rem;
-    flex-direction: column;
-    justify-content: center;
-    width: 15rem;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--foreground-2);
-    margin-bottom: 0.5rem;
-}
-
-.form button {
-    width: 15rem;
-}
-
-.form button:active {
-    background-color: var(--background-3);
-    transform: scale(0.95);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.ajuste {
-    margin-top: -0.1rem;
+    margin: 5% 0 1rem;
 }
 
 .form-header-option {
@@ -86,7 +56,12 @@
     grid-template-columns: 25rem;
     margin-top: 1rem;
     background-color: dark light;
-    width: 50rem;
+}
+
+.contenedores {
+    display: flex;
+    align-items: flex-start;
+    gap: 5rem;
 }
 
 .opciones {
@@ -114,7 +89,6 @@
     text-shadow: 0 0 1rem var(--main-light-0);
 }
 
-
 .opciones * {
     margin: 0;
     color: var(--foreground-0);
@@ -136,53 +110,4 @@
     text-overflow: ellipsis;
     text-align: center;
     color: #000000;
-}
-
-
-.izquierda, .centro, .derecha {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.centro {
-    align-items: center;
-}
-
-.derecha {
-    align-items: flex-end;
-}
-
-.derecha label,
-.derecha select {
-    width: 100%;
-}
-
-input[type="checkbox"] {
-    display: none;
-}
-
-input[type="checkbox"] + label {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 15rem;
-    height: 2.5rem;
-    border: 1px solid black;
-    border-radius: 1rem;
-    font-size: 1rem;
-    font-weight: 600;
-    background-color: rgb(75, 75, 75);
-    color: var(--foreground-3);
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    margin-bottom: 0.5rem;
-}
-
-input[type="checkbox"]:checked + label {
-    background-color: var(--main-light-0);
-    color: #4B4B4B;
-    transform: scale(1.05);
 }
