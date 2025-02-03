@@ -20,86 +20,86 @@ import java.util.Optional;
 
 public class FaltaViandaService implements WithSimplePersistenceUnit {
 
-    private final FaltaViandaRepository faltaViandaRepository;
-    private final IColaboradorRepository colaboradorRepository;
+  private final FaltaViandaRepository faltaViandaRepository;
+  private final IColaboradorRepository colaboradorRepository;
 
-    private final MensajeriaService mensajeriaService;
+  private final MensajeriaService mensajeriaService;
 
-    public FaltaViandaService(FaltaViandaRepository faltaViandaRepository,
-                              ColaboradorRepository colaboradorRepository, MensajeriaService mensajeriaService) {
-        this.faltaViandaRepository = faltaViandaRepository;
-        this.colaboradorRepository = colaboradorRepository;
-        this.mensajeriaService = mensajeriaService;
+  public FaltaViandaService(FaltaViandaRepository faltaViandaRepository,
+                            ColaboradorRepository colaboradorRepository, MensajeriaService mensajeriaService) {
+    this.faltaViandaRepository = faltaViandaRepository;
+    this.colaboradorRepository = colaboradorRepository;
+    this.mensajeriaService = mensajeriaService;
+  }
+
+  public void registrar(Colaborador colaborador, Heladera heladera, Integer viandasRestantes, MedioDeNotificacion medioDeNotificacion, String infoContacto) throws SuscripcionFaltaViandaException {
+
+    if (colaborador.getContactos().isEmpty()) {
+      List<Contacto> contactos = new ArrayList<>(Arrays.asList(Contacto.vacio()));
+      colaborador.setContactos(contactos);
     }
 
-    public void registrar(Colaborador colaborador, Heladera heladera, Integer viandasRestantes, MedioDeNotificacion medioDeNotificacion, String infoContacto) throws SuscripcionFaltaViandaException {
+    boolean contactoActualizado = false;
 
-        if (colaborador.getContactos().isEmpty()) {
-            List<Contacto> contactos = new ArrayList<>(Arrays.asList(Contacto.vacio()));
-            colaborador.setContactos(contactos);
-        }
-
-        boolean contactoActualizado = false;
-
-        if (colaborador.getContacto(medioDeNotificacion).isEmpty()) {
-            colaborador.agregarContacto(Contacto.con(medioDeNotificacion, infoContacto));
-            contactoActualizado = true;
-        }
-
-        if (viandasRestantes <= 0 || viandasRestantes > heladera.getCapacidad()) {
-            throw new SuscripcionFaltaViandaException("La cantidad de viandas restantes debe ser mayor a 0 y menor o igual a la capacidad máxima de la heladera");
-        }
-
-        SuscripcionFaltaVianda nuevaSuscripcion = SuscripcionFaltaVianda.de(
-                colaborador,
-                heladera,
-                medioDeNotificacion,
-                viandasRestantes);
-
-        if (contactoActualizado) {
-            beginTransaction();
-            colaboradorRepository.actualizar(colaborador);
-            faltaViandaRepository.guardar(nuevaSuscripcion);
-            commitTransaction();
-        } else {
-            beginTransaction();
-            faltaViandaRepository.guardar(nuevaSuscripcion);
-            commitTransaction();
-        }
+    if (colaborador.getContacto(medioDeNotificacion).isEmpty()) {
+      colaborador.agregarContacto(Contacto.con(medioDeNotificacion, infoContacto));
+      contactoActualizado = true;
     }
 
-    public List<SuscripcionFaltaVianda> obtenerPorHeladera(Heladera heladera) {
-        return faltaViandaRepository.obtenerPorHeladera(heladera);
+    if (viandasRestantes <= 0 || viandasRestantes > heladera.getCapacidad()) {
+      throw new SuscripcionFaltaViandaException("La cantidad de viandas restantes debe ser mayor a 0 y menor o igual a la capacidad máxima de la heladera");
     }
 
-    public void notificacionFaltaVianda(SuscripcionFaltaVianda suscripcion) {
-        String asunto = "Heladera por baja disponibilidad de viandas";
-        String cuerpo = String.format(
-                """
-                        Estimado/a %s,
+    SuscripcionFaltaVianda nuevaSuscripcion = SuscripcionFaltaVianda.de(
+        colaborador,
+        heladera,
+        medioDeNotificacion,
+        viandasRestantes);
 
-                        La %s tiene solo %d viandas restantes. Por favor, lleve más viandas para reabastecerla.
-
-                        Gracias por su colaboración.""",
-                suscripcion.getColaborador().getNombre(),
-                suscripcion.getHeladera().getNombre(),
-                suscripcion.getUmbralViandas()
-        );
-
-        try {
-            Optional<Contacto> contacto = suscripcion.getColaborador().getContacto(suscripcion.getMedioDeNotificacion());
-            if (contacto.isPresent()) {
-                Mensaje mensaje = Mensaje.con(
-                        contacto.get(),
-                        asunto,
-                        cuerpo);
-                mensajeriaService.enviarMensaje(mensaje);
-            } else {
-                System.out.println("Medio de contacto solicitado no disponible. No se puede enviar el mensaje.");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    if (contactoActualizado) {
+      beginTransaction();
+      colaboradorRepository.actualizar(colaborador);
+      faltaViandaRepository.guardar(nuevaSuscripcion);
+      commitTransaction();
+    } else {
+      beginTransaction();
+      faltaViandaRepository.guardar(nuevaSuscripcion);
+      commitTransaction();
     }
+  }
+
+  public List<SuscripcionFaltaVianda> obtenerPorHeladera(Heladera heladera) {
+    return faltaViandaRepository.obtenerPorHeladera(heladera);
+  }
+
+  public void notificacionFaltaVianda(SuscripcionFaltaVianda suscripcion) {
+    String asunto = "Heladera por baja disponibilidad de viandas";
+    String cuerpo = String.format(
+        """
+            Estimado/a %s,
+
+            La %s tiene solo %d viandas restantes. Por favor, lleve más viandas para reabastecerla.
+
+            Gracias por su colaboración.""",
+        suscripcion.getColaborador().getNombre(),
+        suscripcion.getHeladera().getNombre(),
+        suscripcion.getUmbralViandas()
+    );
+
+    try {
+      Optional<Contacto> contacto = suscripcion.getColaborador().getContacto(suscripcion.getMedioDeNotificacion());
+      if (contacto.isPresent()) {
+        Mensaje mensaje = Mensaje.con(
+            contacto.get(),
+            asunto,
+            cuerpo);
+        mensajeriaService.enviarMensaje(mensaje);
+      } else {
+        System.out.println("Medio de contacto solicitado no disponible. No se puede enviar el mensaje.");
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 
 }
