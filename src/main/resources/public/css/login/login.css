@@ -1,4 +1,5 @@
 .main-section {
+    background: url("/img/Map.png");
     border: 1px solid var(--background-3);
     margin: 0 1.5vh;
     overflow-y: hidden;
