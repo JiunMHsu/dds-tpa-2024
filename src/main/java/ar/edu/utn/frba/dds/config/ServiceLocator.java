@@ -2,14 +2,7 @@ package ar.edu.utn.frba.dds.config;
 
 import ar.edu.utn.frba.dds.broker.ClienteMqtt;
 import ar.edu.utn.frba.dds.controllers.canjeDePuntos.CanjeDePuntosController;
-import ar.edu.utn.frba.dds.controllers.colaboraciones.ColaboracionController;
-import ar.edu.utn.frba.dds.controllers.colaboraciones.DistribucionViandasController;
-import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionDineroController;
-import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionDineroPeriodicaController;
-import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionViandaController;
-import ar.edu.utn.frba.dds.controllers.colaboraciones.HacerseCargoHeladeraController;
-import ar.edu.utn.frba.dds.controllers.colaboraciones.OfertaProductosServiciosController;
-import ar.edu.utn.frba.dds.controllers.colaboraciones.RepartoDeTarjetaController;
+import ar.edu.utn.frba.dds.controllers.colaboraciones.*;
 import ar.edu.utn.frba.dds.controllers.colaborador.ColaboradorController;
 import ar.edu.utn.frba.dds.controllers.heladera.BrokerMessageHandler;
 import ar.edu.utn.frba.dds.controllers.heladera.HeladeraController;
@@ -26,13 +19,7 @@ import ar.edu.utn.frba.dds.controllers.tecnico.TecnicoController;
 import ar.edu.utn.frba.dds.controllers.tecnico.VisitaTecnicaController;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.CanjeDePuntosRepository;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.VarianteDePuntosRepository;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroPeriodicaRepository;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroRepository;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaRepository;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladeraRepository;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRepository;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetaRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.*;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.AperturaHeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
@@ -51,23 +38,13 @@ import ar.edu.utn.frba.dds.models.repositories.tecnico.TecnicoRepository;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.VisitaTecnicaRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import ar.edu.utn.frba.dds.models.repositories.vianda.ViandaRepository;
-import ar.edu.utn.frba.dds.models.stateless.puntoDeColocacion.mock.PuntoDeColocacionAPIMock;
 import ar.edu.utn.frba.dds.models.stateless.mensajeria.SenderFactory;
 import ar.edu.utn.frba.dds.models.stateless.mensajeria.mail.SafeMailSender;
+import ar.edu.utn.frba.dds.models.stateless.puntoDeColocacion.mock.PuntoDeColocacionAPIMock;
 import ar.edu.utn.frba.dds.services.canjeDePuntos.CanjeDePuntosService;
-import ar.edu.utn.frba.dds.services.colaboraciones.ColaboracionService;
-import ar.edu.utn.frba.dds.services.colaboraciones.DistribucionViandasService;
-import ar.edu.utn.frba.dds.services.colaboraciones.DonacionDineroService;
-import ar.edu.utn.frba.dds.services.colaboraciones.DonacionViandaService;
-import ar.edu.utn.frba.dds.services.colaboraciones.HacerseCargoHeladeraService;
-import ar.edu.utn.frba.dds.services.colaboraciones.OfertaProductosServiciosService;
-import ar.edu.utn.frba.dds.services.colaboraciones.RepartoDeTarjetaService;
+import ar.edu.utn.frba.dds.services.colaboraciones.*;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
-import ar.edu.utn.frba.dds.services.heladera.AperturaHeladeraService;
-import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
-import ar.edu.utn.frba.dds.services.heladera.RetiroDeViandaService;
-import ar.edu.utn.frba.dds.services.heladera.SolicitudDeAperturaService;
-import ar.edu.utn.frba.dds.services.heladera.SuscriptorSensorService;
+import ar.edu.utn.frba.dds.services.heladera.*;
 import ar.edu.utn.frba.dds.services.images.ImageService;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.mapa.MapService;
@@ -84,6 +61,7 @@ import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import ar.edu.utn.frba.dds.services.tecnico.VisitaTecnicaService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.RandomString;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -92,592 +70,593 @@ import java.util.Map;
  */
 public class ServiceLocator {
 
-  private static final Map<String, Object> instances = new HashMap<>();
-
-  /**
-   * Get an instance of a component.
-   *
-   * @param componentClass Component class
-   * @param <T>            Component type
-   * @return Component instance
-   */
-  @SuppressWarnings("unchecked")
-  public static <T> T instanceOf(Class<T> componentClass) {
-    String componentName = componentClass.getName();
-
-    if (instances.containsKey(componentName)) {
-      return (T) instances.get(componentName);
+    private static final Map<String, Object> instances = new HashMap<>();
+
+    /**
+     * Get an instance of a component.
+     *
+     * @param componentClass Component class
+     * @param <T>            Component type
+     * @return Component instance
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T instanceOf(Class<T> componentClass) {
+        String componentName = componentClass.getName();
+
+        if (instances.containsKey(componentName)) {
+            return (T) instances.get(componentName);
+        }
+
+        // =========================  UTILS =========================
+
+        if (componentName.equals(RandomString.class.getName())) {
+            RandomString instance = new RandomString();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(ClienteMqtt.class.getName())) {
+            ClienteMqtt instance = new ClienteMqtt();
+            instances.put(componentName, instance);
+        }
+
+        // ========================= CONTROLLERS =========================
+
+        if (componentName.equals(BrokerMessageHandler.class.getName())) {
+            BrokerMessageHandler instance = new BrokerMessageHandler(
+                    instanceOf(HeladeraService.class),
+                    instanceOf(IncidenteService.class),
+                    instanceOf(FallaHeladeraService.class),
+                    instanceOf(SolicitudDeAperturaService.class),
+                    instanceOf(TarjetaPersonaVulnerableService.class),
+                    instanceOf(DistribucionViandasService.class),
+                    instanceOf(DonacionViandaService.class),
+                    instanceOf(RetiroDeViandaService.class),
+                    instanceOf(FaltaViandaService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(HomeController.class.getName())) {
+            HomeController instance = new HomeController(instanceOf(UsuarioService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(SessionController.class.getName())) {
+            SessionController instance = new SessionController(
+                    instanceOf(UsuarioService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(HeladeraController.class.getName())) {
+            HeladeraController instance = new HeladeraController(
+                    instanceOf(UsuarioService.class),
+                    instanceOf(ColaboradorService.class),
+                    instanceOf(HeladeraService.class),
+                    instanceOf(PuntoColocacionService.class),
+                    instanceOf(MapService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(IncidenteController.class.getName())) {
+            IncidenteController instance = new IncidenteController(
+                    instanceOf(UsuarioService.class),
+                    instanceOf(IncidenteService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(AlertaController.class.getName())) {
+            AlertaController instance = new AlertaController(
+                    instanceOf(UsuarioService.class),
+                    instanceOf(IncidenteService.class),
+                    instanceOf(VisitaTecnicaService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(FallaTecnicaController.class.getName())) {
+            FallaTecnicaController instance = new FallaTecnicaController(
+                    instanceOf(UsuarioService.class),
+                    instanceOf(ColaboradorService.class),
+                    instanceOf(IncidenteService.class),
+                    instanceOf(HeladeraService.class),
+                    instanceOf(VisitaTecnicaService.class),
+                    instanceOf(ImageService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(ColaboradorController.class.getName())) {
+            ColaboradorController instance = new ColaboradorController(
+                    instanceOf(UsuarioService.class),
+                    instanceOf(ColaboradorService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(PersonaVulnerableController.class.getName())) {
+            PersonaVulnerableController instance = new PersonaVulnerableController(
+                    instanceOf(PersonaVulnerableService.class),
+                    instanceOf(TarjetaPersonaVulnerableService.class),
+                    instanceOf(ColaboradorService.class),
+                    instanceOf(UsuarioService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(PuntoDeColocacionController.class.getName())) {
+            PuntoDeColocacionController instance = new PuntoDeColocacionController();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(ColaboracionController.class.getName())) {
+            ColaboracionController instance = new ColaboracionController(
+                    instanceOf(UsuarioService.class),
+                    instanceOf(ColaboradorService.class),
+                    instanceOf(ColaboracionService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(DistribucionViandasController.class.getName())) {
+            DistribucionViandasController instance = new DistribucionViandasController(
+                    instanceOf(UsuarioService.class),
+                    instanceOf(ColaboradorService.class),
+                    instanceOf(DistribucionViandasService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(DonacionDineroController.class.getName())) {
+            DonacionDineroController instance = new DonacionDineroController(
+                    instanceOf(UsuarioService.class),
+                    instanceOf(ColaboradorService.class),
+                    instanceOf(DonacionDineroService.class)
+            );
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(DonacionDineroPeriodicaController.class.getName())) {
+            DonacionDineroPeriodicaController instance = new DonacionDineroPeriodicaController(
+                    instanceOf(UsuarioService.class),
+                    instanceOf(ColaboradorService.class),
+                    instanceOf(DonacionDineroService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(DonacionViandaController.class.getName())) {
+            DonacionViandaController instance = new DonacionViandaController(
+                    instanceOf(UsuarioService.class),
+                    instanceOf(ColaboradorService.class),
+                    instanceOf(DonacionViandaService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(OfertaProductosServiciosController.class.getName())) {
+            OfertaProductosServiciosController instance = new OfertaProductosServiciosController(
+                    instanceOf(UsuarioService.class),
+                    instanceOf(ColaboradorService.class),
+                    instanceOf(OfertaProductosServiciosService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(HacerseCargoHeladeraController.class.getName())) {
+            HacerseCargoHeladeraController instance = new HacerseCargoHeladeraController(
+                    instanceOf(UsuarioService.class),
+                    instanceOf(ColaboradorService.class),
+                    instanceOf(HacerseCargoHeladeraService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(RepartoDeTarjetaController.class.getName())) {
+            RepartoDeTarjetaController instance = new RepartoDeTarjetaController(
+                    instanceOf(UsuarioService.class),
+                    instanceOf(ColaboradorService.class),
+                    instanceOf(RepartoDeTarjetaService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(TecnicoController.class.getName())) {
+            TecnicoController instance = new TecnicoController(
+                    instanceOf(UsuarioService.class),
+                    instanceOf(TecnicoService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(VisitaTecnicaController.class.getName())) {
+            VisitaTecnicaController instance = new VisitaTecnicaController(
+                    instanceOf(UsuarioService.class),
+                    instanceOf(TecnicoService.class),
+                    instanceOf(VisitaTecnicaService.class),
+                    instanceOf(IncidenteService.class),
+                    instanceOf(ImageService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(ReporteController.class.getName())) {
+            ReporteController instance = new ReporteController(
+                    instanceOf(UsuarioService.class),
+                    instanceOf(ReporteService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(CanjeDePuntosController.class.getName())) {
+            CanjeDePuntosController instance = new CanjeDePuntosController(
+                    instanceOf(UsuarioService.class),
+                    instanceOf(ColaboradorService.class),
+                    instanceOf(CanjeDePuntosService.class),
+                    instanceOf(OfertaProductosServiciosService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(SuscripcionHeladeraController.class.getName())) {
+            SuscripcionHeladeraController instance = new SuscripcionHeladeraController(
+                    instanceOf(HeladeraService.class),
+                    instanceOf(FallaHeladeraService.class),
+                    instanceOf(FaltaViandaService.class),
+                    instanceOf(HeladeraLlenaService.class),
+                    instanceOf(UsuarioService.class),
+                    instanceOf(ColaboradorService.class)
+            );
+            instances.put(componentName, instance);
+        }
+
+        // ========================= SERVICES =========================
+
+        if (componentName.equals(SuscriptorSensorService.class.getName())) {
+            SuscriptorSensorService instance = new SuscriptorSensorService(
+                    instanceOf(HeladeraService.class),
+                    instanceOf(BrokerMessageHandler.class),
+                    instanceOf(ClienteMqtt.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(ImageService.class.getName())) {
+            ImageService instance = new ImageService(instanceOf(RandomString.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(HeladeraService.class.getName())) {
+            HeladeraService instance = new HeladeraService(
+                    instanceOf(HeladeraRepository.class),
+                    instanceOf(HacerseCargoHeladeraRepository.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(SolicitudDeAperturaService.class.getName())) {
+            SolicitudDeAperturaService instance = new SolicitudDeAperturaService(
+                    instanceOf(SolicitudDeAperturaRepository.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(AperturaHeladeraService.class.getName())) {
+            AperturaHeladeraService instance = new AperturaHeladeraService(
+                    instanceOf(AperturaHeladeraRepository.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(RetiroDeViandaService.class.getName())) {
+            RetiroDeViandaService instance = new RetiroDeViandaService(
+                    instanceOf(RetiroDeViandaRepository.class),
+                    instanceOf(HeladeraRepository.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(IncidenteService.class.getName())) {
+            IncidenteService instance = new IncidenteService(
+                    instanceOf(IncidenteRepository.class),
+                    instanceOf(HeladeraRepository.class),
+                    instanceOf(MapService.class)
+            );
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(ColaboradorService.class.getName())) {
+            ColaboradorService instance = new ColaboradorService(
+                    instanceOf(ColaboradorRepository.class),
+                    instanceOf(UsuarioRepository.class)
+            );
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(PuntoColocacionService.class.getName())) {
+            PuntoColocacionService instance = new PuntoColocacionService(
+                    new PuntoDeColocacionAPIMock()
+            );
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(UsuarioService.class.getName())) {
+            UsuarioService instance = new UsuarioService(
+                    instanceOf(UsuarioRepository.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(PersonaVulnerableService.class.getName())) {
+            PersonaVulnerableService instance = new PersonaVulnerableService(
+                    instanceOf(PersonaVulnerableRepository.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(ColaboracionService.class.getName())) {
+            ColaboracionService instance = new ColaboracionService(
+                    instanceOf(UsuarioRepository.class),
+                    instanceOf(ColaboradorRepository.class),
+                    instanceOf(DonacionViandaRepository.class),
+                    instanceOf(DonacionDineroRepository.class),
+                    instanceOf(DistribucionViandasRepository.class),
+                    instanceOf(HacerseCargoHeladeraRepository.class),
+                    instanceOf(OfertaDeProductosRepository.class),
+                    instanceOf(RepartoDeTarjetaRepository.class),
+                    new SafeMailSender(),
+                    instanceOf(MensajeRepository.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(RepartoDeTarjetaService.class.getName())) {
+            RepartoDeTarjetaService instance = new RepartoDeTarjetaService(
+                    instanceOf(RepartoDeTarjetaRepository.class),
+                    instanceOf(PersonaVulnerableRepository.class),
+                    instanceOf(TarjetaPersonaVulnerableRepository.class),
+                    instanceOf(ColaboradorRepository.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(DistribucionViandasService.class.getName())) {
+            DistribucionViandasService instance = new DistribucionViandasService(
+                    instanceOf(DistribucionViandasRepository.class),
+                    instanceOf(ColaboradorRepository.class),
+                    instanceOf(HeladeraRepository.class),
+                    instanceOf(TarjetaColaboradorService.class),
+                    instanceOf(SolicitudDeAperturaService.class),
+                    instanceOf(AperturaHeladeraService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(DonacionViandaService.class.getName())) {
+            DonacionViandaService instance = new DonacionViandaService(
+                    instanceOf(DonacionViandaRepository.class),
+                    instanceOf(ViandaRepository.class),
+                    instanceOf(ColaboradorRepository.class),
+                    instanceOf(HeladeraRepository.class),
+                    instanceOf(TarjetaColaboradorService.class),
+                    instanceOf(SolicitudDeAperturaService.class),
+                    instanceOf(AperturaHeladeraService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(DonacionDineroService.class.getName())) {
+            DonacionDineroService instance = new DonacionDineroService(
+                    instanceOf(DonacionDineroRepository.class),
+                    instanceOf(DonacionDineroPeriodicaRepository.class),
+                    instanceOf(ColaboradorRepository.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(HacerseCargoHeladeraService.class.getName())) {
+            HacerseCargoHeladeraService instance = new HacerseCargoHeladeraService(
+                    instanceOf(HacerseCargoHeladeraRepository.class),
+                    instanceOf(ColaboradorRepository.class),
+                    instanceOf(HeladeraRepository.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(OfertaProductosServiciosService.class.getName())) {
+            OfertaProductosServiciosService instance = new OfertaProductosServiciosService(
+                    instanceOf(OfertaDeProductosRepository.class),
+                    instanceOf(ColaboradorRepository.class),
+                    instanceOf(ImageService.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(TarjetaColaboradorService.class.getName())) {
+            TarjetaColaboradorService instance = new TarjetaColaboradorService(
+                    instanceOf(TarjetaColaboradorRepository.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(TarjetaPersonaVulnerableService.class.getName())) {
+            TarjetaPersonaVulnerableService instance = new TarjetaPersonaVulnerableService(
+                    instanceOf(TarjetaPersonaVulnerableRepository.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(MensajeriaService.class.getName())) {
+            MensajeriaService instance = new MensajeriaService(
+                    instanceOf(MensajeRepository.class),
+                    new SenderFactory());
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(TecnicoService.class.getName())) {
+            TecnicoService instance = new TecnicoService(
+                    instanceOf(TecnicoRepository.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(VisitaTecnicaService.class.getName())) {
+            VisitaTecnicaService instance = new VisitaTecnicaService(
+                    instanceOf(VisitaTecnicaRepository.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(ReporteService.class.getName())) {
+            ReporteService instance = new ReporteService(
+                    instanceOf(ReporteRepository.class),
+                    instanceOf(DonacionViandaRepository.class),
+                    instanceOf(IncidenteRepository.class),
+                    instanceOf(DistribucionViandasRepository.class),
+                    instanceOf(RetiroDeViandaRepository.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(CanjeDePuntosService.class.getName())) {
+            CanjeDePuntosService instance = new CanjeDePuntosService(
+                    instanceOf(CanjeDePuntosRepository.class),
+                    instanceOf(DonacionDineroRepository.class),
+                    instanceOf(DistribucionViandasRepository.class),
+                    instanceOf(DonacionViandaRepository.class),
+                    instanceOf(RepartoDeTarjetaRepository.class),
+                    instanceOf(HacerseCargoHeladeraRepository.class),
+                    instanceOf(ColaboradorRepository.class),
+                    instanceOf(VarianteDePuntosRepository.class));
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(FallaHeladeraService.class.getName())) {
+            FallaHeladeraService instance = new FallaHeladeraService(
+                    instanceOf(FallaHeladeraRepository.class),
+                    instanceOf(ColaboradorRepository.class),
+                    instanceOf(MensajeriaService.class),
+                    instanceOf(TecnicoService.class),
+                    instanceOf(HeladeraService.class)
+            );
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(FaltaViandaService.class.getName())) {
+            FaltaViandaService instance = new FaltaViandaService(
+                    instanceOf(FaltaViandaRepository.class),
+                    instanceOf(ColaboradorRepository.class),
+                    instanceOf(MensajeriaService.class)
+            );
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(HeladeraLlenaService.class.getName())) {
+            HeladeraLlenaService instance = new HeladeraLlenaService(
+                    instanceOf(HeladeraLlenaRepository.class),
+                    instanceOf(ColaboradorRepository.class),
+                    instanceOf(MensajeriaService.class)
+            );
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(MapService.class.getName())) {
+            MapService instance = new MapService();
+            instances.put(componentName, instance);
+        }
+
+        // ========================= REPOSITORIES =========================
+
+        if (componentName.equals(HeladeraRepository.class.getName())) {
+            HeladeraRepository instance = new HeladeraRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(IncidenteRepository.class.getName())) {
+            IncidenteRepository instance = new IncidenteRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(ColaboradorRepository.class.getName())) {
+            ColaboradorRepository instance = new ColaboradorRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(UsuarioRepository.class.getName())) {
+            UsuarioRepository instance = new UsuarioRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(PersonaVulnerableRepository.class.getName())) {
+            PersonaVulnerableRepository instance = new PersonaVulnerableRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(RepartoDeTarjetaRepository.class.getName())) {
+            RepartoDeTarjetaRepository instance = new RepartoDeTarjetaRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(TarjetaColaboradorRepository.class.getName())) {
+            TarjetaColaboradorRepository instance = new TarjetaColaboradorRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(TarjetaPersonaVulnerableRepository.class.getName())) {
+            TarjetaPersonaVulnerableRepository instance = new TarjetaPersonaVulnerableRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(DistribucionViandasRepository.class.getName())) {
+            DistribucionViandasRepository instance = new DistribucionViandasRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(HacerseCargoHeladeraRepository.class.getName())) {
+            HacerseCargoHeladeraRepository instance = new HacerseCargoHeladeraRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(DonacionDineroRepository.class.getName())) {
+            DonacionDineroRepository instance = new DonacionDineroRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(DonacionDineroPeriodicaRepository.class.getName())) {
+            DonacionDineroPeriodicaRepository instance = new DonacionDineroPeriodicaRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(DonacionViandaRepository.class.getName())) {
+            DonacionViandaRepository instance = new DonacionViandaRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(OfertaDeProductosRepository.class.getName())) {
+            OfertaDeProductosRepository instance = new OfertaDeProductosRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(ViandaRepository.class.getName())) {
+            ViandaRepository instance = new ViandaRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(MensajeRepository.class.getName())) {
+            MensajeRepository instance = new MensajeRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(TecnicoRepository.class.getName())) {
+            TecnicoRepository instance = new TecnicoRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(VisitaTecnicaRepository.class.getName())) {
+            VisitaTecnicaRepository instance = new VisitaTecnicaRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(ReporteRepository.class.getName())) {
+            ReporteRepository instance = new ReporteRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(CanjeDePuntosRepository.class.getName())) {
+            CanjeDePuntosRepository instance = new CanjeDePuntosRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(FallaHeladeraRepository.class.getName())) {
+            FallaHeladeraRepository instance = new FallaHeladeraRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(FaltaViandaRepository.class.getName())) {
+            FaltaViandaRepository instance = new FaltaViandaRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(HeladeraLlenaRepository.class.getName())) {
+            HeladeraLlenaRepository instance = new HeladeraLlenaRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(VarianteDePuntosRepository.class.getName())) {
+            VarianteDePuntosRepository instance = new VarianteDePuntosRepository();
+            instances.put(componentName, instance);
+        }
+
+        if (componentName.equals(RetiroDeViandaRepository.class.getName())) {
+            RetiroDeViandaRepository instance = new RetiroDeViandaRepository();
+            instances.put(componentName, instance);
+        }
+
+        return (T) instances.get(componentName);
     }
-
-    // =========================  UTILS =========================
-
-    if (componentName.equals(RandomString.class.getName())) {
-      RandomString instance = new RandomString();
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(ClienteMqtt.class.getName())) {
-      ClienteMqtt instance = new ClienteMqtt();
-      instances.put(componentName, instance);
-    }
-
-    // ========================= CONTROLLERS =========================
-
-    if (componentName.equals(BrokerMessageHandler.class.getName())) {
-      BrokerMessageHandler instance = new BrokerMessageHandler(
-          instanceOf(HeladeraService.class),
-          instanceOf(IncidenteService.class),
-          instanceOf(FallaHeladeraService.class),
-          instanceOf(SolicitudDeAperturaService.class),
-          instanceOf(TarjetaPersonaVulnerableService.class),
-          instanceOf(DistribucionViandasService.class),
-          instanceOf(DonacionViandaService.class),
-          instanceOf(RetiroDeViandaService.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(HomeController.class.getName())) {
-      HomeController instance = new HomeController(instanceOf(UsuarioService.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(SessionController.class.getName())) {
-      SessionController instance = new SessionController(
-          instanceOf(UsuarioService.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(HeladeraController.class.getName())) {
-      HeladeraController instance = new HeladeraController(
-          instanceOf(UsuarioService.class),
-          instanceOf(ColaboradorService.class),
-          instanceOf(HeladeraService.class),
-          instanceOf(PuntoColocacionService.class),
-          instanceOf(MapService.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(IncidenteController.class.getName())) {
-      IncidenteController instance = new IncidenteController(
-          instanceOf(UsuarioService.class),
-          instanceOf(IncidenteService.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(AlertaController.class.getName())) {
-      AlertaController instance = new AlertaController(
-          instanceOf(UsuarioService.class),
-          instanceOf(IncidenteService.class),
-          instanceOf(VisitaTecnicaService.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(FallaTecnicaController.class.getName())) {
-      FallaTecnicaController instance = new FallaTecnicaController(
-          instanceOf(UsuarioService.class),
-          instanceOf(ColaboradorService.class),
-          instanceOf(IncidenteService.class),
-          instanceOf(HeladeraService.class),
-          instanceOf(VisitaTecnicaService.class),
-          instanceOf(ImageService.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(ColaboradorController.class.getName())) {
-      ColaboradorController instance = new ColaboradorController(
-          instanceOf(UsuarioService.class),
-          instanceOf(ColaboradorService.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(PersonaVulnerableController.class.getName())) {
-      PersonaVulnerableController instance = new PersonaVulnerableController(
-          instanceOf(PersonaVulnerableService.class),
-          instanceOf(TarjetaPersonaVulnerableService.class),
-          instanceOf(ColaboradorService.class),
-          instanceOf(UsuarioService.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(PuntoDeColocacionController.class.getName())) {
-      PuntoDeColocacionController instance = new PuntoDeColocacionController();
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(ColaboracionController.class.getName())) {
-      ColaboracionController instance = new ColaboracionController(
-          instanceOf(UsuarioService.class),
-          instanceOf(ColaboradorService.class),
-          instanceOf(ColaboracionService.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(DistribucionViandasController.class.getName())) {
-      DistribucionViandasController instance = new DistribucionViandasController(
-          instanceOf(UsuarioService.class),
-          instanceOf(ColaboradorService.class),
-          instanceOf(DistribucionViandasService.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(DonacionDineroController.class.getName())) {
-      DonacionDineroController instance = new DonacionDineroController(
-          instanceOf(UsuarioService.class),
-          instanceOf(ColaboradorService.class),
-          instanceOf(DonacionDineroService.class)
-      );
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(DonacionDineroPeriodicaController.class.getName())) {
-      DonacionDineroPeriodicaController instance = new DonacionDineroPeriodicaController(
-          instanceOf(UsuarioService.class),
-          instanceOf(ColaboradorService.class),
-          instanceOf(DonacionDineroService.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(DonacionViandaController.class.getName())) {
-      DonacionViandaController instance = new DonacionViandaController(
-          instanceOf(UsuarioService.class),
-          instanceOf(ColaboradorService.class),
-          instanceOf(DonacionViandaService.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(OfertaProductosServiciosController.class.getName())) {
-      OfertaProductosServiciosController instance = new OfertaProductosServiciosController(
-          instanceOf(UsuarioService.class),
-          instanceOf(ColaboradorService.class),
-          instanceOf(OfertaProductosServiciosService.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(HacerseCargoHeladeraController.class.getName())) {
-      HacerseCargoHeladeraController instance = new HacerseCargoHeladeraController(
-          instanceOf(UsuarioService.class),
-          instanceOf(ColaboradorService.class),
-          instanceOf(HacerseCargoHeladeraService.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(RepartoDeTarjetaController.class.getName())) {
-      RepartoDeTarjetaController instance = new RepartoDeTarjetaController(
-          instanceOf(UsuarioService.class),
-          instanceOf(ColaboradorService.class),
-          instanceOf(RepartoDeTarjetaService.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(TecnicoController.class.getName())) {
-      TecnicoController instance = new TecnicoController(
-          instanceOf(UsuarioService.class),
-          instanceOf(TecnicoService.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(VisitaTecnicaController.class.getName())) {
-      VisitaTecnicaController instance = new VisitaTecnicaController(
-          instanceOf(UsuarioService.class),
-          instanceOf(TecnicoService.class),
-          instanceOf(VisitaTecnicaService.class),
-          instanceOf(IncidenteService.class),
-          instanceOf(ImageService.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(ReporteController.class.getName())) {
-      ReporteController instance = new ReporteController(
-          instanceOf(UsuarioService.class),
-          instanceOf(ReporteService.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(CanjeDePuntosController.class.getName())) {
-      CanjeDePuntosController instance = new CanjeDePuntosController(
-          instanceOf(UsuarioService.class),
-          instanceOf(ColaboradorService.class),
-          instanceOf(CanjeDePuntosService.class),
-          instanceOf(OfertaProductosServiciosService.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(SuscripcionHeladeraController.class.getName())) {
-      SuscripcionHeladeraController instance = new SuscripcionHeladeraController(
-          instanceOf(HeladeraService.class),
-          instanceOf(FallaHeladeraService.class),
-          instanceOf(FaltaViandaService.class),
-          instanceOf(HeladeraLlenaService.class),
-          instanceOf(UsuarioService.class),
-          instanceOf(ColaboradorService.class)
-      );
-      instances.put(componentName, instance);
-    }
-
-    // ========================= SERVICES =========================
-
-    if (componentName.equals(SuscriptorSensorService.class.getName())) {
-      SuscriptorSensorService instance = new SuscriptorSensorService(
-          instanceOf(HeladeraService.class),
-          instanceOf(BrokerMessageHandler.class),
-          instanceOf(ClienteMqtt.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(ImageService.class.getName())) {
-      ImageService instance = new ImageService(instanceOf(RandomString.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(HeladeraService.class.getName())) {
-      HeladeraService instance = new HeladeraService(
-          instanceOf(HeladeraRepository.class),
-          instanceOf(HacerseCargoHeladeraRepository.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(SolicitudDeAperturaService.class.getName())) {
-      SolicitudDeAperturaService instance = new SolicitudDeAperturaService(
-          instanceOf(SolicitudDeAperturaRepository.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(AperturaHeladeraService.class.getName())) {
-      AperturaHeladeraService instance = new AperturaHeladeraService(
-          instanceOf(AperturaHeladeraRepository.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(RetiroDeViandaService.class.getName())) {
-      RetiroDeViandaService instance = new RetiroDeViandaService(
-          instanceOf(RetiroDeViandaRepository.class),
-          instanceOf(HeladeraRepository.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(IncidenteService.class.getName())) {
-      IncidenteService instance = new IncidenteService(
-          instanceOf(IncidenteRepository.class),
-          instanceOf(HeladeraRepository.class),
-          instanceOf(MapService.class)
-      );
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(ColaboradorService.class.getName())) {
-      ColaboradorService instance = new ColaboradorService(
-          instanceOf(ColaboradorRepository.class),
-          instanceOf(UsuarioRepository.class)
-      );
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(PuntoColocacionService.class.getName())) {
-      PuntoColocacionService instance = new PuntoColocacionService(
-          new PuntoDeColocacionAPIMock()
-      );
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(UsuarioService.class.getName())) {
-      UsuarioService instance = new UsuarioService(
-          instanceOf(UsuarioRepository.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(PersonaVulnerableService.class.getName())) {
-      PersonaVulnerableService instance = new PersonaVulnerableService(
-          instanceOf(PersonaVulnerableRepository.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(ColaboracionService.class.getName())) {
-      ColaboracionService instance = new ColaboracionService(
-          instanceOf(UsuarioRepository.class),
-          instanceOf(ColaboradorRepository.class),
-          instanceOf(DonacionViandaRepository.class),
-          instanceOf(DonacionDineroRepository.class),
-          instanceOf(DistribucionViandasRepository.class),
-          instanceOf(HacerseCargoHeladeraRepository.class),
-          instanceOf(OfertaDeProductosRepository.class),
-          instanceOf(RepartoDeTarjetaRepository.class),
-          new SafeMailSender(),
-          instanceOf(MensajeRepository.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(RepartoDeTarjetaService.class.getName())) {
-      RepartoDeTarjetaService instance = new RepartoDeTarjetaService(
-          instanceOf(RepartoDeTarjetaRepository.class),
-          instanceOf(PersonaVulnerableRepository.class),
-          instanceOf(TarjetaPersonaVulnerableRepository.class),
-          instanceOf(ColaboradorRepository.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(DistribucionViandasService.class.getName())) {
-      DistribucionViandasService instance = new DistribucionViandasService(
-          instanceOf(DistribucionViandasRepository.class),
-          instanceOf(ColaboradorRepository.class),
-          instanceOf(HeladeraRepository.class),
-          instanceOf(TarjetaColaboradorService.class),
-          instanceOf(SolicitudDeAperturaService.class),
-          instanceOf(AperturaHeladeraService.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(DonacionViandaService.class.getName())) {
-      DonacionViandaService instance = new DonacionViandaService(
-          instanceOf(DonacionViandaRepository.class),
-          instanceOf(ViandaRepository.class),
-          instanceOf(ColaboradorRepository.class),
-          instanceOf(HeladeraRepository.class),
-          instanceOf(TarjetaColaboradorService.class),
-          instanceOf(SolicitudDeAperturaService.class),
-          instanceOf(AperturaHeladeraService.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(DonacionDineroService.class.getName())) {
-      DonacionDineroService instance = new DonacionDineroService(
-          instanceOf(DonacionDineroRepository.class),
-          instanceOf(DonacionDineroPeriodicaRepository.class),
-          instanceOf(ColaboradorRepository.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(HacerseCargoHeladeraService.class.getName())) {
-      HacerseCargoHeladeraService instance = new HacerseCargoHeladeraService(
-          instanceOf(HacerseCargoHeladeraRepository.class),
-          instanceOf(ColaboradorRepository.class),
-          instanceOf(HeladeraRepository.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(OfertaProductosServiciosService.class.getName())) {
-      OfertaProductosServiciosService instance = new OfertaProductosServiciosService(
-          instanceOf(OfertaDeProductosRepository.class),
-          instanceOf(ColaboradorRepository.class),
-          instanceOf(ImageService.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(TarjetaColaboradorService.class.getName())) {
-      TarjetaColaboradorService instance = new TarjetaColaboradorService(
-          instanceOf(TarjetaColaboradorRepository.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(TarjetaPersonaVulnerableService.class.getName())) {
-      TarjetaPersonaVulnerableService instance = new TarjetaPersonaVulnerableService(
-          instanceOf(TarjetaPersonaVulnerableRepository.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(MensajeriaService.class.getName())) {
-      MensajeriaService instance = new MensajeriaService(
-          instanceOf(MensajeRepository.class),
-          new SenderFactory());
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(TecnicoService.class.getName())) {
-      TecnicoService instance = new TecnicoService(
-          instanceOf(TecnicoRepository.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(VisitaTecnicaService.class.getName())) {
-      VisitaTecnicaService instance = new VisitaTecnicaService(
-          instanceOf(VisitaTecnicaRepository.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(ReporteService.class.getName())) {
-      ReporteService instance = new ReporteService(
-          instanceOf(ReporteRepository.class),
-          instanceOf(DonacionViandaRepository.class),
-          instanceOf(IncidenteRepository.class),
-          instanceOf(DistribucionViandasRepository.class),
-          instanceOf(RetiroDeViandaRepository.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(CanjeDePuntosService.class.getName())) {
-      CanjeDePuntosService instance = new CanjeDePuntosService(
-          instanceOf(CanjeDePuntosRepository.class),
-          instanceOf(DonacionDineroRepository.class),
-          instanceOf(DistribucionViandasRepository.class),
-          instanceOf(DonacionViandaRepository.class),
-          instanceOf(RepartoDeTarjetaRepository.class),
-          instanceOf(HacerseCargoHeladeraRepository.class),
-          instanceOf(ColaboradorRepository.class),
-          instanceOf(VarianteDePuntosRepository.class));
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(FallaHeladeraService.class.getName())) {
-      FallaHeladeraService instance = new FallaHeladeraService(
-          instanceOf(FallaHeladeraRepository.class),
-          instanceOf(ColaboradorRepository.class),
-          instanceOf(MensajeriaService.class),
-          instanceOf(TecnicoService.class),
-          instanceOf(HeladeraService.class)
-      );
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(FaltaViandaService.class.getName())) {
-      FaltaViandaService instance = new FaltaViandaService(
-          instanceOf(FaltaViandaRepository.class),
-          instanceOf(ColaboradorRepository.class),
-          instanceOf(MensajeriaService.class)
-      );
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(HeladeraLlenaService.class.getName())) {
-      HeladeraLlenaService instance = new HeladeraLlenaService(
-          instanceOf(HeladeraLlenaRepository.class),
-          instanceOf(ColaboradorRepository.class),
-          instanceOf(MensajeriaService.class)
-      );
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(MapService.class.getName())) {
-      MapService instance = new MapService();
-      instances.put(componentName, instance);
-    }
-
-    // ========================= REPOSITORIES =========================
-
-    if (componentName.equals(HeladeraRepository.class.getName())) {
-      HeladeraRepository instance = new HeladeraRepository();
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(IncidenteRepository.class.getName())) {
-      IncidenteRepository instance = new IncidenteRepository();
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(ColaboradorRepository.class.getName())) {
-      ColaboradorRepository instance = new ColaboradorRepository();
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(UsuarioRepository.class.getName())) {
-      UsuarioRepository instance = new UsuarioRepository();
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(PersonaVulnerableRepository.class.getName())) {
-      PersonaVulnerableRepository instance = new PersonaVulnerableRepository();
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(RepartoDeTarjetaRepository.class.getName())) {
-      RepartoDeTarjetaRepository instance = new RepartoDeTarjetaRepository();
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(TarjetaColaboradorRepository.class.getName())) {
-      TarjetaColaboradorRepository instance = new TarjetaColaboradorRepository();
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(TarjetaPersonaVulnerableRepository.class.getName())) {
-      TarjetaPersonaVulnerableRepository instance = new TarjetaPersonaVulnerableRepository();
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(DistribucionViandasRepository.class.getName())) {
-      DistribucionViandasRepository instance = new DistribucionViandasRepository();
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(HacerseCargoHeladeraRepository.class.getName())) {
-      HacerseCargoHeladeraRepository instance = new HacerseCargoHeladeraRepository();
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(DonacionDineroRepository.class.getName())) {
-      DonacionDineroRepository instance = new DonacionDineroRepository();
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(DonacionDineroPeriodicaRepository.class.getName())) {
-      DonacionDineroPeriodicaRepository instance = new DonacionDineroPeriodicaRepository();
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(DonacionViandaRepository.class.getName())) {
-      DonacionViandaRepository instance = new DonacionViandaRepository();
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(OfertaDeProductosRepository.class.getName())) {
-      OfertaDeProductosRepository instance = new OfertaDeProductosRepository();
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(ViandaRepository.class.getName())) {
-      ViandaRepository instance = new ViandaRepository();
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(MensajeRepository.class.getName())) {
-      MensajeRepository instance = new MensajeRepository();
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(TecnicoRepository.class.getName())) {
-      TecnicoRepository instance = new TecnicoRepository();
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(VisitaTecnicaRepository.class.getName())) {
-      VisitaTecnicaRepository instance = new VisitaTecnicaRepository();
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(ReporteRepository.class.getName())) {
-      ReporteRepository instance = new ReporteRepository();
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(CanjeDePuntosRepository.class.getName())) {
-      CanjeDePuntosRepository instance = new CanjeDePuntosRepository();
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(FallaHeladeraRepository.class.getName())) {
-      FallaHeladeraRepository instance = new FallaHeladeraRepository();
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(FaltaViandaRepository.class.getName())) {
-      FaltaViandaRepository instance = new FaltaViandaRepository();
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(HeladeraLlenaRepository.class.getName())) {
-      HeladeraLlenaRepository instance = new HeladeraLlenaRepository();
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(VarianteDePuntosRepository.class.getName())) {
-      VarianteDePuntosRepository instance = new VarianteDePuntosRepository();
-      instances.put(componentName, instance);
-    }
-
-    if (componentName.equals(RetiroDeViandaRepository.class.getName())) {
-      RetiroDeViandaRepository instance = new RetiroDeViandaRepository();
-      instances.put(componentName, instance);
-    }
-
-    return (T) instances.get(componentName);
-  }
 
 }
