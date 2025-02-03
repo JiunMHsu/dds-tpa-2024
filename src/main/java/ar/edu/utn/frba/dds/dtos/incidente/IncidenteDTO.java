@@ -25,7 +25,7 @@ public class IncidenteDTO {
 
   private String path;
 
-  public static IncidenteDTO preview(Incidente incidente) {
+  public static IncidenteDTO fromIncidente(Incidente incidente) {
 
     String ruta = switch (incidente.getTipo()) {
       case FALLA_TECNICA -> "/fallas-tecnicas/";

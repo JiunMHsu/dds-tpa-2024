@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Repositorio de Incidente.
+ */
 public class IncidenteRepository implements ICrudRepository<Incidente>, WithSimplePersistenceUnit {
 
   @Override
@@ -49,33 +52,64 @@ public class IncidenteRepository implements ICrudRepository<Incidente>, WithSimp
         .getResultList();
   }
 
+  /**
+   * Busca incidentes por heladera.
+   *
+   * @param heladera Heladera
+   * @return Lista de incidentes
+   */
   public List<Incidente> buscarPorHeladera(Heladera heladera) {
+    String query = "from Incidente i where i.alta = :alta and i.heladera = :heladera";
+
     return entityManager()
-        .createQuery("from Incidente i where i.alta = :alta and i.heladera = :heladera", Incidente.class)
+        .createQuery(query, Incidente.class)
         .setParameter("alta", true)
         .setParameter("heladera", heladera)
         .getResultList();
   }
 
+  /**
+   * Busca incidentes por tipo.
+   *
+   * @param tipo Tipo de incidente
+   * @return Lista de incidentes
+   */
   public List<Incidente> buscarPorTipo(TipoIncidente tipo) {
+    String query = "from Incidente i where i.alta = :alta and i.tipo = :tipo_incidente";
+
     return entityManager()
-        .createQuery("from Incidente i where i.alta = :alta and i.tipo = :tipo_incidente", Incidente.class)
+        .createQuery(query, Incidente.class)
         .setParameter("alta", true)
         .setParameter("tipo_incidente", tipo)
         .getResultList();
   }
 
-  public List<Incidente> buscarAPartirDe(LocalDateTime fechaHora) {
+  /**
+   * Busca incidentes desde una fecha y hora.
+   *
+   * @param fechaHora Fecha y hora
+   * @return Lista de incidentes
+   */
+  public List<Incidente> buscarDesde(LocalDateTime fechaHora) {
+    String query = "from Incidente i where i.alta = :alta and i.fechaHora >= :fecha_hora";
+
     return entityManager()
-        .createQuery("from Incidente i where i.alta = :alta and i.fechaHora >= :fecha_hora", Incidente.class)
+        .createQuery(query, Incidente.class)
         .setParameter("alta", true)
         .setParameter("fecha_hora", fechaHora)
         .getResultList();
   }
 
+  /**
+   * Busca alertas.
+   *
+   * @return Lista de incidentes
+   */
   public List<Incidente> buscarAlertas() {
+    String query = "from Incidente i where i.alta = :alta and i.tipo != :tipo";
+    
     return entityManager()
-        .createQuery("from Incidente i where i.alta = :alta and i.tipo != :tipo", Incidente.class)
+        .createQuery(query, Incidente.class)
         .setParameter("alta", true)
         .setParameter("tipo", TipoIncidente.FALLA_TECNICA)
         .getResultList();

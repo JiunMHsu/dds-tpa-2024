@@ -1,5 +1,7 @@
 package ar.edu.utn.frba.dds.services.incidente;
 
+import ar.edu.utn.frba.dds.dtos.incidente.AlertaDTO;
+import ar.edu.utn.frba.dds.dtos.incidente.IncidenteDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
@@ -7,7 +9,7 @@ import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.models.entities.incidente.TipoIncidente;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
-import ar.edu.utn.frba.dds.services.mapa.MapService;
+import ar.edu.utn.frba.dds.services.heladera.SuscriptorSensorService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
 
@@ -18,42 +20,41 @@ public class IncidenteService implements WithSimplePersistenceUnit {
 
   private final IncidenteRepository incidenteRepository;
   private final HeladeraRepository heladeraRepository;
-
-  private final MapService mapService;
+  private final SuscriptorSensorService suscriptorSensorService;
 
   /**
    * Constructor.
    *
-   * @param incidenteRepository Repositorio de incidente
-   * @param heladeraRepository  Repositorio de heladera
-   * @param mapService          Servicio de mapa
+   * @param incidenteRepository     Repositorio de incidente
+   * @param heladeraRepository      Repositorio de heladera
+   * @param suscriptorSensorService Servicio de suscriptor de sensor
    */
   public IncidenteService(IncidenteRepository incidenteRepository,
                           HeladeraRepository heladeraRepository,
-                          MapService mapService) {
+                          SuscriptorSensorService suscriptorSensorService) {
     this.incidenteRepository = incidenteRepository;
     this.heladeraRepository = heladeraRepository;
-    this.mapService = mapService;
+    this.suscriptorSensorService = suscriptorSensorService;
   }
 
   /**
    * Buscar todos los incidentes.
-   * TODO: Mapear a DTO
    *
    * @return Lista de incidentes
    */
-  public List<Incidente> buscarTodos() {
-    return this.incidenteRepository.buscarTodos();
+  public List<IncidenteDTO> buscarTodos() {
+    return this.incidenteRepository.buscarTodos().stream()
+        .map(IncidenteDTO::fromIncidente).toList();
   }
 
   /**
    * Buscar todas las alertas.
-   * TODO: Mapear a DTO
    *
    * @return Lista de incidentes
    */
-  public List<Incidente> buscarTodasAlertas() {
-    return this.incidenteRepository.buscarAlertas();
+  public List<AlertaDTO> buscarTodasAlertas() {
+    return this.incidenteRepository.buscarAlertas().stream()
+        .map(AlertaDTO::fromIncidente).toList();
   }
 
   /**
@@ -80,7 +81,6 @@ public class IncidenteService implements WithSimplePersistenceUnit {
 
   /**
    * Registrar un incidente.
-   * TODO: Recibir un DTO
    *
    * @param incidente Incidente
    */
@@ -92,35 +92,35 @@ public class IncidenteService implements WithSimplePersistenceUnit {
       throw new IllegalArgumentException("Las Fallas Tecnicas deben tener asociado un Colaborador");
     }
 
-    incidente.getHeladera().setEstado(EstadoHeladera.INACTIVA);
+    Heladera heladera = incidente.getHeladera();
 
-    withTransaction(() -> {
-      heladeraRepository.actualizar(incidente.getHeladera());
-      incidenteRepository.guardar(incidente);
-    });
+    heladera.setEstado(EstadoHeladera.INACTIVA);
+    suscriptorSensorService.desuscribirPara(heladera);
+
+    beginTransaction();
+    heladeraRepository.actualizar(heladera);
+    incidenteRepository.guardar(incidente);
+    commitTransaction();
   }
 
   /**
    * Resolver un incidente.
-   * TODO: Recibir un DTO
-   * TODO: Reanudar los brokers
    *
    * @param incidente Incidente
    */
   public void resolverIncidente(Incidente incidente) {
     incidente.setEsResuelta(true);
+    Heladera heladera = incidente.getHeladera();
 
-    if (!this.tieneOtroIncidentePendiente(incidente.getHeladera())) {
-      incidente.getHeladera().setEstado(EstadoHeladera.ACTIVA);
+    beginTransaction();
+    incidenteRepository.actualizar(incidente);
 
-      // Reanudar brokers
-      // Esta en HeladeraService, ver si moverlo a otro lado
+    if (!this.tieneOtroIncidentePendiente(heladera)) {
+      heladera.setEstado(EstadoHeladera.ACTIVA);
+      suscriptorSensorService.suscribirPara(heladera);
+      heladeraRepository.actualizar(heladera);
     }
-
-    withTransaction(() -> {
-      heladeraRepository.actualizar(incidente.getHeladera());
-      incidenteRepository.actualizar(incidente);
-    });
+    commitTransaction();
   }
 
   private boolean tieneOtroIncidentePendiente(Heladera heladera) {

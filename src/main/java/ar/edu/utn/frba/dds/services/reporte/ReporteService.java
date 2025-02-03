@@ -59,7 +59,7 @@ public class ReporteService implements WithSimplePersistenceUnit {
 
   private Map<String, Integer> incidentesPorHeladera() {
     LocalDateTime haceUnaSemana = LocalDateTime.now().minusWeeks(1);
-    List<Incidente> incidentes = incidenteRepository.buscarAPartirDe(haceUnaSemana);
+    List<Incidente> incidentes = incidenteRepository.buscarDesde(haceUnaSemana);
 
     Map<String, Integer> incidentesPorHeladera = new HashMap<>();
 

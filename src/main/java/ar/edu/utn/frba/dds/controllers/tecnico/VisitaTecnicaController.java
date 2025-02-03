@@ -72,7 +72,7 @@ public class VisitaTecnicaController extends TecnicoRequired {
         throw new IncicenteToFixException("El incidente ya está resuelto");
       }
 
-      model.put("incidente", IncidenteDTO.preview(incidente));
+      model.put("incidente", IncidenteDTO.fromIncidente(incidente));
       render(context, "visitas_tecnicas/visita_tecnica_crear.hbs", model);
     } catch (ValidationException | IncicenteToFixException e) {
       render(context, "visitas_tecnicas/incidente_invalido.hbs", model);

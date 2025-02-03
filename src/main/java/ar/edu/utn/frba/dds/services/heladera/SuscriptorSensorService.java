@@ -39,7 +39,7 @@ public class SuscriptorSensorService {
     heladeraService.buscarTodas()
         .parallelStream()
         .filter(Heladera::estaActiva)
-        .forEach(this::suscibirPara);
+        .forEach(this::suscribirPara);
   }
 
   /**
@@ -47,7 +47,7 @@ public class SuscriptorSensorService {
    *
    * @param heladera Heladera
    */
-  public void suscibirPara(Heladera heladera) {
+  public void suscribirPara(Heladera heladera) {
     SuscriptorSensor suscriptor = suscriptores.getOrDefault(
         heladera.getBrokerTopic(),
         new SuscriptorSensor(

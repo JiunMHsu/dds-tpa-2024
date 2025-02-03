@@ -51,9 +51,9 @@ import ar.edu.utn.frba.dds.models.repositories.tecnico.TecnicoRepository;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.VisitaTecnicaRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import ar.edu.utn.frba.dds.models.repositories.vianda.ViandaRepository;
-import ar.edu.utn.frba.dds.models.stateless.puntoDeColocacion.mock.PuntoDeColocacionAPIMock;
 import ar.edu.utn.frba.dds.models.stateless.mensajeria.SenderFactory;
 import ar.edu.utn.frba.dds.models.stateless.mensajeria.mail.SafeMailSender;
+import ar.edu.utn.frba.dds.models.stateless.puntoDeColocacion.mock.PuntoDeColocacionAPIMock;
 import ar.edu.utn.frba.dds.services.canjeDePuntos.CanjeDePuntosService;
 import ar.edu.utn.frba.dds.services.colaboraciones.ColaboracionService;
 import ar.edu.utn.frba.dds.services.colaboraciones.DistribucionViandasService;
@@ -359,8 +359,7 @@ public class ServiceLocator {
       IncidenteService instance = new IncidenteService(
           instanceOf(IncidenteRepository.class),
           instanceOf(HeladeraRepository.class),
-          instanceOf(MapService.class)
-      );
+          instanceOf(SuscriptorSensorService.class));
       instances.put(componentName, instance);
     }
 
