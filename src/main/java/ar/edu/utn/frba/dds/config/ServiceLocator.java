@@ -2,7 +2,14 @@ package ar.edu.utn.frba.dds.config;
 
 import ar.edu.utn.frba.dds.broker.ClienteMqtt;
 import ar.edu.utn.frba.dds.controllers.canjeDePuntos.CanjeDePuntosController;
-import ar.edu.utn.frba.dds.controllers.colaboraciones.*;
+import ar.edu.utn.frba.dds.controllers.colaboraciones.ColaboracionController;
+import ar.edu.utn.frba.dds.controllers.colaboraciones.DistribucionViandasController;
+import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionDineroController;
+import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionDineroPeriodicaController;
+import ar.edu.utn.frba.dds.controllers.colaboraciones.DonacionViandaController;
+import ar.edu.utn.frba.dds.controllers.colaboraciones.HacerseCargoHeladeraController;
+import ar.edu.utn.frba.dds.controllers.colaboraciones.OfertaProductosServiciosController;
+import ar.edu.utn.frba.dds.controllers.colaboraciones.RepartoDeTarjetaController;
 import ar.edu.utn.frba.dds.controllers.colaborador.ColaboradorController;
 import ar.edu.utn.frba.dds.controllers.heladera.BrokerMessageHandler;
 import ar.edu.utn.frba.dds.controllers.heladera.HeladeraController;
@@ -19,7 +26,13 @@ import ar.edu.utn.frba.dds.controllers.tecnico.TecnicoController;
 import ar.edu.utn.frba.dds.controllers.tecnico.VisitaTecnicaController;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.CanjeDePuntosRepository;
 import ar.edu.utn.frba.dds.models.repositories.canjeDePuntos.VarianteDePuntosRepository;
-import ar.edu.utn.frba.dds.models.repositories.colaboracion.*;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.DistribucionViandasRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroPeriodicaRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionDineroRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladeraRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRepository;
+import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetaRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.AperturaHeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
@@ -42,9 +55,19 @@ import ar.edu.utn.frba.dds.models.stateless.mensajeria.SenderFactory;
 import ar.edu.utn.frba.dds.models.stateless.mensajeria.mail.SafeMailSender;
 import ar.edu.utn.frba.dds.models.stateless.puntoDeColocacion.mock.PuntoDeColocacionAPIMock;
 import ar.edu.utn.frba.dds.services.canjeDePuntos.CanjeDePuntosService;
-import ar.edu.utn.frba.dds.services.colaboraciones.*;
+import ar.edu.utn.frba.dds.services.colaboraciones.ColaboracionService;
+import ar.edu.utn.frba.dds.services.colaboraciones.DistribucionViandasService;
+import ar.edu.utn.frba.dds.services.colaboraciones.DonacionDineroService;
+import ar.edu.utn.frba.dds.services.colaboraciones.DonacionViandaService;
+import ar.edu.utn.frba.dds.services.colaboraciones.HacerseCargoHeladeraService;
+import ar.edu.utn.frba.dds.services.colaboraciones.OfertaProductosServiciosService;
+import ar.edu.utn.frba.dds.services.colaboraciones.RepartoDeTarjetaService;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
-import ar.edu.utn.frba.dds.services.heladera.*;
+import ar.edu.utn.frba.dds.services.heladera.AperturaHeladeraService;
+import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
+import ar.edu.utn.frba.dds.services.heladera.RetiroDeViandaService;
+import ar.edu.utn.frba.dds.services.heladera.SolicitudDeAperturaService;
+import ar.edu.utn.frba.dds.services.heladera.SuscriptorSensorService;
 import ar.edu.utn.frba.dds.services.images.ImageService;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.mapa.MapService;
@@ -61,7 +84,6 @@ import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import ar.edu.utn.frba.dds.services.tecnico.VisitaTecnicaService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.RandomString;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -111,7 +133,8 @@ public class ServiceLocator {
           instanceOf(DistribucionViandasService.class),
           instanceOf(DonacionViandaService.class),
           instanceOf(RetiroDeViandaService.class),
-          instanceOf(FaltaViandaService.class));
+          instanceOf(FaltaViandaService.class),
+          instanceOf(HeladeraLlenaService.class));
       instances.put(componentName, instance);
     }
 

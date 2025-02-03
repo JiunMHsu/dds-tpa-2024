@@ -279,13 +279,4 @@ public class Heladera extends EntidadPersistente {
     return rangoTemperatura.incluye(unaTemperatura);
   }
 
-  /**
-   * Verifica si la heladera tiene n viandas o menos.
-   *
-   * @param N numero a comparar
-   */
-  public Boolean tieneNViandasOMenos(Integer N) {
-    return this.viandas <= N;
-  }
-
 }

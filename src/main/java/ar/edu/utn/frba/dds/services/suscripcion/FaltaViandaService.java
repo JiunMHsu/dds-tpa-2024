@@ -12,7 +12,6 @@ import ar.edu.utn.frba.dds.models.repositories.suscripcion.FaltaViandaRepository
 import ar.edu.utn.frba.dds.models.stateless.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.services.mensajeria.MensajeriaService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +31,9 @@ public class FaltaViandaService implements WithSimplePersistenceUnit {
     this.mensajeriaService = mensajeriaService;
   }
 
-  public void registrar(Colaborador colaborador, Heladera heladera, Integer viandasRestantes, MedioDeNotificacion medioDeNotificacion, String infoContacto) throws SuscripcionFaltaViandaException {
+  public void registrar(Colaborador colaborador, Heladera heladera, Integer viandasRestantes,
+                        MedioDeNotificacion medioDeNotificacion, String infoContacto)
+      throws SuscripcionFaltaViandaException {
 
     if (colaborador.getContactos().isEmpty()) {
       List<Contacto> contactos = new ArrayList<>(Arrays.asList(Contacto.vacio()));
@@ -47,7 +48,8 @@ public class FaltaViandaService implements WithSimplePersistenceUnit {
     }
 
     if (viandasRestantes <= 0 || viandasRestantes > heladera.getCapacidad()) {
-      throw new SuscripcionFaltaViandaException("La cantidad de viandas restantes debe ser mayor a 0 y menor o igual a la capacidad máxima de la heladera");
+      throw new SuscripcionFaltaViandaException("La cantidad de viandas restantes debe ser mayor a 0 y menor o "
+          + "igual a la capacidad máxima de la heladera");
     }
 
     SuscripcionFaltaVianda nuevaSuscripcion = SuscripcionFaltaVianda.de(
@@ -68,6 +70,11 @@ public class FaltaViandaService implements WithSimplePersistenceUnit {
     }
   }
 
+  /**
+   * Obtener las suscripciones de falta de n viandas por una heladera.
+   *
+   * @param heladera heladera
+   */
   public List<SuscripcionFaltaVianda> obtenerPorHeladera(Heladera heladera) {
     return faltaViandaRepository.obtenerPorHeladera(heladera);
   }
