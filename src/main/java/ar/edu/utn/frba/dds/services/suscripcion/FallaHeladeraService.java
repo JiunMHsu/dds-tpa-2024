@@ -109,18 +109,6 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
   }
 
   /**
-   * Notificar una falla de heladera.
-   * TODO: Revisar envío de mensajes
-   *
-   * @param suscripcion Suscripción a la falla de heladera
-   * @param incidente   Incidente
-   */
-  public void notificacionFallaHeladera(SuscripcionFallaHeladera suscripcion, Incidente incidente) {
-    this.notificacionColaborador(suscripcion, incidente);
-    this.notificacionTecnico(incidente);
-  }
-
-  /**
    * Notificar la falla de heladera a un técnico cercano.
    *
    * @param incidente Incidente

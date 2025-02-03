@@ -108,10 +108,11 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
   }
 
   private void notificarPorFalla(Heladera heladera, Incidente incidente) {
+    fallaHeladeraService.notificacionTecnico(incidente);
     fallaHeladeraService
         .obtenerPorHeladera(heladera)
         .parallelStream()
-        .forEach(s -> fallaHeladeraService.notificacionFallaHeladera(s, incidente));
+        .forEach(s -> fallaHeladeraService.notificacionColaborador(s, incidente));
   }
 
   @Override
