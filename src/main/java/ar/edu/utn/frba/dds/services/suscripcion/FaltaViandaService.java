@@ -79,6 +79,11 @@ public class FaltaViandaService implements WithSimplePersistenceUnit {
     return faltaViandaRepository.obtenerPorHeladera(heladera);
   }
 
+  /**
+   * Notificar a colaboradores por falta de viandas
+   *
+   * @param suscripcion suscripcion
+   */
   public void notificacionFaltaVianda(SuscripcionFaltaVianda suscripcion) {
     String asunto = "Heladera por baja disponibilidad de viandas";
     String cuerpo = String.format(

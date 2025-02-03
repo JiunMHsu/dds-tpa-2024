@@ -78,6 +78,11 @@ public class HeladeraLlenaService implements WithSimplePersistenceUnit {
   }
 
   // TODO: Revisar
+  /**
+   * Notificar colaboradores suscriptos por heladera casi llena
+   *
+   * @param suscripcion suscripcion
+   */
   public void notificacionHeladeraLlena(SuscripcionHeladeraLlena suscripcion) {
     String asunto = "Heladera casi llena";
     String cuerpo = String.format(
