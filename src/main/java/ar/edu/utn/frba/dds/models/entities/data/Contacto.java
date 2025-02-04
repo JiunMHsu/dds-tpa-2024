@@ -59,4 +59,8 @@ public class Contacto extends EntidadPersistente {
   public static Contacto vacio() {
     return Contacto.con(null, null);
   }
+
+  public static Contacto conTelefono(String telefono) {
+    return Contacto.con(MedioDeNotificacion.TELEFONO, telefono);
+  }
 }

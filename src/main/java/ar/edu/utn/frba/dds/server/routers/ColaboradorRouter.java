@@ -19,10 +19,10 @@ public class ColaboradorRouter implements IRouter {
         get(ServiceLocator.instanceOf(ColaboradorController.class)::create, TipoRol.GUEST);
 
         get("/humana", ctx -> ctx.render("signs/signHumana.hbs"), TipoRol.GUEST);
-        post("/humana", ServiceLocator.instanceOf(ColaboradorController.class)::saveHumana, TipoRol.GUEST);
+        post("/humana", ServiceLocator.instanceOf(ColaboradorController.class)::save, TipoRol.GUEST);
 
         get("/juridica", ctx -> ctx.render("signs/signJuridica.hbs"), TipoRol.GUEST);
-        post("/juridica", ServiceLocator.instanceOf(ColaboradorController.class)::saveJuridica, TipoRol.GUEST);
+        post("/juridica", ServiceLocator.instanceOf(ColaboradorController.class)::save, TipoRol.GUEST);
       });
 
       path("/perfil", () ->

@@ -21,7 +21,7 @@ public abstract class UserRequired {
 
   protected Usuario usuarioFromSession(Context context) throws UnauthenticatedException {
     String userId = context.sessionAttribute("userId");
-    return usuarioService.obtenerUsuarioPorID(userId)
+    return usuarioService.obtenerUsuarioPorId(userId)
         .orElseThrow(() -> new UnauthenticatedException("Usuario no encontrado con ID: " + userId));
   }
 
