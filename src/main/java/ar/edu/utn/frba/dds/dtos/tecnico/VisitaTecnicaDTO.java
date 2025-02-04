@@ -5,38 +5,32 @@ import ar.edu.utn.frba.dds.utils.DateTimeParser;
 import lombok.Builder;
 import lombok.Getter;
 
+/**
+ * Data Transfer Object de Visita Técnica.
+ */
 @Getter
 @Builder
 public class VisitaTecnicaDTO {
 
   private String id;
-
   private String fecha;
-
   private String hora;
-
   private String descripcion;
-
   private String foto;
-
   private boolean pudoResolverse;
 
-  public static VisitaTecnicaDTO completa(VisitaTecnica visitaTecnica) {
+  /**
+   * Convierte una Visita Técnica en un VisitaTecnicaDTO.
+   *
+   * @param visitaTecnica Visita Técnica
+   * @return VisitaTecnicaDTO
+   */
+  public static VisitaTecnicaDTO fromVisitaTecnica(VisitaTecnica visitaTecnica) {
     return builder()
         .id(visitaTecnica.getId().toString())
         .fecha(DateTimeParser.parseFecha(visitaTecnica.getFechaHora().toLocalDate()))
         .hora(DateTimeParser.parseHora(visitaTecnica.getFechaHora().toLocalTime()))
         .descripcion(visitaTecnica.getDescripcion())
-        .foto(visitaTecnica.getFoto().getRuta())
-        .pudoResolverse(visitaTecnica.isPudoResolverse())
-        .build();
-  }
-
-  public static VisitaTecnicaDTO preview(VisitaTecnica visitaTecnica) {
-    return builder()
-        .id(visitaTecnica.getId().toString())
-        .fecha(DateTimeParser.parseFecha(visitaTecnica.getFechaHora().toLocalDate()))
-        .hora(DateTimeParser.parseHora(visitaTecnica.getFechaHora().toLocalTime()))
         .foto(visitaTecnica.getFoto().getRuta())
         .pudoResolverse(visitaTecnica.isPudoResolverse())
         .build();

@@ -9,16 +9,24 @@ import ar.edu.utn.frba.dds.controllers.tecnico.VisitaTecnicaController;
 import ar.edu.utn.frba.dds.models.entities.usuario.TipoRol;
 import io.javalin.config.RouterConfig;
 
+/**
+ * Router de visita técnica.
+ */
 public class VisitaTecnicaRouter implements IRouter {
+
   @Override
   public void apply(RouterConfig config) {
     config.apiBuilder(() ->
         path("/visitas-tecnicas", () -> {
-          get(ServiceLocator.instanceOf(VisitaTecnicaController.class)::index, TipoRol.ADMIN);
-          post(ServiceLocator.instanceOf(VisitaTecnicaController.class)::save, TipoRol.TECNICO);
+          get(ServiceLocator.instanceOf(VisitaTecnicaController.class)::index,
+              TipoRol.ADMIN,
+              TipoRol.TECNICO);
 
-          get("/new", ServiceLocator.instanceOf(VisitaTecnicaController.class)::create, TipoRol.TECNICO);
-          get("/{id}", ServiceLocator.instanceOf(VisitaTecnicaController.class)::show, TipoRol.ADMIN, TipoRol.TECNICO);
+          post(ServiceLocator.instanceOf(VisitaTecnicaController.class)::save,
+              TipoRol.TECNICO);
+
+          get("/new", ServiceLocator.instanceOf(VisitaTecnicaController.class)::create,
+              TipoRol.TECNICO);
         })
     );
   }

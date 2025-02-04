@@ -35,6 +35,7 @@ public class ReporteService implements WithSimplePersistenceUnit {
   private final IncidenteRepository incidenteRepository;
   private final DistribucionViandasRepository distribucionViandasRepository;
   private final RetiroDeViandaRepository retiroDeViandaRepository;
+  private final IPDFGenerator pdfGenerator;
 
   /**
    * Crea un servicio de reportes.
@@ -49,17 +50,55 @@ public class ReporteService implements WithSimplePersistenceUnit {
                         DonacionViandaRepository donacionViandaRepository,
                         IncidenteRepository incidenteRepository,
                         DistribucionViandasRepository distribucionViandasRepository,
-                        RetiroDeViandaRepository retiroDeViandaRepository) {
+                        RetiroDeViandaRepository retiroDeViandaRepository,
+                        IPDFGenerator pdfGenerator) {
     this.reporteRepository = reporteRepository;
     this.donacionViandaRepository = donacionViandaRepository;
     this.incidenteRepository = incidenteRepository;
     this.distribucionViandasRepository = distribucionViandasRepository;
     this.retiroDeViandaRepository = retiroDeViandaRepository;
+    this.pdfGenerator = pdfGenerator;
+  }
+
+  private static @NotNull Map<String, Map<String, Integer>> getMovimientos(
+      List<DonacionVianda> donaciones,
+      List<DistribucionViandas> distribuciones,
+      List<RetiroDeVianda> retiros) {
+
+    Map<String, Integer> viandasAgregadas = new HashMap<>();
+    Map<String, Integer> viandasQuitadas = new HashMap<>();
+
+    for (DonacionVianda donacion : donaciones) {
+      String key = donacion.getHeladera().getId().toString();
+      int entradas = viandasAgregadas.getOrDefault(key, 0) + 1;
+      viandasAgregadas.put(key, entradas);
+    }
+
+    for (DistribucionViandas distribucion : distribuciones) {
+      String key = distribucion.getOrigen().getId().toString();
+
+      int entradas = viandasAgregadas.getOrDefault(key, 0) + distribucion.getViandas();
+      viandasAgregadas.put(key, entradas);
+      int salidas = viandasQuitadas.getOrDefault(key, 0) + distribucion.getViandas();
+      viandasQuitadas.put(key, salidas);
+    }
+
+    for (RetiroDeVianda retiro : retiros) {
+      String key = retiro.getHeladera().getId().toString();
+      int salidas = viandasQuitadas.getOrDefault(key, 0) + 1;
+      viandasQuitadas.put(key, salidas);
+    }
+
+    Map<String, Map<String, Integer>> movimientos = new HashMap<>();
+
+    movimientos.put("Viandas Agregadas", viandasAgregadas);
+    movimientos.put("Viandas Quitadas", viandasQuitadas);
+    return movimientos;
   }
 
   private Map<String, Integer> incidentesPorHeladera() {
     LocalDateTime haceUnaSemana = LocalDateTime.now().minusWeeks(1);
-    List<Incidente> incidentes = incidenteRepository.buscarAPartirDe(haceUnaSemana);
+    List<Incidente> incidentes = incidenteRepository.buscarDesde(haceUnaSemana);
 
     Map<String, Integer> incidentesPorHeladera = new HashMap<>();
 
@@ -108,48 +147,10 @@ public class ReporteService implements WithSimplePersistenceUnit {
     return getMovimientos(donaciones, distribuciones, retiros);
   }
 
-  private static @NotNull Map<String, Map<String, Integer>> getMovimientos(
-      List<DonacionVianda> donaciones,
-      List<DistribucionViandas> distribuciones,
-      List<RetiroDeVianda> retiros) {
-
-    Map<String, Integer> viandasAgregadas = new HashMap<>();
-    Map<String, Integer> viandasQuitadas = new HashMap<>();
-
-    for (DonacionVianda donacion : donaciones) {
-      String key = donacion.getHeladera().getId().toString();
-      int entradas = viandasAgregadas.getOrDefault(key, 0) + 1;
-      viandasAgregadas.put(key, entradas);
-    }
-
-    for (DistribucionViandas distribucion : distribuciones) {
-      String key = distribucion.getOrigen().getId().toString();
-
-      int entradas = viandasAgregadas.getOrDefault(key, 0) + distribucion.getViandas();
-      viandasAgregadas.put(key, entradas);
-      int salidas = viandasQuitadas.getOrDefault(key, 0) + distribucion.getViandas();
-      viandasQuitadas.put(key, salidas);
-    }
-
-    for (RetiroDeVianda retiro : retiros) {
-      String key = retiro.getHeladera().getId().toString();
-      int salidas = viandasQuitadas.getOrDefault(key, 0) + 1;
-      viandasQuitadas.put(key, salidas);
-    }
-
-    Map<String, Map<String, Integer>> movimientos = new HashMap<>();
-
-    movimientos.put("Viandas Agregadas", viandasAgregadas);
-    movimientos.put("Viandas Quitadas", viandasQuitadas);
-    return movimientos;
-  }
-
   /**
    * Genera un reporte semanal.
-   *
-   * @param pdfGenerator Generador de PDF.
    */
-  public void generarReporteSemanal(IPDFGenerator pdfGenerator) {
+  public void generarReporteSemanal() {
     Map<String, Integer> incidentesPorHeladera = this.incidentesPorHeladera();
     Map<String, Integer> donacionPorColaborador = this.donacionesPorColaborador();
     Map<String, Map<String, Integer>> movimientos = movimientosPorHeladera();
