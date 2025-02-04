@@ -280,8 +280,7 @@ public class ServiceLocator {
           instanceOf(UsuarioService.class),
           instanceOf(TecnicoService.class),
           instanceOf(VisitaTecnicaService.class),
-          instanceOf(IncidenteService.class),
-          instanceOf(ImageService.class));
+          instanceOf(IncidenteService.class));
       instances.put(componentName, instance);
     }
 
@@ -487,7 +486,9 @@ public class ServiceLocator {
 
     if (componentName.equals(VisitaTecnicaService.class.getName())) {
       VisitaTecnicaService instance = new VisitaTecnicaService(
-          instanceOf(VisitaTecnicaRepository.class));
+          instanceOf(VisitaTecnicaRepository.class),
+          instanceOf(IncidenteService.class),
+          instanceOf(ImageService.class));
       instances.put(componentName, instance);
     }
 

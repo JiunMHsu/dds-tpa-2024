@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Controlador de Incidentes
+ * Controlador de Incidentes.
  */
 public class IncidenteController extends UserRequired {
 

@@ -10,7 +10,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class CreateFallaTecnicaDTO {
-  private String heladera;
-  private String descripcion;
+  private final String heladera;
+  private final String descripcion;
   private final UploadedFile foto;
 }
