@@ -25,7 +25,8 @@ public class FaltaViandaService implements WithSimplePersistenceUnit {
   private final MensajeriaService mensajeriaService;
 
   public FaltaViandaService(FaltaViandaRepository faltaViandaRepository,
-                            ColaboradorRepository colaboradorRepository, MensajeriaService mensajeriaService) {
+                            ColaboradorRepository colaboradorRepository,
+                            MensajeriaService mensajeriaService) {
     this.faltaViandaRepository = faltaViandaRepository;
     this.colaboradorRepository = colaboradorRepository;
     this.mensajeriaService = mensajeriaService;
@@ -48,8 +49,8 @@ public class FaltaViandaService implements WithSimplePersistenceUnit {
     }
 
     if (viandasRestantes <= 0 || viandasRestantes > heladera.getCapacidad()) {
-      throw new SuscripcionFaltaViandaException("La cantidad de viandas restantes debe ser mayor a 0 y menor o "
-          + "igual a la capacidad máxima de la heladera");
+      throw new SuscripcionFaltaViandaException("La cantidad de viandas restantes debe ser mayor "
+          + "a 0 y menor o igual a la capacidad máxima de la heladera");
     }
 
     SuscripcionFaltaVianda nuevaSuscripcion = SuscripcionFaltaVianda.de(
@@ -99,7 +100,8 @@ public class FaltaViandaService implements WithSimplePersistenceUnit {
     );
 
     try {
-      Optional<Contacto> contacto = suscripcion.getColaborador().getContacto(suscripcion.getMedioDeNotificacion());
+      Optional<Contacto> contacto = suscripcion.getColaborador()
+          .getContacto(suscripcion.getMedioDeNotificacion());
       if (contacto.isPresent()) {
         Mensaje mensaje = Mensaje.con(
             contacto.get(),
@@ -107,7 +109,8 @@ public class FaltaViandaService implements WithSimplePersistenceUnit {
             cuerpo);
         mensajeriaService.enviarMensaje(mensaje);
       } else {
-        System.out.println("Medio de contacto solicitado no disponible. No se puede enviar el mensaje.");
+        System.out
+            .println("Medio de contacto solicitado no disponible. No se puede enviar el mensaje.");
       }
     } catch (Exception e) {
       e.printStackTrace();

@@ -59,7 +59,8 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
                               DistribucionViandasService distribucionViandasService,
                               DonacionViandaService donacionViandaService,
                               RetiroDeViandaService retiroDeViandaService,
-                              FaltaViandaService faltaViandaService, HeladeraLlenaService heladeraLlenaService) {
+                              FaltaViandaService faltaViandaService,
+                              HeladeraLlenaService heladeraLlenaService) {
     this.heladeraService = heladeraService;
     this.incidenteService = incidenteService;
     this.fallaHeladeraService = fallaHeladeraService;
@@ -152,7 +153,8 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
 
     try {
       switch (solicitudDeApertura.getMotivo()) {
-        case DISTRIBUCION_VIANDAS -> distribucionViandasService.efectuarAperturaPara(solicitudDeApertura);
+        case DISTRIBUCION_VIANDAS ->
+            distribucionViandasService.efectuarAperturaPara(solicitudDeApertura);
         case DONACION_VIANDA -> donacionViandaService.efectuarAperturaPara(solicitudDeApertura);
         default -> throw new IllegalStateException();
       }
@@ -163,13 +165,13 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
   }
 
   private void manejarFaltaVianda(Heladera heladera) {
-    faltaViandaService.obtenerPorHeladera(heladera).stream()
+    faltaViandaService.obtenerPorHeladera(heladera).parallelStream()
         .filter(suscripcion -> heladera.getViandas() <= suscripcion.getUmbralViandas())
         .forEach(faltaViandaService::notificacionFaltaVianda);
   }
 
   private void manejarHeladeraLlena(Heladera heladera) {
-    heladeraLlenaService.obtenerPorHeladera(heladera).stream()
+    heladeraLlenaService.obtenerPorHeladera(heladera).parallelStream()
         .filter(suscripcion -> heladera.getViandas() >= suscripcion.getUmbralEspacio())
         .forEach(heladeraLlenaService::notificacionHeladeraLlena);
   }

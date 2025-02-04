@@ -137,7 +137,8 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
             cuerpo);
         mensajeriaService.enviarMensaje(mensaje);
       } else {
-        System.out.println("Medio de contacto solicitado no disponible. No se puede enviar el mensaje.");
+        System.out.println("Medio de contacto solicitado no disponible. No se puede enviar el "
+            + "mensaje.");
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -182,7 +183,8 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
             cuerpo);
         mensajeriaService.enviarMensaje(mensaje);
       } else {
-        System.out.println("Medio de contacto solicitado no disponible. No se puede enviar el mensaje.");
+        System.out.println("Medio de contacto solicitado no disponible. No se puede enviar el "
+            + "mensaje.");
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -216,7 +218,8 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
   }
 
   public List<Heladera> heladerasRecomendadas(Heladera heladera) {
-    List<Heladera> listaHeladerasActivasMasCercanasConEspacio = this.heladerasActivasMasCercanas(heladera).stream()
+    List<Heladera> listaHeladerasActivasMasCercanasConEspacio =
+        this.heladerasActivasMasCercanas(heladera).stream()
         .filter(heladera1 -> !heladera1.estaLlena())
         .toList();
     List<Heladera> heladerasSeleccionadas = new ArrayList<>();
