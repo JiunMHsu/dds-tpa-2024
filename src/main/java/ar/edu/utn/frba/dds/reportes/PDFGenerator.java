@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.reportes;
 
+import ar.edu.utn.frba.dds.utils.AppProperties;
 import ar.edu.utn.frba.dds.utils.IPDFGenerator;
 import com.aspose.pdf.Color;
 import com.aspose.pdf.Document;
@@ -20,8 +21,20 @@ public class PDFGenerator implements IPDFGenerator {
 
   private final String dir;
 
+  /**
+   * Creates a PDF Generator.
+   *
+   * @param dir Directory where the PDF will be saved.
+   */
   public PDFGenerator(String dir) {
     this.dir = dir;
+  }
+
+  /**
+   * Creates a PDF Generator with the default directory.
+   */
+  public PDFGenerator() {
+    this.dir = AppProperties.getInstance().propertyFromName("REPORT_DIR");
   }
 
   @Override

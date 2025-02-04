@@ -54,6 +54,7 @@ import ar.edu.utn.frba.dds.models.repositories.vianda.ViandaRepository;
 import ar.edu.utn.frba.dds.models.stateless.mensajeria.SenderFactory;
 import ar.edu.utn.frba.dds.models.stateless.mensajeria.mail.SafeMailSender;
 import ar.edu.utn.frba.dds.models.stateless.puntoDeColocacion.mock.PuntoDeColocacionAPIMock;
+import ar.edu.utn.frba.dds.reportes.PDFGenerator;
 import ar.edu.utn.frba.dds.services.canjeDePuntos.CanjeDePuntosService;
 import ar.edu.utn.frba.dds.services.colaboraciones.ColaboracionService;
 import ar.edu.utn.frba.dds.services.colaboraciones.DistribucionViandasService;
@@ -287,6 +288,7 @@ public class ServiceLocator {
     if (componentName.equals(ReporteController.class.getName())) {
       ReporteController instance = new ReporteController(
           instanceOf(UsuarioService.class),
+          instanceOf(ColaboradorService.class),
           instanceOf(ReporteService.class));
       instances.put(componentName, instance);
     }
@@ -498,7 +500,8 @@ public class ServiceLocator {
           instanceOf(DonacionViandaRepository.class),
           instanceOf(IncidenteRepository.class),
           instanceOf(DistribucionViandasRepository.class),
-          instanceOf(RetiroDeViandaRepository.class));
+          instanceOf(RetiroDeViandaRepository.class),
+          new PDFGenerator());
       instances.put(componentName, instance);
     }
 
