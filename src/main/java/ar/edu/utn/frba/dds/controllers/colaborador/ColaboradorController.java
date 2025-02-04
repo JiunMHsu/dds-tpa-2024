@@ -293,7 +293,7 @@ public class ColaboradorController extends ColaboradorRequired {
       String chatId = context.queryParamAsClass("chatId", String.class).get();
 
       this.colaboradorService.registrarChatId(colaborador, chatId);
-      
+
     } catch (NotColaboratorException e) {
       throw new UnauthorizedException(e.getMessage());
     }

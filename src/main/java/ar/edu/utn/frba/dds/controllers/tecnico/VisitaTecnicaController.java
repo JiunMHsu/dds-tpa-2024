@@ -2,66 +2,78 @@ package ar.edu.utn.frba.dds.controllers.tecnico;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.incidente.IncidenteDTO;
+import ar.edu.utn.frba.dds.dtos.tecnico.CreateVisitaTecnicaDTO;
 import ar.edu.utn.frba.dds.dtos.tecnico.VisitaTecnicaDTO;
 import ar.edu.utn.frba.dds.exceptions.IncicenteToFixException;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
-import ar.edu.utn.frba.dds.models.entities.data.Imagen;
+import ar.edu.utn.frba.dds.exceptions.NonTecnicoException;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
-import ar.edu.utn.frba.dds.models.entities.tecnico.VisitaTecnica;
 import ar.edu.utn.frba.dds.permissions.TecnicoRequired;
-import ar.edu.utn.frba.dds.services.images.ImageService;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import ar.edu.utn.frba.dds.services.tecnico.VisitaTecnicaService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import ar.edu.utn.frba.dds.utils.DateTimeParser;
 import io.javalin.http.Context;
-import io.javalin.http.UploadedFile;
 import io.javalin.validation.ValidationException;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Controlador de visitas técnicas.
+ */
 public class VisitaTecnicaController extends TecnicoRequired {
 
   private final VisitaTecnicaService visitaTecnicaService;
   private final IncidenteService incidenteService;
-  private final ImageService fileService;
 
+  /**
+   * Constructor de VisitaTecnicaController.
+   *
+   * @param usuarioService       Servicio de Usuario
+   * @param tecnicoService       Servicio de Tecnico
+   * @param visitaTecnicaService Servicio de VisitaTecnica
+   * @param incidenteService     Servicio de Incidente
+   */
   public VisitaTecnicaController(UsuarioService usuarioService,
                                  TecnicoService tecnicoService,
                                  VisitaTecnicaService visitaTecnicaService,
-                                 IncidenteService incidenteService,
-                                 ImageService fileService) {
-
+                                 IncidenteService incidenteService) {
     super(usuarioService, tecnicoService);
     this.visitaTecnicaService = visitaTecnicaService;
     this.incidenteService = incidenteService;
-    this.fileService = fileService;
   }
 
+  /**
+   * Muestra la lista de visitas técnicas.
+   *
+   * @param context Context de Javalin
+   */
   public void index(Context context) {
-    List<VisitaTecnica> visitasTecnicas = this.visitaTecnicaService.buscarTodas();
-    List<VisitaTecnicaDTO> visitaTecnicaDTO = visitasTecnicas.stream()
-        .map(VisitaTecnicaDTO::preview)
-        .toList();
-
     Map<String, Object> model = new HashMap<>();
-    model.put("visitas-tecnicas", visitaTecnicaDTO);
-    render(context, "visitas_tecnicas/visitas_tecnicas.hbs", model);
+    List<VisitaTecnicaDTO> visitasTecnicas = new ArrayList<>();
+
+    try {
+      Tecnico tecnico = tecnicoFromSession(context);
+      visitasTecnicas = this.visitaTecnicaService.buscarPorTecnico(tecnico);
+    } catch (NonTecnicoException e) {
+      visitasTecnicas = this.visitaTecnicaService.buscarTodas();
+    } finally {
+      model.put("visitas-tecnicas", visitasTecnicas);
+      render(context, "visitas_tecnicas/visitas_tecnicas.hbs", model);
+    }
   }
 
-  public void show(Context context) {
-    // TODO - implementar
-  }
-
+  /**
+   * Muestra una visita técnica.
+   *
+   * @param context Context de Javalin
+   */
   public void create(Context context) {
-    Map<String, Object> model = new HashMap<>();
-
     try {
       String incidenteId = context.queryParamAsClass("incidente", String.class)
           .getOrThrow(ValidationException::new);
@@ -72,74 +84,61 @@ public class VisitaTecnicaController extends TecnicoRequired {
         throw new IncicenteToFixException("El incidente ya está resuelto");
       }
 
-      model.put("incidente", IncidenteDTO.preview(incidente));
+      Map<String, Object> model = new HashMap<>();
+      model.put("incidente", IncidenteDTO.fromIncidente(incidente));
       render(context, "visitas_tecnicas/visita_tecnica_crear.hbs", model);
     } catch (ValidationException | IncicenteToFixException e) {
-      render(context, "visitas_tecnicas/incidente_invalido.hbs", model);
+      render(context, "visitas_tecnicas/incidente_invalido.hbs");
     }
   }
 
+  /**
+   * Guarda una visita técnica.
+   *
+   * @param context Context de Javalin
+   */
   public void save(Context context) {
     Map<String, Object> model = new HashMap<>();
-    List<RedirectDTO> redirectDTOS = new ArrayList<>();
+    List<RedirectDTO> redirects = new ArrayList<>();
     boolean operationSuccess = false;
 
     Tecnico tecnico = tecnicoFromSession(context);
 
     try {
-      String incidenteId = context.queryParamAsClass("incidente", String.class)
-          .getOrThrow(ValidationException::new);
 
-      Incidente incidente = this.incidenteService.buscarIncidentePorId(incidenteId);
+      String estado = context.formParamAsClass("estado-incidente", String.class)
+          .getOrDefault("pendiente");
 
-      if (incidente.getEsResuelta()) {
-        throw new IncicenteToFixException("El incidente ya está resuelto");
-      }
-
-      LocalDateTime fechaHoraVisita = DateTimeParser.fromFormInput(
-          context.formParamAsClass("fecha-hora-visita", String.class).get());
-
-      String descripcion = context.formParamAsClass("descripcion", String.class).get();
-
-      Boolean resuelta = switch (context.formParamAsClass("estado-incidente", String.class).getOrDefault("pendiente")) {
+      boolean pudoResolverse = switch (estado) {
         case "resuelta" -> true;
         case "pendiente" -> false;
         default -> throw new InvalidFormParamException("estado incidente invalido");
       };
 
-      UploadedFile uploadedFile = context.uploadedFile("foto");
-      if (uploadedFile == null) {
-        throw new InvalidFormParamException();
-      }
-      String pathImagen = fileService.guardarImagen(uploadedFile.content(), uploadedFile.extension());
-
-      VisitaTecnica visitaTecnica = VisitaTecnica.por(
-          tecnico,
-          incidente,
-          incidente.getHeladera(),
-          fechaHoraVisita,
-          descripcion,
-          resuelta,
-          new Imagen(pathImagen)
+      CreateVisitaTecnicaDTO nuevaVisita = new CreateVisitaTecnicaDTO(
+          context.queryParamAsClass("incidente", String.class)
+              .getOrThrow(ValidationException::new),
+          DateTimeParser.fromFormInput(
+              context.formParamAsClass("fecha-hora-visita", String.class).get()),
+          context.formParamAsClass("descripcion", String.class).get(),
+          context.uploadedFile("foto"),
+          pudoResolverse
       );
 
-      this.visitaTecnicaService.registrarVisita(visitaTecnica);
-      if (resuelta) {
-        this.incidenteService.resolverIncidente(incidente);
-      }
+      this.visitaTecnicaService.registrarVisita(tecnico, nuevaVisita);
 
       operationSuccess = true;
-      redirectDTOS.add(new RedirectDTO("/incidentes", "Registrar otra Visita"));
+      redirects.add(new RedirectDTO("/incidentes", "Registrar otra Visita"));
 
     } catch (ValidationException
              | IncicenteToFixException
              | InvalidFormParamException
              | IOException e) {
-      redirectDTOS.add(new RedirectDTO("/incidentes", "Ver Incidentes"));
+      redirects.add(new RedirectDTO("/incidentes", "Ver Incidentes"));
     } finally {
       model.put("success", operationSuccess);
-      model.put("redirects", redirectDTOS);
-      context.render("post_result.hbs", model);
+      model.put("redirects", redirects);
+      render(context, "post_result.hbs", model);
     }
   }
 }

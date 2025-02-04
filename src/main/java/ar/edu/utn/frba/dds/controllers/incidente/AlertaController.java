@@ -14,11 +14,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Controlador de Alertas.
+ */
 public class AlertaController extends UserRequired {
 
   private final IncidenteService incidenteService;
   private final VisitaTecnicaService visitaTecnicaService;
 
+  /**
+   * Constructor.
+   *
+   * @param usuarioService       Servicio de usuario
+   * @param incidenteService     Servicio de incidente
+   * @param visitaTecnicaService Servicio de visita técnica
+   */
   public AlertaController(UsuarioService usuarioService,
                           IncidenteService incidenteService,
                           VisitaTecnicaService visitaTecnicaService) {
@@ -27,40 +37,41 @@ public class AlertaController extends UserRequired {
     this.visitaTecnicaService = visitaTecnicaService;
   }
 
+  /**
+   * Muestra la lista de alertas.
+   *
+   * @param context Context de Javalin
+   */
   public void index(Context context) {
-    List<Incidente> incidentes = this.incidenteService.buscarTodasAlertas();
-
-    List<AlertaDTO> alertasDTOS = incidentes.stream()
-        .map(AlertaDTO::preview)
-        .toList();
+    List<AlertaDTO> alertas = this.incidenteService.buscarTodasAlertas();
 
     Map<String, Object> model = new HashMap<>();
-    model.put("alertas", alertasDTOS);
-
+    model.put("alertas", alertas);
     render(context, "incidentes/alertas.hbs", model);
   }
 
+  /**
+   * Muestra el detalle de una alerta.
+   * TODO: Revisar
+   *
+   * @param context Context de Javalin
+   */
   public void show(Context context) {
     String alertaId = context.pathParam("id");
 
     Incidente alerta = this.incidenteService.buscarIncidentePorId(alertaId);
-
-    List<VisitaTecnicaDTO> visitasPreviasDTO = this.visitaTecnicaService
-        .buscarPorincidente(alerta)
-        .stream().map(VisitaTecnicaDTO::preview)
-        .toList();
+    List<VisitaTecnicaDTO> visitasPrevias = this.visitaTecnicaService.buscarPorincidente(alerta);
 
     Heladera heladera = alerta.getHeladera();
-
     boolean puedeResolver = rolFromSession(context).isTecnico() && !alerta.getEsResuelta();
 
     Map<String, Object> model = new HashMap<>();
 
     model.put("heladera", HeladeraDTO.preview(heladera));
-    model.put("alerta", AlertaDTO.completa(alerta));
+    model.put("alerta", AlertaDTO.fromIncidente(alerta));
     model.put("puedeResolver", puedeResolver);
 
-    model.put("visitasPrevias", visitasPreviasDTO);
+    model.put("visitasPrevias", visitasPrevias);
 
     render(context, "incidentes/alerta_detalle.hbs", model);
   }

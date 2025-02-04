@@ -8,6 +8,10 @@ import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import io.javalin.http.Context;
 
+/**
+ * Clase abstracta que extiende de UserRequired y
+ * agrega la funcionalidad de obtener un Tecnico a partir de la sesion.
+ */
 public abstract class TecnicoRequired extends UserRequired {
 
   protected final TecnicoService tecnicoService;
@@ -17,9 +21,12 @@ public abstract class TecnicoRequired extends UserRequired {
     this.tecnicoService = tecnicoService;
   }
 
-  protected Tecnico tecnicoFromSession(Context context) throws UnauthenticatedException, NonTecnicoException {
+  protected Tecnico tecnicoFromSession(Context context)
+      throws UnauthenticatedException, NonTecnicoException {
+
     Usuario usuarioSession = usuarioFromSession(context);
+
     return tecnicoService.obtenerTecnicoPorUsuario(usuarioSession)
-        .orElseThrow(() -> new NonTecnicoException("Tecnico no encontrado por Usuario: " + usuarioSession.getNombre()));
+        .orElseThrow(NonTecnicoException::new);
   }
 }
