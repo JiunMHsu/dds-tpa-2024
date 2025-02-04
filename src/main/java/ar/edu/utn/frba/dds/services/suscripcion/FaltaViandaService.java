@@ -81,7 +81,7 @@ public class FaltaViandaService implements WithSimplePersistenceUnit {
   }
 
   /**
-   * Notificar a colaboradores por falta de viandas
+   * Notificar a colaboradores por falta de viandas.
    *
    * @param suscripcion suscripcion
    */
