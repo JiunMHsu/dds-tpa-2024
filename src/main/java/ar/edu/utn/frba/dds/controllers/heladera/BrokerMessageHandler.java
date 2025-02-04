@@ -135,7 +135,7 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
       throws AperturaDeniedException {
     try {
       retiroDeViandaService.registrarRetiro(tarjeta, heladera);
-      manejarFaltaVianda(heladera);
+      this.manejarFaltaVianda(heladera);
     } catch (Exception | CantidadDeViandasException e) {
       throw new AperturaDeniedException();
     }
@@ -153,8 +153,10 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
 
     try {
       switch (solicitudDeApertura.getMotivo()) {
-        case DISTRIBUCION_VIANDAS ->
-            distribucionViandasService.efectuarAperturaPara(solicitudDeApertura);
+        case DISTRIBUCION_VIANDAS -> {
+          distribucionViandasService.efectuarAperturaPara(solicitudDeApertura);
+          this.manejarFaltaVianda(heladera);
+        }
         case DONACION_VIANDA -> donacionViandaService.efectuarAperturaPara(solicitudDeApertura);
         default -> throw new IllegalStateException();
       }
