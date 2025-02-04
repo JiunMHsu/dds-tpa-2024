@@ -11,11 +11,9 @@ public class ContactoRepository implements WithSimplePersistenceUnit {
   }
 
   public void guardar(List<Contacto> contactos) {
-    withTransaction(() -> {
-      for (Contacto contacto : contactos) {
-        entityManager().persist(contacto);
-      }
-    });
+    for (Contacto contacto : contactos) {
+      entityManager().persist(contacto);
+    }
   }
 
   public void actualizar(Contacto contacto) {
