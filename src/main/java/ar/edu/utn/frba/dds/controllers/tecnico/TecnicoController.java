@@ -27,7 +27,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-
+/**
+ * Controlador de la entidad Tecnico.
+ */
 public class TecnicoController extends TecnicoRequired implements ICrudViewsHandler {
 
   public TecnicoController(UsuarioService usuarioService,

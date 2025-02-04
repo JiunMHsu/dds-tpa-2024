@@ -92,7 +92,7 @@ public class Colaborador extends EntidadPersistente {
 
   @Embedded
   private Puntos puntos;
-  
+
   /**
    * Constructor de un colaborador jurídico.
    *

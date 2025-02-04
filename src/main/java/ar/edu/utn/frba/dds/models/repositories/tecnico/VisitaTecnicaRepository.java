@@ -8,12 +8,25 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Repositorio de visitas técnicas.
+ */
 public class VisitaTecnicaRepository implements WithSimplePersistenceUnit {
 
+  /**
+   * Guarda una visita técnica.
+   *
+   * @param visitaTecnica Visita técnica
+   */
   public void guardar(VisitaTecnica visitaTecnica) {
     entityManager().persist(visitaTecnica);
   }
 
+  /**
+   * Busca todas las visitas técnicas.
+   *
+   * @return Lista de visitas técnicas
+   */
   public List<VisitaTecnica> buscarTodos() {
     return entityManager()
         .createQuery("from VisitaTecnica v where v.alta = :alta", VisitaTecnica.class)
@@ -21,6 +34,12 @@ public class VisitaTecnicaRepository implements WithSimplePersistenceUnit {
         .getResultList();
   }
 
+  /**
+   * Busca una visita técnica por su id.
+   *
+   * @param id Id de la visita técnica
+   * @return Visita técnica
+   */
   public Optional<VisitaTecnica> buscarPorId(String id) {
     try {
       UUID uuid = UUID.fromString(id);
@@ -31,17 +50,33 @@ public class VisitaTecnicaRepository implements WithSimplePersistenceUnit {
     }
   }
 
+  /**
+   * Busca las visitas técnicas de un técnico.
+   *
+   * @param t Técnico
+   * @return Lista de visitas técnicas
+   */
   public List<VisitaTecnica> buscarPorTecnico(Tecnico t) {
+    String query = "from VisitaTecnica v where v.tecnico = :tecnico and v.alta = :alta";
+
     return entityManager()
-        .createQuery("from VisitaTecnica v where v.tecnico = :tecnico and v.alta = :alta", VisitaTecnica.class)
+        .createQuery(query, VisitaTecnica.class)
         .setParameter("tecnico", t)
         .setParameter("alta", true)
         .getResultList();
   }
 
+  /**
+   * Busca las visitas técnicas de un incidente.
+   *
+   * @param i Incidente
+   * @return Lista de visitas técnicas
+   */
   public List<VisitaTecnica> buscarPorIncidente(Incidente i) {
+    String query = "from VisitaTecnica v where v.incidente = :incidente and v.alta = :alta";
+
     return entityManager()
-        .createQuery("from VisitaTecnica v where v.incidente = :incidente and v.alta = :alta", VisitaTecnica.class)
+        .createQuery(query, VisitaTecnica.class)
         .setParameter("incidente", i)
         .setParameter("alta", true)
         .getResultList();

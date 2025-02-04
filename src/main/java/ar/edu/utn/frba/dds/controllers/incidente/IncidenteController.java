@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Controlador de Incidentes.
+ */
 public class IncidenteController extends UserRequired {
 
   private final IncidenteService incidenteService;
@@ -21,22 +24,27 @@ public class IncidenteController extends UserRequired {
     this.incidenteService = incidenteService;
   }
 
+  /**
+   * Muestra la lista de incidentes.
+   *
+   * @param context Context
+   */
   public void index(Context context) {
-    List<Incidente> incidentes = this.incidenteService.buscarTodos();
-
-    List<IncidenteDTO> incidenteDTOS = incidentes.stream()
-        .map(IncidenteDTO::preview)
-        .toList();
+    List<IncidenteDTO> incidentes = this.incidenteService.buscarTodos();
 
     Map<String, Object> model = new HashMap<>();
-    model.put("incidentes", incidenteDTOS);
+    model.put("incidentes", incidentes);
 
     render(context, "incidentes/incidentes.hbs", model);
   }
 
+  /**
+   * Muestra un incidente.
+   *
+   * @param context Context
+   */
   public void show(Context context) {
     String incidenteId = context.pathParam("id");
-
     Incidente incidente = incidenteService.buscarIncidentePorId(incidenteId);
 
     if (Objects.requireNonNull(incidente.getTipo()).equals(TipoIncidente.FALLA_TECNICA)) {
