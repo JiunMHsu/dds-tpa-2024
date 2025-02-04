@@ -18,9 +18,9 @@ import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -197,11 +197,13 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
    * @param direccion Dirección
    * @return Técnico
    */
-  public Tecnico tecnicoMasCercano(Direccion direccion) {
-    List<Tecnico> tecnicosCercanos = tecnicoService.obtenerPorBarrio(direccion.getBarrio());
-    Random random = new Random();
-    int indiceAleatorio = random.nextInt(tecnicosCercanos.size());
-    return tecnicosCercanos.get(indiceAleatorio);
+  private Tecnico tecnicoMasCercano(Direccion direccion) {
+    List<Tecnico> tecnicosCercanos = tecnicoService.obtenerPorBarrio(direccion.getBarrio())
+        .stream()
+        .sorted(Comparator.comparingDouble(tecnico1 -> tecnico1.getAreaDeCobertura().getUbicacion()
+            .distanciaA(direccion.getUbicacion())))
+        .toList();
+    return tecnicosCercanos.get(0);
   }
 
   /**
@@ -210,24 +212,26 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
    * @param heladera Heladera
    * @return Lista de heladeras activas más cercanas
    */
-  public List<Heladera> heladerasActivasMasCercanas(Heladera heladera) {
+  private List<Heladera> heladerasActivasMasCercanas(Heladera heladera) {
     return heladeraService.buscarPorBarrio(heladera.getDireccion().getBarrio())
         .stream()
         .filter(Heladera::estaActiva)
+        .sorted(Comparator.comparingDouble(heladera1 -> heladera1.getDireccion().getUbicacion()
+            .distanciaA(heladera.getDireccion().getUbicacion())))
         .toList();
   }
 
-  public List<Heladera> heladerasRecomendadas(Heladera heladera) {
+  private List<Heladera> heladerasRecomendadas(Heladera heladera) {
     List<Heladera> listaHeladerasActivasMasCercanasConEspacio =
         this.heladerasActivasMasCercanas(heladera).stream()
-        .filter(heladera1 -> !heladera1.estaLlena())
-        .toList();
+            .filter(heladera1 -> !heladera1.estaLlena())
+            .toList();
     List<Heladera> heladerasSeleccionadas = new ArrayList<>();
-    Integer cantViandasATransportar = heladera.getViandas();
-    for (int i = 0; cantViandasATransportar > 0; i++) {
+    Integer cantViandasTransportar = heladera.getViandas();
+    for (int i = 0; cantViandasTransportar > 0; i++) {
       Heladera heladeraX = listaHeladerasActivasMasCercanasConEspacio.get(i);
       heladerasSeleccionadas.add(heladeraX);
-      cantViandasATransportar -= heladeraX.espacioRestante();
+      cantViandasTransportar -= heladeraX.espacioRestante();
     }
     return heladerasSeleccionadas;
   }
