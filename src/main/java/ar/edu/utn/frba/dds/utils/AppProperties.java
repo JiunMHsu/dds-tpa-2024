@@ -6,6 +6,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * Gestiona la configuración de la aplicación mediante la carga de propiedades desde un archivo
+ * externo, implementando el patrón Singleton.
+ */
 public class AppProperties {
 
   private static AppProperties instance = null;
@@ -16,6 +20,11 @@ public class AppProperties {
     this.readProperties();
   }
 
+  /**
+   * Obtiene la instancia única de AppProperties.
+   *
+   * @return La instancia única de AppProperties.
+   */
   public static AppProperties getInstance() {
     if (instance == null) {
       instance = new AppProperties();
@@ -38,14 +47,33 @@ public class AppProperties {
     }
   }
 
+  /**
+   * Obtiene el valor de una propiedad como cadena de texto a partir de un nombre.
+   *
+   * @param name Nombre de la propiedad.
+   * @return Valor de la propiedad como String, o null si no existe.
+   */
   public String propertyFromName(String name) {
     return this.props.getProperty(name);
   }
 
+  /**
+   * Obtiene una propiedad como un número entero a través de su nombre.
+   *
+   * @param name Nombre de la propiedad.
+   * @return Valor de la propiedad como Integer.
+   * @throws NumberFormatException si el valor no es un número válido.
+   */
   public Integer intPropertyFromName(String name) {
     return Integer.parseInt(propertyFromName(name));
   }
 
+  /**
+   * Obtiene una propiedad como un valor booleano a través de su nombre.
+   *
+   * @param name Nombre de la propiedad.
+   * @return true si el valor es "true", false en caso contrario.
+   */
   public Boolean boolPropertyFromName(String name) {
     return Boolean.parseBoolean(propertyFromName(name));
   }

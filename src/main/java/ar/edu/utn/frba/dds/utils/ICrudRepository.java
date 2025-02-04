@@ -9,13 +9,40 @@ import java.util.Optional;
  * @param <T> tipo de entidad
  */
 public interface ICrudRepository<T> {
+
+  /**
+   * Guarda una entidad en el repositorio.
+   *
+   * @param entidad la entidad a guardar
+   */
   void guardar(T entidad);
 
+  /**
+   * Actualiza una entidad existente en el repositorio.
+   *
+   * @param entidad la entidad a actualizar
+   */
   void actualizar(T entidad);
 
+  /**
+   * Elimina una entidad del repositorio.
+   *
+   * @param entidad la entidad a eliminar
+   */
   void eliminar(T entidad);
 
+  /**
+   * Busca una entidad por su identificador.
+   *
+   * @param id el identificador de la entidad a buscar
+   * @return un Optional que contiene la entidad encontrada, o vacío si no se encuentra
+   */
   Optional<T> buscarPorId(String id);
 
+  /**
+   * Busca todas las entidades en el repositorio.
+   *
+   * @return una lista con todas las entidades
+   */
   List<T> buscarTodos();
 }

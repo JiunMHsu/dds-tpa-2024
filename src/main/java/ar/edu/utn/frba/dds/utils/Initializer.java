@@ -39,8 +39,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase encargada de inicializar los datos de la aplicación, configurando entidades y registros iniciales.
+ * Esto incluye la creación de usuarios, colaboradores, heladeras, incidentes, variantes de puntos y ofertas de productos.
+ */
 public class Initializer implements WithSimplePersistenceUnit {
 
+  /**
+   * Método principal que ejecuta la inicialización del sistema.
+   */
   public static void init() {
     Initializer instance = new Initializer();
 
@@ -58,6 +65,9 @@ public class Initializer implements WithSimplePersistenceUnit {
     // ServiceLocator.instanceOf(ReporteService.class).generarReporteSemanal(pdfGenerator);
   }
 
+  /**
+   * Crea un usuario con rol de superadministrador y lo guarda en la base de datos.
+   */
   public void withSuperUser() {
     Usuario superUser = Usuario.con(
         "Admin del Sistema",
@@ -71,6 +81,9 @@ public class Initializer implements WithSimplePersistenceUnit {
     withTransaction(() -> usuarioRepository.guardar(superUser));
   }
 
+  /**
+   * Crea una lista de usuarios colaboradores y los guarda junto con sus contactos y direcciones.
+   */
   public void withColaboradores() {
     Usuario u1 = Usuario.con("JiunMHsu", "1111", "jhsu@frba.utn.edu.ar", TipoRol.COLABORADOR);
     Usuario u2 = Usuario.con("abrilnimo", "1111", "adomingueznimo@frba.utn.edu.ar", TipoRol.COLABORADOR);
@@ -129,6 +142,10 @@ public class Initializer implements WithSimplePersistenceUnit {
     });
   }
 
+  /**
+   * Crea las heladeras y las guarda en la base de datos.
+   * Asocia cada heladera con una dirección y configura su temperatura.
+   */
   public void withHeladeras() {
 
     Ubicacion u1 = new Ubicacion(-34.65980101272007, -58.46812313140898); // UTN Lugano

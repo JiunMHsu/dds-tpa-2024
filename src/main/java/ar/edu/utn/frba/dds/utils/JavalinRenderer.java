@@ -6,10 +6,21 @@ import java.util.HashMap;
 import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Clase que implementa el renderizador de archivos para Javalin.
+ * Permite registrar renderizadores personalizados para diferentes extensiones de archivos.
+ */
 public class JavalinRenderer implements FileRenderer {
 
   private final Map<String, FileRenderer> renderers = new HashMap<>();
 
+  /**
+   * Registra un renderizador para una extensión de archivo específica.
+   *
+   * @param extension la extensión del archivo (por ejemplo, "html", "json")
+   * @param renderer  el renderizador a registrar
+   * @return la instancia actual de JavalinRenderer
+   */
   public JavalinRenderer register(String extension, FileRenderer renderer) {
     renderers.put(extension, renderer);
     return this;
