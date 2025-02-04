@@ -18,6 +18,9 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Arrays;
 
+/**
+ * Rutas de la aplicación.
+ */
 public class Routers {
 
   private static final IRouter[] routers = new IRouter[]{
@@ -33,10 +36,19 @@ public class Routers {
       new VisitaTecnicaRouter()
   };
 
+  /**
+   * Aplica las rutas de la aplicación.
+   *
+   * @param config configuración del router
+   */
   public static void apply(RouterConfig config) {
     config.apiBuilder(() -> {
-      get("/", ctx -> ctx.redirect("/home"), TipoRol.COLABORADOR, TipoRol.ADMIN, TipoRol.TECNICO);
-      get("/home", ServiceLocator.instanceOf(HomeController.class)::index, TipoRol.COLABORADOR, TipoRol.ADMIN, TipoRol.TECNICO);
+      get("/", ctx -> ctx.redirect("/home"),
+          TipoRol.COLABORADOR, TipoRol.ADMIN, TipoRol.TECNICO);
+
+      get("/home", ServiceLocator.instanceOf(HomeController.class)::index,
+          TipoRol.COLABORADOR, TipoRol.ADMIN, TipoRol.TECNICO);
+
       get("/test", ctx -> ctx.result("DDS TPA"));
 
       path("/login", () -> {
@@ -44,16 +56,22 @@ public class Routers {
         post(ServiceLocator.instanceOf(SessionController.class)::create, TipoRol.GUEST);
       });
 
+      path("/logout", () -> post(ServiceLocator.instanceOf(SessionController.class)::delete,
+          TipoRol.COLABORADOR, TipoRol.ADMIN, TipoRol.TECNICO)
+      );
+
       get("/image/{id}", ctx -> {
         String relativePath = AppProperties.getInstance().propertyFromName("IMAGE_DIR");
-        if (relativePath == null)
+        if (relativePath == null) {
           throw new RuntimeException("No image directory found");
+        }
 
         String absolutePath = Path.of(relativePath).toAbsolutePath().toString();
         System.out.println(absolutePath);
 
         try {
-          InputStream input = new FileInputStream(absolutePath + File.separator + ctx.pathParam("id"));
+          String fileName = absolutePath + File.separator + ctx.pathParam("id");
+          InputStream input = new FileInputStream(fileName);
           ctx.result(input);
         } catch (FileNotFoundException e) {
           throw new ResourceNotFoundException();

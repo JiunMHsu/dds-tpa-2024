@@ -21,7 +21,7 @@ public class ReporteRouter implements IRouter {
           get(ServiceLocator.instanceOf(ReporteController.class)::index,
               TipoRol.ADMIN,
               TipoRol.COLABORADOR);
-          
+
           post(ServiceLocator.instanceOf(ReporteController.class)::generate,
               TipoRol.ADMIN,
               TipoRol.COLABORADOR);
