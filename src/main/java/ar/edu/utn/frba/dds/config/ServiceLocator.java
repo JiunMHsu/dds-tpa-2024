@@ -133,7 +133,9 @@ public class ServiceLocator {
           instanceOf(TarjetaPersonaVulnerableService.class),
           instanceOf(DistribucionViandasService.class),
           instanceOf(DonacionViandaService.class),
-          instanceOf(RetiroDeViandaService.class));
+          instanceOf(RetiroDeViandaService.class),
+          instanceOf(FaltaViandaService.class),
+          instanceOf(HeladeraLlenaService.class));
       instances.put(componentName, instance);
     }
 

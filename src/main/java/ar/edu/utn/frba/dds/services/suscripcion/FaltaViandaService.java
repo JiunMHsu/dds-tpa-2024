@@ -25,13 +25,16 @@ public class FaltaViandaService implements WithSimplePersistenceUnit {
   private final MensajeriaService mensajeriaService;
 
   public FaltaViandaService(FaltaViandaRepository faltaViandaRepository,
-                            ColaboradorRepository colaboradorRepository, MensajeriaService mensajeriaService) {
+                            ColaboradorRepository colaboradorRepository,
+                            MensajeriaService mensajeriaService) {
     this.faltaViandaRepository = faltaViandaRepository;
     this.colaboradorRepository = colaboradorRepository;
     this.mensajeriaService = mensajeriaService;
   }
 
-  public void registrar(Colaborador colaborador, Heladera heladera, Integer viandasRestantes, MedioDeNotificacion medioDeNotificacion, String infoContacto) throws SuscripcionFaltaViandaException {
+  public void registrar(Colaborador colaborador, Heladera heladera, Integer viandasRestantes,
+                        MedioDeNotificacion medioDeNotificacion, String infoContacto)
+      throws SuscripcionFaltaViandaException {
 
     if (colaborador.getContactos().isEmpty()) {
       List<Contacto> contactos = new ArrayList<>(Arrays.asList(Contacto.vacio()));
@@ -46,7 +49,8 @@ public class FaltaViandaService implements WithSimplePersistenceUnit {
     }
 
     if (viandasRestantes <= 0 || viandasRestantes > heladera.getCapacidad()) {
-      throw new SuscripcionFaltaViandaException("La cantidad de viandas restantes debe ser mayor a 0 y menor o igual a la capacidad máxima de la heladera");
+      throw new SuscripcionFaltaViandaException("La cantidad de viandas restantes debe ser mayor "
+          + "a 0 y menor o igual a la capacidad máxima de la heladera");
     }
 
     SuscripcionFaltaVianda nuevaSuscripcion = SuscripcionFaltaVianda.de(
@@ -67,19 +71,37 @@ public class FaltaViandaService implements WithSimplePersistenceUnit {
     }
   }
 
+  /**
+   * Obtener las suscripciones de falta de n viandas por una heladera.
+   *
+   * @param heladera heladera
+   */
+  public List<SuscripcionFaltaVianda> obtenerPorHeladera(Heladera heladera) {
+    return faltaViandaRepository.obtenerPorHeladera(heladera);
+  }
+
+  /**
+   * Notificar a colaboradores por falta de viandas
+   *
+   * @param suscripcion suscripcion
+   */
   public void notificacionFaltaVianda(SuscripcionFaltaVianda suscripcion) {
     String asunto = "Heladera por baja disponibilidad de viandas";
     String cuerpo = String.format(
-        "Estimado/a %s,\n\n" +
-            "La %s tiene solo %d viandas restantes. Por favor, lleve más viandas para reabastecerla.\n\n" +
-            "Gracias por su colaboración.",
+        """
+            Estimado/a %s,
+
+            La %s tiene solo %d viandas restantes. Por favor, lleve más viandas para reabastecerla.
+
+            Gracias por su colaboración.""",
         suscripcion.getColaborador().getNombre(),
         suscripcion.getHeladera().getNombre(),
         suscripcion.getUmbralViandas()
     );
 
     try {
-      Optional<Contacto> contacto = suscripcion.getColaborador().getContacto(suscripcion.getMedioDeNotificacion());
+      Optional<Contacto> contacto = suscripcion.getColaborador()
+          .getContacto(suscripcion.getMedioDeNotificacion());
       if (contacto.isPresent()) {
         Mensaje mensaje = Mensaje.con(
             contacto.get(),
@@ -87,7 +109,8 @@ public class FaltaViandaService implements WithSimplePersistenceUnit {
             cuerpo);
         mensajeriaService.enviarMensaje(mensaje);
       } else {
-        System.out.println("Medio de contacto solicitado no disponible. No se puede enviar el mensaje.");
+        System.out
+            .println("Medio de contacto solicitado no disponible. No se puede enviar el mensaje.");
       }
     } catch (Exception e) {
       e.printStackTrace();

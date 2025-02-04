@@ -24,13 +24,16 @@ public class HeladeraLlenaService implements WithSimplePersistenceUnit {
   private final MensajeriaService mensajeriaService;
 
   public HeladeraLlenaService(HeladeraLlenaRepository heladeraLlenaRepositoy,
-                              ColaboradorRepository colaboradorRepository, MensajeriaService mensajeriaService) {
+                              ColaboradorRepository colaboradorRepository,
+                              MensajeriaService mensajeriaService) {
     this.heladeraLlenaRepositoy = heladeraLlenaRepositoy;
     this.colaboradorRepository = colaboradorRepository;
     this.mensajeriaService = mensajeriaService;
   }
 
-  public void registrar(Colaborador colaborador, Heladera heladera, Integer espacioRestante, MedioDeNotificacion medioDeNotificacion, String infoContacto) throws SuscripcionHeladeraLlenaException {
+  public void registrar(Colaborador colaborador, Heladera heladera, Integer espacioRestante,
+                        MedioDeNotificacion medioDeNotificacion, String infoContacto)
+      throws SuscripcionHeladeraLlenaException {
 
     if (colaborador.getContactos().isEmpty()) {
       List<Contacto> contactos = new ArrayList<>(Arrays.asList(Contacto.vacio()));
@@ -45,7 +48,8 @@ public class HeladeraLlenaService implements WithSimplePersistenceUnit {
     }
 
     if (espacioRestante < 0 || espacioRestante > heladera.getCapacidad())
-      throw new SuscripcionHeladeraLlenaException("El espacio restante debe ser mayor o igual a 0 y menor a la capacidad máxima nueva la heladera");
+      throw new SuscripcionHeladeraLlenaException("El espacio restante debe ser mayor o igual a "
+          + "0 y menor a la capacidad máxima nueva la heladera");
 
     SuscripcionHeladeraLlena nuevaSuscripcion = SuscripcionHeladeraLlena.de(
         colaborador,
@@ -65,21 +69,36 @@ public class HeladeraLlenaService implements WithSimplePersistenceUnit {
     }
   }
 
+  /**
+   * Obtener las suscripciones de una heladera casi llena con n viandas.
+   *
+   * @param heladera heladera
+   */
+  public List<SuscripcionHeladeraLlena> obtenerPorHeladera(Heladera heladera) {
+    return heladeraLlenaRepositoy.obtenerPorHeladera(heladera);
+  }
+
   // TODO: Revisar
+  /**
+   * Notificar colaboradores suscriptos por heladera casi llena
+   *
+   * @param suscripcion suscripcion
+   */
   public void notificacionHeladeraLlena(SuscripcionHeladeraLlena suscripcion) {
     String asunto = "Heladera casi llena";
     String cuerpo = String.format(
-        "Estimado/a %s,\n\n" +
-            "La %s está a punto de llenarse, queda solo espacio para %d viandas más. " +
-            "Por favor, redistribuir algunas viandas a otras heladeras.\n\n" +
-            "Gracias por su colaboración.",
+        "Estimado/a %s,\n\n"
+            + "La %s está a punto de llenarse, queda solo espacio para %d viandas más. "
+            + "Por favor, redistribuir algunas viandas a otras heladeras.\n\n"
+            + "Gracias por su colaboración.",
         suscripcion.getColaborador().getNombre(),
         suscripcion.getHeladera().getNombre(),
         suscripcion.getUmbralEspacio()
     );
 
     try {
-      Optional<Contacto> contacto = suscripcion.getColaborador().getContacto(suscripcion.getMedioDeNotificacion());
+      Optional<Contacto> contacto = suscripcion.getColaborador()
+          .getContacto(suscripcion.getMedioDeNotificacion());
       if (contacto.isPresent()) {
         Mensaje mensaje = Mensaje.con(
             contacto.get(),
@@ -87,7 +106,8 @@ public class HeladeraLlenaService implements WithSimplePersistenceUnit {
             cuerpo);
         mensajeriaService.enviarMensaje(mensaje);
       } else {
-        System.out.println("Medio de contacto solicitado no disponible. No se puede enviar el mensaje.");
+        System.out.println("Medio de contacto solicitado no disponible. No se puede enviar "
+            + "el mensaje.");
       }
     } catch (Exception e) {
       e.printStackTrace();
