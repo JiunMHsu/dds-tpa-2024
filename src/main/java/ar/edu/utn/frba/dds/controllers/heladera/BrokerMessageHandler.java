@@ -14,6 +14,8 @@ import ar.edu.utn.frba.dds.services.heladera.RetiroDeViandaService;
 import ar.edu.utn.frba.dds.services.heladera.SolicitudDeAperturaService;
 import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import ar.edu.utn.frba.dds.services.suscripcion.FallaHeladeraService;
+import ar.edu.utn.frba.dds.services.suscripcion.FaltaViandaService;
+import ar.edu.utn.frba.dds.services.suscripcion.HeladeraLlenaService;
 import ar.edu.utn.frba.dds.services.tarjeta.TarjetaPersonaVulnerableService;
 import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
 import java.time.LocalDateTime;
@@ -23,6 +25,7 @@ import java.util.UUID;
 /**
  * Manejador de mensajes del broker.
  */
+@SuppressWarnings("checkstyle:Indentation")
 public class BrokerMessageHandler implements IBrokerMessageHandler {
 
   private final HeladeraService heladeraService;
@@ -33,6 +36,8 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
   private final DistribucionViandasService distribucionViandasService;
   private final DonacionViandaService donacionViandaService;
   private final RetiroDeViandaService retiroDeViandaService;
+  private final FaltaViandaService faltaViandaService;
+  private final HeladeraLlenaService heladeraLlenaService;
 
   /**
    * Constructor.
@@ -43,6 +48,8 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
    * @param solicitudDeAperturaService      Servicio de solicitud de apertura
    * @param tarjetaPersonaVulnerableService Servicio de tarjeta de persona vulnerable
    * @param retiroDeViandaService           Servicio de retiro de vianda
+   * @param faltaViandaService              Servicio de falta de viandas
+   * @param heladeraLlenaService            Servicio de heladera llena
    */
   public BrokerMessageHandler(HeladeraService heladeraService,
                               IncidenteService incidenteService,
@@ -51,7 +58,9 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
                               TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService,
                               DistribucionViandasService distribucionViandasService,
                               DonacionViandaService donacionViandaService,
-                              RetiroDeViandaService retiroDeViandaService) {
+                              RetiroDeViandaService retiroDeViandaService,
+                              FaltaViandaService faltaViandaService,
+                              HeladeraLlenaService heladeraLlenaService) {
     this.heladeraService = heladeraService;
     this.incidenteService = incidenteService;
     this.fallaHeladeraService = fallaHeladeraService;
@@ -60,6 +69,8 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
     this.distribucionViandasService = distribucionViandasService;
     this.donacionViandaService = donacionViandaService;
     this.retiroDeViandaService = retiroDeViandaService;
+    this.faltaViandaService = faltaViandaService;
+    this.heladeraLlenaService = heladeraLlenaService;
   }
 
   @Override
@@ -98,10 +109,11 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
   }
 
   private void notificarPorFalla(Heladera heladera, Incidente incidente) {
+    fallaHeladeraService.notificacionTecnico(incidente);
     fallaHeladeraService
         .obtenerPorHeladera(heladera)
         .parallelStream()
-        .forEach(s -> fallaHeladeraService.notificacionFallaHeladera(s, incidente));
+        .forEach(s -> fallaHeladeraService.notificacionColaborador(s, incidente));
   }
 
   @Override
@@ -119,10 +131,11 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
   }
 
   private void manejarSolicitudPersonaVulnerable(TarjetaPersonaVulnerable tarjeta,
-                                                 Heladera healdera)
+                                                 Heladera heladera)
       throws AperturaDeniedException {
     try {
-      retiroDeViandaService.registrarRetiro(tarjeta, healdera);
+      retiroDeViandaService.registrarRetiro(tarjeta, heladera);
+      this.manejarFaltaVianda(heladera);
     } catch (Exception | CantidadDeViandasException e) {
       throw new AperturaDeniedException();
     }
@@ -140,13 +153,28 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
 
     try {
       switch (solicitudDeApertura.getMotivo()) {
-        case DISTRIBUCION_VIANDAS ->
-            distribucionViandasService.efectuarAperturaPara(solicitudDeApertura);
+        case DISTRIBUCION_VIANDAS -> {
+          distribucionViandasService.efectuarAperturaPara(solicitudDeApertura);
+          this.manejarFaltaVianda(heladera);
+        }
         case DONACION_VIANDA -> donacionViandaService.efectuarAperturaPara(solicitudDeApertura);
         default -> throw new IllegalStateException();
       }
+      this.manejarHeladeraLlena(heladera);
     } catch (ResourceNotFoundException | CantidadDeViandasException e) {
       throw new AperturaDeniedException();
     }
+  }
+
+  private void manejarFaltaVianda(Heladera heladera) {
+    faltaViandaService.obtenerPorHeladera(heladera).parallelStream()
+        .filter(suscripcion -> heladera.getViandas() <= suscripcion.getUmbralViandas())
+        .forEach(faltaViandaService::notificacionFaltaVianda);
+  }
+
+  private void manejarHeladeraLlena(Heladera heladera) {
+    heladeraLlenaService.obtenerPorHeladera(heladera).parallelStream()
+        .filter(suscripcion -> heladera.getViandas() >= suscripcion.getUmbralEspacio())
+        .forEach(heladeraLlenaService::notificacionHeladeraLlena);
   }
 }
