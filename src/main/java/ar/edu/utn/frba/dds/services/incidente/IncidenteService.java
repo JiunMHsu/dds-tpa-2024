@@ -1,8 +1,13 @@
 package ar.edu.utn.frba.dds.services.incidente;
 
 import ar.edu.utn.frba.dds.dtos.incidente.AlertaDTO;
+import ar.edu.utn.frba.dds.dtos.incidente.CreateFallaTecnicaDTO;
+import ar.edu.utn.frba.dds.dtos.incidente.FallaTecnicaDTO;
 import ar.edu.utn.frba.dds.dtos.incidente.IncidenteDTO;
+import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
+import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.models.entities.data.Imagen;
 import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
@@ -10,7 +15,11 @@ import ar.edu.utn.frba.dds.models.entities.incidente.TipoIncidente;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
 import ar.edu.utn.frba.dds.services.heladera.SuscriptorSensorService;
+import ar.edu.utn.frba.dds.services.images.ImageService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+import io.javalin.http.UploadedFile;
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -21,6 +30,7 @@ public class IncidenteService implements WithSimplePersistenceUnit {
   private final IncidenteRepository incidenteRepository;
   private final HeladeraRepository heladeraRepository;
   private final SuscriptorSensorService suscriptorSensorService;
+  private final ImageService imageService;
 
   /**
    * Constructor.
@@ -31,10 +41,12 @@ public class IncidenteService implements WithSimplePersistenceUnit {
    */
   public IncidenteService(IncidenteRepository incidenteRepository,
                           HeladeraRepository heladeraRepository,
-                          SuscriptorSensorService suscriptorSensorService) {
+                          SuscriptorSensorService suscriptorSensorService,
+                          ImageService imageService) {
     this.incidenteRepository = incidenteRepository;
     this.heladeraRepository = heladeraRepository;
     this.suscriptorSensorService = suscriptorSensorService;
+    this.imageService = imageService;
   }
 
   /**
@@ -59,24 +71,52 @@ public class IncidenteService implements WithSimplePersistenceUnit {
 
   /**
    * Buscar todas las fallas técnicas.
-   * TODO: Mapear a DTO
    *
    * @return Lista de incidentes
    */
-  public List<Incidente> buscarTodasFallasTecnicas() {
-    return this.incidenteRepository.buscarPorTipo(TipoIncidente.FALLA_TECNICA);
+  public List<FallaTecnicaDTO> buscarTodasFallasTecnicas() {
+    return this.incidenteRepository.buscarPorTipo(TipoIncidente.FALLA_TECNICA).stream()
+        .map(FallaTecnicaDTO::fromIncidente).toList();
   }
 
   /**
-   * Buscar todas las fallas de temperatura.
-   * TODO: Mapear a DTO
+   * Buscar un incidente por ID.
    *
-   * @return Lista de incidentes
+   * @return Incidente
    */
   public Incidente buscarIncidentePorId(String id) {
-    return this.incidenteRepository
-        .buscarPorId(id)
+    return this.incidenteRepository.buscarPorId(id)
         .orElseThrow(ResourceNotFoundException::new);
+  }
+
+  /**
+   * Registrar una falla técnica.
+   *
+   * @param colaborador Colaborador
+   * @param falla       Falla técnica
+   */
+  public void registrarFallaTecnica(Colaborador colaborador, CreateFallaTecnicaDTO falla)
+      throws InvalidFormParamException, IOException {
+    Heladera heladera = heladeraRepository
+        .buscarPorNombre(falla.getHeladera())
+        .orElseThrow(ResourceNotFoundException::new);
+
+    UploadedFile foto = falla.getFoto();
+    if (foto == null) {
+      throw new InvalidFormParamException();
+    }
+
+    String pathFoto = imageService.guardarImagen(foto.content(), foto.extension());
+
+    Incidente incidente = Incidente.fallaTecnica(
+        heladera,
+        LocalDateTime.now(),
+        colaborador,
+        falla.getDescripcion(),
+        new Imagen(pathFoto)
+    );
+
+    this.registrarIncidente(incidente);
   }
 
   /**

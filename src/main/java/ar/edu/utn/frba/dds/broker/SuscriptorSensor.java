@@ -1,5 +1,7 @@
 package ar.edu.utn.frba.dds.broker;
 
+import ar.edu.utn.frba.dds.config.ServiceLocator;
+import ar.edu.utn.frba.dds.controllers.heladera.BrokerMessageHandler;
 import ar.edu.utn.frba.dds.models.stateless.TipoSensor;
 import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
 import java.util.UUID;
@@ -29,13 +31,11 @@ public class SuscriptorSensor implements ISuscriptorMqtt {
   /**
    * Constructor.
    *
-   * @param brokerMessageHandler Handler de mensajes del broker
-   * @param clienteMqtt          Cliente MQTT
-   * @param topic                Tópico
-   * @param heladeraId           Id de la heladera
+   * @param clienteMqtt Cliente MQTT
+   * @param topic       Tópico
+   * @param heladeraId  Id de la heladera
    */
-  public SuscriptorSensor(IBrokerMessageHandler brokerMessageHandler,
-                          IClienteMqtt clienteMqtt,
+  public SuscriptorSensor(IClienteMqtt clienteMqtt,
                           String topic,
                           UUID heladeraId) {
 
@@ -43,7 +43,7 @@ public class SuscriptorSensor implements ISuscriptorMqtt {
     this.topic = topic;
     this.heladeraId = heladeraId;
     this.scheduler = null;
-    this.brokerMessageHandler = brokerMessageHandler;
+    this.brokerMessageHandler = ServiceLocator.instanceOf(BrokerMessageHandler.class);
     this.isSubscribed = false;
   }
 

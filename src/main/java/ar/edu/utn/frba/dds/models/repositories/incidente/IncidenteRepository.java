@@ -107,7 +107,7 @@ public class IncidenteRepository implements ICrudRepository<Incidente>, WithSimp
    */
   public List<Incidente> buscarAlertas() {
     String query = "from Incidente i where i.alta = :alta and i.tipo != :tipo";
-    
+
     return entityManager()
         .createQuery(query, Incidente.class)
         .setParameter("alta", true)

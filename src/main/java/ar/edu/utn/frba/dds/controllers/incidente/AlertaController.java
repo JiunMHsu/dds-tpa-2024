@@ -60,14 +60,9 @@ public class AlertaController extends UserRequired {
     String alertaId = context.pathParam("id");
 
     Incidente alerta = this.incidenteService.buscarIncidentePorId(alertaId);
-
-    List<VisitaTecnicaDTO> visitasPreviasDTO = this.visitaTecnicaService
-        .buscarPorincidente(alerta)
-        .stream().map(VisitaTecnicaDTO::preview)
-        .toList();
+    List<VisitaTecnicaDTO> visitasPrevias = this.visitaTecnicaService.buscarPorincidente(alerta);
 
     Heladera heladera = alerta.getHeladera();
-
     boolean puedeResolver = rolFromSession(context).isTecnico() && !alerta.getEsResuelta();
 
     Map<String, Object> model = new HashMap<>();
@@ -76,7 +71,7 @@ public class AlertaController extends UserRequired {
     model.put("alerta", AlertaDTO.fromIncidente(alerta));
     model.put("puedeResolver", puedeResolver);
 
-    model.put("visitasPrevias", visitasPreviasDTO);
+    model.put("visitasPrevias", visitasPrevias);
 
     render(context, "incidentes/alerta_detalle.hbs", model);
   }

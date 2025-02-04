@@ -44,19 +44,17 @@ public class VisitaTecnicaController extends TecnicoRequired {
     this.fileService = fileService;
   }
 
+  /**
+   * Muestra la lista de visitas técnicas.
+   *
+   * @param context Context de Javalin
+   */
   public void index(Context context) {
-    List<VisitaTecnica> visitasTecnicas = this.visitaTecnicaService.buscarTodas();
-    List<VisitaTecnicaDTO> visitaTecnicaDTO = visitasTecnicas.stream()
-        .map(VisitaTecnicaDTO::preview)
-        .toList();
+    List<VisitaTecnicaDTO> visitasTecnicas = this.visitaTecnicaService.buscarTodas();
 
     Map<String, Object> model = new HashMap<>();
-    model.put("visitas-tecnicas", visitaTecnicaDTO);
+    model.put("visitas-tecnicas", visitasTecnicas);
     render(context, "visitas_tecnicas/visitas_tecnicas.hbs", model);
-  }
-
-  public void show(Context context) {
-    // TODO - implementar
   }
 
   public void create(Context context) {

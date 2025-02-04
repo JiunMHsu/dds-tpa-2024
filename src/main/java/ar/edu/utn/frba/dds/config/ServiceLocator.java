@@ -178,8 +178,7 @@ public class ServiceLocator {
           instanceOf(ColaboradorService.class),
           instanceOf(IncidenteService.class),
           instanceOf(HeladeraService.class),
-          instanceOf(VisitaTecnicaService.class),
-          instanceOf(ImageService.class));
+          instanceOf(VisitaTecnicaService.class));
       instances.put(componentName, instance);
     }
 
@@ -319,7 +318,6 @@ public class ServiceLocator {
     if (componentName.equals(SuscriptorSensorService.class.getName())) {
       SuscriptorSensorService instance = new SuscriptorSensorService(
           instanceOf(HeladeraService.class),
-          instanceOf(BrokerMessageHandler.class),
           instanceOf(ClienteMqtt.class));
       instances.put(componentName, instance);
     }
@@ -359,7 +357,8 @@ public class ServiceLocator {
       IncidenteService instance = new IncidenteService(
           instanceOf(IncidenteRepository.class),
           instanceOf(HeladeraRepository.class),
-          instanceOf(SuscriptorSensorService.class));
+          instanceOf(SuscriptorSensorService.class),
+          instanceOf(ImageService.class));
       instances.put(componentName, instance);
     }
 
