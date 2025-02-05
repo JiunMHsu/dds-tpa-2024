@@ -36,7 +36,9 @@ public class JSONReader {
     StringBuilder jsonBuilder = new StringBuilder();
     Scanner scanner = new Scanner(inputStream);
 
-    while (scanner.hasNext()) jsonBuilder.append(scanner.nextLine());
+    while (scanner.hasNext()) {
+      jsonBuilder.append(scanner.nextLine());
+    }
     scanner.close();
 
     return jsonBuilder.toString();
@@ -58,17 +60,8 @@ public class JSONReader {
   }
 
   /**
-   * Lee un objeto JSON asociado a una clave específica.
-   *
-   * @param key la clave del objeto JSON a leer
-   * @return el objeto JSON asociado a la clave proporcionada
-   */
-  public JSONObject readObject(String key) {
-    return (JSONObject) this.jsonObject.get(key);
-  }
-
-  /**
-   * Lee un arreglo JSON asociado a una clave específica y lo convierte en una lista de objetos JSON.
+   * Lee un arreglo JSON asociado a una clave específica y
+   * lo convierte en una lista de objetos JSON.
    *
    * @param key la clave del arreglo JSON a leer
    * @return una lista de objetos JSON del arreglo asociado a la clave proporcionada
@@ -77,7 +70,9 @@ public class JSONReader {
     List<JSONObject> list = new ArrayList<>();
     JSONArray array = (JSONArray) this.jsonObject.get(key);
 
-    for (Object object : array) list.add((JSONObject) object);
+    for (Object object : array) {
+      list.add((JSONObject) object);
+    }
 
     return list;
   }

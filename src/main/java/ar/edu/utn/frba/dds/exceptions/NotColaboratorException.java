@@ -5,6 +5,10 @@ package ar.edu.utn.frba.dds.exceptions;
  * un colaborador de un usuario que no es colaborador.
  */
 public class NotColaboratorException extends RuntimeException {
+
+  /**
+   * Constructor.
+   */
   public NotColaboratorException() {
     super("El usuario no es colaborador");
   }

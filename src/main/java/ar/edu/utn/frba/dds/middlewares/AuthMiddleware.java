@@ -8,8 +8,18 @@ import io.javalin.http.Context;
 import io.javalin.security.RouteRole;
 import java.util.Set;
 
+/**
+ * Middleware que se encarga de autenticar y autorizar
+ * a los usuarios que intentan acceder a las rutas protegidas por roles.
+ */
 public class AuthMiddleware {
 
+  /**
+   * Aplica el middleware a la configuración de rutas.
+   *
+   * @param config Configuración de rutas.
+   * @return Configuración de rutas con el middleware aplicado.
+   */
   public static RouterConfig apply(RouterConfig config) {
     return config.mount(router -> router.beforeMatched(ctx -> {
       authenticate(ctx);
@@ -19,23 +29,27 @@ public class AuthMiddleware {
 
   private static void authenticate(Context context) {
     Set<RouteRole> routeRoles = context.routeRoles();
-    if (routeRoles.isEmpty() || routeRoles.contains(TipoRol.GUEST))
+    if (routeRoles.isEmpty() || routeRoles.contains(TipoRol.GUEST)) {
       return;
+    }
 
     String userId = userIdFromSession(context);
-    if (userId == null)
+    if (userId == null) {
       throw new UnauthenticatedException("unauthenticated");
+    }
   }
 
   private static void authorize(Context context) {
     TipoRol userRol = rolFromSession(context);
 
     Set<RouteRole> routeRoles = context.routeRoles();
-    if (routeRoles.isEmpty() || routeRoles.contains(TipoRol.GUEST))
+    if (routeRoles.isEmpty() || routeRoles.contains(TipoRol.GUEST)) {
       return;
+    }
 
-    if (!routeRoles.contains(userRol))
+    if (!routeRoles.contains(userRol)) {
       throw new UnauthorizedException("unauthorized");
+    }
   }
 
   private static TipoRol rolFromSession(Context context) {

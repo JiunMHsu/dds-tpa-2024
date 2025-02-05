@@ -75,4 +75,29 @@ public class OfertaDeProductos extends EntidadPersistente {
         .build();
   }
 
+  /**
+   * Crea una oferta de productos por un {@link Colaborador}.
+   * Con fecha y hora actual. (Se usa en el seeder)
+   *
+   * @param colaborador      {@link Colaborador} que ofrece los productos
+   * @param nombre           nombre de la oferta
+   * @param puntosNecesarios puntos necesarios para adquirir la oferta
+   * @param rubro            rubro de la oferta
+   * @return oferta de productos por un {@link Colaborador}
+   */
+  public static OfertaDeProductos por(Colaborador colaborador,
+                                      String nombre,
+                                      double puntosNecesarios,
+                                      RubroOferta rubro,
+                                      Imagen imagen) {
+    return OfertaDeProductos.builder()
+        .colaborador(colaborador)
+        .fechaHora(LocalDateTime.now())
+        .nombre(nombre)
+        .puntosNecesarios(puntosNecesarios)
+        .rubro(rubro)
+        .imagen(imagen)
+        .build();
+  }
+
 }

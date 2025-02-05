@@ -11,6 +11,9 @@ public class PuntoDeColocacionAPIAdapter implements IPuntoDeColocacionAdapter {
 
   private final PuntoDeColocacionAPI api;
 
+  /**
+   * Constructor.
+   */
   public PuntoDeColocacionAPIAdapter() {
     this.api = new PuntoDeColocacionAPI();
   }
