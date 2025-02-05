@@ -135,10 +135,13 @@ public class HeladeraService implements WithSimplePersistenceUnit {
     commitTransaction();
   }
 
-  public void eliminarHeladera(Heladera heladera) {
-    this.heladeraRepository.eliminar(heladera);
-  }
-
+  /**
+   * Verifica si un colaborador puede configurar una heladera.
+   *
+   * @param colaborador Colaborador
+   * @param heladera    Heladera
+   * @return Si puede configurar
+   */
   public boolean puedeConfigurar(Colaborador colaborador, Heladera heladera) {
     List<HacerseCargoHeladera> encargos = hacerseCargoHeladeraRepository.buscarPorColaborador(colaborador);
     return encargos.stream().anyMatch(encargo -> encargo.getHeladera().equals(heladera));
