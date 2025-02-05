@@ -44,7 +44,7 @@ public class DateTimeParser {
   }
 
   /**
-   * Convierte una cadena con formato "yyyy-MM-dd'T'HH:mm" en un objeto LocalDateTime.
+   * Convierte una cadena con formato "yyyy-MM-ddTHH:mm" en un objeto LocalDateTime.
    *
    * @param fecha Cadena que representa la fecha y hora en formato ISO de formularios.
    * @return Un objeto LocalDateTime parseado, o null si la cadena es null.
