@@ -25,7 +25,7 @@ public class GeneradorDeCredenciales {
     StringBuilder contraseniaUsuario = new StringBuilder();
 
     for (int i = 0; i < 6; i++) {
-      int indiceAleatorio = numeroAleatorioEnRango(0, banco.length() - 1);
+      int indiceAleatorio = numeroAleatorioEnRango(banco.length() - 1);
       char caracterAleatorio = banco.charAt(indiceAleatorio);
       contraseniaUsuario.append(caracterAleatorio);
     }
@@ -33,7 +33,7 @@ public class GeneradorDeCredenciales {
     return contraseniaUsuario.toString();
   }
 
-  private static int numeroAleatorioEnRango(int minimo, int maximo) {
-    return ThreadLocalRandom.current().nextInt(minimo, maximo + 1);
+  private static int numeroAleatorioEnRango(int maximo) {
+    return ThreadLocalRandom.current().nextInt(0, maximo + 1);
   }
 }

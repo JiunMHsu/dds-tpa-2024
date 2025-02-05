@@ -14,6 +14,11 @@ public class AppHandlers {
       new ResourceNotFoundExceptionHandler()
   };
 
+  /**
+   * Aplica los handlers a la app.
+   *
+   * @param app the app
+   */
   public static void apply(Javalin app) {
     Arrays.stream(new AppHandlers().handlers).toList().forEach(handler -> handler.setHandler(app));
   }

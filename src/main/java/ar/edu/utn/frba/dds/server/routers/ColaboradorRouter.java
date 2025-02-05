@@ -19,17 +19,25 @@ public class ColaboradorRouter implements IRouter {
     config.apiBuilder(() -> {
 
       path("/signup", () -> {
-        get(ServiceLocator.instanceOf(ColaboradorController.class)::create, TipoRol.GUEST);
+        get(ServiceLocator.instanceOf(ColaboradorController.class)::create,
+            TipoRol.GUEST);
 
-        get("/humana", ctx -> ctx.render("signs/signHumana.hbs"), TipoRol.GUEST);
-        post("/humana", ServiceLocator.instanceOf(ColaboradorController.class)::save, TipoRol.GUEST);
+        get("/humana", ctx -> ctx.render("signs/signHumana.hbs"),
+            TipoRol.GUEST);
 
-        get("/juridica", ctx -> ctx.render("signs/signJuridica.hbs"), TipoRol.GUEST);
-        post("/juridica", ServiceLocator.instanceOf(ColaboradorController.class)::save, TipoRol.GUEST);
+        post("/humana", ServiceLocator.instanceOf(ColaboradorController.class)::save,
+            TipoRol.GUEST);
+
+        get("/juridica", ctx -> ctx.render("signs/signJuridica.hbs"),
+            TipoRol.GUEST);
+
+        post("/juridica", ServiceLocator.instanceOf(ColaboradorController.class)::save,
+            TipoRol.GUEST);
       });
 
       path("/perfil", () ->
-          get(ServiceLocator.instanceOf(ColaboradorController.class)::getProfile, TipoRol.COLABORADOR)
+          get(ServiceLocator.instanceOf(ColaboradorController.class)::getProfile,
+              TipoRol.COLABORADOR)
       );
 
       path("/colaboradores", () -> {
@@ -41,16 +49,19 @@ public class ColaboradorRouter implements IRouter {
           get("/edit", ctx -> ctx.result("GET Form edit"));
 
           path("/formas-de-colaboracion", () -> {
-            get(ServiceLocator.instanceOf(ColaboradorController.class)::editFormasDeColaborar, TipoRol.COLABORADOR);
-            post(ServiceLocator.instanceOf(ColaboradorController.class)::updateFormasDeColaborar, TipoRol.COLABORADOR);
+            get(ServiceLocator.instanceOf(ColaboradorController.class)::editFormasDeColaborar,
+                TipoRol.COLABORADOR);
+
+            post(ServiceLocator.instanceOf(ColaboradorController.class)::updateFormasDeColaborar,
+                TipoRol.COLABORADOR);
           });
 
         });
       });
 
-      path("/api", () -> {
-        post("/vincular-telegram", ServiceLocator.instanceOf(ColaboradorController.class)::registrarChatId, TipoRol.COLABORADOR);
-      });
+      path("/api", () -> post("/vincular-telegram",
+          ServiceLocator.instanceOf(ColaboradorController.class)::registrarChatId,
+          TipoRol.COLABORADOR));
     });
   }
 }

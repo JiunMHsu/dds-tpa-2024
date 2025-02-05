@@ -33,7 +33,9 @@ public class ValidadorDeContrasenias {
 
   private boolean esFuerte(String unaClave) {
     try {
-      List<String> peoresContrasenias = Files.readAllLines(Paths.get("src/main/resources/contraseniasComunes.txt"));
+      List<String> peoresContrasenias = Files.readAllLines(
+          Paths.get("src/main/resources/contraseniasComunes.txt")
+      );
       return !peoresContrasenias.contains(unaClave);
     } catch (IOException error) {
       error.printStackTrace();
@@ -58,7 +60,11 @@ public class ValidadorDeContrasenias {
       char actualCaracter = unaClave.charAt(i);
       char siguienteCaracter = unaClave.charAt(i + 1);
       char siguienteSiguienteCaracter = unaClave.charAt(i + 2);
-      if (siguienteCaracter == actualCaracter + 1 && siguienteSiguienteCaracter == siguienteCaracter + 1) {
+
+      boolean esOrdenadoAlfabeticamente = siguienteCaracter == actualCaracter + 1
+          && siguienteSiguienteCaracter == siguienteCaracter + 1;
+
+      if (esOrdenadoAlfabeticamente) {
         return false;
       }
     }

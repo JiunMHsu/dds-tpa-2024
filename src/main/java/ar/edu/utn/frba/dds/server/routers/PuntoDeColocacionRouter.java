@@ -8,7 +8,10 @@ import ar.edu.utn.frba.dds.controllers.heladera.PuntoDeColocacionController;
 import ar.edu.utn.frba.dds.models.entities.usuario.TipoRol;
 import io.javalin.config.RouterConfig;
 
-public class PuntoIdealRouter implements IRouter {
+/**
+ * Router de puntos de colocación.
+ */
+public class PuntoDeColocacionRouter implements IRouter {
 
   @Override
   public void apply(RouterConfig config) {

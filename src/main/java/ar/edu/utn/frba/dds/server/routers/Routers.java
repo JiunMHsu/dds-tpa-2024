@@ -26,7 +26,7 @@ public class Routers {
   private static final IRouter[] routers = new IRouter[]{
       new ColaboracionRouter(),
       new HeladeraRouter(),
-      new PuntoIdealRouter(),
+      new PuntoDeColocacionRouter(),
       new SuscripcionRouter(),
       new ColaboradorRouter(),
       new IncidenteRouter(),
