@@ -21,7 +21,7 @@ const renderMap = async () => {
         throw new Error('El archivo GeoJSON no contiene el formato esperado.');
     }
 
-    map.on('load', function () {
+    map.on('load', () => {
         map.addSource('heladeras', {
             type: 'geojson',
             data: geojsonData,
@@ -69,7 +69,7 @@ const renderMap = async () => {
             const {coordinates} = e.features[0].geometry;
             const {name, isActive} = e.features[0].properties;
 
-            const color = isActive === 1 ? "hsl(120, 45%, 58%)" : "hsl(0, 55%, 54%)";
+            const color = isActive ? "hsl(120, 45%, 58%)" : "hsl(0, 55%, 54%)";
 
             popup
                 .setLngLat(coordinates)

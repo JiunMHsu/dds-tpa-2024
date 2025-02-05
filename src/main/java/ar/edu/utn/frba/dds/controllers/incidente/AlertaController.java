@@ -53,6 +53,7 @@ public class AlertaController extends UserRequired {
   /**
    * Muestra el detalle de una alerta.
    * TODO: Revisar
+   * TODO: Adaptar Vista a DTO de la Heladera
    *
    * @param context Context de Javalin
    */
@@ -67,7 +68,7 @@ public class AlertaController extends UserRequired {
 
     Map<String, Object> model = new HashMap<>();
 
-    model.put("heladera", HeladeraDTO.preview(heladera));
+    model.put("heladera", HeladeraDTO.fromHeladra(heladera));
     model.put("alerta", AlertaDTO.fromIncidente(alerta));
     model.put("puedeResolver", puedeResolver);
 

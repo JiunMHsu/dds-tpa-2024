@@ -44,4 +44,9 @@ public class Ubicacion {
 
     return radioTierraEnKm * c;
   }
+
+  @Override
+  public String toString() {
+    return this.latitud + ", " + this.longitud;
+  }
 }

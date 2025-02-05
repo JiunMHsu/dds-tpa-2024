@@ -54,7 +54,7 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
 
     Map<String, Object> model = new HashMap<>();
 
-    HeladeraDTO heladeraDTO = HeladeraDTO.completa(heladera);
+    HeladeraDTO heladeraDTO = HeladeraDTO.fromHeladra(heladera);
     model.put("heladera", heladeraDTO);
 
     render(context, "suscripciones/suscripciones.hbs", model);
@@ -68,7 +68,7 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
 
     Map<String, Object> model = new HashMap<>();
 
-    HeladeraDTO heladeraDTO = HeladeraDTO.completa(heladera);
+    HeladeraDTO heladeraDTO = HeladeraDTO.fromHeladra(heladera);
     model.put("heladera", heladeraDTO);
 
     render(context, "suscripciones/suscripcion_falla_heladera.hbs", model);
@@ -82,7 +82,7 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
 
     Map<String, Object> model = new HashMap<>();
 
-    HeladeraDTO heladeraDTO = HeladeraDTO.completa(heladera);
+    HeladeraDTO heladeraDTO = HeladeraDTO.fromHeladra(heladera);
     model.put("heladera", heladeraDTO);
 
     render(context, "suscripciones/suscripcion_falta_viandas.hbs", model);
@@ -96,7 +96,7 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
 
     Map<String, Object> model = new HashMap<>();
 
-    HeladeraDTO heladeraDTO = HeladeraDTO.completa(heladera);
+    HeladeraDTO heladeraDTO = HeladeraDTO.fromHeladra(heladera);
     model.put("heladera", heladeraDTO);
 
     render(context, "suscripciones/suscripcion_heladera_llena.hbs", model);
