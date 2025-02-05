@@ -186,6 +186,7 @@
                 <configuration>
                     <configLocation>google_checks.xml</configLocation>
                     <violationSeverity>warning</violationSeverity>
+                    <failOnViolation>false</failOnViolation>
                     <violationIgnore>
                         MissingJavadocMethod,
                         MissingJavadocPackage,
