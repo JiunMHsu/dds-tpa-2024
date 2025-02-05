@@ -41,8 +41,8 @@ public class RandomString {
   /**
    * Crea un generador de cadenas alfanuméricas.
    *
-   * @param length  longitud de la cadena generada
-   * @param random  instancia de Random para la generación de números aleatorios
+   * @param length longitud de la cadena generada
+   * @param random instancia de Random para la generación de números aleatorios
    */
   public RandomString(int length, Random random) {
     this(length, random, alphanum);

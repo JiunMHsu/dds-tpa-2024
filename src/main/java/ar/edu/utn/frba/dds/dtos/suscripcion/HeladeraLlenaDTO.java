@@ -3,21 +3,26 @@ package ar.edu.utn.frba.dds.dtos.suscripcion;
 import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionHeladeraLlena;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
+/**
+ * DTO de HeladeraLlena.
+ * Warning: Unused
+ */
 @Getter
-@Setter
 @Builder
 public class HeladeraLlenaDTO {
 
-  private String colaborador;
+  private final String colaborador;
+  private final String heladera;
+  private final String medioDeNotificacion;
+  private final String espacioRestante;
 
-  private String heladera;
-
-  private String medioDeNotificacion;
-
-  private String espacioRestante;
-
+  /**
+   * Genera el DTO completo de una HeladeraLlena.
+   *
+   * @param suscripcionHeladeraLlena SuscripcionHeladeraLlena
+   * @return HeladeraLlenaDTO
+   */
   public static HeladeraLlenaDTO completa(SuscripcionHeladeraLlena suscripcionHeladeraLlena) {
 
     return HeladeraLlenaDTO

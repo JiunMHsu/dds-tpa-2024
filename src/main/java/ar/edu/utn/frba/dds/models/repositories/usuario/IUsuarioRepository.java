@@ -4,6 +4,9 @@ import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.utils.ICrudRepository;
 import java.util.Optional;
 
+/**
+ * Interfaz de Repositorio de usuarios.
+ */
 public interface IUsuarioRepository extends ICrudRepository<Usuario> {
 
   Optional<Usuario> obtenerPorEmail(String mail);

@@ -9,40 +9,54 @@ import java.net.URL;
 import java.util.List;
 import org.json.simple.JSONObject;
 
+/**
+ * Servicio de puntos de donacion.
+ */
 public class PuntoDonacionService {
 
   private final String apiBaseUrl;
   private final String apiAuthToken;
 
+  /**
+   * Constructor.
+   *
+   * @param apiUrl    URL de la API.
+   * @param authToken Token de autenticación.
+   */
   public PuntoDonacionService(String apiUrl, String authToken) {
     this.apiBaseUrl = apiUrl;
     this.apiAuthToken = authToken;
   }
 
-  public List<PuntoDeDonacion> obneterPuntoDonacion(Double latitude, Double longitud, Integer limite, Double distanciaMaxEnKM) {
-
-    String coordinatesQueryParam;
-    String limiteQueryParam = "";
-    String distanciaQueryParam = "";
+  /**
+   * Obtiene los puntos de donación cercanos a una ubicación.
+   *
+   * @param latitude         Latitud.
+   * @param longitud         Longitud.
+   * @param limite           Límite de resultados.
+   * @param distanciaMaxEnKm Distancia máxima en kilómetros.
+   * @return Lista de puntos de donación.
+   */
+  public List<PuntoDeDonacion> obneterPuntoDonacion(Double latitude,
+                                                    Double longitud,
+                                                    Integer limite,
+                                                    Double distanciaMaxEnKm) {
 
     if (latitude == null || longitud == null) {
       throw new BadAPIRequestException("Latitude and longitud are required");
     }
-    coordinatesQueryParam = "lat=" + latitude + "&lon=" + longitud;
 
-    if (limite != null) {
-      if (limite < 0)
-        throw new BadAPIRequestException("Limite negativo");
-
-      limiteQueryParam = "&limite=" + limite;
+    if (limite != null && limite < 0) {
+      throw new BadAPIRequestException("Limite negativo");
     }
 
-    if (distanciaMaxEnKM != null) {
-      if (distanciaMaxEnKM < 0)
-        throw new BadAPIRequestException("Distancia max en km negativo");
-
-      distanciaQueryParam = "&distanciaMaxEnKM=" + distanciaMaxEnKM;
+    if (distanciaMaxEnKm != null && distanciaMaxEnKm < 0) {
+      throw new BadAPIRequestException("Distancia max en km negativo");
     }
+
+    String coordinatesQueryParam = "lat=" + latitude + "&lon=" + longitud;
+    String limiteQueryParam = "&limite=" + limite;
+    String distanciaQueryParam = "&distanciaMaxEnKM=" + distanciaMaxEnKm;
 
     String urlToFetch = apiBaseUrl
         + "/locaciones-donacion?"
@@ -52,6 +66,9 @@ public class PuntoDonacionService {
 
     try {
       JSONReader jsonResponse = getResponse(urlToFetch);
+      if (jsonResponse == null) {
+        return List.of();
+      }
       List<JSONObject> lugares = jsonResponse.readArray("lugares");
 
       return lugares
@@ -88,15 +105,19 @@ public class PuntoDonacionService {
 
     } catch (IOException e) {
 
-      if (conn == null) throw e;
+      if (conn == null) {
+        throw e;
+      }
 
       int responseCode = conn.getResponseCode();
 
-      if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED)
+      if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
         throw new BadAPIRequestException("No credentials provided");
+      }
 
-      if (responseCode == HttpURLConnection.HTTP_FORBIDDEN)
+      if (responseCode == HttpURLConnection.HTTP_FORBIDDEN) {
         throw new BadAPIRequestException("Invalid API Key");
+      }
     }
 
     return null;

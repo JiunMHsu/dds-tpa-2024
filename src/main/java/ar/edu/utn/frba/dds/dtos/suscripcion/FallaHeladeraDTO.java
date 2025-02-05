@@ -3,19 +3,25 @@ package ar.edu.utn.frba.dds.dtos.suscripcion;
 import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFallaHeladera;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
+/**
+ * DTO de FallaHeladera.
+ * Warning: Unused
+ */
 @Getter
-@Setter
 @Builder
 public class FallaHeladeraDTO {
 
-  private String colaborador;
+  private final String colaborador;
+  private final String heladera;
+  private final String medioDeNotificacion;
 
-  private String heladera;
-
-  private String medioDeNotificacion;
-
+  /**
+   * Genera el DTO completo de una FallaHeladera.
+   *
+   * @param suscripcionFallaHeladera SuscripcionFallaHeladera
+   * @return FallaHeladeraDTO
+   */
   public static FallaHeladeraDTO completa(SuscripcionFallaHeladera suscripcionFallaHeladera) {
 
     return FallaHeladeraDTO

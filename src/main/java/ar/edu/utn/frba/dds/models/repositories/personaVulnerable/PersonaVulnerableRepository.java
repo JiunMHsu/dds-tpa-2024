@@ -7,7 +7,11 @@ import java.util.Optional;
 import java.util.UUID;
 import javax.persistence.NoResultException;
 
-public class PersonaVulnerableRepository implements IPersonaVulnerableRepository, WithSimplePersistenceUnit {
+/**
+ * Repositorio de personas vulnerables.
+ */
+public class PersonaVulnerableRepository
+    implements IPersonaVulnerableRepository, WithSimplePersistenceUnit {
 
   @Override
   public void guardar(PersonaVulnerable personaVulnerable) {
@@ -47,9 +51,11 @@ public class PersonaVulnerableRepository implements IPersonaVulnerableRepository
 
   @Override
   public Optional<PersonaVulnerable> buscarPorDocumento(String documento) {
+    String query = "from PersonaVulnerable pv where pv.documento.numero = :documento";
+
     try {
       return Optional.of(entityManager()
-          .createQuery("from PersonaVulnerable pv where pv.documento.numero = :documento", PersonaVulnerable.class)
+          .createQuery(query, PersonaVulnerable.class)
           .setParameter("documento", documento)
           .getSingleResult());
     } catch (NoResultException e) {

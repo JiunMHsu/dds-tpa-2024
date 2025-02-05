@@ -219,11 +219,15 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
         + " - Nombre de usuario provicional: " + usuario.getNombre()
         + " - Contrasenia de usuario provicional: " + usuario.getContrasenia();
 
-    Mensaje mensaje = Mensaje.con(colaborador.getContacto(MedioDeNotificacion.EMAIL).get(), asunto, cuerpo);
-    return mensaje;
+    Contacto contacto = colaborador.getContacto(MedioDeNotificacion.EMAIL)
+        .orElse(Contacto.conEmail(colaborador.getUsuario().getEmail()));
+
+    return Mensaje.con(contacto, asunto, cuerpo);
   }
 
-  private void registrarColaboracion(ColaboracionPrevia colaboracionPrevia, Colaborador colaborador) {
+  private void registrarColaboracion(ColaboracionPrevia colaboracionPrevia,
+                                     Colaborador colaborador) {
+
     switch (colaboracionPrevia.getFormaDeColaboracion()) {
       case "DINERO":
         DonacionDinero donacionDinero = DonacionDinero

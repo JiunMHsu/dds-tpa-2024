@@ -79,6 +79,7 @@ public class HeladeraLlenaService implements WithSimplePersistenceUnit {
   }
 
   // TODO: Revisar
+
   /**
    * Notificar colaboradores suscriptos por heladera casi llena.
    *

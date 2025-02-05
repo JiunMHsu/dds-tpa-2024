@@ -7,33 +7,27 @@ import java.util.Optional;
 import java.util.UUID;
 import javax.persistence.NoResultException;
 
+/**
+ * Repositorio de usuarios.
+ */
 public class UsuarioRepository implements IUsuarioRepository, WithSimplePersistenceUnit {
 
+  @Override
   public void guardar(Usuario usuario) {
     entityManager().persist(usuario);
   }
 
+  @Override
   public void actualizar(Usuario usuario) {
     entityManager().merge(usuario);
   }
 
+  @Override
   public void eliminar(Usuario usuario) {
     withTransaction(() -> {
       usuario.setAlta(false);
       entityManager().merge(usuario);
     });
-  }
-
-  public Optional<Usuario> obtenerPorEmail(String email) {
-    try {
-      return Optional.of(entityManager()
-          .createQuery("from Usuario u where u.email = :email and u.alta = :alta", Usuario.class)
-          .setParameter("email", email)
-          .setParameter("alta", true)
-          .getSingleResult());
-    } catch (NoResultException e) {
-      return Optional.empty();
-    }
   }
 
   @Override
@@ -52,5 +46,22 @@ public class UsuarioRepository implements IUsuarioRepository, WithSimplePersiste
     return entityManager()
         .createQuery("from Usuario ", Usuario.class)
         .getResultList();
+  }
+
+  /**
+   * Busca un usuario por su email.
+   *
+   * @param email Email del usuario
+   */
+  public Optional<Usuario> obtenerPorEmail(String email) {
+    try {
+      return Optional.of(entityManager()
+          .createQuery("from Usuario u where u.email = :email and u.alta = :alta", Usuario.class)
+          .setParameter("email", email)
+          .setParameter("alta", true)
+          .getSingleResult());
+    } catch (NoResultException e) {
+      return Optional.empty();
+    }
   }
 }

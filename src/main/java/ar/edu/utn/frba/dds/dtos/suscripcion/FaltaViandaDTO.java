@@ -3,21 +3,26 @@ package ar.edu.utn.frba.dds.dtos.suscripcion;
 import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFaltaVianda;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
+/**
+ * DTO de FaltaVianda.
+ * Warning: Unusued
+ */
 @Getter
-@Setter
 @Builder
 public class FaltaViandaDTO {
 
-  private String colaborador;
+  private final String colaborador;
+  private final String heladera;
+  private final String medioDeNotificacion;
+  private final String viandasRestantes;
 
-  private String heladera;
-
-  private String medioDeNotificacion;
-
-  private String viandasRestantes;
-
+  /**
+   * Genera el DTO completo de una FaltaVianda.
+   *
+   * @param suscripcionFaltaVianda SuscripcionFaltaVianda
+   * @return FaltaViandaDTO
+   */
   public static FaltaViandaDTO completa(SuscripcionFaltaVianda suscripcionFaltaVianda) {
 
     return FaltaViandaDTO
