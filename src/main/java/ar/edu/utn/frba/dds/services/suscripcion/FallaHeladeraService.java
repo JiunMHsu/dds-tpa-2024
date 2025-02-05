@@ -197,11 +197,10 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
    * @param direccion Dirección
    * @return Técnico
    */
-  private Tecnico tecnicoMasCercano(Direccion direccion) {
+  public Tecnico tecnicoMasCercano(Direccion direccion) {
     List<Tecnico> tecnicosCercanos = tecnicoService.obtenerPorBarrio(direccion.getBarrio())
         .stream()
-        .sorted(Comparator.comparingDouble(tecnico1 -> tecnico1.getAreaDeCobertura().getUbicacion()
-            .distanciaA(direccion.getUbicacion())))
+        .sorted(Comparator.comparingDouble(tecnico1 -> tecnico1.getAreaDeCobertura().distanciaA(direccion.getUbicacion())))
         .toList();
     return tecnicosCercanos.get(0);
   }
