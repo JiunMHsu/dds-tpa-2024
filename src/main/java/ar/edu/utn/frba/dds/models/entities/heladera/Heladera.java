@@ -93,7 +93,8 @@ public class Heladera extends EntidadPersistente {
   }
 
   /**
-   * Crea una heladera.
+   * Crea una heladera, ACTIVA por defecto.
+   * Constructor usado en el seeder.
    *
    * @param nombre           nombre de la heladera
    * @param direccion        dirección de la heladera
@@ -121,35 +122,6 @@ public class Heladera extends EntidadPersistente {
   }
 
   /**
-   * Crea una heladera.
-   *
-   * @param nombre           nombre de la heladera
-   * @param direccion        dirección de la heladera
-   * @param capacidad        capacidad de la heladera
-   * @param rangoTemperatura rango de temperatura de la heladera
-   * @param estado           estado de la heladera
-   * @param brokerTopic      tópico del broker
-   * @return heladera
-   */
-  public static Heladera con(String nombre,
-                             Direccion direccion,
-                             Integer capacidad,
-                             RangoTemperatura rangoTemperatura,
-                             EstadoHeladera estado,
-                             String brokerTopic) {
-    return Heladera.con(
-        nombre,
-        direccion,
-        LocalDateTime.now(),
-        capacidad,
-        rangoTemperatura,
-        null,
-        estado,
-        0,
-        brokerTopic);
-  }
-
-  /**
    * Crea una heladera con nombre.
    *
    * @param nombre nombre de la heladera
@@ -169,7 +141,8 @@ public class Heladera extends EntidadPersistente {
   }
 
   /**
-   * Crea una heladera.
+   * Crea una heladera, INACTIVA por defecto.
+   * Constructor para dar de alta una heladera.
    *
    * @param nombre           nombre de la heladera
    * @param direccion        dirección de la heladera
@@ -186,9 +159,12 @@ public class Heladera extends EntidadPersistente {
     return Heladera.con(
         nombre,
         direccion,
+        null,
         capacidad,
         rangoTemperatura,
-        EstadoHeladera.ACTIVA,
+        null,
+        EstadoHeladera.INACTIVA,
+        0,
         brokerTopic);
   }
 

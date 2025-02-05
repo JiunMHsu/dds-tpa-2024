@@ -453,7 +453,9 @@ public class ServiceLocator {
       HacerseCargoHeladeraService instance = new HacerseCargoHeladeraService(
           instanceOf(HacerseCargoHeladeraRepository.class),
           instanceOf(ColaboradorRepository.class),
-          instanceOf(HeladeraRepository.class));
+          instanceOf(HeladeraRepository.class),
+          instanceOf(IncidenteService.class),
+          instanceOf(SuscriptorSensorService.class));
       instances.put(componentName, instance);
     }
 

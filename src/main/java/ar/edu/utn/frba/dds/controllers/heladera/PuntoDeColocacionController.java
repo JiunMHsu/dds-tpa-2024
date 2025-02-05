@@ -9,17 +9,19 @@ import io.javalin.validation.ValidationException;
 public class PuntoDeColocacionController {
 
   /**
-   * Crea un nuevo punto de colocación de heladeras.
+   * Lee los parámetros de la petición y redirige a la creación de la heladera.
    *
-   * @param context Contexto HTTP
+   * @param context Contexto de Javalin
    */
   public void create(Context context) {
     try {
-      // TODO: recuperar los datos del form?
+      Double latitud = context.formParamAsClass("latitud", Double.class).get();
+      Double longitud = context.formParamAsClass("longitud", Double.class).get();
+      Integer radio = context.formParamAsClass("radio", Integer.class).get();
 
-      String latitudQuery = "lat=";
-      String longitudQuery = "lon=";
-      String radioQuery = "radio=";
+      String latitudQuery = "lat=" + latitud;
+      String longitudQuery = "lon=" + longitud;
+      String radioQuery = "radio=" + radio;
 
       context.redirect("/heladeras/new?"
           + latitudQuery

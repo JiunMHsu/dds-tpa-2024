@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.services.heladera;
 
 import ar.edu.utn.frba.dds.dtos.heladera.CreateHeladeraDTO;
+import ar.edu.utn.frba.dds.dtos.heladera.UpdateHeladeraDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.HacerseCargoHeladera;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
@@ -67,7 +68,7 @@ public class HeladeraService implements WithSimplePersistenceUnit {
   }
 
   /**
-   * Registra una nueva heladera.
+   * Registra una nueva heladera. INACTIVA por defecto.
    *
    * @param nuevaHeladera DTO de heladera
    */
@@ -102,8 +103,36 @@ public class HeladeraService implements WithSimplePersistenceUnit {
     commitTransaction();
   }
 
-  public void actualizarHeladera(Heladera heladeraActualizada) {
-    withTransaction(() -> this.heladeraRepository.actualizar(heladeraActualizada));
+  /**
+   * Actualiza una heladera.
+   *
+   * @param heladera    Heladera
+   * @param actualizada DTO de heladera actualizada
+   */
+  public void actualizarHeladera(Heladera heladera, UpdateHeladeraDTO actualizada) {
+    RangoTemperatura rango = new RangoTemperatura(
+        actualizada.getTempMax(),
+        actualizada.getTempMin()
+    );
+
+    heladera.setRangoTemperatura(rango);
+    beginTransaction();
+    this.heladeraRepository.actualizar(heladera);
+    commitTransaction();
+  }
+
+  /**
+   * Actualiza la temperatura de una heladera.
+   *
+   * @param heladera         Heladera
+   * @param nuevaTemperatura Nueva temperatura
+   */
+  public void actualizarTemperatura(Heladera heladera, double nuevaTemperatura) {
+    heladera.setUltimaTemperatura(nuevaTemperatura);
+
+    beginTransaction();
+    this.heladeraRepository.actualizar(heladera);
+    commitTransaction();
   }
 
   public void eliminarHeladera(Heladera heladera) {

@@ -12,18 +12,18 @@ import lombok.Getter;
 @Builder
 public class HeladeraDTO {
 
-  private String id;
-  private String nombre;
-  private String estado; // ACTIVA, INACTIVA
-  private String direccion; // calle, altura, barrio
-  private String capacidad;
-  private String ubicacion; // latitud y longitud
-  private String cantViandas;
-  private String fechaInicio;
-  private String ultimaTemp;
-  private String temperaturaMaxima;
-  private String temperaturaMinima;
-  private boolean estaActiva;
+  private final String id;
+  private final String nombre;
+  private final String estado; // ACTIVA, INACTIVA
+  private final String direccion; // calle, altura, barrio
+  private final String capacidad;
+  private final String ubicacion; // latitud y longitud
+  private final String cantViandas;
+  private final String fechaInicio;
+  private final String ultimaTemp;
+  private final String temperaturaMaxima;
+  private final String temperaturaMinima;
+  private final boolean estaActiva;
 
   /**
    * Convierte una heladera en un DTO.
