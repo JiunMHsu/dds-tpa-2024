@@ -12,9 +12,16 @@ public class PuntoDeColocacionAPIMock implements IPuntoDeColocacionAdapter {
   @Override
   public List<Ubicacion> solicitarRecomendacion(double latitud, double longitud, double radio) {
     return List.of(
-        new Ubicacion(-30.12873, 35.08979),
-        new Ubicacion(-34.98288, 37.12931),
-        new Ubicacion(-29.92662, 31.23442)
+        // Hospital Italiano, Juan D Perón 4190
+        new Ubicacion(-34.60617, -58.42564),
+
+        // McDonald's, Puerto Madero
+        // Av. Alicia Moreau de Justo 1190
+        new Ubicacion(-34.61120, -58.36592),
+
+        // Alto Palermo Shopping
+        // Av. Santa Fe 3253
+        new Ubicacion(-34.58815, -58.41081)
     );
   }
 }

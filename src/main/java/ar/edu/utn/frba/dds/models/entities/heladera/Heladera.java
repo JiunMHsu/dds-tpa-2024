@@ -36,7 +36,7 @@ public class Heladera extends EntidadPersistente {
   @Column(name = "capacidad", columnDefinition = "SMALLINT", nullable = false)
   private Integer capacidad;
 
-  @Column(name = "inicio_funcionamiento", columnDefinition = "DATE")
+  @Column(name = "inicio_funcionamiento", columnDefinition = "DATETIME")
   private LocalDateTime inicioFuncionamiento;
 
   @Embedded
