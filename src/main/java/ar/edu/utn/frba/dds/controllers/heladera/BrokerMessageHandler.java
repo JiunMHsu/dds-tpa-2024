@@ -83,8 +83,7 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
 
       this.notificarPorFalla(heladera, incidente);
     } else {
-      heladera.setUltimaTemperatura(temperatura);
-      this.heladeraService.actualizarHeladera(heladera);
+      this.heladeraService.actualizarTemperatura(heladera, temperatura);
     }
   }
 

@@ -155,7 +155,7 @@ public class IncidenteService implements WithSimplePersistenceUnit {
     beginTransaction();
     incidenteRepository.actualizar(incidente);
 
-    if (!this.tieneOtroIncidentePendiente(heladera)) {
+    if (this.noTieneIncidentePendiente(heladera)) {
       heladera.setEstado(EstadoHeladera.ACTIVA);
       suscriptorSensorService.suscribirPara(heladera);
       heladeraRepository.actualizar(heladera);
@@ -163,9 +163,15 @@ public class IncidenteService implements WithSimplePersistenceUnit {
     commitTransaction();
   }
 
-  private boolean tieneOtroIncidentePendiente(Heladera heladera) {
+  /**
+   * Verificar si una heladera no tiene incidentes pendientes.
+   *
+   * @param heladera Heladera
+   * @return True si no tiene incidentes pendientes, false en caso contrario
+   */
+  public boolean noTieneIncidentePendiente(Heladera heladera) {
     return incidenteRepository.buscarPorHeladera(heladera).stream()
         .filter(i -> !i.getEsResuelta())
-        .toList().size() > 1; // mayor a 1 porque el incidente actual cuenta como pendiente
+        .toList().isEmpty(); // mayor a 1 porque el incidente actual cuenta como pendiente
   }
 }
