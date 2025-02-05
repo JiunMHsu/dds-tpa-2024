@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.controllers.session;
 
+import ar.edu.utn.frba.dds.dtos.usuario.UsuarioDTO;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
-import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
@@ -56,16 +56,14 @@ public class SessionController {
       String email = context.formParamAsClass("email", String.class).get();
       String claveIngresada = context.formParamAsClass("clave", String.class).get();
 
-      Usuario usuario = usuarioService.obtenerUsuarioPorEmail(email)
-          .orElseThrow(InvalidFormParamException::new);
+      UsuarioDTO usuario = usuarioService.obtenerUsuarioPorEmail(email);
 
-      String claveDelUsuario = usuario.getContrasenia();
-      if (!Objects.equals(claveIngresada, claveDelUsuario)) {
+      if (!Objects.equals(claveIngresada, usuario.getContrasenia())) {
         throw new InvalidFormParamException();
       }
 
-      context.sessionAttribute("userId", usuario.getId().toString());
-      context.sessionAttribute("userRol", usuario.getRol().toString());
+      context.sessionAttribute("userId", usuario.getId());
+      context.sessionAttribute("userRol", usuario.getRol());
       context.req().changeSessionId();
 
       context.redirect(forward);

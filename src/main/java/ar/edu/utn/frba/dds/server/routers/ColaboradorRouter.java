@@ -9,6 +9,9 @@ import ar.edu.utn.frba.dds.controllers.colaborador.ColaboradorController;
 import ar.edu.utn.frba.dds.models.entities.usuario.TipoRol;
 import io.javalin.config.RouterConfig;
 
+/**
+ * Router de Colaborador.
+ */
 public class ColaboradorRouter implements IRouter {
 
   @Override
@@ -19,10 +22,10 @@ public class ColaboradorRouter implements IRouter {
         get(ServiceLocator.instanceOf(ColaboradorController.class)::create, TipoRol.GUEST);
 
         get("/humana", ctx -> ctx.render("signs/signHumana.hbs"), TipoRol.GUEST);
-        post("/humana", ServiceLocator.instanceOf(ColaboradorController.class)::saveHumana, TipoRol.GUEST);
+        post("/humana", ServiceLocator.instanceOf(ColaboradorController.class)::save, TipoRol.GUEST);
 
         get("/juridica", ctx -> ctx.render("signs/signJuridica.hbs"), TipoRol.GUEST);
-        post("/juridica", ServiceLocator.instanceOf(ColaboradorController.class)::saveJuridica, TipoRol.GUEST);
+        post("/juridica", ServiceLocator.instanceOf(ColaboradorController.class)::save, TipoRol.GUEST);
       });
 
       path("/perfil", () ->

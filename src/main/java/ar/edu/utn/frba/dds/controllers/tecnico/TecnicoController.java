@@ -160,7 +160,7 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
 
     String userId = context.sessionAttribute("userId");
 
-    Optional<Usuario> usuarioSession = this.usuarioService.obtenerUsuarioPorID(userId);
+    Optional<Usuario> usuarioSession = this.usuarioService.obtenerUsuarioPorId(userId);
     if (usuarioSession.isEmpty()) {
       throw new ResourceNotFoundException("No se encontró el usuario paraColaborador id " + userId);
     }

@@ -44,18 +44,51 @@ public class Contacto extends EntidadPersistente {
         .build();
   }
 
+  /**
+   * Crea un contacto con un medio de notificación de Telegram.
+   *
+   * @param telegram chatId del chat Telegram
+   * @return Contacto.
+   */
   public static Contacto conTelegram(String telegram) {
     return Contacto.con(MedioDeNotificacion.TELEGRAM, telegram);
   }
 
+  /**
+   * Crea un contacto con un medio de notificación de WhatsApp.
+   *
+   * @param whatsApp numero asociado a WhatsApp
+   * @return Contacto.
+   */
   public static Contacto conWhatsApp(String whatsApp) {
     return Contacto.con(MedioDeNotificacion.WHATSAPP, whatsApp);
   }
 
+  /**
+   * Crea un contacto con un medio de notificación de Email.
+   *
+   * @param email direccion de correo electronico
+   * @return Contacto.
+   */
   public static Contacto conEmail(String email) {
     return Contacto.con(MedioDeNotificacion.EMAIL, email);
   }
 
+  /**
+   * Crea un contacto con un medio de notificación de Teléfono.
+   *
+   * @param telefono numero de telefono
+   * @return Contacto.
+   */
+  public static Contacto conTelefono(String telefono) {
+    return Contacto.con(MedioDeNotificacion.TELEFONO, telefono);
+  }
+
+  /**
+   * Crea un contacto vacío.
+   *
+   * @return Contacto.
+   */
   public static Contacto vacio() {
     return Contacto.con(null, null);
   }

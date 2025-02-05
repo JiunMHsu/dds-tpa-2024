@@ -3,100 +3,142 @@
 {{/partial}}
 {{#partial "links"}}
     <link rel="stylesheet" href="/css/form.css">
-    <link rel="stylesheet" href="/css/sign/sign.css"/>
+    <link rel="stylesheet" href="/css/sign/signform.css"/>
 {{/partial}}
 
 {{#partial "main-content"}}
-    <img src="/img/Map.png" class="main-section" alt="">
-
     <div class="form-container">
-        <div class="form-title">
-            Sign Up Humana
-        </div>
+        <h2 class="form-title">Sign Up Humana</h2>
+
         <form action="/signup/humana" method="post" class="form">
-            <div class="contenedores">
-                <div class="izquierda">
-                    <input type="hidden" name="tipo_colaborador" value="HUMANA">
-                    <label>
-                        <input type="text" name="nombre_usuario" placeholder="Nombre de Usuario"
-                               required>
-                    </label>
-                    <label>
-                        <input type="password" name="contrasenia" placeholder="Contraseña" required>
-                    </label>
-                    <label>
-                        <input type="email" name="email" placeholder="Email Usuario" required>
-                    </label>
-                    <label>
-                        <input type="text" name="nombre" placeholder="Nombre" required>
-                    </label>
-                    <label>
-                        <input type="text" name="apellido" placeholder="Apellido" required>
-                    </label>
-                    <label>
-                        <input type="date" name="fecha_nacimiento" required>
-                    </label>
+            <input type="hidden" name="tipo_colaborador" value="HUMANO">
+
+            <label class="field-input">
+                Nombre de Usuario
+                <input
+                        type="text"
+                        name="nombre_usuario"
+                        placeholder="Nombre de Usuario"
+                        required
+                />
+            </label>
+
+            <label class="field-input">
+                Contraseña
+                <input
+                        type="password"
+                        name="contrasenia"
+                        placeholder="Contraseña"
+                        required
+                />
+            </label>
+
+            <label class="field-input">
+                Email Usuario
+                <input
+                        type="email"
+                        name="email"
+                        placeholder="Email Usuario"
+                        required
+                />
+            </label>
+
+            <label class="field-input">
+                Nombre
+                <input
+                        type="text"
+                        name="nombre"
+                        placeholder="Nombre"
+                        required
+                />
+            </label>
+
+            <label class="field-input">
+                Apellido
+                <input
+                        type="text"
+                        name="apellido"
+                        placeholder="Apellido"
+                        required
+                />
+            </label>
+
+            <label class="field-input">
+                Fecha de Nacimiento
+                <input
+                        type="date"
+                        name="fecha_nacimiento"
+                        required
+                />
+            </label>
+
+            <label class="field-input">
+                Barrio
+                <input
+                        type="text"
+                        name="barrio"
+                        placeholder="Barrio"
+                        required
+                />
+            </label>
+
+            <label class="field-input">
+                Calle
+                <input
+                        type="text"
+                        name="calle"
+                        placeholder="Calle"
+                        required
+                />
+            </label>
+
+            <label class="field-input">
+                Altura
+                <input
+                        type="number"
+                        name="altura"
+                        placeholder="Altura"
+                        required
+                />
+            </label>
+
+            <label class="field-input">
+                Teléfono
+                <input
+                        type="text"
+                        name="telefono"
+                        placeholder="Teléfono"
+                />
+            </label>
+
+            <label class="field-input">
+                WhatsApp
+                <input
+                        type="text"
+                        name="whatsapp"
+                        placeholder="WhatsApp"
+                />
+            </label>
+
+            <div class="checkbox-group">
+                <label for="colaboraciones">Colaboraciones:</label>
+                <div class="colaboraciones-container">
+                    <input type="checkbox" id="donacion-dinero" name="colaboraciones" value="DONACION_DINERO">
+                    <label for="donacion-dinero">Donación de Dinero</label>
+
+                    <input type="checkbox" id="donacion-viandas" name="colaboraciones" value="DONACION_VIANDAS">
+                    <label for="donacion-viandas">Donación de Viandas</label>
+
+                    <input type="checkbox" id="distribucion-viandas" name="colaboraciones" value="DISTRIBUCION_VIANDAS">
+                    <label for="distribucion-viandas">Distribución de Viandas</label>
+
+                    <input type="checkbox" id="reparto-tarjetas" name="colaboraciones" value="REPARTO_DE_TARJETAS">
+                    <label for="reparto-tarjetas">Reparto de Tarjetas</label>
                 </div>
-                <div class="centro">
-                    <label>
-                        <input type="text" name="barrio" placeholder="Barrio" required>
-                    </label>
-                    <label>
-                        <input type="text" name="calle" placeholder="Calle" required>
-                    </label>
-                    <label>
-                        <input type="number" name="altura" placeholder="Altura" required>
-                    </label>
-                    <label>
-                        <input type="text" name="email" placeholder="Email">
-                    </label>
-                    <label>
-                        <input type="text" name="telefono" placeholder="Telefono">
-                    </label>
-                    <label>
-                        <input type="text" name="whatsapp" placeholder="WhatsApp">
-                    </label>
-                    <label>
-                        <input type="text" name="telegram" placeholder="Telegram">
-                    </label>
-                </div>
-                <div class="derecha">
-                    <label for="colaboraciones">Colaboraciones:</label>
-                    <div>
-                        <input type="checkbox" id="donacion-dinero" name="colaboraciones"
-                               value="DONACION_DINERO"/>
-                        <label for="donacion-dinero">Donación de Dinero</label>
-                    </div>
+            </div>
 
-                    <div>
-                        <input type="checkbox" id="donacion-viandas" name="colaboraciones"
-                               value="DONACION_VIANDAS"/>
-                        <label for="donacion-viandas">Donación de Viandas</label>
-                    </div>
-
-                    <div>
-                        <input type="checkbox" id="distribucion-viandas" name="colaboraciones"
-                               value="DISTRIBUCION_VIANDAS"/>
-                        <label for="distribucion-viandas">Distribución de Viandas</label>
-                    </div>
-
-                    <div>
-                        <input type="checkbox" id="entrega-vianda" name="colaboraciones"
-                               value="ENTREGA_VIANDA"/>
-                        <label for="entrega-vianda">Entrega de Viandas</label>
-                    </div>
-
-                    <div>
-                        <input type="checkbox" id="reparto-tarjetas" name="colaboraciones"
-                               value="REPARTO_DE_TARJETAS"/>
-                        <label for="reparto-tarjetas">Reparto de Tarjetas</label>
-                    </div>
-                    <div class="form-button-container">
-                        <div class="ajuste">
-                            <button type="submit">Guardar</button>
-                        </div>
-                    </div>
-                </div>
+            <div class="form-button-container">
+                <button type="submit">Guardar</button>
             </div>
         </form>
     </div>
