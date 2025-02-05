@@ -18,7 +18,11 @@ public class RandomString {
   private final char[] buf;
 
   /**
-   * Create an alphanumeric string generator.
+   * Crea un generador de cadenas alfanuméricas.
+   *
+   * @param length  longitud de la cadena generada
+   * @param random  instancia de Random para la generación de números aleatorios
+   * @param symbols conjunto de símbolos permitidos en la cadena generada
    */
   public RandomString(int length, Random random, String symbols) {
     if (length < 1) {
@@ -35,14 +39,19 @@ public class RandomString {
   }
 
   /**
-   * Create an alphanumeric string generator.
+   * Crea un generador de cadenas alfanuméricas.
+   *
+   * @param length  longitud de la cadena generada
+   * @param random  instancia de Random para la generación de números aleatorios
    */
   public RandomString(int length, Random random) {
     this(length, random, alphanum);
   }
 
   /**
-   * Create an alphanumeric strings fromUbicacion a secure generator.
+   * Crea un generador de cadenas alfanuméricas utilizando un generador seguro.
+   *
+   * @param length longitud de la cadena generada
    */
   public RandomString(int length) {
     this(length, new SecureRandom());
@@ -56,7 +65,9 @@ public class RandomString {
   }
 
   /**
-   * Generate a random string.
+   * Genera una cadena aleatoria.
+   *
+   * @return una cadena aleatoria generada
    */
   public String nextString() {
     for (int idx = 0; idx < buf.length; ++idx) {
