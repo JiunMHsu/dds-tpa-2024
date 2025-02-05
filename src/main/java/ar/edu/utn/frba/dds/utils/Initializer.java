@@ -47,14 +47,28 @@ import java.util.List;
  */
 public class Initializer implements WithSimplePersistenceUnit {
 
-  private final UsuarioRepository usuarioRepository = new UsuarioRepository();
-  private final ColaboradorRepository colaboradorRepository = new ColaboradorRepository();
-  private final ContactoRepository contactoRepository = new ContactoRepository();
-  private final HeladeraRepository heladeraRepository = new HeladeraRepository();
+  private final UsuarioRepository usuarioRepository;
+  private final ColaboradorRepository colaboradorRepository;
+  private final ContactoRepository contactoRepository;
+  private final HeladeraRepository heladeraRepository;
+  private final IncidenteRepository incidenteRepository;
+  private final VarianteDePuntosRepository varianteDePuntosRepository;
+  private final OfertaDeProductosRepository ofertaDeProductosRepository;
+  private final TecnicoRepository tecnicoRepository;
 
+  private Initializer() {
+    usuarioRepository = new UsuarioRepository();
+    colaboradorRepository = new ColaboradorRepository();
+    contactoRepository = new ContactoRepository();
+    heladeraRepository = new HeladeraRepository();
+    incidenteRepository = new IncidenteRepository();
+    varianteDePuntosRepository = new VarianteDePuntosRepository();
+    ofertaDeProductosRepository = new OfertaDeProductosRepository();
+    tecnicoRepository = new TecnicoRepository();
+  }
 
   /**
-   * Método principal que ejecuta la inicialización del sistema.
+   * Seeder del sistema.
    */
   public static void init() {
     Initializer instance = new Initializer();
@@ -392,79 +406,70 @@ public class Initializer implements WithSimplePersistenceUnit {
   }
 
   private void withIncidentes() {
-    HeladeraRepository heladeraRepository = new HeladeraRepository();
-    ColaboradorRepository colaboradorRepository = new ColaboradorRepository();
+    final Heladera heladeraHospitalPiniero = heladeraRepository
+        .buscarPorNombre("Heladera Hospital Piñero").orElseThrow();
 
-    Heladera h1 = heladeraRepository.buscarPorNombre("Heladera UNO").orElseThrow();
-    Heladera h2 = heladeraRepository.buscarPorNombre("Heladera DOS").orElseThrow();
-    Heladera h5 = heladeraRepository.buscarPorNombre("Heladera CINCO").orElseThrow();
-    Heladera h6 = heladeraRepository.buscarPorNombre("Heladera SEIS").orElseThrow();
-    Heladera h8 = heladeraRepository.buscarPorNombre("Heladera OCHO").orElseThrow();
-    Heladera h10 = heladeraRepository.buscarPorNombre("Heladera DIEZ").orElseThrow();
-    Heladera h12 = heladeraRepository.buscarPorNombre("Heladera DOCE").orElseThrow();
-    Heladera h15 = heladeraRepository.buscarPorNombre("Heladera QUINCE").orElseThrow();
+    final Heladera heladeraObelisco = heladeraRepository
+        .buscarPorNombre("Heladera Obelisco").orElseThrow();
 
-    h1.setEstado(EstadoHeladera.INACTIVA);
-    h2.setEstado(EstadoHeladera.INACTIVA);
-    h5.setEstado(EstadoHeladera.INACTIVA);
-    h6.setEstado(EstadoHeladera.INACTIVA);
-    h8.setEstado(EstadoHeladera.INACTIVA);
-    h10.setEstado(EstadoHeladera.INACTIVA);
-    h12.setEstado(EstadoHeladera.INACTIVA);
-    h15.setEstado(EstadoHeladera.INACTIVA);
+    final Heladera heladeraLineaD = heladeraRepository
+        .buscarPorNombre("Heladera Línea D").orElseThrow();
 
-    Incidente i1 = Incidente.fallaTemperatura(h10, LocalDateTime.of(2024, 3, 19, 14, 3));
-    Incidente i2 = Incidente.fallaConexion(h1, LocalDateTime.of(2024, 1, 15, 10, 30));
-    Incidente i3 = Incidente.fallaTemperatura(h15, LocalDateTime.of(2024, 2, 29, 9, 45));
-    Incidente i4 = Incidente.fraude(h8, LocalDateTime.of(2024, 4, 5, 16, 15));
-    Incidente i5 = Incidente.fallaTemperatura(h2, LocalDateTime.of(2024, 5, 20, 8, 0));
-    Incidente i6 = Incidente.fallaConexion(h5, LocalDateTime.of(2024, 6, 10, 13, 25));
-    Incidente i7 = Incidente.fraude(h6, LocalDateTime.of(2024, 7, 23, 18, 50));
+    final Heladera heladeraCaminito = heladeraRepository
+        .buscarPorNombre("Heladera Caminito de la Boca").orElseThrow();
 
-    Incidente i8 = Incidente.fallaTecnica(
-        h5,
+    final Heladera heladeraFerro = heladeraRepository
+        .buscarPorNombre("Heladera Ferro").orElseThrow();
+
+    heladeraHospitalPiniero.setEstado(EstadoHeladera.INACTIVA);
+    heladeraObelisco.setEstado(EstadoHeladera.INACTIVA);
+    heladeraLineaD.setEstado(EstadoHeladera.INACTIVA);
+    heladeraCaminito.setEstado(EstadoHeladera.INACTIVA);
+    heladeraFerro.setEstado(EstadoHeladera.INACTIVA);
+
+    beginTransaction();
+    incidenteRepository.guardar(Incidente.fallaConexion(
+        heladeraHospitalPiniero,
+        LocalDateTime.of(2024, 1, 15, 10, 30)));
+
+    incidenteRepository.guardar(Incidente.fallaTemperatura(
+        heladeraObelisco,
+        LocalDateTime.of(2024, 5, 20, 8, 0)));
+
+    incidenteRepository.guardar(Incidente.fallaConexion(
+        heladeraLineaD,
+        LocalDateTime.of(2024, 6, 10, 13, 25)));
+
+    incidenteRepository.guardar(Incidente.fraude(
+        heladeraCaminito,
+        LocalDateTime.of(2024, 7, 23, 18, 50)));
+
+    incidenteRepository.guardar(Incidente.fallaTecnica(
+        heladeraLineaD,
         LocalDateTime.of(2024, 8, 12, 14, 5),
         colaboradorRepository.buscarPorEmail("adomingueznimo@frba.utn.edu.ar").orElseThrow(),
         "No funca el lector de tarjeta.",
-        new Imagen("image-test.png"));
+        new Imagen("image-test.png")));
 
-    Incidente i9 = Incidente.fallaTecnica(
-        h6,
+    incidenteRepository.guardar(Incidente.fallaTecnica(
+        heladeraCaminito,
         LocalDateTime.of(2024, 9, 17, 19, 40),
         colaboradorRepository.buscarPorEmail("adomingueznimo@frba.utn.edu.ar").orElseThrow(),
         "La vianda no sale",
-        new Imagen("image-test.png"));
+        new Imagen("image-test.png")));
 
-    Incidente i10 = Incidente.fallaTecnica(
-        h12,
+    incidenteRepository.guardar(Incidente.fallaTecnica(
+        heladeraFerro,
         LocalDateTime.of(2024, 12, 1, 7, 55),
         colaboradorRepository.buscarPorEmail("jgandola@frba.utn.edu.ar").orElseThrow(),
         "Ni idea lo que paso",
-        new Imagen("image-test.png"));
+        new Imagen("image-test.png")));
 
-    IncidenteRepository incidenteRepository = new IncidenteRepository();
-
-    beginTransaction();
-    incidenteRepository.guardar(i1);
-    incidenteRepository.guardar(i2);
-    incidenteRepository.guardar(i3);
-    incidenteRepository.guardar(i4);
-    incidenteRepository.guardar(i5);
-    incidenteRepository.guardar(i6);
-    incidenteRepository.guardar(i7);
-    incidenteRepository.guardar(i8);
-    incidenteRepository.guardar(i9);
-    incidenteRepository.guardar(i10);
-
-    heladeraRepository.actualizar(h1);
-    heladeraRepository.actualizar(h2);
-    heladeraRepository.actualizar(h5);
-    heladeraRepository.actualizar(h6);
-    heladeraRepository.actualizar(h8);
-    heladeraRepository.actualizar(h10);
-    heladeraRepository.actualizar(h12);
-    heladeraRepository.actualizar(h15);
-
+    heladeraRepository.actualizar(heladeraHospitalPiniero);
+    heladeraRepository.actualizar(heladeraObelisco);
+    heladeraRepository.actualizar(heladeraLineaD);
+    heladeraRepository.actualizar(heladeraCaminito);
+    heladeraRepository.actualizar(heladeraFerro);
     commitTransaction();
   }
 
@@ -472,59 +477,104 @@ public class Initializer implements WithSimplePersistenceUnit {
     VarianteDePuntos variante = new VarianteDePuntos(
         LocalDate.now(), 0.5, 1.0, 1.5, 2.0, 5.0);
 
-    VarianteDePuntosRepository repository = new VarianteDePuntosRepository();
-    withTransaction(() -> repository.guardar(variante));
+    withTransaction(() -> varianteDePuntosRepository.guardar(variante));
   }
 
   private void withOfertas() {
-    ColaboradorRepository colaboradorRepository = new ColaboradorRepository();
-    Colaborador c1 = colaboradorRepository.buscarPorEmail("melperez@frba.utn.edu.ar").orElseThrow();
-    Colaborador c2 = colaboradorRepository.buscarPorEmail("jgandola@frba.utn.edu.ar").orElseThrow();
+    Colaborador melperez = colaboradorRepository
+        .buscarPorEmail("melperez@frba.utn.edu.ar").orElseThrow();
+
+    Colaborador jgandola = colaboradorRepository
+        .buscarPorEmail("jgandola@frba.utn.edu.ar").orElseThrow();
 
     Imagen img = new Imagen("image-test.png");
 
-    OfertaDeProductosRepository repository = new OfertaDeProductosRepository();
     beginTransaction();
-    repository.guardar(OfertaDeProductos.por(c1, LocalDateTime.now(), "Producto 1", 1, RubroOferta.ELECTRONICA, img));
-    repository.guardar(OfertaDeProductos.por(c2, LocalDateTime.now(), "Producto 2", 20, RubroOferta.GASTRONOMIA, img));
-    repository.guardar(OfertaDeProductos.por(c1, LocalDateTime.now(), "Producto 3", 50, RubroOferta.HOGAR, img));
-    repository.guardar(OfertaDeProductos.por(c2, LocalDateTime.now(), "Producto 4", 60, RubroOferta.GASTRONOMIA, img));
-    repository.guardar(OfertaDeProductos.por(c1, LocalDateTime.now(), "Producto 5", 35, RubroOferta.ELECTRONICA, img));
-    repository.guardar(OfertaDeProductos.por(c2, LocalDateTime.now(), "Producto 6", 65, RubroOferta.HOGAR, img));
-    repository.guardar(OfertaDeProductos.por(c1, LocalDateTime.now(), "Producto 7", 40, RubroOferta.ELECTRONICA, img));
-    repository.guardar(OfertaDeProductos.por(c2, LocalDateTime.now(), "Producto 8", 70, RubroOferta.HOGAR, img));
-    repository.guardar(OfertaDeProductos.por(c1, LocalDateTime.now(), "Producto 9", 20, RubroOferta.GASTRONOMIA, img));
-    repository.guardar(OfertaDeProductos.por(c2, LocalDateTime.now(), "Producto 10", 45, RubroOferta.HOGAR, img));
-    repository.guardar(OfertaDeProductos.por(c1, LocalDateTime.now(), "Producto 11", 65, RubroOferta.GASTRONOMIA, img));
-    repository.guardar(OfertaDeProductos.por(c2, LocalDateTime.now(), "Producto 12", 50, RubroOferta.HOGAR, img));
-    repository.guardar(OfertaDeProductos.por(c1, LocalDateTime.now(), "Producto 13", 30, RubroOferta.ELECTRONICA, img));
-    repository.guardar(OfertaDeProductos.por(c2, LocalDateTime.now(), "Producto 14", 40, RubroOferta.HOGAR, img));
-    repository.guardar(OfertaDeProductos.por(c1, LocalDateTime.now(), "Producto 15", 35, RubroOferta.ELECTRONICA, img));
-    repository.guardar(OfertaDeProductos.por(c2, LocalDateTime.now(), "Producto 16", 75, RubroOferta.HOGAR, img));
-    repository.guardar(OfertaDeProductos.por(c1, LocalDateTime.now(), "Producto 17", 25, RubroOferta.HOGAR, img));
-    repository.guardar(OfertaDeProductos.por(c2, LocalDateTime.now(), "Producto 18", 80, RubroOferta.GASTRONOMIA, img));
-    repository.guardar(OfertaDeProductos.por(c1, LocalDateTime.now(), "Producto 19", 20, RubroOferta.HOGAR, img));
-    repository.guardar(OfertaDeProductos.por(c2, LocalDateTime.now(), "Producto 20", 30, RubroOferta.ELECTRONICA, img));
+    ofertaDeProductosRepository.guardar(
+        OfertaDeProductos.por(melperez, "Producto 1", 1, RubroOferta.ELECTRONICA, img));
+
+    ofertaDeProductosRepository.guardar(
+        OfertaDeProductos.por(jgandola, "Producto 2", 20, RubroOferta.GASTRONOMIA, img));
+
+    ofertaDeProductosRepository.guardar(
+        OfertaDeProductos.por(melperez, "Producto 3", 50, RubroOferta.HOGAR, img));
+
+    ofertaDeProductosRepository.guardar(
+        OfertaDeProductos.por(jgandola, "Producto 4", 60, RubroOferta.GASTRONOMIA, img));
+
+    ofertaDeProductosRepository.guardar(
+        OfertaDeProductos.por(melperez, "Producto 5", 35, RubroOferta.ELECTRONICA, img));
+
+    ofertaDeProductosRepository.guardar(
+        OfertaDeProductos.por(jgandola, "Producto 6", 65, RubroOferta.HOGAR, img));
+
+    ofertaDeProductosRepository.guardar(
+        OfertaDeProductos.por(melperez, "Producto 7", 40, RubroOferta.ELECTRONICA, img));
+
+    ofertaDeProductosRepository.guardar(
+        OfertaDeProductos.por(jgandola, "Producto 8", 70, RubroOferta.HOGAR, img));
+
+    ofertaDeProductosRepository.guardar(
+        OfertaDeProductos.por(melperez, "Producto 9", 20, RubroOferta.GASTRONOMIA, img));
+
+    ofertaDeProductosRepository.guardar(
+        OfertaDeProductos.por(jgandola, "Producto 10", 45, RubroOferta.HOGAR, img));
+
+    ofertaDeProductosRepository.guardar(
+        OfertaDeProductos.por(melperez, "Producto 11", 65, RubroOferta.GASTRONOMIA, img));
+
+    ofertaDeProductosRepository.guardar(
+        OfertaDeProductos.por(jgandola, "Producto 12", 50, RubroOferta.HOGAR, img));
+
+    ofertaDeProductosRepository.guardar(
+        OfertaDeProductos.por(melperez, "Producto 13", 30, RubroOferta.ELECTRONICA, img));
+
+    ofertaDeProductosRepository.guardar(
+        OfertaDeProductos.por(jgandola, "Producto 14", 40, RubroOferta.HOGAR, img));
+
+    ofertaDeProductosRepository.guardar(
+        OfertaDeProductos.por(melperez, "Producto 15", 35, RubroOferta.ELECTRONICA, img));
+
+    ofertaDeProductosRepository.guardar(
+        OfertaDeProductos.por(jgandola, "Producto 16", 75, RubroOferta.HOGAR, img));
+
+    ofertaDeProductosRepository.guardar(
+        OfertaDeProductos.por(melperez, "Producto 17", 25, RubroOferta.HOGAR, img));
+
+    ofertaDeProductosRepository.guardar(
+        OfertaDeProductos.por(jgandola, "Producto 18", 80, RubroOferta.GASTRONOMIA, img));
+
+    ofertaDeProductosRepository.guardar(
+        OfertaDeProductos.por(melperez, "Producto 19", 20, RubroOferta.HOGAR, img));
+
+    ofertaDeProductosRepository.guardar(
+        OfertaDeProductos.por(jgandola, "Producto 20", 30, RubroOferta.ELECTRONICA, img));
     commitTransaction();
   }
 
   private void withTecnicos() {
-
     Contacto contacto = Contacto.conTelegram("+5491132420699");
 
-    Usuario u1 = Usuario.con("Tecnico1", "1111", "tecnico1@gmail.com", TipoRol.TECNICO);
+    Usuario blopez = Usuario.con("Tecnico1", "1111", "blopez@gmail.com", TipoRol.TECNICO);
     Area areaDeCoberura = Area.con(
         new Ubicacion(-34.6037, -58.3816),
         100,
         new Barrio("Palermo")
     );
     Documento unDocumento = Documento.con(TipoDocumento.DNI, "00019283");
-    Tecnico t1 = Tecnico.con(u1, "Tecnico", "Uno", unDocumento, "20-00019283-1", contacto, areaDeCoberura);
+    final Tecnico t1 = Tecnico.con(
+        blopez,
+        "Bautista",
+        "López",
+        unDocumento,
+        "20-00019283-1",
+        contacto,
+        areaDeCoberura);
 
     beginTransaction();
-    new ContactoRepository().guardar(contacto);
-    new UsuarioRepository().guardar(u1);
-    new TecnicoRepository().guardar(t1);
+    contactoRepository.guardar(contacto);
+    usuarioRepository.guardar(blopez);
+    tecnicoRepository.guardar(t1);
     commitTransaction();
   }
 
