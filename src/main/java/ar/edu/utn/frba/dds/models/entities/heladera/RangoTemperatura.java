@@ -27,7 +27,7 @@ public class RangoTemperatura {
    * @param temperatura Temperatura a evaluar.
    * @return {@code true} si la temperatura está dentro del rango, {@code false} en caso contrario.
    */
-  public Boolean incluye(Double temperatura) {
+  public boolean incluye(double temperatura) {
     return (maxima != null)
         && (minima != null)
         && (temperatura < maxima)

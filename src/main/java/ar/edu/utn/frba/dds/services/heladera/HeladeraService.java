@@ -59,7 +59,7 @@ public class HeladeraService implements WithSimplePersistenceUnit {
     return this.heladeraRepository.buscarPorBarrio(barrio);
   }
 
-  public void guardarHeladera(Heladera heladera) {
+  public void registrar(Heladera heladera) {
     withTransaction(() -> this.heladeraRepository.guardar(heladera));
   }
 

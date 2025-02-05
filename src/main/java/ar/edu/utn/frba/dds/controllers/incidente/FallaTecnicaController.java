@@ -77,6 +77,7 @@ public class FallaTecnicaController extends ColaboradorRequired {
 
   /**
    * Muestra el detalle de una falla técnica.
+   * TODO: Adaptar Vista a DTO de la Heladera
    *
    * @param context Context de Javalin
    */
@@ -92,7 +93,7 @@ public class FallaTecnicaController extends ColaboradorRequired {
 
     Map<String, Object> model = new HashMap<>();
 
-    model.put("heladera", HeladeraDTO.preview(heladera));
+    model.put("heladera", HeladeraDTO.fromHeladra(heladera));
     model.put("falla", FallaTecnicaDTO.fromIncidente(falla));
     model.put("puedeResolver", puedeResolver);
 

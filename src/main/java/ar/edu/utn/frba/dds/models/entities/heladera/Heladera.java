@@ -198,7 +198,7 @@ public class Heladera extends EntidadPersistente {
    * @param capacidad capacidad de la heladera
    * @return heladera
    */
-  public static Heladera con(Integer capacidad) {
+  public static Heladera con(int capacidad) {
     return Heladera.builder().capacidad(capacidad).build();
   }
 
@@ -209,7 +209,7 @@ public class Heladera extends EntidadPersistente {
    * @param cantViandas cantidad de viandas
    * @throws CantidadDeViandasException excepción de cantidad de viandas
    */
-  public void agregarViandas(Integer cantViandas) throws CantidadDeViandasException {
+  public void agregarViandas(int cantViandas) throws CantidadDeViandasException {
     if (!this.puedeAgregarViandas(cantViandas)) {
       throw new CantidadDeViandasException();
     }
@@ -224,7 +224,7 @@ public class Heladera extends EntidadPersistente {
    * @param cantViandas cantidad de viandas
    * @throws CantidadDeViandasException excepción de cantidad de viandas
    */
-  public void quitarViandas(Integer cantViandas) throws CantidadDeViandasException {
+  public void quitarViandas(int cantViandas) throws CantidadDeViandasException {
     if (!this.puedeQuitarViandas(cantViandas)) {
       throw new CantidadDeViandasException();
     }
@@ -236,7 +236,7 @@ public class Heladera extends EntidadPersistente {
    *
    * @param cantidad cantidad de viandas
    */
-  public Boolean puedeAgregarViandas(Integer cantidad) {
+  public boolean puedeAgregarViandas(int cantidad) {
     return (viandas + cantidad) <= capacidad;
   }
 
@@ -245,28 +245,28 @@ public class Heladera extends EntidadPersistente {
    *
    * @param cantidad cantidad de viandas
    */
-  public Boolean puedeQuitarViandas(Integer cantidad) {
+  public boolean puedeQuitarViandas(int cantidad) {
     return (viandas - cantidad) >= 0;
   }
 
   /**
    * Verifica si la heladera está activa.
    */
-  public Boolean estaActiva() {
-    return estado == EstadoHeladera.ACTIVA;
+  public boolean estaActiva() {
+    return this.estado.equals(EstadoHeladera.ACTIVA);
   }
 
   /**
    * Retorna el espacio restante en la heladera.
    */
-  public Integer espacioRestante() {
+  public int espacioRestante() {
     return capacidad - viandas;
   }
 
   /**
    * Verifica si la heladera está llena.
    */
-  public Boolean estaLlena() {
+  public boolean estaLlena() {
     return this.espacioRestante() == 0;
   }
 
@@ -275,7 +275,7 @@ public class Heladera extends EntidadPersistente {
    *
    * @param unaTemperatura temperatura
    */
-  public Boolean admiteTemperatura(Double unaTemperatura) {
+  public boolean admiteTemperatura(double unaTemperatura) {
     return rangoTemperatura.incluye(unaTemperatura);
   }
 
