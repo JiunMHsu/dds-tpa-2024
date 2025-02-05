@@ -5,6 +5,12 @@ package ar.edu.utn.frba.dds.exceptions;
  * TODO: Revisar Propósito
  */
 public class SuscripcionHeladeraLlenaException extends Throwable {
+
+  /**
+   * Constructor.
+   *
+   * @param message mensaje de error.
+   */
   public SuscripcionHeladeraLlenaException(String message) {
     super(message);
   }
