@@ -4,7 +4,7 @@ import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.TipoColaboracionDTO;
 import ar.edu.utn.frba.dds.dtos.colaborador.ColaboradorDTO;
 import ar.edu.utn.frba.dds.dtos.colaborador.CreateColaboradorDTO;
-import ar.edu.utn.frba.dds.dtos.usuario.UsuarioDTO;
+import ar.edu.utn.frba.dds.dtos.usuario.CreateUsuarioDTO;
 import ar.edu.utn.frba.dds.exceptions.NotColaboratorException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.exceptions.ValidationException;
@@ -48,11 +48,7 @@ public class ColaboradorController extends ColaboradorRequired {
   public void index(Context context) {
     Map<String, Object> model = new HashMap<>();
 
-    List<Colaborador> todosColaboradores = this.colaboradorService.buscarTodosColaboradores();
-
-    List<ColaboradorDTO> colaboradores = todosColaboradores.stream()
-        .map(ColaboradorDTO::preview)
-        .toList();
+    List<ColaboradorDTO> colaboradores = this.colaboradorService.buscarTodosColaboradores();
     model.put("colaboradores", colaboradores);
 
     render(context, "colaboradores/colaboradores.hbs", model);
@@ -96,19 +92,18 @@ public class ColaboradorController extends ColaboradorRequired {
       String contrasenia = context.formParamAsClass("contrasenia", String.class).get();
       ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
 
-      UsuarioDTO nuevoUsuario;
+      CreateUsuarioDTO nuevoUsuario;
 
 
       if (!validador.esValida(contrasenia)) {
         throw new ValidationException("La contraseña no cumple con los requisitos de seguridad.");
       } else {
-        nuevoUsuario = UsuarioDTO.con(
+        nuevoUsuario = CreateUsuarioDTO.con(
             context.formParamAsClass("nombre_usuario", String.class).get(),
             contrasenia,
             context.formParamAsClass("email", String.class).get(),
             TipoRol.COLABORADOR.toString()
         );
-
       }
 
       String tipoParam = context.formParamAsClass("tipo_colaborador", String.class).get();
@@ -131,6 +126,7 @@ public class ColaboradorController extends ColaboradorRequired {
             context.formParamAsClass("calle", String.class).get(),
             context.formParamAsClass("altura", String.class).get(),
             context.formParamAsClass("telefono", String.class).get(),
+            context.formParamAsClass("whatsapp", String.class).get(),
             formasDeColaborar
         );
       } else {
@@ -143,6 +139,7 @@ public class ColaboradorController extends ColaboradorRequired {
             context.formParamAsClass("calle", String.class).get(),
             context.formParamAsClass("altura", String.class).get(),
             context.formParamAsClass("telefono", String.class).get(),
+            context.formParamAsClass("whatsapp", String.class).get(),
             formasDeColaborar
         );
       }
@@ -195,27 +192,24 @@ public class ColaboradorController extends ColaboradorRequired {
     Colaborador colaborador = restrictByOwner(context, context.pathParam("id"));
 
     Map<String, Object> model = new HashMap<>();
-    List<RedirectDTO> redirectDTOS = new ArrayList<>();
+    List<RedirectDTO> redirects = new ArrayList<>();
     boolean operationSuccess = false;
 
     try {
       List<String> colaboracionesForm = context.formParams("colaboracion");
-      ArrayList<TipoColaboracion> colaboraciones = colaboracionesForm.stream()
-          .map(TipoColaboracion::valueOf).collect(Collectors.toCollection(ArrayList::new));
 
-      System.out.println(colaboraciones);
+      System.out.println(colaboracionesForm);
 
-      colaborador.setFormasDeColaborar(colaboraciones);
-      this.colaboradorService.actualizar(colaborador);
+      this.colaboradorService.actualizarFormasColaborar(colaborador, colaboracionesForm);
 
       operationSuccess = true;
-      redirectDTOS.add(new RedirectDTO("/colaboraciones", "Colaborar"));
+      redirects.add(new RedirectDTO("/colaboraciones", "Colaborar"));
 
     } catch (ValidationException e) {
-      redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
+      redirects.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
     } finally {
       model.put("success", operationSuccess);
-      model.put("redirects", redirectDTOS);
+      model.put("redirects", redirects);
       render(context, "post_result.hbs", model);
     }
   }

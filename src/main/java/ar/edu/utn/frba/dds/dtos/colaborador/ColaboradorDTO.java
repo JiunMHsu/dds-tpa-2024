@@ -3,45 +3,42 @@ package ar.edu.utn.frba.dds.dtos.colaborador;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.colaborador.TipoColaborador;
+import ar.edu.utn.frba.dds.models.entities.data.Contacto;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * DTO de Colaborador.
+ */
 @Getter
 @Setter
 @Builder
 public class ColaboradorDTO {
+  private final String userId;
+  private final String id;
+  private final String tipoColaborador;
+  private final String contacto;
+  private final String direccion;
+  private final String formaDeColaborar;
+  private final String razonSocial;
+  private final String tipoRazonSocial;
+  private final String rubro;
+  private final String nombre;
+  private final String apellido;
+  private final String fechaNacimiento;
+  private final String mail;
+  private final String documento;
+  private final Boolean isHumano;
 
-  private String id;
-
-  private String tipoColaborador;
-
-  private String contacto; // pueden ser cuatro
-
-  private String direccion; // concatenar
-
-  private String formaDeColaborar; //concatenar
-
-  private String razonSocial;
-
-  private String tipoRazonSocial;
-
-  private String rubro;
-
-  private String nombre;
-
-  private String apellido;
-
-  private String fechaNacimiento;
-
-  private String mail;
-
-  private String documento;
-
-  private Boolean isHumano;
-
-
+  /**
+   * Genera el DTO completo de un Colaborador.
+   *
+   * @param colaborador Colaborador
+   * @return ColaboradorDTO
+   */
   public static ColaboradorDTO completa(Colaborador colaborador) {
 
     if (colaborador.getTipoColaborador().equals(TipoColaborador.HUMANO)) {
@@ -51,6 +48,12 @@ public class ColaboradorDTO {
 
   }
 
+  /**
+   * Genera el DTO completo de un Colaborador Humano.
+   *
+   * @param colaborador Colaborador
+   * @return ColaboradorDTO
+   */
   public static ColaboradorDTO completaHumano(Colaborador colaborador) {
 
     String formasDeColaborar = colaborador.getFormasDeColaborar()
@@ -59,8 +62,12 @@ public class ColaboradorDTO {
         .collect(Collectors.joining(", "));
 
     String domicilioString = colaborador.getDireccion().getCalle().getNombre() + " " + colaborador.getDireccion().getAltura().toString();
-    //String contactos = colaborador.getContacto().getTelegram() + " " + colaborador.getContacto().getEmail() + " " + colaborador.getContacto().getWhatsApp() + " " + colaborador.getContacto().getTelefono();
-    // TODO si alguno de los contactos es null chequearlo porque sino imprime los nulls creo
+
+    String contactos = colaborador.getContactos().stream()
+        .map(Contacto::getValor)
+        .filter(Objects::nonNull)
+        .collect(Collectors.joining(" "));
+
     return ColaboradorDTO
         .builder()
         .nombre(colaborador.getNombre())
@@ -68,11 +75,17 @@ public class ColaboradorDTO {
         .fechaNacimiento(colaborador.getFechaNacimiento().toString())
         .direccion(domicilioString)
         .formaDeColaborar(formasDeColaborar)
-        // .contacto(contactos)
+        .contacto(contactos)
         .tipoColaborador("HUMANO")
         .build();
   }
 
+  /**
+   * Genera el DTO completo de un Colaborador Juridico.
+   *
+   * @param colaborador Colaborador
+   * @return ColaboradorDTO
+   */
   public static ColaboradorDTO completaJuridico(Colaborador colaborador) {
 
     String formasDeColaborar = colaborador.getFormasDeColaborar()
@@ -81,20 +94,30 @@ public class ColaboradorDTO {
         .collect(Collectors.joining(", "));
 
     String domicilioString = colaborador.getDireccion().getCalle().getNombre() + " " + colaborador.getDireccion().getAltura().toString();
-    //String contactos = colaborador.getContacto().getTelegram() + " " + colaborador.getContacto().getEmail() + " " + colaborador.getContacto().getWhatsApp() + " " + colaborador.getContacto().getTelefono();
-    // TODO si alguno de los contactos es null chequearlo porque sino imprime los nulls creo
+
+    String contactos = colaborador.getContactos().stream()
+        .map(Contacto::getValor)
+        .filter(Objects::nonNull)
+        .collect(Collectors.joining(" "));
+
     return ColaboradorDTO
         .builder()
         .direccion(domicilioString)
         .rubro(colaborador.getRubro())
         .formaDeColaborar(formasDeColaborar)
-        //.contacto(contactos)
+        .contacto(contactos)
         .razonSocial(colaborador.getRazonSocial())
         .tipoRazonSocial(colaborador.getTipoRazonSocial().name())
         .tipoColaborador("JURIDICO")
         .build();
   }
 
+  /**
+   * Genera el DTO de la preview de un Colaborador.
+   *
+   * @param colaborador Colaborador
+   * @return ColaboradorDTO
+   */
   public static ColaboradorDTO preview(Colaborador colaborador) {
     if (colaborador.getTipoColaborador().equals(TipoColaborador.HUMANO)) {
       return ColaboradorDTO.previewHumano(colaborador);
@@ -103,6 +126,12 @@ public class ColaboradorDTO {
     }
   }
 
+  /**
+   * Genera el DTO de la preview de un Colaborador Humano.
+   *
+   * @param colaborador Colaborador
+   * @return ColaboradorDTO
+   */
   public static ColaboradorDTO previewHumano(Colaborador colaborador) {
 
     String numeroDocumento = colaborador.getDocumento() != null
@@ -120,6 +149,12 @@ public class ColaboradorDTO {
         .build();
   }
 
+  /**
+   * Genera el DTO de la preview de un Colaborador Juridico.
+   *
+   * @param colaborador Colaborador
+   * @return ColaboradorDTO
+   */
   public static ColaboradorDTO previewJuridico(Colaborador colaborador) {
 
     return ColaboradorDTO

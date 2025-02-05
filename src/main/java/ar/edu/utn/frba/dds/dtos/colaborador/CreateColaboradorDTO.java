@@ -22,7 +22,8 @@ public class CreateColaboradorDTO {
   private final String calle;
   private final String altura;
   private final String telefono;
-  private String formaDeColaborar;
+  private final String whatsapp;
+  private final String formaDeColaborar;
 
   /**
    * Builder del DTO Colaborador con los atributos de un Colaborador Humano.
@@ -34,6 +35,7 @@ public class CreateColaboradorDTO {
    * @param calle            Calle de la Dirección del Colaborador
    * @param altura           Altura de la Dirección del Colaborador
    * @param telefono         Telefono del Colaborador
+   * @param whatsapp         Whatsapp del Colaborador
    * @param formaDeColaborar Formas de Colaborar elegidas por el Colaborador
    * @return DTO Create Colaborador en formato Humana
    */
@@ -45,6 +47,7 @@ public class CreateColaboradorDTO {
                                             String calle,
                                             String altura,
                                             String telefono,
+                                            String whatsapp,
                                             String formaDeColaborar) {
     return CreateColaboradorDTO.builder()
         .tipo(tipo)
@@ -55,6 +58,7 @@ public class CreateColaboradorDTO {
         .calle(calle)
         .altura(altura)
         .telefono(telefono)
+        .whatsapp(whatsapp)
         .formaDeColaborar(formaDeColaborar)
         .build();
   }
@@ -69,6 +73,7 @@ public class CreateColaboradorDTO {
    * @param calle            Calle de la Dirección del Colaborador
    * @param altura           Altura de la Dirección del Colaborador
    * @param telefono         Telefono del Colaborador
+   * @param whatsapp         Whatsapp del Colaborador
    * @param formaDeColaborar Formas de Colaborar elegidas por el Colaborador
    * @return DTO Create Colaborador en formato Juridico
    */
@@ -80,6 +85,7 @@ public class CreateColaboradorDTO {
                                               String calle,
                                               String altura,
                                               String telefono,
+                                              String whatsapp,
                                               String formaDeColaborar) {
     return CreateColaboradorDTO.builder()
         .tipo(tipo)
@@ -90,6 +96,7 @@ public class CreateColaboradorDTO {
         .calle(calle)
         .altura(altura)
         .telefono(telefono)
+        .whatsapp(whatsapp)
         .formaDeColaborar(formaDeColaborar)
         .build();
   }

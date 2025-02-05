@@ -1,7 +1,8 @@
 package ar.edu.utn.frba.dds.services.colaborador;
 
+import ar.edu.utn.frba.dds.dtos.colaborador.ColaboradorDTO;
 import ar.edu.utn.frba.dds.dtos.colaborador.CreateColaboradorDTO;
-import ar.edu.utn.frba.dds.dtos.usuario.UsuarioDTO;
+import ar.edu.utn.frba.dds.dtos.usuario.CreateUsuarioDTO;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.colaborador.TipoColaborador;
@@ -17,6 +18,7 @@ import ar.edu.utn.frba.dds.models.repositories.contacto.ContactoRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.IUsuarioRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -47,24 +49,28 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
     this.contactoRepository = contactoRepository;
   }
 
-  public void guardar(Colaborador colaborador) {
+  /**
+   * Actualiza las formas de colaborar de un Colaborador.
+   *
+   * @param colaborador    Colaborador a actualizar
+   * @param colaboraciones Nueva lista de colaboraciones
+   */
+  public void actualizarFormasColaborar(Colaborador colaborador, List<String> colaboraciones) {
 
-    Usuario usuarioNuevo = colaborador.getUsuario();
+    ArrayList<TipoColaboracion> nuevasColaboraciones = colaboraciones.stream()
+        .map(TipoColaboracion::valueOf).collect(Collectors.toCollection(ArrayList::new));
 
-    beginTransaction();
-    this.usuarioRepository.guardar(usuarioNuevo);
-    this.colaboradorRepository.guardar(colaborador);
-    commitTransaction();
-  }
+    colaborador.setFormasDeColaborar(nuevasColaboraciones);
 
-  public void actualizar(Colaborador colaborador) {
     withTransaction(() -> this.colaboradorRepository.actualizar(colaborador));
   }
 
-  public void eliminar(Colaborador colaborador) {
-    this.colaboradorRepository.eliminar(colaborador);
-  }
-
+  /**
+   * Obtiene un Colaborador por Usuario.
+   *
+   * @param usuario Usuario
+   * @return Optional de Colaborador
+   */
   public Optional<Colaborador> obtenerColaboradorPorUsuario(Usuario usuario) {
     if (usuario == null) {
       throw new IllegalArgumentException("El colaboradores debe tener un Usuario");
@@ -72,12 +78,29 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
     return this.colaboradorRepository.buscarPorUsuario(usuario);
   }
 
+  /**
+   * Busca un Colaborador por Id.
+   *
+   * @param id Id del Colaborador
+   * @return Optional de Colaborador
+   */
   public Optional<Colaborador> buscarPorId(String id) {
     return this.colaboradorRepository.buscarPorId(id);
   }
 
-  public List<Colaborador> buscarTodosColaboradores() {
-    return this.colaboradorRepository.buscarTodos();
+  /**
+   * Busca todos los Colaboradores.
+   *
+   * @return Lista de ColaboradorDTO
+   */
+  public List<ColaboradorDTO> buscarTodosColaboradores() {
+
+    List<Colaborador> todosColaboradores = this.colaboradorRepository.buscarTodos();
+    List<ColaboradorDTO> colaboradores = todosColaboradores.stream()
+        .map(ColaboradorDTO::preview)
+        .toList();
+
+    return colaboradores;
   }
 
   /**
@@ -97,7 +120,8 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
    *
    * @param nuevoColaborador DTO del nuevo Colaborador
    */
-  public void registrarNuevoColaborador(UsuarioDTO nuevoUsuario, CreateColaboradorDTO nuevoColaborador) {
+  public void registrarNuevoColaborador(CreateUsuarioDTO nuevoUsuario,
+                                        CreateColaboradorDTO nuevoColaborador) {
 
     Direccion direccion = Direccion.con(
         new Barrio(nuevoColaborador.getBarrio()),
@@ -118,27 +142,29 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
         .valueOf(nuevoColaborador.getTipo().toUpperCase());
 
     TipoRazonSocial tipoRazonSocial = null;
-    if (tipo == TipoColaborador.JURIDICO) {
+    if (tipo.esJuridico()) {
       tipoRazonSocial = TipoRazonSocial
           .valueOf(nuevoColaborador.getTipoRazonSocial().trim().toUpperCase());
     }
 
     LocalDate fechaNacimiento = null;
-    if (tipo == TipoColaborador.HUMANO) {
+    if (tipo.esHumano()) {
       fechaNacimiento = LocalDate.parse(nuevoColaborador.getFechaNacimiento());
     }
-    
+
     List<Contacto> contactos = List.of(
+        Contacto.conEmail(nuevoUsuario.getEmail()),
         Contacto.conTelefono(nuevoColaborador.getTelefono()),
-        Contacto.conEmail(nuevoUsuario.getEmail())
+        Contacto.conWhatsApp("whatsapp:" + nuevoColaborador.getWhatsapp())
     );
 
-    List<TipoColaboracion> formasDeColaborar = Arrays.stream(nuevoColaborador.getFormaDeColaborar().split(","))
+    List<TipoColaboracion> formasDeColaborar = Arrays
+        .stream(nuevoColaborador.getFormaDeColaborar().split(","))
         .map(String::trim)
         .map(TipoColaboracion::valueOf)
         .collect(Collectors.toList());
 
-    Colaborador colaborador = Colaborador.builder()
+    final Colaborador colaborador = Colaborador.builder()
         .tipoColaborador(tipo)
         .usuario(usuario)
         .direccion(direccion)
@@ -151,8 +177,6 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
         .rubro(nuevoColaborador.getRubro())
         .fechaNacimiento(fechaNacimiento)
         .build();
-
-    System.out.println("Post Crear Colaborador");
 
     beginTransaction();
     this.usuarioRepository.guardar(usuario);
