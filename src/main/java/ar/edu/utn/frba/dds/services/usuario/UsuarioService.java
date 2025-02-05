@@ -1,5 +1,7 @@
 package ar.edu.utn.frba.dds.services.usuario;
 
+import ar.edu.utn.frba.dds.dtos.usuario.UsuarioDTO;
+import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.usuario.IUsuarioRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
@@ -21,10 +23,10 @@ public class UsuarioService implements WithSimplePersistenceUnit {
   }
 
   /**
-   * Busca un usuario por ID.
+   * Busca un usuario por Id.
    *
    * @param id Id del usuario
-   * @return
+   * @return Optional de Usuario
    */
   public Optional<Usuario> obtenerUsuarioPorId(String id) {
     if (id == null || id.isEmpty()) {
@@ -36,10 +38,18 @@ public class UsuarioService implements WithSimplePersistenceUnit {
   /**
    * Obtiene un usuario por email.
    *
-   * @param email Email del usuario
-   * @return
+   * @param email Email del Usuario
+   * @return UsuarioDTO
    */
-  public Optional<Usuario> obtenerUsuarioPorEmail(String email) {
-    return this.usuarioRepository.obtenerPorEmail(email);
+  public UsuarioDTO obtenerUsuarioPorEmail(String email) {
+
+    Usuario usuario = this.usuarioRepository.obtenerPorEmail(email)
+        .orElseThrow(InvalidFormParamException::new);
+
+    return new UsuarioDTO(usuario.getId().toString(),
+        usuario.getNombre(),
+        usuario.getContrasenia(),
+        usuario.getEmail(),
+        usuario.getRol().toString());
   }
 }

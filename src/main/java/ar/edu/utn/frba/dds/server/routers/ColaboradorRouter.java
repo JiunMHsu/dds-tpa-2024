@@ -9,6 +9,9 @@ import ar.edu.utn.frba.dds.controllers.colaborador.ColaboradorController;
 import ar.edu.utn.frba.dds.models.entities.usuario.TipoRol;
 import io.javalin.config.RouterConfig;
 
+/**
+ * Router de Colaborador.
+ */
 public class ColaboradorRouter implements IRouter {
 
   @Override
