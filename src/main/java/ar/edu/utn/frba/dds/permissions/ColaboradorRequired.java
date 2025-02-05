@@ -29,7 +29,7 @@ public abstract class ColaboradorRequired extends UserRequired {
     Usuario usuarioSession = usuarioFromSession(context);
     return colaboradorService
         .obtenerColaboradorPorUsuario(usuarioSession)
-        .orElseThrow(UnauthorizedException::new);
+        .orElseThrow(NotColaboratorException::new);
   }
 
   protected TipoColaborador tipoColaboradorFromSession(Context context)

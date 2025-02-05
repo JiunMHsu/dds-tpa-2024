@@ -36,7 +36,7 @@ public class Heladera extends EntidadPersistente {
   @Column(name = "capacidad", columnDefinition = "SMALLINT", nullable = false)
   private Integer capacidad;
 
-  @Column(name = "inicio_funcionamiento", columnDefinition = "DATE")
+  @Column(name = "inicio_funcionamiento", columnDefinition = "DATETIME")
   private LocalDateTime inicioFuncionamiento;
 
   @Embedded
@@ -93,7 +93,8 @@ public class Heladera extends EntidadPersistente {
   }
 
   /**
-   * Crea una heladera.
+   * Crea una heladera, ACTIVA por defecto.
+   * Constructor usado en el seeder.
    *
    * @param nombre           nombre de la heladera
    * @param direccion        dirección de la heladera
@@ -121,35 +122,6 @@ public class Heladera extends EntidadPersistente {
   }
 
   /**
-   * Crea una heladera.
-   *
-   * @param nombre           nombre de la heladera
-   * @param direccion        dirección de la heladera
-   * @param capacidad        capacidad de la heladera
-   * @param rangoTemperatura rango de temperatura de la heladera
-   * @param estado           estado de la heladera
-   * @param brokerTopic      tópico del broker
-   * @return heladera
-   */
-  public static Heladera con(String nombre,
-                             Direccion direccion,
-                             Integer capacidad,
-                             RangoTemperatura rangoTemperatura,
-                             EstadoHeladera estado,
-                             String brokerTopic) {
-    return Heladera.con(
-        nombre,
-        direccion,
-        LocalDateTime.now(),
-        capacidad,
-        rangoTemperatura,
-        null,
-        estado,
-        0,
-        brokerTopic);
-  }
-
-  /**
    * Crea una heladera con nombre.
    *
    * @param nombre nombre de la heladera
@@ -169,7 +141,8 @@ public class Heladera extends EntidadPersistente {
   }
 
   /**
-   * Crea una heladera.
+   * Crea una heladera, INACTIVA por defecto.
+   * Constructor para dar de alta una heladera.
    *
    * @param nombre           nombre de la heladera
    * @param direccion        dirección de la heladera
@@ -186,9 +159,12 @@ public class Heladera extends EntidadPersistente {
     return Heladera.con(
         nombre,
         direccion,
+        null,
         capacidad,
         rangoTemperatura,
-        EstadoHeladera.ACTIVA,
+        null,
+        EstadoHeladera.INACTIVA,
+        0,
         brokerTopic);
   }
 
@@ -198,7 +174,7 @@ public class Heladera extends EntidadPersistente {
    * @param capacidad capacidad de la heladera
    * @return heladera
    */
-  public static Heladera con(Integer capacidad) {
+  public static Heladera con(int capacidad) {
     return Heladera.builder().capacidad(capacidad).build();
   }
 
@@ -209,7 +185,7 @@ public class Heladera extends EntidadPersistente {
    * @param cantViandas cantidad de viandas
    * @throws CantidadDeViandasException excepción de cantidad de viandas
    */
-  public void agregarViandas(Integer cantViandas) throws CantidadDeViandasException {
+  public void agregarViandas(int cantViandas) throws CantidadDeViandasException {
     if (!this.puedeAgregarViandas(cantViandas)) {
       throw new CantidadDeViandasException();
     }
@@ -224,7 +200,7 @@ public class Heladera extends EntidadPersistente {
    * @param cantViandas cantidad de viandas
    * @throws CantidadDeViandasException excepción de cantidad de viandas
    */
-  public void quitarViandas(Integer cantViandas) throws CantidadDeViandasException {
+  public void quitarViandas(int cantViandas) throws CantidadDeViandasException {
     if (!this.puedeQuitarViandas(cantViandas)) {
       throw new CantidadDeViandasException();
     }
@@ -236,7 +212,7 @@ public class Heladera extends EntidadPersistente {
    *
    * @param cantidad cantidad de viandas
    */
-  public Boolean puedeAgregarViandas(Integer cantidad) {
+  public boolean puedeAgregarViandas(int cantidad) {
     return (viandas + cantidad) <= capacidad;
   }
 
@@ -245,28 +221,28 @@ public class Heladera extends EntidadPersistente {
    *
    * @param cantidad cantidad de viandas
    */
-  public Boolean puedeQuitarViandas(Integer cantidad) {
+  public boolean puedeQuitarViandas(int cantidad) {
     return (viandas - cantidad) >= 0;
   }
 
   /**
    * Verifica si la heladera está activa.
    */
-  public Boolean estaActiva() {
-    return estado == EstadoHeladera.ACTIVA;
+  public boolean estaActiva() {
+    return this.estado.equals(EstadoHeladera.ACTIVA);
   }
 
   /**
    * Retorna el espacio restante en la heladera.
    */
-  public Integer espacioRestante() {
+  public int espacioRestante() {
     return capacidad - viandas;
   }
 
   /**
    * Verifica si la heladera está llena.
    */
-  public Boolean estaLlena() {
+  public boolean estaLlena() {
     return this.espacioRestante() == 0;
   }
 
@@ -275,7 +251,7 @@ public class Heladera extends EntidadPersistente {
    *
    * @param unaTemperatura temperatura
    */
-  public Boolean admiteTemperatura(Double unaTemperatura) {
+  public boolean admiteTemperatura(double unaTemperatura) {
     return rangoTemperatura.incluye(unaTemperatura);
   }
 

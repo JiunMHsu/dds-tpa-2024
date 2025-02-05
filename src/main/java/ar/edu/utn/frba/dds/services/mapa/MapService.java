@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.services.mapa;
 
-import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
@@ -57,16 +56,10 @@ public class MapService {
 
   private static @NotNull JSONObject getJsonObject(Heladera heladera) {
     JSONObject properties = new JSONObject();
-    properties.put("id", heladera.getId());
+    properties.put("id", heladera.getId().toString());
     properties.put("name", heladera.getNombre());
-    properties.put("barrio", heladera.getDireccion().getBarrio().getNombre());
-    properties.put("calle", heladera.getDireccion().getCalle().getNombre());
-    properties.put("altura", heladera.getDireccion().getAltura());
-    properties.put("isActive", heladera.getEstado() == EstadoHeladera.ACTIVA ? 1 : 0);
-    properties.put("capacidad", heladera.getCapacidad());
-    properties.put("disponibilidad", heladera.getViandas());
-    properties.put("temperatura_max", heladera.getRangoTemperatura().getMaxima());
-    properties.put("temperatura_min", heladera.getRangoTemperatura().getMinima());
+    properties.put("isActive", heladera.estaActiva() ? 1 : 0);
+
     return properties;
   }
 

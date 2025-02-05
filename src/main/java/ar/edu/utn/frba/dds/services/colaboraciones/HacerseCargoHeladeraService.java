@@ -4,10 +4,13 @@ import ar.edu.utn.frba.dds.dtos.colaboraciones.hacerseCargoHeladera.HacerseCargo
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.HacerseCargoHeladera;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
+import ar.edu.utn.frba.dds.services.heladera.SuscriptorSensorService;
+import ar.edu.utn.frba.dds.services.incidente.IncidenteService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDateTime;
 
@@ -19,6 +22,8 @@ public class HacerseCargoHeladeraService implements WithSimplePersistenceUnit {
   private final HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository;
   private final ColaboradorRepository colaboradorRepository;
   private final HeladeraRepository heladeraRepository;
+  private final IncidenteService incidenteService;
+  private final SuscriptorSensorService suscriptorSensorService;
 
   /**
    * Constructor de HacerseCargoHeladeraService.
@@ -29,10 +34,14 @@ public class HacerseCargoHeladeraService implements WithSimplePersistenceUnit {
    */
   public HacerseCargoHeladeraService(HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository,
                                      ColaboradorRepository colaboradorRepository,
-                                     HeladeraRepository heladeraRepository) {
+                                     HeladeraRepository heladeraRepository,
+                                     IncidenteService incidenteService,
+                                     SuscriptorSensorService suscriptorSensorService) {
     this.hacerseCargoHeladeraRepository = hacerseCargoHeladeraRepository;
     this.colaboradorRepository = colaboradorRepository;
     this.heladeraRepository = heladeraRepository;
+    this.incidenteService = incidenteService;
+    this.suscriptorSensorService = suscriptorSensorService;
   }
 
   /**
@@ -42,18 +51,29 @@ public class HacerseCargoHeladeraService implements WithSimplePersistenceUnit {
    * @param heladeraId  Id de la heladera
    */
   public void registrar(Colaborador colaborador, String heladeraId) {
-    Heladera heladera = heladeraRepository.buscarPorId(heladeraId)
+    Heladera heladera = heladeraRepository.buscarPorNombre(heladeraId)
         .orElseThrow(ResourceNotFoundException::new);
 
-    HacerseCargoHeladera hacerseCargoHeladera = HacerseCargoHeladera.por(
+    final HacerseCargoHeladera hacerseCargoHeladera = HacerseCargoHeladera.por(
         colaborador,
         LocalDateTime.now(),
         heladera
     );
 
+    // Caso heladera nueva
+    if (heladera.getInicioFuncionamiento() == null) {
+      heladera.setInicioFuncionamiento(LocalDateTime.now());
+    }
+
+    if (incidenteService.noTieneIncidentePendiente(heladera)) {
+      heladera.setEstado(EstadoHeladera.ACTIVA);
+      suscriptorSensorService.suscribirPara(heladera);
+    }
+
     colaborador.invalidarPuntos();
 
     beginTransaction();
+    heladeraRepository.actualizar(heladera);
     hacerseCargoHeladeraRepository.guardar(hacerseCargoHeladera);
     colaboradorRepository.actualizar(colaborador);
     commitTransaction();

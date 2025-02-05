@@ -2,16 +2,13 @@ package ar.edu.utn.frba.dds.controllers.heladera;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.UbicacionDTO;
+import ar.edu.utn.frba.dds.dtos.heladera.CreateHeladeraDTO;
 import ar.edu.utn.frba.dds.dtos.heladera.HeladeraDTO;
+import ar.edu.utn.frba.dds.dtos.heladera.UpdateHeladeraDTO;
 import ar.edu.utn.frba.dds.exceptions.NotColaboratorException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
-import ar.edu.utn.frba.dds.models.entities.data.Barrio;
-import ar.edu.utn.frba.dds.models.entities.data.Calle;
-import ar.edu.utn.frba.dds.models.entities.data.Direccion;
-import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
-import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.permissions.ColaboradorRequired;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
@@ -19,7 +16,6 @@ import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.mapa.MapService;
 import ar.edu.utn.frba.dds.services.puntoColocacion.PuntoColocacionService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
-import ar.edu.utn.frba.dds.utils.AppProperties;
 import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.validation.ValidationException;
@@ -59,23 +55,22 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
 
   @Override
   public void index(Context context) {
-    List<Heladera> heladeras = this.heladeraService.buscarTodas();
 
-    List<HeladeraDTO> heladerasDTO = heladeras.stream()
-        .map(HeladeraDTO::preview)
+    List<HeladeraDTO> heladeras = this.heladeraService
+        .buscarTodas().stream()
+        .map(HeladeraDTO::fromHeladra)
         .toList();
 
-
-    boolean puedeDarDeAltaHeladera = rolFromSession(context).isAdmin();
-    boolean puedeSuscribirseAHeladera = rolFromSession(context).isColaborador();
+    boolean puedeDarDeAlta = rolFromSession(context).isAdmin();
+    boolean puedeSuscribirse = rolFromSession(context).isColaborador();
     boolean puedeEncargarseDeHeladera = rolFromSession(context).isColaborador()
         && tipoColaboradorFromSession(context).esJuridico();
 
     Map<String, Object> model = new HashMap<>();
-    model.put("heladeras", heladerasDTO);
-    model.put("puedeDarDeAltaHeladera", puedeDarDeAltaHeladera);
+    model.put("heladeras", heladeras);
+    model.put("puedeDarDeAltaHeladera", puedeDarDeAlta);
     model.put("puedeEncargarseDeHeladera", puedeEncargarseDeHeladera);
-    model.put("puedeSuscribirseAHeladera", puedeSuscribirseAHeladera);
+    model.put("puedeSuscribirseAHeladera", puedeSuscribirse);
 
     render(context, "heladeras/heladeras.hbs", model);
   }
@@ -88,15 +83,14 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
     try {
       Colaborador colaborador = colaboradorFromSession(context);
       puedeConfigurar = heladeraService.puedeConfigurar(colaborador, heladera);
-    } catch (UnauthorizedException e) {
+    } catch (NotColaboratorException e) {
       Usuario usuario = usuarioFromSession(context);
       puedeConfigurar = usuario.getRol().isAdmin();
     }
 
     Map<String, Object> model = new HashMap<>();
 
-    HeladeraDTO heladeraDTO = HeladeraDTO.completa(heladera);
-    model.put("heladera", heladeraDTO);
+    model.put("heladera", HeladeraDTO.fromHeladra(heladera));
     model.put("puedeConfigurar", puedeConfigurar);
     model.put("puedeSuscribirse", this.rolFromSession(context).isColaborador());
 
@@ -116,56 +110,42 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
 
       Map<String, Object> model = new HashMap<>();
       model.put("puntosRecomendados", ubicaciones);
-
       render(context, "heladeras/heladera_crear.hbs", model);
     } catch (ValidationException e) {
-      render(context, "heladeras/heladera_crear.hbs", new HashMap<>());
+      render(context, "heladeras/heladera_crear.hbs");
     }
-
   }
 
   @Override
   public void save(Context context) {
-    // TODO - crear e inicializar cliente del broker
-
     Map<String, Object> model = new HashMap<>();
-    List<RedirectDTO> redirectDTOS = new ArrayList<>();
+    List<RedirectDTO> redirects = new ArrayList<>();
     boolean operationSuccess = false;
 
     try {
-      String nombre = context.formParamAsClass("nombre", String.class).get();
-      Integer capacidad = context.formParamAsClass("capacidad", Integer.class)
-          .check(c -> c > 0, "la capacidad debe ser positiva").get();
-
-      Double latitud = context.formParamAsClass("latitud", Double.class).get();
-      Double longitud = context.formParamAsClass("longitud", Double.class).get();
-
-      Direccion direccion = Direccion.con(
-          new Barrio(context.formParamAsClass("barrio", String.class).get()),
-          new Calle(context.formParamAsClass("calle", String.class).get()),
+      CreateHeladeraDTO nuevaHeladera = new CreateHeladeraDTO(
+          context.formParamAsClass("nombre", String.class).get(),
+          context.formParamAsClass("capacidad", Integer.class)
+              .check(c -> c > 0, "la capacidad debe ser positiva").get(),
+          context.formParamAsClass("calle", String.class).get(),
           context.formParamAsClass("altura", Integer.class).get(),
-          new Ubicacion(latitud, longitud)
+          context.formParamAsClass("barrio", String.class).get(),
+          context.formParamAsClass("latitud", Double.class).get(),
+          context.formParamAsClass("longitud", Double.class).get(),
+          context.formParamAsClass("temp_minima", Double.class).get(),
+          context.formParamAsClass("temp_maxima", Double.class).get()
       );
 
-      Double tempMaxima = context.formParamAsClass("temp_maxima", Double.class).get();
-      Double tempMinima = context.formParamAsClass("temp_minima", Double.class).get();
-      RangoTemperatura rangoTemperatura = new RangoTemperatura(tempMaxima, tempMinima);
-
-      String topic = AppProperties.getInstance().propertyFromName("BASE_TOPIC")
-          + "/heladeras/"
-          + nombre.toLowerCase().replace(" ", "-");
-
-      Heladera heladeraNueva = Heladera.con(nombre, direccion, capacidad, rangoTemperatura, topic);
-      this.heladeraService.guardarHeladera(heladeraNueva);
+      this.heladeraService.registrar(nuevaHeladera);
 
       operationSuccess = true;
-      redirectDTOS.add(new RedirectDTO("/heladeras", "Ver Heladeras"));
+      redirects.add(new RedirectDTO("/heladeras", "Ver Heladeras"));
 
     } catch (ValidationException e) {
-      redirectDTOS.add(new RedirectDTO("/heladeras/new", "Reintentar"));
+      redirects.add(new RedirectDTO("/heladeras/new", "Reintentar"));
     } finally {
       model.put("success", operationSuccess);
-      model.put("redirects", redirectDTOS);
+      model.put("redirects", redirects);
       render(context, "post_result.hbs", model);
     }
   }
@@ -175,18 +155,17 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
     Heladera heladera = heladeraFromPath(context);
 
     try {
-      Colaborador colaborador = colaboradorFromSession(context);
-      if (!heladeraService.puedeConfigurar(colaborador, heladera))
+      if (!heladeraService.puedeConfigurar(colaboradorFromSession(context), heladera)) {
         throw new UnauthorizedException("no es encargado de la heladera");
+      }
     } catch (NotColaboratorException e) {
-      Usuario usuario = usuarioFromSession(context);
-      if (!usuario.getRol().isAdmin())
+      if (!usuarioFromSession(context).getRol().isAdmin()) {
         throw new UnauthorizedException("no es administrador");
+      }
     } finally {
       Map<String, Object> model = new HashMap<>();
+      model.put("heladera", HeladeraDTO.fromHeladra(heladera));
 
-      HeladeraDTO heladeraDTO = HeladeraDTO.completa(heladera);
-      model.put("heladera", heladeraDTO);
       render(context, "heladeras/heladera_editar.hbs", model);
     }
   }
@@ -196,34 +175,35 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
     Heladera heladera = heladeraFromPath(context);
 
     try {
-      Colaborador colaborador = colaboradorFromSession(context);
-      if (!heladeraService.puedeConfigurar(colaborador, heladera))
+      if (!heladeraService.puedeConfigurar(colaboradorFromSession(context), heladera)) {
         throw new UnauthorizedException("no es encargado de la heladera");
+      }
     } catch (NotColaboratorException e) {
-      Usuario usuario = usuarioFromSession(context);
-      if (!usuario.getRol().isAdmin())
+      if (!usuarioFromSession(context).getRol().isAdmin()) {
         throw new UnauthorizedException("no es administrador");
+      }
     }
 
     Map<String, Object> model = new HashMap<>();
-    List<RedirectDTO> redirectDTOS = new ArrayList<>();
+    List<RedirectDTO> redirects = new ArrayList<>();
     boolean operationSuccess = false;
 
     try {
-      Double nuevoMaximo = context.formParamAsClass("maxima", Double.class).get();
-      Double nuevoMinimo = context.formParamAsClass("minima", Double.class).get();
+      UpdateHeladeraDTO actualizada = new UpdateHeladeraDTO(
+          context.formParamAsClass("minima", Double.class).get(),
+          context.formParamAsClass("maxima", Double.class).get()
+      );
 
-      heladera.setRangoTemperatura(new RangoTemperatura(nuevoMaximo, nuevoMinimo));
-      this.heladeraService.actualizarHeladera(heladera);
+      this.heladeraService.actualizarHeladera(heladera, actualizada);
 
       operationSuccess = true;
-      redirectDTOS.add(new RedirectDTO("/heladeras", "Ver Heladeras"));
+      redirects.add(new RedirectDTO("/heladeras", "Ver Heladeras"));
 
     } catch (ValidationException e) {
-      redirectDTOS.add(new RedirectDTO("/heladeras/" + heladera.getId() + "/edit", "Reintentar"));
+      redirects.add(new RedirectDTO("/heladeras/" + heladera.getId() + "/edit", "Reintentar"));
     } finally {
       model.put("success", operationSuccess);
-      model.put("redirects", redirectDTOS);
+      model.put("redirects", redirects);
       render(context, "post_result.hbs", model);
     }
   }
