@@ -14,12 +14,10 @@ public class HeladeraDTO {
 
   private String id;
   private String nombre;
-  private String estado;
-  private String direccion;
+  private String estado; // ACTIVA, INACTIVA
+  private String direccion; // calle, altura, barrio
   private String capacidad;
-  private String ubicacion;
-  private String latitud;
-  private String longitud;
+  private String ubicacion; // latitud y longitud
   private String cantViandas;
   private String fechaInicio;
   private String ultimaTemp;
