@@ -212,7 +212,7 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
    * @param heladera Heladera
    * @return Lista de heladeras activas más cercanas
    */
-  private List<Heladera> heladerasActivasMasCercanas(Heladera heladera) {
+  public List<Heladera> heladerasActivasMasCercanas(Heladera heladera) {
     return heladeraService.buscarPorBarrio(heladera.getDireccion().getBarrio())
         .stream()
         .filter(Heladera::estaActiva)
@@ -221,7 +221,13 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
         .toList();
   }
 
-  private List<Heladera> heladerasRecomendadas(Heladera heladera) {
+  /**
+   * Obtener las heladeras recomendadas segun su disponibilidad de espacio para viandas y cercania.
+   *
+   * @param heladera Heladera
+   * @return Lista de heladeras recomendadas
+   */
+  public List<Heladera> heladerasRecomendadas(Heladera heladera) {
     List<Heladera> listaHeladerasActivasMasCercanasConEspacio =
         this.heladerasActivasMasCercanas(heladera).stream()
             .filter(heladera1 -> !heladera1.estaLlena())
