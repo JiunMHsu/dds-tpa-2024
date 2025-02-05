@@ -4,6 +4,7 @@ import ar.edu.utn.frba.dds.dtos.colaboraciones.hacerseCargoHeladera.HacerseCargo
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.HacerseCargoHeladera;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
@@ -50,7 +51,7 @@ public class HacerseCargoHeladeraService implements WithSimplePersistenceUnit {
    * @param heladeraId  Id de la heladera
    */
   public void registrar(Colaborador colaborador, String heladeraId) {
-    Heladera heladera = heladeraRepository.buscarPorId(heladeraId)
+    Heladera heladera = heladeraRepository.buscarPorNombre(heladeraId)
         .orElseThrow(ResourceNotFoundException::new);
 
     final HacerseCargoHeladera hacerseCargoHeladera = HacerseCargoHeladera.por(
@@ -59,13 +60,14 @@ public class HacerseCargoHeladeraService implements WithSimplePersistenceUnit {
         heladera
     );
 
-    if (incidenteService.noTieneIncidentePendiente(heladera)) {
-      suscriptorSensorService.suscribirPara(heladera);
-    }
-
     // Caso heladera nueva
     if (heladera.getInicioFuncionamiento() == null) {
       heladera.setInicioFuncionamiento(LocalDateTime.now());
+    }
+
+    if (incidenteService.noTieneIncidentePendiente(heladera)) {
+      heladera.setEstado(EstadoHeladera.ACTIVA);
+      suscriptorSensorService.suscribirPara(heladera);
     }
 
     colaborador.invalidarPuntos();

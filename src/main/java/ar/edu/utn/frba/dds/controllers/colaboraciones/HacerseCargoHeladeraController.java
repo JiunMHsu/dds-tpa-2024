@@ -73,15 +73,15 @@ public class HacerseCargoHeladeraController extends ColaboradorRequired {
    * @param context Context de Javalin
    */
   public void save(Context context) {
-    Map<String, Object> model = new HashMap<>();
-    List<RedirectDTO> redirects = new ArrayList<>();
-    boolean operationSuccess = false;
-
     Colaborador colaborador = colaboradorFromSession(context);
 
     if (!colaborador.puedeColaborar(TipoColaboracion.HACERSE_CARGO_HELADERA)) {
       throw new UnauthorizedException("No tenes permiso");
     }
+
+    Map<String, Object> model = new HashMap<>();
+    List<RedirectDTO> redirects = new ArrayList<>();
+    boolean operationSuccess = false;
 
     try {
       this.hacerseCargoHeladeraService.registrar(
@@ -96,7 +96,7 @@ public class HacerseCargoHeladeraController extends ColaboradorRequired {
     } finally {
       model.put("success", operationSuccess);
       model.put("redirects", redirects);
-      context.render("post_result.hbs", model);
+      render(context, "post_result.hbs", model);
     }
   }
 
