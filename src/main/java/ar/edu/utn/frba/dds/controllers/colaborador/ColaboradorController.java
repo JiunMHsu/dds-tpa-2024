@@ -5,6 +5,7 @@ import ar.edu.utn.frba.dds.dtos.colaboraciones.TipoColaboracionDTO;
 import ar.edu.utn.frba.dds.dtos.colaborador.ColaboradorDTO;
 import ar.edu.utn.frba.dds.dtos.colaborador.CreateColaboradorDTO;
 import ar.edu.utn.frba.dds.dtos.usuario.CreateUsuarioDTO;
+import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
 import ar.edu.utn.frba.dds.exceptions.NotColaboratorException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.exceptions.ValidationException;
@@ -115,7 +116,7 @@ public class ColaboradorController extends ColaboradorRequired {
           .collect(Collectors.joining(","));
 
       CreateColaboradorDTO nuevoColaborador;
-      if (tipo == TipoColaborador.HUMANO) {
+      if (tipo.esHumano()) {
 
         nuevoColaborador = CreateColaboradorDTO.humana(
             tipoParam,
@@ -125,8 +126,8 @@ public class ColaboradorController extends ColaboradorRequired {
             context.formParamAsClass("barrio", String.class).get(),
             context.formParamAsClass("calle", String.class).get(),
             context.formParamAsClass("altura", String.class).get(),
-            context.formParamAsClass("telefono", String.class).get(),
-            context.formParamAsClass("whatsapp", String.class).get(),
+            context.formParamAsClass("telefono", String.class).getOrDefault(""),
+            context.formParamAsClass("whatsapp", String.class).getOrDefault(""),
             formasDeColaborar
         );
       } else {
@@ -138,8 +139,8 @@ public class ColaboradorController extends ColaboradorRequired {
             context.formParamAsClass("barrio", String.class).get(),
             context.formParamAsClass("calle", String.class).get(),
             context.formParamAsClass("altura", String.class).get(),
-            context.formParamAsClass("telefono", String.class).get(),
-            context.formParamAsClass("whatsapp", String.class).get(),
+            context.formParamAsClass("telefono", String.class).getOrDefault(""),
+            context.formParamAsClass("whatsapp", String.class).getOrDefault(""),
             formasDeColaborar
         );
       }
@@ -149,7 +150,7 @@ public class ColaboradorController extends ColaboradorRequired {
       operationSuccess = true;
       redirects.add(new RedirectDTO("/login", "Iniciar Sesión"));
 
-    } catch (ValidationException e) {
+    } catch (ValidationException | InvalidFormParamException e) {
       redirects.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
     } finally {
       model.put("success", operationSuccess);
@@ -205,7 +206,7 @@ public class ColaboradorController extends ColaboradorRequired {
       operationSuccess = true;
       redirects.add(new RedirectDTO("/colaboraciones", "Colaborar"));
 
-    } catch (ValidationException e) {
+    } catch (ValidationException | InvalidFormParamException e) {
       redirects.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
     } finally {
       model.put("success", operationSuccess);

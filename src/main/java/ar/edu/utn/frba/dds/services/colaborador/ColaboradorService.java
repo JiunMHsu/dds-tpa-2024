@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.services.colaborador;
 import ar.edu.utn.frba.dds.dtos.colaborador.ColaboradorDTO;
 import ar.edu.utn.frba.dds.dtos.colaborador.CreateColaboradorDTO;
 import ar.edu.utn.frba.dds.dtos.usuario.CreateUsuarioDTO;
+import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.colaborador.TipoColaborador;
@@ -57,11 +58,20 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
    */
   public void actualizarFormasColaborar(Colaborador colaborador, List<String> colaboraciones) {
 
-    ArrayList<TipoColaboracion> nuevasColaboraciones = colaboraciones.stream()
-        .map(TipoColaboracion::valueOf).collect(Collectors.toCollection(ArrayList::new));
+    List<TipoColaboracion> nuevasColaboraciones = colaboraciones.stream()
+        .map(String::toUpperCase)
+        .map(TipoColaboracion::valueOf)
+        .toList();
+
+    boolean puedeColaborar =
+        new ArrayList<>(colaborador.getTipoColaborador().colaboracionesPermitidas())
+            .containsAll(nuevasColaboraciones);
+
+    if (!puedeColaborar) {
+      throw new InvalidFormParamException();
+    }
 
     colaborador.setFormasDeColaborar(nuevasColaboraciones);
-
     withTransaction(() -> this.colaboradorRepository.actualizar(colaborador));
   }
 
@@ -71,10 +81,7 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
    * @param usuario Usuario
    * @return Optional de Colaborador
    */
-  public Optional<Colaborador> obtenerColaboradorPorUsuario(Usuario usuario) {
-    if (usuario == null) {
-      throw new IllegalArgumentException("El colaboradores debe tener un Usuario");
-    }
+  public Optional<Colaborador> obtenerColaboradorPorUsuario(@NotNull Usuario usuario) {
     return this.colaboradorRepository.buscarPorUsuario(usuario);
   }
 
@@ -94,13 +101,9 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
    * @return Lista de ColaboradorDTO
    */
   public List<ColaboradorDTO> buscarTodosColaboradores() {
-
-    List<Colaborador> todosColaboradores = this.colaboradorRepository.buscarTodos();
-    List<ColaboradorDTO> colaboradores = todosColaboradores.stream()
+    return this.colaboradorRepository.buscarTodos().stream()
         .map(ColaboradorDTO::preview)
         .toList();
-
-    return colaboradores;
   }
 
   /**
@@ -123,7 +126,7 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
   public void registrarNuevoColaborador(CreateUsuarioDTO nuevoUsuario,
                                         CreateColaboradorDTO nuevoColaborador) {
 
-    Direccion direccion = Direccion.con(
+    final Direccion direccion = Direccion.con(
         new Barrio(nuevoColaborador.getBarrio()),
         new Calle(nuevoColaborador.getCalle()),
         Integer.parseInt(nuevoColaborador.getAltura())
@@ -131,7 +134,7 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
 
     TipoRol rol = TipoRol.valueOf(nuevoUsuario.getRol().toUpperCase());
 
-    Usuario usuario = Usuario.con(
+    final Usuario usuario = Usuario.con(
         nuevoUsuario.getNombre(),
         nuevoUsuario.getContrasenia(),
         nuevoUsuario.getEmail(),
@@ -152,17 +155,31 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
       fechaNacimiento = LocalDate.parse(nuevoColaborador.getFechaNacimiento());
     }
 
-    List<Contacto> contactos = List.of(
-        Contacto.conEmail(nuevoUsuario.getEmail()),
-        Contacto.conTelefono(nuevoColaborador.getTelefono()),
-        Contacto.conWhatsApp("whatsapp:" + nuevoColaborador.getWhatsapp())
-    );
+    List<Contacto> contactos = new ArrayList<>();
+
+
+    contactos.add(Contacto.conEmail(nuevoUsuario.getEmail()));
+
+    if (!nuevoColaborador.getTelefono().isEmpty()) {
+      contactos.add(Contacto.conTelefono(nuevoColaborador.getTelefono()));
+    }
+
+    if (!nuevoColaborador.getWhatsapp().isEmpty()) {
+      Contacto.conWhatsApp("whatsapp:" + nuevoColaborador.getWhatsapp());
+    }
 
     List<TipoColaboracion> formasDeColaborar = Arrays
         .stream(nuevoColaborador.getFormaDeColaborar().split(","))
         .map(String::trim)
         .map(TipoColaboracion::valueOf)
         .collect(Collectors.toList());
+
+    boolean puedeColaborar =
+        new ArrayList<>(tipo.colaboracionesPermitidas()).containsAll(formasDeColaborar);
+
+    if (!puedeColaborar) {
+      throw new InvalidFormParamException();
+    }
 
     final Colaborador colaborador = Colaborador.builder()
         .tipoColaborador(tipo)
