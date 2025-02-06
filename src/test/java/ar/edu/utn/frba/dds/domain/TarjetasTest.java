@@ -45,7 +45,7 @@ public class TarjetasTest {
     tarjetasExistentes.add(tarjeta2);
     tarjetasExistentes.add(tarjeta3);
 
-    String nuevoCodigo = new RandomString(11).nextString();
+    String nuevoCodigo = new RandomString(11).generate();
 
     Assertions.assertFalse(tarjetasExistentes.stream().anyMatch(tarjeta -> tarjeta.getCodigo().equals(nuevoCodigo)),
         "El código generado ya existe en la lista de tarjetas existentes.");

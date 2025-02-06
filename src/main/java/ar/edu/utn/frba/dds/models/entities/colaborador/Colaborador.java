@@ -250,6 +250,11 @@ public class Colaborador extends EntidadPersistente {
         .findFirst();
   }
 
+  /**
+   * Agrega un contacto.
+   *
+   * @param contacto contacto
+   */
   public void agregarContacto(Contacto contacto) {
     if (contactos == null) {
       contactos = new ArrayList<>();

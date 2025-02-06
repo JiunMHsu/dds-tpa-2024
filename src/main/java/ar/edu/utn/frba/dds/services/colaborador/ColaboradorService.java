@@ -17,6 +17,7 @@ import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.IColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.contacto.ContactoRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.IUsuarioRepository;
+import ar.edu.utn.frba.dds.services.tarjeta.TarjetaColaboradorService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
   private final IColaboradorRepository colaboradorRepository;
   private final IUsuarioRepository usuarioRepository;
   private final ContactoRepository contactoRepository;
+  private final TarjetaColaboradorService tarjetaColaboradorService;
 
   /**
    * Constructor de ColaboradorService.
@@ -44,10 +46,12 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
    */
   public ColaboradorService(IColaboradorRepository colaboradorRepository,
                             IUsuarioRepository usuarioRepository,
-                            ContactoRepository contactoRepository) {
+                            ContactoRepository contactoRepository,
+                            TarjetaColaboradorService tarjetaColaboradorService) {
     this.colaboradorRepository = colaboradorRepository;
     this.usuarioRepository = usuarioRepository;
     this.contactoRepository = contactoRepository;
+    this.tarjetaColaboradorService = tarjetaColaboradorService;
   }
 
   /**
@@ -72,7 +76,15 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
     }
 
     colaborador.setFormasDeColaborar(nuevasColaboraciones);
-    withTransaction(() -> this.colaboradorRepository.actualizar(colaborador));
+
+    beginTransaction();
+    this.colaboradorRepository.actualizar(colaborador);
+
+    if (deberiaTenerTarjeta(colaborador)) {
+      this.tarjetaColaboradorService.generarTarjetaPara(colaborador);
+    }
+    // ¿Dar de baja en caso contrario??
+    commitTransaction();
   }
 
   /**
@@ -157,7 +169,6 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
 
     List<Contacto> contactos = new ArrayList<>();
 
-
     contactos.add(Contacto.conEmail(nuevoUsuario.getEmail()));
 
     if (!nuevoColaborador.getTelefono().isEmpty()) {
@@ -199,6 +210,17 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
     this.usuarioRepository.guardar(usuario);
     this.contactoRepository.guardar(contactos);
     this.colaboradorRepository.guardar(colaborador);
+
+    if (deberiaTenerTarjeta(colaborador)) {
+      this.tarjetaColaboradorService.generarTarjetaPara(colaborador);
+    }
     commitTransaction();
+  }
+
+  private boolean deberiaTenerTarjeta(Colaborador colaborador) {
+    List<TipoColaboracion> colaboraciones = colaborador.getFormasDeColaborar();
+
+    return colaboraciones.contains(TipoColaboracion.DISTRIBUCION_VIANDAS)
+        || colaboraciones.contains(TipoColaboracion.DONACION_VIANDAS);
   }
 }

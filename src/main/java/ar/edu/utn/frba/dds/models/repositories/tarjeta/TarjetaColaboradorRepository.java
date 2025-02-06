@@ -16,7 +16,7 @@ public class TarjetaColaboradorRepository
 
   @Override
   public void guardar(TarjetaColaborador tarjeta) {
-    withTransaction(() -> entityManager().persist(tarjeta));
+    entityManager().persist(tarjeta);
   }
 
   @Override

@@ -69,7 +69,7 @@ public class RandomString {
    *
    * @return una cadena aleatoria generada
    */
-  public String nextString() {
+  public String generate() {
     for (int idx = 0; idx < buf.length; ++idx) {
       buf[idx] = symbols[random.nextInt(symbols.length)];
     }
