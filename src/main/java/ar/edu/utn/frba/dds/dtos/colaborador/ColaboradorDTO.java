@@ -61,8 +61,6 @@ public class ColaboradorDTO {
         .map(TipoColaboracion::getDescription)
         .collect(Collectors.joining(", "));
 
-    String domicilioString = colaborador.getDireccion().getCalle().getNombre() + " " + colaborador.getDireccion().getAltura().toString();
-
     String contactos = colaborador.getContactos().stream()
         .map(Contacto::getValor)
         .filter(Objects::nonNull)
@@ -73,7 +71,7 @@ public class ColaboradorDTO {
         .nombre(colaborador.getNombre())
         .apellido(colaborador.getApellido())
         .fechaNacimiento(colaborador.getFechaNacimiento().toString())
-        .direccion(domicilioString)
+        .direccion(colaborador.getDireccion().toString())
         .formaDeColaborar(formasDeColaborar)
         .contacto(contactos)
         .tipoColaborador("HUMANO")
@@ -93,8 +91,6 @@ public class ColaboradorDTO {
         .map(TipoColaboracion::getDescription)
         .collect(Collectors.joining(", "));
 
-    String domicilioString = colaborador.getDireccion().getCalle().getNombre() + " " + colaborador.getDireccion().getAltura().toString();
-
     String contactos = colaborador.getContactos().stream()
         .map(Contacto::getValor)
         .filter(Objects::nonNull)
@@ -102,7 +98,7 @@ public class ColaboradorDTO {
 
     return ColaboradorDTO
         .builder()
-        .direccion(domicilioString)
+        .direccion(colaborador.getDireccion().toString())
         .rubro(colaborador.getRubro())
         .formaDeColaborar(formasDeColaborar)
         .contacto(contactos)

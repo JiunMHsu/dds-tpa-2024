@@ -39,7 +39,7 @@ public class ImageService {
       throw new IOException();
     }
 
-    String fileName = randomString.nextString() + extension;
+    String fileName = randomString.generate() + extension;
     Path path = Path.of(relativePath, fileName).toAbsolutePath();
     System.out.println(path);
 
