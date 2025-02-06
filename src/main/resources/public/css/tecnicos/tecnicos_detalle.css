@@ -1,92 +1,61 @@
-.main-section {
-    /* border: 1px solid var(--background-3); */
-    justify-content: center;
-}
-
 .container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    column-gap: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 70%;
+    gap: 1.5rem;
 }
 
 .header {
-    grid-column: 1 / -1;
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     align-items: center;
-    margin: 0 0 5%;
+    width: 100%;
+    margin-bottom: 1rem;
 }
 
 .title {
     flex-grow: 1;
-    display: flex;
-    width: 100%;
     margin: 0;
     font-size: 2rem;
 }
 
-.edit-button {
+.info-grid {
     display: flex;
+    flex-direction: row;
     justify-content: center;
-    align-items: center;
-    padding: .5rem;
-    border-radius: .5rem;
-    background-color: var(--background-2);
-    border: 1px solid var(--background-3);
-
-    color: var(--foreground-0);
-    text-decoration: none;
-
-    transition-property: all;
-    transition-duration: 300ms;
+    width: 100%;
+    gap: 2rem;
 }
 
-.edit-button:hover {
-    color: var(--main-light-0);
-    text-shadow: 0 0 .1rem var(--main-light-0);
-    box-shadow: 0 0 1rem var(--background-3);
+.left-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.ultimo-estado {
-    grid-column: 1 / -1;
-}
-
-.direccion {
-    grid-column: 1 / -1;
-}
-
-.inicio-funcionamiento {
-    grid-column: 1 / -1;
+.right-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .card-container {
     display: flex;
     flex-direction: column;
-}
-
-.card-container h3 {
-    margin: .5rem 0;
+    width: 100%;
+    max-width: 500px;
 }
 
 .card {
-    flex-grow: 1;
     display: flex;
     flex-direction: column;
     padding: 1rem;
     border-radius: .5rem;
     color: var(--foreground-0);
-    background-color: var(--background-2);
-    border: 1px solid var(--background-3);
-
-    transition-property: all;
-    transition-duration: 300ms;
-}
-
-.card:hover {
-    color: var(--main-light-0);
-    background-color: var(--background-1);
+    width: 100%;
 }
 
 .card p {
@@ -101,11 +70,18 @@
     margin-right: .5rem;
 }
 
-.side-panel {
-    width: 35vw;
+.section-title {
+    font-weight: 600;
+    margin: .5rem 0;
+    text-align: left;
 }
 
-#map {
-    height: 100%;
-    width: 100%;
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+
+    .info-grid {
+        flex-direction: column;
+    }
 }

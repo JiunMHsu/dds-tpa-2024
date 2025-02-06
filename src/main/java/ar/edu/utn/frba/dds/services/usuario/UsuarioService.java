@@ -6,6 +6,7 @@ import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.usuario.IUsuarioRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Servicio de Usuario.
@@ -28,10 +29,7 @@ public class UsuarioService implements WithSimplePersistenceUnit {
    * @param id Id del usuario
    * @return Optional de Usuario
    */
-  public Optional<Usuario> obtenerUsuarioPorId(String id) {
-    if (id == null || id.isEmpty()) {
-      throw new IllegalArgumentException("El ID del Usuario no puede ser null o vacío");
-    }
+  public Optional<Usuario> obtenerUsuarioPorId(@NotNull String id) {
     return this.usuarioRepository.buscarPorId(id);
   }
 

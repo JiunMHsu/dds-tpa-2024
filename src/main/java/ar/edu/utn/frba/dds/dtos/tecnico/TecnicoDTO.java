@@ -5,27 +5,31 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * DTO de Tecnico.
+ */
 @Getter
 @Setter
 @Builder
 public class TecnicoDTO {
-
   private String id;
-
   private String nombre;
-
   private String apellido;
-
   private String documento;
-
-  private String cuit;
-
+  private String cuil;
   private String contacto;
-
   private String medioDeNotificacion;
+  private String barrioArea;
+  private String radioArea;
+  private String latitudArea;
+  private String longitudArea;
 
-  private String areaDeCobertura;
-
+  /**
+   * Genera el DTO completo de un Técnico.
+   *
+   * @param tecnico Técnico
+   * @return TecnicoDTO
+   */
   public static TecnicoDTO completa(Tecnico tecnico) {
     return TecnicoDTO
         .builder()
@@ -33,12 +37,21 @@ public class TecnicoDTO {
         .nombre(tecnico.getNombre())
         .apellido(tecnico.getApellido())
         .documento(tecnico.getDocumento().getNumero())
-        .cuit(tecnico.getCuil())
-        .medioDeNotificacion(tecnico.getContacto().getMedioDeNotificacion().toString())
-        .areaDeCobertura(tecnico.getAreaDeCobertura().getBarrio().getNombre())
+        .cuil(tecnico.getCuil())
+        .medioDeNotificacion(tecnico.getContacto().getValor())
+        .barrioArea(tecnico.getAreaDeCobertura().getBarrio().getNombre())
+        .radioArea(tecnico.getAreaDeCobertura().getRadio().toString())
+        .latitudArea(String.valueOf(tecnico.getAreaDeCobertura().getUbicacion().getLatitud()))
+        .longitudArea(String.valueOf(tecnico.getAreaDeCobertura().getUbicacion().getLongitud()))
         .build();
   }
 
+  /**
+   * Genera el DTO preview de un Técnico.
+   *
+   * @param tecnico Técnico
+   * @return TecnicoDTO
+   */
   public static TecnicoDTO preview(Tecnico tecnico) {
     return TecnicoDTO
         .builder()
@@ -46,9 +59,8 @@ public class TecnicoDTO {
         .nombre(tecnico.getNombre())
         .apellido(tecnico.getApellido())
         .documento(tecnico.getDocumento().getNumero())
-        .cuit(tecnico.getCuil())
-        .areaDeCobertura(tecnico.getAreaDeCobertura().getBarrio().getNombre())
+        .cuil(tecnico.getCuil())
+        .barrioArea(tecnico.getAreaDeCobertura().getBarrio().getNombre())
         .build();
   }
-
 }

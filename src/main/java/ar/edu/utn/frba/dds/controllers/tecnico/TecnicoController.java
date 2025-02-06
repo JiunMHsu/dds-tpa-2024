@@ -43,32 +43,25 @@ public class TecnicoController extends TecnicoRequired {
    * @param context Objeto Context de io.javalin.http
    */
   public void index(Context context) {
-    List<Tecnico> tecnicos = this.tecnicoService.buscarTodos();
-    List<TecnicoDTO> tecnicosDTO = tecnicos.stream()
-        .map(TecnicoDTO::preview)
-        .toList();
-
     Map<String, Object> model = new HashMap<>();
-    model.put("tecnicos", tecnicosDTO);
+
+    List<TecnicoDTO> tecnicos = this.tecnicoService.buscarTodos();
+    model.put("tecnicos", tecnicos);
+
     render(context, "tecnicos/tecnicos.hbs", model);
   }
 
   /**
-   * Devuelve la vista de un técnico.
+   * Devuelve la vista de un Técnico.
    *
    * @param context Objeto Context de io.javalin.http
    */
   public void show(Context context) {
     String idTecnico = context.pathParam("id");
-    Optional<Tecnico> tecnicoBuscado = this.tecnicoService.buscarTecnicoPorId(idTecnico);
-
-    if (tecnicoBuscado.isEmpty()) {
-      throw new ResourceNotFoundException("No se encontró tecnico paraColaborador cuit " + idTecnico);
-    }
+    TecnicoDTO tecnico = this.tecnicoService.buscarTecnicoPorId(idTecnico);
 
     Map<String, Object> model = new HashMap<>();
-    TecnicoDTO tecnicoDTO = TecnicoDTO.completa(tecnicoBuscado.get());
-    model.put("tecnico", tecnicoDTO);
+    model.put("tecnico", tecnico);
 
     render(context, "tecnicos/tecnico_detalle.hbs", model);
   }
@@ -89,7 +82,7 @@ public class TecnicoController extends TecnicoRequired {
    */
   public void save(Context context) {
     Map<String, Object> model = new HashMap<>();
-    List<RedirectDTO> redirectDTOS = new ArrayList<>();
+    List<RedirectDTO> redirects = new ArrayList<>();
     boolean operationSuccess = false;
 
     try {
@@ -99,7 +92,7 @@ public class TecnicoController extends TecnicoRequired {
       CreateUsuarioDTO nuevoUsuario;
 
       if (!validador.esValida(contrasenia)) {
-        throw new ar.edu.utn.frba.dds.exceptions.ValidationException("La contraseña no cumple con los requisitos de seguridad.");
+        throw new ar.edu.utn.frba.dds.exceptions.ValidationException("");
       } else {
         nuevoUsuario = CreateUsuarioDTO.con(
             context.formParamAsClass("nombre_usuario", String.class).get(),
@@ -124,19 +117,20 @@ public class TecnicoController extends TecnicoRequired {
       this.tecnicoService.registrarNuevoTecnico(nuevoUsuario, nuevoTecnico);
 
       operationSuccess = true;
-      redirectDTOS.add(new RedirectDTO("/home", "Siguiente"));
+      redirects.add(new RedirectDTO("/home", "Siguiente"));
 
     } catch (ValidationException | IllegalArgumentException e) {
-      redirectDTOS.add(new RedirectDTO("/home", "Reintentar"));
+      redirects.add(new RedirectDTO("/home", "Reintentar"));
     } finally {
       model.put("success", operationSuccess);
-      model.put("redirects", redirectDTOS);
+      model.put("redirects", redirects);
       context.render("post_result.hbs", model);
     }
   }
 
   /**
    * Devuelve un formulario para editar a un Técnico.
+   * TODO - Ver si Refactorizar
    *
    * @param context Objeto Context de io.javalin.http
    */
@@ -151,13 +145,14 @@ public class TecnicoController extends TecnicoRequired {
 
     Usuario usuario = usuarioSession.get();
 
-    Optional<Tecnico> tecnicoSession = this.tecnicoService.obtenerTecnicoPorUsuario(usuarioSession.get());
+    Optional<Tecnico> tecnicoSession = this.tecnicoService
+        .obtenerTecnicoPorUsuario(usuarioSession.get());
+
     if (tecnicoSession.isEmpty()) {
-      throw new ResourceNotFoundException("No se encontró el tecnico paraColaborador usuario " + usuario.getNombre());
+      throw new ResourceNotFoundException("");
     }
 
     Tecnico tecnicoActualizado = tecnicoSession.get();
-
 
     this.tecnicoService.actualizar(tecnicoActualizado);
     context.status(HttpStatus.OK); // TODO - mepa q esto solo no es suficiente
