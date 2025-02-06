@@ -88,7 +88,7 @@ public class TarjetaPersonaVulnerable extends EntidadPersistente {
    */
   public static TarjetaPersonaVulnerable de(PersonaVulnerable duenio) {
     return TarjetaPersonaVulnerable.de(
-        new RandomString(11).nextString(),
+        new RandomString(11).generate(),
         duenio,
         0,
         LocalDate.now());

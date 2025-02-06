@@ -370,8 +370,8 @@ public class ServiceLocator {
       ColaboradorService instance = new ColaboradorService(
           instanceOf(ColaboradorRepository.class),
           instanceOf(UsuarioRepository.class),
-          instanceOf(ContactoRepository.class)
-      );
+          instanceOf(ContactoRepository.class),
+          instanceOf(TarjetaColaboradorService.class));
       instances.put(componentName, instance);
     }
 

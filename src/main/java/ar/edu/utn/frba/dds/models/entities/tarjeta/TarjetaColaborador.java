@@ -62,7 +62,7 @@ public class TarjetaColaborador extends EntidadPersistente {
    * @return Tarjeta de colaborador.
    */
   public static TarjetaColaborador de(Colaborador duenio) {
-    return TarjetaColaborador.de(new RandomString(11).nextString(), duenio, true);
+    return TarjetaColaborador.de(new RandomString(11).generate(), duenio, true);
   }
 
 }

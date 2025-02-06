@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.services.colaborador;
 import ar.edu.utn.frba.dds.dtos.colaborador.ColaboradorDTO;
 import ar.edu.utn.frba.dds.dtos.colaborador.CreateColaboradorDTO;
 import ar.edu.utn.frba.dds.dtos.usuario.CreateUsuarioDTO;
+import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.colaborador.TipoColaborador;
@@ -16,6 +17,7 @@ import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.IColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.contacto.ContactoRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.IUsuarioRepository;
+import ar.edu.utn.frba.dds.services.tarjeta.TarjetaColaboradorService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -33,6 +35,7 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
   private final IColaboradorRepository colaboradorRepository;
   private final IUsuarioRepository usuarioRepository;
   private final ContactoRepository contactoRepository;
+  private final TarjetaColaboradorService tarjetaColaboradorService;
 
   /**
    * Constructor de ColaboradorService.
@@ -43,10 +46,12 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
    */
   public ColaboradorService(IColaboradorRepository colaboradorRepository,
                             IUsuarioRepository usuarioRepository,
-                            ContactoRepository contactoRepository) {
+                            ContactoRepository contactoRepository,
+                            TarjetaColaboradorService tarjetaColaboradorService) {
     this.colaboradorRepository = colaboradorRepository;
     this.usuarioRepository = usuarioRepository;
     this.contactoRepository = contactoRepository;
+    this.tarjetaColaboradorService = tarjetaColaboradorService;
   }
 
   /**
@@ -57,12 +62,29 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
    */
   public void actualizarFormasColaborar(Colaborador colaborador, List<String> colaboraciones) {
 
-    ArrayList<TipoColaboracion> nuevasColaboraciones = colaboraciones.stream()
-        .map(TipoColaboracion::valueOf).collect(Collectors.toCollection(ArrayList::new));
+    List<TipoColaboracion> nuevasColaboraciones = colaboraciones.stream()
+        .map(String::toUpperCase)
+        .map(TipoColaboracion::valueOf)
+        .toList();
+
+    boolean puedeColaborar =
+        new ArrayList<>(colaborador.getTipoColaborador().colaboracionesPermitidas())
+            .containsAll(nuevasColaboraciones);
+
+    if (!puedeColaborar) {
+      throw new InvalidFormParamException();
+    }
 
     colaborador.setFormasDeColaborar(nuevasColaboraciones);
 
-    withTransaction(() -> this.colaboradorRepository.actualizar(colaborador));
+    beginTransaction();
+    this.colaboradorRepository.actualizar(colaborador);
+
+    if (deberiaTenerTarjeta(colaborador)) {
+      this.tarjetaColaboradorService.generarTarjetaPara(colaborador);
+    }
+    // ¿Dar de baja en caso contrario??
+    commitTransaction();
   }
 
   /**
@@ -71,10 +93,7 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
    * @param usuario Usuario
    * @return Optional de Colaborador
    */
-  public Optional<Colaborador> obtenerColaboradorPorUsuario(Usuario usuario) {
-    if (usuario == null) {
-      throw new IllegalArgumentException("El colaboradores debe tener un Usuario");
-    }
+  public Optional<Colaborador> obtenerColaboradorPorUsuario(@NotNull Usuario usuario) {
     return this.colaboradorRepository.buscarPorUsuario(usuario);
   }
 
@@ -94,13 +113,9 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
    * @return Lista de ColaboradorDTO
    */
   public List<ColaboradorDTO> buscarTodosColaboradores() {
-
-    List<Colaborador> todosColaboradores = this.colaboradorRepository.buscarTodos();
-    List<ColaboradorDTO> colaboradores = todosColaboradores.stream()
+    return this.colaboradorRepository.buscarTodos().stream()
         .map(ColaboradorDTO::preview)
         .toList();
-
-    return colaboradores;
   }
 
   /**
@@ -123,7 +138,7 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
   public void registrarNuevoColaborador(CreateUsuarioDTO nuevoUsuario,
                                         CreateColaboradorDTO nuevoColaborador) {
 
-    Direccion direccion = Direccion.con(
+    final Direccion direccion = Direccion.con(
         new Barrio(nuevoColaborador.getBarrio()),
         new Calle(nuevoColaborador.getCalle()),
         Integer.parseInt(nuevoColaborador.getAltura())
@@ -131,7 +146,7 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
 
     TipoRol rol = TipoRol.valueOf(nuevoUsuario.getRol().toUpperCase());
 
-    Usuario usuario = Usuario.con(
+    final Usuario usuario = Usuario.con(
         nuevoUsuario.getNombre(),
         nuevoUsuario.getContrasenia(),
         nuevoUsuario.getEmail(),
@@ -152,17 +167,30 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
       fechaNacimiento = LocalDate.parse(nuevoColaborador.getFechaNacimiento());
     }
 
-    List<Contacto> contactos = List.of(
-        Contacto.conEmail(nuevoUsuario.getEmail()),
-        Contacto.conTelefono(nuevoColaborador.getTelefono()),
-        Contacto.conWhatsApp("whatsapp:" + nuevoColaborador.getWhatsapp())
-    );
+    List<Contacto> contactos = new ArrayList<>();
+
+    contactos.add(Contacto.conEmail(nuevoUsuario.getEmail()));
+
+    if (!nuevoColaborador.getTelefono().isEmpty()) {
+      contactos.add(Contacto.conTelefono(nuevoColaborador.getTelefono()));
+    }
+
+    if (!nuevoColaborador.getWhatsapp().isEmpty()) {
+      Contacto.conWhatsApp("whatsapp:" + nuevoColaborador.getWhatsapp());
+    }
 
     List<TipoColaboracion> formasDeColaborar = Arrays
         .stream(nuevoColaborador.getFormaDeColaborar().split(","))
         .map(String::trim)
         .map(TipoColaboracion::valueOf)
         .collect(Collectors.toList());
+
+    boolean puedeColaborar =
+        new ArrayList<>(tipo.colaboracionesPermitidas()).containsAll(formasDeColaborar);
+
+    if (!puedeColaborar) {
+      throw new InvalidFormParamException();
+    }
 
     final Colaborador colaborador = Colaborador.builder()
         .tipoColaborador(tipo)
@@ -182,6 +210,17 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
     this.usuarioRepository.guardar(usuario);
     this.contactoRepository.guardar(contactos);
     this.colaboradorRepository.guardar(colaborador);
+
+    if (deberiaTenerTarjeta(colaborador)) {
+      this.tarjetaColaboradorService.generarTarjetaPara(colaborador);
+    }
     commitTransaction();
+  }
+
+  private boolean deberiaTenerTarjeta(Colaborador colaborador) {
+    List<TipoColaboracion> colaboraciones = colaborador.getFormasDeColaborar();
+
+    return colaboraciones.contains(TipoColaboracion.DISTRIBUCION_VIANDAS)
+        || colaboraciones.contains(TipoColaboracion.DONACION_VIANDAS);
   }
 }
