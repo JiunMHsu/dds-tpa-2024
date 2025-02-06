@@ -118,11 +118,15 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
     Tecnico tecnico = this.tecnicoMasCercano(incidente.getHeladera().getDireccion());
 
     String asunto = "Falla en la heladera";
-    String cuerpo = String.format("Estimado/a %s,\n\n"
-            + "La %s ha sufrido un desperfecto.\n"
-            + "Ocurrio un/a %s\n\n"
-            + "Por favor, dirigirse a la heladera situada en: %s lo antes posible. \n\n"
-            + "Gracias por su rápida acción.",
+    String cuerpo = String.format("""
+            Estimado/a %s,
+            
+            La %s ha sufrido un desperfecto.
+            Ocurrio un/a %s
+            
+            Por favor, dirigirse a la heladera situada en: %s lo antes posible.\s
+            
+            Gracias por su rápida acción.""",
         tecnico.getNombre(),
         incidente.getHeladera().getNombre(),
         incidente.getTipo().getDescription(),
@@ -162,12 +166,16 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
         .map(Heladera::getNombre)
         .collect(Collectors.joining("\n"));
 
-    String cuerpo = String.format("Estimado/a %s,\n\n"
-            + "La %s ha sufrido un desperfecto.\n"
-            + "Ocurrio un/a %s\n\n"
-            + "Por favor, traslade las viandas a las siguientes heladeras sugeridas:\n\n"
-            + "%s\n"
-            + "Gracias por su rápida acción.",
+    String cuerpo = String.format("""
+            Estimado/a %s,
+            
+            La %s ha sufrido un desperfecto.
+            Ocurrio un/a %s
+            
+            Por favor, traslade las viandas a las siguientes heladeras sugeridas:
+            
+            %s
+            Gracias por su rápida acción.""",
         incidente.getTipo().getDescription(),
         sugerencias
     );
@@ -200,7 +208,8 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
   public Tecnico tecnicoMasCercano(Direccion direccion) {
     List<Tecnico> tecnicosCercanos = tecnicoService.obtenerPorBarrio(direccion.getBarrio())
         .stream()
-        .sorted(Comparator.comparingDouble(tecnico1 -> tecnico1.getAreaDeCobertura().distanciaA(direccion.getUbicacion())))
+        .sorted(Comparator.comparingDouble(tecnico -> tecnico.getAreaDeCobertura()
+            .distanciaA(direccion.getUbicacion())))
         .toList();
     return tecnicosCercanos.get(0);
   }

@@ -1,23 +1,17 @@
 package ar.edu.utn.frba.dds.controllers.tecnico;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
+import ar.edu.utn.frba.dds.dtos.tecnico.CreateTecnicoDTO;
 import ar.edu.utn.frba.dds.dtos.tecnico.TecnicoDTO;
+import ar.edu.utn.frba.dds.dtos.usuario.CreateUsuarioDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
-import ar.edu.utn.frba.dds.models.entities.data.Area;
-import ar.edu.utn.frba.dds.models.entities.data.Barrio;
-import ar.edu.utn.frba.dds.models.entities.data.Contacto;
-import ar.edu.utn.frba.dds.models.entities.data.Documento;
-import ar.edu.utn.frba.dds.models.entities.data.TipoDocumento;
-import ar.edu.utn.frba.dds.models.entities.data.Ubicacion;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.entities.usuario.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.stateless.ValidadorDeContrasenias;
-import ar.edu.utn.frba.dds.models.stateless.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.permissions.TecnicoRequired;
 import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
-import ar.edu.utn.frba.dds.utils.ICrudViewsHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.validation.ValidationException;
@@ -30,14 +24,24 @@ import java.util.Optional;
 /**
  * Controlador de la entidad Tecnico.
  */
-public class TecnicoController extends TecnicoRequired implements ICrudViewsHandler {
+public class TecnicoController extends TecnicoRequired {
 
+  /**
+   * Constructor de TecnicoController.
+   *
+   * @param usuarioService Servicio de Usuario
+   * @param tecnicoService Servicio de Tecnico
+   */
   public TecnicoController(UsuarioService usuarioService,
                            TecnicoService tecnicoService) {
     super(usuarioService, tecnicoService);
   }
 
-  @Override
+  /**
+   * Devuelve la vista de todos los técnicos.
+   *
+   * @param context Objeto Context de io.javalin.http
+   */
   public void index(Context context) {
     List<Tecnico> tecnicos = this.tecnicoService.buscarTodos();
     List<TecnicoDTO> tecnicosDTO = tecnicos.stream()
@@ -49,7 +53,11 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
     render(context, "tecnicos/tecnicos.hbs", model);
   }
 
-  @Override
+  /**
+   * Devuelve la vista de un técnico.
+   *
+   * @param context Objeto Context de io.javalin.http
+   */
   public void show(Context context) {
     String idTecnico = context.pathParam("id");
     Optional<Tecnico> tecnicoBuscado = this.tecnicoService.buscarTecnicoPorId(idTecnico);
@@ -65,12 +73,20 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
     render(context, "tecnicos/tecnico_detalle.hbs", model);
   }
 
-  @Override
+  /**
+   * Devuelve un formulario para dar de alta a un Técnico.
+   *
+   * @param context Objeto Context de io.javalin.http
+   */
   public void create(Context context) {
     render(context, "tecnicos/tecnico_crear.hbs", new HashMap<>());
   }
 
-  @Override
+  /**
+   * Registra a un Técnico.
+   *
+   * @param context Objeto Context de io.javalin.http
+   */
   public void save(Context context) {
     Map<String, Object> model = new HashMap<>();
     List<RedirectDTO> redirectDTOS = new ArrayList<>();
@@ -80,68 +96,37 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
       String contrasenia = context.formParamAsClass("contrasenia", String.class).get();
       ValidadorDeContrasenias validador = new ValidadorDeContrasenias();
 
+      CreateUsuarioDTO nuevoUsuario;
+
       if (!validador.esValida(contrasenia)) {
-        throw new ar.edu.utn.frba.dds.exceptions.ValidationException("La contraseña no cumple por los requisitos de seguridad.");
+        throw new ar.edu.utn.frba.dds.exceptions.ValidationException("La contraseña no cumple con los requisitos de seguridad.");
+      } else {
+        nuevoUsuario = CreateUsuarioDTO.con(
+            context.formParamAsClass("nombre_usuario", String.class).get(),
+            contrasenia,
+            context.formParamAsClass("email", String.class).get(),
+            TipoRol.TECNICO.toString()
+        );
       }
 
-      Usuario usuario = Usuario.con(
-          context.formParamAsClass("nombre_usuario", String.class).get(),
-          contrasenia,
-          context.formParamAsClass("email", String.class).get(),
-          TipoRol.TECNICO
-      );
-
-      String nombre = context.formParamAsClass("nombre", String.class).get();
-      String apellido = context.formParamAsClass("apellido", String.class).get();
-
-      Documento documento = Documento.con(
-          TipoDocumento.valueOf(context.formParamAsClass("tipo_documento", String.class).get()),
-          context.formParamAsClass("nro_documento", String.class).get()
-      );
-
-      String cuit = context.formParamAsClass("cuit", String.class).get();
-
-      MedioDeNotificacion medioDeNotificacion = MedioDeNotificacion.valueOf(context.formParamAsClass("medio-notificacion", String.class).get());
-
-      String key = switch (medioDeNotificacion) {
-        case EMAIL -> context.formParamAsClass("email", String.class).get();
-        case WHATSAPP -> "whatsapp:" + context.formParamAsClass("whatsapp", String.class).get();
-        case TELEGRAM -> context.formParamAsClass("telegram", String.class).get();
-        case TELEFONO -> context.formParamAsClass("telefono", String.class).get();
-      };
-
-      Contacto contacto = Contacto.con(medioDeNotificacion, key);
-
-      Ubicacion ubicacion = new Ubicacion(
+      CreateTecnicoDTO nuevoTecnico = new CreateTecnicoDTO(
+          context.formParamAsClass("nombre", String.class).get(),
+          context.formParamAsClass("apellido", String.class).get(),
+          context.formParamAsClass("tipo_documento", String.class).get(),
+          context.formParamAsClass("nro_documento", String.class).get(),
+          context.formParamAsClass("cuil", String.class).get(),
           context.formParamAsClass("latitud", Double.class).get(),
-          context.formParamAsClass("longitud", Double.class).get()
+          context.formParamAsClass("longitud", Double.class).get(),
+          context.formParamAsClass("radio", Integer.class).get(),
+          context.formParamAsClass("barrio", String.class).get()
       );
 
-      Integer radio = context.queryParamAsClass("radio", Integer.class)
-          .check(rad -> rad >= 0.0, "el radio debe ser positivo").get();
-
-      Area area = Area.con(
-          ubicacion,
-          radio,
-          new Barrio(context.formParamAsClass("barrio", String.class).get())
-      );
-
-      Tecnico tecnico = Tecnico.con(
-          usuario,
-          nombre,
-          apellido,
-          documento,
-          cuit,
-          contacto,
-          area
-      );
-
-      this.tecnicoService.guardarTecnico(tecnico);
+      this.tecnicoService.registrarNuevoTecnico(nuevoUsuario, nuevoTecnico);
 
       operationSuccess = true;
       redirectDTOS.add(new RedirectDTO("/home", "Siguiente"));
 
-    } catch (ValidationException e) {
+    } catch (ValidationException | IllegalArgumentException e) {
       redirectDTOS.add(new RedirectDTO("/home", "Reintentar"));
     } finally {
       model.put("success", operationSuccess);
@@ -150,12 +135,11 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
     }
   }
 
-  @Override
-  public void edit(Context context) {
-
-  }
-
-  @Override
+  /**
+   * Devuelve un formulario para editar a un Técnico.
+   *
+   * @param context Objeto Context de io.javalin.http
+   */
   public void update(Context context) { // TODO - REFACTOR
 
     String userId = context.sessionAttribute("userId");
@@ -177,10 +161,5 @@ public class TecnicoController extends TecnicoRequired implements ICrudViewsHand
 
     this.tecnicoService.actualizar(tecnicoActualizado);
     context.status(HttpStatus.OK); // TODO - mepa q esto solo no es suficiente
-  }
-
-  @Override
-  public void delete(Context context) {
-
   }
 }

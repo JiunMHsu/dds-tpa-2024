@@ -26,8 +26,6 @@ public class TecnicoRouter implements IRouter {
             post(ServiceLocator.instanceOf(TecnicoController.class)::update, TipoRol.ADMIN);
 
             get(ServiceLocator.instanceOf(TecnicoController.class)::show, TipoRol.ADMIN);
-
-            get("/edit", ServiceLocator.instanceOf(TecnicoController.class)::edit, TipoRol.ADMIN);
           });
         })
     );

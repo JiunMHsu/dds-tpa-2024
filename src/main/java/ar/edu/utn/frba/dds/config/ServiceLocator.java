@@ -488,7 +488,9 @@ public class ServiceLocator {
 
     if (componentName.equals(TecnicoService.class.getName())) {
       TecnicoService instance = new TecnicoService(
-          instanceOf(TecnicoRepository.class));
+          instanceOf(TecnicoRepository.class),
+          instanceOf(UsuarioRepository.class),
+          instanceOf(ContactoRepository.class));
       instances.put(componentName, instance);
     }
 
