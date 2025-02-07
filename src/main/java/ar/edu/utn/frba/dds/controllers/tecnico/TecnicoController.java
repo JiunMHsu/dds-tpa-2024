@@ -4,22 +4,17 @@ import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.tecnico.CreateTecnicoDTO;
 import ar.edu.utn.frba.dds.dtos.tecnico.TecnicoDTO;
 import ar.edu.utn.frba.dds.dtos.usuario.CreateUsuarioDTO;
-import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
-import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.entities.usuario.TipoRol;
-import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
 import ar.edu.utn.frba.dds.models.stateless.ValidadorDeContrasenias;
 import ar.edu.utn.frba.dds.permissions.TecnicoRequired;
 import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import io.javalin.http.Context;
-import io.javalin.http.HttpStatus;
 import io.javalin.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Controlador de la entidad Tecnico.
@@ -126,35 +121,5 @@ public class TecnicoController extends TecnicoRequired {
       model.put("redirects", redirects);
       context.render("post_result.hbs", model);
     }
-  }
-
-  /**
-   * Devuelve un formulario para editar a un Técnico.
-   * TODO - Ver si Refactorizar
-   *
-   * @param context Objeto Context de io.javalin.http
-   */
-  public void update(Context context) { // TODO - REFACTOR
-
-    String userId = context.sessionAttribute("userId");
-
-    Optional<Usuario> usuarioSession = this.usuarioService.obtenerUsuarioPorId(userId);
-    if (usuarioSession.isEmpty()) {
-      throw new ResourceNotFoundException("No se encontró el usuario paraColaborador id " + userId);
-    }
-
-    Usuario usuario = usuarioSession.get();
-
-    Optional<Tecnico> tecnicoSession = this.tecnicoService
-        .obtenerTecnicoPorUsuario(usuarioSession.get());
-
-    if (tecnicoSession.isEmpty()) {
-      throw new ResourceNotFoundException("");
-    }
-
-    Tecnico tecnicoActualizado = tecnicoSession.get();
-
-    this.tecnicoService.actualizar(tecnicoActualizado);
-    context.status(HttpStatus.OK); // TODO - mepa q esto solo no es suficiente
   }
 }

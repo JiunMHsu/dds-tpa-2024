@@ -57,9 +57,11 @@ public class ColaboradorRepository implements IColaboradorRepository, WithSimple
    * @return el colaborador si existe
    */
   public Optional<Colaborador> buscarPorEmail(String email) {
+    String query = "from Colaborador c where c.alta = :alta and c.usuario.email = :email";
+
     try {
       return Optional.of(entityManager()
-          .createQuery("from Colaborador c where c.alta = :alta and c.usuario.email = :email", Colaborador.class)
+          .createQuery(query, Colaborador.class)
           .setParameter("alta", true)
           .setParameter("email", email)
           .getSingleResult());
@@ -75,9 +77,11 @@ public class ColaboradorRepository implements IColaboradorRepository, WithSimple
    * @return el colaborador si existe
    */
   public Optional<Colaborador> buscarPorUsuario(Usuario usuario) {
+    String query = "from Colaborador c where c.alta = :alta and c.usuario = :usuario";
+
     try {
       return Optional.of(entityManager()
-          .createQuery("from Colaborador c where c.alta = :alta and c.usuario = :usuario", Colaborador.class)
+          .createQuery(query, Colaborador.class)
           .setParameter("alta", true)
           .setParameter("usuario", usuario)
           .getSingleResult());

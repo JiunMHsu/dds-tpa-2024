@@ -59,9 +59,10 @@ public class TecnicoRepository implements WithSimplePersistenceUnit, ICrudReposi
    * @return Lista de Técnicos
    */
   public List<Tecnico> obtenerPorBarrio(Barrio barrio) {
+    String query = "from Tecnico t where t.areaDeCobertura.barrio = :barrio and t.alta = :alta";
+
     return entityManager()
-        .createQuery("from Tecnico t "
-            + "where t.areaDeCobertura.barrio = :barrio and t.alta = :alta", Tecnico.class)
+        .createQuery(query, Tecnico.class)
         .setParameter("barrio", barrio)
         .setParameter("alta", true)
         .getResultList();
@@ -74,11 +75,13 @@ public class TecnicoRepository implements WithSimplePersistenceUnit, ICrudReposi
    * @return Técnico
    */
   public Optional<Tecnico> buscarPorUsuario(Usuario usuario) {
+
+    String query = "from Tecnico t where t.usuario = :usuario and t.alta = :alta";
+
     try {
       return Optional.of(
           entityManager()
-              .createQuery("from Tecnico t "
-                  + "where t.usuario = :usuario and t.alta = :alta", Tecnico.class)
+              .createQuery(query, Tecnico.class)
               .setParameter("alta", true)
               .setParameter("usuario", usuario)
               .getSingleResult()

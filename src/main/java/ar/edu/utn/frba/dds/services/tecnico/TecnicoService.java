@@ -84,23 +84,12 @@ public class TecnicoService implements WithSimplePersistenceUnit {
 
   /**
    * Busca los Técnico cuya Área de cobertura corresponda a un Barrio.
-   * TODO - Ver Refactor
    *
    * @param barrio Barrio
    * @return Lista de Técnicos
    */
   public List<Tecnico> obtenerPorBarrio(Barrio barrio) {
     return tecnicoRepository.obtenerPorBarrio(barrio);
-  }
-
-  /**
-   * Actualiza un Técnico.
-   * TODO - Ver si Refactorizar
-   *
-   * @param tecnico Técnico a actualizar
-   */
-  public void actualizar(Tecnico tecnico) {
-    withTransaction(() -> tecnicoRepository.actualizar(tecnico));
   }
 
   /**
