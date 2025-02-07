@@ -42,8 +42,8 @@ public class Tecnico extends EntidadPersistente {
   @Embedded
   private Documento documento;
 
-  @Column(name = "cuit", unique = true, nullable = false)
-  private String cuit;
+  @Column(name = "cuil", unique = true, nullable = false)
+  private String cuil;
 
   @OneToOne
   @JoinColumn(name = "contacto_id", nullable = false)
@@ -59,7 +59,7 @@ public class Tecnico extends EntidadPersistente {
    * @param nombre          Nombre.
    * @param apellido        Apellido.
    * @param documento       Documento.
-   * @param cuit            CUIT.
+   * @param cuil            CUIL.
    * @param contacto        Contacto.
    * @param areaDeCobertura Área de cobertura.
    * @return Técnico.
@@ -68,7 +68,7 @@ public class Tecnico extends EntidadPersistente {
                             String nombre,
                             String apellido,
                             Documento documento,
-                            String cuit,
+                            String cuil,
                             Contacto contacto,
                             Area areaDeCobertura) {
 
@@ -78,7 +78,7 @@ public class Tecnico extends EntidadPersistente {
         .nombre(nombre)
         .apellido(apellido)
         .documento(documento)
-        .cuit(cuit)
+        .cuil(cuil)
         .contacto(contacto)
         .areaDeCobertura(areaDeCobertura)
         .build();

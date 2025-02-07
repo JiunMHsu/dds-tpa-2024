@@ -2,11 +2,8 @@
     {{tecnico.nombre}}
 {{/partial}}
 {{#partial "links"}}
-    <link rel="stylesheet" href="/css/tecnicos/tecnico_detalle.css"/>
-    <link
-            href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css"
-            rel="stylesheet"
-    />
+    <link rel="stylesheet" href="/css/tecnicos/tecnicos_detalle.css"/>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet"/>
 {{/partial}}
 {{#partial "scripts"}}
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
@@ -15,53 +12,47 @@
 {{#partial "main-content"}}
     <div class="container">
         <div class="header">
-            <h2 class="title">{{tecnico.nombre}}</h2>
-            <a href="/tecnicos/{{tecnico.id}}/edit" class="edit-button">Configurar</a>
+            <h2 class="title">{{tecnico.nombre}} 🔨⚙️</h2>
         </div>
 
-        <div class="datos-personales card-container">
-            <h3>Datos Personales</h3>
-            <div class="card">
-                <p>
-                    <span class="material-symbols-rounded card-detail-icon">background_dot_small</span>
-                    Nombre: {{tecnico.nombre}}
-                </p>
-                <p>
-                    <span class="material-symbols-rounded card-detail-icon">background_dot_small</span>
-                    Apellido: {{tecnico.apellido}}
-                </p>
-                <p>
-                    <span class="material-symbols-rounded card-detail-icon">background_dot_small</span>
-                    Numero Documento: {{tecnico.documento}}
-                </p>
-                <p>
-                    <span class="material-symbols-rounded card-detail-icon">background_dot_small</span>
-                    Cuit: {{tecnico.cuit}}
-                </p>
+        <div class="info-grid">
+            <div class="left-column">
+                <div class="card-container">
+                    <h3 class="section-title">Datos Personales</h3>
+                    <div class="card">
+                        <p><span class="material-symbols-rounded card-detail-icon">person</span>
+                            Nombre: {{tecnico.nombre}}</p>
+                        <p><span class="material-symbols-rounded card-detail-icon">badge</span>
+                            Apellido: {{tecnico.apellido}}</p>
+                        <p><span
+                                class="material-symbols-rounded card-detail-icon">fingerprint</span>
+                            Número Documento: {{tecnico.documento}}</p>
+                        <p><span class="material-symbols-rounded card-detail-icon">business</span>
+                            CUIL: {{tecnico.cuil}}</p>
+                        <p><span
+                                class="material-symbols-rounded card-detail-icon">notifications</span>
+                            Medio de notificación: {{tecnico.medioDeNotificacion}}</p>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div class="contacto card-container">
-            <h3>Contacto</h3>
-            <div class="card">
-                <p>
-                    <span class="material-symbols-rounded card-detail-icon">thermometer_add</span>
-                    Medio de notificacion: {{tecnico.medioDeNotificacion}}°C
-                </p>
-                <p>
-                    <span class="material-symbols-rounded card-detail-icon">thermometer_minus</span>
-                    Contacto: {{tecnico.contacto}}°C
-                </p>
-            </div>
-        </div>
-
-        <div class="areaCobertura card-container">
-            <h3>Area de Cobertura</h3>
-            <div class="card">
-                <p>
-                    <span class="material-symbols-rounded card-detail-icon">location_on</span>
-                    Area: {{tecnico.areaDeCobertura}}
-                </p>
+            <div class="right-column">
+                <div class="card-container">
+                    <h3 class="section-title">Área de Cobertura</h3>
+                    <div class="card">
+                        <p><span
+                                class="material-symbols-rounded card-detail-icon">location_city</span>
+                            Barrio: {{tecnico.barrioArea}}</p>
+                        <p><span class="material-symbols-rounded card-detail-icon">radio_button_checked</span>
+                            Radio de Cobertura: {{tecnico.radioArea}} m</p>
+                        <p><span
+                                class="material-symbols-rounded card-detail-icon">location_on</span>
+                            Latitud: {{tecnico.latitudArea}}</p>
+                        <p><span
+                                class="material-symbols-rounded card-detail-icon">location_on</span>
+                            Longitud: {{tecnico.longitudArea}}</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
