@@ -553,27 +553,32 @@ public class Initializer implements WithSimplePersistenceUnit {
   }
 
   private void withTecnicos() {
-    Contacto contacto = Contacto.conTelegram("+5491132420699");
+    Contacto contacto = Contacto.conTelegram("leoneljuncossmieres@gmail.com");
 
-    Usuario blopez = Usuario.con("Tecnico1", "1111", "blopez@gmail.com", TipoRol.TECNICO);
+    Usuario mmieres = Usuario.con(
+        "Xx_mieres_xX",
+        "1111",
+        "leoneljuncossmieres@gmail.com",
+        TipoRol.TECNICO);
+
     Area areaDeCoberura = Area.con(
         new Ubicacion(-34.6037, -58.3816),
         100,
         new Barrio("Palermo")
     );
-    Documento unDocumento = Documento.con(TipoDocumento.DNI, "00019283");
+
     final Tecnico t1 = Tecnico.con(
-        blopez,
-        "Bautista",
-        "López",
-        unDocumento,
-        "20-00019283-1",
+        mmieres,
+        "Matias",
+        "Mieres",
+        Documento.con(TipoDocumento.DNI, "45234468"),
+        "27-45234468-3",
         contacto,
         areaDeCoberura);
 
     beginTransaction();
     contactoRepository.guardar(contacto);
-    usuarioRepository.guardar(blopez);
+    usuarioRepository.guardar(mmieres);
     tecnicoRepository.guardar(t1);
     commitTransaction();
   }
