@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.services.canjeDePuntos;
 
+import ar.edu.utn.frba.dds.dtos.canjeDePuntos.CanjeDePuntosDTO;
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.CanjeDePuntos;
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.Puntos;
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.PuntosInvalidosException;
@@ -8,6 +9,7 @@ import ar.edu.utn.frba.dds.models.entities.colaboracion.DistribucionViandas;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionDinero;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.HacerseCargoHeladera;
+import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.RepartoDeTarjeta;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
@@ -19,6 +21,7 @@ import ar.edu.utn.frba.dds.models.repositories.colaboracion.DonacionViandaReposi
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetaRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
+import ar.edu.utn.frba.dds.services.colaboraciones.OfertaProductosServiciosService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -31,6 +34,7 @@ import java.util.Optional;
  * Servicio de canje de puntos.
  */
 public class CanjeDePuntosService implements WithSimplePersistenceUnit {
+
   private final CanjeDePuntosRepository canjeDePuntosRepository;
   private final DonacionDineroRepository donacionDineroRepository;
   private final DistribucionViandasRepository distribucionViandasRepository;
@@ -39,18 +43,20 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
   private final HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository;
   private final ColaboradorRepository colaboradorRepository;
   private final VarianteDePuntosRepository varianteDePuntosRepository;
+  private final OfertaProductosServiciosService ofertaProductosServiciosService;
 
   /**
    * Constructor.
    *
-   * @param canjeDePuntosRepository        el repositorio de canjes de puntos
-   * @param donacionDineroRepository       el repositorio de donaciones de dinero
-   * @param distribucionViandasRepository  el repositorio de distribuciones de viandas
-   * @param donacionViandaRepository       el repositorio de donaciones de viandas
-   * @param repartoDeTarjetasRepository    el repositorio de repartos de tarjetas
-   * @param hacerseCargoHeladeraRepository el repositorio de heladeras activas
-   * @param colaboradorRepository          el repositorio de colaboradores
-   * @param varianteDePuntosRepository     el repositorio de variantes de puntos
+   * @param canjeDePuntosRepository         el repositorio de canjes de puntos
+   * @param donacionDineroRepository        el repositorio de donaciones de dinero
+   * @param distribucionViandasRepository   el repositorio de distribuciones de viandas
+   * @param donacionViandaRepository        el repositorio de donaciones de viandas
+   * @param repartoDeTarjetasRepository     el repositorio de repartos de tarjetas
+   * @param hacerseCargoHeladeraRepository  el repositorio de heladeras activas
+   * @param colaboradorRepository           el repositorio de colaboradores
+   * @param varianteDePuntosRepository      el repositorio de variantes de puntos
+   * @param ofertaProductosServiciosService el repositorio de oferta de productos y servicios
    */
   public CanjeDePuntosService(CanjeDePuntosRepository canjeDePuntosRepository,
                               DonacionDineroRepository donacionDineroRepository,
@@ -59,7 +65,8 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
                               RepartoDeTarjetaRepository repartoDeTarjetasRepository,
                               HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository,
                               ColaboradorRepository colaboradorRepository,
-                              VarianteDePuntosRepository varianteDePuntosRepository) {
+                              VarianteDePuntosRepository varianteDePuntosRepository,
+                              OfertaProductosServiciosService ofertaProductosServiciosService) {
     this.canjeDePuntosRepository = canjeDePuntosRepository;
     this.donacionDineroRepository = donacionDineroRepository;
     this.distribucionViandasRepository = distribucionViandasRepository;
@@ -68,6 +75,7 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
     this.hacerseCargoHeladeraRepository = hacerseCargoHeladeraRepository;
     this.colaboradorRepository = colaboradorRepository;
     this.varianteDePuntosRepository = varianteDePuntosRepository;
+    this.ofertaProductosServiciosService = ofertaProductosServiciosService;
   }
 
   /**
@@ -180,18 +188,45 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
    * Registra un canje de puntos para un colaborador.
    * Invalida los puntos del colaborador y guarda el canje.
    *
-   * @param canjeDePuntos el canje a registrar
+   * @param colaborador colaborador
+   * @param ofertaId    Id de la oferta
    */
-  public void registrar(CanjeDePuntos canjeDePuntos) {
-    canjeDePuntos.getColaborador().invalidarPuntos();
+  public void registrar(Colaborador colaborador, String ofertaId) throws Exception {
+
+    double puntaje = this.getPuntosDeColaborador(colaborador);
+
+    OfertaDeProductos oferta = ofertaProductosServiciosService.buscarPorId(ofertaId);
+
+    if (puntaje < oferta.getPuntosNecesarios()) {
+      System.out.println("Puntos insuficientes, no se puede realizar el canje");
+      throw new Exception();
+    }
+
+    final CanjeDePuntos nuevoCanjeDePuntos = CanjeDePuntos.por(
+        colaborador,
+        oferta,
+        LocalDateTime.now(),
+        oferta.getPuntosNecesarios(),
+        puntaje - oferta.getPuntosNecesarios()
+    );
+
+    colaborador.invalidarPuntos();
 
     beginTransaction();
-    this.colaboradorRepository.actualizar(canjeDePuntos.getColaborador());
-    this.canjeDePuntosRepository.guardar(canjeDePuntos);
+    this.colaboradorRepository.actualizar(colaborador);
+    this.canjeDePuntosRepository.guardar(nuevoCanjeDePuntos);
     commitTransaction();
   }
 
-  public List<CanjeDePuntos> buscarTodosxColaborador(Colaborador colaborador) {
-    return canjeDePuntosRepository.buscarTodosXColaborador(colaborador);
+  /**
+   * Retorna el DTO de todos los canjes de puntos de un colaborador.
+   *
+   * @param colaborador colaborador
+   * @return lista canjes de puntos del colaborador en formato DTO
+   */
+  public List<CanjeDePuntosDTO> buscarPorColaborador(Colaborador colaborador) {
+    return canjeDePuntosRepository.buscarPorColaborador(colaborador).stream()
+        .map(CanjeDePuntosDTO::preview)
+        .toList();
   }
 }

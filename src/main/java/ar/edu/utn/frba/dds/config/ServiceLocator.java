@@ -522,7 +522,8 @@ public class ServiceLocator {
           instanceOf(RepartoDeTarjetaRepository.class),
           instanceOf(HacerseCargoHeladeraRepository.class),
           instanceOf(ColaboradorRepository.class),
-          instanceOf(VarianteDePuntosRepository.class));
+          instanceOf(VarianteDePuntosRepository.class),
+          instanceOf(OfertaProductosServiciosService.class));
       instances.put(componentName, instance);
     }
 

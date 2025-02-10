@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Canje de Puntos DTO.
+ */
 @Getter
 @Setter
 @Builder
@@ -29,7 +32,12 @@ public class CanjeDePuntosDTO {
 
   private String puntosRestantes;
 
-
+  /**
+   * Builder del DTO CanjeDePuntos.
+   *
+   * @param canjeDePuntos Canje de puntos
+   * @return DTO CanjeDePuntos
+   */
   public static CanjeDePuntosDTO preview(CanjeDePuntos canjeDePuntos) {
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");

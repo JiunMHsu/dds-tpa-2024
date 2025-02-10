@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.services.colaboraciones;
 
+import ar.edu.utn.frba.dds.dtos.canjeDePuntos.ProductoDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.ofertaDeProductos.CreateOfertaDeProductosDTO;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
@@ -97,5 +98,10 @@ public class OfertaProductosServiciosService implements WithSimplePersistenceUni
    */
   public List<OfertaDeProductos> buscarTodos() {
     return this.ofertaDeProductosRepository.buscarTodos();
+  }
+
+  public List<ProductoDTO> buscarTodosProductos() {
+    return this.ofertaDeProductosRepository.buscarTodos().stream()
+        .map(ProductoDTO::preview).toList();
   }
 }
