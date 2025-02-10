@@ -19,6 +19,7 @@ import java.util.Map;
  * Controller de Canje de Puntos.
  */
 public class CanjeDePuntosController extends ColaboradorRequired {
+
   private final CanjeDePuntosService canjeDePuntosService;
   private final OfertaProductosServiciosService ofertaProductosServiciosService;
 
@@ -45,7 +46,6 @@ public class CanjeDePuntosController extends ColaboradorRequired {
    * @param context Objeto Context de io.javalin.http
    */
   public void index(Context context) {
-
     Colaborador colaborador = colaboradorFromSession(context);
     List<CanjeDePuntosDTO> canjeDePuntosDtos = this.canjeDePuntosService
         .buscarPorColaborador(colaborador);
@@ -57,7 +57,7 @@ public class CanjeDePuntosController extends ColaboradorRequired {
   }
 
   /**
-   * Devuelve un formulario para dar de alta un canje de punto.
+   * Devuelve una lista de productos para canjear.
    *
    * @param context Objeto Context de io.javalin.http
    */
@@ -81,22 +81,23 @@ public class CanjeDePuntosController extends ColaboradorRequired {
    */
   public void save(Context context) {
     Map<String, Object> model = new HashMap<>();
-    List<RedirectDTO> redirectDtos = new ArrayList<>();
+    List<RedirectDTO> redirects = new ArrayList<>();
     boolean operationSuccess = false;
 
     try {
-      this.canjeDePuntosService.registrar(colaboradorFromSession(context),
-          context.queryParam("oferta"));
+      this.canjeDePuntosService.registrar(
+          colaboradorFromSession(context),
+          context.queryParam("oferta")
+      );
 
       operationSuccess = true;
-      redirectDtos.add(new RedirectDTO("/canje-de-puntos/new", "Ver Productos"));
+      redirects.add(new RedirectDTO("/canje-de-puntos/new", "Ver Productos"));
     } catch (Exception e) {
-      redirectDtos.add(new RedirectDTO("/canje-de-puntos/new", "Reintentar"));
+      redirects.add(new RedirectDTO("/canje-de-puntos/new", "Reintentar"));
     } finally {
       model.put("success", operationSuccess);
-      model.put("redirects", redirectDtos);
+      model.put("redirects", redirects);
       render(context, "post_result.hbs", model);
     }
   }
-
 }

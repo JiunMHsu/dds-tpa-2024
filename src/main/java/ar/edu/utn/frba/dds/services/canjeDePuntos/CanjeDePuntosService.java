@@ -34,6 +34,7 @@ import java.util.Optional;
  * Servicio de canje de puntos.
  */
 public class CanjeDePuntosService implements WithSimplePersistenceUnit {
+
   private final CanjeDePuntosRepository canjeDePuntosRepository;
   private final DonacionDineroRepository donacionDineroRepository;
   private final DistribucionViandasRepository distribucionViandasRepository;
@@ -196,29 +197,32 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
 
     OfertaDeProductos oferta = ofertaProductosServiciosService.buscarPorId(ofertaId);
 
-    CanjeDePuntos nuevoCanjeDePuntos;
-
     if (puntaje < oferta.getPuntosNecesarios()) {
       System.out.println("Puntos insuficientes, no se puede realizar el canje");
       throw new Exception();
-    } else {
-      nuevoCanjeDePuntos = CanjeDePuntos.por(colaborador, oferta, LocalDateTime.now(),
-          oferta.getPuntosNecesarios(), puntaje - oferta.getPuntosNecesarios());
-
-      colaborador.invalidarPuntos();
-
-      beginTransaction();
-      this.colaboradorRepository.actualizar(colaborador);
-      this.canjeDePuntosRepository.guardar(nuevoCanjeDePuntos);
-      commitTransaction();
     }
+
+    final CanjeDePuntos nuevoCanjeDePuntos = CanjeDePuntos.por(
+        colaborador,
+        oferta,
+        LocalDateTime.now(),
+        oferta.getPuntosNecesarios(),
+        puntaje - oferta.getPuntosNecesarios()
+    );
+
+    colaborador.invalidarPuntos();
+
+    beginTransaction();
+    this.colaboradorRepository.actualizar(colaborador);
+    this.canjeDePuntosRepository.guardar(nuevoCanjeDePuntos);
+    commitTransaction();
   }
 
   /**
-   * Retorna el DTO de todos los canje de puntos de un colaborador.
+   * Retorna el DTO de todos los canjes de puntos de un colaborador.
    *
    * @param colaborador colaborador
-   * @return lista canjes de puntos dto del colaborador
+   * @return lista canjes de puntos del colaborador en formato DTO
    */
   public List<CanjeDePuntosDTO> buscarPorColaborador(Colaborador colaborador) {
     return canjeDePuntosRepository.buscarPorColaborador(colaborador).stream()

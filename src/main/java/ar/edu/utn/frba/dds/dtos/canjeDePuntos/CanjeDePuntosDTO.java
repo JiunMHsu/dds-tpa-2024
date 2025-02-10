@@ -35,7 +35,7 @@ public class CanjeDePuntosDTO {
   /**
    * Builder del DTO CanjeDePuntos.
    *
-   * @param canjeDePuntos           Canje de puntos
+   * @param canjeDePuntos Canje de puntos
    * @return DTO CanjeDePuntos
    */
   public static CanjeDePuntosDTO preview(CanjeDePuntos canjeDePuntos) {

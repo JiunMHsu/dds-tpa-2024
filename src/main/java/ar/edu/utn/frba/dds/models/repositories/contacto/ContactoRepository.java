@@ -13,7 +13,6 @@ public class ContactoRepository implements WithSimplePersistenceUnit {
    * Guarda un Contacto.
    *
    * @param contacto Id del contacto
-   * @return Contacto
    */
   public void guardar(Contacto contacto) {
     entityManager().persist(contacto);

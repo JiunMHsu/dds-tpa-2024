@@ -12,12 +12,17 @@ import javax.persistence.NoResultException;
  */
 public class CanjeDePuntosRepository implements WithSimplePersistenceUnit {
 
+  /**
+   * Guarda un canje de puntos.
+   *
+   * @param canjeDePuntos canje de puntos
+   */
   public void guardar(CanjeDePuntos canjeDePuntos) {
     entityManager().persist(canjeDePuntos);
   }
 
   /**
-   * Busca todos los canje de puntos de un colaborador.
+   * Busca todos los canjes de puntos de un colaborador.
    *
    * @param unColaborador colaborador
    * @return canjes de puntos del colaborador
@@ -31,14 +36,15 @@ public class CanjeDePuntosRepository implements WithSimplePersistenceUnit {
   }
 
   /**
-   * Busca el ultimo canje de punto de un colaborador.
+   * Busca el último canje de puntos de un colaborador.
    *
    * @param colaborador colaborador
-   * @return ultimo canje de puntos del colaborador
+   * @return último canje de puntos del colaborador
    */
   public Optional<CanjeDePuntos> ultimoPorColaborador(Colaborador colaborador) {
-    String query = "from CanjeDePuntos c where c.colaborador = :colaborador order by c.fechaHora "
-        + "desc";
+    String query = "from CanjeDePuntos c"
+        + " where c.colaborador = :colaborador order by c.fechaHora desc";
+
     try {
       return Optional.of(entityManager()
           .createQuery(query, CanjeDePuntos.class)
