@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.controllers.canjeDePuntos;
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.canjeDePuntos.CanjeDePuntosDTO;
 import ar.edu.utn.frba.dds.dtos.canjeDePuntos.ProductoDTO;
+import ar.edu.utn.frba.dds.dtos.colaborador.ColaboradorDTO;
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.CanjeDePuntos;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
@@ -88,21 +89,8 @@ public class CanjeDePuntosController extends ColaboradorRequired {
     boolean operationSuccess = false;
 
     try {
-      Colaborador colaborador = colaboradorFromSession(context);
-      double puntaje = this.canjeDePuntosService.getPuntosDeColaborador(colaborador);
-
-      String ofertaId = context.queryParam("oferta");
-      OfertaDeProductos oferta = ofertaProductosServiciosService.buscarPorId(ofertaId);
-
-      double puntosRestantes = puntaje - oferta.getPuntosNecesarios();
-      if (puntosRestantes < 0) {
-        System.out.println("puntos insuficientes");
-        throw new Exception();
-      }
-
-      CanjeDePuntos canjeDePuntosNuevo = CanjeDePuntos.por(colaborador, oferta, LocalDateTime.now(),
-          oferta.getPuntosNecesarios(), puntosRestantes);
-      this.canjeDePuntosService.registrar(canjeDePuntosNuevo);
+      this.canjeDePuntosService.registrar(colaboradorFromSession(context),
+          context.queryParam("oferta"));
 
       operationSuccess = true;
       redirectDtos.add(new RedirectDTO("/canje-de-puntos/new", "Ver Productos"));
