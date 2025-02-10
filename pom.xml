@@ -280,6 +280,11 @@
                             <mainClass>ar.edu.utn.frba.dds.server.App</mainClass>
                         </manifest>
                     </archive>
+                    <excludes>
+                        <exclude>META-INF/*.SF</exclude>
+                        <exclude>META-INF/*.RSA</exclude>
+                        <exclude>META-INF/*.DSA</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
             <plugin>
