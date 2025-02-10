@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.services.canjeDePuntos;
 
+import ar.edu.utn.frba.dds.dtos.canjeDePuntos.CanjeDePuntosDTO;
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.CanjeDePuntos;
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.Puntos;
 import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.PuntosInvalidosException;
@@ -191,7 +192,15 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
     commitTransaction();
   }
 
-  public List<CanjeDePuntos> buscarTodosxColaborador(Colaborador colaborador) {
-    return canjeDePuntosRepository.buscarTodosXColaborador(colaborador);
+  /**
+   * Retorna el DTO de todos los canje de puntos de un colaborador.
+   *
+   * @param colaborador colaborador
+   * @return lista canjes de puntos dto del colaborador
+   */
+  public List<CanjeDePuntosDTO> buscarPorColaborador(Colaborador colaborador) {
+    return canjeDePuntosRepository.buscarPorColaborador(colaborador).stream()
+        .map(CanjeDePuntosDTO::preview)
+        .toList();
   }
 }

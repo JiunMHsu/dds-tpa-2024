@@ -22,36 +22,46 @@ public class CanjeDePuntosController extends ColaboradorRequired {
   private final CanjeDePuntosService canjeDePuntosService;
   private final OfertaProductosServiciosService ofertaProductosServiciosService;
 
+  /**
+   * Constructor de CanjeDePuntosController.
+   *
+   * @param usuarioService                  Servicio de Usuario
+   * @param colaboradorService              Servicio de Colaborador
+   * @param canjeDePuntosService            Servicio de Canje de Puntos
+   * @param ofertaProductosServiciosService Servicio de Oferta Productos o Servicios
+   */
   public CanjeDePuntosController(UsuarioService usuarioService, ColaboradorService colaboradorService, CanjeDePuntosService canjeDePuntosService, OfertaProductosServiciosService ofertaProductosServiciosService) {
     super(usuarioService, colaboradorService);
     this.canjeDePuntosService = canjeDePuntosService;
     this.ofertaProductosServiciosService = ofertaProductosServiciosService;
   }
 
+  /**
+   * Devuelve la vista de todos los canjes de puntos.
+   *
+   * @param context Objeto Context de io.javalin.http
+   */
   public void index(Context context) {
 
     Colaborador colaborador = colaboradorFromSession(context);
-    List<CanjeDePuntos> canjeDePuntos = this.canjeDePuntosService.buscarTodosxColaborador(colaborador);
-
-    List<CanjeDePuntosDTO> canjeDePuntosDTOS = canjeDePuntos.stream()
-        .map(CanjeDePuntosDTO::preview)
-        .toList();
+    List<CanjeDePuntosDTO> canjeDePuntosDtos = this.canjeDePuntosService.buscarPorColaborador(colaborador);
 
     Map<String, Object> model = new HashMap<>();
-    model.put("canjes", canjeDePuntosDTOS);
+    model.put("canjes", canjeDePuntosDtos);
 
-    context.render("canje_de_puntos/historial_canjeos.hbs", model);
+    render(context, "canje_de_puntos/historial_canjeos.hbs", model);
   }
 
-  public void show(Context context) {
-  }
-
+  /**
+   * Devuelve un formulario para dar de alta un canje de punto.
+   *
+   * @param context Objeto Context de io.javalin.http
+   */
   public void create(Context context) {
     Colaborador colaborador = colaboradorFromSession(context);
     double puntaje = this.canjeDePuntosService.getPuntosDeColaborador(colaborador);
 
-    List<ProductoDTO> productos = this.ofertaProductosServiciosService.buscarTodos()
-        .stream().map(ProductoDTO::preview).toList();
+    List<ProductoDTO> productos = this.ofertaProductosServiciosService.buscarTodosProductos();
 
     Map<String, Object> model = new HashMap<>();
     model.put("productos", productos);
@@ -60,6 +70,11 @@ public class CanjeDePuntosController extends ColaboradorRequired {
     render(context, "canje_de_puntos/canje_puntos_crear.hbs", model);
   }
 
+  /**
+   * Registra un canje de puntos.
+   *
+   * @param context Objeto Context de io.javalin.http
+   */
   public void save(Context context) {
     Map<String, Object> model = new HashMap<>();
     List<RedirectDTO> redirectDTOS = new ArrayList<>();
@@ -88,7 +103,7 @@ public class CanjeDePuntosController extends ColaboradorRequired {
     } finally {
       model.put("success", operationSuccess);
       model.put("redirects", redirectDTOS);
-      context.render("post_result.hbs", model);
+      render(context, "post_result.hbs", model);
     }
   }
 
