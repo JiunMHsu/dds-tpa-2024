@@ -64,7 +64,8 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
                               RepartoDeTarjetaRepository repartoDeTarjetasRepository,
                               HacerseCargoHeladeraRepository hacerseCargoHeladeraRepository,
                               ColaboradorRepository colaboradorRepository,
-                              VarianteDePuntosRepository varianteDePuntosRepository, OfertaProductosServiciosService ofertaProductosServiciosService) {
+                              VarianteDePuntosRepository varianteDePuntosRepository,
+                              OfertaProductosServiciosService ofertaProductosServiciosService) {
     this.canjeDePuntosRepository = canjeDePuntosRepository;
     this.donacionDineroRepository = donacionDineroRepository;
     this.distribucionViandasRepository = distribucionViandasRepository;
@@ -207,7 +208,7 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
       colaborador.invalidarPuntos();
 
       beginTransaction();
-      this.colaboradorRepository.actualizar(nuevoCanjeDePuntos.getColaborador());
+      this.colaboradorRepository.actualizar(colaborador);
       this.canjeDePuntosRepository.guardar(nuevoCanjeDePuntos);
       commitTransaction();
     }

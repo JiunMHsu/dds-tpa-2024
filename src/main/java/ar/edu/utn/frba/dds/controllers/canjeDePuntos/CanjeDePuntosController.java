@@ -3,9 +3,6 @@ package ar.edu.utn.frba.dds.controllers.canjeDePuntos;
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.canjeDePuntos.CanjeDePuntosDTO;
 import ar.edu.utn.frba.dds.dtos.canjeDePuntos.ProductoDTO;
-import ar.edu.utn.frba.dds.dtos.colaborador.ColaboradorDTO;
-import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.CanjeDePuntos;
-import ar.edu.utn.frba.dds.models.entities.colaboracion.OfertaDeProductos;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.permissions.ColaboradorRequired;
 import ar.edu.utn.frba.dds.services.canjeDePuntos.CanjeDePuntosService;
@@ -13,7 +10,6 @@ import ar.edu.utn.frba.dds.services.colaboraciones.OfertaProductosServiciosServi
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import io.javalin.http.Context;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
