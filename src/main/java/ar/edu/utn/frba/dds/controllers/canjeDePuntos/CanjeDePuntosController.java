@@ -18,6 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Controller de Canje de Puntos.
+ */
 public class CanjeDePuntosController extends ColaboradorRequired {
   private final CanjeDePuntosService canjeDePuntosService;
   private final OfertaProductosServiciosService ofertaProductosServiciosService;
@@ -30,7 +33,10 @@ public class CanjeDePuntosController extends ColaboradorRequired {
    * @param canjeDePuntosService            Servicio de Canje de Puntos
    * @param ofertaProductosServiciosService Servicio de Oferta Productos o Servicios
    */
-  public CanjeDePuntosController(UsuarioService usuarioService, ColaboradorService colaboradorService, CanjeDePuntosService canjeDePuntosService, OfertaProductosServiciosService ofertaProductosServiciosService) {
+  public CanjeDePuntosController(UsuarioService usuarioService,
+                                 ColaboradorService colaboradorService,
+                                 CanjeDePuntosService canjeDePuntosService,
+                                 OfertaProductosServiciosService ofertaProductosServiciosService) {
     super(usuarioService, colaboradorService);
     this.canjeDePuntosService = canjeDePuntosService;
     this.ofertaProductosServiciosService = ofertaProductosServiciosService;
@@ -44,7 +50,8 @@ public class CanjeDePuntosController extends ColaboradorRequired {
   public void index(Context context) {
 
     Colaborador colaborador = colaboradorFromSession(context);
-    List<CanjeDePuntosDTO> canjeDePuntosDtos = this.canjeDePuntosService.buscarPorColaborador(colaborador);
+    List<CanjeDePuntosDTO> canjeDePuntosDtos = this.canjeDePuntosService
+        .buscarPorColaborador(colaborador);
 
     Map<String, Object> model = new HashMap<>();
     model.put("canjes", canjeDePuntosDtos);
@@ -77,7 +84,7 @@ public class CanjeDePuntosController extends ColaboradorRequired {
    */
   public void save(Context context) {
     Map<String, Object> model = new HashMap<>();
-    List<RedirectDTO> redirectDTOS = new ArrayList<>();
+    List<RedirectDTO> redirectDtos = new ArrayList<>();
     boolean operationSuccess = false;
 
     try {
@@ -93,16 +100,17 @@ public class CanjeDePuntosController extends ColaboradorRequired {
         throw new Exception();
       }
 
-      CanjeDePuntos canjeDePuntosNuevo = CanjeDePuntos.por(colaborador, oferta, LocalDateTime.now(), oferta.getPuntosNecesarios(), puntosRestantes);
+      CanjeDePuntos canjeDePuntosNuevo = CanjeDePuntos.por(colaborador, oferta, LocalDateTime.now(),
+          oferta.getPuntosNecesarios(), puntosRestantes);
       this.canjeDePuntosService.registrar(canjeDePuntosNuevo);
 
       operationSuccess = true;
-      redirectDTOS.add(new RedirectDTO("/canje-de-puntos/new", "Ver Productos"));
+      redirectDtos.add(new RedirectDTO("/canje-de-puntos/new", "Ver Productos"));
     } catch (Exception e) {
-      redirectDTOS.add(new RedirectDTO("/canje-de-puntos/new", "Reintentar"));
+      redirectDtos.add(new RedirectDTO("/canje-de-puntos/new", "Reintentar"));
     } finally {
       model.put("success", operationSuccess);
-      model.put("redirects", redirectDTOS);
+      model.put("redirects", redirectDtos);
       render(context, "post_result.hbs", model);
     }
   }
