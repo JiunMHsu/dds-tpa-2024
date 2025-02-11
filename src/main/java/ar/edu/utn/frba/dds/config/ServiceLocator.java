@@ -52,6 +52,8 @@ import ar.edu.utn.frba.dds.models.repositories.tecnico.TecnicoRepository;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.VisitaTecnicaRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import ar.edu.utn.frba.dds.models.repositories.vianda.ViandaRepository;
+import ar.edu.utn.frba.dds.models.stateless.mensajeria.ISenderFactory;
+import ar.edu.utn.frba.dds.models.stateless.mensajeria.SafeSenderFactory;
 import ar.edu.utn.frba.dds.models.stateless.mensajeria.SenderFactory;
 import ar.edu.utn.frba.dds.models.stateless.mensajeria.mail.SafeMailSender;
 import ar.edu.utn.frba.dds.models.stateless.puntoDeColocacion.mock.PuntoDeColocacionAPIMock;
@@ -85,6 +87,7 @@ import ar.edu.utn.frba.dds.services.tarjeta.TarjetaPersonaVulnerableService;
 import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import ar.edu.utn.frba.dds.services.tecnico.VisitaTecnicaService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
+import ar.edu.utn.frba.dds.utils.AppProperties;
 import ar.edu.utn.frba.dds.utils.RandomString;
 import java.util.HashMap;
 import java.util.Map;
@@ -189,7 +192,8 @@ public class ServiceLocator {
     if (componentName.equals(ColaboradorController.class.getName())) {
       ColaboradorController instance = new ColaboradorController(
           instanceOf(UsuarioService.class),
-          instanceOf(ColaboradorService.class));
+          instanceOf(ColaboradorService.class),
+          instanceOf(TarjetaColaboradorService.class));
       instances.put(componentName, instance);
     }
 
@@ -480,9 +484,13 @@ public class ServiceLocator {
     }
 
     if (componentName.equals(MensajeriaService.class.getName())) {
+      ISenderFactory senderFactory = AppProperties.getInstance().boolPropertyFromName("DEV_MODE")
+          ? new SafeSenderFactory()
+          : new SenderFactory();
+
       MensajeriaService instance = new MensajeriaService(
           instanceOf(MensajeRepository.class),
-          new SenderFactory());
+          senderFactory);
       instances.put(componentName, instance);
     }
 

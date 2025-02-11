@@ -73,6 +73,7 @@ public class ColaboradorDTO {
         .fechaNacimiento(colaborador.getFechaNacimiento().toString())
         .direccion(colaborador.getDireccion().toString())
         .formaDeColaborar(formasDeColaborar)
+        .documento(colaborador.getDocumento().getNumero())
         .contacto(contactos)
         .tipoColaborador("HUMANO")
         .build();
