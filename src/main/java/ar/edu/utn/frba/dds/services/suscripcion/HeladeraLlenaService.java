@@ -15,7 +15,7 @@ import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 public class HeladeraLlenaService implements WithSimplePersistenceUnit {
 
@@ -97,22 +97,30 @@ public class HeladeraLlenaService implements WithSimplePersistenceUnit {
         suscripcion.getUmbralEspacio()
     );
 
+    Contacto contacto = null;
     try {
-      Optional<Contacto> contacto = suscripcion.getColaborador()
-          .getContacto(suscripcion.getMedioDeNotificacion());
-      if (contacto.isPresent()) {
-        Mensaje mensaje = Mensaje.con(
-            contacto.get(),
-            asunto,
-            cuerpo);
-        mensajeriaService.enviarMensaje(mensaje);
-      } else {
-        System.out.println("Medio de contacto solicitado no disponible. No se puede enviar "
-            + "el mensaje.");
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
+      contacto = suscripcion.getColaborador()
+          .getContacto(suscripcion.getMedioDeNotificacion()).orElseThrow();
+    } catch (NoSuchElementException e) {
+      //noinspection OptionalGetWithoutIsPresent
+      contacto = suscripcion.getColaborador().getContacto(MedioDeNotificacion.EMAIL).get();
+    } finally {
+      Mensaje mensaje = Mensaje.con(
+          contacto,
+          asunto,
+          cuerpo);
+      mensajeriaService.enviarMensaje(mensaje);
     }
   }
 
+  /**
+   * Chequea las suscripciones y notifica en caso de ser necesario.
+   *
+   * @param heladera heladera
+   */
+  public void manejarHeladeraLlena(Heladera heladera) {
+    this.obtenerPorHeladera(heladera).parallelStream()
+        .filter(suscripcion -> heladera.getViandas() >= suscripcion.getUmbralEspacio())
+        .forEach(this::notificacionHeladeraLlena);
+  }
 }

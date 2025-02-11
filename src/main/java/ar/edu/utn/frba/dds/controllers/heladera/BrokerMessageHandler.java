@@ -134,7 +134,7 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
       throws AperturaDeniedException {
     try {
       retiroDeViandaService.registrarRetiro(tarjeta, heladera);
-      this.manejarFaltaVianda(heladera);
+      faltaViandaService.manejarFaltaVianda(heladera);
     } catch (Exception | CantidadDeViandasException e) {
       throw new AperturaDeniedException();
     }
@@ -154,26 +154,15 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
       switch (solicitudDeApertura.getMotivo()) {
         case DISTRIBUCION_VIANDAS -> {
           distribucionViandasService.efectuarAperturaPara(solicitudDeApertura);
-          this.manejarFaltaVianda(heladera);
+          faltaViandaService.manejarFaltaVianda(heladera);
         }
         case DONACION_VIANDA -> donacionViandaService.efectuarAperturaPara(solicitudDeApertura);
         default -> throw new IllegalStateException();
       }
-      this.manejarHeladeraLlena(heladera);
+      heladeraLlenaService.manejarHeladeraLlena(heladera);
     } catch (ResourceNotFoundException | CantidadDeViandasException e) {
       throw new AperturaDeniedException();
     }
   }
 
-  private void manejarFaltaVianda(Heladera heladera) {
-    faltaViandaService.obtenerPorHeladera(heladera).parallelStream()
-        .filter(suscripcion -> heladera.getViandas() <= suscripcion.getUmbralViandas())
-        .forEach(faltaViandaService::notificacionFaltaVianda);
-  }
-
-  private void manejarHeladeraLlena(Heladera heladera) {
-    heladeraLlenaService.obtenerPorHeladera(heladera).parallelStream()
-        .filter(suscripcion -> heladera.getViandas() >= suscripcion.getUmbralEspacio())
-        .forEach(heladeraLlenaService::notificacionHeladeraLlena);
-  }
 }
