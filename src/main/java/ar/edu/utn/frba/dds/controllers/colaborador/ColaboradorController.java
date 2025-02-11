@@ -4,6 +4,7 @@ import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.colaboraciones.TipoColaboracionDTO;
 import ar.edu.utn.frba.dds.dtos.colaborador.ColaboradorDTO;
 import ar.edu.utn.frba.dds.dtos.colaborador.CreateColaboradorDTO;
+import ar.edu.utn.frba.dds.dtos.tarjeta.TarjetaColaboradorDTO;
 import ar.edu.utn.frba.dds.dtos.usuario.CreateUsuarioDTO;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
 import ar.edu.utn.frba.dds.exceptions.NotColaboratorException;
@@ -12,10 +13,12 @@ import ar.edu.utn.frba.dds.exceptions.ValidationException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.colaborador.TipoColaborador;
+import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaColaborador;
 import ar.edu.utn.frba.dds.models.entities.usuario.TipoRol;
 import ar.edu.utn.frba.dds.models.stateless.ValidadorDeContrasenias;
 import ar.edu.utn.frba.dds.permissions.ColaboradorRequired;
 import ar.edu.utn.frba.dds.services.colaborador.ColaboradorService;
+import ar.edu.utn.frba.dds.services.tarjeta.TarjetaColaboradorService;
 import ar.edu.utn.frba.dds.services.usuario.UsuarioService;
 import io.javalin.http.Context;
 import java.util.ArrayList;
@@ -30,6 +33,8 @@ import java.util.stream.Collectors;
  */
 public class ColaboradorController extends ColaboradorRequired {
 
+  private final TarjetaColaboradorService tarjetaColaboradorService;
+
   /**
    * Constructor de ColaboradorController.
    *
@@ -37,8 +42,10 @@ public class ColaboradorController extends ColaboradorRequired {
    * @param colaboradorService Servicio de Colaborador
    */
   public ColaboradorController(UsuarioService usuarioService,
-                               ColaboradorService colaboradorService) {
+                               ColaboradorService colaboradorService,
+                               TarjetaColaboradorService tarjetaColaboradorService) {
     super(usuarioService, colaboradorService);
+    this.tarjetaColaboradorService = tarjetaColaboradorService;
   }
 
   /**
@@ -63,10 +70,14 @@ public class ColaboradorController extends ColaboradorRequired {
   public void getProfile(Context context) {
     Colaborador colaboradorSession = colaboradorFromSession(context);
 
+    TarjetaColaborador tarjetaColaborador = this.tarjetaColaboradorService
+        .buscarPorColaborador(colaboradorSession);
+
     Map<String, Object> model = new HashMap<>();
+    TarjetaColaboradorDTO tarjeta = TarjetaColaboradorDTO.completa(tarjetaColaborador);
     ColaboradorDTO colaborador = ColaboradorDTO.completa(colaboradorSession);
     model.put("colaborador", colaborador);
-
+    model.put("tarjeta", tarjeta);
     render(context, "perfil/perfil.hbs", model);
   }
 

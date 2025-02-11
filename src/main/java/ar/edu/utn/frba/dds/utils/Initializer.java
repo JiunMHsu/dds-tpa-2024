@@ -21,6 +21,7 @@ import ar.edu.utn.frba.dds.models.entities.heladera.EstadoHeladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.heladera.RangoTemperatura;
 import ar.edu.utn.frba.dds.models.entities.incidente.Incidente;
+import ar.edu.utn.frba.dds.models.entities.tarjeta.TarjetaColaborador;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.entities.usuario.TipoRol;
 import ar.edu.utn.frba.dds.models.entities.usuario.Usuario;
@@ -30,6 +31,7 @@ import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository
 import ar.edu.utn.frba.dds.models.repositories.contacto.ContactoRepository;
 import ar.edu.utn.frba.dds.models.repositories.heladera.HeladeraRepository;
 import ar.edu.utn.frba.dds.models.repositories.incidente.IncidenteRepository;
+import ar.edu.utn.frba.dds.models.repositories.tarjeta.TarjetaColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.tecnico.TecnicoRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import ar.edu.utn.frba.dds.services.heladera.SuscriptorSensorService;
@@ -81,6 +83,7 @@ public class Initializer implements WithSimplePersistenceUnit {
     instance.withVarianteDePuntos();
     instance.withOfertas();
     instance.withTecnicos();
+    instance.withTarjetas();
     instance.initializeMqttSubscribers();
 
     // ServiceLocator.instanceOf(ReporteService.class).generarReporteSemanal();
@@ -161,7 +164,7 @@ public class Initializer implements WithSimplePersistenceUnit {
         u1,
         "Jiun Ming",
         "Hsu",
-        null,
+        new Documento(TipoDocumento.DNI, "94474536"),
         LocalDate.of(2003, 2, 19),
         new ArrayList<>(),
         direccion,
@@ -172,7 +175,7 @@ public class Initializer implements WithSimplePersistenceUnit {
         u2,
         "Abril",
         "Nimo Dominguez",
-        null,
+        new Documento(TipoDocumento.DNI, "45419638"),
         LocalDate.of(2004, 1, 8),
         new ArrayList<>(),
         direccion,
@@ -183,7 +186,7 @@ public class Initializer implements WithSimplePersistenceUnit {
         u3,
         "Matías Leonel",
         "Juncos Mieres",
-        null,
+        new Documento(TipoDocumento.DNI, "45234468"),
         LocalDate.of(2003, 12, 1),
         contactos,
         direccion,
@@ -553,7 +556,7 @@ public class Initializer implements WithSimplePersistenceUnit {
   }
 
   private void withTecnicos() {
-    Contacto contacto = Contacto.conTelegram("leoneljuncossmieres@gmail.com");
+    Contacto contacto = Contacto.conEmail("leoneljuncossmieres@gmail.com");
 
     Usuario mmieres = Usuario.con(
         "Xx_mieres_xX",
@@ -580,6 +583,27 @@ public class Initializer implements WithSimplePersistenceUnit {
     contactoRepository.guardar(contacto);
     usuarioRepository.guardar(mmieres);
     tecnicoRepository.guardar(t1);
+    commitTransaction();
+  }
+
+  private void withTarjetas() {
+    TarjetaColaborador t1 = TarjetaColaborador.de(
+        "1234567890123456",
+        colaboradorRepository.buscarPorEmail("jhsu@frba.utn.edu.ar").orElseThrow(),
+        true
+    );
+
+    TarjetaColaborador t2 = TarjetaColaborador.de(
+        "123456we890123456",
+        colaboradorRepository.buscarPorEmail("mjuncosmieres@frba.utn.edu.ar").orElseThrow(),
+        false
+    );
+
+    TarjetaColaboradorRepository tarjetaColaboradorRepository = new TarjetaColaboradorRepository();
+
+    beginTransaction();
+    tarjetaColaboradorRepository.guardar(t1);
+    tarjetaColaboradorRepository.guardar(t2);
     commitTransaction();
   }
 
