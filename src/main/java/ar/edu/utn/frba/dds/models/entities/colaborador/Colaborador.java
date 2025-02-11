@@ -31,6 +31,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Modelo Colaborador.
@@ -255,11 +256,7 @@ public class Colaborador extends EntidadPersistente {
    *
    * @param contacto contacto
    */
-  public void agregarContacto(Contacto contacto) {
-    if (contactos == null) {
-      contactos = new ArrayList<>();
-    }
-
+  public void agregarContacto(@NotNull Contacto contacto) {
     Contacto contactoExistente = contactos.stream()
         .filter(c -> c.getMedioDeNotificacion() == contacto.getMedioDeNotificacion())
         .findFirst()
