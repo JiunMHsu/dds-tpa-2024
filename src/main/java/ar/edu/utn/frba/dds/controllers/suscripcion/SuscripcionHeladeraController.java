@@ -115,35 +115,17 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
               String.class).get()),
           context.formParamAsClass("contacto", String.class).get()
       );
-//TODO ver tipo-suscripcion
 
-      String tipoSuscripcion = context.path(); // Obtiene la ruta de la petición
+      String tipoSuscripcion = context.path();
 
       if (tipoSuscripcion.contains("falla-tecnica")) {
-        tipoSuscripcion = "falla-heladera";
+        this.fallaHeladeraService.registrar(nuevaSuscripcion);
       } else if (tipoSuscripcion.contains("falta-viandas")) {
-        tipoSuscripcion = "falta-vianda";
+        nuevaSuscripcion.setViandasRestantes(context.formParamAsClass("cantidad-viandas", Integer.class).get());
+        this.faltaViandaService.registrar(nuevaSuscripcion);
       } else if (tipoSuscripcion.contains("heladera-llena")) {
-        tipoSuscripcion = "heladera-llena";
-      }
-
-      tipoSuscripcion = "falla-heladera"; // TODO: Revisar
-//
-//      String tipoSuscripcion = context.queryParamAsClass("tipo-suscripcion", String.class)
-//          .get();
-
-      switch (tipoSuscripcion) {
-        case "falla-heladera":
-          this.fallaHeladeraService.registrar(nuevaSuscripcion);
-          break;
-        case "falta-vianda":
-          nuevaSuscripcion.setViandasRestantes(context.formParamAsClass("cantidad-viandas", Integer.class).get());
-          this.faltaViandaService.registrar(nuevaSuscripcion);
-          break;
-        case "heladera-llena":
-          nuevaSuscripcion.setEspacioRestante(context.formParamAsClass("viandas-restantes", Integer.class).get());
-          this.heladeraLlenaService.registrar(nuevaSuscripcion);
-          break;
+        nuevaSuscripcion.setEspacioRestante(context.formParamAsClass("viandas-restantes", Integer.class).get());
+        this.heladeraLlenaService.registrar(nuevaSuscripcion);
       }
 
       operationSuccess = true;
