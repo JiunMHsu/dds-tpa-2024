@@ -1,10 +1,12 @@
 package ar.edu.utn.frba.dds.services.suscripcion;
 
+import ar.edu.utn.frba.dds.dtos.suscripcion.CreateSuscripcionHeladeraDTO;
 import ar.edu.utn.frba.dds.exceptions.SuscripcionFaltaViandaException;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.mensaje.Mensaje;
+import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFallaHeladera;
 import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFaltaVianda;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.IColaboradorRepository;
@@ -32,37 +34,34 @@ public class FaltaViandaService implements WithSimplePersistenceUnit {
     this.mensajeriaService = mensajeriaService;
   }
 
-  public void registrar(Colaborador colaborador, Heladera heladera, Integer viandasRestantes,
-                        MedioDeNotificacion medioDeNotificacion, String infoContacto)
+  /**
+   * Registrar una suscripción a una falla de heladera.
+   *
+   * @param suscripcion suscripción a falta viandas de heladera
+   */
+  public void registrar(CreateSuscripcionHeladeraDTO suscripcion)
       throws SuscripcionFaltaViandaException {
 
-    if (colaborador.getContactos().isEmpty()) {
-      List<Contacto> contactos = new ArrayList<>(Arrays.asList(Contacto.vacio()));
-      colaborador.setContactos(contactos);
-    }
+    Contacto nuevoContacto = Contacto.con(suscripcion.getMedioDeNotificacion(),
+        suscripcion.getInfoContacto());
 
-    boolean contactoActualizado = false;
+    suscripcion.getColaborador().agregarContacto(nuevoContacto);
 
-    if (colaborador.getContacto(medioDeNotificacion).isEmpty()) {
-      colaborador.agregarContacto(Contacto.con(medioDeNotificacion, infoContacto));
-      contactoActualizado = true;
-    }
-
-    if (viandasRestantes <= 0 || viandasRestantes > heladera.getCapacidad()) {
+    if (suscripcion.getViandasRestantes() <= 0 || suscripcion.getViandasRestantes()
+        > suscripcion.getHeladera().getCapacidad()) {
       throw new SuscripcionFaltaViandaException("La cantidad de viandas restantes debe ser mayor "
           + "a 0 y menor o igual a la capacidad máxima de la heladera");
     }
 
     SuscripcionFaltaVianda nuevaSuscripcion = SuscripcionFaltaVianda.de(
-        colaborador,
-        heladera,
-        medioDeNotificacion,
-        viandasRestantes);
+        suscripcion.getColaborador(),
+        suscripcion.getHeladera(),
+        suscripcion.getMedioDeNotificacion(),
+        suscripcion.getViandasRestantes());
 
     beginTransaction();
-    if (contactoActualizado) {
-      colaboradorRepository.actualizar(colaborador);
-    }
+    //TODO ver si agrego chequeo si es que agrego un contacto que ya estaba (no seria necesario actualizar)
+    colaboradorRepository.actualizar(suscripcion.getColaborador());
     faltaViandaRepository.guardar(nuevaSuscripcion);
     commitTransaction();
   }

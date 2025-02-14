@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.services.heladera;
 
 import ar.edu.utn.frba.dds.dtos.heladera.CreateHeladeraDTO;
+import ar.edu.utn.frba.dds.dtos.heladera.HeladeraDTO;
 import ar.edu.utn.frba.dds.dtos.heladera.UpdateHeladeraDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.HacerseCargoHeladera;
@@ -55,6 +56,11 @@ public class HeladeraService implements WithSimplePersistenceUnit {
    */
   public Heladera buscarPorId(@NotNull String id) {
     return this.heladeraRepository.buscarPorId(id).orElseThrow(ResourceNotFoundException::new);
+  }
+
+  public HeladeraDTO buscarPorIdDto(@NotNull String id) {
+    return HeladeraDTO.fromHeladra(this.heladeraRepository.buscarPorId(id)
+        .orElseThrow(ResourceNotFoundException::new));
   }
 
   /**

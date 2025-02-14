@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.controllers.suscripcion;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
 import ar.edu.utn.frba.dds.dtos.heladera.HeladeraDTO;
+import ar.edu.utn.frba.dds.dtos.suscripcion.CreateSuscripcionHeladeraDTO;
 import ar.edu.utn.frba.dds.exceptions.NotColaboratorException;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.SuscripcionFaltaViandaException;
@@ -49,7 +50,7 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
   public void create(Context context) {
 
     String heladeraId = context.queryParamAsClass("heladera", String.class).get();
-
+//TODO ver donde poner la logica del DTO
     Heladera heladera = this.heladeraService.buscarPorId(heladeraId);
 
     Map<String, Object> model = new HashMap<>();
@@ -64,11 +65,10 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
 
     String heladeraId = context.queryParamAsClass("heladera", String.class).get();
 
-    Heladera heladera = this.heladeraService.buscarPorId(heladeraId);
+    HeladeraDTO heladeraDTO = this.heladeraService.buscarPorIdDto(heladeraId);
 
     Map<String, Object> model = new HashMap<>();
 
-    HeladeraDTO heladeraDTO = HeladeraDTO.fromHeladra(heladera);
     model.put("heladera", heladeraDTO);
 
     render(context, "suscripciones/suscripcion_falla_heladera.hbs", model);
@@ -78,11 +78,10 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
 
     String heladeraId = context.queryParamAsClass("heladera", String.class).get();
 
-    Heladera heladera = this.heladeraService.buscarPorId(heladeraId);
+    HeladeraDTO heladeraDTO = this.heladeraService.buscarPorIdDto(heladeraId);
 
     Map<String, Object> model = new HashMap<>();
 
-    HeladeraDTO heladeraDTO = HeladeraDTO.fromHeladra(heladera);
     model.put("heladera", heladeraDTO);
 
     render(context, "suscripciones/suscripcion_falta_viandas.hbs", model);
@@ -92,121 +91,75 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
 
     String heladeraId = context.queryParamAsClass("heladera", String.class).get();
 
-    Heladera heladera = this.heladeraService.buscarPorId(heladeraId);
+    HeladeraDTO heladeraDTO = this.heladeraService.buscarPorIdDto(heladeraId);
 
     Map<String, Object> model = new HashMap<>();
 
-    HeladeraDTO heladeraDTO = HeladeraDTO.fromHeladra(heladera);
     model.put("heladera", heladeraDTO);
 
     render(context, "suscripciones/suscripcion_heladera_llena.hbs", model);
   }
 
-  public void saveFallaHeladera(Context context) {
+  public void save(Context context) {
 
     Map<String, Object> model = new HashMap<>();
     List<RedirectDTO> redirectDTOS = new ArrayList<>();
     boolean operationSuccess = false;
 
     try {
+      CreateSuscripcionHeladeraDTO nuevaSuscripcion = new CreateSuscripcionHeladeraDTO(
+          colaboradorFromSession(context),
+          this.heladeraService.buscarPorId(context.queryParamAsClass("heladera",
+              String.class).get()),
+          MedioDeNotificacion.valueOf(context.formParamAsClass("medio-notificacion",
+              String.class).get()),
+          context.formParamAsClass("contacto", String.class).get()
+      );
+//TODO ver tipo-suscripcion
 
-      Colaborador colaborador = colaboradorFromSession(context);
+      String tipoSuscripcion = context.path(); // Obtiene la ruta de la petición
 
-      String heladeraId = context.queryParamAsClass("heladera", String.class).get();
+      if (tipoSuscripcion.contains("falla-tecnica")) {
+        tipoSuscripcion = "falla-heladera";
+      } else if (tipoSuscripcion.contains("falta-viandas")) {
+        tipoSuscripcion = "falta-vianda";
+      } else if (tipoSuscripcion.contains("heladera-llena")) {
+        tipoSuscripcion = "heladera-llena";
+      }
 
-      Heladera heladera = this.heladeraService.buscarPorId(heladeraId);
+      tipoSuscripcion = "falla-heladera"; // TODO: Revisar
+//
+//      String tipoSuscripcion = context.queryParamAsClass("tipo-suscripcion", String.class)
+//          .get();
 
-      MedioDeNotificacion medioDeNotificacion = MedioDeNotificacion.valueOf(context.formParamAsClass("medio-notificacion", String.class).get());
-
-      String infoContacto = context.formParamAsClass("contacto", String.class).get();
-
-      this.fallaHeladeraService.registrar(colaborador, heladera, medioDeNotificacion, infoContacto);
-
-      operationSuccess = true;
-      redirectDTOS.add(new RedirectDTO("/heladeras", "Ir a Heladeras"));
-
-    } catch (NotColaboratorException e) {
-      throw new UnauthorizedException(e.getMessage());
-    } finally {
-      model.put("success", operationSuccess);
-      model.put("redirects", redirectDTOS);
-      context.render("post_result.hbs", model);
-    }
-  }
-
-  public void saveFaltaVianda(Context context) {
-
-
-    Map<String, Object> model = new HashMap<>();
-    List<RedirectDTO> redirectDTOS = new ArrayList<>();
-    boolean operationSuccess = false;
-
-    try {
-
-      Colaborador colaborador = colaboradorFromSession(context);
-
-      String heladeraId = context.queryParamAsClass("heladera", String.class).get();
-
-      Heladera heladera = this.heladeraService.buscarPorId(heladeraId);
-
-      Integer viandasRestantes = context.formParamAsClass("cantidad-viandas", Integer.class).get();
-
-      MedioDeNotificacion medioDeNotificacion = MedioDeNotificacion.valueOf(context.formParamAsClass("medio-notificacion", String.class).get());
-
-      String infoContacto = context.formParamAsClass("contacto", String.class).get();
-
-      this.faltaViandaService.registrar(colaborador, heladera, viandasRestantes, medioDeNotificacion, infoContacto);
+      switch (tipoSuscripcion) {
+        case "falla-heladera":
+          this.fallaHeladeraService.registrar(nuevaSuscripcion);
+          break;
+        case "falta-vianda":
+          nuevaSuscripcion.setViandasRestantes(context.formParamAsClass("cantidad-viandas", Integer.class).get());
+          this.faltaViandaService.registrar(nuevaSuscripcion);
+          break;
+        case "heladera-llena":
+          nuevaSuscripcion.setEspacioRestante(context.formParamAsClass("viandas-restantes", Integer.class).get());
+          this.heladeraLlenaService.registrar(nuevaSuscripcion);
+          break;
+      }
 
       operationSuccess = true;
       redirectDTOS.add(new RedirectDTO("/heladeras", "Ir a Heladeras"));
 
     } catch (NotColaboratorException e) {
       throw new UnauthorizedException(e.getMessage());
-    } catch (ValidationException | ResourceNotFoundException |
-             SuscripcionFaltaViandaException e) {
+    } catch (ValidationException | ResourceNotFoundException
+             | SuscripcionFaltaViandaException | SuscripcionHeladeraLlenaException e) {
       redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
     } finally {
       model.put("success", operationSuccess);
       model.put("redirects", redirectDTOS);
       context.render("post_result.hbs", model);
     }
-  }
 
-  public void saveHeladeraLlena(Context context) {
-
-    Map<String, Object> model = new HashMap<>();
-    List<RedirectDTO> redirectDTOS = new ArrayList<>();
-    boolean operationSuccess = false;
-
-    try {
-
-      Colaborador colaborador = colaboradorFromSession(context);
-
-      String heladeraId = context.queryParamAsClass("heladera", String.class).get();
-
-      Heladera heladera = this.heladeraService.buscarPorId(heladeraId);
-
-      Integer espacioRestante = context.formParamAsClass("viandas-restantes", Integer.class).get();
-
-      MedioDeNotificacion medioDeNotificacion = MedioDeNotificacion.valueOf(context.formParamAsClass("medio-notificacion", String.class).get());
-
-      String infoContacto = context.formParamAsClass("contacto", String.class).get();
-
-      this.heladeraLlenaService.registrar(colaborador, heladera, espacioRestante, medioDeNotificacion, infoContacto);
-
-      operationSuccess = true;
-      redirectDTOS.add(new RedirectDTO("/heladeras", "Ir a Heladeras"));
-
-    } catch (NotColaboratorException e) {
-      throw new UnauthorizedException(e.getMessage());
-    } catch (ValidationException | ResourceNotFoundException |
-             SuscripcionHeladeraLlenaException e) {
-      redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
-    } finally {
-      model.put("success", operationSuccess);
-      model.put("redirects", redirectDTOS);
-      context.render("post_result.hbs", model);
-    }
   }
 
 }

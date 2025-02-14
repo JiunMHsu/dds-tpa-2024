@@ -1,10 +1,12 @@
 package ar.edu.utn.frba.dds.services.suscripcion;
 
+import ar.edu.utn.frba.dds.dtos.suscripcion.CreateSuscripcionHeladeraDTO;
 import ar.edu.utn.frba.dds.exceptions.SuscripcionHeladeraLlenaException;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.mensaje.Mensaje;
+import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFallaHeladera;
 import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionHeladeraLlena;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.IColaboradorRepository;
@@ -31,42 +33,35 @@ public class HeladeraLlenaService implements WithSimplePersistenceUnit {
     this.mensajeriaService = mensajeriaService;
   }
 
-  public void registrar(Colaborador colaborador, Heladera heladera, Integer espacioRestante,
-                        MedioDeNotificacion medioDeNotificacion, String infoContacto)
+  /**
+   * Registrar una suscripción a una falla de heladera.
+   *
+   * @param suscripcion suscripción a la falla de heladera
+   */
+  public void registrar(CreateSuscripcionHeladeraDTO suscripcion)
       throws SuscripcionHeladeraLlenaException {
 
-    if (colaborador.getContactos().isEmpty()) {
-      List<Contacto> contactos = new ArrayList<>(Arrays.asList(Contacto.vacio()));
-      colaborador.setContactos(contactos);
-    }
+    Contacto nuevoContacto = Contacto.con(suscripcion.getMedioDeNotificacion(),
+        suscripcion.getInfoContacto());
 
-    boolean contactoActualizado = false;
+    suscripcion.getColaborador().agregarContacto(nuevoContacto);
 
-    if (colaborador.getContacto(medioDeNotificacion).isEmpty()) {
-      colaborador.agregarContacto(Contacto.con(medioDeNotificacion, infoContacto));
-      contactoActualizado = true;
-    }
-
-    if (espacioRestante < 0 || espacioRestante > heladera.getCapacidad())
+    if (suscripcion.getEspacioRestante() < 0 || suscripcion.getEspacioRestante()
+        > suscripcion.getHeladera().getCapacidad())
       throw new SuscripcionHeladeraLlenaException("El espacio restante debe ser mayor o igual a "
           + "0 y menor a la capacidad máxima nueva la heladera");
 
     SuscripcionHeladeraLlena nuevaSuscripcion = SuscripcionHeladeraLlena.de(
-        colaborador,
-        heladera,
-        medioDeNotificacion,
-        espacioRestante);
+        suscripcion.getColaborador(),
+        suscripcion.getHeladera(),
+        suscripcion.getMedioDeNotificacion(),
+        suscripcion.getEspacioRestante());
 
-    if (contactoActualizado) {
-      beginTransaction();
-      colaboradorRepository.actualizar(colaborador);
-      heladeraLlenaRepositoy.guardar(nuevaSuscripcion);
-      commitTransaction();
-    } else {
-      beginTransaction();
-      heladeraLlenaRepositoy.guardar(nuevaSuscripcion);
-      commitTransaction();
-    }
+    beginTransaction();
+    //TODO ver si agrego chequeo si es que agrego un contacto que ya estaba (no seria necesario actualizar)
+    colaboradorRepository.actualizar(suscripcion.getColaborador());
+    heladeraLlenaRepositoy.guardar(nuevaSuscripcion);
+    commitTransaction();
   }
 
   /**
