@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 
-// TODO - Refactorizar
+// TODO - documentar
 public class SuscripcionHeladeraController extends ColaboradorRequired {
 
   private final HeladeraService heladeraService;
@@ -47,10 +47,10 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
     this.heladeraLlenaService = heladeraLlenaService;
   }
 
-  public void create(Context context) {
+  public void createSuscripcion(Context context, String pathSuscripcion) {
 
     String heladeraId = context.queryParamAsClass("heladera", String.class).get();
-//TODO ver donde poner la logica del DTO
+
     Heladera heladera = this.heladeraService.buscarPorId(heladeraId);
 
     Map<String, Object> model = new HashMap<>();
@@ -58,49 +58,24 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
     HeladeraDTO heladeraDTO = HeladeraDTO.fromHeladra(heladera);
     model.put("heladera", heladeraDTO);
 
-    render(context, "suscripciones/suscripciones.hbs", model);
+    render(context, "suscripciones/" + pathSuscripcion, model);
   }
 
+  public void create(Context context) {
+    createSuscripcion(context, "suscripciones.hbs");
+  }
+
+
   public void createFallaHeladera(Context context) {
-
-    String heladeraId = context.queryParamAsClass("heladera", String.class).get();
-
-    Heladera heladera = this.heladeraService.buscarPorId(heladeraId);
-
-    Map<String, Object> model = new HashMap<>();
-
-    HeladeraDTO heladeraDTO = HeladeraDTO.fromHeladra(heladera);
-    model.put("heladera", heladeraDTO);
-
-    render(context, "suscripciones/suscripcion_falla_heladera.hbs", model);
+    this.createSuscripcion(context, "suscripcion_falla_heladera.hbs");
   }
 
   public void createFaltaVianda(Context context) {
-
-    String heladeraId = context.queryParamAsClass("heladera", String.class).get();
-
-    Heladera heladera = this.heladeraService.buscarPorId(heladeraId);
-
-    Map<String, Object> model = new HashMap<>();
-
-    HeladeraDTO heladeraDTO = HeladeraDTO.fromHeladra(heladera);
-    model.put("heladera", heladeraDTO);
-
-    render(context, "suscripciones/suscripcion_falta_viandas.hbs", model);
+    this.createSuscripcion(context, "suscripcion_falta_viandas.hbs");
   }
 
   public void createHeladeraLlena(Context context) {
-
-    String heladeraId = context.queryParamAsClass("heladera", String.class).get();
-
-    Heladera heladera = this.heladeraService.buscarPorId(heladeraId);
-
-    Map<String, Object> model = new HashMap<>();
-
-    HeladeraDTO heladeraDTO = HeladeraDTO.fromHeladra(heladera);
-    model.put("heladera", heladeraDTO);
-
-    render(context, "suscripciones/suscripcion_heladera_llena.hbs", model);
+    this.createSuscripcion(context, "suscripcion_heladera_llena.hbs");
   }
 
   public void save(Context context) {
