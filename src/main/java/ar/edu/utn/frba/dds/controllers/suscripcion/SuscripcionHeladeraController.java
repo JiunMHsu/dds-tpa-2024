@@ -8,7 +8,6 @@ import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.SuscripcionFaltaViandaException;
 import ar.edu.utn.frba.dds.exceptions.SuscripcionHeladeraLlenaException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
-import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.stateless.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.permissions.ColaboradorRequired;
@@ -55,8 +54,8 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
 
     Map<String, Object> model = new HashMap<>();
 
-    HeladeraDTO heladeraDTO = HeladeraDTO.fromHeladra(heladera);
-    model.put("heladera", heladeraDTO);
+    HeladeraDTO heladeraDto = HeladeraDTO.fromHeladra(heladera);
+    model.put("heladera", heladeraDto);
 
     render(context, "suscripciones/" + pathSuscripcion, model);
   }
@@ -64,7 +63,6 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
   public void create(Context context) {
     createSuscripcion(context, "suscripciones.hbs");
   }
-
 
   public void createFallaHeladera(Context context) {
     this.createSuscripcion(context, "suscripcion_falla_heladera.hbs");
@@ -81,7 +79,7 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
   public void save(Context context) {
 
     Map<String, Object> model = new HashMap<>();
-    List<RedirectDTO> redirectDTOS = new ArrayList<>();
+    List<RedirectDTO> redirectDtos = new ArrayList<>();
     boolean operationSuccess = false;
 
     try {
@@ -99,24 +97,26 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
       if (tipoSuscripcion.contains("falla-tecnica")) {
         this.fallaHeladeraService.registrar(nuevaSuscripcion);
       } else if (tipoSuscripcion.contains("falta-viandas")) {
-        nuevaSuscripcion.setViandasRestantes(context.formParamAsClass("cantidad-viandas", Integer.class).get());
+        nuevaSuscripcion.setViandasRestantes(context.formParamAsClass("cantidad-viandas",
+            Integer.class).get());
         this.faltaViandaService.registrar(nuevaSuscripcion);
       } else if (tipoSuscripcion.contains("heladera-llena")) {
-        nuevaSuscripcion.setEspacioRestante(context.formParamAsClass("viandas-restantes", Integer.class).get());
+        nuevaSuscripcion.setEspacioRestante(context.formParamAsClass("viandas-restantes",
+            Integer.class).get());
         this.heladeraLlenaService.registrar(nuevaSuscripcion);
       }
 
       operationSuccess = true;
-      redirectDTOS.add(new RedirectDTO("/heladeras", "Ir a Heladeras"));
+      redirectDtos.add(new RedirectDTO("/heladeras", "Ir a Heladeras"));
 
     } catch (NotColaboratorException e) {
       throw new UnauthorizedException(e.getMessage());
     } catch (ValidationException | ResourceNotFoundException
              | SuscripcionFaltaViandaException | SuscripcionHeladeraLlenaException e) {
-      redirectDTOS.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
+      redirectDtos.add(new RedirectDTO(context.fullUrl(), "Reintentar"));
     } finally {
       model.put("success", operationSuccess);
-      model.put("redirects", redirectDTOS);
+      model.put("redirects", redirectDtos);
       context.render("post_result.hbs", model);
     }
 
