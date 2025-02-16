@@ -65,10 +65,11 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
 
     String heladeraId = context.queryParamAsClass("heladera", String.class).get();
 
-    HeladeraDTO heladeraDTO = this.heladeraService.buscarPorIdDto(heladeraId);
+    Heladera heladera = this.heladeraService.buscarPorId(heladeraId);
 
     Map<String, Object> model = new HashMap<>();
 
+    HeladeraDTO heladeraDTO = HeladeraDTO.fromHeladra(heladera);
     model.put("heladera", heladeraDTO);
 
     render(context, "suscripciones/suscripcion_falla_heladera.hbs", model);
@@ -78,10 +79,11 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
 
     String heladeraId = context.queryParamAsClass("heladera", String.class).get();
 
-    HeladeraDTO heladeraDTO = this.heladeraService.buscarPorIdDto(heladeraId);
+    Heladera heladera = this.heladeraService.buscarPorId(heladeraId);
 
     Map<String, Object> model = new HashMap<>();
 
+    HeladeraDTO heladeraDTO = HeladeraDTO.fromHeladra(heladera);
     model.put("heladera", heladeraDTO);
 
     render(context, "suscripciones/suscripcion_falta_viandas.hbs", model);
@@ -91,10 +93,11 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
 
     String heladeraId = context.queryParamAsClass("heladera", String.class).get();
 
-    HeladeraDTO heladeraDTO = this.heladeraService.buscarPorIdDto(heladeraId);
+    Heladera heladera = this.heladeraService.buscarPorId(heladeraId);
 
     Map<String, Object> model = new HashMap<>();
 
+    HeladeraDTO heladeraDTO = HeladeraDTO.fromHeladra(heladera);
     model.put("heladera", heladeraDTO);
 
     render(context, "suscripciones/suscripcion_heladera_llena.hbs", model);

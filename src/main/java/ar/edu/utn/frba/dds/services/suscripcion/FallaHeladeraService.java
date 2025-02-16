@@ -10,6 +10,7 @@ import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFallaHeladera;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.IColaboradorRepository;
+import ar.edu.utn.frba.dds.models.repositories.contacto.ContactoRepository;
 import ar.edu.utn.frba.dds.models.repositories.suscripcion.FallaHeladeraRepository;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.mensajeria.MensajeriaService;
@@ -31,6 +32,7 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
   private final MensajeriaService mensajeriaService;
   private final TecnicoService tecnicoService;
   private final HeladeraService heladeraService;
+  private final ContactoRepository contactoRepository;
 
   /**
    * Constructor.
@@ -45,12 +47,13 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
                               ColaboradorRepository colaboradorRepository,
                               MensajeriaService mensajeriaService,
                               TecnicoService tecnicoService,
-                              HeladeraService heladeraService) {
+                              HeladeraService heladeraService, ContactoRepository contactoRepository) {
     this.fallaHeladeraRepository = fallaHeladeraRepository;
     this.colaboradorRepository = colaboradorRepository;
     this.mensajeriaService = mensajeriaService;
     this.tecnicoService = tecnicoService;
     this.heladeraService = heladeraService;
+    this.contactoRepository = contactoRepository;
   }
 
   /**
@@ -72,6 +75,7 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
 
     beginTransaction();
     //TODO ver si agrego chequeo si es que agrego un contacto que ya estaba (no seria necesario actualizar)
+    contactoRepository.guardar(nuevoContacto);
     colaboradorRepository.actualizar(suscripcion.getColaborador());
     fallaHeladeraRepository.guardar(nuevaSuscripcion);
     commitTransaction();

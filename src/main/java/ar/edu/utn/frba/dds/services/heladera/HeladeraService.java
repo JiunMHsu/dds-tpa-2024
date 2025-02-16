@@ -58,11 +58,6 @@ public class HeladeraService implements WithSimplePersistenceUnit {
     return this.heladeraRepository.buscarPorId(id).orElseThrow(ResourceNotFoundException::new);
   }
 
-  public HeladeraDTO buscarPorIdDto(@NotNull String id) {
-    return HeladeraDTO.fromHeladra(this.heladeraRepository.buscarPorId(id)
-        .orElseThrow(ResourceNotFoundException::new));
-  }
-
   /**
    * Busca heladeras por barrio.
    *

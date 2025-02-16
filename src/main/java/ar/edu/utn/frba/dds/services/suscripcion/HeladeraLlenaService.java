@@ -10,6 +10,7 @@ import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFallaHeladera;
 import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionHeladeraLlena;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.IColaboradorRepository;
+import ar.edu.utn.frba.dds.models.repositories.contacto.ContactoRepository;
 import ar.edu.utn.frba.dds.models.repositories.suscripcion.HeladeraLlenaRepository;
 import ar.edu.utn.frba.dds.models.stateless.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.services.mensajeria.MensajeriaService;
@@ -24,13 +25,15 @@ public class HeladeraLlenaService implements WithSimplePersistenceUnit {
   private final HeladeraLlenaRepository heladeraLlenaRepositoy;
   private final IColaboradorRepository colaboradorRepository;
   private final MensajeriaService mensajeriaService;
+  private final ContactoRepository contactoRepository;
 
   public HeladeraLlenaService(HeladeraLlenaRepository heladeraLlenaRepositoy,
                               ColaboradorRepository colaboradorRepository,
-                              MensajeriaService mensajeriaService) {
+                              MensajeriaService mensajeriaService, ContactoRepository contactoRepository) {
     this.heladeraLlenaRepositoy = heladeraLlenaRepositoy;
     this.colaboradorRepository = colaboradorRepository;
     this.mensajeriaService = mensajeriaService;
+    this.contactoRepository = contactoRepository;
   }
 
   /**
@@ -59,6 +62,7 @@ public class HeladeraLlenaService implements WithSimplePersistenceUnit {
 
     beginTransaction();
     //TODO ver si agrego chequeo si es que agrego un contacto que ya estaba (no seria necesario actualizar)
+    contactoRepository.guardar(nuevoContacto);
     colaboradorRepository.actualizar(suscripcion.getColaborador());
     heladeraLlenaRepositoy.guardar(nuevaSuscripcion);
     commitTransaction();

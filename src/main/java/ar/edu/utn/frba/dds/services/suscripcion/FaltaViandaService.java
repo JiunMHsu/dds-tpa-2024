@@ -10,6 +10,7 @@ import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFallaHeladera;
 import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFaltaVianda;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.IColaboradorRepository;
+import ar.edu.utn.frba.dds.models.repositories.contacto.ContactoRepository;
 import ar.edu.utn.frba.dds.models.repositories.suscripcion.FaltaViandaRepository;
 import ar.edu.utn.frba.dds.models.stateless.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.services.mensajeria.MensajeriaService;
@@ -23,15 +24,17 @@ public class FaltaViandaService implements WithSimplePersistenceUnit {
 
   private final FaltaViandaRepository faltaViandaRepository;
   private final IColaboradorRepository colaboradorRepository;
-
   private final MensajeriaService mensajeriaService;
+  private final ContactoRepository contactoRepository;
 
   public FaltaViandaService(FaltaViandaRepository faltaViandaRepository,
                             ColaboradorRepository colaboradorRepository,
-                            MensajeriaService mensajeriaService) {
+                            MensajeriaService mensajeriaService,
+                            ContactoRepository contactoRepository) {
     this.faltaViandaRepository = faltaViandaRepository;
     this.colaboradorRepository = colaboradorRepository;
     this.mensajeriaService = mensajeriaService;
+    this.contactoRepository = contactoRepository;
   }
 
   /**
@@ -61,6 +64,7 @@ public class FaltaViandaService implements WithSimplePersistenceUnit {
 
     beginTransaction();
     //TODO ver si agrego chequeo si es que agrego un contacto que ya estaba (no seria necesario actualizar)
+    contactoRepository.guardar(nuevoContacto);
     colaboradorRepository.actualizar(suscripcion.getColaborador());
     faltaViandaRepository.guardar(nuevaSuscripcion);
     commitTransaction();
