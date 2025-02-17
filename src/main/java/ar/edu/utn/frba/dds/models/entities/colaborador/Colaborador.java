@@ -268,5 +268,16 @@ public class Colaborador extends EntidadPersistente {
       contactos.add(contacto);
     }
   }
+
+  /**
+   * Verifica si el contacto ya existe en la lista.
+   *
+   * @param contacto contacto
+   */
+  public boolean contactoYaExiste(@NotNull Contacto contacto) {
+    return contactos.stream()
+        .anyMatch(c -> c.getMedioDeNotificacion() == contacto.getMedioDeNotificacion()
+            && c.getValor().equals(contacto.getValor()));
+  }
 }
 

@@ -2,11 +2,9 @@ package ar.edu.utn.frba.dds.services.suscripcion;
 
 import ar.edu.utn.frba.dds.dtos.suscripcion.CreateSuscripcionHeladeraDTO;
 import ar.edu.utn.frba.dds.exceptions.SuscripcionHeladeraLlenaException;
-import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.mensaje.Mensaje;
-import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFallaHeladera;
 import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionHeladeraLlena;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.IColaboradorRepository;
@@ -15,8 +13,6 @@ import ar.edu.utn.frba.dds.models.repositories.suscripcion.HeladeraLlenaReposito
 import ar.edu.utn.frba.dds.models.stateless.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.services.mensajeria.MensajeriaService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -44,10 +40,15 @@ public class HeladeraLlenaService implements WithSimplePersistenceUnit {
   public void registrar(CreateSuscripcionHeladeraDTO suscripcion)
       throws SuscripcionHeladeraLlenaException {
 
+    Boolean contactoNuevoNoExiste = false;
+
     Contacto nuevoContacto = Contacto.con(suscripcion.getMedioDeNotificacion(),
         suscripcion.getInfoContacto());
 
-    suscripcion.getColaborador().agregarContacto(nuevoContacto);
+    if (!suscripcion.getColaborador().contactoYaExiste(nuevoContacto)) {
+      suscripcion.getColaborador().agregarContacto(nuevoContacto);
+      contactoNuevoNoExiste = true;
+    }
 
     if (suscripcion.getEspacioRestante() < 0 || suscripcion.getEspacioRestante()
         > suscripcion.getHeladera().getCapacidad())
@@ -61,9 +62,10 @@ public class HeladeraLlenaService implements WithSimplePersistenceUnit {
         suscripcion.getEspacioRestante());
 
     beginTransaction();
-    //TODO ver si agrego chequeo si es que agrego un contacto que ya estaba (no seria necesario actualizar)
-    contactoRepository.guardar(nuevoContacto);
-    colaboradorRepository.actualizar(suscripcion.getColaborador());
+    if (contactoNuevoNoExiste) {
+      contactoRepository.guardar(nuevoContacto);
+      colaboradorRepository.actualizar(suscripcion.getColaborador());
+    }
     heladeraLlenaRepositoy.guardar(nuevaSuscripcion);
     commitTransaction();
   }

@@ -63,10 +63,15 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
    */
   public void registrar(CreateSuscripcionHeladeraDTO suscripcion) {
 
+    Boolean contactoNuevoNoExiste = false;
+
     Contacto nuevoContacto = Contacto.con(suscripcion.getMedioDeNotificacion(),
         suscripcion.getInfoContacto());
 
-    suscripcion.getColaborador().agregarContacto(nuevoContacto);
+    if (!suscripcion.getColaborador().contactoYaExiste(nuevoContacto)) {
+      suscripcion.getColaborador().agregarContacto(nuevoContacto);
+      contactoNuevoNoExiste = true;
+    }
 
     SuscripcionFallaHeladera nuevaSuscripcion = SuscripcionFallaHeladera.de(
         suscripcion.getColaborador(),
@@ -74,9 +79,10 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
         suscripcion.getMedioDeNotificacion());
 
     beginTransaction();
-    //TODO ver si agrego chequeo si es que agrego un contacto que ya estaba (no seria necesario actualizar)
-    contactoRepository.guardar(nuevoContacto);
-    colaboradorRepository.actualizar(suscripcion.getColaborador());
+    if (contactoNuevoNoExiste) {
+      contactoRepository.guardar(nuevoContacto);
+      colaboradorRepository.actualizar(suscripcion.getColaborador());
+    }
     fallaHeladeraRepository.guardar(nuevaSuscripcion);
     commitTransaction();
   }
