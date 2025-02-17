@@ -117,15 +117,18 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
 
   @Override
   public void manejarSolicitudDeApertura(String codigoTarjeta, UUID heladeraId) {
-    Heladera heladera = this.heladeraService.buscarPorId(heladeraId.toString());
-
     try {
+      Heladera heladera = this.heladeraService.buscarPorId(heladeraId.toString());
+
       tarjetaPersonaVulnerableService.buscarTarjetaPorCodigo(codigoTarjeta).ifPresentOrElse(
           tarjeta -> manejarSolicitudPersonaVulnerable(tarjeta, heladera),
           () -> manejarSolicitudColaborador(codigoTarjeta, heladera)
       );
-    } catch (AperturaDeniedException e) {
-      System.out.println("no se permite acceso");
+      System.out.println("Acceso permitido para " + codigoTarjeta);
+      // Send "ALOWED" to broker
+    } catch (ResourceNotFoundException | AperturaDeniedException e) {
+      System.out.println("Acceso denegado para " + codigoTarjeta);
+      // Send "DENIED" to broker
     }
   }
 
