@@ -117,7 +117,7 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
     } finally {
       model.put("success", operationSuccess);
       model.put("redirects", redirectDtos);
-      context.render("post_result.hbs", model);
+      render(context, "post_result.hbs", model);
     }
 
   }
