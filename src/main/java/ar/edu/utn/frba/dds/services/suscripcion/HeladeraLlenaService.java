@@ -25,7 +25,8 @@ public class HeladeraLlenaService implements WithSimplePersistenceUnit {
 
   public HeladeraLlenaService(HeladeraLlenaRepository heladeraLlenaRepositoy,
                               ColaboradorRepository colaboradorRepository,
-                              MensajeriaService mensajeriaService, ContactoRepository contactoRepository) {
+                              MensajeriaService mensajeriaService,
+                              ContactoRepository contactoRepository) {
     this.heladeraLlenaRepositoy = heladeraLlenaRepositoy;
     this.colaboradorRepository = colaboradorRepository;
     this.mensajeriaService = mensajeriaService;
@@ -40,20 +41,27 @@ public class HeladeraLlenaService implements WithSimplePersistenceUnit {
   public void registrar(CreateSuscripcionHeladeraDTO suscripcion)
       throws SuscripcionHeladeraLlenaException {
 
-    Boolean contactoNuevoNoExiste = false;
+    boolean contactoNuevoNoExiste = false;
+    boolean actualizarContacto = false;
 
     Contacto nuevoContacto = Contacto.con(suscripcion.getMedioDeNotificacion(),
         suscripcion.getInfoContacto());
 
-    if (!suscripcion.getColaborador().contactoYaExiste(nuevoContacto)) {
+    if (!suscripcion.getColaborador().contactoDuplicado(nuevoContacto)) {
+      if (suscripcion.getColaborador()
+          .medioContactoYaExiste(nuevoContacto.getMedioDeNotificacion())) {
+        actualizarContacto = true;
+      } else {
+        contactoNuevoNoExiste = true;
+      }
       suscripcion.getColaborador().agregarContacto(nuevoContacto);
-      contactoNuevoNoExiste = true;
     }
 
     if (suscripcion.getEspacioRestante() < 0 || suscripcion.getEspacioRestante()
-        > suscripcion.getHeladera().getCapacidad())
+        > suscripcion.getHeladera().getCapacidad()) {
       throw new SuscripcionHeladeraLlenaException("El espacio restante debe ser mayor o igual a "
           + "0 y menor a la capacidad máxima nueva la heladera");
+    }
 
     SuscripcionHeladeraLlena nuevaSuscripcion = SuscripcionHeladeraLlena.de(
         suscripcion.getColaborador(),
@@ -64,6 +72,8 @@ public class HeladeraLlenaService implements WithSimplePersistenceUnit {
     beginTransaction();
     if (contactoNuevoNoExiste) {
       contactoRepository.guardar(nuevoContacto);
+      colaboradorRepository.actualizar(suscripcion.getColaborador());
+    } else if (actualizarContacto) {
       colaboradorRepository.actualizar(suscripcion.getColaborador());
     }
     heladeraLlenaRepositoy.guardar(nuevaSuscripcion);

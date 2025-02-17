@@ -47,7 +47,8 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
                               ColaboradorRepository colaboradorRepository,
                               MensajeriaService mensajeriaService,
                               TecnicoService tecnicoService,
-                              HeladeraService heladeraService, ContactoRepository contactoRepository) {
+                              HeladeraService heladeraService,
+                              ContactoRepository contactoRepository) {
     this.fallaHeladeraRepository = fallaHeladeraRepository;
     this.colaboradorRepository = colaboradorRepository;
     this.mensajeriaService = mensajeriaService;
@@ -63,14 +64,20 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
    */
   public void registrar(CreateSuscripcionHeladeraDTO suscripcion) {
 
-    Boolean contactoNuevoNoExiste = false;
+    boolean contactoNuevoNoExiste = false;
+    boolean actualizarContacto = false;
 
     Contacto nuevoContacto = Contacto.con(suscripcion.getMedioDeNotificacion(),
         suscripcion.getInfoContacto());
 
-    if (!suscripcion.getColaborador().contactoYaExiste(nuevoContacto)) {
+    if (!suscripcion.getColaborador().contactoDuplicado(nuevoContacto)) {
+      if (suscripcion.getColaborador()
+          .medioContactoYaExiste(nuevoContacto.getMedioDeNotificacion())) {
+        actualizarContacto = true;
+      } else {
+        contactoNuevoNoExiste = true;
+      }
       suscripcion.getColaborador().agregarContacto(nuevoContacto);
-      contactoNuevoNoExiste = true;
     }
 
     SuscripcionFallaHeladera nuevaSuscripcion = SuscripcionFallaHeladera.de(
@@ -81,6 +88,8 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
     beginTransaction();
     if (contactoNuevoNoExiste) {
       contactoRepository.guardar(nuevoContacto);
+      colaboradorRepository.actualizar(suscripcion.getColaborador());
+    } else if (actualizarContacto) {
       colaboradorRepository.actualizar(suscripcion.getColaborador());
     }
     fallaHeladeraRepository.guardar(nuevaSuscripcion);

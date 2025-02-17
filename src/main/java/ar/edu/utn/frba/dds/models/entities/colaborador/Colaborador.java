@@ -274,10 +274,20 @@ public class Colaborador extends EntidadPersistente {
    *
    * @param contacto contacto
    */
-  public boolean contactoYaExiste(@NotNull Contacto contacto) {
+  public boolean contactoDuplicado(@NotNull Contacto contacto) {
     return contactos.stream()
         .anyMatch(c -> c.getMedioDeNotificacion() == contacto.getMedioDeNotificacion()
             && c.getValor().equals(contacto.getValor()));
+  }
+
+  /**
+   * Verifica si existe un contacto con ese medio de notificacion en la lista.
+   *
+   * @param medioDeNotificacion medio de notificación
+   */
+  public boolean medioContactoYaExiste(@NotNull MedioDeNotificacion medioDeNotificacion) {
+    return contactos.stream()
+        .anyMatch(c -> c.getMedioDeNotificacion() == medioDeNotificacion);
   }
 }
 

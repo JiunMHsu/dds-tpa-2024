@@ -45,14 +45,20 @@ public class FaltaViandaService implements WithSimplePersistenceUnit {
   public void registrar(CreateSuscripcionHeladeraDTO suscripcion)
       throws SuscripcionFaltaViandaException {
 
-    Boolean contactoNuevoNoExiste = false;
+    boolean contactoNuevoNoExiste = false;
+    boolean actualizarContacto = false;
 
     Contacto nuevoContacto = Contacto.con(suscripcion.getMedioDeNotificacion(),
         suscripcion.getInfoContacto());
 
-    if (!suscripcion.getColaborador().contactoYaExiste(nuevoContacto)) {
+    if (!suscripcion.getColaborador().contactoDuplicado(nuevoContacto)) {
+      if (suscripcion.getColaborador()
+          .medioContactoYaExiste(nuevoContacto.getMedioDeNotificacion())) {
+        actualizarContacto = true;
+      } else {
+        contactoNuevoNoExiste = true;
+      }
       suscripcion.getColaborador().agregarContacto(nuevoContacto);
-      contactoNuevoNoExiste = true;
     }
 
     if (suscripcion.getViandasRestantes() <= 0 || suscripcion.getViandasRestantes()
@@ -70,6 +76,8 @@ public class FaltaViandaService implements WithSimplePersistenceUnit {
     beginTransaction();
     if (contactoNuevoNoExiste) {
       contactoRepository.guardar(nuevoContacto);
+      colaboradorRepository.actualizar(suscripcion.getColaborador());
+    } else if (actualizarContacto) {
       colaboradorRepository.actualizar(suscripcion.getColaborador());
     }
     faltaViandaRepository.guardar(nuevaSuscripcion);
