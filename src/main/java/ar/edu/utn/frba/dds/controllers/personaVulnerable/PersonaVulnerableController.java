@@ -23,11 +23,22 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Controlador para manejar las operaciones relacionadas con personas vulnerables.
+ */
 public class PersonaVulnerableController extends ColaboradorRequired implements ICrudViewsHandler {
 
   private final PersonaVulnerableService personaVulnerableService;
   private final TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService;
 
+  /**
+   * Constructor para inicializar el controlador de personas vulnerables.
+   *
+   * @param personaVulnerableService        El servicio de personas vulnerables.
+   * @param tarjetaPersonaVulnerableService El servicio de tarjetas de personas vulnerables.
+   * @param colaboradorService              El servicio de colaboradores.
+   * @param usuarioService                  El servicio de usuarios.
+   */
   public PersonaVulnerableController(PersonaVulnerableService personaVulnerableService,
                                      TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService,
                                      ColaboradorService colaboradorService,
@@ -38,6 +49,11 @@ public class PersonaVulnerableController extends ColaboradorRequired implements 
     this.tarjetaPersonaVulnerableService = tarjetaPersonaVulnerableService;
   }
 
+  /**
+   * Maneja la visualización del listado de personas vulnerables.
+   *
+   * @param context El contexto de la solicitud actual.
+   */
   @Override
   public void index(Context context) {
 
@@ -54,6 +70,11 @@ public class PersonaVulnerableController extends ColaboradorRequired implements 
     // context.render("/colaboraciones/", model);
   }
 
+  /**
+   * Maneja la visualización de los detalles de una persona vulnerable específica.
+   *
+   * @param context El contexto de la solicitud actual.
+   */
   @Override
   public void show(Context context) {
 
@@ -78,6 +99,11 @@ public class PersonaVulnerableController extends ColaboradorRequired implements 
   public void save(Context context) {
   }
 
+  /**
+   * Maneja la visualización del formulario de edición de una persona vulnerable existente.
+   *
+   * @param context El contexto de la solicitud actual.
+   */
   @Override
   public void edit(Context context) {
     Optional<PersonaVulnerable> personaVulnerableBuscada = this.personaVulnerableService.buscarPVPorId(context.pathParam("id"));
@@ -94,6 +120,11 @@ public class PersonaVulnerableController extends ColaboradorRequired implements 
     context.render("colaboraciones/editar_pv.hbs", model);
   }
 
+  /**
+   * Actualiza los datos de una persona vulnerable existente en el sistema.
+   *
+   * @param context El contexto de la solicitud actual.
+   */
   @Override
   public void update(Context context) {
     try {
