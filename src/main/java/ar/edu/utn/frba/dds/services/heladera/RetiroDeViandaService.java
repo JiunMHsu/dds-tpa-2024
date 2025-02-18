@@ -17,6 +17,12 @@ public class RetiroDeViandaService implements WithSimplePersistenceUnit {
   private final RetiroDeViandaRepository retiroDeViandaRepository;
   private final HeladeraRepository heladeraRepository;
 
+  /**
+   * Constructor para inicializar el servicio de retiro de viandas.
+   *
+   * @param retiroDeViandaRepository El repositorio de retiro de viandas.
+   * @param heladeraRepository       El repositorio de heladeras.
+   */
   public RetiroDeViandaService(RetiroDeViandaRepository retiroDeViandaRepository,
                                HeladeraRepository heladeraRepository) {
     this.retiroDeViandaRepository = retiroDeViandaRepository;

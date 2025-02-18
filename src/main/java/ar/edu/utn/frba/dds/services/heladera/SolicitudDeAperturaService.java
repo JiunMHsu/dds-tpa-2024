@@ -16,14 +16,31 @@ public class SolicitudDeAperturaService {
 
   private final SolicitudDeAperturaRepository solicitudDeAperturaRepository;
 
+  /**
+   * Constructor para inicializar el servicio de solicitudes de apertura de heladeras.
+   *
+   * @param solicitudDeAperturaRepository El repositorio de solicitudes de apertura de heladeras.
+   */
   public SolicitudDeAperturaService(SolicitudDeAperturaRepository solicitudDeAperturaRepository) {
     this.solicitudDeAperturaRepository = solicitudDeAperturaRepository;
   }
 
+  /**
+   * Actualiza una solicitud de apertura en el repositorio.
+   *
+   * @param solicitudDeApertura La solicitud de apertura a actualizar.
+   */
   public void actualizar(SolicitudDeApertura solicitudDeApertura) {
     this.solicitudDeAperturaRepository.actualizar(solicitudDeApertura);
   }
 
+  /**
+   * Busca solicitudes de apertura por tarjeta y heladera.
+   *
+   * @param tarjeta  El código de la tarjeta.
+   * @param heladera La heladera asociada a la solicitud.
+   * @return Una lista de solicitudes de apertura que coinciden con la tarjeta y la heladera.
+   */
   public List<SolicitudDeApertura> buscarPorTarjetaHeladera(String tarjeta,
                                                             Heladera heladera) {
     return this.solicitudDeAperturaRepository.buscarPorTarjetaHeladera(tarjeta, heladera);
@@ -72,6 +89,11 @@ public class SolicitudDeAperturaService {
     return solicitud;
   }
 
+  /**
+   * Completa una solicitud de apertura cambiando su estado a COMPLETADA y actualiza el repositorio.
+   *
+   * @param solicitud La solicitud de apertura a completar.
+   */
   public void completarSolicitud(SolicitudDeApertura solicitud) {
     solicitud.setEstado(EstadoSolicitud.COMPLETADA);
     solicitudDeAperturaRepository.actualizar(solicitud);
