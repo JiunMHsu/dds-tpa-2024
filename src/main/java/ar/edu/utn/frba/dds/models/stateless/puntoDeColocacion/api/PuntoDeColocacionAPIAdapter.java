@@ -7,6 +7,7 @@ import java.util.List;
 /**
  * Adapter concreto del API de recomendaciones de puntos de colocación.
  */
+//TODO check mayuscula
 public class PuntoDeColocacionAPIAdapter implements IPuntoDeColocacionAdapter {
 
   private final PuntoDeColocacionAPI api;

@@ -5,6 +5,7 @@ import io.javalin.Javalin;
 /**
  * Handler Interface.
  */
+//TODO check mayuscula
 public interface IHandler {
   void setHandler(Javalin app);
 }

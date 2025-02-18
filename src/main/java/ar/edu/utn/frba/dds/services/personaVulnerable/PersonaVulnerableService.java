@@ -31,7 +31,7 @@ public class PersonaVulnerableService {
    *
    * @return Una lista de todas las personas vulnerables.
    */
-  public List<PersonaVulnerable> buscarTodosPV() {
+  public List<PersonaVulnerable> buscarTodos() {
     return this.personaVulnerableRepository.buscarTodos();
   }
 
@@ -42,10 +42,11 @@ public class PersonaVulnerableService {
    * @return Un Optional que contiene la persona vulnerable si se encuentra.
    * @throws IllegalArgumentException si el ID es null o vacío.
    */
-  public Optional<PersonaVulnerable> buscarPVPorId(String id) {
+  public Optional<PersonaVulnerable> buscarPorId(String id) {
 
     if (id == null || id.isEmpty()) {
-      throw new IllegalArgumentException("El ID de la persona en situacion vulnerable no puede ser null o vacío");
+      throw new IllegalArgumentException("El ID de la persona en situacion vulnerable no puede "
+          + "ser null o vacío");
     }
 
     return this.personaVulnerableRepository.buscarPorId(id);
@@ -56,9 +57,9 @@ public class PersonaVulnerableService {
    *
    * @param personaVulnerable La persona vulnerable a guardar.
    * @throws IllegalArgumentException si los datos de la persona vulnerable son incompletos
-   * o si el documento ya está registrado en el sistema.
+   *                                  o si el documento ya está registrado en el sistema.
    */
-  public void guardarPV(PersonaVulnerable personaVulnerable) {
+  public void guardar(PersonaVulnerable personaVulnerable) {
 
     System.out.println("Antes del if documento service pv");
 
@@ -70,7 +71,8 @@ public class PersonaVulnerableService {
 
     System.out.println("Antes del if service pv");
 
-    Optional<PersonaVulnerable> existente = personaVulnerableRepository.buscarPorDocumento(personaVulnerable.getDocumento().getNumero());
+    Optional<PersonaVulnerable> existente = personaVulnerableRepository.buscarPorDocumento(
+        personaVulnerable.getDocumento().getNumero());
 
     if (existente.isPresent()) {
       throw new IllegalArgumentException("El documento ya está registrado en el sistema");
@@ -86,17 +88,21 @@ public class PersonaVulnerableService {
    * Elimina una persona vulnerable del repositorio.
    *
    * @param id El ID de la persona vulnerable a eliminar.
-   * @throws IllegalArgumentException si el ID es null o vacío o si la persona no existe en el sistema.
+   * @throws IllegalArgumentException si el ID es null o vacío o si la persona no existe en el
+   *                                  sistema.
    */
-  public void eliminarPV(String id) {
+  public void eliminar(String id) {
 
     if (id == null || id.isEmpty()) {
-      throw new IllegalArgumentException("El ID de la persona en situación vulnerable no puede ser null o vacío");
+      throw new IllegalArgumentException("El ID de la persona en situación vulnerable no puede "
+          + "ser null o vacío");
     }
 
-    Optional<PersonaVulnerable> posiblePersonaVulnerable = this.personaVulnerableRepository.buscarPorId(id);
+    Optional<PersonaVulnerable> posiblePersonaVulnerable =
+        this.personaVulnerableRepository.buscarPorId(id);
     if (posiblePersonaVulnerable.isEmpty()) {
-      throw new IllegalArgumentException("La persona en situación vulnerable vulnerable no existe en el sistema");
+      throw new IllegalArgumentException("La persona en situación vulnerable vulnerable no existe "
+          + "en el sistema");
     }
 
     this.personaVulnerableRepository.eliminar(posiblePersonaVulnerable.get());

@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.models.stateless.puntoDeColocacion.api;
 /**
  * API de punto de colocación.
  */
+// TODO check mayuscula
 public class PuntoDeColocacionAPI {
   private final String apiUrl;
   private final String endpoint;

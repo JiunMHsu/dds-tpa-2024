@@ -1,7 +1,6 @@
 package ar.edu.utn.frba.dds.services.heladera;
 
 import ar.edu.utn.frba.dds.dtos.heladera.CreateHeladeraDTO;
-import ar.edu.utn.frba.dds.dtos.heladera.HeladeraDTO;
 import ar.edu.utn.frba.dds.dtos.heladera.UpdateHeladeraDTO;
 import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.HacerseCargoHeladera;
@@ -144,7 +143,8 @@ public class HeladeraService implements WithSimplePersistenceUnit {
    * @return Si puede configurar
    */
   public boolean puedeConfigurar(Colaborador colaborador, Heladera heladera) {
-    List<HacerseCargoHeladera> encargos = hacerseCargoHeladeraRepository.buscarPorColaborador(colaborador);
+    List<HacerseCargoHeladera> encargos =
+        hacerseCargoHeladeraRepository.buscarPorColaborador(colaborador);
     return encargos.stream().anyMatch(encargo -> encargo.getHeladera().equals(heladera));
   }
 }
