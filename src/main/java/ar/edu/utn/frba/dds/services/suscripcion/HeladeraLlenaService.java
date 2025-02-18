@@ -16,6 +16,9 @@ import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * Servicio para manejar las suscripciones y notificaciones relacionadas con heladeras llenas.
+ */
 public class HeladeraLlenaService implements WithSimplePersistenceUnit {
 
   private final HeladeraLlenaRepository heladeraLlenaRepositoy;
@@ -23,6 +26,14 @@ public class HeladeraLlenaService implements WithSimplePersistenceUnit {
   private final MensajeriaService mensajeriaService;
   private final ContactoRepository contactoRepository;
 
+  /**
+   * Constructor para inicializar los repositorios y servicios necesarios.
+   *
+   * @param heladeraLlenaRepositoy     El repositorio de heladeras llenas.
+   * @param colaboradorRepository      El repositorio de colaboradores.
+   * @param mensajeriaService          El servicio de mensajería.
+   * @param contactoRepository         El repositorio de contactos.
+   */
   public HeladeraLlenaService(HeladeraLlenaRepository heladeraLlenaRepositoy,
                               ColaboradorRepository colaboradorRepository,
                               MensajeriaService mensajeriaService,

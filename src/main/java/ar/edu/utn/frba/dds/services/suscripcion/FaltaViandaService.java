@@ -20,6 +20,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * Servicio para manejar las suscripciones y notificaciones relacionadas con la falta de viandas.
+ */
 public class FaltaViandaService implements WithSimplePersistenceUnit {
 
   private final FaltaViandaRepository faltaViandaRepository;
@@ -27,6 +30,14 @@ public class FaltaViandaService implements WithSimplePersistenceUnit {
   private final MensajeriaService mensajeriaService;
   private final ContactoRepository contactoRepository;
 
+  /**
+   * Constructor para inicializar los repositorios y servicios necesarios.
+   *
+   * @param faltaViandaRepository    El repositorio de falta de viandas.
+   * @param colaboradorRepository    El repositorio de colaboradores.
+   * @param mensajeriaService        El servicio de mensajería.
+   * @param contactoRepository       El repositorio de contactos.
+   */
   public FaltaViandaService(FaltaViandaRepository faltaViandaRepository,
                             ColaboradorRepository colaboradorRepository,
                             MensajeriaService mensajeriaService,
