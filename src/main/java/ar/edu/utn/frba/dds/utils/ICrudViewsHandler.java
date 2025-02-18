@@ -5,6 +5,7 @@ import io.javalin.http.Context;
 /**
  * Interfaz para manejar las vistas de un CRUD.
  */
+//TODO check mayuscula
 public interface ICrudViewsHandler {
 
   /**

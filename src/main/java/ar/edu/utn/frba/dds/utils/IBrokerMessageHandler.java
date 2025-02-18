@@ -5,6 +5,7 @@ import java.util.UUID;
 /**
  * Manejador de mensajes del broker.
  */
+//TODO check mayuscula
 public interface IBrokerMessageHandler {
 
   /**

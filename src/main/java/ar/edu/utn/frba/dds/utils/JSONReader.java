@@ -12,6 +12,7 @@ import org.json.simple.parser.ParseException;
 /**
  * Clase que facilita la lectura de datos de un archivo JSON.
  */
+//TODO check mayuscula
 public class JSONReader {
 
   private final JSONObject jsonObject;

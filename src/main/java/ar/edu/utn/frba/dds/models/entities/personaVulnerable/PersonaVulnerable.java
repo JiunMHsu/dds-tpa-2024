@@ -43,6 +43,7 @@ public class PersonaVulnerable extends EntidadPersistente {
 
   @Column(name = "menores_a_cargo", nullable = false)
   private Integer menoresACargo;
+  //TODO check mayuscula
 
   /**
    * Crea una persona vulnerable con los datos mínimos.

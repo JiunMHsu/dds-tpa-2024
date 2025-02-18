@@ -76,11 +76,11 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
   /**
    * Maneja la temperatura de una heladera específica.
    * Este método primero busca la heladera por su ID. Si la temperatura proporcionada no es admitida
-   * por la heladera, se registra un incidente de falla de temperatura y se notifica. Si la temperatura
-   * es admitida, simplemente se actualiza la temperatura de la heladera.
+   * por la heladera, se registra un incidente de falla de temperatura y se notifica.
+   * Si la temperatura es admitida, simplemente se actualiza la temperatura de la heladera.
    *
-   * @param temperatura  La temperatura a la que se desea ajustar la heladera.
-   * @param heladeraId   El ID de la heladera que se desea ajustar.
+   * @param temperatura La temperatura a la que se desea ajustar la heladera.
+   * @param heladeraId  El ID de la heladera que se desea ajustar.
    */
   @Override
   public void manejarTemperatura(double temperatura, UUID heladeraId) {
@@ -101,7 +101,7 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
    * Este método busca la heladera por su ID. Luego, registra un incidente de fraude
    * y notifica la falla correspondiente .
    *
-   * @param heladeraId  El ID de la heladera en la que se detectó el fraude.
+   * @param heladeraId El ID de la heladera en la que se detectó el fraude.
    */
   @Override
   public void manejarFraude(UUID heladeraId) {
@@ -118,7 +118,7 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
    * Este método busca la heladera por su ID. Luego, registra un incidente de falla de conexión
    * y notifica el incidente a los técnicos y colaboradores correspondientes de la heladera.
    *
-   * @param heladeraId  El ID de la heladera en la que se detectó la falla de conexión.
+   * @param heladeraId El ID de la heladera en la que se detectó la falla de conexión.
    */
   @Override
   public void manejarFallaConexion(UUID heladeraId) {
@@ -146,8 +146,8 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
    * se maneja como una solicitud de colaborador.
    * Se imprime un mensaje en la consola para indicar si el acceso fue permitido o denegado.
    *
-   * @param codigoTarjeta  El código de la tarjeta utilizada para solicitar la apertura.
-   * @param heladeraId     El ID de la heladera en la que se solicita la apertura.
+   * @param codigoTarjeta El código de la tarjeta utilizada para solicitar la apertura.
+   * @param heladeraId    El ID de la heladera en la que se solicita la apertura.
    */
   @Override
   public void manejarSolicitudDeApertura(String codigoTarjeta, UUID heladeraId) {

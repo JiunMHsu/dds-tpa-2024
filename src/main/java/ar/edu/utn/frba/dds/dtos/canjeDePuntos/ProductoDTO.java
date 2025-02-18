@@ -5,9 +5,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Producto DTO.
+ */
 @Getter
 @Setter
 @SuperBuilder
+//TODO check mayuscula
 public class ProductoDTO {
 
   private String id;
@@ -20,6 +24,12 @@ public class ProductoDTO {
 
   private String pathImagen;
 
+  /**
+   * Builder completo del DTO Producto.
+   *
+   * @param producto Producto
+   * @return DTO Producto
+   */
   public static ProductoDTO completa(OfertaDeProductos producto) {
     return ProductoDTO.builder()
         .id(producto.getId().toString())
@@ -30,6 +40,12 @@ public class ProductoDTO {
         .build();
   }
 
+  /**
+   * Builder preview del DTO Producto.
+   *
+   * @param producto Producto
+   * @return DTO Producto
+   */
   public static ProductoDTO preview(OfertaDeProductos producto) {
 
     return ProductoDTO.builder()

@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * DTO de Tarjeta de Colaborador.
+ */
 @Getter
 @Setter
 @Builder

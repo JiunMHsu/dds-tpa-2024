@@ -12,6 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
+//TODO check mayuscula
 public class CanjeDePuntosDTO {
 
   private String id;
