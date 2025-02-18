@@ -38,12 +38,12 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
   /**
    * Constructor para inicializar los servicios necesarios para manejar las suscripciones.
    *
-   * @param heladeraService       El servicio de heladeras.
-   * @param fallaHeladeraService  El servicio de fallas de heladeras.
-   * @param faltaViandaService    El servicio de falta de viandas.
-   * @param heladeraLlenaService  El servicio de heladeras llenas.
-   * @param usuarioService        El servicio de usuarios.
-   * @param colaboradorService    El servicio de colaboradores.
+   * @param heladeraService      El servicio de heladeras.
+   * @param fallaHeladeraService El servicio de fallas de heladeras.
+   * @param faltaViandaService   El servicio de falta de viandas.
+   * @param heladeraLlenaService El servicio de heladeras llenas.
+   * @param usuarioService       El servicio de usuarios.
+   * @param colaboradorService   El servicio de colaboradores.
    */
   public SuscripcionHeladeraController(HeladeraService heladeraService,
                                        FallaHeladeraService fallaHeladeraService,
@@ -81,7 +81,7 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
   /**
    * Crea una suscripción genérica a una heladera y renderiza la vista de suscripción.
    *
-   * @param context  El contexto de la solicitud actual.
+   * @param context El contexto de la solicitud actual.
    */
   public void create(Context context) {
     createSuscripcion(context, "suscripciones.hbs");
@@ -90,16 +90,17 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
   /**
    * Crea una suscripción a las fallas de heladera y renderiza la vista de suscripción de fallas.
    *
-   * @param context  El contexto de la solicitud actual.
+   * @param context El contexto de la solicitud actual.
    */
   public void createFallaHeladera(Context context) {
     this.createSuscripcion(context, "suscripcion_falla_heladera.hbs");
   }
 
   /**
-   * Crea una suscripción a la falta de viandas y renderiza la vista de suscripción de falta de viandas.
+   * Crea una suscripción a la falta de viandas y renderiza la vista de suscripción de falta
+   * de viandas.
    *
-   * @param context  El contexto de la solicitud actual.
+   * @param context El contexto de la solicitud actual.
    */
   public void createFaltaVianda(Context context) {
     this.createSuscripcion(context, "suscripcion_falta_viandas.hbs");
@@ -108,20 +109,23 @@ public class SuscripcionHeladeraController extends ColaboradorRequired {
   /**
    * Crea una suscripción a heladera llena y renderiza la vista de suscripción de heladera llena.
    *
-   * @param context  El contexto de la solicitud actual.
+   * @param context El contexto de la solicitud actual.
    */
   public void createHeladeraLlena(Context context) {
     this.createSuscripcion(context, "suscripcion_heladera_llena.hbs");
   }
 
   /**
-   * Guarda una nueva suscripción en el sistema y maneja la redirección en función del éxito de la operación.
+   * Guarda una nueva suscripción en el sistema y maneja la redirección en función del éxito de la
+   * operación.
    * Este método extrae los parámetros necesarios del formulario y del contexto de la solicitud,
-   * crea un nuevo objeto `CreateSuscripcionHeladeraDTO` y lo registra en el servicio correspondiente
+   * crea un nuevo objeto `CreateSuscripcionHeladeraDTO` y lo registra en el servicio
+   * correspondiente
    * según el tipo de suscripción (falla técnica, falta de viandas, o heladera llena).
    * Si la operación es exitosa, redirige al usuario a la lista de heladeras. En caso de error,
    * redirige al usuario para que reintente la creación de la suscripción.
-   * @param context  El contexto de la solicitud actual.
+   *
+   * @param context El contexto de la solicitud actual.
    * @throws UnauthorizedException si el usuario no es colaborador.
    */
   public void save(Context context) {

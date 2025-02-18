@@ -6,6 +6,11 @@ import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Repositorio de suscripciones.
+ *
+ * @param <T> el tipo de suscripción
+ */
 public abstract class SuscripcionRepository<T> implements WithSimplePersistenceUnit {
   private final Class<T> type;
 
@@ -17,6 +22,11 @@ public abstract class SuscripcionRepository<T> implements WithSimplePersistenceU
     entityManager().persist(suscripcion);
   }
 
+  /**
+   * Obtiene todas las suscripciones de un colaborador.
+   *
+   * @return todas las suscripciones del colaborador
+   */
   public List<T> obtenerPorColaborador(Colaborador unColaborador) {
     return entityManager()
         .createQuery("from " + type.getName() + " c where c.colaborador = :id_colaborador and c.alta = :alta", type)
@@ -25,7 +35,13 @@ public abstract class SuscripcionRepository<T> implements WithSimplePersistenceU
         .getResultList();
   }
 
-  public List<T> obtenerPorColaboradorAPartirDe(Colaborador unColaborador, LocalDateTime fechaHora) {
+  /**
+   * Obtiene todas las suscripciones de un colaborador a partir de una fecha y hora.
+   *
+   * @param fechaHora la fecha y hora
+   * @return todas las suscripciones a partir de una fecha y hora
+   */
+  public List<T> obtenerPorColaboradorDesde(Colaborador unColaborador, LocalDateTime fechaHora) {
     return entityManager()
         .createQuery("from " + type.getName() + " d where d.colaborador = :id_colaborador and d.fechaHora >= :fecha and d.alta = :alta", type)
         .setParameter("id_colaborador", unColaborador.getId())
@@ -34,6 +50,12 @@ public abstract class SuscripcionRepository<T> implements WithSimplePersistenceU
         .getResultList();
   }
 
+  /**
+   * Obtiene todas las suscripciones de una heladera.
+   *
+   * @param unaHeladera heladera
+   * @return todas las suscripciones de la heladera
+   */
   public List<T> obtenerPorHeladera(Heladera unaHeladera) {
     return entityManager()
         .createQuery("from " + type.getName() + " h where h.heladera = :id_heladera and h.alta = :alta", type)
@@ -41,8 +63,6 @@ public abstract class SuscripcionRepository<T> implements WithSimplePersistenceU
         .setParameter("alta", true)
         .getResultList();
   }
-
-  // medio un choreo estas clases jiji
 
 }
 

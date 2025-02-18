@@ -29,10 +29,10 @@ public class HeladeraLlenaService implements WithSimplePersistenceUnit {
   /**
    * Constructor para inicializar los repositorios y servicios necesarios.
    *
-   * @param heladeraLlenaRepositoy     El repositorio de heladeras llenas.
-   * @param colaboradorRepository      El repositorio de colaboradores.
-   * @param mensajeriaService          El servicio de mensajería.
-   * @param contactoRepository         El repositorio de contactos.
+   * @param heladeraLlenaRepositoy El repositorio de heladeras llenas.
+   * @param colaboradorRepository  El repositorio de colaboradores.
+   * @param mensajeriaService      El servicio de mensajería.
+   * @param contactoRepository     El repositorio de contactos.
    */
   public HeladeraLlenaService(HeladeraLlenaRepository heladeraLlenaRepositoy,
                               ColaboradorRepository colaboradorRepository,

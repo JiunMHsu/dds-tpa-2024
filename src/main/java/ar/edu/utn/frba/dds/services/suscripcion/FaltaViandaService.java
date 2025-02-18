@@ -2,11 +2,9 @@ package ar.edu.utn.frba.dds.services.suscripcion;
 
 import ar.edu.utn.frba.dds.dtos.suscripcion.CreateSuscripcionHeladeraDTO;
 import ar.edu.utn.frba.dds.exceptions.SuscripcionFaltaViandaException;
-import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
 import ar.edu.utn.frba.dds.models.entities.mensaje.Mensaje;
-import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFallaHeladera;
 import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFaltaVianda;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.IColaboradorRepository;
@@ -15,9 +13,6 @@ import ar.edu.utn.frba.dds.models.repositories.suscripcion.FaltaViandaRepository
 import ar.edu.utn.frba.dds.models.stateless.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.services.mensajeria.MensajeriaService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -33,10 +28,10 @@ public class FaltaViandaService implements WithSimplePersistenceUnit {
   /**
    * Constructor para inicializar los repositorios y servicios necesarios.
    *
-   * @param faltaViandaRepository    El repositorio de falta de viandas.
-   * @param colaboradorRepository    El repositorio de colaboradores.
-   * @param mensajeriaService        El servicio de mensajería.
-   * @param contactoRepository       El repositorio de contactos.
+   * @param faltaViandaRepository El repositorio de falta de viandas.
+   * @param colaboradorRepository El repositorio de colaboradores.
+   * @param mensajeriaService     El servicio de mensajería.
+   * @param contactoRepository    El repositorio de contactos.
    */
   public FaltaViandaService(FaltaViandaRepository faltaViandaRepository,
                             ColaboradorRepository colaboradorRepository,
