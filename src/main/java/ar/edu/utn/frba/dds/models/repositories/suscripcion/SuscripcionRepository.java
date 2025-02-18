@@ -29,7 +29,8 @@ public abstract class SuscripcionRepository<T> implements WithSimplePersistenceU
    */
   public List<T> obtenerPorColaborador(Colaborador unColaborador) {
     return entityManager()
-        .createQuery("from " + type.getName() + " c where c.colaborador = :id_colaborador and c.alta = :alta", type)
+        .createQuery("from " + type.getName() + " c where c.colaborador = :id_colaborador "
+            + "and c.alta = :alta", type)
         .setParameter("id_colaborador", unColaborador.getId())
         .setParameter("alta", true)
         .getResultList();
@@ -43,7 +44,8 @@ public abstract class SuscripcionRepository<T> implements WithSimplePersistenceU
    */
   public List<T> obtenerPorColaboradorDesde(Colaborador unColaborador, LocalDateTime fechaHora) {
     return entityManager()
-        .createQuery("from " + type.getName() + " d where d.colaborador = :id_colaborador and d.fechaHora >= :fecha and d.alta = :alta", type)
+        .createQuery("from " + type.getName() + " d where d.colaborador = :id_colaborador "
+            + "and d.fechaHora >= :fecha and d.alta = :alta", type)
         .setParameter("id_colaborador", unColaborador.getId())
         .setParameter("fecha", fechaHora)
         .setParameter("alta", true)
@@ -58,7 +60,8 @@ public abstract class SuscripcionRepository<T> implements WithSimplePersistenceU
    */
   public List<T> obtenerPorHeladera(Heladera unaHeladera) {
     return entityManager()
-        .createQuery("from " + type.getName() + " h where h.heladera = :id_heladera and h.alta = :alta", type)
+        .createQuery("from " + type.getName() + " h where h.heladera = :id_heladera "
+            + "and h.alta = :alta", type)
         .setParameter("id_heladera", unaHeladera.getId())
         .setParameter("alta", true)
         .getResultList();

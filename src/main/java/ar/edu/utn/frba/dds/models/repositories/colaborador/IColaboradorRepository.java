@@ -8,6 +8,7 @@ import java.util.Optional;
 /**
  * Interfaz de Repositorio de colaboradores.
  */
+//TODO checkstyle mayuscula
 public interface IColaboradorRepository extends ICrudRepository<Colaborador> {
   Optional<Colaborador> buscarPorEmail(String email);
 
