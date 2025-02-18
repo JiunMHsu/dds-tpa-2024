@@ -19,6 +19,12 @@ public class IncidenteController extends UserRequired {
 
   private final IncidenteService incidenteService;
 
+  /**
+   * Constructor para inicializar el controlador de incidentes.
+   *
+   * @param usuarioService    El servicio de usuarios.
+   * @param incidenteService  El servicio de incidentes.
+   */
   public IncidenteController(UsuarioService usuarioService, IncidenteService incidenteService) {
     super(usuarioService);
     this.incidenteService = incidenteService;
