@@ -28,9 +28,11 @@ public class DonacionDineroPeriodicaController extends ColaboradorRequired {
   private final DonacionDineroService donacionDineroService;
 
   /**
-   * Constructor.
+   * Constructor para inicializar el controlador de donaciones de dinero periódicas.
    *
-   * @param donacionDineroService servicio de donación de dinero
+   * @param usuarioService         El servicio de usuarios.
+   * @param colaboradorService     El servicio de colaboradores.
+   * @param donacionDineroService  El servicio de donaciones de dinero.
    */
   public DonacionDineroPeriodicaController(UsuarioService usuarioService,
                                            ColaboradorService colaboradorService,

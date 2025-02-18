@@ -24,6 +24,13 @@ public class RepartoDeTarjetaController extends ColaboradorRequired {
 
   private final RepartoDeTarjetaService repartoDeTarjetaService;
 
+  /**
+   * Constructor para inicializar el controlador de reparto de tarjetas.
+   *
+   * @param usuarioService         El servicio de usuarios.
+   * @param colaboradorService     El servicio de colaboradores.
+   * @param repartoDeTarjetaService  El servicio de reparto de tarjetas.
+   */
   public RepartoDeTarjetaController(UsuarioService usuarioService,
                                     ColaboradorService colaboradorService,
                                     RepartoDeTarjetaService repartoDeTarjetaService) {
