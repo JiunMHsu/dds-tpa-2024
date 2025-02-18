@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.models.repositories.mensajeria;
 
-import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.mensaje.Mensaje;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;

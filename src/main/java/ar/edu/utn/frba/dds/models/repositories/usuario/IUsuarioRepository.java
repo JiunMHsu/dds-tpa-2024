@@ -7,6 +7,7 @@ import java.util.Optional;
 /**
  * Interfaz de Repositorio de usuarios.
  */
+//TODO check mayuscula
 public interface IUsuarioRepository extends ICrudRepository<Usuario> {
 
   Optional<Usuario> obtenerPorEmail(String mail);

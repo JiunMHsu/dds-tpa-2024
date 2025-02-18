@@ -28,7 +28,8 @@ public class TelegramSender implements ISender {
    * Constructor de TelegramSender.
    */
   public TelegramSender() {
-    this.authorizationToken = AppProperties.getInstance().propertyFromName("TELEGRAM_AUTHORIZATION_TOKEN");
+    this.authorizationToken = AppProperties.getInstance()
+        .propertyFromName("TELEGRAM_AUTHORIZATION_TOKEN");
     this.chatId = AppProperties.getInstance().propertyFromName("TELEGRAM_CHAT_ID");
     configurarCamelContext();
   }
@@ -50,10 +51,12 @@ public class TelegramSender implements ISender {
           from("telegram:bots/?authorizationToken=" + authorizationToken)
               .log("Mensaje enviado a Telegram")
               .process(exchange -> {
-                String receivedChatId = exchange.getIn().getHeader("CamelTelegramChatId", String.class);
+                String receivedChatId = exchange.getIn()
+                    .getHeader("CamelTelegramChatId", String.class);
 
                 if (receivedChatId != null) {
-                  String backendUrl = "http://localhost:8081/api/vincular-telegram?chatId=" + receivedChatId;
+                  String backendUrl = "http://localhost:8081/api/vincular-telegram?chatId="
+                      + receivedChatId;
                   exchange.getIn().setHeader(Exchange.HTTP_QUERY, "chatId=" + receivedChatId);
                   exchange.getIn().setHeader(Exchange.HTTP_METHOD, "POST");
                   producerTemplate.sendBody("direct:sendToBackend", backendUrl);
