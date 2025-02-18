@@ -188,6 +188,14 @@ public class Colaborador extends EntidadPersistente {
     );
   }
 
+  /**
+   * Crea un nuevo objeto Colaborador a partir de un objeto Usuario.
+   * Este método utiliza el patrón Builder para construir un nuevo Colaborador
+   * con el usuario proporcionado.
+   *
+   * @param usuario  El objeto Usuario a partir del cual se construye el nuevo Colaborador.
+   * @return Un nuevo objeto Colaborador con el usuario proporcionado.
+   */
   public static Colaborador conUsuario(Usuario usuario) {
     return Colaborador.builder().usuario(usuario).build();
   }
