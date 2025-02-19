@@ -30,9 +30,9 @@ public class DonacionDineroPeriodicaController extends ColaboradorRequired {
   /**
    * Constructor para inicializar el controlador de donaciones de dinero periódicas.
    *
-   * @param usuarioService         El servicio de usuarios.
-   * @param colaboradorService     El servicio de colaboradores.
-   * @param donacionDineroService  El servicio de donaciones de dinero.
+   * @param usuarioService        El servicio de usuarios.
+   * @param colaboradorService    El servicio de colaboradores.
+   * @param donacionDineroService El servicio de donaciones de dinero.
    */
   public DonacionDineroPeriodicaController(UsuarioService usuarioService,
                                            ColaboradorService colaboradorService,
@@ -103,13 +103,23 @@ public class DonacionDineroPeriodicaController extends ColaboradorRequired {
 
   /**
    * Muestra el formulario para editar una donación de dinero periódica.
-   * TODO: Implementar
    *
    * @param context contexto de Javalin
    */
   public void edit(Context context) {
-    Colaborador colaborador = colaboradorFromSession(context);
     String id = context.pathParam("id");
+
+    try {
+      DonacionPeriodicaDTO donacionPeriodica =
+          donacionDineroService.buscarDonacionPeriodicaPorId(id);
+
+      Map<String, Object> model = new HashMap<>();
+      model.put("donacionPeriodica", donacionPeriodica);
+
+      render(context, "colaboraciones/donacion_dinero/donacion_periodica_editar.hbs", model);
+    } catch (ResourceNotFoundException e) {
+      render(context, "not_found.hbs"); //TODO temporal?
+    }
   }
 
   /**

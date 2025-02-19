@@ -11,8 +11,8 @@
     <div class="form-container">
         <h2 class="form-title">Donar Dinero Periodicamente</h2>
 
-        <form action="/colaboraciones/donacion-dinero/periodica" method="post" class="form">
-            <label class="field-monto">
+        <form action="/colaboraciones/donacion-dinero/periodica/{{donacionPeriodica.id}}" method="post" class="form">
+        <label class="field-monto">
                 Monto
                 <input type="number" min="1" step="1" name="monto" required/>
             </label>

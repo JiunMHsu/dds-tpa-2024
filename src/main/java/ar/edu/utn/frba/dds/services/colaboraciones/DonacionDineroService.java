@@ -77,6 +77,19 @@ public class DonacionDineroService implements WithSimplePersistenceUnit {
   }
 
   /**
+   * Busca una donación periódica por su ID.
+   *
+   * @param id Id de la donación periódica
+   * @return Donación periódica en formato DTO
+   */
+  public DonacionPeriodicaDTO buscarDonacionPeriodicaPorId(String id) {
+    return DonacionPeriodicaDTO.fromDonacionPeriodica(
+        donacionDineroPeriodicaRepository.buscarPorId(id)
+            .orElseThrow(ResourceNotFoundException::new)
+    );
+  }
+
+  /**
    * Registra una donación periódica.
    *
    * @param colaborador       Colaborador que realiza la donación
@@ -106,7 +119,6 @@ public class DonacionDineroService implements WithSimplePersistenceUnit {
 
   /**
    * Actualiza una donación periódica.
-   * TODO: Implementar
    *
    * @param colaborador       Colaborador que realiza la donación
    * @param donacionPeriodica Datos de la donación periódica
@@ -114,7 +126,7 @@ public class DonacionDineroService implements WithSimplePersistenceUnit {
    */
   public void actualizarDonacionPeriodica(Colaborador colaborador,
                                           UpdateDonacionPeriodicaDTO donacionPeriodica)
-      throws UnauthorizedException {
+      throws UnauthorizedException, ResourceNotFoundException {
     DonacionDineroPeriodica donacion = donacionDineroPeriodicaRepository
         .buscarPorId(donacionPeriodica.getId())
         .orElseThrow(ResourceNotFoundException::new);
@@ -122,7 +134,23 @@ public class DonacionDineroService implements WithSimplePersistenceUnit {
     if (!donacion.getColaborador().equals(colaborador)) {
       throw new UnauthorizedException();
     }
+
+    Period frecuencia = switch (donacionPeriodica.getUnidadPeriodicidad()) {
+      case "DAY" -> Period.ofDays(donacionPeriodica.getPeriodicidad());
+      case "WEEK" -> Period.ofWeeks(donacionPeriodica.getPeriodicidad());
+      case "MONTH" -> Period.ofMonths(donacionPeriodica.getPeriodicidad());
+      case "YEAR" -> Period.ofYears(donacionPeriodica.getPeriodicidad());
+      default -> throw new InvalidFormParamException();
+    };
+
+    donacion.setMonto(donacionPeriodica.getMonto());
+    donacion.setFrecuencia(frecuencia);
+
+    beginTransaction();
+    this.donacionDineroPeriodicaRepository.actualizar(donacion);
+    commitTransaction();
   }
+
 
   /**
    * Busca una donación periódica por colaborador.
