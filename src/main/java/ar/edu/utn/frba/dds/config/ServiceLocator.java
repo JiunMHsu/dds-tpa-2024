@@ -579,6 +579,11 @@ public class ServiceLocator {
       instances.put(componentName, instance);
     }
 
+    if (componentName.equals(SolicitudDeAperturaRepository.class.getName())) {
+      SolicitudDeAperturaRepository instance = new SolicitudDeAperturaRepository();
+      instances.put(componentName, instance);
+    }
+
     if (componentName.equals(IncidenteRepository.class.getName())) {
       IncidenteRepository instance = new IncidenteRepository();
       instances.put(componentName, instance);
