@@ -73,7 +73,7 @@ public class SuscripcionHeladeraLlena extends EntidadPersistente {
    *
    * @return contacto a notificar
    */
-  public Optional<Contacto> contactoANotificar() {
+  public Optional<Contacto> contactoNotificar() {
     return colaborador.getContacto(this.medioDeNotificacion);
   }
 

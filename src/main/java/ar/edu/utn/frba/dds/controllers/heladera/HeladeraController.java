@@ -53,6 +53,15 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
     this.mapService = mapService;
   }
 
+  /**
+   * Maneja la visualización de la página de heladeras.
+   * Este método busca todas las heladeras, convierte cada una a su correspondiente DTO
+   * y determina las capacidades del usuario (crear nuevas heladeras, suscribirse a una heladera,
+   * encargarse de una heladera). Luego, utiliza estos datos para construir un modelo que se
+   * renderiza en una página HTML.
+   *
+   * @param context El contexto de la solicitud actual.
+   */
   @Override
   public void index(Context context) {
 
@@ -75,6 +84,15 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
     render(context, "heladeras/heladeras.hbs", model);
   }
 
+  /**
+   * Maneja la visualización de los detalles de una heladera específica.
+   * Este método obtiene la heladera desde la ruta del contexto. Determina si el usuario
+   * puede configurar la heladera verificando el rol y tipo de colaborador del usuario en sesión.
+   * Luego, utiliza estos datos para construir un modelo que se renderiza en una página HTML de
+   * detalles de la heladera.
+   *
+   * @param context El contexto de la solicitud actual.
+   */
   @Override
   public void show(Context context) {
     Heladera heladera = heladeraFromPath(context);
@@ -97,6 +115,14 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
     render(context, "heladeras/heladera_detalle.hbs", model);
   }
 
+  /**
+   * Maneja la creación de una nueva heladera.
+   * Este método extrae la latitud, longitud y radio desde los parámetros de la solicitud.
+   * Obtiene las ubicaciones recomendadas basadas en estos parámetros y las agrega al modelo
+   * para ser renderizadas en la vista de creación de heladeras.
+   *
+   * @param context El contexto de la solicitud actual.
+   */
   @Override
   public void create(Context context) {
     try {
@@ -116,6 +142,14 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
     }
   }
 
+  /**
+   * Maneja la creación y registro de una nueva heladera en el sistema.
+   * Este método extrae los parámetros del formulario para crear un nuevo objeto CreateHeladeraDTO.
+   * Si la creación de la heladera es exitosa, se redirige al usuario a la lista de heladeras.
+   * En caso de error, se redirige al usuario para reintentar la creación.
+   *
+   * @param context El contexto de la solicitud actual.
+   */
   @Override
   public void save(Context context) {
     Map<String, Object> model = new HashMap<>();
@@ -150,6 +184,17 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
     }
   }
 
+  /**
+   * Maneja la edición de una heladera específica.
+   * Este método obtiene la heladera desde la ruta del contexto. Verifica si el usuario en sesión
+   * tiene permiso para configurar la heladera. Si el usuario no tiene los permisos necesarios,
+   * lanza una excepción de no autorizado. Luego, construye un modelo de datos y lo renderiza en
+   * la vista de edición de la heladera.
+   *
+   * @param context El contexto de la solicitud actual.
+   * @throws UnauthorizedException si el usuario no tiene permiso para configurar la heladera o
+   *                               ya sea porque no es administrador.
+   */
   @Override
   public void edit(Context context) {
     Heladera heladera = heladeraFromPath(context);
@@ -170,6 +215,18 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
     }
   }
 
+  /**
+   * Actualiza la configuración de una heladera específica.
+   * Este método obtiene la heladera desde la ruta del contexto. Verifica si el usuario en sesión
+   * tiene permiso para configurar la heladera. Si el usuario no tiene los permisos necesarios,
+   * lanza una excepción de no autorizado. Luego, extrae los parámetros del formulario para
+   * actualizar la heladera y construye un modelo de datos para renderizar la vista de resultados
+   * de la operación.
+   *
+   * @param context El contexto de la solicitud actual.
+   * @throws UnauthorizedException si el usuario no tiene permiso para configurar la heladera,
+   *                               ya sea porque no es administrador.
+   */
   @Override
   public void update(Context context) {
     Heladera heladera = heladeraFromPath(context);
@@ -200,7 +257,8 @@ public class HeladeraController extends ColaboradorRequired implements ICrudView
       redirects.add(new RedirectDTO("/heladeras", "Ver Heladeras"));
 
     } catch (ValidationException e) {
-      redirects.add(new RedirectDTO("/heladeras/" + heladera.getId() + "/edit", "Reintentar"));
+      redirects.add(new RedirectDTO("/heladeras/" + heladera.getId() + "/edit",
+          "Reintentar"));
     } finally {
       model.put("success", operationSuccess);
       model.put("redirects", redirects);

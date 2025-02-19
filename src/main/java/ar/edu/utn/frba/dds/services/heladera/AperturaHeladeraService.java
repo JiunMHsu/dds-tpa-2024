@@ -12,6 +12,11 @@ public class AperturaHeladeraService {
 
   private final AperturaHeladeraRepository aperturaHeladeraRepository;
 
+  /**
+   * Constructor para inicializar el servicio de apertura de heladeras.
+   *
+   * @param aperturaHeladeraRepository El repositorio de aperturas de heladeras.
+   */
   public AperturaHeladeraService(AperturaHeladeraRepository aperturaHeladeraRepository) {
     this.aperturaHeladeraRepository = aperturaHeladeraRepository;
   }

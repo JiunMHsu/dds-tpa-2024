@@ -188,6 +188,14 @@ public class Colaborador extends EntidadPersistente {
     );
   }
 
+  /**
+   * Crea un nuevo objeto Colaborador a partir de un objeto Usuario.
+   * Este método utiliza el patrón Builder para construir un nuevo Colaborador
+   * con el usuario proporcionado.
+   *
+   * @param usuario  El objeto Usuario a partir del cual se construye el nuevo Colaborador.
+   * @return Un nuevo objeto Colaborador con el usuario proporcionado.
+   */
   public static Colaborador conUsuario(Usuario usuario) {
     return Colaborador.builder().usuario(usuario).build();
   }
@@ -267,6 +275,27 @@ public class Colaborador extends EntidadPersistente {
     } else {
       contactos.add(contacto);
     }
+  }
+
+  /**
+   * Verifica si el contacto ya existe en la lista.
+   *
+   * @param contacto contacto
+   */
+  public boolean contactoDuplicado(@NotNull Contacto contacto) {
+    return contactos.stream()
+        .anyMatch(c -> c.getMedioDeNotificacion() == contacto.getMedioDeNotificacion()
+            && c.getValor().equals(contacto.getValor()));
+  }
+
+  /**
+   * Verifica si existe un contacto con ese medio de notificacion en la lista.
+   *
+   * @param medioDeNotificacion medio de notificación
+   */
+  public boolean medioContactoYaExiste(@NotNull MedioDeNotificacion medioDeNotificacion) {
+    return contactos.stream()
+        .anyMatch(c -> c.getMedioDeNotificacion() == medioDeNotificacion);
   }
 }
 

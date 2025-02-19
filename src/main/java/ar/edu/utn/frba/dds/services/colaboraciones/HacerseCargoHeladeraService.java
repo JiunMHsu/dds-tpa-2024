@@ -28,7 +28,7 @@ public class HacerseCargoHeladeraService implements WithSimplePersistenceUnit {
   /**
    * Constructor de HacerseCargoHeladeraService.
    *
-   * @param hacerseCargoHeladeraRepository Repositorio de colaboraciones de tipo HacerseCargoHeladera
+   * @param hacerseCargoHeladeraRepository Repositorio de colaboraciones HacerseCargoHeladera
    * @param colaboradorRepository          Repositorio de colaboradores
    * @param heladeraRepository             Repositorio de heladeras
    */

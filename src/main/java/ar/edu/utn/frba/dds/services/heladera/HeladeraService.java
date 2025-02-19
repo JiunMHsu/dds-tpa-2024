@@ -143,7 +143,8 @@ public class HeladeraService implements WithSimplePersistenceUnit {
    * @return Si puede configurar
    */
   public boolean puedeConfigurar(Colaborador colaborador, Heladera heladera) {
-    List<HacerseCargoHeladera> encargos = hacerseCargoHeladeraRepository.buscarPorColaborador(colaborador);
+    List<HacerseCargoHeladera> encargos =
+        hacerseCargoHeladeraRepository.buscarPorColaborador(colaborador);
     return encargos.stream().anyMatch(encargo -> encargo.getHeladera().equals(heladera));
   }
 }

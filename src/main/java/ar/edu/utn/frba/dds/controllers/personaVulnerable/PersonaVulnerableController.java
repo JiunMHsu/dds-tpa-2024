@@ -23,41 +23,63 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Controlador para manejar las operaciones relacionadas con personas vulnerables.
+ */
 public class PersonaVulnerableController extends ColaboradorRequired implements ICrudViewsHandler {
 
   private final PersonaVulnerableService personaVulnerableService;
   private final TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService;
 
+  /**
+   * Constructor para inicializar el controlador de personas vulnerables.
+   *
+   * @param personaVulnerableService     El servicio de personas vulnerables.
+   * @param tarjPersonaVulnerableService El servicio de tarjetas de personas vulnerables.
+   * @param colaboradorService           El servicio de colaboradores.
+   * @param usuarioService               El servicio de usuarios.
+   */
   public PersonaVulnerableController(PersonaVulnerableService personaVulnerableService,
-                                     TarjetaPersonaVulnerableService tarjetaPersonaVulnerableService,
+                                     TarjetaPersonaVulnerableService tarjPersonaVulnerableService,
                                      ColaboradorService colaboradorService,
                                      UsuarioService usuarioService) {
 
     super(usuarioService, colaboradorService);
     this.personaVulnerableService = personaVulnerableService;
-    this.tarjetaPersonaVulnerableService = tarjetaPersonaVulnerableService;
+    this.tarjetaPersonaVulnerableService = tarjPersonaVulnerableService;
   }
 
+  /**
+   * Maneja la visualización del listado de personas vulnerables.
+   *
+   * @param context El contexto de la solicitud actual.
+   */
   @Override
   public void index(Context context) {
 
-    List<PersonaVulnerable> personasVulnerables = this.personaVulnerableService.buscarTodosPV();
+    List<PersonaVulnerable> personasVulnerables = this.personaVulnerableService.buscarTodos();
 
-    List<PersonaVulnerableDTO> personasVulnerablesDTO = personasVulnerables.stream()
+    List<PersonaVulnerableDTO> personasVulnerablesDto = personasVulnerables.stream()
         .map(PersonaVulnerableDTO::fromPersonaVulnerable)
         .collect(Collectors.toList());
 
     Map<String, Object> model = new HashMap<>();
-    model.put("personasVulnerables", personasVulnerablesDTO);
+    model.put("personasVulnerables", personasVulnerablesDto);
     model.put("titulo", "Listado de Personas en Situacion Vulnerable");
-
-    // context.render("/colaboraciones/", model);
+    //TODO que onda esto comentado?
+    // render(context, "/colaboraciones/", model);
   }
 
+  /**
+   * Maneja la visualización de los detalles de una persona vulnerable específica.
+   *
+   * @param context El contexto de la solicitud actual.
+   */
   @Override
   public void show(Context context) {
 
-    Optional<PersonaVulnerable> personaVulnerableBuscada = this.personaVulnerableService.buscarPVPorId(context.pathParam("id"));
+    Optional<PersonaVulnerable> personaVulnerableBuscada = this.personaVulnerableService
+        .buscarPorId(context.pathParam("id"));
 
     if (personaVulnerableBuscada.isEmpty()) {
       context.status(404).result("Persona en situacion vulnerable no encontrada");
@@ -78,9 +100,15 @@ public class PersonaVulnerableController extends ColaboradorRequired implements 
   public void save(Context context) {
   }
 
+  /**
+   * Maneja la visualización del formulario de edición de una persona vulnerable existente.
+   *
+   * @param context El contexto de la solicitud actual.
+   */
   @Override
   public void edit(Context context) {
-    Optional<PersonaVulnerable> personaVulnerableBuscada = this.personaVulnerableService.buscarPVPorId(context.pathParam("id"));
+    Optional<PersonaVulnerable> personaVulnerableBuscada = this.personaVulnerableService
+        .buscarPorId(context.pathParam("id"));
 
     if (personaVulnerableBuscada.isEmpty()) {
       context.status(404).result("Persona en situación vulnerable no encontrada");
@@ -94,11 +122,17 @@ public class PersonaVulnerableController extends ColaboradorRequired implements 
     context.render("colaboraciones/editar_pv.hbs", model);
   }
 
+  /**
+   * Actualiza los datos de una persona vulnerable existente en el sistema.
+   *
+   * @param context El contexto de la solicitud actual.
+   */
   @Override
   public void update(Context context) {
     try {
       Documento documento = Documento.con(
-          TipoDocumento.valueOf(context.formParamAsClass("tipo_documento", String.class).get()),
+          TipoDocumento.valueOf(context.formParamAsClass("tipo_documento", String.class)
+              .get()),
           context.formParamAsClass("nro_documento", String.class).get()
       );
 
@@ -117,11 +151,14 @@ public class PersonaVulnerableController extends ColaboradorRequired implements 
           context.formParamAsClass("menores_a_cargo", Integer.class).get()
       );
 
-      this.personaVulnerableService.actualizarPersonaVulnerable(context.pathParam("id"), personaVulnerableActualizada);
+      this.personaVulnerableService.actualizarPersonaVulnerable(context.pathParam("id"),
+          personaVulnerableActualizada);
 
-      context.status(HttpStatus.OK).result("Persona vulnerable actualizada exitosamente");
+      context.status(HttpStatus.OK)
+          .result("Persona vulnerable actualizada exitosamente");
     } catch (ValidationException e) {
-      context.status(HttpStatus.BAD_REQUEST).result("Error en la validación nueva los datos");
+      context.status(HttpStatus.BAD_REQUEST)
+          .result("Error en la validación nueva los datos");
     }
   }
 

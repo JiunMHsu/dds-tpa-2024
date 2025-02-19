@@ -13,6 +13,11 @@ public class TarjetaColaboradorService {
 
   private final TarjetaColaboradorRepository tarjetaColaboradorRepository;
 
+  /**
+   * Constructor para inicializar el servicio de tarjetas de colaboradores.
+   *
+   * @param tarjetaColaboradorRepository El repositorio de tarjetas de colaboradores.
+   */
   public TarjetaColaboradorService(TarjetaColaboradorRepository tarjetaColaboradorRepository) {
     this.tarjetaColaboradorRepository = tarjetaColaboradorRepository;
   }

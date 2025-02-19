@@ -541,7 +541,8 @@ public class ServiceLocator {
           instanceOf(ColaboradorRepository.class),
           instanceOf(MensajeriaService.class),
           instanceOf(TecnicoService.class),
-          instanceOf(HeladeraService.class)
+          instanceOf(HeladeraService.class),
+          instanceOf(ContactoRepository.class)
       );
       instances.put(componentName, instance);
     }
@@ -550,7 +551,8 @@ public class ServiceLocator {
       FaltaViandaService instance = new FaltaViandaService(
           instanceOf(FaltaViandaRepository.class),
           instanceOf(ColaboradorRepository.class),
-          instanceOf(MensajeriaService.class)
+          instanceOf(MensajeriaService.class),
+          instanceOf(ContactoRepository.class)
       );
       instances.put(componentName, instance);
     }
@@ -559,7 +561,8 @@ public class ServiceLocator {
       HeladeraLlenaService instance = new HeladeraLlenaService(
           instanceOf(HeladeraLlenaRepository.class),
           instanceOf(ColaboradorRepository.class),
-          instanceOf(MensajeriaService.class)
+          instanceOf(MensajeriaService.class),
+          instanceOf(ContactoRepository.class)
       );
       instances.put(componentName, instance);
     }

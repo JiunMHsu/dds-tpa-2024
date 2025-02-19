@@ -43,7 +43,7 @@ public class HeladerasMasCercanasTest {
     HeladeraService heladeraService = mock(HeladeraService.class);
     when(heladeraService.buscarPorBarrio(flores)).thenReturn(List.of(heladera1, heladera2, heladera3, heladera4, heladera5, heladera6));
 
-    fallaHeladeraService = new FallaHeladeraService(null, null, null, null, heladeraService);
+    fallaHeladeraService = new FallaHeladeraService(null, null, null, null, heladeraService, null);
   }
 
   @Test

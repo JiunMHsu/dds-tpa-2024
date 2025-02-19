@@ -43,7 +43,7 @@ public class TecnicoMasCercanoTest {
     TecnicoService tecnicoService = mock(TecnicoService.class);
     when(tecnicoService.obtenerPorBarrio(flores)).thenReturn(List.of(tecnico3, tecnico2, tecnico1));
 
-    fallaHeladeraService = new FallaHeladeraService(null, null, null, tecnicoService, null);
+    fallaHeladeraService = new FallaHeladeraService(null, null, null, tecnicoService, null, null);
   }
 
   @Test

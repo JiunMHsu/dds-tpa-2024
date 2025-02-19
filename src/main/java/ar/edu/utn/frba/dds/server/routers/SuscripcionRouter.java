@@ -23,7 +23,7 @@ public class SuscripcionRouter implements IRouter {
               TipoRol.COLABORADOR);
 
           path("/falla-tecnica", () -> {
-            post(ServiceLocator.instanceOf(SuscripcionHeladeraController.class)::saveFallaHeladera,
+            post(ServiceLocator.instanceOf(SuscripcionHeladeraController.class)::save,
                 TipoRol.COLABORADOR);
 
             get("/new",
@@ -32,7 +32,7 @@ public class SuscripcionRouter implements IRouter {
           });
 
           path("/falta-viandas", () -> {
-            post(ServiceLocator.instanceOf(SuscripcionHeladeraController.class)::saveFaltaVianda,
+            post(ServiceLocator.instanceOf(SuscripcionHeladeraController.class)::save,
                 TipoRol.COLABORADOR);
 
             get("/new",
@@ -41,7 +41,7 @@ public class SuscripcionRouter implements IRouter {
           });
 
           path("/heladera-llena", () -> {
-            post(ServiceLocator.instanceOf(SuscripcionHeladeraController.class)::saveHeladeraLlena,
+            post(ServiceLocator.instanceOf(SuscripcionHeladeraController.class)::save,
                 TipoRol.COLABORADOR);
 
             get("/new",

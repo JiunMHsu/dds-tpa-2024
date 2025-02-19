@@ -27,9 +27,11 @@ public class ReporteController extends ColaboradorRequired {
   private final ReporteService reporteService;
 
   /**
-   * Constructor.
+   * Constructor para inicializar el controlador de reportes.
    *
-   * @param reporteService servicio de reportes
+   * @param usuarioService    El servicio de usuarios.
+   * @param colaboradorService  El servicio de colaboradores.
+   * @param reporteService     El servicio de reportes.
    */
   public ReporteController(UsuarioService usuarioService,
                            ColaboradorService colaboradorService,

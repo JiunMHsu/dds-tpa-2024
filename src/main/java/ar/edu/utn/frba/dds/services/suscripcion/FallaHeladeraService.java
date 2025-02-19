@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.services.suscripcion;
 
-import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import ar.edu.utn.frba.dds.dtos.suscripcion.CreateSuscripcionHeladeraDTO;
 import ar.edu.utn.frba.dds.models.entities.data.Contacto;
 import ar.edu.utn.frba.dds.models.entities.data.Direccion;
 import ar.edu.utn.frba.dds.models.entities.heladera.Heladera;
@@ -10,14 +10,13 @@ import ar.edu.utn.frba.dds.models.entities.suscripcion.SuscripcionFallaHeladera;
 import ar.edu.utn.frba.dds.models.entities.tecnico.Tecnico;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.IColaboradorRepository;
+import ar.edu.utn.frba.dds.models.repositories.contacto.ContactoRepository;
 import ar.edu.utn.frba.dds.models.repositories.suscripcion.FallaHeladeraRepository;
-import ar.edu.utn.frba.dds.models.stateless.mensajeria.MedioDeNotificacion;
 import ar.edu.utn.frba.dds.services.heladera.HeladeraService;
 import ar.edu.utn.frba.dds.services.mensajeria.MensajeriaService;
 import ar.edu.utn.frba.dds.services.tecnico.TecnicoService;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +32,7 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
   private final MensajeriaService mensajeriaService;
   private final TecnicoService tecnicoService;
   private final HeladeraService heladeraService;
+  private final ContactoRepository contactoRepository;
 
   /**
    * Constructor.
@@ -47,55 +47,53 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
                               ColaboradorRepository colaboradorRepository,
                               MensajeriaService mensajeriaService,
                               TecnicoService tecnicoService,
-                              HeladeraService heladeraService) {
+                              HeladeraService heladeraService,
+                              ContactoRepository contactoRepository) {
     this.fallaHeladeraRepository = fallaHeladeraRepository;
     this.colaboradorRepository = colaboradorRepository;
     this.mensajeriaService = mensajeriaService;
     this.tecnicoService = tecnicoService;
     this.heladeraService = heladeraService;
+    this.contactoRepository = contactoRepository;
   }
 
   /**
    * Registrar una suscripción a una falla de heladera.
-   * TODO: Revisar
    *
-   * @param colaborador         Colaborador
-   * @param heladera            Heladera
-   * @param medioDeNotificacion Medio de notificación
-   * @param infoContacto        Información de contacto
+   * @param suscripcion suscripción a la falla de heladera
    */
-  public void registrar(Colaborador colaborador,
-                        Heladera heladera,
-                        MedioDeNotificacion medioDeNotificacion,
-                        String infoContacto) {
+  public void registrar(CreateSuscripcionHeladeraDTO suscripcion) {
 
-    if (colaborador.getContactos().isEmpty()) {
-      List<Contacto> contactos = new ArrayList<>(Arrays.asList(Contacto.vacio()));
-      colaborador.setContactos(contactos);
-    }
+    boolean contactoNuevoNoExiste = false;
+    boolean actualizarContacto = false;
 
-    boolean contactoActualizado = false;
+    Contacto nuevoContacto = Contacto.con(suscripcion.getMedioDeNotificacion(),
+        suscripcion.getInfoContacto());
 
-    if (colaborador.getContacto(medioDeNotificacion).isEmpty()) {
-      colaborador.agregarContacto(Contacto.con(medioDeNotificacion, infoContacto));
-      contactoActualizado = true;
+    if (!suscripcion.getColaborador().contactoDuplicado(nuevoContacto)) {
+      if (suscripcion.getColaborador()
+          .medioContactoYaExiste(nuevoContacto.getMedioDeNotificacion())) {
+        actualizarContacto = true;
+      } else {
+        contactoNuevoNoExiste = true;
+      }
+      suscripcion.getColaborador().agregarContacto(nuevoContacto);
     }
 
     SuscripcionFallaHeladera nuevaSuscripcion = SuscripcionFallaHeladera.de(
-        colaborador,
-        heladera,
-        medioDeNotificacion);
+        suscripcion.getColaborador(),
+        suscripcion.getHeladera(),
+        suscripcion.getMedioDeNotificacion());
 
-    if (contactoActualizado) {
-      beginTransaction();
-      colaboradorRepository.actualizar(colaborador);
-      fallaHeladeraRepository.guardar(nuevaSuscripcion);
-      commitTransaction();
-    } else {
-      beginTransaction();
-      fallaHeladeraRepository.guardar(nuevaSuscripcion);
-      commitTransaction();
+    beginTransaction();
+    if (contactoNuevoNoExiste) {
+      contactoRepository.guardar(nuevoContacto);
+      colaboradorRepository.actualizar(suscripcion.getColaborador());
+    } else if (actualizarContacto) {
+      colaboradorRepository.actualizar(suscripcion.getColaborador());
     }
+    fallaHeladeraRepository.guardar(nuevaSuscripcion);
+    commitTransaction();
   }
 
   /**
@@ -120,12 +118,12 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
     String asunto = "Falla en la heladera";
     String cuerpo = String.format("""
             Estimado/a %s,
-            
+                        
             La %s ha sufrido un desperfecto.
             Ocurrio un/a %s
-            
+                        
             Por favor, dirigirse a la heladera situada en: %s lo antes posible.\s
-            
+                        
             Gracias por su rápida acción.""",
         tecnico.getNombre(),
         incidente.getHeladera().getNombre(),
@@ -168,12 +166,12 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
 
     String cuerpo = String.format("""
             Estimado/a %s,
-            
+                        
             La %s ha sufrido un desperfecto.
             Ocurrio un/a %s
-            
+                        
             Por favor, traslade las viandas a las siguientes heladeras sugeridas:
-            
+                        
             %s
             Gracias por su rápida acción.""",
         incidente.getTipo().getDescription(),

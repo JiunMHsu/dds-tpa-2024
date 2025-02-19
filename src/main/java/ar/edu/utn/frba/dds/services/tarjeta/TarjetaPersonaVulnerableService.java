@@ -11,6 +11,11 @@ public class TarjetaPersonaVulnerableService {
 
   private final TarjetaPersonaVulnerableRepository tarjetaPersonaVulnerableRepository;
 
+  /**
+   * Constructor para inicializar el servicio de tarjetas de personas vulnerables.
+   *
+   * @param tarjetaRepository El repositorio de tarjetas de personas vulnerables.
+   */
   public TarjetaPersonaVulnerableService(TarjetaPersonaVulnerableRepository tarjetaRepository) {
     this.tarjetaPersonaVulnerableRepository = tarjetaRepository;
   }
