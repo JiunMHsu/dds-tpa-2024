@@ -344,7 +344,8 @@ public class ServiceLocator {
 
     if (componentName.equals(SolicitudDeAperturaService.class.getName())) {
       SolicitudDeAperturaService instance = new SolicitudDeAperturaService(
-          instanceOf(SolicitudDeAperturaRepository.class));
+          instanceOf(SolicitudDeAperturaRepository.class)
+      );
       instances.put(componentName, instance);
     }
 
@@ -576,6 +577,11 @@ public class ServiceLocator {
 
     if (componentName.equals(HeladeraRepository.class.getName())) {
       HeladeraRepository instance = new HeladeraRepository();
+      instances.put(componentName, instance);
+    }
+
+    if (componentName.equals(SolicitudDeAperturaRepository.class.getName())) {
+      SolicitudDeAperturaRepository instance = new SolicitudDeAperturaRepository();
       instances.put(componentName, instance);
     }
 
