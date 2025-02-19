@@ -297,5 +297,14 @@ public class Colaborador extends EntidadPersistente {
     return contactos.stream()
         .anyMatch(c -> c.getMedioDeNotificacion() == medioDeNotificacion);
   }
+
+  /**
+   * Actualiza las formas de colaborar de un colaborador, evitando de error inmutabilidad.
+   *
+   * @param formasDeColaborar nuevas colaboraciones
+   */
+  public void setFormasDeColaborar(List<TipoColaboracion> formasDeColaborar) {
+    this.formasDeColaborar = new ArrayList<>(formasDeColaborar);
+  }
 }
 
