@@ -18,6 +18,7 @@ import lombok.Setter;
  * Registro de la periociadad de una donación de dinero. Configurada por un {@link Colaborador}.
  */
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
