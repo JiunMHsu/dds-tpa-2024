@@ -8,6 +8,7 @@ import ar.edu.utn.frba.dds.dtos.tarjeta.TarjetaColaboradorDTO;
 import ar.edu.utn.frba.dds.dtos.usuario.CreateUsuarioDTO;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
 import ar.edu.utn.frba.dds.exceptions.NotColaboratorException;
+import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.exceptions.ValidationException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
@@ -70,14 +71,21 @@ public class ColaboradorController extends ColaboradorRequired {
   public void getProfile(Context context) {
     Colaborador colaboradorSession = colaboradorFromSession(context);
 
-    TarjetaColaborador tarjetaColaborador = this.tarjetaColaboradorService
-        .buscarPorColaborador(colaboradorSession);
+    TarjetaColaborador tarjeta;
+    try {
+      tarjeta = this.tarjetaColaboradorService.buscarPorColaborador(colaboradorSession);
+    } catch (ResourceNotFoundException e) {
+      tarjeta = null;
+    }
 
     Map<String, Object> model = new HashMap<>();
-    TarjetaColaboradorDTO tarjeta = TarjetaColaboradorDTO.completa(tarjetaColaborador);
+    TarjetaColaboradorDTO tarjetaDto =
+        (tarjeta != null) ? TarjetaColaboradorDTO.completa(tarjeta) : null;
     ColaboradorDTO colaborador = ColaboradorDTO.completa(colaboradorSession);
+
     model.put("colaborador", colaborador);
-    model.put("tarjeta", tarjeta);
+    model.put("tarjeta", tarjetaDto);
+
     render(context, "perfil/perfil.hbs", model);
   }
 

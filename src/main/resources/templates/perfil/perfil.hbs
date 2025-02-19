@@ -11,15 +11,15 @@
 {{#partial "main-content"}}
     <div class="list-container">
         <h2 class="list-title">Información Personal</h2>
-        <p><span
-                class="negrita">Dirección:</span>
-            {{colaborador.direccion}}</p>
-        <p><span
-                class="negrita">Contacto:</span>
-            {{colaborador.contacto}}</p>
-        <p><span
-                class="negrita">Tarjeta:</span>
-            {{tarjeta.codigo}}</p>
+        <p><span class="negrita">Dirección:</span> {{colaborador.direccion}}</p>
+        <p><span class="negrita">Contacto:</span> {{colaborador.contacto}}</p>
+        <p><span class="negrita">Tarjeta:</span>
+            {{#if tarjeta}}
+                {{tarjeta.codigo}}
+            {{else}}
+                No tienes una tarjeta asociada.
+            {{/if}}
+        </p>
     </div>
 {{/partial}}
 {{#partial "side-panel"}}
