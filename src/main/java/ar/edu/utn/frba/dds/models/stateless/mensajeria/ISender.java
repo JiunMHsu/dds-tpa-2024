@@ -6,7 +6,6 @@ import jakarta.mail.MessagingException;
 /**
  * Interface for sending messages.
  */
-//TODO check mayuscula
 public interface ISender {
   void enviarMensaje(Mensaje mensaje) throws MessagingException;
 }

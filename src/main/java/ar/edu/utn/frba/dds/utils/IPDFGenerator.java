@@ -5,7 +5,6 @@ import java.util.Map;
 /**
  * Interfaz que define los métodos para la generación de documentos PDF.
  */
-//TODO check mayuscula
 public interface IPDFGenerator {
 
   /**

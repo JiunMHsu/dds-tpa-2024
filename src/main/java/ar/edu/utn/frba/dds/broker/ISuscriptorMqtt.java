@@ -3,7 +3,6 @@ package ar.edu.utn.frba.dds.broker;
 /**
  * Interfaz de Suscriptor MQTT.
  */
-//TODO check mayuscula
 public interface ISuscriptorMqtt {
   /**
    * Devuelve el topico al que se suscribe el suscriptor.

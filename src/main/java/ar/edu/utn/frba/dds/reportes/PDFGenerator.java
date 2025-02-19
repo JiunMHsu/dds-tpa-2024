@@ -17,7 +17,6 @@ import java.util.Map;
 /**
  * PDF Generator implementation.
  */
-//TODO check mayuscula
 public class PDFGenerator implements IPDFGenerator {
 
   private final String dir;

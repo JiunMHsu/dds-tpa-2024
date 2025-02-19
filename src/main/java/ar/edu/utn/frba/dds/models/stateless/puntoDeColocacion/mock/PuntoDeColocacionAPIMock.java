@@ -7,7 +7,6 @@ import java.util.List;
 /**
  * Mock de API de punto de colocación.
  */
-//TODO check mayuscula
 public class PuntoDeColocacionAPIMock implements IPuntoDeColocacionAdapter {
 
   @Override

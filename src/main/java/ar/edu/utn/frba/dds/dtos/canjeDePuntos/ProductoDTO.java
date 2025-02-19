@@ -11,7 +11,6 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @SuperBuilder
-//TODO check mayuscula
 public class ProductoDTO {
 
   private String id;

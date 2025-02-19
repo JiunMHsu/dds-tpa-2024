@@ -7,7 +7,6 @@ import java.util.Optional;
 /**
  * Interfaz de Repositorio de personas vulnerables.
  */
-//TODO check de mayuscula
 public interface IPersonaVulnerableRepository extends ICrudRepository<PersonaVulnerable> {
 
   Optional<PersonaVulnerable> buscarPorDocumento(String documento);

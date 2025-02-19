@@ -8,7 +8,6 @@ import java.util.Optional;
  *
  * @param <T> tipo de entidad
  */
-//TODO check mayuscula
 public interface ICrudRepository<T> {
 
   /**

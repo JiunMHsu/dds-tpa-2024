@@ -6,7 +6,6 @@ import java.util.List;
 /**
  * Adapter de API de punto de colocación.
  */
-//TODO check mayuscula
 public interface IPuntoDeColocacionAdapter {
   List<Ubicacion> solicitarRecomendacion(double latitud, double longitud, double radio);
 }
