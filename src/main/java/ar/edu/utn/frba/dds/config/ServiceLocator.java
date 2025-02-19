@@ -344,8 +344,7 @@ public class ServiceLocator {
 
     if (componentName.equals(SolicitudDeAperturaService.class.getName())) {
       SolicitudDeAperturaService instance = new SolicitudDeAperturaService(
-          instanceOf(SolicitudDeAperturaRepository.class)
-      );
+          instanceOf(SolicitudDeAperturaRepository.class));
       instances.put(componentName, instance);
     }
 
