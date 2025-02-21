@@ -4,6 +4,7 @@ import ar.edu.utn.frba.dds.dtos.colaborador.ColaboradorDTO;
 import ar.edu.utn.frba.dds.dtos.colaborador.CreateColaboradorDTO;
 import ar.edu.utn.frba.dds.dtos.usuario.CreateUsuarioDTO;
 import ar.edu.utn.frba.dds.exceptions.InvalidFormParamException;
+import ar.edu.utn.frba.dds.models.entities.canjeDePuntos.Puntos;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.colaborador.TipoColaborador;
@@ -204,6 +205,7 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
         .tipoRazonSocial(tipoRazonSocial)
         .rubro(nuevoColaborador.getRubro())
         .fechaNacimiento(fechaNacimiento)
+        .puntos(Puntos.iniciales())
         .build();
 
     beginTransaction();
