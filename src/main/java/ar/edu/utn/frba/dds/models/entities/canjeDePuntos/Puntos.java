@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import lombok.Setter;
  */
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Embeddable
 public class Puntos {
 
@@ -39,5 +41,15 @@ public class Puntos {
       case HUMANO -> this.esValido;
       case JURIDICO -> this.esValido && this.validoHasta.isAfter(LocalDate.now());
     };
+  }
+
+  /**
+   * Builder puntos iniciales.
+   */
+  public static Puntos iniciales() {
+    return Puntos.builder()
+        .puntos(0)
+        .esValido(true)
+        .build();
   }
 }
