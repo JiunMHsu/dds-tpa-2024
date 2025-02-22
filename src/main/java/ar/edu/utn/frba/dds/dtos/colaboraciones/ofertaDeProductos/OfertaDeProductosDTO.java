@@ -23,9 +23,15 @@ public class OfertaDeProductosDTO extends ColaboracionDTO {
         getPath(TipoColaboracion.OFERTA_DE_PRODUCTOS),
         ofertaDeProductos.getColaborador().getUsuario().getNombre()
     );
-    this.nombreProducto = ofertaDeProductos.getNombre();
-    this.rubro = ofertaDeProductos.getRubro().toString();
-    this.pathImagen = ofertaDeProductos.getImagen().getRuta();
+    this.nombreProducto = (ofertaDeProductos.getNombre() != null)
+        ? ofertaDeProductos.getNombre()
+        : "Producto desconocido";
+    this.rubro = (ofertaDeProductos.getRubro() != null)
+        ? ofertaDeProductos.getRubro().toString()
+        : "Rubro desconocido";
+    this.pathImagen = (ofertaDeProductos.getImagen() != null)
+        ? ofertaDeProductos.getImagen().getRuta()
+        : "Sin imagen";
   }
 
   public static OfertaDeProductosDTO fromColaboracion(OfertaDeProductos ofertaDeProductos) {

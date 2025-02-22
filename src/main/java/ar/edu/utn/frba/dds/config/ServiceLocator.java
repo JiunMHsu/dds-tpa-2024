@@ -409,7 +409,8 @@ public class ServiceLocator {
           instanceOf(OfertaDeProductosRepository.class),
           instanceOf(RepartoDeTarjetaRepository.class),
           new SafeMailSender(),
-          instanceOf(MensajeRepository.class));
+          instanceOf(MensajeRepository.class),
+          instanceOf(ContactoRepository.class));
       instances.put(componentName, instance);
     }
 

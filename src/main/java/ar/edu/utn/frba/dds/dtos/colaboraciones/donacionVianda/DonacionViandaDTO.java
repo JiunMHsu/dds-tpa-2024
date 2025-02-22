@@ -26,11 +26,18 @@ public class DonacionViandaDTO extends ColaboracionDTO {
         donacionVianda.getColaborador().getUsuario().getNombre()
     );
     this.esEntregada = donacionVianda.getEsEntregada() ? "Entregada" : "No entregada";
-    this.nombreComida = donacionVianda.getVianda().getComida().getNombre();
-    this.pesoVianda = donacionVianda.getVianda().getPeso().toString();
-    this.caloriasComida = String.valueOf(donacionVianda.getVianda().getComida().getCalorias());
-    this.fechaCaducidadComida =
-        DateTimeParser.parseFecha(donacionVianda.getVianda().getFechaCaducidad());
+    this.nombreComida = (donacionVianda.getVianda() != null && donacionVianda.getVianda().getComida() != null)
+        ? donacionVianda.getVianda().getComida().getNombre()
+        : "Desconocido";
+    this.pesoVianda = (donacionVianda.getVianda() != null && donacionVianda.getVianda().getPeso() != null)
+        ? donacionVianda.getVianda().getPeso().toString()
+        : "Desconocido";
+    this.caloriasComida = (donacionVianda.getVianda() != null && donacionVianda.getVianda().getComida() != null)
+        ? String.valueOf(donacionVianda.getVianda().getComida().getCalorias())
+        : "Desconocido";
+    this.fechaCaducidadComida = (donacionVianda.getVianda() != null && donacionVianda.getVianda().getFechaCaducidad() != null)
+        ? DateTimeParser.parseFecha(donacionVianda.getVianda().getFechaCaducidad())
+        : "Desconocida";
   }
 
   public static DonacionViandaDTO fromColaboracion(DonacionVianda donacionVianda) {

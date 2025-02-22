@@ -22,8 +22,12 @@ public class RepartoDeTarjetaDTO extends ColaboracionDTO {
         getPath(TipoColaboracion.REPARTO_DE_TARJETAS),
         repartoDeTarjeta.getColaborador().getUsuario().getNombre()
     );
-    this.tarjeta = repartoDeTarjeta.getTarjeta().getCodigo();
-    this.personaVulnerable = repartoDeTarjeta.getPersonaVulnerable().getNombre();
+    this.tarjeta = (repartoDeTarjeta.getTarjeta() != null)
+        ? repartoDeTarjeta.getTarjeta().getCodigo()
+        : "Tarjeta Desconocida";
+    this.personaVulnerable = (repartoDeTarjeta.getPersonaVulnerable() != null)
+        ? repartoDeTarjeta.getPersonaVulnerable().getNombre()
+        : "Persona Desconocida";
   }
 
   public static RepartoDeTarjetaDTO fromColaboracion(RepartoDeTarjeta repartoDeTarjeta) {
