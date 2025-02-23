@@ -75,12 +75,10 @@ public class TarjetaColaboradorRepository
   public Optional<TarjetaColaborador> buscarPorColaborador(Colaborador colaborador) {
     String query = "from TarjetaColaborador t where t.duenio = :colaborador and t.alta = :alta";
 
-    List<TarjetaColaborador> resultados = entityManager()
+    return Optional.ofNullable(entityManager()
         .createQuery(query, TarjetaColaborador.class)
         .setParameter("colaborador", colaborador)
         .setParameter("alta", true)
-        .getResultList();
-
-    return resultados.isEmpty() ? Optional.empty() : Optional.of(resultados.get(0));
+        .getSingleResult());
   }
 }
