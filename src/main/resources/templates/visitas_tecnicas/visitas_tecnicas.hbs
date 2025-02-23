@@ -22,21 +22,29 @@
                 {{#each visitas-tecnicas}}
                     <li class="list-item">
                         <a class="item-card">
-                            <h3 class="card-title">{{this.fecha}}&nbsp;&nbsp;{{this.hora}}</h3>
-                            <p>
-                                <span class="material-symbols-rounded card-detail-icon">description</span>
-                                Descripcion: {{this.decripcion}}
-                            </p>
-                            <p>
-                                {{#if this.resuelto}}
+                            <div class="content-wrapper">
+                                <img src="/image/{{this.foto}}" alt="foto-visita"
+                                     class="visita-image">
+                                <div class="description">
+                                    <p>
+                                        <span class="material-symbols-rounded card-detail-icon"> today </span>
+                                        Fecha y Hora: {{this.fecha}} {{this.hora}}
+                                    </p>
+                                    <p>
+                                        <span class="material-symbols-rounded card-detail-icon">description</span>
+                                        Descripcion: {{this.descripcion}}
+                                    </p>
+                                    <p {{#if this.pudoResolverse}}
                                     style="color: #A7C957"
-                                {{else}}
+                                    {{else}}
                                     style="color: #e37f8f"
-                                {{/if}}>
-                                <span class="material-symbols-rounded card-detail-icon"> radio_button_checked </span>
-                                Resuelto: {{#if this.pudoResolverse}}
-                                Resuelto {{else}} Pendiente {{/if}}
-                            </p>
+                                    {{/if}}>
+                                        <span class="material-symbols-rounded card-detail-icon"> build </span>
+                                        Resolvió la falla: {{#if this.pudoResolverse}}
+                                        Sí {{else}} No {{/if}}
+                                    </p>
+                                </div>
+                            </div>
                         </a>
                     </li>
                 {{/each}}
