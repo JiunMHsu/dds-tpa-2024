@@ -25,12 +25,19 @@ public class DistribucionViandasDTO extends ColaboracionDTO {
         getPath(TipoColaboracion.DISTRIBUCION_VIANDAS),
         distribucionViandas.getColaborador().getUsuario().getNombre()
     );
-    this.heladeraOrigen = distribucionViandas.getOrigen().getNombre();
-    this.heladeraDestino = distribucionViandas.getDestino().getNombre();
-    this.cantViandas = distribucionViandas.getViandas().toString();
+    this.heladeraOrigen = (distribucionViandas.getOrigen() != null)
+        ? distribucionViandas.getOrigen().getNombre()
+        : "Origen desconocido";
+    this.heladeraDestino = (distribucionViandas.getDestino() != null)
+        ? distribucionViandas.getDestino().getNombre()
+        : "Destino desconocido";
+    this.cantViandas = distribucionViandas.getViandas() != null
+        ? distribucionViandas.getViandas().toString()
+        : "Desconocida";
     this.motivo = distribucionViandas.getMotivo();
     this.estado = distribucionViandas.getEstado().toString();
   }
+
 
   public static DistribucionViandasDTO fromColaboracion(DistribucionViandas distribucionViandas) {
     return new DistribucionViandasDTO(distribucionViandas);

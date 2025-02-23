@@ -21,7 +21,9 @@ public class HacerseCargoHeladeraDTO extends ColaboracionDTO {
         getPath(TipoColaboracion.HACERSE_CARGO_HELADERA),
         hacerseCargoHeladera.getColaborador().getUsuario().getNombre()
     );
-    this.heladera = hacerseCargoHeladera.getHeladera().getNombre();
+    this.heladera = (hacerseCargoHeladera.getHeladera() != null)
+        ? hacerseCargoHeladera.getHeladera().getNombre()
+        : "Heladera Desconocida";
   }
 
   /**

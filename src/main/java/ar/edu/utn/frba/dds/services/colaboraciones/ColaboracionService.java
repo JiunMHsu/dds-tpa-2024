@@ -21,6 +21,7 @@ import ar.edu.utn.frba.dds.models.repositories.colaboracion.HacerseCargoHeladera
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.OfertaDeProductosRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaboracion.RepartoDeTarjetaRepository;
 import ar.edu.utn.frba.dds.models.repositories.colaborador.ColaboradorRepository;
+import ar.edu.utn.frba.dds.models.repositories.contacto.ContactoRepository;
 import ar.edu.utn.frba.dds.models.repositories.mensajeria.MensajeRepository;
 import ar.edu.utn.frba.dds.models.repositories.usuario.UsuarioRepository;
 import ar.edu.utn.frba.dds.models.stateless.GeneradorDeCredenciales;
@@ -55,11 +56,9 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
   private final DonacionDineroRepository donacionDineroRepository;
   private final DistribucionViandasRepository distribucionViandasRepository;
   private final RepartoDeTarjetaRepository repartoDeTarjetasRepository;
-
   private final ISender mailSender;
   private final MensajeRepository mensajeRepository;
-  // private final MensajeriaService mensajeriaService;
-
+  private final ContactoRepository contactoRepository;
   private final Map<String, ColaboracionRepository> colaboracionRepositories;
 
   /**
@@ -75,6 +74,7 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
    * @param repartoDeTarjetasRepository    el repositorio de repartos de tarjetas
    * @param mailSender                     el servicio de envío de correos
    * @param mensajeRepository              el repositorio de mensajes
+   * @param contactoRepository             el repositorio de contactos
    */
   public ColaboracionService(UsuarioRepository usuarioRepository,
                              ColaboradorRepository colaboradorRepository,
@@ -85,17 +85,17 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
                              OfertaDeProductosRepository ofertaDeProductosRepository,
                              RepartoDeTarjetaRepository repartoDeTarjetasRepository,
                              ISender mailSender,
-                             MensajeRepository mensajeRepository) {
+                             MensajeRepository mensajeRepository,
+                             ContactoRepository contactoRepository) {
     this.usuarioRepository = usuarioRepository;
     this.colaboradorRepository = colaboradorRepository;
     this.donacionViandaRepository = donacionViandaRepository;
     this.donacionDineroRepository = donacionDineroRepository;
     this.distribucionViandasRepository = distribucionViandasRepository;
     this.repartoDeTarjetasRepository = repartoDeTarjetasRepository;
-
     this.mailSender = mailSender;
     this.mensajeRepository = mensajeRepository;
-    // this.mensajeriaService = mensajeriaService;
+    this.contactoRepository = contactoRepository;
 
     this.colaboracionRepositories = Map.of(
         DonacionViandaRepository.class.getName(), donacionViandaRepository,
@@ -205,7 +205,7 @@ public class ColaboracionService implements WithSimplePersistenceUnit {
     Contacto contacto = Contacto.conEmail(email);
     colaborador.agregarContacto(contacto);
 
-    // TODO: guardar contacto
+    contactoRepository.guardar(contacto);
     usuarioRepository.guardar(usuario);
     colaboradorRepository.guardar(colaborador);
     return colaborador;
