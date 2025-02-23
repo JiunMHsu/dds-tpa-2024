@@ -7,7 +7,7 @@
             <ul class="list">
                 {{#each visitasPrevias}}
                     <li class="list-item">
-                        <a href="/visitas-tecnicas/{{this.id}}" class="item-card">
+                        <a class="item-card">
                             <div class="content-wrapper">
                                 <img src="/image/{{this.foto}}" alt="foto-visita"
                                      class="visita-image">
@@ -15,6 +15,10 @@
                                     <p>
                                         <span class="material-symbols-rounded card-detail-icon"> today </span>
                                         Fecha y Hora: {{this.fecha}} {{this.hora}}
+                                    </p>
+                                    <p>
+                                        <span class="material-symbols-rounded card-detail-icon"> description </span>
+                                        Descripcion: {{this.descripcion}}
                                     </p>
                                     <p {{#if this.pudoResolverse}}
                                     style="color: #A7C957"
