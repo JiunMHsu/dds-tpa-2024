@@ -7,6 +7,7 @@ import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import javax.persistence.NoResultException;
 
 /**
  * Repositorio de Tarjeta de Colaborador.
@@ -75,10 +76,16 @@ public class TarjetaColaboradorRepository
   public Optional<TarjetaColaborador> buscarPorColaborador(Colaborador colaborador) {
     String query = "from TarjetaColaborador t where t.duenio = :colaborador and t.alta = :alta";
 
-    return Optional.ofNullable(entityManager()
-        .createQuery(query, TarjetaColaborador.class)
-        .setParameter("colaborador", colaborador)
-        .setParameter("alta", true)
-        .getSingleResult());
+    try {
+      TarjetaColaborador tarjeta = entityManager()
+          .createQuery(query, TarjetaColaborador.class)
+          .setParameter("colaborador", colaborador)
+          .setParameter("alta", true)
+          .getSingleResult();
+      return Optional.of(tarjeta);
+    } catch (NoResultException e) {
+      return Optional.empty();
+    }
   }
+
 }

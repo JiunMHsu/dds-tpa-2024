@@ -135,6 +135,7 @@
                     <input type="checkbox" id="reparto-tarjetas" name="colaboraciones" value="REPARTO_DE_TARJETAS">
                     <label for="reparto-tarjetas">Reparto de Tarjetas</label>
                 </div>
+                <p id="error-colaboraciones" style="color: red; display: none; margin-top: 5px;">Debe seleccionar al menos una colaboración.</p>
             </div>
 
             <div class="form-button-container">
@@ -144,3 +145,19 @@
     </div>
 {{/partial}}
 {{> templates/base_plain}}
+
+<script>
+    document.querySelector("form").addEventListener("submit", function(event) {
+        const checkboxes = document.querySelectorAll('input[name="colaboraciones"]');
+        const errorMsg = document.getElementById("error-colaboraciones");
+
+        const checked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+
+        if (!checked) {
+            event.preventDefault();
+            errorMsg.style.display = "block";
+        } else {
+            errorMsg.style.display = "none";
+        }
+    });
+</script>
