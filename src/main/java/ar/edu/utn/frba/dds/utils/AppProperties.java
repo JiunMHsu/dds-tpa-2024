@@ -4,6 +4,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 /**
@@ -33,8 +36,16 @@ public class AppProperties {
   }
 
   private void readProperties() {
+    Path devConfigPath = Paths.get("src/main/resources/config.properties");
+
     try {
-      InputStream input = new FileInputStream("src/main/resources/config.properties");
+      InputStream input;
+      if (Files.exists(devConfigPath)) {
+        input = new FileInputStream("src/main/resources/config.properties");
+      } else {
+        input = new FileInputStream("/home/ubuntu/app/config.properties");
+      }
+
       this.props.load(input);
     } catch (FileNotFoundException e) {
       System.out.println("No se encontró el archivo de configuración");
