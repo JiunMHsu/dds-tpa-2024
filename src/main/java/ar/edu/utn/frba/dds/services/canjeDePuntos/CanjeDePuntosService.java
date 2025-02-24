@@ -141,7 +141,7 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
 
   private double viandasDonadas(Colaborador colaborador, LocalDateTime fechaUltimoCanje) {
     List<DonacionVianda> colaboraciones = this.donacionViandaRepository
-        .buscarPorColaboradorDesde(colaborador, fechaUltimoCanje);
+        .bucarCompletadaPorColaboradorDesde(colaborador, fechaUltimoCanje);
 
     return colaboraciones.size();
   }

@@ -2,6 +2,9 @@ package ar.edu.utn.frba.dds.models.repositories.colaboracion;
 
 import ar.edu.utn.frba.dds.models.entities.aperturaHeladera.SolicitudDeApertura;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.DonacionVianda;
+import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -30,5 +33,20 @@ public class DonacionViandaRepository extends ColaboracionRepository<DonacionVia
         .getResultList()
         .stream()
         .findFirst();
+  }
+
+  /**
+   * Busca donaciones de viandas por colaborador desde una fecha y hora.
+   *
+   * @param colaborador el {@link Colaborador} asociado
+   * @param fechaHora   la fecha y hora desde la cual buscar
+   * @return las donaciones, si existen
+   */
+  public List<DonacionVianda> bucarCompletadaPorColaboradorDesde(Colaborador colaborador,
+                                                                 LocalDateTime fechaHora) {
+    List<DonacionVianda> donaciones = this.buscarPorColaboradorDesde(colaborador, fechaHora);
+    return donaciones.stream()
+        .filter(DonacionVianda::getEsEntregada)
+        .toList();
   }
 }

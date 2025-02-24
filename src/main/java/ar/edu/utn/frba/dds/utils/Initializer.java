@@ -191,7 +191,7 @@ public class Initializer implements WithSimplePersistenceUnit {
         contactos,
         direccion,
         new ArrayList<>(colabHumana1),
-        new Puntos(0, false, null)));
+        new Puntos(0, true, null)));
 
     colaboradorRepository.guardar(Colaborador.juridica(
         u4,

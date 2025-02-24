@@ -85,11 +85,6 @@ public class ColaboracionRouter implements IRouter {
       get("/new",
           ServiceLocator.instanceOf(DonacionViandaController.class)::create,
           TipoRol.COLABORADOR);
-
-      get("/{id}",
-          ServiceLocator.instanceOf(DonacionViandaController.class)::show,
-          TipoRol.COLABORADOR,
-          TipoRol.ADMIN);
     });
   }
 

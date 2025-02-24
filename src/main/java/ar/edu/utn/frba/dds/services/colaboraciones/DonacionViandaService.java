@@ -129,6 +129,7 @@ public class DonacionViandaService implements WithSimplePersistenceUnit {
 
     Heladera heladera = donacion.getHeladera();
     heladera.agregarViandas(1);
+    donacion.setEsEntregada(true);
 
     donacion.getColaborador().invalidarPuntos();
 

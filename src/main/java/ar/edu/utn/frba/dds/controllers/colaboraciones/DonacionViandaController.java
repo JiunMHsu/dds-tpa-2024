@@ -40,17 +40,6 @@ public class DonacionViandaController extends ColaboradorRequired {
   }
 
   /**
-   * Muestra el detalle de una donación de vianda.
-   * TODO: Implementar
-   *
-   * @param context Contexto de Javalin
-   */
-  public void show(Context context) {
-    // model.put("donacionVianda", null);
-    // render(context, "colaboraciones/donacion_vianda/donacion_vianda_detalle.hbs", model);
-  }
-
-  /**
    * Muestra el formulario para crear una donación de vianda.
    * TODO: Revisar y Testear
    *
@@ -81,7 +70,7 @@ public class DonacionViandaController extends ColaboradorRequired {
     try {
       Colaborador colaborador = colaboradorFromSession(context);
 
-      CreateDonacionViandaDTO a = new CreateDonacionViandaDTO(
+      CreateDonacionViandaDTO donacion = new CreateDonacionViandaDTO(
           context.formParamAsClass("heladera", String.class).get(),
           context.formParamAsClass("comida", String.class).get(),
           context.formParamAsClass("peso", Integer.class).get(),
@@ -89,7 +78,7 @@ public class DonacionViandaController extends ColaboradorRequired {
           LocalDate.parse(context.formParamAsClass("caducidad", String.class).get())
       );
 
-      this.donacionViandaService.registrar(colaborador, a);
+      this.donacionViandaService.registrar(colaborador, donacion);
 
       operationSuccess = true;
       redirects.add(new RedirectDTO("/colaboraciones", "Seguir Colaborando"));

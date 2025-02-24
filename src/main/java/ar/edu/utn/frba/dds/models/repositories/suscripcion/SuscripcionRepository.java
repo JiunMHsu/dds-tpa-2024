@@ -60,9 +60,9 @@ public abstract class SuscripcionRepository<T> implements WithSimplePersistenceU
    */
   public List<T> obtenerPorHeladera(Heladera unaHeladera) {
     return entityManager()
-        .createQuery("from " + type.getName() + " h where h.heladera = :id_heladera "
+        .createQuery("from " + type.getName() + " h where h.heladera = :heladera "
             + "and h.alta = :alta", type)
-        .setParameter("id_heladera", unaHeladera.getId())
+        .setParameter("heladera", unaHeladera)
         .setParameter("alta", true)
         .getResultList();
   }
