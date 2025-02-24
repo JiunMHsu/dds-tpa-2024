@@ -15,6 +15,7 @@ public class VisitaTecnicaDTO {
   private String id;
   private String fecha;
   private String hora;
+  private String heladera;
   private String descripcion;
   private String foto;
   private boolean pudoResolverse;
@@ -30,6 +31,7 @@ public class VisitaTecnicaDTO {
         .id(visitaTecnica.getId().toString())
         .fecha(DateTimeParser.parseFecha(visitaTecnica.getFechaHora().toLocalDate()))
         .hora(DateTimeParser.parseHora(visitaTecnica.getFechaHora().toLocalTime()))
+        .heladera(visitaTecnica.getHeladera().getNombre())
         .descripcion(visitaTecnica.getDescripcion())
         .foto(visitaTecnica.getFoto().getRuta())
         .pudoResolverse(visitaTecnica.isPudoResolverse())
