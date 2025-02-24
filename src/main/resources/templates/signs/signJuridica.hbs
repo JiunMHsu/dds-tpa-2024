@@ -120,19 +120,21 @@
                         placeholder="WhatsApp"
                 />
             </label>
-            
+
             <div class="checkbox-group">
                 <label for="colaboraciones">Colaboraciones:</label>
                 <div class="colaboraciones-container">
                     <input type="checkbox" id="donacion-dinero" name="colaboraciones" value="DONACION_DINERO">
                     <label for="donacion-dinero">Donación de Dinero</label>
 
-                    <input type="checkbox" id="hacerse-cargo-heladera" name="colaboraciones"
-                           value="HACERSE_CARGO_HELADERA">
+                    <input type="checkbox" id="hacerse-cargo-heladera" name="colaboraciones" value="HACERSE_CARGO_HELADERA">
                     <label for="hacerse-cargo-heladera">Hacerse Cargo de Heladera</label>
-                </div>
-            </div>
 
+                    <input type="checkbox" id="ofertar-producto-servicio" name="colaboraciones" value="OFERTA_DE_PRODUCTOS">
+                    <label for="ofertar-producto-servicio">Ofertar Producto/Servicio</label>
+                </div>
+                <p id="error-colaboraciones" style="color: red; display: none; margin-top: 5px;">Debe seleccionar al menos una colaboración.</p>
+            </div>
             <div class="form-button-container">
                 <button type="submit">Guardar</button>
             </div>
@@ -140,3 +142,19 @@
     </div>
 {{/partial}}
 {{> templates/base_plain}}
+
+<script>
+    document.querySelector("form").addEventListener("submit", function(event) {
+        const checkboxes = document.querySelectorAll('input[name="colaboraciones"]');
+        const errorMsg = document.getElementById("error-colaboraciones");
+
+        const checked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+
+        if (!checked) {
+            event.preventDefault();
+            errorMsg.style.display = "block";
+        } else {
+            errorMsg.style.display = "none";
+        }
+    });
+</script>

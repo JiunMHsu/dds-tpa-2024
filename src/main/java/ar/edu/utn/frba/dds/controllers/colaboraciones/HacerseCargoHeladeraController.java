@@ -50,7 +50,7 @@ public class HacerseCargoHeladeraController extends ColaboradorRequired {
 
     Map<String, Object> model = new HashMap<>();
     model.put("hacerse_cargo_heladera", dto);
-    render(context, "colaboraciones/colaboracion_detalle.hbs", model);
+    render(context, "colaboraciones/hacerse_cargo_heladera/encargarse_de_heladera_detalle.hbs", model);
   }
 
   /**
@@ -64,7 +64,7 @@ public class HacerseCargoHeladeraController extends ColaboradorRequired {
       throw new UnauthorizedException("No tenes permiso");
     }
 
-    render(context, "colaboraciones/encargarse_de_heladera_crear.hbs");
+    render(context, "colaboraciones/hacerse_cargo_heladera/encargarse_de_heladera_crear.hbs");
   }
 
   /**
