@@ -44,8 +44,8 @@ public class DonacionViandaRepository extends ColaboracionRepository<DonacionVia
    */
   public List<DonacionVianda> bucarCompletadaPorColaboradorDesde(Colaborador colaborador,
                                                                  LocalDateTime fechaHora) {
-    List<DonacionVianda> donaciones = this.buscarPorColaboradorDesde(colaborador, fechaHora);
-    return donaciones.stream()
+    return this.buscarPorColaboradorDesde(colaborador, fechaHora)
+        .stream()
         .filter(DonacionVianda::getEsEntregada)
         .toList();
   }

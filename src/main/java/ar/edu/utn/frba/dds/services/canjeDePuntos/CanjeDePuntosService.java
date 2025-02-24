@@ -101,6 +101,7 @@ public class CanjeDePuntosService implements WithSimplePersistenceUnit {
           LocalDate.now().plusMonths(1).withDayOfMonth(1)
       ));
       withTransaction(() -> this.colaboradorRepository.actualizar(colaborador));
+      System.out.println("se calcularon los puntos para " + colaborador.getNombre());
       return puntos;
     }
   }

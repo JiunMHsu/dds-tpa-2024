@@ -77,6 +77,10 @@ public class DistribucionViandasService implements WithSimplePersistenceUnit {
 
     Integer viandas = nuevaDistribucion.getCantViandas();
 
+    if (!heladeraOrigen.puedeQuitarViandas(viandas)) {
+      throw new CantidadDeViandasException();
+    }
+
     if (!heladeraDestino.puedeAgregarViandas(viandas)) {
       throw new CantidadDeViandasException();
     }
