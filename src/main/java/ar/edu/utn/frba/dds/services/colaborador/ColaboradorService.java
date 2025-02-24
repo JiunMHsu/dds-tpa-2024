@@ -147,6 +147,10 @@ public class ColaboradorService implements WithSimplePersistenceUnit {
 
     TipoRol rol = TipoRol.valueOf(nuevoUsuario.getRol().toUpperCase());
 
+    if (usuarioRepository.obtenerPorEmail(nuevoUsuario.getEmail()).isPresent()) {
+      throw new InvalidFormParamException();
+    }
+
     final Usuario usuario = Usuario.con(
         nuevoUsuario.getNombre(),
         nuevoUsuario.getContrasenia(),
