@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.models.stateless;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -32,10 +33,16 @@ public class ValidadorDeContrasenias {
   }
 
   private boolean esFuerte(String unaClave) {
+    Path devPath = Paths.get("src/main/resources/contrasenias_comunes.txt");
+
     try {
-      List<String> peoresContrasenias = Files.readAllLines(
-          Paths.get("src/main/resources/contraseniasComunes.txt")
-      );
+      List<String> peoresContrasenias = null;
+      if (Files.exists(devPath)) {
+        peoresContrasenias = Files.readAllLines(devPath);
+      } else {
+        Files.readAllLines(Paths.get("/home/ubuntu/app/contrasenias_comunes.txt"));
+      }
+
       return !peoresContrasenias.contains(unaClave);
     } catch (IOException error) {
       error.printStackTrace();
