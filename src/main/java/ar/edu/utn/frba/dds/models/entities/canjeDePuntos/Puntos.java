@@ -50,6 +50,7 @@ public class Puntos {
     return Puntos.builder()
         .puntos(0)
         .esValido(true)
+        .validoHasta(LocalDate.now().plusMonths(1))
         .build();
   }
 }
