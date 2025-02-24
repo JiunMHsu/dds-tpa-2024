@@ -1,6 +1,9 @@
 package ar.edu.utn.frba.dds.services.colaboraciones;
 
+import ar.edu.utn.frba.dds.dtos.colaboraciones.RepartoDeTarjeta.RepartoDeTarjetaDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.donacionDinero.DonacionDineroDTO;
 import ar.edu.utn.frba.dds.dtos.personaVulnerable.CreatePersonaVulnerableDTO;
+import ar.edu.utn.frba.dds.exceptions.ResourceNotFoundException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.RepartoDeTarjeta;
 import ar.edu.utn.frba.dds.models.entities.colaborador.Colaborador;
 import ar.edu.utn.frba.dds.models.entities.data.Barrio;
@@ -90,5 +93,18 @@ public class RepartoDeTarjetaService implements WithSimplePersistenceUnit {
     repartoDeTarjetasRepository.guardar(reparto);
     colaboradorRepository.actualizar(colaborador);
     commitTransaction();
+  }
+
+  /**
+   * Busca un reparto de tarjeta por su ID.
+   *
+   * @param id Id del reparto
+   * @return Reparto de tarjeta
+   * @throws ResourceNotFoundException si no se encuentra el reparto
+   */
+  public RepartoDeTarjetaDTO buscarPorId(String id) {
+    return RepartoDeTarjetaDTO.fromColaboracion(
+        repartoDeTarjetasRepository.buscarPorId(id).orElseThrow(ResourceNotFoundException::new)
+    );
   }
 }

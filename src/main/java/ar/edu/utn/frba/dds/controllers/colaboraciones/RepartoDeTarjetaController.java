@@ -1,6 +1,8 @@
 package ar.edu.utn.frba.dds.controllers.colaboraciones;
 
 import ar.edu.utn.frba.dds.dtos.RedirectDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.RepartoDeTarjeta.RepartoDeTarjetaDTO;
+import ar.edu.utn.frba.dds.dtos.colaboraciones.donacionDinero.DonacionDineroDTO;
 import ar.edu.utn.frba.dds.dtos.personaVulnerable.CreatePersonaVulnerableDTO;
 import ar.edu.utn.frba.dds.exceptions.UnauthorizedException;
 import ar.edu.utn.frba.dds.models.entities.colaboracion.TipoColaboracion;
@@ -40,11 +42,16 @@ public class RepartoDeTarjetaController extends ColaboradorRequired {
 
   /**
    * Muestra el detalle de una colaboración de reparto de tarjetas.
-   * TODO: Implementar
    *
    * @param context Contexto de Javalin
    */
   public void show(Context context) {
+    String repartoDeTarjetaId = context.pathParam("id");
+    RepartoDeTarjetaDTO repartoDeTarjetaDTO = repartoDeTarjetaService.buscarPorId(repartoDeTarjetaId);
+
+    Map<String, Object> model = new HashMap<>();
+    model.put("reparto_tarjeta", repartoDeTarjetaDTO);
+    render(context, "colaboraciones/registro_pv/registro_pv_detalle.hbs", model);
   }
 
   /**
