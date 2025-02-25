@@ -333,17 +333,10 @@ public class Initializer implements WithSimplePersistenceUnit {
         true
     );
 
-    TarjetaColaborador t2 = TarjetaColaborador.de(
-        "123456we890123456",
-        colaboradorRepository.buscarPorEmail("melperez@frba.utn.edu.ar").orElseThrow(),
-        false
-    );
-
     TarjetaColaboradorRepository tarjetaColaboradorRepository = new TarjetaColaboradorRepository();
 
     beginTransaction();
     tarjetaColaboradorRepository.guardar(t1);
-    tarjetaColaboradorRepository.guardar(t2);
     commitTransaction();
   }
 
