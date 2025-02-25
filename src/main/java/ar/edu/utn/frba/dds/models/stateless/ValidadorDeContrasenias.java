@@ -33,15 +33,12 @@ public class ValidadorDeContrasenias {
   }
 
   private boolean esFuerte(String unaClave) {
-    Path devPath = Paths.get("src/main/resources/contrasenias_comunes.txt");
-
     try {
-      List<String> peoresContrasenias = null;
-      if (Files.exists(devPath)) {
-        peoresContrasenias = Files.readAllLines(devPath);
-      } else {
-        Files.readAllLines(Paths.get("/home/ubuntu/app/contrasenias_comunes.txt"));
-      }
+      Path devPath = Paths.get("src/main/resources/contrasenias_comunes.txt");
+
+      List<String> peoresContrasenias = Files.exists(devPath)
+          ? Files.readAllLines(devPath)
+          : Files.readAllLines(Paths.get("/home/ubuntu/app/contrasenias_comunes.txt"));
 
       return !peoresContrasenias.contains(unaClave);
     } catch (IOException error) {

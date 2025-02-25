@@ -36,15 +36,12 @@ public class AppProperties {
   }
 
   private void readProperties() {
-    Path devConfigPath = Paths.get("src/main/resources/config.properties");
-
     try {
-      InputStream input;
-      if (Files.exists(devConfigPath)) {
-        input = new FileInputStream("src/main/resources/config.properties");
-      } else {
-        input = new FileInputStream("/home/ubuntu/app/config.properties");
-      }
+      Path devConfigPath = Paths.get("src/main/resources/config.properties");
+
+      InputStream input = Files.exists(devConfigPath)
+          ? new FileInputStream("src/main/resources/config.properties")
+          : new FileInputStream("/home/ubuntu/app/config.properties");
 
       this.props.load(input);
     } catch (FileNotFoundException e) {
