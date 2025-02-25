@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.broker;
 import ar.edu.utn.frba.dds.config.ServiceLocator;
 import ar.edu.utn.frba.dds.controllers.heladera.BrokerMessageHandler;
 import ar.edu.utn.frba.dds.models.stateless.TipoSensor;
+import ar.edu.utn.frba.dds.utils.AppProperties;
 import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
 import java.util.UUID;
 import java.util.concurrent.Executors;
@@ -121,6 +122,9 @@ public class SuscriptorSensor implements ISuscriptorMqtt {
   private void newScheduler() {
     killScheduler();
     scheduler = Executors.newScheduledThreadPool(1);
-    scheduler.schedule(this::manejarRetrasoMensaje, 30, TimeUnit.SECONDS);
+    scheduler.schedule(
+        this::manejarRetrasoMensaje,
+        AppProperties.getInstance().intPropertyFromName("INTERVALO_MENSAJE"),
+        TimeUnit.SECONDS);
   }
 }
