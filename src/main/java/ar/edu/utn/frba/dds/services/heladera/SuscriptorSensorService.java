@@ -33,7 +33,7 @@ public class SuscriptorSensorService {
    */
   public void initialize() {
     heladeraService.buscarTodas()
-        .parallelStream()
+        .stream()
         .filter(Heladera::estaActiva)
         .forEach(this::suscribirPara);
   }

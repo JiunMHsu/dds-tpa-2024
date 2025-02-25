@@ -118,12 +118,12 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
     String asunto = "Falla en la heladera";
     String cuerpo = String.format("""
             Estimado/a %s,
-                        
+            
             La %s ha sufrido un desperfecto.
-            Ocurrio un/a %s
-                        
+            Ocurrió un/a %s
+            
             Por favor, dirigirse a la heladera situada en: %s lo antes posible.\s
-                        
+            
             Gracias por su rápida acción.""",
         tecnico.getNombre(),
         incidente.getHeladera().getNombre(),
@@ -166,14 +166,16 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
 
     String cuerpo = String.format("""
             Estimado/a %s,
-                        
+            
             La %s ha sufrido un desperfecto.
             Ocurrio un/a %s
-                        
+            
             Por favor, traslade las viandas a las siguientes heladeras sugeridas:
-                        
+            
             %s
             Gracias por su rápida acción.""",
+        suscripcion.getColaborador().getNombre(),
+        incidente.getHeladera().getNombre(),
         incidente.getTipo().getDescription(),
         sugerencias
     );
@@ -228,7 +230,7 @@ public class FallaHeladeraService implements WithSimplePersistenceUnit {
   }
 
   /**
-   * Obtener las heladeras recomendadas segun su disponibilidad de espacio para viandas y cercania.
+   * Obtener las heladeras recomendadas según su disponibilidad de espacio para viandas y cercania.
    *
    * @param heladera Heladera
    * @return Lista de heladeras recomendadas

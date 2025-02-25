@@ -5,12 +5,13 @@ import ar.edu.utn.frba.dds.models.repositories.mensajeria.MensajeRepository;
 import ar.edu.utn.frba.dds.models.stateless.mensajeria.ISender;
 import ar.edu.utn.frba.dds.models.stateless.mensajeria.ISenderFactory;
 import ar.edu.utn.frba.dds.models.stateless.mensajeria.MedioDeNotificacion;
+import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDateTime;
 
 /**
  * Servicio de mensajería.
  */
-public class MensajeriaService {
+public class MensajeriaService implements WithSimplePersistenceUnit {
   private final MensajeRepository mensajeRepository;
   private final ISenderFactory senderFactory;
 
@@ -37,7 +38,10 @@ public class MensajeriaService {
     try {
       sender.enviarMensaje(mensaje);
       mensaje.setFechaEnvio(LocalDateTime.now());
+
+      beginTransaction();
       mensajeRepository.guardar(mensaje);
+      commitTransaction();
     } catch (Exception e) {
       throw new RuntimeException("Error al enviar el mensaje: " + e.getMessage(), e);
     }

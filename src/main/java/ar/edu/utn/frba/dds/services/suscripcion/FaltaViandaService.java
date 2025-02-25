@@ -100,9 +100,9 @@ public class FaltaViandaService implements WithSimplePersistenceUnit {
     String cuerpo = String.format(
         """
             Estimado/a %s,
-                        
+            
             La %s tiene solo %d viandas restantes. Por favor, lleve más viandas para reabastecerla.
-                        
+            
             Gracias por su colaboración.""",
         suscripcion.getColaborador().getNombre(),
         suscripcion.getHeladera().getNombre(),
