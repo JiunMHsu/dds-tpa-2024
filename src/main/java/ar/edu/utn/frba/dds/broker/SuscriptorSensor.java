@@ -5,9 +5,9 @@ import ar.edu.utn.frba.dds.controllers.heladera.BrokerMessageHandler;
 import ar.edu.utn.frba.dds.models.stateless.TipoSensor;
 import ar.edu.utn.frba.dds.utils.AppProperties;
 import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
+import ar.edu.utn.frba.dds.utils.SchedulerManager;
 import java.util.UUID;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import lombok.Getter;
 
@@ -25,7 +25,7 @@ public class SuscriptorSensor implements ISuscriptorMqtt {
 
   private final IBrokerMessageHandler brokerMessageHandler;
 
-  private ScheduledExecutorService scheduler;
+  private ScheduledFuture<?> futureTask;
 
   private boolean isSubscribed;
 
@@ -43,7 +43,7 @@ public class SuscriptorSensor implements ISuscriptorMqtt {
     this.clienteMqtt = clienteMqtt;
     this.topic = topic;
     this.heladeraId = heladeraId;
-    this.scheduler = null;
+    this.futureTask = null;
     this.brokerMessageHandler = ServiceLocator.instanceOf(BrokerMessageHandler.class);
     this.isSubscribed = false;
   }
@@ -69,7 +69,7 @@ public class SuscriptorSensor implements ISuscriptorMqtt {
           throw new IllegalStateException("Unexpected value: " + parseOperation(vectorMensaje[0]));
     }
 
-    newScheduler();
+    scheduleMessageDelayHandler();
   }
 
   /**
@@ -82,7 +82,7 @@ public class SuscriptorSensor implements ISuscriptorMqtt {
 
     clienteMqtt.suscribirPara(this);
     isSubscribed = true;
-    newScheduler();
+    scheduleMessageDelayHandler();
   }
 
   /**
@@ -93,7 +93,7 @@ public class SuscriptorSensor implements ISuscriptorMqtt {
       return;
     }
 
-    killScheduler();
+    cancelMessageDelayHandle();
     isSubscribed = false;
     clienteMqtt.desuscribirPara(this);
   }
@@ -112,19 +112,18 @@ public class SuscriptorSensor implements ISuscriptorMqtt {
     };
   }
 
-  private void killScheduler() {
-    if (scheduler != null && !scheduler.isShutdown()) {
-      scheduler.shutdownNow();
-      scheduler = null;
-    }
-  }
+  private void scheduleMessageDelayHandler() {
+    this.cancelMessageDelayHandle();
 
-  private void newScheduler() {
-    killScheduler();
-    scheduler = Executors.newScheduledThreadPool(1);
-    scheduler.schedule(
+    futureTask = SchedulerManager.scheduleTask(
         this::manejarRetrasoMensaje,
         AppProperties.getInstance().intPropertyFromName("INTERVALO_MENSAJE"),
         TimeUnit.SECONDS);
+  }
+
+  private void cancelMessageDelayHandle() {
+    if (futureTask != null && !futureTask.isDone()) {
+      futureTask.cancel(true);
+    }
   }
 }
