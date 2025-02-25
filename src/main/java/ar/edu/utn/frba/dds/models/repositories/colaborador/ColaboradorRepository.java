@@ -35,8 +35,12 @@ public class ColaboradorRepository implements IColaboradorRepository, WithSimple
   public Optional<Colaborador> buscarPorId(String id) {
     try {
       UUID uuid = UUID.fromString(id);
-      return Optional.ofNullable(entityManager().find(Colaborador.class, uuid))
-          .filter(Colaborador::getAlta);
+      Colaborador colaborador = entityManager().find(Colaborador.class, uuid);
+      if (colaborador != null) {
+        entityManager().refresh(colaborador);
+      }
+
+      return Optional.ofNullable(colaborador).filter(Colaborador::getAlta);
     } catch (IllegalArgumentException e) {
       return Optional.empty();
     }
@@ -44,10 +48,13 @@ public class ColaboradorRepository implements IColaboradorRepository, WithSimple
 
   @Override
   public List<Colaborador> buscarTodos() {
-    return entityManager()
+    List<Colaborador> colaboradores = entityManager()
         .createQuery("from Colaborador c where c.alta = :alta", Colaborador.class)
         .setParameter("alta", true)
         .getResultList();
+
+    colaboradores.forEach(entityManager()::refresh);
+    return colaboradores;
   }
 
   /**
@@ -60,11 +67,14 @@ public class ColaboradorRepository implements IColaboradorRepository, WithSimple
     String query = "from Colaborador c where c.alta = :alta and c.usuario.email = :email";
 
     try {
-      return Optional.of(entityManager()
+      Colaborador colaborador = entityManager()
           .createQuery(query, Colaborador.class)
           .setParameter("alta", true)
           .setParameter("email", email)
-          .getSingleResult());
+          .getSingleResult();
+
+      entityManager().refresh(colaborador);
+      return Optional.of(colaborador);
     } catch (NoResultException e) {
       return Optional.empty();
     }
@@ -80,11 +90,14 @@ public class ColaboradorRepository implements IColaboradorRepository, WithSimple
     String query = "from Colaborador c where c.alta = :alta and c.usuario = :usuario";
 
     try {
-      return Optional.of(entityManager()
+      Colaborador colaborador = entityManager()
           .createQuery(query, Colaborador.class)
           .setParameter("alta", true)
           .setParameter("usuario", usuario)
-          .getSingleResult());
+          .getSingleResult();
+
+      entityManager().refresh(colaborador);
+      return Optional.of(colaborador);
     } catch (NoResultException e) {
       return Optional.empty();
     }

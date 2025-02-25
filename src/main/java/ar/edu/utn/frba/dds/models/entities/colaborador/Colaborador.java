@@ -31,6 +31,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -41,6 +43,7 @@ import org.jetbrains.annotations.NotNull;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Cache(usage = CacheConcurrencyStrategy.NONE)
 @Entity
 @Table(name = "colaborador")
 public class Colaborador extends EntidadPersistente {

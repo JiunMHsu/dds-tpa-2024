@@ -48,13 +48,16 @@ public abstract class ColaboracionRepository<T extends EntidadPersistente>
    * @return las colaboraciones, si existen
    */
   public List<T> buscarPorColaborador(Colaborador colaborador) {
-    return entityManager()
+    List<T> colaboraciones = entityManager()
         .createQuery("from "
             + type.getName()
             + " c where c.alta = :alta and c.colaborador = :colaborador", type)
         .setParameter("colaborador", colaborador)
         .setParameter("alta", true)
         .getResultList();
+
+    colaboraciones.forEach(entityManager()::refresh);
+    return colaboraciones;
   }
 
   /**
@@ -69,7 +72,7 @@ public abstract class ColaboracionRepository<T extends EntidadPersistente>
         + type.getName()
         + " c where c.alta = :alta and c.colaborador = :colaborador and c.fechaHora >= :fecha";
 
-    return fechaHora == null
+    List<T> colaboraciones = fechaHora == null
         ? buscarPorColaborador(colaborador)
         : entityManager()
         .createQuery(query, type)
@@ -77,6 +80,9 @@ public abstract class ColaboracionRepository<T extends EntidadPersistente>
         .setParameter("fecha", fechaHora)
         .setParameter("alta", true)
         .getResultList();
+
+    colaboraciones.forEach(entityManager()::refresh);
+    return colaboraciones;
   }
 
   /**
@@ -88,11 +94,14 @@ public abstract class ColaboracionRepository<T extends EntidadPersistente>
   public List<T> buscarDesde(@NotNull LocalDateTime fechaHora) {
     String query = "from " + type.getName() + " c where c.alta = :alta and c.fechaHora >= :fecha";
 
-    return entityManager()
+    List<T> colaboraciones = entityManager()
         .createQuery(query, type)
         .setParameter("fecha", fechaHora)
         .setParameter("alta", true)
         .getResultList();
+
+    colaboraciones.forEach(entityManager()::refresh);
+    return colaboraciones;
   }
 
   /**
@@ -101,10 +110,13 @@ public abstract class ColaboracionRepository<T extends EntidadPersistente>
    * @return todas las colaboraciones
    */
   public List<T> buscarTodos() {
-    return entityManager()
+    List<T> colaboraciones = entityManager()
         .createQuery("from " + type.getName() + " c where c.alta = :alta", type)
         .setParameter("alta", true)
         .getResultList();
+
+    colaboraciones.forEach(entityManager()::refresh);
+    return colaboraciones;
   }
 
   /**
@@ -116,8 +128,12 @@ public abstract class ColaboracionRepository<T extends EntidadPersistente>
   public Optional<T> buscarPorId(String id) {
     try {
       UUID uuid = UUID.fromString(id);
-      return Optional.ofNullable(entityManager().find(type, uuid))
-          .filter(T::getAlta);
+      T colaboracion = entityManager().find(type, uuid);
+      if (colaboracion != null) {
+        entityManager().refresh(colaboracion);
+      }
+
+      return Optional.ofNullable(colaboracion).filter(T::getAlta);
     } catch (IllegalArgumentException e) {
       return Optional.empty();
     }
