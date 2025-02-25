@@ -56,6 +56,10 @@ public class ColaboradorDTO {
    */
   public static ColaboradorDTO completaHumano(Colaborador colaborador) {
 
+    String numeroDocumento = colaborador.getDocumento() != null
+        ? colaborador.getDocumento().getNumero()
+        : "Indocumentado";
+
     String formasDeColaborar = colaborador.getFormasDeColaborar()
         .stream()
         .map(TipoColaboracion::getDescription)
@@ -73,7 +77,7 @@ public class ColaboradorDTO {
         .fechaNacimiento(colaborador.getFechaNacimiento().toString())
         .direccion(colaborador.getDireccion().toString())
         .formaDeColaborar(formasDeColaborar)
-        .documento(colaborador.getDocumento().getNumero())
+        .documento(numeroDocumento)
         .contacto(contactos)
         .tipoColaborador("HUMANO")
         .build();
