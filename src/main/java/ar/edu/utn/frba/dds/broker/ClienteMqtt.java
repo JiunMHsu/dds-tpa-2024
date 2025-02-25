@@ -2,7 +2,7 @@ package ar.edu.utn.frba.dds.broker;
 
 import ar.edu.utn.frba.dds.utils.AppProperties;
 import com.hivemq.client.mqtt.datatypes.MqttQos;
-import com.hivemq.client.mqtt.mqtt5.Mqtt5BlockingClient;
+import com.hivemq.client.mqtt.mqtt5.Mqtt5AsyncClient;
 import com.hivemq.client.mqtt.mqtt5.Mqtt5Client;
 import com.hivemq.client.mqtt.mqtt5.message.unsubscribe.Mqtt5Unsubscribe;
 import java.nio.charset.StandardCharsets;
@@ -13,7 +13,7 @@ import java.util.UUID;
  */
 public class ClienteMqtt implements IClienteMqtt {
 
-  private final Mqtt5BlockingClient client;
+  private final Mqtt5AsyncClient client;
 
   /**
    * Constructor.
@@ -24,9 +24,9 @@ public class ClienteMqtt implements IClienteMqtt {
         .identifier(UUID.randomUUID().toString())
         .serverHost(AppProperties.getInstance().propertyFromName("BROKER_HOST"))
         .serverPort(AppProperties.getInstance().intPropertyFromName("BROKER_PORT"))
-        .buildBlocking();
+        .buildAsync();
 
-    client.connectWith().send();
+    client.connectWith().cleanStart(true).send();
     System.out.println("Conexión establecida con el broker MQTT.");
   }
 
@@ -37,10 +37,9 @@ public class ClienteMqtt implements IClienteMqtt {
    */
   @Override
   public void suscribirPara(ISuscriptorMqtt suscriptor) {
-    client.toAsync()
-        .subscribeWith()
+    client.subscribeWith()
         .topicFilter(suscriptor.topic())
-        .qos(MqttQos.AT_MOST_ONCE)
+        .qos(MqttQos.AT_LEAST_ONCE)
         .callback(mqtt5Publish -> {
           String mensaje = "";
           if (mqtt5Publish.getPayload().isPresent()) {
@@ -69,7 +68,7 @@ public class ClienteMqtt implements IClienteMqtt {
     Mqtt5Unsubscribe unsubscribe = Mqtt5Unsubscribe.builder()
         .topicFilter(suscriptor.topic()).build();
 
-    client.toAsync().unsubscribe(unsubscribe)
+    client.unsubscribe(unsubscribe)
         .whenComplete((mqtt5UnsubAck, throwable) -> {
           if (throwable != null) {
             throwable.printStackTrace();
