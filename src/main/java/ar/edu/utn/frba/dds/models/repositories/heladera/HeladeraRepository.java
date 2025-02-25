@@ -34,6 +34,8 @@ public class HeladeraRepository implements ICrudRepository<Heladera>, WithSimple
 
   @Override
   public Optional<Heladera> buscarPorId(String id) {
+    entityManager().clear();
+
     try {
       UUID uuid = UUID.fromString(id);
       return Optional.ofNullable(entityManager().find(Heladera.class, uuid))
@@ -45,6 +47,8 @@ public class HeladeraRepository implements ICrudRepository<Heladera>, WithSimple
 
   @Override
   public List<Heladera> buscarTodos() {
+    entityManager().clear();
+
     return entityManager()
         .createQuery("from Heladera h where h.alta = :alta", Heladera.class)
         .setParameter("alta", true)
@@ -58,6 +62,8 @@ public class HeladeraRepository implements ICrudRepository<Heladera>, WithSimple
    * @return Heladera
    */
   public Optional<Heladera> buscarPorNombre(String nombre) {
+    entityManager().clear();
+
     try {
       return Optional.of(entityManager()
           .createQuery("from Heladera h where h.alta = :alta and h.nombre = :name", Heladera.class)
@@ -76,6 +82,7 @@ public class HeladeraRepository implements ICrudRepository<Heladera>, WithSimple
    * @return Lista de heladeras
    */
   public List<Heladera> buscarPorBarrio(Barrio barrio) {
+    entityManager().clear();
     String query = "from Heladera h where h.alta = :alta and h.direccion.barrio = :barrio";
 
     return entityManager()

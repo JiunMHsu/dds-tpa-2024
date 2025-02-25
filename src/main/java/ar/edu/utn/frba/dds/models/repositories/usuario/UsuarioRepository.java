@@ -32,6 +32,8 @@ public class UsuarioRepository implements IUsuarioRepository, WithSimplePersiste
 
   @Override
   public Optional<Usuario> buscarPorId(String id) {
+    entityManager().clear();
+
     try {
       UUID uuid = UUID.fromString(id);
       return Optional.ofNullable(entityManager().find(Usuario.class, uuid))
@@ -43,6 +45,8 @@ public class UsuarioRepository implements IUsuarioRepository, WithSimplePersiste
 
   @Override
   public List<Usuario> buscarTodos() {
+    entityManager().clear();
+
     return entityManager()
         .createQuery("from Usuario ", Usuario.class)
         .getResultList();

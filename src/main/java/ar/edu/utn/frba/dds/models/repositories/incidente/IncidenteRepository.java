@@ -35,6 +35,8 @@ public class IncidenteRepository implements ICrudRepository<Incidente>, WithSimp
 
   @Override
   public Optional<Incidente> buscarPorId(String id) {
+    entityManager().clear();
+
     try {
       UUID uuid = UUID.fromString(id);
       return Optional.ofNullable(entityManager().find(Incidente.class, uuid))
@@ -46,6 +48,8 @@ public class IncidenteRepository implements ICrudRepository<Incidente>, WithSimp
 
   @Override
   public List<Incidente> buscarTodos() {
+    entityManager().clear();
+
     return entityManager()
         .createQuery("from Incidente i where i.alta = :alta", Incidente.class)
         .setParameter("alta", true)
@@ -59,6 +63,7 @@ public class IncidenteRepository implements ICrudRepository<Incidente>, WithSimp
    * @return Lista de incidentes
    */
   public List<Incidente> buscarPorHeladera(Heladera heladera) {
+    entityManager().clear();
     String query = "from Incidente i where i.alta = :alta and i.heladera = :heladera";
 
     return entityManager()
@@ -75,6 +80,7 @@ public class IncidenteRepository implements ICrudRepository<Incidente>, WithSimp
    * @return Lista de incidentes
    */
   public List<Incidente> buscarPorTipo(TipoIncidente tipo) {
+    entityManager().clear();
     String query = "from Incidente i where i.alta = :alta and i.tipo = :tipo_incidente";
 
     return entityManager()
@@ -91,6 +97,7 @@ public class IncidenteRepository implements ICrudRepository<Incidente>, WithSimp
    * @return Lista de incidentes
    */
   public List<Incidente> buscarDesde(LocalDateTime fechaHora) {
+    entityManager().clear();
     String query = "from Incidente i where i.alta = :alta and i.fechaHora >= :fecha_hora";
 
     return entityManager()
@@ -106,6 +113,7 @@ public class IncidenteRepository implements ICrudRepository<Incidente>, WithSimp
    * @return Lista de incidentes
    */
   public List<Incidente> buscarAlertas() {
+    entityManager().clear();
     String query = "from Incidente i where i.alta = :alta and i.tipo != :tipo";
 
     return entityManager()
