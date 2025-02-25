@@ -54,7 +54,7 @@ public class Colaborador extends EntidadPersistente {
   private Usuario usuario;
 
   @OneToMany
-  @JoinColumn(name = "contacto_id", referencedColumnName = "id")
+  @JoinColumn(name = "colaborador_id", referencedColumnName = "id")
   private List<Contacto> contactos;
 
   @Embedded
@@ -193,7 +193,7 @@ public class Colaborador extends EntidadPersistente {
    * Este método utiliza el patrón Builder para construir un nuevo Colaborador
    * con el usuario proporcionado.
    *
-   * @param usuario  El objeto Usuario a partir del cual se construye el nuevo Colaborador.
+   * @param usuario El objeto Usuario a partir del cual se construye el nuevo Colaborador.
    * @return Un nuevo objeto Colaborador con el usuario proporcionado.
    */
   public static Colaborador conUsuario(Usuario usuario) {
