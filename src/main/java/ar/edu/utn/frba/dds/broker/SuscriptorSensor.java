@@ -6,6 +6,7 @@ import ar.edu.utn.frba.dds.models.stateless.TipoSensor;
 import ar.edu.utn.frba.dds.utils.AppProperties;
 import ar.edu.utn.frba.dds.utils.IBrokerMessageHandler;
 import ar.edu.utn.frba.dds.utils.SchedulerManager;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -55,7 +56,9 @@ public class SuscriptorSensor implements ISuscriptorMqtt {
 
   @Override
   public void recibirMensaje(String mensaje) {
-    System.out.println("Mensaje recibido por " + this.topic() + ": " + mensaje);
+    System.out.println("[+]"
+        + LocalDateTime.now()
+        + " Mensaje recibido por " + this.topic() + ": " + mensaje);
 
     String[] vectorMensaje = mensaje.split(" ");
 

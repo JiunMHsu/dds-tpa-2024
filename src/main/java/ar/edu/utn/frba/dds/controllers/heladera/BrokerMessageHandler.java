@@ -158,10 +158,10 @@ public class BrokerMessageHandler implements IBrokerMessageHandler {
           tarjeta -> manejarSolicitudPersonaVulnerable(tarjeta, heladera),
           () -> manejarSolicitudColaborador(codigoTarjeta, heladera)
       );
-      System.out.println("Acceso permitido para " + codigoTarjeta);
+      System.out.println("[+]" + LocalDateTime.now() + "Acceso permitido para " + codigoTarjeta);
       // Send "ALOWED" to broker
     } catch (ResourceNotFoundException | AperturaDeniedException e) {
-      System.out.println("Acceso denegado para " + codigoTarjeta);
+      System.out.println("[+]" + LocalDateTime.now() + "Acceso denegado para " + codigoTarjeta);
       // Send "DENIED" to broker
     }
   }
