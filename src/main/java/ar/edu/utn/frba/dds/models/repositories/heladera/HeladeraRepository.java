@@ -34,12 +34,14 @@ public class HeladeraRepository implements ICrudRepository<Heladera>, WithSimple
 
   @Override
   public Optional<Heladera> buscarPorId(String id) {
-    entityManager().clear();
-
     try {
       UUID uuid = UUID.fromString(id);
-      return Optional.ofNullable(entityManager().find(Heladera.class, uuid))
-          .filter(Heladera::getAlta);
+      Heladera heladera = entityManager().find(Heladera.class, uuid);
+      if (heladera != null) {
+        entityManager().refresh(heladera);
+      }
+
+      return Optional.ofNullable(heladera).filter(Heladera::getAlta);
     } catch (IllegalArgumentException e) {
       return Optional.empty();
     }
@@ -47,12 +49,13 @@ public class HeladeraRepository implements ICrudRepository<Heladera>, WithSimple
 
   @Override
   public List<Heladera> buscarTodos() {
-    entityManager().clear();
-
-    return entityManager()
+    List<Heladera> heladeras = entityManager()
         .createQuery("from Heladera h where h.alta = :alta", Heladera.class)
         .setParameter("alta", true)
         .getResultList();
+
+    heladeras.forEach(entityManager()::refresh);
+    return heladeras;
   }
 
   /**
@@ -62,14 +65,16 @@ public class HeladeraRepository implements ICrudRepository<Heladera>, WithSimple
    * @return Heladera
    */
   public Optional<Heladera> buscarPorNombre(String nombre) {
-    entityManager().clear();
-
     try {
-      return Optional.of(entityManager()
+      Heladera heladera = entityManager()
           .createQuery("from Heladera h where h.alta = :alta and h.nombre = :name", Heladera.class)
           .setParameter("name", nombre)
           .setParameter("alta", true)
-          .getSingleResult());
+          .getSingleResult();
+
+      entityManager().refresh(heladera);
+
+      return Optional.of(heladera);
     } catch (NoResultException e) {
       return Optional.empty();
     }
@@ -82,14 +87,16 @@ public class HeladeraRepository implements ICrudRepository<Heladera>, WithSimple
    * @return Lista de heladeras
    */
   public List<Heladera> buscarPorBarrio(Barrio barrio) {
-    entityManager().clear();
     String query = "from Heladera h where h.alta = :alta and h.direccion.barrio = :barrio";
 
-    return entityManager()
+    List<Heladera> heladeras = entityManager()
         .createQuery(query, Heladera.class)
         .setParameter("barrio", barrio)
         .setParameter("alta", true)
         .getResultList();
+
+    heladeras.forEach(entityManager()::refresh);
+    return heladeras;
   }
 
 }

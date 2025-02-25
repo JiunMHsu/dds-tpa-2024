@@ -28,8 +28,6 @@ public class CanjeDePuntosRepository implements WithSimplePersistenceUnit {
    * @return canjes de puntos del colaborador
    */
   public List<CanjeDePuntos> buscarPorColaborador(Colaborador unColaborador) {
-    entityManager().clear();
-
     return entityManager()
         .createQuery("from CanjeDePuntos c where c.colaborador = :colaborador",
             CanjeDePuntos.class)
@@ -44,8 +42,6 @@ public class CanjeDePuntosRepository implements WithSimplePersistenceUnit {
    * @return último canje de puntos del colaborador
    */
   public Optional<CanjeDePuntos> ultimoPorColaborador(Colaborador colaborador) {
-    entityManager().clear();
-
     String query = "from CanjeDePuntos c"
         + " where c.colaborador = :colaborador order by c.fechaHora desc";
 

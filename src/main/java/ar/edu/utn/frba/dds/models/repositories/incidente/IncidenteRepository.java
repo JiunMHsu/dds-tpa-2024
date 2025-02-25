@@ -39,8 +39,12 @@ public class IncidenteRepository implements ICrudRepository<Incidente>, WithSimp
 
     try {
       UUID uuid = UUID.fromString(id);
-      return Optional.ofNullable(entityManager().find(Incidente.class, uuid))
-          .filter(Incidente::getAlta);
+      Incidente incidente = entityManager().find(Incidente.class, uuid);
+      if (incidente != null) {
+        entityManager().refresh(incidente);
+      }
+
+      return Optional.ofNullable(incidente).filter(Incidente::getAlta);
     } catch (IllegalArgumentException e) {
       return Optional.empty();
     }
@@ -48,12 +52,13 @@ public class IncidenteRepository implements ICrudRepository<Incidente>, WithSimp
 
   @Override
   public List<Incidente> buscarTodos() {
-    entityManager().clear();
-
-    return entityManager()
+    List<Incidente> incidentes = entityManager()
         .createQuery("from Incidente i where i.alta = :alta", Incidente.class)
         .setParameter("alta", true)
         .getResultList();
+
+    incidentes.forEach(entityManager()::refresh);
+    return incidentes;
   }
 
   /**
@@ -63,14 +68,16 @@ public class IncidenteRepository implements ICrudRepository<Incidente>, WithSimp
    * @return Lista de incidentes
    */
   public List<Incidente> buscarPorHeladera(Heladera heladera) {
-    entityManager().clear();
     String query = "from Incidente i where i.alta = :alta and i.heladera = :heladera";
 
-    return entityManager()
+    List<Incidente> incidentes = entityManager()
         .createQuery(query, Incidente.class)
         .setParameter("alta", true)
         .setParameter("heladera", heladera)
         .getResultList();
+
+    incidentes.forEach(entityManager()::refresh);
+    return incidentes;
   }
 
   /**
@@ -80,14 +87,16 @@ public class IncidenteRepository implements ICrudRepository<Incidente>, WithSimp
    * @return Lista de incidentes
    */
   public List<Incidente> buscarPorTipo(TipoIncidente tipo) {
-    entityManager().clear();
     String query = "from Incidente i where i.alta = :alta and i.tipo = :tipo_incidente";
 
-    return entityManager()
+    List<Incidente> incidentes = entityManager()
         .createQuery(query, Incidente.class)
         .setParameter("alta", true)
         .setParameter("tipo_incidente", tipo)
         .getResultList();
+
+    incidentes.forEach(entityManager()::refresh);
+    return incidentes;
   }
 
   /**
@@ -97,14 +106,16 @@ public class IncidenteRepository implements ICrudRepository<Incidente>, WithSimp
    * @return Lista de incidentes
    */
   public List<Incidente> buscarDesde(LocalDateTime fechaHora) {
-    entityManager().clear();
     String query = "from Incidente i where i.alta = :alta and i.fechaHora >= :fecha_hora";
 
-    return entityManager()
+    List<Incidente> incidentes = entityManager()
         .createQuery(query, Incidente.class)
         .setParameter("alta", true)
         .setParameter("fecha_hora", fechaHora)
         .getResultList();
+
+    incidentes.forEach(entityManager()::refresh);
+    return incidentes;
   }
 
   /**
@@ -113,14 +124,16 @@ public class IncidenteRepository implements ICrudRepository<Incidente>, WithSimp
    * @return Lista de incidentes
    */
   public List<Incidente> buscarAlertas() {
-    entityManager().clear();
     String query = "from Incidente i where i.alta = :alta and i.tipo != :tipo";
 
-    return entityManager()
+    List<Incidente> incidentes = entityManager()
         .createQuery(query, Incidente.class)
         .setParameter("alta", true)
         .setParameter("tipo", TipoIncidente.FALLA_TECNICA)
         .getResultList();
+
+    incidentes.forEach(entityManager()::refresh);
+    return incidentes;
   }
 
 }
